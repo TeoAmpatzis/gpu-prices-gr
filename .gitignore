@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.*
+venv/
+.venv/
+__pycache__/
+*.pyc
+.vscode/
+scraper/debug/
