@@ -11,6 +11,12 @@ export const SOURCES: Record<SourceName, { label: string; badge: string; color: 
     badge: 'bg-bestprice/10 text-blue-800 ring-bestprice/40 dark:bg-bestprice/15 dark:text-blue-400',
     color: '#3b82f6',
   },
+  // A shop, not an aggregator: its listings are its own products and prices.
+  eshop: {
+    label: 'e-shop.gr',
+    badge: 'bg-eshop/10 text-rose-800 ring-eshop/40 dark:bg-eshop/15 dark:text-rose-400',
+    color: '#e11d48',
+  },
 };
 
 export const SOURCE_NAMES = Object.keys(SOURCES) as SourceName[];

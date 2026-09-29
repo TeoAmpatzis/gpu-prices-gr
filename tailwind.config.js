@@ -12,6 +12,7 @@ export default {
       colors: {
         skroutz: '#f68b24',
         bestprice: '#2563eb',
+        eshop: '#e11d48',
         // Theme tokens, defined in src/index.css for light and .dark.
         page: token('page'),
         panel: token('panel'),

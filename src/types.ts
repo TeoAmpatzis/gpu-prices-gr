@@ -2,7 +2,7 @@
 
 export type Category = 'gpu' | 'cpu' | 'ram' | 'psu' | 'case' | 'fan' | 'cooler';
 export type Brand = 'NVIDIA' | 'AMD' | 'Intel';
-export type SourceName = 'skroutz' | 'bestprice';
+export type SourceName = 'skroutz' | 'bestprice' | 'eshop';
 
 export interface BaseListing {
   id: string;
