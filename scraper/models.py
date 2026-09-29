@@ -39,3 +39,26 @@ class CpuListing:
 
     def to_dict(self) -> dict:
         return asdict(self)
+
+
+@dataclass
+class RamListing:
+    """One RAM kit offer as seen on an aggregator. Mirrored in src/types.ts (RamListing)."""
+
+    id: str
+    source: str
+    title: str
+    url: str
+    price: float
+    shopCount: int | None
+    brand: str  # vendor, e.g. "Kingston"; "Other" if unknown
+    chip: str  # kit spec used as the model name, e.g. "DDR5 32GB (2×16GB) 6000MHz"
+    type: str  # DDR2 | DDR3 | DDR4 | DDR5
+    capacity: int  # total GB across modules
+    modules: int
+    speed: int | None  # MHz (MT/s)
+    formFactor: str  # Desktop | Laptop | Server
+    scrapedAt: str
+
+    def to_dict(self) -> dict:
+        return asdict(self)

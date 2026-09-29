@@ -88,7 +88,7 @@ def scrape_category(cat: Category, only: list[str] | None) -> bool:
             sources_meta[name] = {"count": len(old), "ok": False, "updatedAt": prev_meta.get("updatedAt")}
             print(f"[{cat.name}/{name}] FAILED — keeping {len(old)} previous listings")
 
-    listings.sort(key=lambda l: (l["brand"], l["chip"], l["price"]))
+    listings.sort(key=lambda l: (l["chip"], l["price"]))
     out_dir.mkdir(parents=True, exist_ok=True)
     latest_path.write_text(
         json.dumps({"updatedAt": run_at, "sources": sources_meta, "listings": listings}, ensure_ascii=False, indent=1),

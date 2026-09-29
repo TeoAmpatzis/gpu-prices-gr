@@ -1,5 +1,10 @@
-"""Skroutz: plain GET listing pages (60 cards each), `?page=N`."""
+"""Skroutz: plain GET listing pages (60 cards each), `?page=N`.
 
+Some cards stand for a product family ("G.Skill Aegis DDR4", capacities 8-64GB) and show a
+price range across all variants; the page's JSON-LD has the price of the variant the card
+links to, so that is preferred over the card text."""
+
+import json
 import re
 
 from selectolax.parser import HTMLParser
@@ -12,22 +17,45 @@ BASE = "https://www.skroutz.gr"
 MAX_PAGES = 80
 
 
+def jsonld_prices(tree: HTMLParser) -> dict[str, float]:
+    """skuid -> price of the exact product each card links to."""
+    out: dict[str, float] = {}
+    for script in tree.css('script[type="application/ld+json"]'):
+        try:
+            data = json.loads(script.text())
+        except ValueError:
+            continue
+        for el in data.get("itemListElement", []) if isinstance(data, dict) else []:
+            item = el.get("item") if isinstance(el, dict) else None
+            if not isinstance(item, dict):
+                continue
+            m = re.search(r"/s/(\d+)/", item.get("url", ""))
+            price = (item.get("offers") or {}).get("price")
+            if m and isinstance(price, (int, float)):
+                out[m.group(1)] = float(price)
+    return out
+
+
 def parse(html: str, scraped_at: str, cat: Category) -> tuple[list, bool]:
     """Return (listings, has_next_page)."""
     tree = HTMLParser(html)
+    exact = jsonld_prices(tree)
     out = []
     for card in tree.css("li.card[data-skuid]"):
         title_el = card.css_first("a.sku-card-title-link")
         price_el = card.css_first("a.sku-link")
         if not title_el or not price_el:
             continue
-        price = http.parse_price(price_el.text())
+        skuid = card.attributes["data-skuid"] or ""
+        text = price_el.text()
+        # A range without a JSON-LD price can't be pinned to the linked variant.
+        price = exact.get(skuid) or (None if " - " in text else http.parse_price(text))
         if price is None:
             continue
         href = (title_el.attributes.get("href") or "").split("?", 1)[0]
         listing = cat.make_listing(
             source="skroutz",
-            native_id=card.attributes["data-skuid"] or "",
+            native_id=skuid,
             title=title_el.attributes.get("title") or title_el.text(),
             url=BASE + href,
             price=price,
