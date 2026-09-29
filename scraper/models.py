@@ -84,3 +84,24 @@ class PsuListing:
 
     def to_dict(self) -> dict:
         return asdict(self)
+
+
+@dataclass
+class CaseListing:
+    """One PC case offer as seen on an aggregator. Mirrored in src/types.ts (CaseListing)."""
+
+    id: str
+    source: str
+    title: str
+    url: str
+    price: float
+    shopCount: int | None
+    brand: str  # vendor, e.g. "Lian Li"
+    chip: str  # vendor + model name without colour, e.g. "Lian Li O11 Vision Compact"
+    size: str  # Full Tower | Midi Tower | Mini Tower | SFF / Cube | Άλλο
+    window: bool  # side window / tempered glass
+    rgb: bool
+    scrapedAt: str
+
+    def to_dict(self) -> dict:
+        return asdict(self)
