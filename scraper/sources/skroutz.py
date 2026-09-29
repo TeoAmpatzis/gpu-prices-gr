@@ -71,26 +71,34 @@ def parse(html: str, scraped_at: str, cat: Category) -> tuple[list, bool]:
 
 
 def fetch(cat: Category) -> list:
-    category = BASE + cat.skroutz_path
     s = http.session()
     scraped_at = now_iso()
     seen: dict = {}
+    for i, path in enumerate(cat.skroutz_paths):
+        if i:
+            http.polite_sleep()
+        label = cat.name if len(cat.skroutz_paths) == 1 else f"{cat.name}{i + 1}"
+        fetch_category(s, BASE + path, label, cat, scraped_at, seen)
+    return list(seen.values())
+
+
+def fetch_category(s, category: str, label: str, cat: Category, scraped_at: str, seen: dict) -> None:
+    """Fetch every page of one category URL into `seen` (id -> listing)."""
     for page in range(1, MAX_PAGES + 1):
         url = category if page == 1 else f"{category}?page={page}"
         r = s.get(url)
         r.raise_for_status()
         if "Just a moment" in r.text[:2000]:
             raise RuntimeError("Cloudflare challenge")
-        http.dump(f"skroutz_{cat.name}_p{page}.html", r.text)
+        http.dump(f"skroutz_{label}_p{page}.html", r.text)
         listings, has_next = parse(r.text, scraped_at, cat)
         before = len(seen)
         for l in listings:  # sponsored cards repeat products; keep the cheapest
             if l.id not in seen or l.price < seen[l.id].price:
                 seen[l.id] = l
-        print(f"  skroutz {cat.name} page {page}: {len(listings)} items")
+        print(f"  skroutz {label} page {page}: {len(listings)} items")
         # Out-of-range pages are served as the last page again, so also stop
         # when a page adds nothing new.
         if not has_next or (page > 1 and len(seen) == before):
             break
         http.polite_sleep()
-    return list(seen.values())
