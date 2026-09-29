@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Category } from './types';
-import { CATEGORIES, CATEGORY_IDS, CPU, GPU, RAM } from './lib/categories';
+import { CATEGORIES, CATEGORY_IDS, CPU, GPU, PSU, RAM } from './lib/categories';
 import CategoryView from './components/CategoryView';
 import ThemeToggle from './components/ThemeToggle';
 
@@ -38,7 +38,9 @@ export default function App() {
           </div>
           <ThemeToggle />
         </div>
-        <nav className="flex gap-1 border-b border-line">
+        {/* Bottom rule is an inset shadow so the active tab's underline can sit on it without
+            causing vertical overflow; tabs scroll sideways on narrow screens. */}
+        <nav className="flex gap-1 overflow-x-auto shadow-[inset_0_-1px_0_rgb(var(--line))] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {CATEGORY_IDS.map((id) => {
             const c = CATEGORIES[id];
             const TabIcon = c.icon;
@@ -46,7 +48,7 @@ export default function App() {
               <a
                 key={id}
                 href={`#${id}`}
-                className={`-mb-px inline-flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium transition ${
+                className={`inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap border-b-2 px-3 py-2 text-sm font-medium transition ${
                   id === active ? 'border-accent text-fg' : 'border-transparent text-muted hover:text-fg'
                 }`}
               >
@@ -70,6 +72,11 @@ export default function App() {
       {visited.has('ram') && (
         <div hidden={active !== 'ram'}>
           <CategoryView cfg={RAM} />
+        </div>
+      )}
+      {visited.has('psu') && (
+        <div hidden={active !== 'psu'}>
+          <CategoryView cfg={PSU} />
         </div>
       )}
 
