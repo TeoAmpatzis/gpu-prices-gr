@@ -2,14 +2,15 @@ import type { ReactNode } from 'react';
 import { Check, RotateCcw, Search } from 'lucide-react';
 import type { BaseListing } from '../types';
 import { defaultFilters, type Filters, type Segment, type SortKey } from '../lib/data';
-import type { CategoryConfig } from '../lib/categories';
+import { groupName, type CategoryConfig } from '../lib/categories';
+import { T, tr, useLang, type Text } from '../lib/i18n';
 import { SOURCES, SOURCE_NAMES } from '../lib/sources';
 
-const SORTS: { value: SortKey; label: string }[] = [
-  { value: 'model', label: 'Προτεινόμενα' },
-  { value: 'price-asc', label: 'Τιμή: χαμηλή → υψηλή' },
-  { value: 'price-desc', label: 'Τιμή: υψηλή → χαμηλή' },
-  { value: 'offers', label: 'Περισσότερα προϊόντα' },
+const SORTS: { value: SortKey; label: Text }[] = [
+  { value: 'model', label: T.sortModel },
+  { value: 'price-asc', label: T.sortPriceAsc },
+  { value: 'price-desc', label: T.sortPriceDesc },
+  { value: 'offers', label: T.sortOffers },
 ];
 
 function toggle<T>(arr: T[], v: T): T[] {
@@ -52,12 +53,14 @@ interface Props<L extends BaseListing> {
 }
 
 export default function FilterBar<L extends BaseListing>({ cfg, listings, filters: f, onChange }: Props<L>) {
+  const lang = useLang();
+  const t = (x: Text) => tr(lang, x);
   const set = <K extends keyof Filters>(k: K, v: Filters[K]) => onChange({ ...f, [k]: v });
-  const segments: { value: Segment; label: string }[] = cfg.segments
+  const segments: { value: Segment; label: Text }[] = cfg.segments
     ? [
         { value: 'main', label: cfg.segments.main },
         { value: 'pro', label: cfg.segments.pro },
-        { value: 'all', label: 'Όλα' },
+        { value: 'all', label: T.all },
       ]
     : [];
 
@@ -69,14 +72,14 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
           <input
             value={f.query}
             onChange={(e) => set('query', e.target.value)}
-            placeholder={cfg.searchPlaceholder}
+            placeholder={t(cfg.searchPlaceholder)}
             className="field w-full py-2 pl-9 pr-3"
           />
         </label>
         <select className="field px-3 py-2" value={f.sort} onChange={(e) => set('sort', e.target.value as SortKey)}>
           {SORTS.map((s) => (
             <option key={s.value} value={s.value}>
-              {s.label}
+              {t(s.label)}
             </option>
           ))}
         </select>
@@ -84,23 +87,23 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
           type="button"
           onClick={() => onChange(defaultFilters(cfg.groups))}
           className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-muted transition hover:bg-hover hover:text-fg"
-          title="Επαναφορά φίλτρων"
+          title={t(T.resetTitle)}
         >
-          <RotateCcw className="h-4 w-4" /> Επαναφορά
+          <RotateCcw className="h-4 w-4" /> {t(T.reset)}
         </button>
       </div>
 
       <div className="flex flex-wrap gap-x-8 gap-y-4 border-t border-line pt-4">
-        <Section label={cfg.groupLabel}>
+        <Section label={t(cfg.groupLabel)}>
           {cfg.groups.map((g) => (
             <Chip key={g} active={f.groups.includes(g)} dot={cfg.groupDot[g]} onClick={() => set('groups', toggle(f.groups, g))}>
-              {g}
+              {groupName(g, lang)}
             </Chip>
           ))}
         </Section>
 
         {cfg.segments && (
-          <Section label="Κατηγορία">
+          <Section label={t(T.segment)}>
             <div className="inline-flex rounded-lg bg-hover p-0.5 ring-1 ring-inset ring-line">
               {segments.map((c) => (
                 <button
@@ -112,14 +115,14 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
                     f.segment === c.value ? 'bg-panel text-fg shadow-sm ring-1 ring-line' : 'text-muted hover:text-fg'
                   }`}
                 >
-                  {c.label}
+                  {t(c.label)}
                 </button>
               ))}
             </div>
           </Section>
         )}
 
-        <Section label="Πηγή">
+        <Section label={t(T.source)}>
           {SOURCE_NAMES.map((s) => (
             <Chip key={s} active={f.sources.includes(s)} onClick={() => set('sources', toggle(f.sources, s))}>
               {SOURCES[s].label}
@@ -127,7 +130,7 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
           ))}
         </Section>
 
-        <Section label="Προδιαγραφές & τιμή">
+        <Section label={t(T.specsPrice)}>
           {cfg.extraFilters.map((x) => (
             <select
               key={x.key}
@@ -137,7 +140,7 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
             >
               {x.options(listings).map((o) => (
                 <option key={o.value} value={o.value}>
-                  {o.label}
+                  {t(o.label)}
                 </option>
               ))}
             </select>
@@ -149,8 +152,8 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
               step={50}
               value={f.maxPrice ?? ''}
               onChange={(e) => set('maxPrice', e.target.value === '' ? null : Number(e.target.value))}
-              placeholder="Έως"
-              aria-label="Μέγιστη τιμή"
+              placeholder={t(T.maxPrice)}
+              aria-label={t(T.maxPriceLabel)}
               className="field w-28 py-1.5 pl-2.5 pr-7"
             />
             <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-sm text-faint">€</span>

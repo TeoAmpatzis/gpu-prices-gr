@@ -3,7 +3,9 @@ import { TrendingDown } from 'lucide-react';
 import type { BaseListing, Category } from './types';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './lib/categories';
 import CategoryView from './components/CategoryView';
+import LangToggle from './components/LangToggle';
 import ThemeToggle from './components/ThemeToggle';
+import { T, tr, useLang } from './lib/i18n';
 
 const fromHash = (): Category => {
   const id = location.hash.slice(1);
@@ -24,7 +26,13 @@ export default function App() {
     setVisited((v) => (v.has(active) ? v : new Set(v).add(active)));
   }, [active]);
 
+  const lang = useLang();
+  const t = (x: Parameters<typeof tr>[1]) => tr(lang, x);
   const cfg = CATEGORIES[active];
+
+  useEffect(() => {
+    document.title = `${t(cfg.title)} — ${t(T.siteName)}`;
+  });
   const Icon = cfg.icon;
 
   return (
@@ -36,11 +44,14 @@ export default function App() {
               <TrendingDown className="h-5 w-5" strokeWidth={2.5} />
             </span>
             <span className="leading-tight">
-              <span className="block text-[15px] font-semibold tracking-tight">Τιμές Hardware</span>
-              <span className="block text-xs text-faint">Skroutz · BestPrice · Ελλάδα</span>
+              <span className="block text-[15px] font-semibold tracking-tight">{t(T.siteName)}</span>
+              <span className="block text-xs text-faint">{t(T.siteTagline)}</span>
             </span>
           </a>
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <LangToggle />
+            <ThemeToggle />
+          </div>
         </div>
 
         {/* Bottom rule is an inset shadow so the active tab's underline can sit on it without
@@ -58,7 +69,7 @@ export default function App() {
                   id === active ? 'border-accent text-fg' : 'border-transparent text-muted hover:border-line-strong hover:text-fg'
                 }`}
               >
-                <TabIcon className={`h-4 w-4 ${id === active ? 'text-accent' : ''}`} /> {c.tab}
+                <TabIcon className={`h-4 w-4 ${id === active ? 'text-accent' : ''}`} /> {t(c.tab)}
               </a>
             );
           })}
@@ -69,8 +80,8 @@ export default function App() {
             <Icon className="h-5 w-5" />
           </span>
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{cfg.title}</h1>
-            <p className="mt-1 text-sm text-muted">{cfg.subtitle}</p>
+            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{t(cfg.title)}</h1>
+            <p className="mt-1 text-sm text-muted">{t(cfg.subtitle)}</p>
           </div>
         </div>
       </header>
@@ -84,7 +95,7 @@ export default function App() {
       ))}
 
       <footer className="mt-10 border-t border-line pt-6 text-center text-xs text-faint">
-        Οι τιμές ενημερώνονται αυτόματα κάθε 6 ώρες και ενδέχεται να διαφέρουν από τις τρέχουσες στα καταστήματα.
+        {t(T.footer)}
       </footer>
     </div>
   );

@@ -2,7 +2,8 @@ import { lazy, Suspense } from 'react';
 import { ChevronDown, ExternalLink, TrendingDown, TrendingUp } from 'lucide-react';
 import type { BaseListing, HistoryPoint } from '../types';
 import { formatPrice, type Model } from '../lib/data';
-import type { CategoryConfig } from '../lib/categories';
+import { groupName, type CategoryConfig } from '../lib/categories';
+import { T, tr, useLang } from '../lib/i18n';
 import SourceBadge from './SourceBadge';
 
 // Recharts is heavy and only needed once a row is expanded.
@@ -25,11 +26,13 @@ interface Props<L extends BaseListing> {
 }
 
 export default function ModelRow<L extends BaseListing>({ cfg, model: m, history, open, onToggle }: Props<L>) {
+  const lang = useLang();
+  const price = (n: number) => formatPrice(n, lang);
   const delta = weekChange(history, m.cheapest.price);
   const colSpan = 4 + cfg.before.length + cfg.after.length;
   const td = (c: CategoryConfig<L>['before'][number]) => (
-    <td key={c.header} className={`whitespace-nowrap px-2 text-sm text-fg-soft ${c.className ?? ''}`}>
-      {c.cell(m)}
+    <td key={tr('en', c.header)} className={`whitespace-nowrap px-2 text-sm text-fg-soft ${c.className ?? ''}`}>
+      {c.cell(m, lang)}
     </td>
   );
   return (
@@ -38,29 +41,29 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
         <td className="py-3 pl-4 pr-2">
           <div className="flex items-center gap-2">
             <ChevronDown className={`h-4 w-4 shrink-0 text-faint transition ${open ? 'rotate-180' : ''}`} />
-            <span className={`h-2 w-2 shrink-0 rounded-full ${cfg.groupDot[m.group] ?? 'bg-zinc-400'}`} title={m.group} />
+            <span className={`h-2 w-2 shrink-0 rounded-full ${cfg.groupDot[m.group] ?? 'bg-zinc-400'}`} title={groupName(m.group, lang)} />
             <span className="font-semibold tracking-tight">{m.chip}</span>
           </div>
         </td>
         {cfg.before.map(td)}
         <td className="px-2">
           <div className="flex items-center gap-2 whitespace-nowrap">
-            <span className="text-[15px] font-semibold tabular-nums text-accent">{formatPrice(m.cheapest.price)}</span>
+            <span className="text-[15px] font-semibold tabular-nums text-accent">{price(m.cheapest.price)}</span>
             <SourceBadge source={m.cheapest.source} />
             {delta != null && Math.abs(delta) >= 1 && (
               <span
                 className={`inline-flex items-center gap-0.5 text-xs ${delta < 0 ? 'text-accent' : 'text-up'}`}
-                title="Μεταβολή 7 ημερών"
+                title={tr(lang, T.weekChange)}
               >
                 {delta < 0 ? <TrendingDown className="h-3.5 w-3.5" /> : <TrendingUp className="h-3.5 w-3.5" />}
-                {formatPrice(Math.abs(delta))}
+                {price(Math.abs(delta))}
               </span>
             )}
           </div>
         </td>
         {cfg.after.map(td)}
         <td className="hidden whitespace-nowrap px-2 text-sm tabular-nums text-muted md:table-cell">
-          {m.listings.length > 1 ? `έως ${formatPrice(m.maxPrice)}` : '—'}
+          {m.listings.length > 1 ? `${tr(lang, T.upTo)} ${price(m.maxPrice)}` : '—'}
         </td>
         <td className="pr-4 text-right text-sm tabular-nums text-muted">{m.listings.length}</td>
       </tr>
@@ -77,13 +80,13 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
                       rel="noopener noreferrer"
                       className="flex items-center gap-3 px-3 py-2 text-sm hover:bg-hover"
                     >
-                      <span className="w-24 shrink-0 font-medium tabular-nums">{formatPrice(l.price)}</span>
+                      <span className="w-24 shrink-0 font-medium tabular-nums">{price(l.price)}</span>
                       <SourceBadge source={l.source} />
                       <span className="min-w-0 flex-1 truncate text-fg-soft" title={l.title}>
                         {l.title}
                       </span>
                       {l.shopCount != null && (
-                        <span className="hidden shrink-0 text-xs text-faint sm:inline">{l.shopCount} καταστ.</span>
+                        <span className="hidden shrink-0 text-xs text-faint sm:inline">{l.shopCount} {tr(lang, T.shops)}</span>
                       )}
                       <ExternalLink className="h-3.5 w-3.5 shrink-0 text-faint" />
                     </a>
@@ -91,7 +94,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
                 ))}
               </ul>
               <div>
-                <div className="mb-1.5 text-xs text-faint">Χαμηλότερη τιμή ανά ημέρα</div>
+                <div className="mb-1.5 text-xs text-faint">{tr(lang, T.dailyLow)}</div>
                 <Suspense fallback={<div className="h-48 rounded-lg bg-panel ring-1 ring-line" />}>
                   <PriceChart points={history} />
                 </Suspense>

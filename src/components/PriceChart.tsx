@@ -3,6 +3,7 @@ import type { HistoryPoint } from '../types';
 import { formatPrice } from '../lib/data';
 import { SOURCES } from '../lib/sources';
 import { useTheme } from '../lib/theme';
+import { T, tr, useLang } from '../lib/i18n';
 
 // SVG attributes can't use the CSS theme tokens, so the chart keeps its own palette.
 const PALETTE = {
@@ -17,10 +18,11 @@ const shortDate = (d: string) => {
 
 export default function PriceChart({ points }: { points: HistoryPoint[] | undefined }) {
   const c = PALETTE[useTheme()];
+  const lang = useLang();
   if (!points || points.length < 2) {
     return (
       <div className="flex h-40 items-center justify-center rounded-xl bg-panel px-4 text-center text-sm text-faint ring-1 ring-line">
-        Το ιστορικό τιμών θα εμφανιστεί μετά από λίγες μέρες συλλογής δεδομένων.
+        {tr(lang, T.noHistory)}
       </div>
     );
   }
@@ -47,8 +49,8 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
             contentStyle={{ background: c.tipBg, border: `1px solid ${c.tipBorder}`, borderRadius: 8, fontSize: 12 }}
             labelFormatter={(d: string) => d.split('-').reverse().join('/')}
             formatter={(v: number, _name, item) => [
-              `${formatPrice(v)} (${SOURCES[(item.payload as HistoryPoint).source]?.label ?? ''})`,
-              'Χαμηλότερη',
+              `${formatPrice(v, lang)} (${SOURCES[(item.payload as HistoryPoint).source]?.label ?? ''})`,
+              tr(lang, T.lowest),
             ]}
           />
           <Line type="stepAfter" dataKey="min" stroke={c.line} strokeWidth={2} dot={false} />
