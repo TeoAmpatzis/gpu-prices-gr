@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { TrendingDown } from 'lucide-react';
 import type { Category } from './types';
 import { CATEGORIES, CATEGORY_IDS, CPU, GPU, PSU, RAM } from './lib/categories';
 import CategoryView from './components/CategoryView';
@@ -27,17 +28,21 @@ export default function App() {
   const Icon = cfg.icon;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-6 sm:py-10">
-      <header className="mb-6 flex flex-col gap-4">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-              <Icon className="h-6 w-6 text-accent" /> {cfg.title}
-            </h1>
-            <p className="mt-1 text-sm text-muted">{cfg.subtitle}</p>
-          </div>
+    <div className="mx-auto max-w-6xl px-4 py-5 sm:py-8">
+      <header className="mb-6 flex flex-col gap-6">
+        <div className="flex items-center justify-between gap-4">
+          <a href="#gpu" className="flex items-center gap-2.5">
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-accent text-page shadow-sm">
+              <TrendingDown className="h-5 w-5" strokeWidth={2.5} />
+            </span>
+            <span className="leading-tight">
+              <span className="block text-[15px] font-semibold tracking-tight">Τιμές Hardware</span>
+              <span className="block text-xs text-faint">Skroutz · BestPrice · Ελλάδα</span>
+            </span>
+          </a>
           <ThemeToggle />
         </div>
+
         {/* Bottom rule is an inset shadow so the active tab's underline can sit on it without
             causing vertical overflow; tabs scroll sideways on narrow screens. */}
         <nav className="flex gap-1 overflow-x-auto shadow-[inset_0_-1px_0_rgb(var(--line))] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -48,15 +53,26 @@ export default function App() {
               <a
                 key={id}
                 href={`#${id}`}
-                className={`inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap border-b-2 px-3 py-2 text-sm font-medium transition ${
-                  id === active ? 'border-accent text-fg' : 'border-transparent text-muted hover:text-fg'
+                aria-current={id === active ? 'page' : undefined}
+                className={`inline-flex shrink-0 items-center gap-2 whitespace-nowrap border-b-2 px-3 pb-3 pt-1 text-sm font-medium transition ${
+                  id === active ? 'border-accent text-fg' : 'border-transparent text-muted hover:border-line-strong hover:text-fg'
                 }`}
               >
-                <TabIcon className="h-4 w-4" /> {c.tab}
+                <TabIcon className={`h-4 w-4 ${id === active ? 'text-accent' : ''}`} /> {c.tab}
               </a>
             );
           })}
         </nav>
+
+        <div className="flex items-start gap-3">
+          <span className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent ring-1 ring-inset ring-accent/20">
+            <Icon className="h-5 w-5" />
+          </span>
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{cfg.title}</h1>
+            <p className="mt-1 text-sm text-muted">{cfg.subtitle}</p>
+          </div>
+        </div>
       </header>
 
       {visited.has('gpu') && (
@@ -80,7 +96,7 @@ export default function App() {
         </div>
       )}
 
-      <footer className="pt-8 text-center text-xs text-faint">
+      <footer className="mt-10 border-t border-line pt-6 text-center text-xs text-faint">
         Οι τιμές ενημερώνονται αυτόματα κάθε 6 ώρες και ενδέχεται να διαφέρουν από τις τρέχουσες στα καταστήματα.
       </footer>
     </div>

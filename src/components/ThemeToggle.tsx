@@ -8,7 +8,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(next)}
-      className="rounded-md p-2 text-muted ring-1 ring-inset ring-line-strong transition hover:text-fg"
+      className="grid h-9 w-9 place-items-center rounded-lg bg-panel text-muted shadow-sm ring-1 ring-inset ring-line transition hover:text-fg dark:shadow-none"
       title={label}
       aria-label={label}
     >

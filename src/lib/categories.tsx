@@ -26,6 +26,7 @@ export interface CategoryConfig<L extends BaseListing> {
   searchPlaceholder: string;
   /** Pill filter values, in display/sort order: brands for GPU/CPU, memory type for RAM. */
   groups: string[];
+  groupLabel: string; // heading above the pills
   group: (l: L) => string;
   groupDot: Record<string, string>; // Tailwind bg class per group
   /** Default true: "Μοντέλο" sort goes group by group before `tierScore`. */
@@ -70,6 +71,7 @@ export const GPU: CategoryConfig<GpuListing> = {
   empty: 'Δεν βρέθηκαν κάρτες με αυτά τα φίλτρα.',
   searchPlaceholder: 'Αναζήτηση (π.χ. 5070 Ti, Sapphire)',
   groups: ['NVIDIA', 'AMD', 'Intel'],
+  groupLabel: 'Κατασκευαστής',
   group: (l) => l.brand,
   groupDot: { NVIDIA: 'bg-green-500', AMD: 'bg-red-500', Intel: 'bg-sky-500' },
   segments: { main: 'Gaming', pro: 'Workstation' },
@@ -122,6 +124,7 @@ export const CPU: CategoryConfig<CpuListing> = {
   empty: 'Δεν βρέθηκαν επεξεργαστές με αυτά τα φίλτρα.',
   searchPlaceholder: 'Αναζήτηση (π.χ. 9800X3D, 14600K, AM5)',
   groups: ['AMD', 'Intel'],
+  groupLabel: 'Κατασκευαστής',
   group: (l) => l.brand,
   groupDot: { AMD: 'bg-red-500', Intel: 'bg-sky-500' },
   segments: { main: 'Desktop', pro: 'Server / HEDT' },
@@ -168,6 +171,7 @@ export const RAM: CategoryConfig<RamListing> = {
   empty: 'Δεν βρέθηκαν μνήμες με αυτά τα φίλτρα.',
   searchPlaceholder: 'Αναζήτηση (π.χ. 2x16GB 6000, Kingston Fury)',
   groups: ['DDR5', 'DDR4', 'DDR3', 'DDR2'],
+  groupLabel: 'Τύπος μνήμης',
   group: (l) => l.type,
   groupDot: { DDR5: 'bg-violet-500', DDR4: 'bg-sky-500', DDR3: 'bg-amber-500', DDR2: 'bg-zinc-400' },
   segments: { main: 'Desktop', pro: 'Laptop / Server' },
@@ -209,6 +213,7 @@ export const PSU: CategoryConfig<PsuListing> = {
   empty: 'Δεν βρέθηκαν τροφοδοτικά με αυτά τα φίλτρα.',
   searchPlaceholder: 'Αναζήτηση (π.χ. 850W, RM850x, Seasonic)',
   groups: ['Diamond', 'Titanium', 'Platinum', 'Gold', 'Silver', 'Bronze', 'Standard', NO_RATING],
+  groupLabel: 'Πιστοποίηση',
   group: (l) => l.efficiency ?? NO_RATING,
   groupDot: {
     Diamond: 'bg-cyan-400', Titanium: 'bg-slate-300', Platinum: 'bg-indigo-300', Gold: 'bg-yellow-500',

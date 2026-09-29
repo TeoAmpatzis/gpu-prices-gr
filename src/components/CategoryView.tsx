@@ -38,15 +38,17 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
   return (
     <div className="flex flex-col gap-4">
       <FilterBar cfg={cfg} listings={data.latest.listings} filters={filters} onChange={setFilters} />
-      <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-faint">
-        <span>{models.length} μοντέλα</span>
-        <div className="flex flex-wrap gap-3 text-xs text-muted">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-1 text-sm text-muted">
+        <span>
+          <span className="font-semibold text-fg">{models.length}</span> μοντέλα
+        </span>
+        <div className="flex flex-wrap gap-2 text-xs text-muted">
           {SOURCE_NAMES.map((s) => {
             const meta = data.latest.sources[s];
             return (
               <span
                 key={s}
-                className="inline-flex items-center gap-1.5"
+                className="inline-flex items-center gap-1.5 rounded-full bg-panel px-2.5 py-1 ring-1 ring-inset ring-line"
                 title={meta?.ok ? undefined : 'Η τελευταία ενημέρωση απέτυχε — εμφανίζονται παλαιότερα δεδομένα'}
               >
                 <span className={`h-2 w-2 rounded-full ${meta?.ok ? 'bg-emerald-500' : 'bg-amber-500'}`} />

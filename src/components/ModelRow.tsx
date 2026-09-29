@@ -34,18 +34,18 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
   );
   return (
     <>
-      <tr onClick={onToggle} className="cursor-pointer border-t border-line hover:bg-hover/70">
-        <td className="py-2.5 pl-3 pr-2">
+      <tr onClick={onToggle} className={`cursor-pointer border-t border-line transition-colors first:border-t-0 hover:bg-hover/60 ${open ? 'bg-hover/60' : ''}`}>
+        <td className="py-3 pl-4 pr-2">
           <div className="flex items-center gap-2">
             <ChevronDown className={`h-4 w-4 shrink-0 text-faint transition ${open ? 'rotate-180' : ''}`} />
             <span className={`h-2 w-2 shrink-0 rounded-full ${cfg.groupDot[m.group] ?? 'bg-zinc-400'}`} title={m.group} />
-            <span className="font-medium">{m.chip}</span>
+            <span className="font-semibold tracking-tight">{m.chip}</span>
           </div>
         </td>
         {cfg.before.map(td)}
         <td className="px-2">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-semibold tabular-nums text-accent">{formatPrice(m.cheapest.price)}</span>
+            <span className="text-[15px] font-semibold tabular-nums text-accent">{formatPrice(m.cheapest.price)}</span>
             <SourceBadge source={m.cheapest.source} />
             {delta != null && Math.abs(delta) >= 1 && (
               <span
@@ -62,13 +62,13 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
         <td className="hidden px-2 text-sm tabular-nums text-muted md:table-cell">
           {m.listings.length > 1 ? `έως ${formatPrice(m.maxPrice)}` : '—'}
         </td>
-        <td className="pr-3 text-right text-sm tabular-nums text-muted">{m.listings.length}</td>
+        <td className="pr-4 text-right text-sm tabular-nums text-muted">{m.listings.length}</td>
       </tr>
       {open && (
-        <tr className="bg-hover/40">
-          <td colSpan={colSpan} className="px-3 pb-4 pt-2">
+        <tr className="bg-sunken">
+          <td colSpan={colSpan} className="border-t border-line px-4 pb-5 pt-4">
             <div className="grid gap-4 lg:grid-cols-[1fr_22rem]">
-              <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-lg bg-panel ring-1 ring-line">
+              <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-xl bg-panel ring-1 ring-line">
                 {m.listings.map((l) => (
                   <li key={l.id}>
                     <a
