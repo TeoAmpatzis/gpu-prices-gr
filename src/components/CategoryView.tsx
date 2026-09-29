@@ -7,7 +7,7 @@ import { SOURCES, SOURCE_NAMES } from '../lib/sources';
 import FilterBar from './FilterBar';
 import ModelTable from './ModelTable';
 
-/** One category page (GPUs, CPUs, RAM, PSUs or cases): source status, filters and the model table. */
+/** One category page (one tab): source status, filters and the model table. */
 export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: CategoryConfig<L> }) {
   const [data, setData] = useState<{ latest: Latest<L>; history: History } | null>(null);
   const [error, setError] = useState<string | null>(null);

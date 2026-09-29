@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TrendingDown } from 'lucide-react';
-import type { Category } from './types';
-import { CASE, CATEGORIES, CATEGORY_IDS, CPU, GPU, PSU, RAM } from './lib/categories';
+import type { BaseListing, Category } from './types';
+import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './lib/categories';
 import CategoryView from './components/CategoryView';
 import ThemeToggle from './components/ThemeToggle';
 
@@ -75,31 +75,13 @@ export default function App() {
         </div>
       </header>
 
-      {visited.has('gpu') && (
-        <div hidden={active !== 'gpu'}>
-          <CategoryView cfg={GPU} />
+      {/* Visited tabs stay mounted (hidden) so their filters survive switching back and forth.
+          Each config is typed for its own listing type, so it is widened here. */}
+      {CATEGORY_IDS.filter((id) => visited.has(id)).map((id) => (
+        <div key={id} hidden={active !== id}>
+          <CategoryView cfg={CATEGORIES[id] as unknown as CategoryConfig<BaseListing>} />
         </div>
-      )}
-      {visited.has('cpu') && (
-        <div hidden={active !== 'cpu'}>
-          <CategoryView cfg={CPU} />
-        </div>
-      )}
-      {visited.has('ram') && (
-        <div hidden={active !== 'ram'}>
-          <CategoryView cfg={RAM} />
-        </div>
-      )}
-      {visited.has('psu') && (
-        <div hidden={active !== 'psu'}>
-          <CategoryView cfg={PSU} />
-        </div>
-      )}
-      {visited.has('case') && (
-        <div hidden={active !== 'case'}>
-          <CategoryView cfg={CASE} />
-        </div>
-      )}
+      ))}
 
       <footer className="mt-10 border-t border-line pt-6 text-center text-xs text-faint">
         Οι τιμές ενημερώνονται αυτόματα κάθε 6 ώρες και ενδέχεται να διαφέρουν από τις τρέχουσες στα καταστήματα.
