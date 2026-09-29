@@ -105,3 +105,45 @@ class CaseListing:
 
     def to_dict(self) -> dict:
         return asdict(self)
+
+
+@dataclass
+class FanListing:
+    """One case-fan offer. Mirrored in src/types.ts (FanListing)."""
+
+    id: str
+    source: str
+    title: str
+    url: str
+    price: float
+    shopCount: int | None
+    brand: str  # vendor
+    chip: str  # vendor + model + size (+ pack), e.g. "Arctic P12 Pro 120mm ×3"
+    size: int  # mm
+    pack: int  # fans in the box
+    rgb: bool
+    scrapedAt: str
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+
+@dataclass
+class CoolerListing:
+    """One CPU cooler offer (air or AIO). Mirrored in src/types.ts (CoolerListing)."""
+
+    id: str
+    source: str
+    title: str
+    url: str
+    price: float
+    shopCount: int | None
+    brand: str  # vendor
+    chip: str  # vendor + model, e.g. "Arctic Liquid Freezer III Pro 360"
+    type: str  # Air | AIO
+    radiator: int | None  # AIO radiator length in mm (120…420); None for air
+    rgb: bool
+    scrapedAt: str
+
+    def to_dict(self) -> dict:
+        return asdict(self)
