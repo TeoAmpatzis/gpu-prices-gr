@@ -41,20 +41,32 @@ def parse(html: str, scraped_at: str, cat: Category) -> list:
 
 
 def fetch(cat: Category) -> list:
-    category = BASE + cat.bestprice_path
     s = http.session()
     scraped_at = now_iso()
+    seen: dict = {}
+    for i, path in enumerate(cat.bestprice_paths):
+        if i:
+            http.polite_sleep()
+        label = cat.name if len(cat.bestprice_paths) == 1 else f"{cat.name}{i + 1}"
+        fetch_slice(s, BASE + path, label, cat, scraped_at, seen)
+    return list(seen.values())
+
+
+def fetch_slice(s, category: str, label: str, cat: Category, scraped_at: str, seen: dict) -> None:
+    """Fetch every page of one category URL into `seen` (id -> listing)."""
     r = s.get(category)
     r.raise_for_status()
-    http.dump(f"bestprice_{cat.name}_p1.html", r.text)
+    http.dump(f"bestprice_{label}_p1.html", r.text)
 
     pagination = re.search(r'"pagination":(\{[^}]*\})', r.text)
     total_pages = json.loads(pagination.group(1))["totalPages"] if pagination else 1
     gid_m = re.search(r'"guestId":"([^"]+)"', r.text)
     gid = gid_m.group(1) if gid_m else ""
 
-    seen: dict = {l.id: l for l in parse(r.text, scraped_at, cat)}
-    print(f"  bestprice {cat.name} page 1/{total_pages}: {len(seen)} items")
+    listings = parse(r.text, scraped_at, cat)
+    for l in listings:
+        seen.setdefault(l.id, l)
+    print(f"  bestprice {label} page 1/{total_pages}: {len(listings)} items")
 
     for page in range(2, min(total_pages, MAX_PAGES) + 1):
         http.polite_sleep()
@@ -67,9 +79,8 @@ def fetch(cat: Category) -> list:
             headers={"X-GID": gid, "X-PAGINATION": "true", "X-BP-PAGE": "1", "Referer": category},
         )
         r.raise_for_status()
-        http.dump(f"bestprice_{cat.name}_p{page}.html", r.text)
+        http.dump(f"bestprice_{label}_p{page}.html", r.text)
         listings = parse(r.text, scraped_at, cat)
         for l in listings:
             seen.setdefault(l.id, l)
-        print(f"  bestprice {cat.name} page {page}/{total_pages}: {len(listings)} items")
-    return list(seen.values())
+        print(f"  bestprice {label} page {page}/{total_pages}: {len(listings)} items")
