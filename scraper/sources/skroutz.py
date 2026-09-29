@@ -44,6 +44,7 @@ def parse(html: str, scraped_at: str, cat: Category) -> tuple[list, bool]:
     for card in tree.css("li.card[data-skuid]"):
         title_el = card.css_first("a.sku-card-title-link")
         price_el = card.css_first("a.sku-link")
+        specs_el = card.css_first("p.specs")
         if not title_el or not price_el:
             continue
         skuid = card.attributes["data-skuid"] or ""
@@ -60,6 +61,7 @@ def parse(html: str, scraped_at: str, cat: Category) -> tuple[list, bool]:
             url=BASE + href,
             price=price,
             shop_count=None,  # not shown on listing cards
+            specs=specs_el.text() if specs_el else "",  # e.g. "Τύπος:ATX / SFX"
             scraped_at=scraped_at,
         )
         if listing:

@@ -49,12 +49,12 @@ def vendor_of(title: str) -> str:
 
 def make_listing(
     *, source: str, native_id: str, title: str, url: str, price: float,
-    shop_count: int | None, scraped_at: str,
+    shop_count: int | None, scraped_at: str, specs: str = "",
 ) -> RamListing | None:
     title = re.sub(r"\s+", " ", title).strip()
     if EXCLUDE.search(title) or price <= 0:
         return None
-    specs = f"{title} {url}"
+    specs = f"{title} {url} {specs}"
     type_m = TYPE.search(title) or TYPE.search(url.replace("-", " "))
     if not type_m:
         return None
