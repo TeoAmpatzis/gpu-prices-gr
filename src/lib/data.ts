@@ -1,4 +1,4 @@
-import type { BaseListing, Brand, Category, History, Latest, SourceName } from '../types';
+import type { BaseListing, Category, History, Latest, SourceName } from '../types';
 import type { CategoryConfig } from './categories';
 
 const cache = new Map<Category, Promise<{ latest: Latest; history: History }>>();
@@ -24,8 +24,8 @@ export function loadData<L extends BaseListing>(cat: Category): Promise<{ latest
 export interface Model<L extends BaseListing> {
   key: string;
   chip: string;
-  brand: Brand;
-  pro: boolean; // workstation GPU / server-HEDT CPU
+  group: string; // brand (GPU/CPU) or memory type (RAM); drives the pill filter and dot colour
+  pro: boolean; // workstation GPU / server-HEDT CPU / laptop-server RAM
   listings: L[]; // sorted by price ascending
   cheapest: L;
   maxPrice: number;
@@ -45,8 +45,8 @@ export function groupModels<L extends BaseListing>(listings: L[], cfg: CategoryC
     return {
       key,
       chip: first.chip,
-      brand: first.brand,
-      pro: cfg.isPro(first.chip),
+      group: cfg.group(first),
+      pro: cfg.isPro(first),
       listings: ls,
       cheapest: first,
       maxPrice: ls[ls.length - 1].price,
@@ -69,7 +69,7 @@ export type Segment = 'main' | 'pro' | 'all';
 
 export interface Filters {
   query: string;
-  brands: Brand[];
+  groups: string[];
   sources: SourceName[];
   segment: Segment;
   maxPrice: number | null;
@@ -78,12 +78,14 @@ export interface Filters {
   minVram: number;
   socket: string; // '' = any
   minCores: number;
+  minCapacity: number;
+  minSpeed: number;
 }
 
-export function defaultFilters(brands: Brand[]): Filters {
+export function defaultFilters(groups: string[]): Filters {
   return {
     query: '',
-    brands,
+    groups,
     sources: ['skroutz', 'bestprice'],
     segment: 'main',
     maxPrice: null,
@@ -91,6 +93,8 @@ export function defaultFilters(brands: Brand[]): Filters {
     minVram: 0,
     socket: '',
     minCores: 0,
+    minCapacity: 0,
+    minSpeed: 0,
   };
 }
 
@@ -98,7 +102,7 @@ export function applyFilters<L extends BaseListing>(all: L[], f: Filters, cfg: C
   const q = f.query.trim().toLowerCase();
   const listings = all.filter(
     (l) =>
-      f.brands.includes(l.brand) &&
+      f.groups.includes(cfg.group(l)) &&
       f.sources.includes(l.source) &&
       (!q || cfg.searchText(l).toLowerCase().includes(q)),
   );
@@ -113,7 +117,7 @@ export function applyFilters<L extends BaseListing>(all: L[], f: Filters, cfg: C
     'price-desc': (a, b) => b.cheapest.price - a.cheapest.price,
     offers: (a, b) => b.listings.length - a.listings.length,
     model: (a, b) =>
-      cfg.brands.indexOf(a.brand) - cfg.brands.indexOf(b.brand) ||
+      cfg.groups.indexOf(a.group) - cfg.groups.indexOf(b.group) ||
       cfg.tierScore(b) - cfg.tierScore(a) ||
       a.key.localeCompare(b.key),
   };

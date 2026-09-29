@@ -7,11 +7,11 @@ import { SOURCES, SOURCE_NAMES } from '../lib/sources';
 import FilterBar from './FilterBar';
 import ModelTable from './ModelTable';
 
-/** One category page (GPUs or CPUs): source status, filters and the model table. */
+/** One category page (GPUs, CPUs or RAM): source status, filters and the model table. */
 export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: CategoryConfig<L> }) {
   const [data, setData] = useState<{ latest: Latest<L>; history: History } | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [filters, setFilters] = useState<Filters>(() => defaultFilters(cfg.brands));
+  const [filters, setFilters] = useState<Filters>(() => defaultFilters(cfg.groups));
 
   useEffect(() => {
     loadData<L>(cfg.id)

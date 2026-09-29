@@ -1,6 +1,6 @@
 // Mirror of the JSON written by scraper/main.py (see scraper/models.py).
 
-export type Category = 'gpu' | 'cpu';
+export type Category = 'gpu' | 'cpu' | 'ram';
 export type Brand = 'NVIDIA' | 'AMD' | 'Intel';
 export type SourceName = 'skroutz' | 'bestprice';
 
@@ -11,19 +11,31 @@ export interface BaseListing {
   url: string;
   price: number;
   shopCount: number | null;
-  brand: Brand;
+  brand: string;
   chip: string;
   scrapedAt: string;
 }
 
 export interface GpuListing extends BaseListing {
+  brand: Brand;
   vram: number;
   partner: string;
 }
 
 export interface CpuListing extends BaseListing {
+  brand: Exclude<Brand, 'NVIDIA'>;
   cores: number | null;
   socket: string | null; // e.g. "AM5", "LGA1851"
+}
+
+export interface RamListing extends BaseListing {
+  brand: string; // vendor, e.g. "Kingston"
+  chip: string; // kit spec, e.g. "DDR5 32GB (2×16GB) 6000MHz"
+  type: 'DDR2' | 'DDR3' | 'DDR4' | 'DDR5';
+  capacity: number; // total GB
+  modules: number;
+  speed: number | null; // MHz
+  formFactor: 'Desktop' | 'Laptop' | 'Server';
 }
 
 export interface SourceMeta {
@@ -44,5 +56,5 @@ export interface HistoryPoint {
   source: SourceName;
 }
 
-/** Keyed by model, e.g. "RTX 5060 Ti 16GB" or "Ryzen 7 9800X3D". */
+/** Keyed by model, e.g. "RTX 5060 Ti 16GB", "Ryzen 7 9800X3D", "DDR5 32GB (2×16GB) 6000MHz Desktop". */
 export type History = Record<string, HistoryPoint[]>;

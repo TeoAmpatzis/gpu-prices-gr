@@ -58,7 +58,7 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
           ))}
         </select>
         <button
-          onClick={() => onChange(defaultFilters(cfg.brands))}
+          onClick={() => onChange(defaultFilters(cfg.groups))}
           className="inline-flex items-center gap-1 rounded-md px-2 py-1.5 text-sm text-muted hover:text-fg"
           title="Επαναφορά φίλτρων"
         >
@@ -68,8 +68,8 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
 
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
         <div className="flex gap-1.5">
-          {cfg.brands.map((b) => (
-            <button key={b} className={pill(f.brands.includes(b))} onClick={() => set('brands', toggle(f.brands, b))}>
+          {cfg.groups.map((b) => (
+            <button key={b} className={pill(f.groups.includes(b))} onClick={() => set('groups', toggle(f.groups, b))}>
               {b}
             </button>
           ))}

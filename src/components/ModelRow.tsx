@@ -1,18 +1,12 @@
 import { lazy, Suspense } from 'react';
 import { ChevronDown, ExternalLink, TrendingDown, TrendingUp } from 'lucide-react';
-import type { BaseListing, Brand, HistoryPoint } from '../types';
+import type { BaseListing, HistoryPoint } from '../types';
 import { formatPrice, type Model } from '../lib/data';
 import type { CategoryConfig } from '../lib/categories';
 import SourceBadge from './SourceBadge';
 
 // Recharts is heavy and only needed once a row is expanded.
 const PriceChart = lazy(() => import('./PriceChart'));
-
-const BRAND_DOT: Record<Brand, string> = {
-  NVIDIA: 'bg-green-500',
-  AMD: 'bg-red-500',
-  Intel: 'bg-sky-500',
-};
 
 /** Change vs. the most recent history point at least 7 days old. */
 function weekChange(points: HistoryPoint[] | undefined, current: number): number | null {
@@ -44,7 +38,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
         <td className="py-2.5 pl-3 pr-2">
           <div className="flex items-center gap-2">
             <ChevronDown className={`h-4 w-4 shrink-0 text-faint transition ${open ? 'rotate-180' : ''}`} />
-            <span className={`h-2 w-2 shrink-0 rounded-full ${BRAND_DOT[m.brand]}`} title={m.brand} />
+            <span className={`h-2 w-2 shrink-0 rounded-full ${cfg.groupDot[m.group] ?? 'bg-zinc-400'}`} title={m.group} />
             <span className="font-medium">{m.chip}</span>
           </div>
         </td>
