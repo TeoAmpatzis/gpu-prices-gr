@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { CircuitBoard, Cpu, type LucideIcon } from 'lucide-react';
-import type { BaseListing, Brand, Category, CpuListing, GpuListing } from '../types';
+import { CircuitBoard, Cpu, MemoryStick, type LucideIcon } from 'lucide-react';
+import type { BaseListing, Category, CpuListing, GpuListing, RamListing } from '../types';
 import { mostCommon, type Filters, type Model } from './data';
 
 export interface Column<L extends BaseListing> {
@@ -11,7 +11,7 @@ export interface Column<L extends BaseListing> {
 
 /** A select in the filter bar that only applies to one category. */
 export interface ExtraFilter {
-  key: 'minVram' | 'socket' | 'minCores';
+  key: 'minVram' | 'socket' | 'minCores' | 'minCapacity' | 'minSpeed';
   options: (listings: BaseListing[]) => { value: string | number; label: string }[];
 }
 
@@ -24,11 +24,14 @@ export interface CategoryConfig<L extends BaseListing> {
   icon: LucideIcon;
   empty: string;
   searchPlaceholder: string;
-  brands: Brand[];
+  /** Pill filter values, in display/sort order: brands for GPU/CPU, memory type for RAM. */
+  groups: string[];
+  group: (l: L) => string;
+  groupDot: Record<string, string>; // Tailwind bg class per group
   segments: { main: string; pro: string };
   /** Same key as `model_key` in scraper/categories.py. */
   modelKey: (l: L) => string;
-  isPro: (chip: string) => boolean;
+  isPro: (l: L) => boolean;
   /** Higher = listed first when sorting by model. */
   tierScore: (m: Model<L>) => number;
   searchText: (l: L) => string;
@@ -64,10 +67,12 @@ export const GPU: CategoryConfig<GpuListing> = {
   icon: CircuitBoard,
   empty: 'Δεν βρέθηκαν κάρτες με αυτά τα φίλτρα.',
   searchPlaceholder: 'Αναζήτηση (π.χ. 5070 Ti, Sapphire)',
-  brands: ['NVIDIA', 'AMD', 'Intel'],
+  groups: ['NVIDIA', 'AMD', 'Intel'],
+  group: (l) => l.brand,
+  groupDot: { NVIDIA: 'bg-green-500', AMD: 'bg-red-500', Intel: 'bg-sky-500' },
   segments: { main: 'Gaming', pro: 'Workstation' },
   modelKey: (l) => `${l.chip} ${l.vram}GB`,
-  isPro: (chip) => GPU_WORKSTATION.test(chip),
+  isPro: (l) => GPU_WORKSTATION.test(l.chip),
   tierScore: (m) => gpuChipScore(m.chip) * 100 + gpuVram(m),
   searchText: (l) => `${l.chip} ${l.title} ${l.partner}`,
   matchesModel: (m, f) => gpuVram(m) >= f.minVram,
@@ -114,10 +119,12 @@ export const CPU: CategoryConfig<CpuListing> = {
   icon: Cpu,
   empty: 'Δεν βρέθηκαν επεξεργαστές με αυτά τα φίλτρα.',
   searchPlaceholder: 'Αναζήτηση (π.χ. 9800X3D, 14600K, AM5)',
-  brands: ['AMD', 'Intel'],
+  groups: ['AMD', 'Intel'],
+  group: (l) => l.brand,
+  groupDot: { AMD: 'bg-red-500', Intel: 'bg-sky-500' },
   segments: { main: 'Desktop', pro: 'Server / HEDT' },
   modelKey: (l) => l.chip,
-  isPro: (chip) => /^(EPYC|Threadripper|Xeon)/.test(chip),
+  isPro: (l) => /^(EPYC|Threadripper|Xeon)/.test(l.chip),
   tierScore: (m) => cpuTierScore(m.chip),
   searchText: (l) => `${l.chip} ${l.title} ${l.socket ?? ''}`,
   matchesModel: (m, f) => (!f.socket || cpuSocket(m) === f.socket) && (cpuCores(m) ?? 0) >= f.minCores,
@@ -145,5 +152,46 @@ export const CPU: CategoryConfig<CpuListing> = {
   after: [],
 };
 
-export const CATEGORIES = { gpu: GPU, cpu: CPU } as const;
+// ---------- RAM ----------
+// Models are kits by spec across vendors ("DDR5 32GB (2×16GB) 6000MHz"), split by form factor.
+
+const FORM_LABEL: Record<RamListing['formFactor'], string> = { Desktop: 'Desktop', Laptop: 'Laptop (SO-DIMM)', Server: 'Server' };
+
+export const RAM: CategoryConfig<RamListing> = {
+  id: 'ram',
+  tab: 'Μνήμες RAM',
+  title: 'Τιμές Μνημών RAM',
+  subtitle: 'Οι χαμηλότερες τιμές RAM στην Ελλάδα ανά χωρητικότητα και ταχύτητα, από Skroutz και BestPrice.',
+  icon: MemoryStick,
+  empty: 'Δεν βρέθηκαν μνήμες με αυτά τα φίλτρα.',
+  searchPlaceholder: 'Αναζήτηση (π.χ. 2x16GB 6000, Kingston Fury)',
+  groups: ['DDR5', 'DDR4', 'DDR3', 'DDR2'],
+  group: (l) => l.type,
+  groupDot: { DDR5: 'bg-violet-500', DDR4: 'bg-sky-500', DDR3: 'bg-amber-500', DDR2: 'bg-zinc-400' },
+  segments: { main: 'Desktop', pro: 'Laptop / Server' },
+  modelKey: (l) => `${l.chip} ${l.formFactor}`,
+  isPro: (l) => l.formFactor !== 'Desktop',
+  // Most-offered kits first (DDR5 32GB 6000 over a lone 384GB kit), then bigger, then faster.
+  tierScore: (m) => m.listings.length * 1e7 + m.cheapest.capacity * 1e4 + (m.cheapest.speed ?? 0) / 10,
+  searchText: (l) => `${l.chip} ${l.modules}x${l.capacity / l.modules}GB ${l.title} ${l.brand}`,
+  matchesModel: (m, f) => m.cheapest.capacity >= f.minCapacity && (m.cheapest.speed ?? 0) >= f.minSpeed,
+  extraFilters: [
+    {
+      key: 'minCapacity',
+      options: () =>
+        [0, 8, 16, 32, 64, 128].map((v) => ({ value: v, label: v === 0 ? 'Όλες οι χωρητικότητες' : `≥ ${v}GB` })),
+    },
+    {
+      key: 'minSpeed',
+      options: () =>
+        [0, 3200, 3600, 5600, 6000, 6400, 8000].map((v) => ({ value: v, label: v === 0 ? 'Όλες οι ταχύτητες' : `≥ ${v}MHz` })),
+    },
+  ],
+  before: [
+    { header: 'Τύπος', className: 'hidden sm:table-cell', cell: (m) => FORM_LABEL[m.cheapest.formFactor] },
+  ],
+  after: [{ header: 'Κατασκευαστής', className: 'hidden sm:table-cell', cell: (m) => m.cheapest.brand }],
+};
+
+export const CATEGORIES = { gpu: GPU, cpu: CPU, ram: RAM } as const;
 export const CATEGORY_IDS = Object.keys(CATEGORIES) as Category[];

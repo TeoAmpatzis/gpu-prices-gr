@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import type { Category } from './types';
-import { CATEGORIES, CATEGORY_IDS, CPU, GPU } from './lib/categories';
+import { CATEGORIES, CATEGORY_IDS, CPU, GPU, RAM } from './lib/categories';
 import CategoryView from './components/CategoryView';
 import ThemeToggle from './components/ThemeToggle';
 
-const fromHash = (): Category => (location.hash === '#cpu' ? 'cpu' : 'gpu');
+const fromHash = (): Category => {
+  const id = location.hash.slice(1);
+  return (CATEGORY_IDS as string[]).includes(id) ? (id as Category) : 'gpu';
+};
 
 export default function App() {
   const [active, setActive] = useState<Category>(fromHash);
@@ -62,6 +65,11 @@ export default function App() {
       {visited.has('cpu') && (
         <div hidden={active !== 'cpu'}>
           <CategoryView cfg={CPU} />
+        </div>
+      )}
+      {visited.has('ram') && (
+        <div hidden={active !== 'ram'}>
+          <CategoryView cfg={RAM} />
         </div>
       )}
 
