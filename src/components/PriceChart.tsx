@@ -7,7 +7,7 @@ import { useTheme } from '../lib/theme';
 // SVG attributes can't use the CSS theme tokens, so the chart keeps its own palette.
 const PALETTE = {
   dark: { grid: '#27272a', axis: '#3f3f46', tick: '#a1a1aa', tipBg: '#18181b', tipBorder: '#3f3f46', line: '#34d399' },
-  light: { grid: '#eceef1', axis: '#d0d4da', tick: '#667085', tipBg: '#ffffff', tipBorder: '#e4e6ea', line: '#047857' },
+  light: { grid: '#e6e8ec', axis: '#bec4cd', tick: '#3e4a5e', tipBg: '#ffffff', tipBorder: '#d6dae0', line: '#046c4e' },
 };
 
 const shortDate = (d: string) => {
