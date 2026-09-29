@@ -15,11 +15,12 @@ sys.path.insert(0, str(Path(__file__).parent))
 import http_client  # noqa: E402
 from categories import CATEGORIES, Category  # noqa: E402
 from normalize import now_iso  # noqa: E402
-from sources import bestprice, skroutz  # noqa: E402
+from sources import bestprice, eshop, skroutz  # noqa: E402
 
 SOURCES = {
     "skroutz": skroutz.fetch,
     "bestprice": bestprice.fetch,
+    "eshop": eshop.fetch,
 }
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "public" / "data"

@@ -21,12 +21,21 @@ NO_LED = re.compile(r"Χωρίς\s*Led|CHoris[\s-]*Led", re.I)
 
 # ---------- fans ----------
 
-FAN_CUT = re.compile(r"\s(?:Case\s+Fan|Ανεμιστήρας|\d{2,3}\s*mm|με|with|\d+\s*τμχ|\d+-?Pack)\b.*$", re.I)
-FAN_NOISE = names.noise_regex(["RGB", "ARGB", "A-RGB", "LED", "Kit", "Set", "Bundle", "Fans", "Gaming"])
+FAN_CUT = re.compile(
+    r"\s(?:Case\s+Fan|Ανεμιστήρας|\d{2,3}\s*mm|\d{1,2}\s*cm|με|with|\(?\d+\s*(?:τμχ|pcs)|\d+-?Pack|"
+    r"(?:Triple|Dual)\s+Pack)\b.*$",
+    re.I,
+)
+# "Fan" is dropped everywhere (not only e-shop's "... PWM FAN 40MM"), so "Lian Li Uni Fan SL"
+# becomes "Lian Li Uni SL" on every site and still matches.
+FAN_NOISE = names.noise_regex(["RGB", "ARGB", "A-RGB", "LED", "Kit", "Set", "Bundle", "Fans", "Fan", "Gaming"])
 FAN_SIZE = re.compile(r"(?<!\d)(\d{2,3})\s*mm\b", re.I)
+FAN_SIZE_CM = re.compile(r"(?<!\d)(\d{1,2})\s*cm\b", re.I)  # e-shop: "12CM"
 # Fallback: the size in the model name ("NZXT F140Q", "Corsair RS140", "Endorfy Zephyr 120").
 NAME_SIZE = re.compile(r"(?<!\d)(40|50|60|70|80|92|120|140|180|200|230)(?!\d)")
-PACK = re.compile(r"(?<!\d)(\d{1,2})\s*(?:τμχ|tmch|-?Pack\b|x\s*Fans?\b)", re.I)
+PACK = re.compile(r"(?<!\d)(\d{1,2})\s*(?:τμχ|tmch|pcs\b|-?Pack\b|x\s*Fans?\b)", re.I)
+PACK_WORD = {"dual": 2, "triple": 3}
+PACK_WORDS = re.compile(r"\b(Dual|Triple)\s+Pack\b", re.I)
 FAN_EXCLUDE = re.compile(
     r"controller|hub\b|splitter|καλώδι|\bcable|adapter|grill|φίλτρο|filter|screw|βίδ|bracket|"
     r"laptop|notebook|\bvga\b|\bgpu\b",
@@ -40,17 +49,23 @@ def make_fan_listing(
 ) -> FanListing | None:
     title = re.sub(r"\s+", " ", title).strip()
     slug = url.replace("-", " ")
-    if price <= 0 or FAN_EXCLUDE.search(title):
+    if price <= 0:
         return None
-    size_m = FAN_SIZE.search(title) or FAN_SIZE.search(slug) or NAME_SIZE.search(title)
-    if not size_m:
+    if size_m := FAN_SIZE.search(title) or FAN_SIZE.search(slug):
+        size = int(size_m.group(1))
+    elif size_m := FAN_SIZE_CM.search(title):
+        size = int(size_m.group(1)) * 10
+    elif size_m := NAME_SIZE.search(title):
+        size = int(size_m.group(1))
+    else:
         return None
-    size = int(size_m.group(1))
     pack_m = PACK.search(title) or PACK.search(slug)
-    pack = int(pack_m.group(1)) if pack_m else 1
+    words_m = PACK_WORDS.search(title)
+    pack = int(pack_m.group(1)) if pack_m else PACK_WORD[words_m.group(1).lower()] if words_m else 1
     vendor, rest = names.split_vendor(title)
-    name = names.clean_name(FAN_CUT.sub("", " " + rest), FAN_NOISE)
-    if not name or not names.valid_vendor(vendor):
+    name = names.clean_name(FAN_CUT.sub("", " " + FAN_LEADING.sub("", rest)), FAN_NOISE)
+    # Checked on the model name only: "... PWM W. SPLITTER" is still a fan, "FAN HUB" is not.
+    if not name or not names.valid_vendor(vendor) or FAN_EXCLUDE.search(name):
         return None
     text = f"{title} {slug} {specs}"
     return FanListing(
@@ -71,18 +86,27 @@ def make_fan_listing(
 
 # ---------- coolers ----------
 
-WATER = re.compile(r"Υδρόψυξη|Ydropsyxi|\bAIO\b|Liquid|Water|Hydro", re.I)
-COOLER_CUT = re.compile(r"\s(?:Socket|Υδρόψυξη|Ψύκτρα|για|με|with|CPU\s+Cooler|Cooler\s+CPU)\b.*$", re.I)
+WATER = re.compile(r"Υδρόψυξη|ΥΔΡΟΨΥΞΗ|Ydropsyxi|\bAIO\b|Liquid|Water|Hydro", re.I)
+COOLER_CUT = re.compile(
+    r"\s(?:Socket|Υδρόψυξη|Ψύκτρα|για|με|with|CPU\s+(?:Air\s+)?Cooler|Cooler\s+CPU|Air\s+Cooler|"
+    r"(?:\d{3}\s*mm\s+)?(?:AIO\s+)?Liquid\s+(?:CPU\s+)?Cooler|AIO|Low[\s-]Profile|Cooling\s+Fan)\b.*$",
+    re.I,
+)
+# Descriptors right after the vendor (e-shop.gr): "FORCE CPU COOLER G6", "… CPU AIR COOLER …".
+COOLER_LEADING = re.compile(r"^\s*(?:CPU\s+)?(?:Air\s+)?Cooler\s+", re.I)
+FAN_LEADING = re.compile(r"^\s*(?:PC\s+)?(?:Case\s+|Cooling\s+)?Fan\s+", re.I)
 COOLER_NOISE = names.noise_regex([
     "RGB", "ARGB", "A-RGB", "chromax.black", "chromax", "Chromax Black", "Edition", "Gaming",
 ])
-# Not followed by "mm": "Υδρόψυξη CPU 120mm" is the fan size, not the radiator.
-RADIATOR = re.compile(r"(?<!\d)(120|140|240|280|360|420|480)(?!\d|\s*mm)", re.I)
+# 120/140 followed by "mm" is the fan size ("Υδρόψυξη CPU 120mm"), not the radiator; bigger sizes
+# are always radiators ("PURE LOOP 3 240MM AIO").
+RADIATOR = re.compile(r"(?<!\d)(?:(240|280|360|420|480)|(120|140)(?!\s*mm))(?!\d)", re.I)
 FANS_SPEC = re.compile(r"\((\d)x(120|140)mm\)", re.I)  # Skroutz: "Τριπλός Ανεμιστήρας (3x120mm)"
 COOLER_EXCLUDE = re.compile(
     r"pump|αντλία|fitting|reservoir|δεξαμεν|tube|tubing|σωλήν|coolant|υγρό|\bblock\b|radiator\b|ψυγείο|"
     r"backplate|mounting|bracket|\bkit\b|\bthermal\s+(?:paste|pad|grease|compound)|πάστα|\bpad\b|\bvga\b|\bgpu\b|\bm\.2\b|\bssd\b|memory|\bram\b|"
-    r"laptop|notebook|fan\s+controller|καλώδι|\bcable",
+    r"laptop|notebook|fan\s+controller|καλώδι|\bcable|frame\b|heat\s*sink|cover\b|valve|\bring\b|clamp|"
+    r"adapter|\bdie\b|shroud|flow\s+meter",
     re.I,
 )
 
@@ -94,11 +118,12 @@ def make_cooler_listing(
     title = re.sub(r"\s+", " ", title).strip()
     slug = url.replace("-", " ")
     text = f"{title} {slug} {specs}"
-    if price <= 0 or COOLER_EXCLUDE.search(title):
+    if price <= 0:
         return None
     vendor, rest = names.split_vendor(title)
-    name = names.clean_name(COOLER_CUT.sub("", " " + rest), COOLER_NOISE)
-    if not name or not names.valid_vendor(vendor):
+    name = names.clean_name(COOLER_CUT.sub("", " " + COOLER_LEADING.sub("", rest)), COOLER_NOISE)
+    # Parts are checked on the model name only: "… AIO GPU LIQUID COOLER" is still a CPU AIO.
+    if not name or not names.valid_vendor(vendor) or COOLER_EXCLUDE.search(name):
         return None
 
     radiator = None
@@ -109,7 +134,7 @@ def make_cooler_listing(
         if fans_m:
             radiator = int(fans_m.group(1)) * int(fans_m.group(2))
         elif rad_m:
-            radiator = int(rad_m.group(1))
+            radiator = int(rad_m.group(1) or rad_m.group(2))
         else:
             return None  # water-cooling parts (blocks, pumps…) or an AIO we can't size
         if str(radiator) not in name:  # "Silent Loop 3" comes in 240/280/360: keep them apart

@@ -21,6 +21,9 @@ class Category:
     bestprice_paths: tuple[str, ...]
     make_listing: Callable[..., object | None]  # keyword args shared by normalize*.make_listing
     model_key: Callable[[dict], str]  # grouping key, shared with the frontend (src/lib/categories.tsx)
+    # e-shop.gr lists as (path, category name): `<path>?offset=N&table=PER&category=<name>`.
+    # The path matters — the generic `ypologistes-list` ignores `offset` (see sources/eshop.py).
+    eshop_categories: tuple[tuple[str, str], ...] = ()
 
 
 CATEGORIES = {
@@ -30,6 +33,7 @@ CATEGORIES = {
         bestprice_paths=("/cat/2613/kartes-grafikwn.html",),
         make_listing=normalize.make_listing,
         model_key=lambda l: f"{l['chip']} {l['vram']}GB",
+        eshop_categories=(("ypologistes-kartes-grafikon-gpu-list", "ΚΑΡΤΑ ΓΡΑΦΙΚΩΝ"),),
     ),
     "cpu": Category(
         name="cpu",
@@ -37,6 +41,7 @@ CATEGORIES = {
         bestprice_paths=("/cat/2606/epeksergastes.html",),
         make_listing=normalize_cpu.make_listing,
         model_key=lambda l: l["chip"],
+        eshop_categories=(("ypologistes-epeksergastes-cpu-list", "ΕΠΕΞΕΡΓΑΣΤΗΣ - CPU"),),
     ),
     "ram": Category(
         name="ram",
@@ -51,6 +56,7 @@ CATEGORIES = {
         ),
         make_listing=normalize_ram.make_listing,
         model_key=lambda l: f"{l['chip']} {l['formFactor']}",
+        eshop_categories=(("ypologistes-mnimes-ram-list", "ΜΝΗΜΗ RAM"),),
     ),
     "psu": Category(
         name="psu",
@@ -65,6 +71,7 @@ CATEGORIES = {
         ),
         make_listing=normalize_psu.make_listing,
         model_key=lambda l: f"{l['chip']} {l['formFactor']}",
+        eshop_categories=(("ypologistes-trofodotika-psu-list", "ΤΡΟΦΟΔΟΤΙΚΟ"),),
     ),
     "case": Category(
         name="case",
@@ -76,6 +83,7 @@ CATEGORIES = {
         ),
         make_listing=normalize_case.make_listing,
         model_key=lambda l: names.model_key(l["chip"]),
+        eshop_categories=(("ypologistes-koutia-cases-list", "ΚΟΥΤΙΑ - CASES"),),
     ),
     "fan": Category(
         name="fan",
@@ -86,6 +94,7 @@ CATEGORIES = {
         ),
         make_listing=normalize_cooling.make_fan_listing,
         model_key=lambda l: names.model_key(l["chip"]),
+        eshop_categories=(("ypologistes-case-modding-fans-list", "ΑΝΕΜΙΣΤΗΡΑΣ ΚΟΥΤΙΟΥ"),),
     ),
     "cooler": Category(
         name="cooler",
@@ -94,5 +103,6 @@ CATEGORIES = {
         bestprice_paths=("/cat/2614/psyktres-epeksergaston.html", "/cat/8397/ydropsyksi.html"),
         make_listing=normalize_cooling.make_cooler_listing,
         model_key=lambda l: names.model_key(l["chip"]),
+        eshop_categories=(("ypologistes-epeksergastes-cpu-psyktres-coolers-list", "ΣΥΣΤΗΜΑ ΨΥΞΗΣ ΕΠΕΞΕΡΓΑΣΤΗ"), ("ypologistes-ydropsyksi-water-cooling-list", "ΥΔΡΟΨΥΞΗ")),
     ),
 }

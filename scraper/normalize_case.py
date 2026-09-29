@@ -15,8 +15,17 @@ from models import CaseListing
 
 # The name ends at the first real descriptor: a size phrase ("Midi Tower"), "με ..." or the
 # category name. Bare "Tower"/"Gaming" are not cut at: "The Tower 600", "TUF Gaming GT502".
+SIZE_PHRASE = r"(?:Mid|Midi|Mini|Micro|Full|Ultra|Super|Big)[\s-]?Tower"
 CUT = re.compile(
-    r"\s(?:(?:Mid|Midi|Mini|Micro|Full|Ultra|Super|Big)[\s-]?Tower|Κουτί|με|with|Mesh\s+Tower)\b.*$", re.I
+    rf"\s(?:{SIZE_PHRASE}|Κουτί|ΘΗΚΗ|Θήκη|με|with|Mesh\s+Tower|(?:Computer|PC)\s+Case|Case|Chass?is|"
+    rf"\d+\s+(?:A?RGB\s+)?Fans)\b.*$|\s\+.*$",
+    re.I,
+)
+# e-shop.gr sometimes puts descriptors right after the vendor: "BE QUIET MIDI TOWER SHADOW BASE 800",
+# "ARMAGGEDDON GAMING PC CASE TEARAXX APEX 13", "DARKFLASH COMPUTER CASE TH285 4 FANS". Those are
+# removed instead of cut at (cutting would leave no name).
+LEADING = re.compile(
+    rf"^\s*(?:{SIZE_PHRASE}|(?:Gaming\s+)?(?:(?:Computer|PC)\s+)?Case(?:\s+with\s+PSU)?|Gaming)\s+", re.I
 )
 # Side-panel options of the same case ("Define 7 Solid" / "Define 7 TG Clear Tint") and words only
 # one site uses; colours come from names.COLORS.
@@ -31,7 +40,7 @@ SIZES = [
     (re.compile(r"\b(Mini|Micro)[\s-]?Tower\b", re.I), "Mini Tower"),
     (re.compile(r"\b(Cube|SFF|Small Form Factor|HTPC|Mini[\s-]?ITX)\b", re.I), "SFF / Cube"),
 ]
-IS_CASE = re.compile(r"Tower|Cube|SFF|HTPC|Κουτί|Kouti|Chassis|Case\b", re.I)
+IS_CASE = re.compile(r"Tower|Cube|SFF|HTPC|Κουτί|ΚΟΥΤΙ|Kouti|ΘΗΚΗ|Θήκη|Chass?is|Cases?\b", re.I)
 EXCLUDE = re.compile(
     r"riser|dust\s*filter|φίλτρο|\bstand\b|handle|bracket|\bmount\b|καλώδι|\bcable|adapter|\bkit\b|"
     r"side\s*panel|πάνελ|\bfan\b|ανεμιστήρ",
@@ -47,11 +56,13 @@ def make_listing(
 ) -> CaseListing | None:
     title = re.sub(r"\s+", " ", title).strip()
     text = f"{title} {url.replace('-', ' ')} {specs}"
-    if price <= 0 or EXCLUDE.search(title) or not IS_CASE.search(text):
+    if price <= 0 or not IS_CASE.search(text):
         return None
     vendor, rest = names.split_vendor(title)
+    rest = LEADING.sub("", LEADING.sub("", rest))  # "GAMING PC CASE …": two passes
     name = names.clean_name(CUT.sub("", " " + rest), NOISE)
-    if not name or not names.valid_vendor(vendor):
+    # Accessories are checked on the model name only: a case "… WITH 3X ARGB FAN" is still a case.
+    if not name or not names.valid_vendor(vendor) or EXCLUDE.search(name):
         return None
     size = next((v for pattern, v in SIZES if pattern.search(text)), "Άλλο")
     # BestPrice appends the category name ("... Κουτί Υπολογιστή με Πλαϊνό Παράθυρο").

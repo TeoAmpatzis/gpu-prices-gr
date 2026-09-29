@@ -34,6 +34,8 @@ COLORS = [
     "Future Dusk", "Gravel Sand", "Limestone", "Mint Strawberry", "Arctic White", "Glacier White", "Frost",
     "Walnut", "Chalk", "Cobalt", "Satin Aluminum", "Metallic", "Charcoal",
     "Μαύρο", "Λευκό", "Λευκή", "Μαύρη", "Γκρι", "Ασημί", "Ροζ", "Μπλε", "Κόκκινο", "Πράσινο", "Χρώμα",
+    # e-shop.gr writes Greek in capitals without accents.
+    "ΜΑΥΡΟ", "ΛΕΥΚΟ", "ΜΑΥΡΗ", "ΛΕΥΚΗ", "ΑΣΗΜΙ", "ΚΟΚΚΙΝΟ", "ΠΡΑΣΙΝΟ", "ΧΡΩΜΑ",
 ]
 
 
@@ -63,7 +65,8 @@ def split_vendor(title: str) -> tuple[str, str]:
 
 
 def clean_name(name: str, noise: re.Pattern) -> str:
-    return re.sub(r"\s+", " ", noise.sub(" ", name)).strip(" -,/&+")
+    name = re.sub(r"\(\s*\)", " ", noise.sub(" ", name))  # "(WHITE)" -> "( )" -> gone
+    return re.sub(r"\s+", " ", name).strip(" -,/&+")
 
 
 def model_key(chip: str) -> str:
