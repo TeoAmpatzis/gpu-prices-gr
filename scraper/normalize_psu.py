@@ -13,7 +13,10 @@ import re
 from models import PsuListing
 
 # No leading \b: the wattage can be glued to a model prefix ("Aorus P850W").
-WATTS = re.compile(r"(?<![\d.])(\d{3,4})\s*W\b", re.I)
+# e-shop.gr also writes "1000WATT", "650 WATT" and "650W12CM".
+WATTS = re.compile(r"(?<![\d.])(\d{3,4})\s*(?:WATTS?|W)(?![A-Za-z])", re.I)
+# A tier named without "80 PLUS" ("SMART BM3 BRONZE 850W", "ION GOLD 3", "…, TITANIUM").
+BARE_TIER = re.compile(r"\b(Titanium|Platinum|Gold|Silver|Bronze)\b", re.I)
 SLUG_WATTS = re.compile(r"-(\d{3,4})W-", re.I)
 # 80 PLUS and Cybenetics tiers are folded into one scale; "Standard"/"White" = base 80 PLUS.
 EFFICIENCY = re.compile(r"\b(?:80\s*\+|80\s*Plus|Cybenetics)\s*(Titanium|Platinum|Gold|Silver|Bronze|Diamond|Standard|White)?", re.I)
@@ -69,7 +72,13 @@ def make_listing(
 
     text = f"{title} {url.replace('-', ' ')} {specs}"
     eff_m = EFFICIENCY.search(text)
-    tier = (eff_m.group(1) or "Standard").capitalize() if eff_m else None
+    bare_m = BARE_TIER.search(title)
+    if eff_m and eff_m.group(1):
+        tier = eff_m.group(1).capitalize()
+    elif bare_m:  # "80+ RATING … GOLD", or no "80 PLUS" at all
+        tier = bare_m.group(1).capitalize()
+    else:
+        tier = "Standard" if eff_m else None
     efficiency = "Standard" if tier == "White" else tier  # None = no certification
     modular = next((v for pattern, v in MODULAR if pattern.search(text)), None)
     form = next((v for pattern, v in FORM if pattern.search(text)), "ATX")
