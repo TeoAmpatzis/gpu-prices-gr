@@ -1,72 +1,73 @@
-import { useEffect, useMemo, useState } from 'react';
-import { AlertTriangle, Cpu, Loader2 } from 'lucide-react';
-import type { History, Latest } from './types';
-import { applyFilters, DEFAULT_FILTERS, loadData, timeAgo, type Filters } from './lib/data';
-import { SOURCES, SOURCE_NAMES } from './lib/sources';
-import FilterBar from './components/FilterBar';
-import ModelTable from './components/ModelTable';
+import { useEffect, useState } from 'react';
+import type { Category } from './types';
+import { CATEGORIES, CATEGORY_IDS, CPU, GPU } from './lib/categories';
+import CategoryView from './components/CategoryView';
+import ThemeToggle from './components/ThemeToggle';
+
+const fromHash = (): Category => (location.hash === '#cpu' ? 'cpu' : 'gpu');
 
 export default function App() {
-  const [data, setData] = useState<{ latest: Latest; history: History } | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
+  const [active, setActive] = useState<Category>(fromHash);
+  // Keep visited tabs mounted so their filters survive switching back and forth.
+  const [visited, setVisited] = useState<Set<Category>>(() => new Set([fromHash()]));
 
   useEffect(() => {
-    loadData()
-      .then(setData)
-      .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)));
+    const onHash = () => setActive(fromHash());
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
   }, []);
+  useEffect(() => {
+    setVisited((v) => (v.has(active) ? v : new Set(v).add(active)));
+  }, [active]);
 
-  const models = useMemo(() => (data ? applyFilters(data.latest.listings, filters) : []), [data, filters]);
+  const cfg = CATEGORIES[active];
+  const Icon = cfg.icon;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:py-10">
-      <header className="mb-6 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-            <Cpu className="h-6 w-6 text-emerald-400" /> Τιμές Καρτών Γραφικών
-          </h1>
-          <p className="mt-1 text-sm text-zinc-400">Οι χαμηλότερες τιμές GPU στην Ελλάδα από Skroutz και BestPrice.</p>
-        </div>
-        {data && (
-          <div className="flex flex-wrap gap-3 text-xs text-zinc-400">
-            {SOURCE_NAMES.map((s) => {
-              const meta = data.latest.sources[s];
-              return (
-                <span
-                  key={s}
-                  className="inline-flex items-center gap-1.5"
-                  title={meta?.ok ? undefined : 'Η τελευταία ενημέρωση απέτυχε — εμφανίζονται παλαιότερα δεδομένα'}
-                >
-                  <span className={`h-2 w-2 rounded-full ${meta?.ok ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-                  {SOURCES[s].label}: {meta?.count ?? 0} · {timeAgo(meta?.updatedAt)}
-                </span>
-              );
-            })}
+      <header className="mb-6 flex flex-col gap-4">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
+              <Icon className="h-6 w-6 text-accent" /> {cfg.title}
+            </h1>
+            <p className="mt-1 text-sm text-muted">{cfg.subtitle}</p>
           </div>
-        )}
+          <ThemeToggle />
+        </div>
+        <nav className="flex gap-1 border-b border-line">
+          {CATEGORY_IDS.map((id) => {
+            const c = CATEGORIES[id];
+            const TabIcon = c.icon;
+            return (
+              <a
+                key={id}
+                href={`#${id}`}
+                className={`-mb-px inline-flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium transition ${
+                  id === active ? 'border-accent text-fg' : 'border-transparent text-muted hover:text-fg'
+                }`}
+              >
+                <TabIcon className="h-4 w-4" /> {c.tab}
+              </a>
+            );
+          })}
+        </nav>
       </header>
 
-      {error && (
-        <div className="flex items-center gap-2 rounded-lg bg-rose-950/50 p-4 text-rose-300 ring-1 ring-rose-900">
-          <AlertTriangle className="h-5 w-5" /> Αποτυχία φόρτωσης δεδομένων: {error}
+      {visited.has('gpu') && (
+        <div hidden={active !== 'gpu'}>
+          <CategoryView cfg={GPU} />
         </div>
       )}
-      {!data && !error && (
-        <div className="flex items-center justify-center gap-2 py-24 text-zinc-500">
-          <Loader2 className="h-5 w-5 animate-spin" /> Φόρτωση…
+      {visited.has('cpu') && (
+        <div hidden={active !== 'cpu'}>
+          <CategoryView cfg={CPU} />
         </div>
       )}
-      {data && (
-        <div className="flex flex-col gap-4">
-          <FilterBar filters={filters} onChange={setFilters} />
-          <p className="text-sm text-zinc-500">{models.length} μοντέλα</p>
-          <ModelTable models={models} history={data.history} />
-          <footer className="pt-4 text-center text-xs text-zinc-600">
-            Οι τιμές ενημερώνονται αυτόματα κάθε 6 ώρες και ενδέχεται να διαφέρουν από τις τρέχουσες στα καταστήματα.
-          </footer>
-        </div>
-      )}
+
+      <footer className="pt-8 text-center text-xs text-faint">
+        Οι τιμές ενημερώνονται αυτόματα κάθε 6 ώρες και ενδέχεται να διαφέρουν από τις τρέχουσες στα καταστήματα.
+      </footer>
     </div>
   );
 }

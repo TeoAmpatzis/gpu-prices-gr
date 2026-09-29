@@ -3,9 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GPU Τιμές Ελλάδα</title>
+    <title>Τιμές GPU & CPU Ελλάδα</title>
+    <script>
+      // Set the theme before first paint (see src/lib/theme.ts).
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches))
+          document.documentElement.classList.add('dark');
+      } catch (e) {}
+    </script>
   </head>
-  <body class="bg-zinc-950 text-zinc-100">
+  <body class="bg-page text-fg">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

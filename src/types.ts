@@ -1,9 +1,10 @@
 // Mirror of the JSON written by scraper/main.py (see scraper/models.py).
 
+export type Category = 'gpu' | 'cpu';
 export type Brand = 'NVIDIA' | 'AMD' | 'Intel';
 export type SourceName = 'skroutz' | 'bestprice';
 
-export interface Listing {
+export interface BaseListing {
   id: string;
   source: SourceName;
   title: string;
@@ -12,9 +13,17 @@ export interface Listing {
   shopCount: number | null;
   brand: Brand;
   chip: string;
+  scrapedAt: string;
+}
+
+export interface GpuListing extends BaseListing {
   vram: number;
   partner: string;
-  scrapedAt: string;
+}
+
+export interface CpuListing extends BaseListing {
+  cores: number | null;
+  socket: string | null; // e.g. "AM5", "LGA1851"
 }
 
 export interface SourceMeta {
@@ -23,10 +32,10 @@ export interface SourceMeta {
   updatedAt: string | null;
 }
 
-export interface Latest {
+export interface Latest<L extends BaseListing = BaseListing> {
   updatedAt: string;
   sources: Partial<Record<SourceName, SourceMeta>>;
-  listings: Listing[];
+  listings: L[];
 }
 
 export interface HistoryPoint {
@@ -35,5 +44,5 @@ export interface HistoryPoint {
   source: SourceName;
 }
 
-/** Keyed by model, e.g. "RTX 5060 Ti 16GB". */
+/** Keyed by model, e.g. "RTX 5060 Ti 16GB" or "Ryzen 7 9800X3D". */
 export type History = Record<string, HistoryPoint[]>;
