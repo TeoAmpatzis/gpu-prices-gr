@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TrendingDown } from 'lucide-react';
 import type { Category } from './types';
-import { CATEGORIES, CATEGORY_IDS, CPU, GPU, PSU, RAM } from './lib/categories';
+import { CASE, CATEGORIES, CATEGORY_IDS, CPU, GPU, PSU, RAM } from './lib/categories';
 import CategoryView from './components/CategoryView';
 import ThemeToggle from './components/ThemeToggle';
 
@@ -93,6 +93,11 @@ export default function App() {
       {visited.has('psu') && (
         <div hidden={active !== 'psu'}>
           <CategoryView cfg={PSU} />
+        </div>
+      )}
+      {visited.has('case') && (
+        <div hidden={active !== 'case'}>
+          <CategoryView cfg={CASE} />
         </div>
       )}
 

@@ -81,6 +81,8 @@ export interface Filters {
   minCapacity: number;
   minSpeed: number;
   minWatts: number;
+  window: string; // '' | 'yes' | 'no'
+  rgb: string; // '' | 'yes' | 'no'
 }
 
 export function defaultFilters(groups: string[]): Filters {
@@ -97,6 +99,8 @@ export function defaultFilters(groups: string[]): Filters {
     minCapacity: 0,
     minSpeed: 0,
     minWatts: 0,
+    window: '',
+    rgb: '',
   };
 }
 
@@ -110,7 +114,7 @@ export function applyFilters<L extends BaseListing>(all: L[], f: Filters, cfg: C
   );
   const models = groupModels(listings, cfg).filter(
     (m) =>
-      (f.segment === 'all' || (f.segment === 'pro') === m.pro) &&
+      (!cfg.segments || f.segment === 'all' || (f.segment === 'pro') === m.pro) &&
       (f.maxPrice == null || m.cheapest.price <= f.maxPrice) &&
       cfg.matchesModel(m, f),
   );
