@@ -16,31 +16,40 @@ Read this first; it is kept current so you don't need to re-explore the repo.
 ```bash
 npm install && npm run dev            # site on :5174
 npm run build                         # tsc + vite build (gate before commit)
-pip install -r scraper/requirements.txt && playwright install chromium
-python scraper/main.py                # all sources
-python scraper/main.py --only bestprice --debug   # one source, dump HTML to scraper/debug/
+python -m venv venv && venv/Scripts/pip install -r scraper/requirements.txt   # curl_cffi + selectolax, no browser
+venv/Scripts/python scraper/main.py                     # all sources (~2 min, ~50 requests)
+venv/Scripts/python scraper/main.py --only bestprice --debug   # one source, dump HTML to scraper/debug/
 ```
 
 ## File map
 - `scraper/models.py` — `Listing` dataclass (the one shared schema)
-- `scraper/normalize.py` — title → brand/chip/vram/partner (regex tables); unmatched titles dropped
+- `scraper/http_client.py` — curl_cffi Chrome-impersonating session, polite sleep, `parse_price`, debug dumps
+- `scraper/normalize.py` — title → brand/chip/vram/partner (regex tables); unmatched titles dropped. VRAM falls back to the URL slug. Workstation chips: `RTX PRO n`, `RTX An`, `RTX n Ada`, `RTX n (Pro)`, `Tn`
 - `scraper/sources/<name>.py` — each exposes `fetch() -> list[Listing]`; registered in `main.py` `SOURCES`
 - `scraper/main.py` — runs sources isolated, keeps previous data for a source that returns 0, writes JSON
-- `src/types.ts` — TS mirror of JSON schema; `src/lib/data.ts` — load + group by chip + filters
-- `src/components/*` — FilterBar, ModelTable/ModelRow (cheapest + source badge), PriceChart
+- `src/types.ts` — TS mirror of JSON schema; `src/lib/data.ts` — load, group by model (chip+VRAM), filters, tier sort, gaming/workstation split
+- `src/lib/sources.ts` — per-source label/colour
+- `src/components/*` — FilterBar, ModelTable/ModelRow (expandable: all listings + chart), PriceChart (lazy-loaded recharts), SourceBadge
 - `.github/workflows/scrape.yml` — cron + `workflow_dispatch`, commits data with `contents: write`
 
 ## JSON schemas
 - `latest.json`: `{updatedAt, sources: {name: {count, ok, updatedAt}}, listings: Listing[]}`
-- `Listing`: `{id, source, title, url, price, shopCount, brand: NVIDIA|AMD|Intel, chip, vram, partner, scrapedAt}`
-- `history.json`: `{ [chip]: [{d: 'YYYY-MM-DD', min, source}] }` — one point per chip per day (min).
+- `Listing`: `{id: 'source:nativeId', source, title, url, price, shopCount: number|null, brand: NVIDIA|AMD|Intel, chip, vram, partner, scrapedAt}`
+- `history.json`: `{ [model]: [{d: 'YYYY-MM-DD', min, source}] }` — model = `"<chip> <vram>GB"` (`model_key` in main.py = `modelKey` in data.ts); one point per model per day (min across runs), 365 days kept.
 
 ## Adding a source
 1. `scraper/sources/foo.py` with `fetch() -> list[Listing]` (use `normalize.make_listing`).
 2. Add to `SOURCES` in `main.py`; add colour/label in `src/lib/sources.ts`.
 
 ## Scraping notes / pitfalls
-- (filled in as learned — URLs, selectors, anti-bot behaviour)
+- **Anti-bot**: plain curl → Skroutz Cloudflare "Just a moment" 403, BestPrice TLS connection reset. `curl_cffi` with `impersonate="chrome"` passes both, locally and from GitHub Actions runners (verified 2026-09-29). Headless Playwright is *blocked* on BestPrice — don't go back to it.
+- **Skroutz**: `https://www.skroutz.gr/c/55/kartes-grafikwn.html?page=N`, 60 cards/page (~12 real pages). Cards `li.card[data-skuid]`, title `a.sku-card-title-link[title]`, price `a.sku-link` text — can be a range `"740,10 € - 757,90 €"` (take first). No shop count on cards. Out-of-range pages return the last page again → stop when no new IDs. Sponsored cards duplicate products (dedupe by skuid). Titles often omit VRAM; the slug has it.
+- **BestPrice**: `https://www.bestprice.gr/cat/2613/kartes-grafikwn.html`, 16 cards/page (~36 pages). `?pg=N` GET is ignored (always page 1). Pages 2+ = multipart POST to the same URL with `fromPagination=1`, `pg=N` and headers `X-PAGINATION: true`, `X-BP-PAGE: 1`, `X-GID: <"guestId" from page 1 HTML>`. Cards `div.p[data-id]`, `data-price` in cents, title `.p__title a[title]` (may end in "Κάρτα Γραφικών <SKU>"), shops `.p__merchants`. Total pages in embedded `"pagination":{"totalPages":N,...}`.
 
 ## Status / TODO
 - [x] Scaffold
+- [x] Scrapers (Skroutz, BestPrice) + normalize — ~1050 listings, ~90 models
+- [x] GitHub Actions cron (`17 */6 * * *`) — first run green
+- [x] Frontend: filters, model table, source badges, 7-day change, history chart
+- [ ] Owner: connect repo to Vercel (Vite preset, output `dist`)
+- [ ] Ideas: per-partner filter, price-drop highlights, URL-synced filters, merge identical products across sources
