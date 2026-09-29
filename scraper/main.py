@@ -33,15 +33,21 @@ def load_json(path: Path, default):
         return default
 
 
+def model_key(l: dict) -> str:
+    """Grouping key shared with the frontend (src/lib/data.ts): "RTX 5060 Ti 16GB"."""
+    return f"{l['chip']} {l['vram']}GB"
+
+
 def update_history(history: dict, listings: list[dict], day: str) -> dict:
-    """One point per chip per day: the lowest price seen that day across runs."""
+    """One point per model per day: the lowest price seen that day across runs."""
     cheapest: dict[str, dict] = {}
     for l in listings:
-        c = cheapest.get(l["chip"])
+        key = model_key(l)
+        c = cheapest.get(key)
         if c is None or l["price"] < c["price"]:
-            cheapest[l["chip"]] = l
-    for chip, l in cheapest.items():
-        points = history.setdefault(chip, [])
+            cheapest[key] = l
+    for key, l in cheapest.items():
+        points = history.setdefault(key, [])
         if points and points[-1]["d"] == day:
             if l["price"] < points[-1]["min"]:
                 points[-1] = {"d": day, "min": l["price"], "source": l["source"]}
@@ -100,7 +106,7 @@ def main() -> int:
     fresh = [l for l in listings if sources_meta.get(l["source"], {}).get("ok")]
     history = update_history(load_json(HISTORY, {}), fresh, run_at[:10])
     HISTORY.write_text(json.dumps(history, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    print(f"wrote {len(listings)} listings, {len(history)} chips in history")
+    print(f"wrote {len(listings)} listings, {len(history)} models in history")
     return 0 if any(m["ok"] for m in sources_meta.values()) else 1
 
 

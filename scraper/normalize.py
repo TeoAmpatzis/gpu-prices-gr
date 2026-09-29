@@ -26,7 +26,7 @@ NVIDIA_PRO = [
 ]
 WORKSTATION_NUMBERS = {2000, 4000, 4500, 5000, 6000}
 INTEL = re.compile(r"\bArc\s*(?:Pro\s*)?([AB]\d{3})\b", re.I)
-VRAM = re.compile(r"\b(\d{1,2})\s*GB\b", re.I)
+VRAM = re.compile(r"\b(\d{1,2})(?:[.,]0)?\s*GB\b", re.I)  # "8GB", "2.0GB"
 
 # Checked in order against the start of the title, then anywhere.
 PARTNERS = [
