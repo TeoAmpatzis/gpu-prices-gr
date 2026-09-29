@@ -6,7 +6,7 @@ Read this first; it is kept current so you don't need to re-explore the repo.
 - Static site listing **PC hardware prices in the Greek market** (GPU, CPU, RAM, PSU, cases, case fans, CPU coolers) from aggregators **Skroutz** + **BestPrice**. Greece only. Seven tabs (`#gpu #cpu #ram #psu #case #fan #cooler`), light/dark theme toggle.
 - **€0/month is a hard rule**: no paid APIs/SaaS. Free tiers only (GitHub Actions, Vercel Hobby).
 - Private repo: `github.com/TeoAmpatzis/gpu-prices-gr`. Owner deploys on Vercel (Vite preset, output `dist`).
-- UI text in Greek. Icons: `lucide-react` only. Strict TS; `npm run build` is the only check (no tests/lint).
+- UI text is bilingual (Greek default for Greek browsers, else English; toggle in the header): every visible string is a `Text` (`{el, en}`) from `src/lib/i18n.ts` — shared strings in `T`, per-category ones in `categories.tsx`. Never hardcode Greek in components. Icons: `lucide-react` only. Strict TS; `npm run build` is the only check (no tests/lint).
 - Git: conventional commits, commit + push after each unit of work, stage files explicitly, never commit `node_modules/ dist/ venv/ .env`.
 
 ## Data flow
@@ -38,9 +38,10 @@ venv/Scripts/python scraper/main.py --only bestprice --debug   # one source, dum
 - `scraper/main.py` — per category: runs sources isolated, keeps previous data for a source that returns 0, writes JSON
 - `src/types.ts` — TS mirror of JSON schema (`GpuListing`, `CpuListing`); `src/lib/data.ts` — generic load/group/filter/sort
 - `src/lib/categories.tsx` — `CategoryConfig` per category: model key, pill `groups` (brand for GPU/CPU, DDR type for RAM, efficiency for PSU, size for cases/fans, air/AIO size for coolers), optional `segments`, pro split (workstation GPUs / server+HEDT CPUs / laptop+server RAM / non-ATX PSUs), `sortByGroup` (PSU/cases/fans/coolers: false → most-offered first), tier sort, extra filters (VRAM; socket, cores; capacity, speed; watts; window, RGB; pack), table columns
+- `src/lib/i18n.ts` — language store (`<html lang>`, localStorage `lang`, set before paint by the inline script in `index.html`), `useLang`, `tr(lang, text)`, shared strings `T`. `formatPrice`/`timeAgo` in data.ts take the lang. Group keys that come from the data in Greek (`Άλλο`, `Αέρα`, `Χωρίς ένδειξη`) are displayed via `groupName()`
 - `src/lib/theme.ts` — light/dark store (`.dark` on `<html>`, localStorage `theme`, follows OS until chosen); inline script in `index.html` avoids flash. Colours are CSS-variable tokens (`bg-page`, `text-muted`, `ring-line`, `text-accent`…) in `src/index.css` + `tailwind.config.js` — use them instead of raw `zinc-*`
 - `src/lib/sources.ts` — per-source label/colour
-- `src/components/*` — CategoryView (one tab), FilterBar, ModelTable/ModelRow (expandable: all listings + chart), PriceChart (lazy-loaded recharts, own light/dark palette), SourceBadge, ThemeToggle
+- `src/components/*` — CategoryView (one tab), FilterBar, ModelTable/ModelRow (expandable: all listings + chart), PriceChart (lazy-loaded recharts, own light/dark palette), SourceBadge, ThemeToggle, LangToggle
 - `.github/workflows/scrape.yml` — cron + `workflow_dispatch`, commits data with `contents: write`
 
 ## JSON schemas
