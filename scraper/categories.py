@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Callable
 
 import normalize
+import normalize_case
 import normalize_cpu
 import normalize_psu
 import normalize_ram
@@ -62,5 +63,16 @@ CATEGORIES = {
         ),
         make_listing=normalize_psu.make_listing,
         model_key=lambda l: f"{l['chip']} {l['formFactor']}",
+    ),
+    "case": Category(
+        name="case",
+        skroutz_path="/c/28/cases-koutia.html",
+        # ~2050 products: sliced by price (BestPrice's ?min/?max are in cents).
+        bestprice_paths=tuple(
+            f"/cat/2607/koutia-ypologiston.html?{q}"
+            for q in ("max=4999", "min=5000&max=7999", "min=8000&max=11999", "min=12000")
+        ),
+        make_listing=normalize_case.make_listing,
+        model_key=lambda l: normalize_case.model_key(l["chip"]),
     ),
 }
