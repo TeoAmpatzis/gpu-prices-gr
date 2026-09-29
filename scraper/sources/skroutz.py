@@ -5,18 +5,17 @@ import re
 from selectolax.parser import HTMLParser
 
 import http_client as http
-from models import Listing
-from normalize import make_listing, now_iso
+from categories import Category
+from normalize import now_iso
 
 BASE = "https://www.skroutz.gr"
-CATEGORY = f"{BASE}/c/55/kartes-grafikwn.html"
 MAX_PAGES = 80
 
 
-def parse(html: str, scraped_at: str) -> tuple[list[Listing], bool]:
+def parse(html: str, scraped_at: str, cat: Category) -> tuple[list, bool]:
     """Return (listings, has_next_page)."""
     tree = HTMLParser(html)
-    out: list[Listing] = []
+    out = []
     for card in tree.css("li.card[data-skuid]"):
         title_el = card.css_first("a.sku-card-title-link")
         price_el = card.css_first("a.sku-link")
@@ -26,7 +25,7 @@ def parse(html: str, scraped_at: str) -> tuple[list[Listing], bool]:
         if price is None:
             continue
         href = (title_el.attributes.get("href") or "").split("?", 1)[0]
-        listing = make_listing(
+        listing = cat.make_listing(
             source="skroutz",
             native_id=card.attributes["data-skuid"] or "",
             title=title_el.attributes.get("title") or title_el.text(),
@@ -41,23 +40,24 @@ def parse(html: str, scraped_at: str) -> tuple[list[Listing], bool]:
     return out, has_next
 
 
-def fetch() -> list[Listing]:
+def fetch(cat: Category) -> list:
+    category = BASE + cat.skroutz_path
     s = http.session()
     scraped_at = now_iso()
-    seen: dict[str, Listing] = {}
+    seen: dict = {}
     for page in range(1, MAX_PAGES + 1):
-        url = CATEGORY if page == 1 else f"{CATEGORY}?page={page}"
+        url = category if page == 1 else f"{category}?page={page}"
         r = s.get(url)
         r.raise_for_status()
         if "Just a moment" in r.text[:2000]:
             raise RuntimeError("Cloudflare challenge")
-        http.dump(f"skroutz_p{page}.html", r.text)
-        listings, has_next = parse(r.text, scraped_at)
+        http.dump(f"skroutz_{cat.name}_p{page}.html", r.text)
+        listings, has_next = parse(r.text, scraped_at, cat)
         before = len(seen)
         for l in listings:  # sponsored cards repeat products; keep the cheapest
             if l.id not in seen or l.price < seen[l.id].price:
                 seen[l.id] = l
-        print(f"  skroutz page {page}: {len(listings)} gpus")
+        print(f"  skroutz {cat.name} page {page}: {len(listings)} items")
         # Out-of-range pages are served as the last page again, so also stop
         # when a page adds nothing new.
         if not has_next or (page > 1 and len(seen) == before):

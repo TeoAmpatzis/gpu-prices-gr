@@ -3,7 +3,7 @@ from dataclasses import dataclass, asdict
 
 @dataclass
 class Listing:
-    """One product offer as seen on an aggregator. Mirrored in src/types.ts."""
+    """One GPU offer as seen on an aggregator. Mirrored in src/types.ts (GpuListing)."""
 
     id: str  # "<source>:<native id>"
     source: str  # "skroutz" | "bestprice"
@@ -16,6 +16,26 @@ class Listing:
     vram: int  # GB
     partner: str  # board partner, e.g. "Asus"; "Other" if unknown
     scrapedAt: str  # ISO timestamp (UTC)
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+
+@dataclass
+class CpuListing:
+    """One CPU offer as seen on an aggregator. Mirrored in src/types.ts (CpuListing)."""
+
+    id: str
+    source: str
+    title: str
+    url: str
+    price: float
+    shopCount: int | None
+    brand: str  # AMD | Intel
+    chip: str  # e.g. "Ryzen 7 9800X3D", "Core Ultra 7 265K", "Xeon Silver 4309Y"
+    cores: int | None
+    socket: str | None  # e.g. "AM5", "LGA1851"
+    scrapedAt: str
 
     def to_dict(self) -> dict:
         return asdict(self)
