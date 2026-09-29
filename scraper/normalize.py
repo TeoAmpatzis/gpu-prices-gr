@@ -95,7 +95,7 @@ def now_iso() -> str:
 
 def make_listing(
     *, source: str, native_id: str, title: str, url: str, price: float,
-    shop_count: int | None, scraped_at: str,
+    shop_count: int | None, scraped_at: str, specs: str = "",
 ) -> Listing | None:
     title = re.sub(r"\s+", " ", title).strip()
     # BestPrice appends the category name to titles.

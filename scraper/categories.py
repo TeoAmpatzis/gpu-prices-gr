@@ -5,6 +5,7 @@ from typing import Callable
 
 import normalize
 import normalize_cpu
+import normalize_psu
 import normalize_ram
 
 
@@ -46,6 +47,20 @@ CATEGORIES = {
             )
         ),
         make_listing=normalize_ram.make_listing,
+        model_key=lambda l: f"{l['chip']} {l['formFactor']}",
+    ),
+    "psu": Category(
+        name="psu",
+        skroutz_path="/c/30/psu-trofodotika.html",
+        # ~1200 products: sliced by wattage filter.
+        bestprice_paths=tuple(
+            f"/cat/2608/trofodotika-ypologiston/f/679_{f}.html"
+            for f in (
+                "0-300000/mechri-300w", "301000-500000/301w-500w", "501000-650000/501w-650w",
+                "651000-800000/651w-800w", "801000-0/801w-kai-ano",
+            )
+        ),
+        make_listing=normalize_psu.make_listing,
         model_key=lambda l: f"{l['chip']} {l['formFactor']}",
     ),
 }

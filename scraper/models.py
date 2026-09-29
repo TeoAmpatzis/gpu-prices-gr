@@ -62,3 +62,25 @@ class RamListing:
 
     def to_dict(self) -> dict:
         return asdict(self)
+
+
+@dataclass
+class PsuListing:
+    """One PSU offer as seen on an aggregator. Mirrored in src/types.ts (PsuListing)."""
+
+    id: str
+    source: str
+    title: str
+    url: str
+    price: float
+    shopCount: int | None
+    brand: str  # vendor, e.g. "Corsair"; "Other" if unknown
+    chip: str  # spec used as the model name, e.g. "850W Gold"
+    watts: int
+    efficiency: str | None  # Titanium | Platinum | Gold | Silver | Bronze | Diamond | Standard; None = uncertified
+    modular: str | None  # Full | Semi | Non; None if unknown (BestPrice titles don't say)
+    formFactor: str  # ATX | SFX | TFX | Flex
+    scrapedAt: str
+
+    def to_dict(self) -> dict:
+        return asdict(self)

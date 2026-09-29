@@ -72,10 +72,10 @@ def classify(title: str) -> tuple[str, str] | None:
 
 def make_listing(
     *, source: str, native_id: str, title: str, url: str, price: float,
-    shop_count: int | None, scraped_at: str,
+    shop_count: int | None, scraped_at: str, specs: str = "",
 ) -> CpuListing | None:
     title = re.sub(r"\s+", " ", title.replace("®", "").replace("™", "")).strip()
-    specs = f"{title} {url}"
+    specs = f"{title} {url} {specs}"
     cores = CORES.search(specs)
     socket = SOCKET.search(specs)
     # BestPrice appends the category name + specs to titles.
