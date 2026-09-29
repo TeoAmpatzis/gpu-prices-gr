@@ -1,10 +1,12 @@
 import { Moon, Sun } from 'lucide-react';
 import { setTheme, useTheme } from '../lib/theme';
+import { T, tr, useLang } from '../lib/i18n';
 
 export default function ThemeToggle() {
   const theme = useTheme();
   const next = theme === 'dark' ? 'light' : 'dark';
-  const label = next === 'dark' ? 'Σκούρο θέμα' : 'Φωτεινό θέμα';
+  const lang = useLang();
+  const label = tr(lang, next === 'dark' ? T.darkTheme : T.lightTheme);
   return (
     <button
       onClick={() => setTheme(next)}

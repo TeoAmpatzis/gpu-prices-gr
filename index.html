@@ -8,7 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet" />
     <title>Τιμές Hardware Ελλάδα — GPU, CPU, RAM, PSU, Κουτιά, Ψύξη</title>
     <script>
-      // Set the theme before first paint (see src/lib/theme.ts).
+      // Set language and theme before first paint (see src/lib/i18n.ts, src/lib/theme.ts).
+      try {
+        var l = localStorage.getItem('lang');
+        document.documentElement.lang =
+          l === 'en' || l === 'el' ? l : /^el\b/i.test(navigator.language || '') ? 'el' : 'en';
+      } catch (e) {}
       try {
         var t = localStorage.getItem('theme');
         if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches))

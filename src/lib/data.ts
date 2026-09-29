@@ -1,4 +1,5 @@
 import type { BaseListing, Category, History, Latest, SourceName } from '../types';
+import type { Lang } from './i18n';
 import type { CategoryConfig } from './categories';
 
 const cache = new Map<Category, Promise<{ latest: Latest; history: History }>>();
@@ -132,15 +133,24 @@ export function applyFilters<L extends BaseListing>(all: L[], f: Filters, cfg: C
   return models.sort(cmp[f.sort]);
 }
 
-const eur = new Intl.NumberFormat('el-GR', { style: 'currency', currency: 'EUR' });
-export const formatPrice = (n: number) => eur.format(n);
+// "1.209,62 €" in Greek, "€1,209.62" in English.
+const EUR: Record<Lang, Intl.NumberFormat> = {
+  el: new Intl.NumberFormat('el-GR', { style: 'currency', currency: 'EUR' }),
+  en: new Intl.NumberFormat('en-IE', { style: 'currency', currency: 'EUR' }),
+};
+export const formatPrice = (n: number, lang: Lang) => EUR[lang].format(n);
 
-export function timeAgo(iso: string | null | undefined): string {
+const RELATIVE: Record<Lang, Intl.RelativeTimeFormat> = {
+  el: new Intl.RelativeTimeFormat('el', { numeric: 'auto' }),
+  en: new Intl.RelativeTimeFormat('en', { numeric: 'auto' }),
+};
+
+export function timeAgo(iso: string | null | undefined, lang: Lang): string {
   if (!iso) return '—';
   const mins = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
-  if (mins < 1) return 'μόλις τώρα';
-  if (mins < 60) return `πριν ${mins} λεπτά`;
+  const rtf = RELATIVE[lang];
+  if (mins < 60) return rtf.format(-mins, 'minute');
   const h = Math.round(mins / 60);
-  if (h < 48) return `πριν ${h} ${h === 1 ? 'ώρα' : 'ώρες'}`;
-  return `πριν ${Math.round(h / 24)} μέρες`;
+  if (h < 48) return rtf.format(-h, 'hour');
+  return rtf.format(-Math.round(h / 24), 'day');
 }
