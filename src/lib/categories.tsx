@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { CircuitBoard, Cpu, MemoryStick, Plug, type LucideIcon } from 'lucide-react';
-import type { BaseListing, Category, CpuListing, GpuListing, PsuListing, RamListing } from '../types';
+import { Box, CircuitBoard, Cpu, MemoryStick, Plug, type LucideIcon } from 'lucide-react';
+import type { BaseListing, CaseListing, Category, CpuListing, GpuListing, PsuListing, RamListing } from '../types';
 import { mostCommon, type Filters, type Model } from './data';
 
 export interface Column<L extends BaseListing> {
@@ -11,7 +11,7 @@ export interface Column<L extends BaseListing> {
 
 /** A select in the filter bar that only applies to one category. */
 export interface ExtraFilter {
-  key: 'minVram' | 'socket' | 'minCores' | 'minCapacity' | 'minSpeed' | 'minWatts';
+  key: 'minVram' | 'socket' | 'minCores' | 'minCapacity' | 'minSpeed' | 'minWatts' | 'window' | 'rgb';
   options: (listings: BaseListing[]) => { value: string | number; label: string }[];
 }
 
@@ -31,7 +31,8 @@ export interface CategoryConfig<L extends BaseListing> {
   groupDot: Record<string, string>; // Tailwind bg class per group
   /** Default true: "Μοντέλο" sort goes group by group before `tierScore`. */
   sortByGroup?: boolean;
-  segments: { main: string; pro: string };
+  /** Two-way split shown as a segmented control; omitted when a category has none (cases). */
+  segments?: { main: string; pro: string };
   /** Same key as `model_key` in scraper/categories.py. */
   modelKey: (l: L) => string;
   isPro: (l: L) => boolean;
@@ -238,5 +239,48 @@ export const PSU: CategoryConfig<PsuListing> = {
   after: [{ header: 'Κατασκευαστής', className: 'hidden sm:table-cell', cell: (m) => m.cheapest.brand }],
 };
 
-export const CATEGORIES = { gpu: GPU, cpu: CPU, ram: RAM, psu: PSU } as const;
+// ---------- Cases ----------
+// A case is its own model: listings are grouped by vendor + model name, colours merged.
+
+/** Same as `model_key` in scraper/normalize_case.py: letters and digits only. */
+const caseKey = (chip: string) => chip.toLowerCase().replace(/[^a-z0-9]/g, '');
+const yesNo = (all: string, yes: string, no: string) => () => [
+  { value: '', label: all },
+  { value: 'yes', label: yes },
+  { value: 'no', label: no },
+];
+const matchYesNo = (want: string, has: boolean) => !want || (want === 'yes') === has;
+
+export const CASE: CategoryConfig<CaseListing> = {
+  id: 'case',
+  tab: 'Κουτιά',
+  title: 'Τιμές Κουτιών PC',
+  subtitle: 'Οι χαμηλότερες τιμές για κάθε κουτί υπολογιστή στην Ελλάδα, από Skroutz και BestPrice.',
+  icon: Box,
+  empty: 'Δεν βρέθηκαν κουτιά με αυτά τα φίλτρα.',
+  searchPlaceholder: 'Αναζήτηση (π.χ. Lancool 216, NZXT H5, O11)',
+  groups: ['Full Tower', 'Midi Tower', 'Mini Tower', 'SFF / Cube', 'Άλλο'],
+  groupLabel: 'Μέγεθος',
+  group: (l) => l.size,
+  groupDot: {
+    'Full Tower': 'bg-violet-500', 'Midi Tower': 'bg-sky-500', 'Mini Tower': 'bg-teal-500',
+    'SFF / Cube': 'bg-amber-500', Άλλο: 'bg-zinc-400',
+  },
+  // Most-offered cases first (on both sites, several colours) rather than by size.
+  sortByGroup: false,
+  modelKey: (l) => caseKey(l.chip),
+  isPro: () => false,
+  tierScore: (m) => m.listings.length,
+  searchText: (l) => `${l.chip} ${l.title} ${l.size}`,
+  matchesModel: (m, f) =>
+    matchYesNo(f.window, m.listings.some((l) => l.window)) && matchYesNo(f.rgb, m.listings.some((l) => l.rgb)),
+  extraFilters: [
+    { key: 'window', options: yesNo('Παράθυρο: όλα', 'Με πλαϊνό παράθυρο', 'Χωρίς παράθυρο') },
+    { key: 'rgb', options: yesNo('RGB: όλα', 'Με RGB', 'Χωρίς RGB') },
+  ],
+  before: [{ header: 'Μέγεθος', className: 'hidden sm:table-cell', cell: (m) => m.cheapest.size }],
+  after: [],
+};
+
+export const CATEGORIES = { gpu: GPU, cpu: CPU, ram: RAM, psu: PSU, case: CASE } as const;
 export const CATEGORY_IDS = Object.keys(CATEGORIES) as Category[];

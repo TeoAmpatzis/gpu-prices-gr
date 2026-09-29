@@ -53,11 +53,13 @@ interface Props<L extends BaseListing> {
 
 export default function FilterBar<L extends BaseListing>({ cfg, listings, filters: f, onChange }: Props<L>) {
   const set = <K extends keyof Filters>(k: K, v: Filters[K]) => onChange({ ...f, [k]: v });
-  const segments: { value: Segment; label: string }[] = [
-    { value: 'main', label: cfg.segments.main },
-    { value: 'pro', label: cfg.segments.pro },
-    { value: 'all', label: 'Όλα' },
-  ];
+  const segments: { value: Segment; label: string }[] = cfg.segments
+    ? [
+        { value: 'main', label: cfg.segments.main },
+        { value: 'pro', label: cfg.segments.pro },
+        { value: 'all', label: 'Όλα' },
+      ]
+    : [];
 
   return (
     <div className="card flex flex-col gap-4 p-4">
@@ -97,23 +99,25 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
           ))}
         </Section>
 
-        <Section label="Κατηγορία">
-          <div className="inline-flex rounded-lg bg-hover p-0.5 ring-1 ring-inset ring-line">
-            {segments.map((c) => (
-              <button
-                key={c.value}
-                type="button"
-                aria-pressed={f.segment === c.value}
-                onClick={() => set('segment', c.value)}
-                className={`rounded-md px-3 py-1 text-sm font-medium transition ${
-                  f.segment === c.value ? 'bg-panel text-fg shadow-sm ring-1 ring-line' : 'text-muted hover:text-fg'
-                }`}
-              >
-                {c.label}
-              </button>
-            ))}
-          </div>
-        </Section>
+        {cfg.segments && (
+          <Section label="Κατηγορία">
+            <div className="inline-flex rounded-lg bg-hover p-0.5 ring-1 ring-inset ring-line">
+              {segments.map((c) => (
+                <button
+                  key={c.value}
+                  type="button"
+                  aria-pressed={f.segment === c.value}
+                  onClick={() => set('segment', c.value)}
+                  className={`rounded-md px-3 py-1 text-sm font-medium transition ${
+                    f.segment === c.value ? 'bg-panel text-fg shadow-sm ring-1 ring-line' : 'text-muted hover:text-fg'
+                  }`}
+                >
+                  {c.label}
+                </button>
+              ))}
+            </div>
+          </Section>
+        )}
 
         <Section label="Πηγή">
           {SOURCE_NAMES.map((s) => (
@@ -129,7 +133,7 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
               key={x.key}
               className="field px-2.5 py-1.5"
               value={f[x.key]}
-              onChange={(e) => onChange({ ...f, [x.key]: x.key === 'socket' ? e.target.value : Number(e.target.value) })}
+              onChange={(e) => onChange({ ...f, [x.key]: typeof f[x.key] === 'number' ? Number(e.target.value) : e.target.value })}
             >
               {x.options(listings).map((o) => (
                 <option key={o.value} value={o.value}>
