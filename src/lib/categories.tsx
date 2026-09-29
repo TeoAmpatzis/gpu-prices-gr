@@ -78,8 +78,8 @@ const noResults = (el: string, en: string): Text => ({
   en: `No ${en} match these filters.`,
 });
 const subtitle = (el: string, en: string): Text => ({
-  el: `Οι χαμηλότερες τιμές ${el} στην Ελλάδα, από Skroutz και BestPrice.`,
-  en: `The lowest ${en} prices in Greece, from Skroutz and BestPrice.`,
+  el: `Οι χαμηλότερες τιμές ${el} στην Ελλάδα, από Skroutz, BestPrice και e-shop.gr.`,
+  en: `The lowest ${en} prices in Greece, from Skroutz, BestPrice and e-shop.gr.`,
 });
 /** Options for a numeric "at least" select: 0 = any. */
 const atLeast = (values: number[], any: Text, label: (v: number) => Text) => () =>
@@ -213,8 +213,8 @@ export const RAM: CategoryConfig<RamListing> = {
   tab: { el: 'Μνήμες RAM', en: 'Memory (RAM)' },
   title: { el: 'Τιμές Μνημών RAM', en: 'Memory (RAM) Prices' },
   subtitle: {
-    el: 'Οι χαμηλότερες τιμές RAM στην Ελλάδα ανά χωρητικότητα και ταχύτητα, από Skroutz και BestPrice.',
-    en: 'The lowest RAM prices in Greece by capacity and speed, from Skroutz and BestPrice.',
+    el: 'Οι χαμηλότερες τιμές RAM στην Ελλάδα ανά χωρητικότητα και ταχύτητα, από Skroutz, BestPrice και e-shop.gr.',
+    en: 'The lowest RAM prices in Greece by capacity and speed, from Skroutz, BestPrice and e-shop.gr.',
   },
   icon: MemoryStick,
   empty: noResults('μνήμες', 'memory kits'),
@@ -252,8 +252,8 @@ export const PSU: CategoryConfig<PsuListing> = {
   tab: { el: 'Τροφοδοτικά', en: 'Power Supplies' },
   title: { el: 'Τιμές Τροφοδοτικών', en: 'Power Supply Prices' },
   subtitle: {
-    el: 'Οι χαμηλότερες τιμές τροφοδοτικών PC στην Ελλάδα ανά ισχύ και πιστοποίηση, από Skroutz και BestPrice.',
-    en: 'The lowest PC power supply prices in Greece by wattage and efficiency rating, from Skroutz and BestPrice.',
+    el: 'Οι χαμηλότερες τιμές τροφοδοτικών PC στην Ελλάδα ανά ισχύ και πιστοποίηση, από Skroutz, BestPrice και e-shop.gr.',
+    en: 'The lowest PC power supply prices in Greece by wattage and efficiency rating, from Skroutz, BestPrice and e-shop.gr.',
   },
   icon: Plug,
   empty: noResults('τροφοδοτικά', 'power supplies'),
@@ -305,8 +305,8 @@ export const CASE: CategoryConfig<CaseListing> = {
   tab: { el: 'Κουτιά', en: 'Cases' },
   title: { el: 'Τιμές Κουτιών PC', en: 'PC Case Prices' },
   subtitle: {
-    el: 'Οι χαμηλότερες τιμές για κάθε κουτί υπολογιστή στην Ελλάδα, από Skroutz και BestPrice.',
-    en: 'The lowest price for every PC case in Greece, from Skroutz and BestPrice.',
+    el: 'Οι χαμηλότερες τιμές για κάθε κουτί υπολογιστή στην Ελλάδα, από Skroutz, BestPrice και e-shop.gr.',
+    en: 'The lowest price for every PC case in Greece, from Skroutz, BestPrice and e-shop.gr.',
   },
   icon: Box,
   empty: noResults('κουτιά', 'cases'),
@@ -348,8 +348,8 @@ export const FAN: CategoryConfig<FanListing> = {
   tab: { el: 'Ανεμιστήρες', en: 'Case Fans' },
   title: { el: 'Τιμές Ανεμιστήρων', en: 'Case Fan Prices' },
   subtitle: {
-    el: 'Οι χαμηλότερες τιμές ανεμιστήρων κουτιού στην Ελλάδα, ανά μοντέλο και συσκευασία, από Skroutz και BestPrice.',
-    en: 'The lowest case fan prices in Greece, by model and pack size, from Skroutz and BestPrice.',
+    el: 'Οι χαμηλότερες τιμές ανεμιστήρων κουτιού στην Ελλάδα, ανά μοντέλο και συσκευασία, από Skroutz, BestPrice και e-shop.gr.',
+    en: 'The lowest case fan prices in Greece, by model and pack size, from Skroutz, BestPrice and e-shop.gr.',
   },
   icon: Fan,
   empty: noResults('ανεμιστήρες', 'fans'),
@@ -403,8 +403,8 @@ export const COOLER: CategoryConfig<CoolerListing> = {
   tab: { el: 'Ψύκτρες CPU', en: 'CPU Coolers' },
   title: { el: 'Τιμές Ψυκτρών CPU', en: 'CPU Cooler Prices' },
   subtitle: {
-    el: 'Οι χαμηλότερες τιμές για ψύκτρες αέρα και υδροψύξεις AIO στην Ελλάδα, από Skroutz και BestPrice.',
-    en: 'The lowest prices for air coolers and AIO liquid coolers in Greece, from Skroutz and BestPrice.',
+    el: 'Οι χαμηλότερες τιμές για ψύκτρες αέρα και υδροψύξεις AIO στην Ελλάδα, από Skroutz, BestPrice και e-shop.gr.',
+    en: 'The lowest prices for air coolers and AIO liquid coolers in Greece, from Skroutz, BestPrice and e-shop.gr.',
   },
   icon: Snowflake,
   empty: noResults('ψύκτρες', 'coolers'),

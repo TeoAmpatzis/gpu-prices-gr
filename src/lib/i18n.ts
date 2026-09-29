@@ -32,7 +32,7 @@ export const useLang = () => useSyncExternalStore(subscribe, getLang);
 /** Shared strings used by more than one component. */
 export const T = {
   siteName: { el: 'Τιμές Hardware', en: 'Hardware Prices' },
-  siteTagline: { el: 'Skroutz · BestPrice · Ελλάδα', en: 'Skroutz · BestPrice · Greece' },
+  siteTagline: { el: 'Skroutz · BestPrice · e-shop.gr', en: 'Skroutz · BestPrice · e-shop.gr' },
   footer: {
     el: 'Οι τιμές ενημερώνονται αυτόματα κάθε 6 ώρες και ενδέχεται να διαφέρουν από τις τρέχουσες στα καταστήματα.',
     en: 'Prices update automatically every 6 hours and may differ from current prices in the shops.',

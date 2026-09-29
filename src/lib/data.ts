@@ -1,5 +1,6 @@
 import type { BaseListing, Category, History, Latest, SourceName } from '../types';
 import type { Lang } from './i18n';
+import { SOURCE_NAMES } from './sources';
 import type { CategoryConfig } from './categories';
 
 const cache = new Map<Category, Promise<{ latest: Latest; history: History }>>();
@@ -91,7 +92,7 @@ export function defaultFilters(groups: string[]): Filters {
   return {
     query: '',
     groups,
-    sources: ['skroutz', 'bestprice'],
+    sources: [...SOURCE_NAMES],
     segment: 'main',
     maxPrice: null,
     sort: 'model',
