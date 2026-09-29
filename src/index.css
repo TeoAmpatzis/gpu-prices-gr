@@ -5,29 +5,29 @@
 /* Theme tokens as "r g b" so Tailwind opacity modifiers work (see tailwind.config.js). */
 :root {
   color-scheme: light;
-  --page: 244 244 245;
+  --page: 245 246 248;
   --panel: 255 255 255;
   --surface: 255 255 255;
-  --sunken: 250 250 250;
-  --hover: 244 244 245;
-  --line: 228 228 231;
-  --line-strong: 212 212 216;
-  --fg: 24 24 27;
-  --fg-soft: 63 63 70;
-  --muted: 82 82 91;
-  --faint: 113 113 122;
-  --accent: 5 150 105;
-  --up: 225 29 72;
+  --sunken: 249 250 251;
+  --hover: 243 244 246;
+  --line: 228 230 234;
+  --line-strong: 208 212 218;
+  --fg: 16 24 40;
+  --fg-soft: 52 64 84;
+  --muted: 71 84 103;
+  --faint: 102 112 133;
+  --accent: 4 120 87;
+  --up: 217 45 32;
 }
 
 .dark {
   color-scheme: dark;
   --page: 9 9 11;
-  --panel: 9 9 11;
-  --surface: 24 24 27;
-  --sunken: 9 9 11;
-  --hover: 24 24 27;
-  --line: 39 39 42;
+  --panel: 18 18 21;
+  --surface: 18 18 21;
+  --sunken: 12 12 14;
+  --hover: 30 30 34;
+  --line: 39 39 44;
   --line-strong: 63 63 70;
   --fg: 244 244 245;
   --fg-soft: 212 212 216;
@@ -37,6 +37,19 @@
   --up: 251 113 133;
 }
 
+@layer components {
+  /* Raised container: soft shadow in light mode, ring only in dark. */
+  .card {
+    @apply rounded-2xl bg-panel ring-1 ring-line shadow-[0_1px_2px_rgb(16_24_40/0.04),0_1px_3px_rgb(16_24_40/0.06)] dark:shadow-none;
+  }
+  .field {
+    @apply rounded-lg bg-sunken text-sm text-fg ring-1 ring-inset ring-line-strong transition placeholder:text-faint hover:ring-faint/60 focus:outline-none focus:ring-2 focus:ring-accent/50;
+  }
+  .label {
+    @apply text-[11px] font-semibold uppercase tracking-wider text-faint;
+  }
+}
+
 body {
-  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
