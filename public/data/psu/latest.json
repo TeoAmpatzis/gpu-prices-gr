@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-09-29T18:38:16+00:00",
+ "updatedAt": "2026-09-29T20:15:47+00:00",
  "sources": {
   "skroutz": {
    "count": 1108,
@@ -10,6 +10,11 @@
    "count": 1177,
    "ok": true,
    "updatedAt": "2026-09-29T18:38:16+00:00"
+  },
+  "eshop": {
+   "count": 294,
+   "ok": true,
+   "updatedAt": "2026-09-29T20:15:47+00:00"
   }
  },
  "listings": [
@@ -44,6 +49,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.286149",
+   "source": "eshop",
+   "title": "FSP GROUP PPA10A4002 POWER SUPPLY FSP VITA GM 1000W",
+   "url": "https://www.e-shop.gr/fsp-group-ppa10a4002-power-supply-fsp-vita-gm-1000w-p-PER.286149",
+   "price": 115.92,
+   "shopCount": null,
+   "brand": "FSP",
+   "chip": "1000W",
+   "watts": 1000,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:62664328",
    "source": "skroutz",
    "title": "Inter-Tech ARGUSnt Full Modular",
@@ -72,6 +92,36 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.274772",
+   "source": "eshop",
+   "title": "LIAN LI SX 1000P BLACK - PLATINUM 1000W - ATX 3.1 - 12V-2X6 - JAPANESE CAPACITOR - 10 YEARS WARRANT",
+   "url": "https://www.e-shop.gr/lian-li-sx-1000p-black-platinum-1000w-atx-31-12v-2x6-japanese-capacitor-10-years-warrant-p-PER.274772",
+   "price": 125.36,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "1000W",
+   "watts": 1000,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.608410",
+   "source": "eshop",
+   "title": "ASUS TUF GAMING 1000W GOLD UNIT 20+4 PIN ATX BLACK",
+   "url": "https://www.e-shop.gr/psu-asus-tuf-gaming-1000w-gold-unit-20-4-pin-atx-black-p-PER.608410",
+   "price": 148.6,
+   "shopCount": null,
+   "brand": "Asus",
+   "chip": "1000W",
+   "watts": 1000,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2159902513",
@@ -164,6 +214,111 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.608393",
+   "source": "eshop",
+   "title": "MSI MPG A1000G PCIE5 UNIT 1000W 20+4 PIN ATX ATX BLACK",
+   "url": "https://www.e-shop.gr/psu-msi-mpg-a1000g-pcie5-unit-1000w-20-4-pin-atx-atx-black-p-PER.608393",
+   "price": 208.0,
+   "shopCount": null,
+   "brand": "MSI",
+   "chip": "1000W",
+   "watts": 1000,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.547605",
+   "source": "eshop",
+   "title": "CORSAIR SF1000 1000W FULLY MODULAR CYBERNETICS PLATINUM CERTIFIED SFX CP-9020257-EU",
+   "url": "https://www.e-shop.gr/psu-corsair-sf1000-1000w-fully-modular-cybernetics-platinum-certified-sfx-cp-9020257-eu-p-PER.547605",
+   "price": 211.39,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "1000W",
+   "watts": 1000,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.222781",
+   "source": "eshop",
+   "title": "BE QUIET STRAIGHT POWER 12 PLATINUM 1000W, MODULAR, 135MM FAN, 10YW",
+   "url": "https://www.e-shop.gr/psu-be-quiet-straight-power-12-platinum-1000w-modular-135mm-fan-10yw-p-PER.222781",
+   "price": 211.45,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "1000W",
+   "watts": 1000,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.274368",
+   "source": "eshop",
+   "title": "FRACTAL DESIGN ION GOLD 3 1000W BLACK PC-PSU 1000 WATT",
+   "url": "https://www.e-shop.gr/fractaldesign-ion-gold-3-1000w-black-pc-psu-1000-watt-p-PER.274368",
+   "price": 215.0,
+   "shopCount": null,
+   "brand": "Fractal Design",
+   "chip": "1000W",
+   "watts": 1000,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.274369",
+   "source": "eshop",
+   "title": "FRACTAL DESIGN ION GOLD 3 1000W WHITE PC-PSU 1000 WATT",
+   "url": "https://www.e-shop.gr/fractaldesign-ion-gold-3-1000w-white-pc-psu-1000-watt-p-PER.274369",
+   "price": 215.0,
+   "shopCount": null,
+   "brand": "Fractal Design",
+   "chip": "1000W",
+   "watts": 1000,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.608403",
+   "source": "eshop",
+   "title": "ASUS ROG STRIX 1000W GOLD AURA EDITION UNIT 20+4 PIN ATX ATX BLACK",
+   "url": "https://www.e-shop.gr/psu-asus-rog-strix-1000w-gold-aura-edition-unit-20-4-pin-atx-atx-black-p-PER.608403",
+   "price": 219.0,
+   "shopCount": null,
+   "brand": "Asus",
+   "chip": "1000W",
+   "watts": 1000,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.608558",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER SFX 1000W PLATINUM",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-sfx-1000w-platinum-p-PER.608558",
+   "price": 228.52,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "1000W",
+   "watts": 1000,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:64210355",
    "source": "skroutz",
    "title": "Be Quiet PC 100 1000W Full Modular",
@@ -192,6 +347,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.245332",
+   "source": "eshop",
+   "title": "ASUS ROG LOKI SFX-L 1000W PLATINUMER 24-PIN ATX BLACK",
+   "url": "https://www.e-shop.gr/psu-asus-rog-loki-sfx-l-1000w-platinumer-24-pin-atx-black-p-PER.245332",
+   "price": 299.0,
+   "shopCount": null,
+   "brand": "Asus",
+   "chip": "1000W",
+   "watts": 1000,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:68826803",
@@ -524,6 +694,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.275756",
+   "source": "eshop",
+   "title": "DEEPCOOL PN1000-D 1000W 80 PLUS GOLD 12CM FAN BLACK",
+   "url": "https://www.e-shop.gr/deepcool-pn1000-d-1000w-80-plus-gold-12cm-fan-black-p-PER.275756",
+   "price": 109.95,
+   "shopCount": null,
+   "brand": "Deepcool",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:64563335",
    "source": "skroutz",
    "title": "Effitek EG-1000 1000W Full Modular 80 Plus Gold",
@@ -537,6 +722,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.286153",
+   "source": "eshop",
+   "title": "GIGABYTE UD1000GM PG5 V2 1000W 80 PLUS GOLD FULL MODULAR PCIE 5.1 READY",
+   "url": "https://www.e-shop.gr/psu-gigabyte-ud1000gm-pg5-v2-1000w-80-plus-gold-full-modular-pcie-51-ready-p-PER.286153",
+   "price": 110.65,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:66042619",
@@ -567,6 +767,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.645602",
+   "source": "eshop",
+   "title": "ENERMAX REVOLUTION III 1000W 80 PLUS GOLD FULL MODULAR ATX 3.1",
+   "url": "https://www.e-shop.gr/psu-enermax-revolution-iii-1000w-80-plus-gold-full-modular-atx-31-p-PER.645602",
+   "price": 112.44,
+   "shopCount": null,
+   "brand": "Enermax",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:58056888",
@@ -614,6 +829,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.645681",
+   "source": "eshop",
+   "title": "COOLER MASTER ELITE GOLD 1000W 80 PLUS GOLD ATX 3.1 PCIE 5.1",
+   "url": "https://www.e-shop.gr/psu-cooler-master-elite-gold-1000w-80-plus-gold-atx-31-pcie-51-p-PER.645681",
+   "price": 115.02,
+   "shopCount": null,
+   "brand": "Cooler Master",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:64892917",
    "source": "skroutz",
    "title": "Lian Li RS1000G 1000W Full Modular 80 Plus Gold",
@@ -642,6 +872,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.286154",
+   "source": "eshop",
+   "title": "GIGABYTE UD1000GM PG5 V2 ICE1000W 80 PLUS GOLD FULL MODULAR PCIE 5.1 READY",
+   "url": "https://www.e-shop.gr/psu-gigabyte-ud1000gm-pg5-v2-ice1000w-80-plus-gold-full-modular-pcie-51-ready-p-PER.286154",
+   "price": 117.0,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2160537645",
@@ -899,6 +1144,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.620349",
+   "source": "eshop",
+   "title": "ENDORFY SUPREMO FM6 1000W 80+ GOLD (EY7A011)",
+   "url": "https://www.e-shop.gr/psu-endorfy-supremo-fm6-1000w-80-gold-ey7a011-p-PER.620349",
+   "price": 126.77,
+   "shopCount": null,
+   "brand": "Endorfy",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2160251605",
    "source": "bestprice",
    "title": "Asrock Steel Legend SL-1000G 1000W",
@@ -1079,6 +1339,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.260252",
+   "source": "eshop",
+   "title": "BE QUIET PURE POWER 12 1000W 80 PLUS GOLD",
+   "url": "https://www.e-shop.gr/psu-be-quiet-pure-power-12-1000w-80-plus-gold-p-PER.260252",
+   "price": 131.9,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2164270640",
    "source": "bestprice",
    "title": "Asrock Pro-M1000G 1000W",
@@ -1092,6 +1367,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.547687",
+   "source": "eshop",
+   "title": "CORSAIR RM1000E 1000W FULLY MODULAR CYBENETICS GOLD WHITE ATX 3.1 CERTIFIED CP-9020294-EU",
+   "url": "https://www.e-shop.gr/psu-corsair-rm1000e-1000w-fully-modular-cybenetics-gold-white-atx-31-certified-cp-9020294-eu-p-PER.547687",
+   "price": 132.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:52462602",
@@ -1199,6 +1489,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.286164",
+   "source": "eshop",
+   "title": "LIAN-LI RS1000G 1000W 80 PLUS GOLD PCIE 5.1 ATX 3.1 BLACK",
+   "url": "https://www.e-shop.gr/psu-lian-li-rs1000g-1000w-80-plus-gold-pcie-51-atx-31-black-p-PER.286164",
+   "price": 138.55,
+   "shopCount": null,
+   "brand": "LIAN-LI",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2162833319",
    "source": "bestprice",
    "title": "NZXT C1000 Core 1000W",
@@ -1274,6 +1579,36 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.645755",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GT 1000W 80 PLUS GOLD FULL MODULAR",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-gt-1000w-80-plus-gold-full-modular-p-PER.645755",
+   "price": 144.28,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.275630",
+   "source": "eshop",
+   "title": "BE QUIET! PURE POWER 13 M 1000W FULL MODULAR 80 PLUS GOLD",
+   "url": "https://www.e-shop.gr/psu-be-quiet-pure-power-13-m-1000w-full-modular-80-plus-gold-p-PER.275630",
+   "price": 145.8,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2163396452",
    "source": "bestprice",
    "title": "Thermaltake Germanium Pro 1000W",
@@ -1287,6 +1622,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.267481",
+   "source": "eshop",
+   "title": "LIAN LI EDGE 1000W BLACK 80+ GOLD (WITH USB HUB), FULLY MODULAR ATX",
+   "url": "https://www.e-shop.gr/psu-lian-li-edge-1000w-black-80-gold-with-usb-hub-fully-modular-atx-p-PER.267481",
+   "price": 147.0,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:53014804",
@@ -1377,6 +1727,36 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.267482",
+   "source": "eshop",
+   "title": "LIAN LI EDGE 1000W WHITE 80+ GOLD (WITH USB HUB), FULLY MODULAR ATX",
+   "url": "https://www.e-shop.gr/psu-lian-li-edge-1000w-white-80-gold-with-usb-hub-fully-modular-atx-p-PER.267482",
+   "price": 149.9,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.547671",
+   "source": "eshop",
+   "title": "CORSAIR RM1000E 1000W FULLY MODULAR CYBENETICS GOLD ATX 3.1 CERTIFIED CP-9020297-EU",
+   "url": "https://www.e-shop.gr/psu-corsair-rm1000e-1000w-fully-modular-cybenetics-gold-atx-31-certified-cp-9020297-eu-p-PER.547671",
+   "price": 149.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2163359110",
@@ -1499,6 +1879,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.261151",
+   "source": "eshop",
+   "title": "ASROCK PHANTOM GAMING PG-1000G 1000W FULL MODULAR 80 PLUS GOLD BLACK",
+   "url": "https://www.e-shop.gr/psu-asrock-phantom-gaming-pg-1000g-1000w-full-modular-80-plus-gold-black-p-PER.261151",
+   "price": 155.9,
+   "shopCount": null,
+   "brand": "ASRock",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2159303880",
    "source": "bestprice",
    "title": "Seasonic Focus GX-1000 1000W White",
@@ -1559,6 +1954,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.645535",
+   "source": "eshop",
+   "title": "SEASONIC FOCUS GX-1000 V4 1000W 80 PLUS GOLD FULL MODULAR ATX 3.1 BLACK (2024)",
+   "url": "https://www.e-shop.gr/psu-seasonic-focus-gx-1000-v4-1000w-80-plus-gold-full-modular-atx-31-black-2024-p-PER.645535",
+   "price": 158.9,
+   "shopCount": null,
+   "brand": "Seasonic",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2159519278",
    "source": "bestprice",
    "title": "Asus TUF Gaming White 1000W",
@@ -1602,6 +2012,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645741",
+   "source": "eshop",
+   "title": "CORSAIR RM1000X SHIFT 1000W CYBENETICS GOLD FULLY MODULAR",
+   "url": "https://www.e-shop.gr/psu-corsair-rm1000x-shift-1000w-cybenetics-gold-fully-modular-p-PER.645741",
+   "price": 164.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:51528212",
@@ -1724,6 +2149,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.645571",
+   "source": "eshop",
+   "title": "SEASONIC FOCUS GX-1000 1000W 80 PLUS GOLD FULL MODULAR ATX 3.1/PCIE 5.1 WHITE (2024)",
+   "url": "https://www.e-shop.gr/psu-seasonic-focus-gx-1000-1000w-80-plus-gold-full-modular-atx-31-pcie-51-white-2024-p-PER.645571",
+   "price": 175.9,
+   "shopCount": null,
+   "brand": "Seasonic",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2163903759",
    "source": "bestprice",
    "title": "FSP/Fortron Advan GM 1000W",
@@ -1812,6 +2252,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.245328",
+   "source": "eshop",
+   "title": "ASUS TUF GAMING 1000W 80 PLUS GOLD FULL MODULAR 20+4 PIN ATX WHITE",
+   "url": "https://www.e-shop.gr/psu-asus-tuf-gaming-1000w-80-plus-gold-full-modular-20-4-pin-atx-white-p-PER.245328",
+   "price": 189.9,
+   "shopCount": null,
+   "brand": "Asus",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2162510401",
@@ -1934,6 +2389,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.547603",
+   "source": "eshop",
+   "title": "CORSAIR RM1000X 1000W FULLY MODULAR CYBENETICS GOLD CERTIFIED CP-9020271-EU",
+   "url": "https://www.e-shop.gr/psu-corsair-rm1000x-1000w-fully-modular-cybenetics-gold-certified-cp-9020271-eu-p-PER.547603",
+   "price": 201.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:39344211",
    "source": "skroutz",
    "title": "Thermaltake ToughPower GF3 Full Modular 80 Plus Gold",
@@ -2037,6 +2507,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.261179",
+   "source": "eshop",
+   "title": "MSI MPG A1000GS 1000W PCIE5 80+ GOLD",
+   "url": "https://www.e-shop.gr/psu-msi-mpg-a1000gs-1000w-pcie5-80-gold-p-PER.261179",
+   "price": 211.9,
+   "shopCount": null,
+   "brand": "MSI",
+   "chip": "1000W Gold",
+   "watts": 1000,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2164300706",
@@ -2594,6 +3079,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.260248",
+   "source": "eshop",
+   "title": "GIGABYTE AORUS ELITE P1000W 1000W FULL MODULAR 80 PLUS PLATINUM",
+   "url": "https://www.e-shop.gr/psu-gigabyte-aorus-elite-p1000w-1000w-full-modular-80-plus-platinum-p-PER.260248",
+   "price": 154.72,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "1000W Platinum",
+   "watts": 1000,
+   "efficiency": "Platinum",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:66777744",
    "source": "skroutz",
    "title": "Thermalright TPFX-1000 1000W Full Modular 80 Plus Platinum",
@@ -2607,6 +3107,21 @@
    "modular": "Full",
    "formFactor": "SFX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.274771",
+   "source": "eshop",
+   "title": "LIAN LI SP1000P WHITE - 1000W 80+ PLATINUM PSU - 10 YEARS WARRANTY - 12V-2X6 - JAPANESE CAPACITORS",
+   "url": "https://www.e-shop.gr/lian-li-sp1000p-white-1000w-80-platinum-psu-10-years-warranty-12v-2x6-japanesecapacitors-p-PER.274771",
+   "price": 156.29,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "1000W Platinum",
+   "watts": 1000,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:64599905",
@@ -2624,6 +3139,36 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.645757",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER SFX PLATINUM 1000W 80 PLUS PLATINUM FULLY MODULAR TT PREMIUM EDITION",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-sfx-platinum-1000w-80-plus-platinum-fully-modular-tt-premium-edition-p-PER.645757",
+   "price": 160.41,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "1000W Platinum",
+   "watts": 1000,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.260249",
+   "source": "eshop",
+   "title": "BE QUIET POWER ZONE 2 1000W BP008 FULL MODULAR 80 PLUS PLATINUM",
+   "url": "https://www.e-shop.gr/psu-be-quiet-power-zone-2-1000w-bp008-full-modular-80-plus-platinum-p-PER.260249",
+   "price": 161.34,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "1000W Platinum",
+   "watts": 1000,
+   "efficiency": "Platinum",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2163093968",
    "source": "bestprice",
    "title": "Lian Li SP1000P Black 1000W",
@@ -2637,6 +3182,21 @@
    "modular": null,
    "formFactor": "SFX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.261112",
+   "source": "eshop",
+   "title": "GIGABYTE AORUS ELITE P 1000W 80 PLUS PLATINUM FULL MODULAR WHITE",
+   "url": "https://www.e-shop.gr/psu-gigabyte-aorus-elite-p1000w-80-plus-platinum-full-modular-white-p-PER.261112",
+   "price": 163.75,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "1000W Platinum",
+   "watts": 1000,
+   "efficiency": "Platinum",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2163093969",
@@ -2667,6 +3227,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.274770",
+   "source": "eshop",
+   "title": "LIAN LI SP1000P BLACK -1000W 80+ PLATINUM PSU - 10 YEARS WARRANTY - 12V-2X6 - JAPANESE CAPACITORS",
+   "url": "https://www.e-shop.gr/lian-li-sp1000p-black-1000w-80-platinum-psu-10-years-warranty-12v-2x6-japanese-capacitors-p-PER.274770",
+   "price": 169.9,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "1000W Platinum",
+   "watts": 1000,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:54150138",
@@ -2909,6 +3484,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.645742",
+   "source": "eshop",
+   "title": "CORSAIR HX1000I SHIFT 1000W CYBENETICS PLATINUM FULLY MODULAR DIGITAL",
+   "url": "https://www.e-shop.gr/psu-corsair-hx1000i-shift-1000w-cybenetics-platinum-fully-modular-digital-p-PER.645742",
+   "price": 219.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "1000W Platinum",
+   "watts": 1000,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:68877760",
    "source": "skroutz",
    "title": "Asus TUF Gaming Platinum 1000W Full Modular 80 Plus Platinum",
@@ -2922,6 +3512,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.261152",
+   "source": "eshop",
+   "title": "ASUS ROG STRIX 1000P GAMING 1000W 80 PLUS PLATINUM FULL MODULAR ATX 3.1 BLACK",
+   "url": "https://www.e-shop.gr/psu-asus-rog-strix-1000p-gaming-1000w-80-plus-platinum-full-modular-atx-31-black-p-PER.261152",
+   "price": 229.0,
+   "shopCount": null,
+   "brand": "Asus",
+   "chip": "1000W Platinum",
+   "watts": 1000,
+   "efficiency": "Platinum",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2163810068",
@@ -3117,6 +3722,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.547415",
+   "source": "eshop",
+   "title": "CORSAIR CP-9020259-EU HX1000I 1000W 80 PLUS PLATINUM ULTRA-LOW NOISE FULLY MODULAR DIGITAL",
+   "url": "https://www.e-shop.gr/psu-corsair-cp-9020259-eu-hx1000i-1000w-80-plus-platinum-ultra-low-noise-fully-modular-digital-p-PER.547415",
+   "price": 256.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "1000W Platinum",
+   "watts": 1000,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2164244961",
@@ -3404,6 +4024,36 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.645600",
+   "source": "eshop",
+   "title": "FSP HYDRO TI PRO-1000M 1000W 80 PLUS TITANIUM FULL MODULAR GEN 5 ATX 3.0",
+   "url": "https://www.e-shop.gr/psu-fsp-hydro-ti-pro-1000m-1000w-80-plus-titanium-full-modular-gen-5-atx-30-p-PER.645600",
+   "price": 239.9,
+   "shopCount": null,
+   "brand": "FSP",
+   "chip": "1000W Titanium",
+   "watts": 1000,
+   "efficiency": "Titanium",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.645773",
+   "source": "eshop",
+   "title": "BE QUIET DARK POWER 14 1000W 80 PLUS TITANIUM CYBENETICS TITANIUM FULL MODULAR",
+   "url": "https://www.e-shop.gr/psu-be-quiet-dark-power-14-1000w-80-plus-titanium-cybenetics-titanium-full-modular-p-PER.645773",
+   "price": 245.9,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "1000W Titanium",
+   "watts": 1000,
+   "efficiency": "Titanium",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2158262056",
    "source": "bestprice",
    "title": "Be Quiet Dark Power 13 1000W",
@@ -3492,6 +4142,36 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.607583",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GF A3 GOLD 1050W PREMIUM EDITION",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-gf-a3-gold-1050w-premium-edition-p-PER.607583",
+   "price": 135.23,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "1050W",
+   "watts": 1050,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.608568",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GF A3 1050W GOLD SNOW",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-gf-a3-1050w-gold-snow-p-PER.608568",
+   "price": 157.02,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "1050W",
+   "watts": 1050,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:63327007",
@@ -3597,6 +4277,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645641",
+   "source": "eshop",
+   "title": "COOLER MASTER MWE GOLD-V2 1050W 80 PLUS GOLD FULLY MODULAR",
+   "url": "https://www.e-shop.gr/psu-cooler-master-mwe-gold-v2-1050w-80-plus-gold-fully-modular-p-PER.645641",
+   "price": 126.25,
+   "shopCount": null,
+   "brand": "Cooler Master",
+   "chip": "1050W Gold",
+   "watts": 1050,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:60562583",
@@ -3914,6 +4609,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.593088",
+   "source": "eshop",
+   "title": "COUGAR POLAR X2 1050W 80 PLUS PLATINUM PCI-E 5.0 ATX3.0",
+   "url": "https://www.e-shop.gr/psu-cougar-polar-x2-1050w-80-plus-platinum-pci-e-50-atx30-p-PER.593088",
+   "price": 205.9,
+   "shopCount": null,
+   "brand": "Cougar",
+   "chip": "1050W Platinum",
+   "watts": 1050,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2158042889",
    "source": "bestprice",
    "title": "Thermaltake Toughpower PF1 1050W",
@@ -3989,6 +4699,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.607584",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GF A3 GOLD 1200W PREMIUM EDITION",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-gf-a3-gold-1200w-premium-edition-p-PER.607584",
+   "price": 161.27,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "1200W",
+   "watts": 1200,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2159905494",
    "source": "bestprice",
    "title": "Sharkoon Rebel P20 1200W",
@@ -4032,6 +4757,81 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.608572",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER PF3 1200W PLATINUM - TT PREMIUM EDITION",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-pf3-1200w-platinum-tt-premium-edition-p-PER.608572",
+   "price": 197.95,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "1200W",
+   "watts": 1200,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.608404",
+   "source": "eshop",
+   "title": "ASUS ROG STRIX 1200W GOLD AURA EDITION RGB FULL MODULAR",
+   "url": "https://www.e-shop.gr/psu-asus-rog-strix-1200w-gold-aura-edition-rgb-full-modular-p-PER.608404",
+   "price": 199.9,
+   "shopCount": null,
+   "brand": "Asus",
+   "chip": "1200W",
+   "watts": 1200,
+   "efficiency": null,
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.608570",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GF A3 1200W GOLD SNOW",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-gf-a3-1200w-gold-snow-p-PER.608570",
+   "price": 209.9,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "1200W",
+   "watts": 1200,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.222782",
+   "source": "eshop",
+   "title": "BE QUIET PSU STRAIGHT POWER 12 PLATINUM 1200W, MODULAR, 135MM FAN, 10YW",
+   "url": "https://www.e-shop.gr/be-quiet-psu-straight-power-12-platinum-1200w-modular-135mm-fan-10yw-p-PER.222782",
+   "price": 214.15,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "1200W",
+   "watts": 1200,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.608577",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER IRGB 1200W PLATINUM",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-irgb-1200w-platinum-p-PER.608577",
+   "price": 329.0,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "1200W",
+   "watts": 1200,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:52427392",
@@ -4094,6 +4894,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.645682",
+   "source": "eshop",
+   "title": "COOLER MASTER ELITE GOLD 1200W 80 PLUS GOLD FULL MODULAR ATX 3.1 PCIE 5.1",
+   "url": "https://www.e-shop.gr/psu-cooler-master-elite-gold-1200w-80-plus-gold-full-modular-atx-31-pcie-51-p-PER.645682",
+   "price": 119.9,
+   "shopCount": null,
+   "brand": "Cooler Master",
+   "chip": "1200W Gold",
+   "watts": 1200,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2160642256",
    "source": "bestprice",
    "title": "Deepcool PN1200M 1200W",
@@ -4154,6 +4969,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.275755",
+   "source": "eshop",
+   "title": "DEEPCOOL PN1200-M 1200W 80 PLUS GOLD 14CM FAN BLACK",
+   "url": "https://www.e-shop.gr/deepcool-pn1200-m-1200w-80-plus-gold-14cm-fan-black-p-PER.275755",
+   "price": 127.0,
+   "shopCount": null,
+   "brand": "Deepcool",
+   "chip": "1200W Gold",
+   "watts": 1200,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2164505226",
    "source": "bestprice",
    "title": "Ocypus Iota P1200 GPUPSU 1200W",
@@ -4212,6 +5042,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.267483",
+   "source": "eshop",
+   "title": "LIAN LI EDGE 1200W BLACK 80+ GOLD (WITH USB HUB), FULLY MODULAR ATX",
+   "url": "https://www.e-shop.gr/psu-lian-li-edge-1200w-black-80-gold-with-usb-hub-fully-modular-atx-p-PER.267483",
+   "price": 131.26,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "1200W Gold",
+   "watts": 1200,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:60562617",
@@ -4544,6 +5389,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.645603",
+   "source": "eshop",
+   "title": "ENERMAX REVOLUTION 1200W 80 PLUS GOLD FULL MODULAR ATX 3.1",
+   "url": "https://www.e-shop.gr/psu-enermax-revolution-1200w-80-plus-gold-full-modular-atx-31-p-PER.645603",
+   "price": 160.73,
+   "shopCount": null,
+   "brand": "Enermax",
+   "chip": "1200W Gold",
+   "watts": 1200,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2160891413",
    "source": "bestprice",
    "title": "Thermaltake Toughpower GT Snow 1200W",
@@ -4587,6 +5447,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.267484",
+   "source": "eshop",
+   "title": "LIAN LI EDGE 1200W WHITE 80+ GOLD (WITH USB HUB), FULLY MODULAR ATX",
+   "url": "https://www.e-shop.gr/psu-lian-li-edge-1200w-white-80-gold-with-usb-hub-fully-modular-atx-p-PER.267484",
+   "price": 169.9,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "1200W Gold",
+   "watts": 1200,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:56619531",
@@ -4724,6 +5599,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.222784",
+   "source": "eshop",
+   "title": "BE QUIET PURE POWER 1200W, 80+GOLD, MODULAR, 120MM, 10YW",
+   "url": "https://www.e-shop.gr/psu-be-quiet-pure-power-1200w-80-gold-modular-120mm-10yw-p-PER.222784",
+   "price": 193.36,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "1200W Gold",
+   "watts": 1200,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:58115904",
    "source": "skroutz",
    "title": "Adata XPG Core Reactor II Full Modular 80 Plus Gold",
@@ -4859,6 +5749,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.547785",
+   "source": "eshop",
+   "title": "CORSAIR RM1200E 1200W FULLY MODULAR CYBENETICS GOLD ATX 3.1 CERTIFIED CP-9020258-EU",
+   "url": "https://www.e-shop.gr/psu-corsair-rm1200e-1200w-fully-modular-cybenetics-gold-atx-31-certified-cp-9020258-eu-p-PER.547785",
+   "price": 211.0,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "1200W Gold",
+   "watts": 1200,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:40991419",
    "source": "skroutz",
    "title": "Montech Titan 1200W Full Modular 80 Plus Gold",
@@ -4872,6 +5777,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.245329",
+   "source": "eshop",
+   "title": "ASUS TUF GAMING 1200W 80 PLUS GOLD FULL MODULAR 20+4 PIN ATX BLACK",
+   "url": "https://www.e-shop.gr/psu-asus-tuf-gaming-1200w-80-plus-gold-full-modular-20-4-pin-atx-black-p-PER.245329",
+   "price": 217.25,
+   "shopCount": null,
+   "brand": "Asus",
+   "chip": "1200W Gold",
+   "watts": 1200,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:59756749",
@@ -5279,6 +6199,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.645790",
+   "source": "eshop",
+   "title": "BE QUIET POWER ZONE 2 1200W 80 PLUS PLATINUM CYBENETICS PLATINUM FULL MODULAR BLACK",
+   "url": "https://www.e-shop.gr/psu-be-quiet-power-zone-2-1200w-80-plus-platinum-cybenetics-platinum-full-modular-black-p-PER.645790",
+   "price": 192.0,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "1200W Platinum",
+   "watts": 1200,
+   "efficiency": "Platinum",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:40772308",
    "source": "skroutz",
    "title": "Thermaltake Toughpower PF3 Full Modular 80 Plus Platinum",
@@ -5352,6 +6287,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645608",
+   "source": "eshop",
+   "title": "ENERMAX PLATIGEMINI 1200W 80 PLUS PLATINUM FULL MODULAR ATX 3.1",
+   "url": "https://www.e-shop.gr/psu-enermax-platigemini-1200w-80-plus-platinum-full-modular-atx-31-p-PER.645608",
+   "price": 232.0,
+   "shopCount": null,
+   "brand": "Enermax",
+   "chip": "1200W Platinum",
+   "watts": 1200,
+   "efficiency": "Platinum",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:43578923",
@@ -5504,6 +6454,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.645743",
+   "source": "eshop",
+   "title": "CORSAIR HX1200I SHIFT 1200W CYBENETICS PLATINUM FULLY MODULAR DIGITAL",
+   "url": "https://www.e-shop.gr/psu-corsair-hx1200i-shift-1200w-cybenetics-platinum-fully-modular-digital-p-PER.645743",
+   "price": 259.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "1200W Platinum",
+   "watts": 1200,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2164461054",
    "source": "bestprice",
    "title": "Asus ROG Strix 1200W",
@@ -5547,6 +6512,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.261153",
+   "source": "eshop",
+   "title": "ASUS ROG STRIX 1200P GAMING 1200W 80 PLUS PLATINUM FULL MODULAR ATX 3.1 BLACK",
+   "url": "https://www.e-shop.gr/psu-asus-rog-strix-1200p-gaming-1200w-80-plus-platinum-full-modular-atx-31-black-p-PER.261153",
+   "price": 265.9,
+   "shopCount": null,
+   "brand": "Asus",
+   "chip": "1200W Platinum",
+   "watts": 1200,
+   "efficiency": "Platinum",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:57640684",
@@ -5624,6 +6604,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.651396",
+   "source": "eshop",
+   "title": "THERMATAKE TOUGHPOWER PF1 80 PLUS PLATINUM ARGB -1200W",
+   "url": "https://www.e-shop.gr/psu-thermatake-toughpower-pf1-80-plus-platinum-argb-1200w-p-PER.651396",
+   "price": 296.9,
+   "shopCount": null,
+   "brand": "THERMATAKE",
+   "chip": "1200W Platinum",
+   "watts": 1200,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2162736710",
    "source": "bestprice",
    "title": "LC-Power LC1200P2 V3.1 1200W",
@@ -5667,6 +6662,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.547786",
+   "source": "eshop",
+   "title": "CORSAIR HX1200I 1200W CYBENETICS PLATINUM ULTRA-LOW NOISE FULLY MODULAR DIGITAL CP-9020307-EU",
+   "url": "https://www.e-shop.gr/psu-corsair-hx1200i-1200w-cybenetics-platinum-ultra-low-noise-fully-modular-digital-cp-9020307-eu-p-PER.547786",
+   "price": 299.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "1200W Platinum",
+   "watts": 1200,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2155241018",
@@ -5999,6 +7009,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.259730",
+   "source": "eshop",
+   "title": "ARMAGGEDDON PSU VOLTRON GOLD 80+ RATING 1200W VG1200",
+   "url": "https://www.e-shop.gr/armaggeddon-psu-voltron-gold-80-rating-1200w-vg1200-p-PER.259730",
+   "price": 157.89,
+   "shopCount": null,
+   "brand": "ARMAGGEDDON",
+   "chip": "1200W Standard",
+   "watts": 1200,
+   "efficiency": "Standard",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2163075609",
    "source": "bestprice",
    "title": "Be Quiet Dark Power 14 1200W",
@@ -6012,6 +7037,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.274517",
+   "source": "eshop",
+   "title": "BE QUIET DARK POWER 14 1200W 80+ TITANIUM",
+   "url": "https://www.e-shop.gr/psu-be-quiet-dark-power-14-1200w-80-titanium-p-PER.274517",
+   "price": 275.05,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "1200W Titanium",
+   "watts": 1200,
+   "efficiency": "Titanium",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:56859216",
@@ -6104,6 +7144,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.645684",
+   "source": "eshop",
+   "title": "COOLER MASTER MWE GOLD 1250W V2 80 PLUS GOLD FULL MODULAR ATX 3.1",
+   "url": "https://www.e-shop.gr/psu-cooler-master-mwe-gold-1250w-v2-80-plus-gold-full-modular-atx-31-p-PER.645684",
+   "price": 156.9,
+   "shopCount": null,
+   "brand": "Cooler Master",
+   "chip": "1250W Gold",
+   "watts": 1250,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2159902514",
    "source": "bestprice",
    "title": "MSI MAG A1250GL 1250W",
@@ -6179,6 +7234,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.261180",
+   "source": "eshop",
+   "title": "MSI MPG A1250GS 1250W 80+ GOLD",
+   "url": "https://www.e-shop.gr/psu-msi-mpg-a1250gs-1250w-80-gold-p-PER.261180",
+   "price": 222.9,
+   "shopCount": null,
+   "brand": "MSI",
+   "chip": "1250W Gold",
+   "watts": 1250,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:60443607",
    "source": "skroutz",
    "title": "MSI MPG A1000GS PCIE5 Full Modular 80 Plus Gold",
@@ -6252,6 +7322,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.221682",
+   "source": "eshop",
+   "title": "BE QUIET PSU DARK POWER PRO 13 1300W BN331, TITANIUM",
+   "url": "https://www.e-shop.gr/be-quiet-psu-dark-power-pro-13-1300w-bn331-titanium-p-PER.221682",
+   "price": 344.6,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "1300W",
+   "watts": 1300,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2160251608",
@@ -6719,6 +7804,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.645744",
+   "source": "eshop",
+   "title": "CORSAIR HX1500I SHIFT 1500W CYBENETICS PLATINUM FULLY MODULAR DIGITAL",
+   "url": "https://www.e-shop.gr/psu-corsair-hx1500i-shift-1500w-cybenetics-platinum-fully-modular-digital-p-PER.645744",
+   "price": 299.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "1500W Platinum",
+   "watts": 1500,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:63929209",
    "source": "skroutz",
    "title": "Corsair HX1500i Shift 1500W Full Modular Cybenetics Platinum",
@@ -6762,6 +7862,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.547787",
+   "source": "eshop",
+   "title": "CORSAIR HX1500I 1500W CYBENETICS PLATINUM ULTRA-LOW NOISE FULLY MODULAR DIGITAL CP-9020309-EU",
+   "url": "https://www.e-shop.gr/psu-corsair-hx1500i-1500w-cybenetics-platinum-ultra-low-noise-fully-modular-digital-cp-9020309-eu-p-PER.547787",
+   "price": 342.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "1500W Platinum",
+   "watts": 1500,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2157773295",
@@ -6839,6 +7954,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.608573",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER TF1 1550W",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-tf1-1550w-p-PER.608573",
+   "price": 349.0,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "1550W",
+   "watts": 1550,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:29867588",
    "source": "skroutz",
    "title": "Thermaltake Toughpower TF1 TT Premium Edition 1550W Full Modular 80 Plus Titanium",
@@ -6884,6 +8014,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.608574",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER TF3 1550W 80+TITANIUM",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-tf3-1550w-80-titanium-p-PER.608574",
+   "price": 440.25,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "1550W Titanium",
+   "watts": 1550,
+   "efficiency": "Titanium",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:54518779",
    "source": "skroutz",
    "title": "Qoltec 1600W Full Wired (50351)",
@@ -6897,6 +8042,36 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.619319",
+   "source": "eshop",
+   "title": "QOLTEC SET PCI-E SMART 1600W + ATX SILENTLINE 350W POWER SUPPLY",
+   "url": "https://www.e-shop.gr/qoltec-set-pci-e-smart-1600w-atx-silentline-350w-power-supply-p-PER.619319",
+   "price": 149.0,
+   "shopCount": null,
+   "brand": "QOLTEC",
+   "chip": "1600W",
+   "watts": 1600,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.221683",
+   "source": "eshop",
+   "title": "BE QUIET DARK POWER PRO 13 1600W BN332, TITANIUM",
+   "url": "https://www.e-shop.gr/psu-be-quiet-dark-power-pro-13-1600w-bn332-titanium-p-PER.221683",
+   "price": 406.04,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "1600W",
+   "watts": 1600,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:31404749",
@@ -7334,6 +8509,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.608579",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER IRGB 1650W TIT GEN5",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-irgb-1650w-tit-gen5-p-PER.608579",
+   "price": 463.08,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "1650W",
+   "watts": 1650,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2159537965",
    "source": "bestprice",
    "title": "Enermax Revolution D.F. X 1650W",
@@ -7377,6 +8567,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.620918",
+   "source": "eshop",
+   "title": "FSP GROUP PPA16F0101 POWER SUPPLY UNIT HYDRO PTM PRO 1650W 80+ PLATINUM ATX 3.1",
+   "url": "https://www.e-shop.gr/fsp-group-ppa16f0101-power-supply-unit-hydro-ptm-pro-1650w-80-platinum-atx-31-p-PER.620918",
+   "price": 242.0,
+   "shopCount": null,
+   "brand": "FSP",
+   "chip": "1650W Platinum",
+   "watts": 1650,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2159947917",
@@ -7617,6 +8822,21 @@
    "modular": "Non",
    "formFactor": "Flex",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.619557",
+   "source": "eshop",
+   "title": "SILVERSTONE HELA HA2050R-PM 2050W BLACK",
+   "url": "https://www.e-shop.gr/psu-silverstone-hela-ha2050r-pm-2050w-black-p-PER.619557",
+   "price": 559.0,
+   "shopCount": null,
+   "brand": "SilverStone",
+   "chip": "2050W",
+   "watts": 2050,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2159568121",
@@ -7889,6 +9109,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.643005",
+   "source": "eshop",
+   "title": "CHIEFTEC SFX-250VS SFX 250W BULK",
+   "url": "https://www.e-shop.gr/psu-chieftec-sfx-250vs-sfx-250w-bulk-p-PER.643005",
+   "price": 50.98,
+   "shopCount": null,
+   "brand": "Chieftec",
+   "chip": "250W",
+   "watts": 250,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:9348680",
    "source": "skroutz",
    "title": "Chieftec Smart Series 250W Full Wired",
@@ -8037,6 +9272,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.547853",
+   "source": "eshop",
+   "title": "CORSAIR WS3000 3000W 80 PLUS PLATINUM ATX 3.1 FULLY MODULAR WORKSTATION CP-9020312-EU",
+   "url": "https://www.e-shop.gr/psu-corsair-ws3000-3000w-80-plus-platinum-atx-31-fully-modular-workstation-cp-9020312-eu-p-PER.547853",
+   "price": 519.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "3000W Platinum",
+   "watts": 3000,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:63199516",
@@ -8429,6 +9679,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.619612",
+   "source": "eshop",
+   "title": "SILVERSTONE TX300 300W 80 PLUS BRONZE TFX BLACK",
+   "url": "https://www.e-shop.gr/psu-silverstone-tx300-300w-80-plus-bronze-tfx-black-p-PER.619612",
+   "price": 68.62,
+   "shopCount": null,
+   "brand": "SilverStone",
+   "chip": "300W Bronze",
+   "watts": 300,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "TFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:12796734",
    "source": "skroutz",
    "title": "Silverstone TX300 300W Full Wired 80 Plus Bronze",
@@ -8442,6 +9707,21 @@
    "modular": "Non",
    "formFactor": "TFX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.619598",
+   "source": "eshop",
+   "title": "SILVERSTONE ST30SF V2.0 300W 80 PLUS BRONZE BLACK",
+   "url": "https://www.e-shop.gr/psu-silverstone-st30sf-v20-300w-80-plus-bronze-black-p-PER.619598",
+   "price": 71.07,
+   "shopCount": null,
+   "brand": "SilverStone",
+   "chip": "300W Bronze",
+   "watts": 300,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:13125141",
@@ -8637,6 +9917,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.267149",
+   "source": "eshop",
+   "title": "ARMAGGEDDON OVERCLOCK PRO PSU 350W BLACK OCPRO350B",
+   "url": "https://www.e-shop.gr/armaggeddon-overclock-pro-psu-350w-black-ocpro350b-p-PER.267149",
+   "price": 40.0,
+   "shopCount": null,
+   "brand": "ARMAGGEDDON",
+   "chip": "350W",
+   "watts": 350,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:57910118",
@@ -8999,6 +10294,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.818681",
+   "source": "eshop",
+   "title": "SILVERSTONE SST-FX350-G TFX / FLEX ATX 350W 80 PLUS GOLD",
+   "url": "https://www.e-shop.gr/psu-silverstone-sst-fx350-g-tfx-flex-atx-350w-80-plus-gold-p-PER.818681",
+   "price": 85.49,
+   "shopCount": null,
+   "brand": "SilverStone",
+   "chip": "350W Gold",
+   "watts": 350,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "TFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:17418701",
    "source": "skroutz",
    "title": "Silverstone FX350-G 350W Full Wired 80 Plus Gold",
@@ -9087,6 +10397,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.286217",
+   "source": "eshop",
+   "title": "ARMAGGEDDON OVERCLOCK PRO PSU 400W BLACK OCPRO-400W-B",
+   "url": "https://www.e-shop.gr/armaggeddon-overclock-pro-psu-400w-black-ocpro-400w-b-p-PER.286217",
+   "price": 19.95,
+   "shopCount": null,
+   "brand": "ARMAGGEDDON",
+   "chip": "400W",
+   "watts": 400,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2160917742",
@@ -9749,6 +11074,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.700974",
+   "source": "eshop",
+   "title": "NOD A450 450W ATX BLACK",
+   "url": "https://www.e-shop.gr/psu-nod-a450-450w-atx-black-p-PER.700974",
+   "price": 14.7,
+   "shopCount": null,
+   "brand": "NOD",
+   "chip": "450W",
+   "watts": 450,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:41613157",
    "source": "skroutz",
    "title": "Loophole LOOPHOLE Full Wired",
@@ -10079,6 +11419,36 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.608540",
+   "source": "eshop",
+   "title": "THERMALTAKE LITEPOWER II 450W BLACK",
+   "url": "https://www.e-shop.gr/psu-thermaltake-litepower-ii-450w-black-p-PER.608540",
+   "price": 38.26,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "450W",
+   "watts": 450,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.940749",
+   "source": "eshop",
+   "title": "FSP SP500-A 450W ATX",
+   "url": "https://www.e-shop.gr/psu-fsp-sp500-a-450w-atx-p-PER.940749",
+   "price": 38.9,
+   "shopCount": null,
+   "brand": "FSP",
+   "chip": "450W",
+   "watts": 450,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:18755974",
    "source": "skroutz",
    "title": "Thermaltake Litepower G2 450W Full Wired",
@@ -10107,6 +11477,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.607680",
+   "source": "eshop",
+   "title": "XILENCE PERFORMANCE GAMING 450W XP450R10 BLACK",
+   "url": "https://www.e-shop.gr/psu-xilenceperformance-gaming-450w-xp450r10-black-p-PER.607680",
+   "price": 44.99,
+   "shopCount": null,
+   "brand": "Xilence",
+   "chip": "450W",
+   "watts": 450,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:17415767",
@@ -10244,6 +11629,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.587169",
+   "source": "eshop",
+   "title": "GIGABYTE P450B 450W 80 PLUS BRONZE",
+   "url": "https://www.e-shop.gr/psu-gigabyte-p450b-450w-80-plus-bronze-p-PER.587169",
+   "price": 36.47,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "450W Bronze",
+   "watts": 450,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2157812752",
    "source": "bestprice",
    "title": "Xilence Performance A+ 450W",
@@ -10317,6 +11717,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.267349",
+   "source": "eshop",
+   "title": "BE QUIET! SYSTEM POWER 11 450W 80+ BRONZE",
+   "url": "https://www.e-shop.gr/psu-be-quiet-system-power-11-450w-80-bronze-p-PER.267349",
+   "price": 49.77,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "450W Bronze",
+   "watts": 450,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2155919804",
@@ -10437,6 +11852,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.645597",
+   "source": "eshop",
+   "title": "FSP FORTRON 450W SFX PRO 80 PLUS BRONZE",
+   "url": "https://www.e-shop.gr/psu-fsp-fortron-450w-sfx-pro-80-plus-bronze-p-PER.645597",
+   "price": 64.05,
+   "shopCount": null,
+   "brand": "FSP",
+   "chip": "450W Bronze",
+   "watts": 450,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:25856262",
@@ -10769,6 +12199,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.608758",
+   "source": "eshop",
+   "title": "FORCE 500W PPFCC REV.2 (FO28XD)",
+   "url": "https://www.e-shop.gr/psu-force-500w-ppfcc-rev2-fo28xd-p-PER.608758",
+   "price": 20.6,
+   "shopCount": null,
+   "brand": "FORCE",
+   "chip": "500W",
+   "watts": 500,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2152548242",
    "source": "bestprice",
    "title": "Supercase Force 500W",
@@ -10977,6 +12422,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645512",
+   "source": "eshop",
+   "title": "INTER-TECH SL-500K 500W ATX BULK",
+   "url": "https://www.e-shop.gr/psu-inter-tech-sl-500k-500w-atx-bulk-p-PER.645512",
+   "price": 26.48,
+   "shopCount": null,
+   "brand": "Inter-Tech",
+   "chip": "500W",
+   "watts": 500,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:56620019",
@@ -11339,6 +12799,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.607679",
+   "source": "eshop",
+   "title": "XILENCE PERFORMANCE C 500W XP500R6 BLACK",
+   "url": "https://www.e-shop.gr/psu-xilenceperformance-c-500w-xp500r6-black-p-PER.607679",
+   "price": 37.83,
+   "shopCount": null,
+   "brand": "Xilence",
+   "chip": "500W",
+   "watts": 500,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:28623421",
    "source": "skroutz",
    "title": "iBox Aurora Full Wired",
@@ -11382,6 +12857,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.814814",
+   "source": "eshop",
+   "title": "SILVERSTONE SST-ST50F-ES-230 STRIDER ESSENTIAL SERIES 500W",
+   "url": "https://www.e-shop.gr/psu-silverstone-sst-st50f-es-230-strider-essential-series-500w-p-PER.814814",
+   "price": 43.9,
+   "shopCount": null,
+   "brand": "SilverStone",
+   "chip": "500W",
+   "watts": 500,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:40583014",
@@ -11474,6 +12964,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.643012",
+   "source": "eshop",
+   "title": "CHIEFTEC GPS-500A8 500W BOX",
+   "url": "https://www.e-shop.gr/psu-chieftec-gps-500a8-500w-box-p-PER.643012",
+   "price": 50.3,
+   "shopCount": null,
+   "brand": "Chieftec",
+   "chip": "500W",
+   "watts": 500,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:60181752",
    "source": "skroutz",
    "title": "Gamdias Helios E1-500 500W Full Wired",
@@ -11547,6 +13052,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.819323",
+   "source": "eshop",
+   "title": "THERMALTAKE PS-SPS-0500MNSAWE-1 SMART SE2 500W",
+   "url": "https://www.e-shop.gr/psu-thermaltake-ps-sps-0500mnsawe-1-smart-se2-500w-p-PER.819323",
+   "price": 58.9,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "500W",
+   "watts": 500,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:53249516",
@@ -11774,6 +13294,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.619931",
+   "source": "eshop",
+   "title": "ENDORFY VERO L5 BRONZE 500W 80 PLUS BRONZE (EY7A004)",
+   "url": "https://www.e-shop.gr/psu-endorfy-vero-l5-bronze-500w-80-plus-bronze-ey7a004-p-PER.619931",
+   "price": 52.06,
+   "shopCount": null,
+   "brand": "Endorfy",
+   "chip": "500W Bronze",
+   "watts": 500,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:29952822",
    "source": "skroutz",
    "title": "Inter-Tech ArgusNT BPS Full Wired 80 Plus Bronze",
@@ -11862,6 +13397,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.608542",
+   "source": "eshop",
+   "title": "THERMALTAKE SMART BM1 500W 80 PLUS BRONZE SEMI MODULAR",
+   "url": "https://www.e-shop.gr/psu-thermaltake-smart-bm1-500w-80-plus-bronze-semi-modular-p-PER.608542",
+   "price": 68.9,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "500W Bronze",
+   "watts": 500,
+   "efficiency": "Bronze",
+   "modular": "Semi",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:33844830",
@@ -12149,6 +13699,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.619551",
+   "source": "eshop",
+   "title": "SILVERSTONE FX500-G 500W 80 PLUS GOLD FLEX-ATX BLACK",
+   "url": "https://www.e-shop.gr/psu-silverstone-fx500-g-500w-80-plus-gold-flex-atx-black-p-PER.619551",
+   "price": 144.62,
+   "shopCount": null,
+   "brand": "SilverStone",
+   "chip": "500W Gold",
+   "watts": 500,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "Flex",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:26336876",
    "source": "skroutz",
    "title": "Silverstone FX500-G 500W Full Wired 80 Plus Gold",
@@ -12207,6 +13772,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.286218",
+   "source": "eshop",
+   "title": "ARMAGGEDDON PSU 500W VOLTRON BRONZE 80PLUS BLACK VOLTRON500-BB",
+   "url": "https://www.e-shop.gr/armaggeddon-psu-500w-voltron-bronze-80plus-black-voltron500-bb-p-PER.286218",
+   "price": 27.99,
+   "shopCount": null,
+   "brand": "ARMAGGEDDON",
+   "chip": "500W Standard",
+   "watts": 500,
+   "efficiency": "Standard",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:54152789",
@@ -12417,6 +13997,21 @@
    "modular": "Semi",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.263255",
+   "source": "eshop",
+   "title": "WHITE SHARK POWER SUPPLY GPSU-W500F 500W 80+ RGB CAPTAIN-3",
+   "url": "https://www.e-shop.gr/white-shark-power-supply-gpsu-w500f-500w-80-rgb-captain-3-p-PER.263255",
+   "price": 43.72,
+   "shopCount": null,
+   "brand": "White Shark",
+   "chip": "500W Standard",
+   "watts": 500,
+   "efficiency": "Standard",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2160536912",
@@ -12644,6 +14239,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.259737",
+   "source": "eshop",
+   "title": "ARMAGGEDDON PSU VOLTRON GOLD 80+ RATING 500W VG500",
+   "url": "https://www.e-shop.gr/armaggeddon-psu-voltron-gold-80-rating-500w-vg500-p-PER.259737",
+   "price": 79.48,
+   "shopCount": null,
+   "brand": "ARMAGGEDDON",
+   "chip": "500W Standard",
+   "watts": 500,
+   "efficiency": "Standard",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:44792179",
    "source": "skroutz",
    "title": "CoolerMaster Elite NEX Black Mesh Full Wired 80 Plus Standard",
@@ -12824,6 +14434,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.608759",
+   "source": "eshop",
+   "title": "FORCE 550W PPFC REV.2 (FO34XD)",
+   "url": "https://www.e-shop.gr/psu-force-550w-ppfc-rev2-fo34xd-p-PER.608759",
+   "price": 27.3,
+   "shopCount": null,
+   "brand": "FORCE",
+   "chip": "550W",
+   "watts": 550,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2158168671",
    "source": "bestprice",
    "title": "Njoy 55P00P 550W",
@@ -12867,6 +14492,36 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.700975",
+   "source": "eshop",
+   "title": "NOD A550 550W ATX BLACK",
+   "url": "https://www.e-shop.gr/psu-nod-a550-550w-atx-black-p-PER.700975",
+   "price": 29.99,
+   "shopCount": null,
+   "brand": "NOD",
+   "chip": "550W",
+   "watts": 550,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.229496",
+   "source": "eshop",
+   "title": "ATX INTER-TECH NITROX SL-550W V 2.4",
+   "url": "https://www.e-shop.gr/psu-atx-inter-tech-nitrox-sl-550w-v-24-p-PER.229496",
+   "price": 31.0,
+   "shopCount": null,
+   "brand": "ATX",
+   "chip": "550W",
+   "watts": 550,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:69113419",
@@ -12989,6 +14644,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.644163",
+   "source": "eshop",
+   "title": "THERMALTAKE LITEPOWER ACTIVE PFC 12CM 550W",
+   "url": "https://www.e-shop.gr/psu-thermaltake-litepower-active-pfc-12cm-550w-p-PER.644163",
+   "price": 36.97,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "550W",
+   "watts": 550,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2163460309",
    "source": "bestprice",
    "title": "Turbo-X PPFC 550W",
@@ -13049,6 +14719,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.620327",
+   "source": "eshop",
+   "title": "ENERMAX MAXPRO IV 550W BLACK EMP550W",
+   "url": "https://www.e-shop.gr/psu-enermax-maxpro-iv-550w-black-emp550w-p-PER.620327",
+   "price": 43.5,
+   "shopCount": null,
+   "brand": "Enermax",
+   "chip": "550W",
+   "watts": 550,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:69428256",
    "source": "skroutz",
    "title": "Segotep 550W Full Wired",
@@ -13092,6 +14777,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.608396",
+   "source": "eshop",
+   "title": "MSI MAG A550BN 550W",
+   "url": "https://www.e-shop.gr/psu-msi-mag-a550bn-550w-p-PER.608396",
+   "price": 50.7,
+   "shopCount": null,
+   "brand": "MSI",
+   "chip": "550W",
+   "watts": 550,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2155241019",
@@ -13229,6 +14929,36 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.608729",
+   "source": "eshop",
+   "title": "BE QUIET PURE POWER 12 550W GOLD, ECEP 1X 12-PIN HIGH POWER GPU, 2X PCIE",
+   "url": "https://www.e-shop.gr/psu-be-quiet-pure-power-12-550w-gold-ecep-1x-12-pin-high-power-gpu-2x-pcie-p-PER.608729",
+   "price": 73.79,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "550W",
+   "watts": 550,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.608559",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GF 550W",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-gf-550w-p-PER.608559",
+   "price": 95.0,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "550W",
+   "watts": 550,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:50948115",
    "source": "skroutz",
    "title": "Synology 550W Full Wired (PSU 550W_1)",
@@ -13317,6 +15047,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.547942",
+   "source": "eshop",
+   "title": "ADATA XPG PYLON 550W 80 PLUS BRONZE",
+   "url": "https://www.e-shop.gr/psu-adata-xpg-pylon-550w-80-plus-bronze-p-PER.547942",
+   "price": 39.3,
+   "shopCount": null,
+   "brand": "Adata",
+   "chip": "550W Bronze",
+   "watts": 550,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2157780637",
@@ -13484,6 +15229,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.645142",
+   "source": "eshop",
+   "title": "FORCE FP-550W 80+ BRONZE 550W",
+   "url": "https://www.e-shop.gr/psu-force-fp-550w-80-bronze-550w-p-PER.645142",
+   "price": 44.9,
+   "shopCount": null,
+   "brand": "FORCE",
+   "chip": "550W Bronze",
+   "watts": 550,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:51527865",
    "source": "skroutz",
    "title": "Spacer Sursa 550W Full Wired 80 Plus Bronze",
@@ -13542,6 +15302,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.587171",
+   "source": "eshop",
+   "title": "GIGABYTE GP-P550B, 550W, 80 PLUS BRONZE",
+   "url": "https://www.e-shop.gr/psu-gigabyte-gp-p550b-550w-80-plus-bronze-p-PER.587171",
+   "price": 46.7,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "550W Bronze",
+   "watts": 550,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2159461463",
@@ -13739,6 +15514,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.645225",
+   "source": "eshop",
+   "title": "THERMALTAKE SMART BX1 550W NON MODULAR 80 PLUS BRONZE",
+   "url": "https://www.e-shop.gr/psu-thermaltake-smart-bx1-550w-non-modular-80-plus-bronze-p-PER.645225",
+   "price": 51.28,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "550W Bronze",
+   "watts": 550,
+   "efficiency": "Bronze",
+   "modular": "Non",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2164081843",
    "source": "bestprice",
    "title": "Redragon Guard 550W",
@@ -13829,6 +15619,36 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.547438",
+   "source": "eshop",
+   "title": "CORSAIR CP-9020277-EU CX550 550W 80 PLUS BRONZE",
+   "url": "https://www.e-shop.gr/psu-corsair-cp-9020277-eu-cx550-550w-80-plus-bronze-p-PER.547438",
+   "price": 54.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "550W Bronze",
+   "watts": 550,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.267350",
+   "source": "eshop",
+   "title": "BE QUIET! SYSTEM POWER 11 550W 80+ BRONZE",
+   "url": "https://www.e-shop.gr/psu-be-quiet-system-power-11-550w-80-bronze-p-PER.267350",
+   "price": 54.94,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "550W Bronze",
+   "watts": 550,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:61682101",
    "source": "skroutz",
    "title": "Thermaltake smart BX1 S E Full Wired 80 Plus Bronze",
@@ -13917,6 +15737,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.608543",
+   "source": "eshop",
+   "title": "THERMALTAKE SMART BX3 80 PLUS BRONZE 550W",
+   "url": "https://www.e-shop.gr/psu-thermaltake-smart-bx3-80-plus-bronze-550w-p-PER.608543",
+   "price": 57.34,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "550W Bronze",
+   "watts": 550,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:58746498",
@@ -14384,6 +16219,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.645774",
+   "source": "eshop",
+   "title": "BE QUIET PURE POWER 13 M 550W 80 PLUS GOLD FULL MODULAR",
+   "url": "https://www.e-shop.gr/psu-be-quiet-pure-power-13-m-550w-80-plus-gold-full-modular-p-PER.645774",
+   "price": 91.9,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "550W Gold",
+   "watts": 550,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2151758090",
    "source": "bestprice",
    "title": "Corsair TX550M 550W",
@@ -14487,6 +16337,36 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645581",
+   "source": "eshop",
+   "title": "GIGABYTE GP-P550SS ICE 550W 80 PLUS SILVER NO MODULAR ATX 3.1 COMPATIBLE",
+   "url": "https://www.e-shop.gr/psu-gigabyte-gp-p550ss-ice-550w-80-plus-silver-no-modular-atx-31-compatible-p-PER.645581",
+   "price": 40.53,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "550W Silver",
+   "watts": 550,
+   "efficiency": "Silver",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.645580",
+   "source": "eshop",
+   "title": "GIGABYTE GP-P550SS 550W 80 PLUS SILVER NO MODULAR ATX 3.1 COMPATIBLE",
+   "url": "https://www.e-shop.gr/psu-gigabyte-gp-p550ss-550w-80-plus-silver-no-modular-atx-31-compatible-p-PER.645580",
+   "price": 42.46,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "550W Silver",
+   "watts": 550,
+   "efficiency": "Silver",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:57074526",
@@ -15149,6 +17029,36 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.608412",
+   "source": "eshop",
+   "title": "CHIEFTEC EON ZPU-600S 600W",
+   "url": "https://www.e-shop.gr/psu-chieftec-eon-zpu-600s-600w-p-PER.608412",
+   "price": 42.04,
+   "shopCount": null,
+   "brand": "Chieftec",
+   "chip": "600W",
+   "watts": 600,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.619703",
+   "source": "eshop",
+   "title": "AEROCOOL PGS VX PLUS 600W BLACK",
+   "url": "https://www.e-shop.gr/psu-aerocool-pgs-vx-plus-600w-black-p-PER.619703",
+   "price": 43.9,
+   "shopCount": null,
+   "brand": "Aerocool",
+   "chip": "600W",
+   "watts": 600,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2159837359",
    "source": "bestprice",
    "title": "GAMDIAS Helios E1 600W",
@@ -15224,6 +17134,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.819322",
+   "source": "eshop",
+   "title": "THERMALTAKE PS-SPS-0600MNSAWE-1 SMART SE2 600W",
+   "url": "https://www.e-shop.gr/psu-thermaltake-ps-sps-0600mnsawe-1-smart-se2-600w-p-PER.819322",
+   "price": 52.74,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "600W",
+   "watts": 600,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2155100087",
    "source": "bestprice",
    "title": "Chieftec GPE-600S 600W",
@@ -15297,6 +17222,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.643013",
+   "source": "eshop",
+   "title": "CHIEFTEC GPS-600A8 600W BOX",
+   "url": "https://www.e-shop.gr/psu-chieftec-gps-600a8-600w-box-p-PER.643013",
+   "price": 64.41,
+   "shopCount": null,
+   "brand": "Chieftec",
+   "chip": "600W",
+   "watts": 600,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2154928374",
@@ -15419,6 +17359,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.643919",
+   "source": "eshop",
+   "title": "BE QUIET! SFX-L POWER 600W",
+   "url": "https://www.e-shop.gr/psu-be-quiet-sfx-l-power-600w-p-PER.643919",
+   "price": 139.9,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "600W",
+   "watts": 600,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:36154514",
    "source": "skroutz",
    "title": "Silverstone FX600-PT 600W Full Wired",
@@ -15432,6 +17387,21 @@
    "modular": "Non",
    "formFactor": "Flex",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.816326",
+   "source": "eshop",
+   "title": "SILVERSTONE SST-GM600-G GEMINI SERIES REDUNDANT 600W",
+   "url": "https://www.e-shop.gr/psu-silverstone-sst-gm600-g-gemini-series-redundant-600w-p-PER.816326",
+   "price": 690.0,
+   "shopCount": null,
+   "brand": "SilverStone",
+   "chip": "600W",
+   "watts": 600,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:69113422",
@@ -15537,6 +17507,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.275749",
+   "source": "eshop",
+   "title": "DEEPCOOL PF600X 600W 80 PLUS BRONZE 12CM FAN BLACK",
+   "url": "https://www.e-shop.gr/psu-deepcool-pf600x-600w-80-plus-bronze-12cm-fan-black-p-PER.275749",
+   "price": 42.95,
+   "shopCount": null,
+   "brand": "Deepcool",
+   "chip": "600W Bronze",
+   "watts": 600,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:57909941",
@@ -15824,6 +17809,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.269418",
+   "source": "eshop",
+   "title": "WHITE SHARK 600W COLONEL 3 80PLUS BRONZE FULL MODULAR COLONEL-3",
+   "url": "https://www.e-shop.gr/psu-white-shark-600w-colonel-3-80plus-bronze-full-modular-colonel-3-p-PER.269418",
+   "price": 62.4,
+   "shopCount": null,
+   "brand": "White Shark",
+   "chip": "600W Bronze",
+   "watts": 600,
+   "efficiency": "Bronze",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:27225679",
    "source": "skroutz",
    "title": "Inter-Tech Argus RGB II Full Wired 80 Plus Bronze",
@@ -15912,6 +17912,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.257206",
+   "source": "eshop",
+   "title": "WHITE SHARK GPSU-B600S COLONEL-2 600W 80+ BRONZE FULL MODULAR COLONEL-2",
+   "url": "https://www.e-shop.gr/white-shark-gpsu-b600s-colonel-2-600w-80-bronze-full-modular-colonel-2-p-PER.257206",
+   "price": 69.89,
+   "shopCount": null,
+   "brand": "White Shark",
+   "chip": "600W Bronze",
+   "watts": 600,
+   "efficiency": "Bronze",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:28166295",
@@ -16062,6 +18077,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.286158",
+   "source": "eshop",
+   "title": "INTER-TECH 88882239 POWER SUPPLY INTER TECH ARGUS HA-600AA2 600W 80+ GOLD",
+   "url": "https://www.e-shop.gr/inter-tech-88882239-power-supply-inter-tech-argus-ha-600aa2-600w-80-gold-p-PER.286158",
+   "price": 71.31,
+   "shopCount": null,
+   "brand": "Inter-Tech",
+   "chip": "600W Gold",
+   "watts": 600,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:69428371",
@@ -16409,6 +18439,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.940400",
+   "source": "eshop",
+   "title": "FORCE 80+ WHITE 600W (FP-600W)",
+   "url": "https://www.e-shop.gr/psu-force-80-white-600w-fp-600w-p-PER.940400",
+   "price": 42.9,
+   "shopCount": null,
+   "brand": "FORCE",
+   "chip": "600W Standard",
+   "watts": 600,
+   "efficiency": "Standard",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:45142628",
    "source": "skroutz",
    "title": "Gamdias Kratos E1-600 600W Full Wired 80 Plus Standard",
@@ -16589,6 +18634,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.818069",
+   "source": "eshop",
+   "title": "THERMALTAKE SPR-0600NHSAW SMART RGB 600W 80 PLUS",
+   "url": "https://www.e-shop.gr/psu-thermaltake-spr-0600nhsaw-smart-rgb-600w-80-plus-p-PER.818069",
+   "price": 59.24,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "600W Standard",
+   "watts": 600,
+   "efficiency": "Standard",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:55500535",
    "source": "skroutz",
    "title": "Thermaltake Smart W3 Full Wired 80 Plus Standard",
@@ -16632,6 +18692,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.259736",
+   "source": "eshop",
+   "title": "ARMAGGEDDON PSU VOLTRON GOLD 80+ RATING 600W VG600",
+   "url": "https://www.e-shop.gr/armaggeddon-psu-voltron-gold-80-rating-600w-vg600-p-PER.259736",
+   "price": 92.74,
+   "shopCount": null,
+   "brand": "ARMAGGEDDON",
+   "chip": "600W Standard",
+   "watts": 600,
+   "efficiency": "Standard",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:59425968",
@@ -16679,6 +18754,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.608550",
+   "source": "eshop",
+   "title": "THERMALTAKE SMART SE 630W 92%",
+   "url": "https://www.e-shop.gr/psu-thermaltake-smart-se-630w-92-p-PER.608550",
+   "price": 69.9,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "630W",
+   "watts": 630,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:7505417",
    "source": "skroutz",
    "title": "Thermaltake Smart SE Semi Modular",
@@ -16722,6 +18812,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.608760",
+   "source": "eshop",
+   "title": "FORCE 650W PPFC REV.2 (FO36XD)",
+   "url": "https://www.e-shop.gr/psu-force-650w-ppfc-rev2-fo36xd-p-PER.608760",
+   "price": 31.9,
+   "shopCount": null,
+   "brand": "FORCE",
+   "chip": "650W",
+   "watts": 650,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2156316361",
@@ -16889,6 +18994,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.547850",
+   "source": "eshop",
+   "title": "COOLER MASTER MWE BRONZE 650 V3 230V 650W NO MODULAR ATX 3.1 SUPPORT",
+   "url": "https://www.e-shop.gr/psu-cooler-master-mwe-bronze-650-v3-230v-650w-no-modular-atx-31-support-p-PER.547850",
+   "price": 46.19,
+   "shopCount": null,
+   "brand": "Cooler Master",
+   "chip": "650W",
+   "watts": 650,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:54344819",
    "source": "skroutz",
    "title": "Chieftec 650W Semi Modular (GPA-650S)",
@@ -16962,6 +19082,81 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.255632",
+   "source": "eshop",
+   "title": "DEEPCOOL PL650D 650W",
+   "url": "https://www.e-shop.gr/psu-deepcool-pl650d-650w-p-PER.255632",
+   "price": 52.9,
+   "shopCount": null,
+   "brand": "Deepcool",
+   "chip": "650W",
+   "watts": 650,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.644546",
+   "source": "eshop",
+   "title": "THERMALTAKE LITEPOWER RGB 650W",
+   "url": "https://www.e-shop.gr/psu-thermaltake-litepower-rgb-650w-p-PER.644546",
+   "price": 53.78,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "650W",
+   "watts": 650,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.620328",
+   "source": "eshop",
+   "title": "ENERMAX MAXPRO IV 650W BLACK EMP650W",
+   "url": "https://www.e-shop.gr/psu-enermax-maxpro-iv-650w-black-emp650w-p-PER.620328",
+   "price": 54.14,
+   "shopCount": null,
+   "brand": "Enermax",
+   "chip": "650W",
+   "watts": 650,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.608545",
+   "source": "eshop",
+   "title": "THERMALTAKE SMART BX3 650W",
+   "url": "https://www.e-shop.gr/psu-thermaltake-smart-bx3-650w-p-PER.608545",
+   "price": 54.71,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "650W",
+   "watts": 650,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.608397",
+   "source": "eshop",
+   "title": "MSI MAG A650BN 650W",
+   "url": "https://www.e-shop.gr/psu-msi-mag-a650bn-650w-p-PER.608397",
+   "price": 56.74,
+   "shopCount": null,
+   "brand": "MSI",
+   "chip": "650W",
+   "watts": 650,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2163333879",
@@ -17069,6 +19264,51 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.608728",
+   "source": "eshop",
+   "title": "BE QUIET PURE POWER 12 650W GOLD, ECEP 1X 12-PIN HIGH POWER GPU, 2X PCIE",
+   "url": "https://www.e-shop.gr/psu-be-quiet-pure-power-12-650w-gold-ecep-1x-12-pin-high-power-gpu-2x-pcie-p-PER.608728",
+   "price": 85.9,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "650W",
+   "watts": 650,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.608575",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GRAND RGB 650W GOLD",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-grand-rgb-650w-gold-p-PER.608575",
+   "price": 99.0,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "650W",
+   "watts": 650,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.608560",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GF2 ARGB 650W MOD GOLD",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-gf2-argb-650w-mod-gold-p-PER.608560",
+   "price": 105.9,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "650W",
+   "watts": 650,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2155465288",
    "source": "bestprice",
    "title": "Seasonic Focus SGX 650W SGX-650",
@@ -17082,6 +19322,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.608554",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER SFX 650W",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-sfx-650w-p-PER.608554",
+   "price": 149.0,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "650W",
+   "watts": 650,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2156953229",
@@ -17142,6 +19397,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645143",
+   "source": "eshop",
+   "title": "FORCE FP-650W 80+ BRONZE 650W",
+   "url": "https://www.e-shop.gr/psu-force-fp-650w-80-bronze-650w-p-PER.645143",
+   "price": 39.9,
+   "shopCount": null,
+   "brand": "FORCE",
+   "chip": "650W Bronze",
+   "watts": 650,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:58001001",
@@ -17249,6 +19519,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.620919",
+   "source": "eshop",
+   "title": "FSP GROUP 9PA6507504 POWER SUPPLY HYPER PRO 650W 80+ BRONZE 12V-2X6",
+   "url": "https://www.e-shop.gr/fsp-group-9pa6507504-power-supply-hyper-pro-650w-80-bronze-12v-2x6-p-PER.620919",
+   "price": 45.0,
+   "shopCount": null,
+   "brand": "FSP",
+   "chip": "650W Bronze",
+   "watts": 650,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2163396450",
    "source": "bestprice",
    "title": "Seasonic Core BC 650W",
@@ -17292,6 +19577,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.619710",
+   "source": "eshop",
+   "title": "AEROCOOL MARS GAMING MPB650SI 80+ BRONZE 650W BLACK",
+   "url": "https://www.e-shop.gr/psu-aerocool-mars-gaming-mpb650si-80-bronze-650w-black-p-PER.619710",
+   "price": 47.61,
+   "shopCount": null,
+   "brand": "Aerocool",
+   "chip": "650W Bronze",
+   "watts": 650,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2159419981",
@@ -17549,6 +19849,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.275752",
+   "source": "eshop",
+   "title": "DEEPCOOL PL650D 650W 80 PLUS BRONZE 12CM FAN WHITE",
+   "url": "https://www.e-shop.gr/deepcool-pl650d-650w-80-plus-bronze-12cm-fan-white-p-PER.275752",
+   "price": 54.95,
+   "shopCount": null,
+   "brand": "Deepcool",
+   "chip": "650W Bronze",
+   "watts": 650,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:67458386",
    "source": "skroutz",
    "title": "FSP/Fortron VIC-BD Full Wired",
@@ -17577,6 +19892,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.274766",
+   "source": "eshop",
+   "title": "LIAN LI RB0650 - 650W 80+ BRONZE PSU - PCIE GEN 5.1 12+4PIN - INTEL ATX 3.1 - 135MM LOW-NOISE FAN",
+   "url": "https://www.e-shop.gr/lian-li-rb0650-650w-80-bronze-psu-pcie-gen-51-12-4pin-intel-atx-31-135mm-low-noise-fan-p-PER.274766",
+   "price": 55.05,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "650W Bronze",
+   "watts": 650,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:31958730",
@@ -18029,6 +20359,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.651243",
+   "source": "eshop",
+   "title": "THERMALTAKE SMART BM2 650W SEMI MODULAR 80 PLUS BRONZE",
+   "url": "https://www.e-shop.gr/psu-thermaltake-smart-bm2-650w-semi-modular-80-plus-bronze-p-PER.651243",
+   "price": 62.17,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "650W Bronze",
+   "watts": 650,
+   "efficiency": "Bronze",
+   "modular": "Semi",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:58144751",
    "source": "skroutz",
    "title": "Mars Gaming MPB650SI 650W Full Wired 80 Plus Bronze",
@@ -18042,6 +20387,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.547439",
+   "source": "eshop",
+   "title": "CORSAIR CP-9020278-EU CX650 650W 80 PLUS BRONZE",
+   "url": "https://www.e-shop.gr/psu-corsair-cp-9020278-eu-cx650-650w-80-plus-bronze-p-PER.547439",
+   "price": 62.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "650W Bronze",
+   "watts": 650,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:47488542",
@@ -18134,6 +20494,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.940754",
+   "source": "eshop",
+   "title": "ASUS TUF GAMING 650W 80 PLUS BRONZE",
+   "url": "https://www.e-shop.gr/psu-asus-tuf-gaming-650w-80-plus-bronze-p-PER.940754",
+   "price": 64.99,
+   "shopCount": null,
+   "brand": "Asus",
+   "chip": "650W Bronze",
+   "watts": 650,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:58744528",
    "source": "skroutz",
    "title": "ASRock Challenger 650W Full Wired 80 Plus Bronze",
@@ -18207,6 +20582,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.607589",
+   "source": "eshop",
+   "title": "THERMALTAKE SMART BM3 650W 80 PLUS BRONZE",
+   "url": "https://www.e-shop.gr/psu-thermaltake-smart-bm3-650w-80-plus-bronze-p-PER.607589",
+   "price": 68.2,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "650W Bronze",
+   "watts": 650,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2164012898",
@@ -18944,6 +21334,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.286151",
+   "source": "eshop",
+   "title": "GIGABYTE P650G PG5 650W 80 PLUS GOLD PCIE 5.1",
+   "url": "https://www.e-shop.gr/psu-gigabyte-p650g-pg5-650w-80-plus-gold-pcie-51-p-PER.286151",
+   "price": 52.6,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "650W Gold",
+   "watts": 650,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2160326428",
    "source": "bestprice",
    "title": "Enermax CyberG II 650W",
@@ -19002,6 +21407,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645607",
+   "source": "eshop",
+   "title": "ENERMAX CYBERG II ERV650G 650W 80 PLUS GOLD NO MODULAR ATX 3.1",
+   "url": "https://www.e-shop.gr/psu-enermax-cyberg-ii-erv650g-650w-80-plus-gold-no-modular-atx-31-p-PER.645607",
+   "price": 64.73,
+   "shopCount": null,
+   "brand": "Enermax",
+   "chip": "650W Gold",
+   "watts": 650,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:69429307",
@@ -19229,6 +21649,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.644545",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GF1 ARGB 650W 80 PLUS GOLD",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-gf1-argb-650w-80-plus-gold-p-PER.644545",
+   "price": 75.91,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "650W Gold",
+   "watts": 650,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2164151001",
    "source": "bestprice",
    "title": "Endorfy Enduro L6 650W",
@@ -19257,6 +21692,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645593",
+   "source": "eshop",
+   "title": "FSP VITA-650GD GD 650W 80 PLUS GOLD NO MODULAR ATX 3.1",
+   "url": "https://www.e-shop.gr/psu-fsp-vita-650gd-gd-650w-80-plus-gold-no-modular-atx-31-p-PER.645593",
+   "price": 78.01,
+   "shopCount": null,
+   "brand": "FSP",
+   "chip": "650W Gold",
+   "watts": 650,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:66554764",
@@ -19364,6 +21814,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.547668",
+   "source": "eshop",
+   "title": "CORSAIR RM650E 650W FULLY MODULAR CYBENETICS GOLD ATX 3.1 CERTIFIED CP-9020302-EU",
+   "url": "https://www.e-shop.gr/psu-corsair-rm650e-650w-fully-modular-cybenetics-gold-atx-31-certified-cp-9020302-eu-p-PER.547668",
+   "price": 84.8,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "650W Gold",
+   "watts": 650,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:66556610",
    "source": "skroutz",
    "title": "GameMax GX 650GF 650W Full Modular 80 Plus Gold",
@@ -19452,6 +21917,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645560",
+   "source": "eshop",
+   "title": "SEASONIC CORE GX ATX 3 (2024) 650W 80 PLUS GOLD FULL MODULAR ATX 3.1 & PCIE 5.1",
+   "url": "https://www.e-shop.gr/psu-seasonic-core-gx-atx-3-2024-650w-80-plus-gold-full-modular-atx-31-pcie-51-p-PER.645560",
+   "price": 89.9,
+   "shopCount": null,
+   "brand": "Seasonic",
+   "chip": "650W Gold",
+   "watts": 650,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2160793914",
@@ -19544,6 +22024,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.645771",
+   "source": "eshop",
+   "title": "BE QUIET PURE POWER 13 M 650W 80 PLUS GOLD FULL MODULAR",
+   "url": "https://www.e-shop.gr/psu-be-quiet-pure-power-13-m-650w-80-plus-gold-full-modular-p-PER.645771",
+   "price": 98.8,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "650W Gold",
+   "watts": 650,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:67784809",
    "source": "skroutz",
    "title": "Endorfy Enduro L6 650W Full Wired 80 Plus Gold",
@@ -19634,6 +22129,36 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.645556",
+   "source": "eshop",
+   "title": "FSP VITA GM 650W 80 PLUS GOLD FULL MODULAR ATX3.1 PCIE5.1",
+   "url": "https://www.e-shop.gr/psu-fsp-vita-gm-650w-80-plus-gold-full-modular-atx31-pcie51-p-PER.645556",
+   "price": 105.67,
+   "shopCount": null,
+   "brand": "FSP",
+   "chip": "650W Gold",
+   "watts": 650,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.645588",
+   "source": "eshop",
+   "title": "SEASONIC CORE GX WHITE ATX 3 (2024) 650W 80 PLUS GOLD FULL MODULAR ATX 3.1 AND PCIE 5.1",
+   "url": "https://www.e-shop.gr/psu-seasonic-core-gx-white-atx-3-2024-650w-80-plus-gold-full-modular-atx-31-and-pcie-51-p-PER.645588",
+   "price": 106.9,
+   "shopCount": null,
+   "brand": "Seasonic",
+   "chip": "650W Gold",
+   "watts": 650,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2155862128",
    "source": "bestprice",
    "title": "Chieftec Polaris 650W",
@@ -19647,6 +22172,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645555",
+   "source": "eshop",
+   "title": "FSP DAGGER PRO SFX 650W 80 PLUS GOLD FULL MODULAR ATX3.1 PCIE5.1",
+   "url": "https://www.e-shop.gr/psu-fsp-dagger-pro-sfx-650w-80-plus-gold-full-modular-atx31-pcie51-p-PER.645555",
+   "price": 111.34,
+   "shopCount": null,
+   "brand": "FSP",
+   "chip": "650W Gold",
+   "watts": 650,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:65762125",
@@ -20024,6 +22564,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.651246",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER PF1 650W 80 PLUS PLATINUM",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-pf1-650w-80-plus-platinum-p-PER.651246",
+   "price": 123.3,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "650W Platinum",
+   "watts": 650,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2157491882",
    "source": "bestprice",
    "title": "Seasonic Focus SPX 650W",
@@ -20084,6 +22639,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.645582",
+   "source": "eshop",
+   "title": "GIGABYTE GP-P650SS 650W 80 PLUS SILVER NO MODULAR ATX 3.1 COMPATIBLE",
+   "url": "https://www.e-shop.gr/psu-gigabyte-gp-p650ss-650w-80-plus-silver-no-modular-atx-31-compatible-p-PER.645582",
+   "price": 46.4,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "650W Silver",
+   "watts": 650,
+   "efficiency": "Silver",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2160505885",
    "source": "bestprice",
    "title": "Gigabyte P650SS Ice 650W",
@@ -20097,6 +22667,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645583",
+   "source": "eshop",
+   "title": "GIGABYTE GP-P650SS ICE 650W 80 PLUS SILVER NO MODULAR ATX 3.1 COMPATIBLE",
+   "url": "https://www.e-shop.gr/psu-gigabyte-gp-p650ss-ice-650w-80-plus-silver-no-modular-atx-31-compatible-p-PER.645583",
+   "price": 48.94,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "650W Silver",
+   "watts": 650,
+   "efficiency": "Silver",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:57074684",
@@ -20444,6 +23029,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.645513",
+   "source": "eshop",
+   "title": "INTER-TECH SL-700 PLUS 700W ATX",
+   "url": "https://www.e-shop.gr/psu-inter-tech-sl-700-plus-700w-atx-p-PER.645513",
+   "price": 36.01,
+   "shopCount": null,
+   "brand": "Inter-Tech",
+   "chip": "700W",
+   "watts": 700,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2159450141",
    "source": "bestprice",
    "title": "Powertech PT-1169 700W",
@@ -20472,6 +23072,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.286216",
+   "source": "eshop",
+   "title": "ARMAGGEDDON OVERCLOCK PRO PSU 700W BLACK OCPRO-700W-B",
+   "url": "https://www.e-shop.gr/armaggeddon-overclock-pro-psu-700w-black-ocpro-700w-b-p-PER.286216",
+   "price": 37.37,
+   "shopCount": null,
+   "brand": "ARMAGGEDDON",
+   "chip": "700W",
+   "watts": 700,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:66145895",
@@ -20639,6 +23254,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.608413",
+   "source": "eshop",
+   "title": "CHIEFTEC EON ZPU-700S 700W",
+   "url": "https://www.e-shop.gr/psu-chieftec-eon-zpu-700s-700w-p-PER.608413",
+   "price": 49.54,
+   "shopCount": null,
+   "brand": "Chieftec",
+   "chip": "700W",
+   "watts": 700,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:11790810",
    "source": "skroutz",
    "title": "Chieftec iArena Full Wired",
@@ -20804,6 +23434,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.643014",
+   "source": "eshop",
+   "title": "CHIEFTEC GPS-700A8 700W BOX",
+   "url": "https://www.e-shop.gr/psu-chieftec-gps-700a8-700w-box-p-PER.643014",
+   "price": 70.66,
+   "shopCount": null,
+   "brand": "Chieftec",
+   "chip": "700W",
+   "watts": 700,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:61020268",
    "source": "skroutz",
    "title": "Chieftec GPA-700S 700W Semi Modular",
@@ -20817,6 +23462,21 @@
    "modular": "Semi",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.819324",
+   "source": "eshop",
+   "title": "THERMALTAKE PS-SPS-0700MNSAWE-1 SMART SE2 700W",
+   "url": "https://www.e-shop.gr/psu-thermaltake-ps-sps-0700mnsawe-1-smart-se2-700w-p-PER.819324",
+   "price": 74.52,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "700W",
+   "watts": 700,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:24444285",
@@ -20862,6 +23522,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.295419",
+   "source": "eshop",
+   "title": "ADATA XPG PROBE 700W 80 PLUS BRONZE BULK BLACK",
+   "url": "https://www.e-shop.gr/psu-adata-xpg-probe-700w-80-plus-bronze-bulk-black-p-PER.295419",
+   "price": 38.9,
+   "shopCount": null,
+   "brand": "Adata",
+   "chip": "700W Bronze",
+   "watts": 700,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:64868962",
@@ -21164,6 +23839,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.608416",
+   "source": "eshop",
+   "title": "ENDORFY VERO L5 BRONZE 700W 80 PLUS BRONZE (EY7A006)",
+   "url": "https://www.e-shop.gr/psu-endorfy-vero-l5-bronze-700w-80-plus-bronze-ey7a006-p-PER.608416",
+   "price": 68.95,
+   "shopCount": null,
+   "brand": "Endorfy",
+   "chip": "700W Bronze",
+   "watts": 700,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:41010721",
    "source": "skroutz",
    "title": "Endorfy 700W Full Wired 80 Plus Bronze (EY7A006)",
@@ -21267,6 +23957,21 @@
    "modular": "Semi",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.608547",
+   "source": "eshop",
+   "title": "THERMALTAKE SMART BM1 700W 80 PLUS BRONZE SEMI MODULAR",
+   "url": "https://www.e-shop.gr/psu-thermaltake-smart-bm1-700w-80-plus-bronze-semi-modular-p-PER.608547",
+   "price": 78.9,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "700W Bronze",
+   "watts": 700,
+   "efficiency": "Bronze",
+   "modular": "Semi",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:29953002",
@@ -21614,6 +24319,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.644168",
+   "source": "eshop",
+   "title": "THERMALTAKE TR2 S 80 PLUS ACTIVE PFC 700W",
+   "url": "https://www.e-shop.gr/psu-thermaltake-tr2-s-80-plus-active-pfc-700w-p-PER.644168",
+   "price": 50.35,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "700W Standard",
+   "watts": 700,
+   "efficiency": "Standard",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2156249098",
    "source": "bestprice",
    "title": "Zalman MegaMax 700W",
@@ -21809,6 +24529,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.644165",
+   "source": "eshop",
+   "title": "THERMALTAKE SMART RGB ACTIVE PFC 80 PLUS 700W",
+   "url": "https://www.e-shop.gr/psu-thermaltake-smart-rgb-active-pfc-80-plus-700w-p-PER.644165",
+   "price": 81.59,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "700W Standard",
+   "watts": 700,
+   "efficiency": "Standard",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:12685474",
    "source": "skroutz",
    "title": "Thermaltake Smart RGB Full Wired 80 Plus Standard",
@@ -21869,6 +24604,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.645564",
+   "source": "eshop",
+   "title": "SEASONIC PRIME FANLESS TX-700 700W 80 PLUS TITANIUM FULL MODULAR ATX 12V",
+   "url": "https://www.e-shop.gr/psu-seasonic-prime-fanless-tx-700-700w-80-plus-titanium-full-modular-atx-12v-p-PER.645564",
+   "price": 243.59,
+   "shopCount": null,
+   "brand": "Seasonic",
+   "chip": "700W Titanium",
+   "watts": 700,
+   "efficiency": "Titanium",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2154348955",
    "source": "bestprice",
    "title": "Inter-Tech Argus APS-720W",
@@ -21882,6 +24632,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645515",
+   "source": "eshop",
+   "title": "INTER-TECH ARGUS APS-720W 720W 82+ ATX",
+   "url": "https://www.e-shop.gr/psu-inter-tech-argus-aps-720w-720w-82-atx-p-PER.645515",
+   "price": 47.06,
+   "shopCount": null,
+   "brand": "Inter-Tech",
+   "chip": "720W",
+   "watts": 720,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:5246465",
@@ -22019,6 +24784,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.229498",
+   "source": "eshop",
+   "title": "ATX INTER-TECH NITROX SL-750W V 2.4",
+   "url": "https://www.e-shop.gr/psu-atx-inter-tech-nitrox-sl-750w-v-24-p-PER.229498",
+   "price": 49.0,
+   "shopCount": null,
+   "brand": "ATX",
+   "chip": "750W",
+   "watts": 750,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:25490144",
    "source": "skroutz",
    "title": "Inter-Tech Nitrox SL-750W rev. 2.4 750W Full Wired",
@@ -22064,6 +24844,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.255634",
+   "source": "eshop",
+   "title": "DEEPCOOL PL750D 750W",
+   "url": "https://www.e-shop.gr/psu-deepcool-pl750d-750w-p-PER.255634",
+   "price": 58.9,
+   "shopCount": null,
+   "brand": "Deepcool",
+   "chip": "750W",
+   "watts": 750,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:31125212",
    "source": "skroutz",
    "title": "Inter-Tech HiPower SP-750CM 750W Semi Modular",
@@ -22079,6 +24874,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.235727",
+   "source": "eshop",
+   "title": "THERMALTAKE LITEPOWER II RGB 750W",
+   "url": "https://www.e-shop.gr/psu-thermaltake-litepower-ii-rgb-750w-p-PER.235727",
+   "price": 60.47,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "750W",
+   "watts": 750,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:63419092",
    "source": "skroutz",
    "title": "PCCOOLER KF750 750W Full Wired",
@@ -22092,6 +24902,36 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.608548",
+   "source": "eshop",
+   "title": "THERMALTAKE SMART BX3 BRONZE 750W",
+   "url": "https://www.e-shop.gr/psu-thermaltake-smart-bx3-bronze-750w-p-PER.608548",
+   "price": 60.97,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "750W",
+   "watts": 750,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.620329",
+   "source": "eshop",
+   "title": "ENERMAX MAXPRO IV 750W BLACK EMP750W",
+   "url": "https://www.e-shop.gr/psu-enermax-maxpro-iv-750w-black-emp750w-p-PER.620329",
+   "price": 61.38,
+   "shopCount": null,
+   "brand": "Enermax",
+   "chip": "750W",
+   "watts": 750,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2163333880",
@@ -22167,6 +25007,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.620318",
+   "source": "eshop",
+   "title": "ENERMAX CYBERBRON III 750W BLACK EMB750EWT-NAC",
+   "url": "https://www.e-shop.gr/psu-enermax-cyberbron-iii-750w-black-emb750ewt-nac-p-PER.620318",
+   "price": 66.3,
+   "shopCount": null,
+   "brand": "Enermax",
+   "chip": "750W",
+   "watts": 750,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:69437243",
@@ -22289,6 +25144,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.255641",
+   "source": "eshop",
+   "title": "DEEPCOOL PN750D 750W",
+   "url": "https://www.e-shop.gr/deepcool-pn750d-750w-p-PER.255641",
+   "price": 99.9,
+   "shopCount": null,
+   "brand": "Deepcool",
+   "chip": "750W",
+   "watts": 750,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:63760174",
    "source": "skroutz",
    "title": "NZXT C750 Gold 750W Full Modular",
@@ -22302,6 +25172,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.608727",
+   "source": "eshop",
+   "title": "BE QUIET PURE POWER 12 750W GOLD, ECEP 1X 12-PIN HIGH POWER GPU, 3X PCIE",
+   "url": "https://www.e-shop.gr/psu-be-quiet-pure-power-12-750w-gold-ecep-1x-12-pin-high-power-gpu-3x-pcie-p-PER.608727",
+   "price": 102.86,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "750W",
+   "watts": 750,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2157260606",
@@ -22349,6 +25234,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.608399",
+   "source": "eshop",
+   "title": "MSI MAG A750GL PCIE5 UNIT 750W 20+4 PIN ATX ATX BLACK 84 MONTHS GUARANTEE",
+   "url": "https://www.e-shop.gr/psu-msi-mag-a750gl-pcie5-unit-750w-20-4-pin-atx-atx-black-84-months-guarantee-p-PER.608399",
+   "price": 110.4,
+   "shopCount": null,
+   "brand": "MSI",
+   "chip": "750W",
+   "watts": 750,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:18341436",
    "source": "skroutz",
    "title": "Chieftec Photon Semi Modular",
@@ -22362,6 +25262,21 @@
    "modular": "Semi",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.820309",
+   "source": "eshop",
+   "title": "ASUS TUF GAMING 750W GOLD",
+   "url": "https://www.e-shop.gr/psu-asus-tuf-gaming-750w-gold-p-PER.820309",
+   "price": 113.5,
+   "shopCount": null,
+   "brand": "Asus",
+   "chip": "750W",
+   "watts": 750,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:64210328",
@@ -22394,6 +25309,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.274366",
+   "source": "eshop",
+   "title": "FRACTAL DESIGN ION GOLD 3 750W PC-PSU BLACK 750 WATT",
+   "url": "https://www.e-shop.gr/fractaldesign-ion-gold-3-750w-pc-psu-black-750-watt-p-PER.274366",
+   "price": 139.0,
+   "shopCount": null,
+   "brand": "Fractal Design",
+   "chip": "750W",
+   "watts": 750,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2159905491",
    "source": "bestprice",
    "title": "Sharkoon Rebel P20 750W",
@@ -22407,6 +25337,66 @@
    "modular": null,
    "formFactor": "SFX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.222779",
+   "source": "eshop",
+   "title": "BE QUIET PSU STRAIGHT POWER 12 PLATINUM 750W, MODULAR, 135MM FAN, 10YW",
+   "url": "https://www.e-shop.gr/be-quiet-psu-straight-power-12-platinum-750w-modular-135mm-fan-10yw-p-PER.222779",
+   "price": 144.98,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "750W",
+   "watts": 750,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.608562",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GRAND PF3 750W PLA GEN5",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-grand-pf3-750w-pla-gen5-p-PER.608562",
+   "price": 148.8,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "750W",
+   "watts": 750,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.820374",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER PS-STP-0750FNFAGE-1 SFX 750W EU",
+   "url": "https://www.e-shop.gr/psu-thermaltaketoughpower-ps-stp-0750fnfage-1-sfx-750weu-p-PER.820374",
+   "price": 149.9,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "750W",
+   "watts": 750,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.608406",
+   "source": "eshop",
+   "title": "ASUS ROG LOKI SFX-L 750W PLATINUM RGB 20+4 PIN ATX BLACK SILVER",
+   "url": "https://www.e-shop.gr/psu-asus-rog-loki-sfx-l-750w-platinum-rgb-20-4-pin-atx-black-silver-p-PER.608406",
+   "price": 183.67,
+   "shopCount": null,
+   "brand": "Asus",
+   "chip": "750W",
+   "watts": 750,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:67602016",
@@ -22452,6 +25442,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.295418",
+   "source": "eshop",
+   "title": "ADATA XPG PYLON II 750W 80 PLUS BRONZE BLACK",
+   "url": "https://www.e-shop.gr/psu-adata-xpg-pylon-ii-750w-80-plus-bronze-black-p-PER.295418",
+   "price": 42.9,
+   "shopCount": null,
+   "brand": "Adata",
+   "chip": "750W Bronze",
+   "watts": 750,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:63760099",
@@ -22529,6 +25534,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.274147",
+   "source": "eshop",
+   "title": "ASROCK PRO-750B 750W 12CM 80 PLUS BRONZE BLACK",
+   "url": "https://www.e-shop.gr/psu-asrock-pro-750b-750w-12cm-80-plus-bronze-black-p-PER.274147",
+   "price": 47.9,
+   "shopCount": null,
+   "brand": "ASRock",
+   "chip": "750W Bronze",
+   "watts": 750,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2156084483",
    "source": "bestprice",
    "title": "Aerocool Aero 750W",
@@ -22587,6 +25607,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645678",
+   "source": "eshop",
+   "title": "COOLER MASTER MWE BRONZE 750 V3 750W 80 PLUS BRONZE 230V ATX 3.1",
+   "url": "https://www.e-shop.gr/psu-cooler-master-mwe-bronze-750-v3-750w-80-plus-bronze-230v-atx-31-p-PER.645678",
+   "price": 51.14,
+   "shopCount": null,
+   "brand": "Cooler Master",
+   "chip": "750W Bronze",
+   "watts": 750,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:24609925",
@@ -22769,6 +25804,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.607591",
+   "source": "eshop",
+   "title": "THERMALTAKE SMART BM3 750W 80 PLUS BRONZE",
+   "url": "https://www.e-shop.gr/psu-thermaltake-smart-bm3-750w-80-plus-bronze-p-PER.607591",
+   "price": 56.45,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "750W Bronze",
+   "watts": 750,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2160191595",
    "source": "bestprice",
    "title": "Cooler Master MWE Bronze 750 V3 750W",
@@ -22799,6 +25849,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.619711",
+   "source": "eshop",
+   "title": "AEROCOOL MARS GAMING MPB750SI 80+ BRONZE 750W BLACK",
+   "url": "https://www.e-shop.gr/psu-aerocool-mars-gaming-mpb750si-80-bronze-750w-black-p-PER.619711",
+   "price": 56.86,
+   "shopCount": null,
+   "brand": "Aerocool",
+   "chip": "750W Bronze",
+   "watts": 750,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:67603105",
    "source": "skroutz",
    "title": "GameMax Max P750B 750W Full Wired 80 Plus Bronze",
@@ -22827,6 +25892,51 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645613",
+   "source": "eshop",
+   "title": "ASUS PRIME 750W 80 PLUS BRONZE NO MODULAR",
+   "url": "https://www.e-shop.gr/psu-asus-prime-750w-80-plus-bronze-no-modular-p-PER.645613",
+   "price": 58.0,
+   "shopCount": null,
+   "brand": "Asus",
+   "chip": "750W Bronze",
+   "watts": 750,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.261178",
+   "source": "eshop",
+   "title": "GIGABYTE P750BS 750W 80 PLUS BRONZE 120MM FAN",
+   "url": "https://www.e-shop.gr/psu-gigabyte-p750bs-750w-80-plus-bronze-120mm-fan-p-PER.261178",
+   "price": 58.5,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "750W Bronze",
+   "watts": 750,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.267351",
+   "source": "eshop",
+   "title": "THERMALTAKE L SMART BX1 750W 80 PLUS BRONZE",
+   "url": "https://www.e-shop.gr/psu-thermaltake-l-smart-bx1-750w-80-plus-bronze-p-PER.267351",
+   "price": 58.51,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "750W Bronze",
+   "watts": 750,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2160570338",
@@ -22902,6 +26012,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.274767",
+   "source": "eshop",
+   "title": "LIAN LI RB0750 - 750W 80+ BRONZE PSU - PCIE GEN 5.1 12+4PIN - INTEL ATX 3.1 - 135MM LOW-NOISE FAN",
+   "url": "https://www.e-shop.gr/lian-li-rb0750-750w-80-bronze-psu-pcie-gen-51-12-4pin-intel-atx-31-135mmlow-noisefan-p-PER.274767",
+   "price": 60.4,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "750W Bronze",
+   "watts": 750,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:69428678",
@@ -23264,6 +26389,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.645640",
+   "source": "eshop",
+   "title": "FSP VITA BD 750W 80 PLUS BRONZE NO MODULAR ATX 3.1 BULK",
+   "url": "https://www.e-shop.gr/psu-fsp-vita-bd-750w-80-plus-bronze-no-modular-atx-31-bulk-p-PER.645640",
+   "price": 69.2,
+   "shopCount": null,
+   "brand": "FSP",
+   "chip": "750W Bronze",
+   "watts": 750,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2163312288",
    "source": "bestprice",
    "title": "Endorfy Vero L6 750W",
@@ -23294,6 +26434,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.645598",
+   "source": "eshop",
+   "title": "FSP VITA BD 750W 80 PLUS BRONZE NO MODULAR ATX 3.1",
+   "url": "https://www.e-shop.gr/psu-fsp-vita-bd-750w-80-plus-bronze-no-modular-atx-31-p-PER.645598",
+   "price": 69.65,
+   "shopCount": null,
+   "brand": "FSP",
+   "chip": "750W Bronze",
+   "watts": 750,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:62475565",
    "source": "skroutz",
    "title": "Xigmatek Thor T750 V3 rev. 2.0 750W Semi Modular 80 Plus Bronze",
@@ -23307,6 +26462,21 @@
    "modular": "Semi",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.547440",
+   "source": "eshop",
+   "title": "CORSAIR CP-9020279-EU CX750 750W 80 PLUS BRONZE",
+   "url": "https://www.e-shop.gr/psu-corsair-cp-9020279-eu-cx750-750w-80-plus-bronze-p-PER.547440",
+   "price": 69.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "750W Bronze",
+   "watts": 750,
+   "efficiency": "Bronze",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2163712270",
@@ -24314,6 +27484,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.547949",
+   "source": "eshop",
+   "title": "ADATA XPG CORE REACTOR II VE 750W 80 PLUS GOLD",
+   "url": "https://www.e-shop.gr/psu-adata-xpg-core-reactor-ii-ve-750w-80-plus-gold-p-PER.547949",
+   "price": 72.9,
+   "shopCount": null,
+   "brand": "Adata",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2160505882",
    "source": "bestprice",
    "title": "Chieftec Vega M 750W",
@@ -24327,6 +27512,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.619659",
+   "source": "eshop",
+   "title": "ENERMAX CYBERG II 750W 80 PLUS GOLD BLACK ERV750G-AHG-NAC",
+   "url": "https://www.e-shop.gr/psu-enermax-cyberg-ii-750w-80-plus-gold-black-erv750g-ahg-nac-p-PER.619659",
+   "price": 73.33,
+   "shopCount": null,
+   "brand": "Enermax",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2156256173",
@@ -24659,6 +27859,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.942048",
+   "source": "eshop",
+   "title": "GIGABYTE P750WGM 750W 80 PLUS GOLD FULL MODULAR",
+   "url": "https://www.e-shop.gr/psu-gigabyte-p750wgm-750w-80-plus-gold-full-modular-p-PER.942048",
+   "price": 80.75,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2162568411",
    "source": "bestprice",
    "title": "Gigabyte UD750GM PG5 V2 750W",
@@ -24779,6 +27994,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.269417",
+   "source": "eshop",
+   "title": "WHITE SHARK 750W GENERAL-2 GPSU-750W 80PLUS GOLD FULL MODULAR GENERAL-2",
+   "url": "https://www.e-shop.gr/psu-white-shark-750w-general-2-gpsu-750w-80plus-gold-full-modular-general-2-p-PER.269417",
+   "price": 81.9,
+   "shopCount": null,
+   "brand": "White Shark",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2160891080",
    "source": "bestprice",
    "title": "Gembird Fornax Power 750W",
@@ -24882,6 +28112,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.286157",
+   "source": "eshop",
+   "title": "GIGABYTE UD750GM PG5 V2 750W 80 PLUS GOLD FULL MODULAR PCIE 5.1 READY",
+   "url": "https://www.e-shop.gr/psu-gigabyte-ud750gm-pg5-v2-750w-80-plus-gold-full-modular-pcie-51-ready-p-PER.286157",
+   "price": 83.8,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:62398022",
@@ -25049,6 +28294,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.275751",
+   "source": "eshop",
+   "title": "DEEPCOOL PN750M BLACK 750W 80 PLUS GOLD 12CM FAN BLACK",
+   "url": "https://www.e-shop.gr/psu-deepcool-pn750m-black-750w-80-plus-gold-12cm-fan-black-p-PER.275751",
+   "price": 86.16,
+   "shopCount": null,
+   "brand": "Deepcool",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2160665888",
    "source": "bestprice",
    "title": "Darkflash PMT 750W",
@@ -25109,6 +28369,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.284310",
+   "source": "eshop",
+   "title": "DARKFLASH PMT 80 PLUS GOLD COMPUTER POWER SUPPLY 750W",
+   "url": "https://www.e-shop.gr/darkflash-pmt-80-plus-gold-computer-power-supply-750w-p-PER.284310",
+   "price": 87.33,
+   "shopCount": null,
+   "brand": "DARKFLASH",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2163498862",
    "source": "bestprice",
    "title": "NZXT C750 2025 750W",
@@ -25152,6 +28427,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.820372",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GT 750W 80 PLUS GOLD FULL MODULAR ATX 3.1",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-gt-750w-80-plus-gold-full-modular-atx-31-p-PER.820372",
+   "price": 88.04,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2159568123",
@@ -25469,6 +28759,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.620350",
+   "source": "eshop",
+   "title": "ENDORFY SUPREMO FM6 750W 80+ GOLD (EY7A013)",
+   "url": "https://www.e-shop.gr/psu-endorfy-supremo-fm6-750w-80-gold-ey7a013-p-PER.620350",
+   "price": 94.0,
+   "shopCount": null,
+   "brand": "Endorfy",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:66042696",
    "source": "skroutz",
    "title": "GameMax 750W Full Modular 80 Plus Gold (SAGMRGBPRO750ATX3)",
@@ -25497,6 +28802,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645749",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GT 750W 80 PLUS GOLD FULL MODULAR",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-gt-750w-80-plus-gold-full-modular-p-PER.645749",
+   "price": 94.59,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:47841904",
@@ -25602,6 +28922,21 @@
    "modular": "Non",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.645589",
+   "source": "eshop",
+   "title": "SEASONIC CORE GX WHITE ATX 3 (2024) 750W 80 PLUS GOLD FULL MODULAR ATX 3.1 AND PCIE 5.1",
+   "url": "https://www.e-shop.gr/psu-seasonic-core-gx-white-atx-3-2024-750w-80-plus-gold-full-modular-atx-31-and-pcie-51-p-PER.645589",
+   "price": 95.9,
+   "shopCount": null,
+   "brand": "Seasonic",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2164217974",
@@ -25754,6 +29089,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.818065",
+   "source": "eshop",
+   "title": "THERMALTAKE TPG-0750F-R TOUGHPOWER GRAND RGB 750W FULL MODULAR 80 PLUS GOLD",
+   "url": "https://www.e-shop.gr/psu-thermaltake-tpg-0750f-r-toughpower-grand-rgb-750w-full-modular-80-plus-gold-p-PER.818065",
+   "price": 97.66,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:66558201",
    "source": "skroutz",
    "title": "GameMax RGB 750G 750W Full Modular 80 Plus Gold",
@@ -25799,6 +29149,36 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.645553",
+   "source": "eshop",
+   "title": "FSP VITA GM 750W 80 PLUS GOLD FULL MODULAR ATX3.1 PCIE5.1",
+   "url": "https://www.e-shop.gr/psu-fsp-vita-gm-750w-80-plus-gold-full-modular-atx31-pcie51-p-PER.645553",
+   "price": 98.76,
+   "shopCount": null,
+   "brand": "FSP",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.645561",
+   "source": "eshop",
+   "title": "SEASONIC CORE GX ATX 3 (2024) 750W 80 PLUS GOLD FULL MODULAR ATX 3.1 & PCIE 5.1",
+   "url": "https://www.e-shop.gr/psu-seasonic-core-gx-atx-3-2024-750w-80-plus-gold-full-modular-atx-31-pcie-51-p-PER.645561",
+   "price": 98.84,
+   "shopCount": null,
+   "brand": "Seasonic",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:55628252",
    "source": "skroutz",
    "title": "Phanteks 750W Full Modular 80 Plus Gold (PH-P750GH_BK01_EU)",
@@ -25842,6 +29222,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.267485",
+   "source": "eshop",
+   "title": "LIAN LI EDGE 750W BLACK 80+ GOLD, FULLY MODULAR ATX",
+   "url": "https://www.e-shop.gr/psu-lian-li-edge-750w-black-80-gold-fully-modular-atx-p-PER.267485",
+   "price": 99.9,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:55628303",
@@ -25932,6 +29327,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.273126",
+   "source": "eshop",
+   "title": "LIAN LI SP750 V2 GOLD WHITE - 750W SFX PSU - 12V-2X6 - LOW NOISE - 80 PLUS GOLD - ATX 3.1 - PCIE 5",
+   "url": "https://www.e-shop.gr/lian-li-sp750-v2-gold-white-750w-sfx-psu-12v-2x6-low-noise-80-plus-gold-atx-31-pcie-5-p-PER.273126",
+   "price": 101.53,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2162784992",
@@ -26084,6 +29494,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.645767",
+   "source": "eshop",
+   "title": "BE QUIET PURE POWER 13 M 750W 80 PLUS GOLD FULL MODULAR",
+   "url": "https://www.e-shop.gr/psu-be-quiet-pure-power-13-m-750w-80-plus-gold-full-modular-p-PER.645767",
+   "price": 107.23,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:60798262",
    "source": "skroutz",
    "title": "Seasonic CORE GX Full Modular 80 Plus Gold",
@@ -26112,6 +29537,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645134",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GRAND RGB SYNC 750W FULL MODULAR 80 PLUS GOLD",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-grand-rgb-sync-750w-full-modular-80-plus-gold-p-PER.645134",
+   "price": 109.9,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2160309730",
@@ -26219,6 +29659,36 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.273125",
+   "source": "eshop",
+   "title": "LIAN LI SP750 V2 GOLD BLACK - 750W SFX PSU - 12V-2X6 - LOW NOISE - 80 PLUS GOLD - ATX 3.1 - PCIE 5",
+   "url": "https://www.e-shop.gr/lian-li-sp750-v2-gold-black-750w-sfx-psu-12v-2x6-low-noise-80-plus-gold-atx-31-pcie-5-p-PER.273125",
+   "price": 112.9,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.287906",
+   "source": "eshop",
+   "title": "CORSAIR RM750X SHIFT 750W CYBENETICS GOLD ATX 3.1 PCIE 5.1",
+   "url": "https://www.e-shop.gr/psu-corsair-rm750x-shift-750w-cybenetics-gold-atx-31-pcie-51-p-PER.287906",
+   "price": 112.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2155605809",
    "source": "bestprice",
    "title": "Chieftec Photon Gold 750W",
@@ -26277,6 +29747,66 @@
    "modular": "Full",
    "formFactor": "SFX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.645533",
+   "source": "eshop",
+   "title": "SEASONIC FOCUS GX-750 V4 750W 80 PLUS GOLD FULL MODULAR ATX 3.1 BLACK (2024)",
+   "url": "https://www.e-shop.gr/psu-seasonic-focus-gx-750-v4-750w-80-plus-gold-full-modular-atx-31-black-2024-p-PER.645533",
+   "price": 114.88,
+   "shopCount": null,
+   "brand": "Seasonic",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.547669",
+   "source": "eshop",
+   "title": "CORSAIR RM750E 750W FULLY MODULAR CYBENETICS GOLD ATX 3.1 CERTIFIED CP-9020295-EU",
+   "url": "https://www.e-shop.gr/psu-corsair-rm750e-750w-fully-modular-cybenetics-gold-atx-31-certified-cp-9020295-eu-p-PER.547669",
+   "price": 114.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.257494",
+   "source": "eshop",
+   "title": "MSI MAG A750GL PCIE5 II 750 W 80PLUS GOLD FULL MODULAR BLACK",
+   "url": "https://www.e-shop.gr/psu-msi-mag-a750gl-pcie5-ii-750-w-80plus-gold-full-modular-black-p-PER.257494",
+   "price": 115.9,
+   "shopCount": null,
+   "brand": "MSI",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.547685",
+   "source": "eshop",
+   "title": "CORSAIR RM750E 750W FULLY MODULAR CYBENETICS GOLD WHITE ATX 3.1 CERTIFIED CP-9020292-EU",
+   "url": "https://www.e-shop.gr/psu-corsair-rm750e-750w-fully-modular-cybenetics-gold-white-atx-31-certified-cp-9020292-eu-p-PER.547685",
+   "price": 115.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2155862129",
@@ -26352,6 +29882,21 @@
    "modular": "Semi",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.645573",
+   "source": "eshop",
+   "title": "SEASONIC FOCUS GX-750 750W 80 PLUS GOLD FULL MODULAR ATX 3.1/PCIE 5.1 WHITE (2024)",
+   "url": "https://www.e-shop.gr/psu-seasonic-focus-gx-750-750w-80-plus-gold-full-modular-atx-31-pcie-51-white-2024-p-PER.645573",
+   "price": 119.9,
+   "shopCount": null,
+   "brand": "Seasonic",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:66192952",
@@ -26654,6 +30199,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.547601",
+   "source": "eshop",
+   "title": "CORSAIR RM750X 750W FULLY MODULAR CYBENETICS GOLD CERTIFIED CP-9020285-EU",
+   "url": "https://www.e-shop.gr/psu-corsair-rm750x-750w-fully-modular-cybenetics-gold-certified-cp-9020285-eu-p-PER.547601",
+   "price": 132.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:64598912",
    "source": "skroutz",
    "title": "Fractal Design Ion 3 Gold Full Modular 80 Plus Gold",
@@ -26697,6 +30257,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.547578",
+   "source": "eshop",
+   "title": "CORSAIR CP-9020273-EU RM750X SHIFT 750W 80 PLUS GOLD FULLY MODULAR ATX WHITE",
+   "url": "https://www.e-shop.gr/psu-corsair-cp-9020273-eu-rm750x-shift-750w-80-plus-gold-fully-modular-atx-white-p-PER.547578",
+   "price": 136.42,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "750W Gold",
+   "watts": 750,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:63014044",
@@ -27464,6 +31039,36 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.260250",
+   "source": "eshop",
+   "title": "BE QUIET POWER ZONE 2 750W BP006 FULL MODULAR 80 PLUS PLATINUM",
+   "url": "https://www.e-shop.gr/psu-be-quiet-power-zone-2-750w-bp006-full-modular-80-plus-platinum-p-PER.260250",
+   "price": 124.1,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "750W Platinum",
+   "watts": 750,
+   "efficiency": "Platinum",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.651247",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER PF1 750W 80 PLUS PLATINUM",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-pf1-750w-80-plus-platinum-p-PER.651247",
+   "price": 131.98,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "750W Platinum",
+   "watts": 750,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2158825170",
    "source": "bestprice",
    "title": "Be Quiet Straight Power 12 750W",
@@ -28034,6 +31639,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.619706",
+   "source": "eshop",
+   "title": "AEROCOOL PGS VX PLUS 800W BLACK",
+   "url": "https://www.e-shop.gr/psu-aerocool-pgs-vx-plus-800w-black-p-PER.619706",
+   "price": 62.92,
+   "shopCount": null,
+   "brand": "Aerocool",
+   "chip": "800W",
+   "watts": 800,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2154426805",
    "source": "bestprice",
    "title": "Approx APP800PS 800W",
@@ -28047,6 +31667,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.255637",
+   "source": "eshop",
+   "title": "DEEPCOOL PL800D 800W",
+   "url": "https://www.e-shop.gr/deepcool-pl800d-800w-p-PER.255637",
+   "price": 76.94,
+   "shopCount": null,
+   "brand": "Deepcool",
+   "chip": "800W",
+   "watts": 800,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:64210371",
@@ -28349,6 +31984,36 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.259735",
+   "source": "eshop",
+   "title": "ARMAGGEDDON PSU VOLTRON GOLD 80+ RATING 800W VG800",
+   "url": "https://www.e-shop.gr/armaggeddon-psu-voltron-gold-80-rating-800w-vg800-p-PER.259735",
+   "price": 119.28,
+   "shopCount": null,
+   "brand": "ARMAGGEDDON",
+   "chip": "800W Standard",
+   "watts": 800,
+   "efficiency": "Standard",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.608549",
+   "source": "eshop",
+   "title": "THERMALTAKE SMART BM3 BRONZE 850W - TT PREMIUM EDITION",
+   "url": "https://www.e-shop.gr/psu-thermaltake-smart-bm3-bronze-850w-tt-premium-edition-p-PER.608549",
+   "price": 60.2,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "850W",
+   "watts": 850,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:64892924",
    "source": "skroutz",
    "title": "Darkflash 850W Full Wired",
@@ -28469,6 +32134,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.608726",
+   "source": "eshop",
+   "title": "BE QUIET PURE POWER 12 850W GOLD, ECEP 1X 12-PIN HIGH POWER GPU, 3X PCIE",
+   "url": "https://www.e-shop.gr/psu-be-quiet-pure-power-12-850w-gold-ecep-1x-12-pin-high-power-gpu-3x-pcie-p-PER.608726",
+   "price": 101.15,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "850W",
+   "watts": 850,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:67048542",
    "source": "skroutz",
    "title": "APNX DELUXE G1 850 850W",
@@ -28482,6 +32162,36 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.286150",
+   "source": "eshop",
+   "title": "FSP GROUP POWER SUPPLY FSP VITA GM 850W WHITE",
+   "url": "https://www.e-shop.gr/fsp-group-power-supply-fsp-vita-gm-850w-white-p-PER.286150",
+   "price": 106.24,
+   "shopCount": null,
+   "brand": "FSP",
+   "chip": "850W",
+   "watts": 850,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.607582",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GF A3 GOLD 850W PREMIUM EDITION",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-gf-a3-gold-850w-premium-edition-p-PER.607582",
+   "price": 107.11,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "850W",
+   "watts": 850,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:64563327",
@@ -28559,6 +32269,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.608400",
+   "source": "eshop",
+   "title": "MSI MAG A850GL PCIE5 UNIT 850W 20+4 PIN ATX ATX BLACK",
+   "url": "https://www.e-shop.gr/psu-msi-mag-a850gl-pcie5-unit-850w-20-4-pin-atx-atx-black-p-PER.608400",
+   "price": 116.5,
+   "shopCount": null,
+   "brand": "MSI",
+   "chip": "850W",
+   "watts": 850,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2159584223",
    "source": "bestprice",
    "title": "Xilence Performance X 850W",
@@ -28634,6 +32359,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.608565",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GF A3 850W GOLD SNOW",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-gf-a3-850w-gold-snow-p-PER.608565",
+   "price": 125.9,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "850W",
+   "watts": 850,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:63929281",
    "source": "skroutz",
    "title": "Antec GSK850 rev. 2.0 850W Full Modular",
@@ -28647,6 +32387,36 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.608401",
+   "source": "eshop",
+   "title": "MSI MAG A850GL PCIE5 WHITE UNIT 850W 20+4 PIN ATX ATX 84 MONTHS GUARANTEE",
+   "url": "https://www.e-shop.gr/psu-msi-mag-a850gl-pcie5-white-unit-850w-20-4-pin-atx-atx-84-months-guarantee-p-PER.608401",
+   "price": 129.6,
+   "shopCount": null,
+   "brand": "MSI",
+   "chip": "850W",
+   "watts": 850,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.261111",
+   "source": "eshop",
+   "title": "GIGABYTE AORUS ELITE AE850PM 850W PLATINUM WHITE",
+   "url": "https://www.e-shop.gr/psu-gigabyte-aorus-elite-ae850pm-850w-platinum-white-p-PER.261111",
+   "price": 133.52,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "850W",
+   "watts": 850,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2160251315",
@@ -28679,6 +32449,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.274367",
+   "source": "eshop",
+   "title": "FRACTAL DESIGN ION GOLD 3 850W PC-PSU BLACK 850 WATT",
+   "url": "https://www.e-shop.gr/fractaldesign-ion-gold-3-850w-pc-psu-black-850-watt-p-PER.274367",
+   "price": 149.0,
+   "shopCount": null,
+   "brand": "Fractal Design",
+   "chip": "850W",
+   "watts": 850,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2159905492",
    "source": "bestprice",
    "title": "Sharkoon Rebel P20 850W",
@@ -28707,6 +32492,66 @@
    "modular": "Full",
    "formFactor": "SFX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.608557",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER SFX 850W",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-sfx-850w-p-PER.608557",
+   "price": 201.16,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "850W",
+   "watts": 850,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.547604",
+   "source": "eshop",
+   "title": "CORSAIR SF850 850W FULLY MODULAR CYBERNETICS PLATINUM CERTIFIED SFX CP-9020256-EU",
+   "url": "https://www.e-shop.gr/psu-corsair-sf850-850w-fully-modular-cybernetics-platinum-certified-sfx-cp-9020256-eu-p-PER.547604",
+   "price": 213.4,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "850W",
+   "watts": 850,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.608407",
+   "source": "eshop",
+   "title": "ASUS ROG LOKI SFX-L 850W PLATINUM RGB 24-PIN ATX BLACK SILVER",
+   "url": "https://www.e-shop.gr/psu-asus-rog-loki-sfx-l-850w-platinum-rgb-24-pin-atx-black-silver-p-PER.608407",
+   "price": 229.97,
+   "shopCount": null,
+   "brand": "Asus",
+   "chip": "850W",
+   "watts": 850,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.245333",
+   "source": "eshop",
+   "title": "ASUS ROG LOKI SFX-L 850W PLATINUM WHITE 24-PIN ATX",
+   "url": "https://www.e-shop.gr/psu-asus-rog-loki-sfx-l-850w-platinum-white-24-pin-atx-p-PER.245333",
+   "price": 254.9,
+   "shopCount": null,
+   "brand": "Asus",
+   "chip": "850W",
+   "watts": 850,
+   "efficiency": null,
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:40657250",
@@ -29594,6 +33439,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.295420",
+   "source": "eshop",
+   "title": "ADATA XPG CORE REACTOR II VE 850W 80 PLUS GOLD BLACK",
+   "url": "https://www.e-shop.gr/psu-adata-xpg-core-reactor-ii-ve-850w-80-plus-gold-black-p-PER.295420",
+   "price": 74.9,
+   "shopCount": null,
+   "brand": "Adata",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:64353877",
    "source": "skroutz",
    "title": "Chieftec VEGA M Full Modular 80 Plus Gold",
@@ -29684,6 +33544,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.619660",
+   "source": "eshop",
+   "title": "ENERMAX CYBERG II 850W 80 PLUS GOLD BLACK ERV850G-AHG-NAC",
+   "url": "https://www.e-shop.gr/psu-enermax-cyberg-ii-850w-80-plus-gold-black-erv850g-ahg-nac-p-PER.619660",
+   "price": 80.95,
+   "shopCount": null,
+   "brand": "Enermax",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2156347073",
    "source": "bestprice",
    "title": "Gigabyte P850GM 850W",
@@ -29697,6 +33572,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.619691",
+   "source": "eshop",
+   "title": "ENERMAX REVOLUTION III 850W 80 PLUS GOLD FULL MODULAR BLACK ERV850G-AHG-MAC",
+   "url": "https://www.e-shop.gr/psu-enermax-revolution-iii-850w-80-plus-gold-full-modular-black-erv850g-ahg-mac-p-PER.619691",
+   "price": 81.9,
+   "shopCount": null,
+   "brand": "Enermax",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:64780593",
@@ -29772,6 +33662,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.645709",
+   "source": "eshop",
+   "title": "COOLER MASTER ELITE GOLD 850W 80 PLUS GOLD FULL MODULAR PCIE 5.1 ATX 3.1",
+   "url": "https://www.e-shop.gr/psu-cooler-master-elite-gold-850w-80-plus-gold-full-modular-pcie-51-atx-31-p-PER.645709",
+   "price": 85.19,
+   "shopCount": null,
+   "brand": "Cooler Master",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:25755671",
@@ -29997,6 +33902,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.587113",
+   "source": "eshop",
+   "title": "GIGABYTE GP-P850GM 850W 80 PLUS GOLD FULL MODULAR ATX",
+   "url": "https://www.e-shop.gr/psu-gigabyte-gp-p850gm-850w-80-plus-gold-full-modular-atx-p-PER.587113",
+   "price": 90.35,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:68826645",
@@ -30254,6 +34174,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.820373",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GT 850W 80 PLUS GOLD FULL MODULAR ATX 3.1",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-gt-850w-80-plus-gold-full-modular-atx-31-p-PER.820373",
+   "price": 94.9,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:57376282",
    "source": "skroutz",
    "title": "Adata XPG Core Reactor II VE 850W Full Modular 80 Plus Gold",
@@ -30464,6 +34399,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.284309",
+   "source": "eshop",
+   "title": "DARKFLASH PMT 80 PLUS GOLD COMPUTER POWER SUPPLY 850W",
+   "url": "https://www.e-shop.gr/darkflash-pmt-80-plus-gold-computer-power-supply-850w-p-PER.284309",
+   "price": 99.75,
+   "shopCount": null,
+   "brand": "DARKFLASH",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2159161431",
    "source": "bestprice",
    "title": "Thermaltake Toughpower GF A3 Snow 850W",
@@ -30537,6 +34487,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.261113",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER GT 850W 80 PLUS GOLD FULLY MODULAR WHITE",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-gt-850w-80-plus-gold-fully-modular-white-p-PER.261113",
+   "price": 101.37,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:58746668",
@@ -30689,6 +34654,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.286168",
+   "source": "eshop",
+   "title": "NZXT PA-8G3BB-EU C850 CORE 850W 80 PLUS GOLD FULL MODULAR ATX 3.1 PCIE 5.1 - FULLY MODULAR",
+   "url": "https://www.e-shop.gr/psu-nzxt-pa-8g3bb-eu-c850-core-850w-80-plus-gold-full-modular-atx-31-pcie-51-fully-modular-p-PER.286168",
+   "price": 104.89,
+   "shopCount": null,
+   "brand": "NZXT",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:68826721",
    "source": "skroutz",
    "title": "PCCOOLER P3-KN7850-G1F 850W Full Modular 80 Plus Gold",
@@ -30747,6 +34727,36 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.271464",
+   "source": "eshop",
+   "title": "LIAN LI EDGE 850W BLACK 80 PLUS GOLD, FULLY MODULAR ATX PSU",
+   "url": "https://www.e-shop.gr/psu-lian-li-edge-850w-black-80-plus-gold-fully-modular-atx-psu-p-PER.271464",
+   "price": 105.9,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.547945",
+   "source": "eshop",
+   "title": "ADATA XPG PYMCORE 850W 80 PLUS GOLD SFX",
+   "url": "https://www.e-shop.gr/psu-adata-xpg-pymcore-850w-80-plus-gold-sfx-p-PER.547945",
+   "price": 105.9,
+   "shopCount": null,
+   "brand": "Adata",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2160459403",
@@ -30989,6 +34999,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.269416",
+   "source": "eshop",
+   "title": "WHITE SHARK 850W ADMIRAL GPSU-850W 80PLUS GOLD FULL MODULAR ADMIRAL",
+   "url": "https://www.e-shop.gr/psu-white-shark-850w-admiral-gpsu-850w-80plus-gold-full-modular-admiral-p-PER.269416",
+   "price": 108.3,
+   "shopCount": null,
+   "brand": "White Shark",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:55628279",
    "source": "skroutz",
    "title": "Phanteks 850W Full Modular 80 Plus Gold (PH-P850GH_BK01_EU)",
@@ -31004,6 +35029,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.547686",
+   "source": "eshop",
+   "title": "CORSAIR RM850E 850W FULLY MODULAR CYBENETICS GOLD WHITE ATX 3.1 CERTIFIED CP-9020293-EU",
+   "url": "https://www.e-shop.gr/psu-corsair-rm850e-850w-fully-modular-cybenetics-gold-white-atx-31-certified-cp-9020293-eu-p-PER.547686",
+   "price": 108.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2159537963",
    "source": "bestprice",
    "title": "Enermax Revolution D.F.12 White 850W",
@@ -31017,6 +35057,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.620351",
+   "source": "eshop",
+   "title": "ENDORFY SUPREMO FM6 850W 80+ GOLD (EY7A012)",
+   "url": "https://www.e-shop.gr/psu-endorfy-supremo-fm6-850w-80-gold-ey7a012-p-PER.620351",
+   "price": 109.0,
+   "shopCount": null,
+   "brand": "Endorfy",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:39091350",
@@ -31124,6 +35179,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.547670",
+   "source": "eshop",
+   "title": "CORSAIR RM850E 850W FULLY MODULAR CYBENETICS GOLD ATX 3.1 CERTIFIED CP-9020296-EU",
+   "url": "https://www.e-shop.gr/psu-corsair-rm850e-850w-fully-modular-cybenetics-gold-atx-31-certified-cp-9020296-eu-p-PER.547670",
+   "price": 109.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2164270639",
    "source": "bestprice",
    "title": "Asrock Pro-M850G 850W",
@@ -31184,6 +35254,36 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.286152",
+   "source": "eshop",
+   "title": "GIGABYTE 850GM PG5 V2 POWER SUPPLY P 850W 80+ GOLD MODULAR PCIE 5.1 READY",
+   "url": "https://www.e-shop.gr/gigabyte-850gm-pg5-v2-power-supply-p850w-80-gold-modular-pcie-51-ready-p-PER.286152",
+   "price": 112.16,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.645601",
+   "source": "eshop",
+   "title": "FSP VITA GM 850W 80 PLUS GOLD FULL MODULAR ATX3.1 PCIE5.1",
+   "url": "https://www.e-shop.gr/psu-fsp-vita-gm-850w-80-plus-gold-full-modular-atx31-pcie51-p-PER.645601",
+   "price": 112.55,
+   "shopCount": null,
+   "brand": "FSP",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:40811071",
    "source": "skroutz",
    "title": "Gigabyte UD1300GM PG5 Full Modular 80 Plus Gold",
@@ -31197,6 +35297,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.645562",
+   "source": "eshop",
+   "title": "SEASONIC CORE GX ATX 3 (2024) 850W 80 PLUS GOLD FULL MODULAR ATX 3.1 & PCIE 5.1",
+   "url": "https://www.e-shop.gr/psu-seasonic-core-gx-atx-3-2024-850w-80-plus-gold-full-modular-atx-31-pcie-51-p-PER.645562",
+   "price": 112.8,
+   "shopCount": null,
+   "brand": "Seasonic",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2163454911",
@@ -31227,6 +35342,36 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.260306",
+   "source": "eshop",
+   "title": "ASUS PRIME AP-850G 850W FULL MODULAR 80 PLUS GOLD WHITE",
+   "url": "https://www.e-shop.gr/psu-asus-prime-ap-850g-850w-full-modular-80-plus-gold-white-p-PER.260306",
+   "price": 112.94,
+   "shopCount": null,
+   "brand": "Asus",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.261182",
+   "source": "eshop",
+   "title": "MSI MAG A850GL 850W II 80+ GOLD",
+   "url": "https://www.e-shop.gr/psu-msi-mag-a850gl-850w-ii-80-gold-p-PER.261182",
+   "price": 113.78,
+   "shopCount": null,
+   "brand": "MSI",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2160251611",
@@ -31634,6 +35779,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.608411",
+   "source": "eshop",
+   "title": "ASUS TUF GAMING 850W GOLD UNIT 24-PIN ATX 80 PLUS GOLD FULL MODULAR BLACK",
+   "url": "https://www.e-shop.gr/psu-asus-tuf-gaming-850w-gold-unit-24-pin-atx-80-plus-gold-full-modular-black-p-PER.608411",
+   "price": 120.66,
+   "shopCount": null,
+   "brand": "Asus",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:59895579",
    "source": "skroutz",
    "title": "Corsair RM850e ATX3.1 850W Full Modular 80 Plus Gold",
@@ -31647,6 +35807,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.645590",
+   "source": "eshop",
+   "title": "SEASONIC CORE GX WHITE ATX 3 (2024) 850W 80 PLUS GOLD FULL MODULAR ATX 3.1 AND PCIE 5.1",
+   "url": "https://www.e-shop.gr/psu-seasonic-core-gx-white-atx-3-2024-850w-80-plus-gold-full-modular-atx-31-and-pcie-51-p-PER.645590",
+   "price": 121.08,
+   "shopCount": null,
+   "brand": "Seasonic",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:64563451",
@@ -31769,6 +35944,36 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.273128",
+   "source": "eshop",
+   "title": "LIAN LI SP850 V2 GOLD WHITE - 850W SFX PSU - 12V-2X6 - LOW NOISE - 80 PLUS GOLD - ATX 3.1 - PCIE 5",
+   "url": "https://www.e-shop.gr/lian-li-sp850-v2-gold-white-850w-sfx-psu-12v-2x6-low-noise-80-plus-gold-atx31-pcie5-p-PER.273128",
+   "price": 122.8,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
+   "id": "eshop:PER.273127",
+   "source": "eshop",
+   "title": "LIAN LI SP850 V2 GOLD BLACK - 850W SFX PSU - 12V-2X6 - LOW NOISE - 80 PLUS GOLD - ATX 3.1 - PCIE 5",
+   "url": "https://www.e-shop.gr/lian-li-sp850-v2-gold-black-850w-sfx-psu-12v-2x6-low-noise-80-plus-gold-atx-31-pcie-5-p-PER.273127",
+   "price": 122.81,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "SFX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:59135376",
    "source": "skroutz",
    "title": "Endorfy Supremo FM6 850W Full Modular 80 Plus Gold",
@@ -31812,6 +36017,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.619684",
+   "source": "eshop",
+   "title": "ENERMAX REVOLUTION D.F.12 850W 80 PLUS GOLD FULL MODULAR BLACK ETV850G",
+   "url": "https://www.e-shop.gr/psu-enermax-revolution-df12-850w-80-plus-gold-full-modular-black-etv850g-p-PER.619684",
+   "price": 123.89,
+   "shopCount": null,
+   "brand": "Enermax",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:31299168",
@@ -32249,6 +36469,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.645740",
+   "source": "eshop",
+   "title": "CORSAIR RM850X SHIFT 850W CYBENETICS GOLD FULLY MODULAR",
+   "url": "https://www.e-shop.gr/psu-corsair-rm850x-shift-850w-cybenetics-gold-fully-modular-p-PER.645740",
+   "price": 134.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:41982167",
    "source": "skroutz",
    "title": "Thermaltake Toughpower GF A3 TT Premium Edition Full Modular 80 Plus Gold",
@@ -32262,6 +36497,21 @@
    "modular": "Full",
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:38:16+00:00"
+  },
+  {
+   "id": "eshop:PER.645572",
+   "source": "eshop",
+   "title": "SEASONIC FOCUS GX-850 850W 80 PLUS GOLD FULL MODULAR ATX 3.1/PCIE 5.1 WHITE (2024)",
+   "url": "https://www.e-shop.gr/psu-seasonic-focus-gx-850-850w-80-plus-gold-full-modular-atx-31-pcie-51-white-2024-p-PER.645572",
+   "price": 135.9,
+   "shopCount": null,
+   "brand": "Seasonic",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:66192987",
@@ -32354,6 +36604,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.645534",
+   "source": "eshop",
+   "title": "SEASONIC FOCUS GX-850 V4 850W 80 PLUS GOLD FULL MODULAR ATX 3.0 BLACK (2024)",
+   "url": "https://www.e-shop.gr/psu-seasonic-focus-gx-850-v4-850w-80-plus-gold-full-modular-atx-30-black-2024-p-PER.645534",
+   "price": 138.45,
+   "shopCount": null,
+   "brand": "Seasonic",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:66146139",
    "source": "skroutz",
    "title": "Redragon 850W Full Modular 80 Plus Gold (GC-PS007-1-V2)",
@@ -32384,6 +36649,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.619530",
+   "source": "eshop",
+   "title": "SILVERSTONE DA850R-GMA 850W 80 PLUS GOLD FULL MODULAR WHITE",
+   "url": "https://www.e-shop.gr/psu-silverstone-da850r-gma-850w-80-plus-gold-full-modular-white-p-PER.619530",
+   "price": 139.0,
+   "shopCount": null,
+   "brand": "SilverStone",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2164295413",
    "source": "bestprice",
    "title": "Redragon GC-PS007-1-V2 850W",
@@ -32397,6 +36677,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645768",
+   "source": "eshop",
+   "title": "BE QUIET PURE POWER 13 M 850W 80 PLUS GOLD FULL MODULAR",
+   "url": "https://www.e-shop.gr/psu-be-quiet-pure-power-13-m-850w-80-plus-gold-full-modular-p-PER.645768",
+   "price": 139.9,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2158370339",
@@ -32787,6 +37082,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.547602",
+   "source": "eshop",
+   "title": "CORSAIR RM850X 850W FULLY MODULAR CYBENETICS GOLD CERTIFIED CP-9020270-EU",
+   "url": "https://www.e-shop.gr/psu-corsair-rm850x-850w-fully-modular-cybenetics-gold-certified-cp-9020270-eu-p-PER.547602",
+   "price": 171.9,
+   "shopCount": null,
+   "brand": "Corsair",
+   "chip": "850W Gold",
+   "watts": 850,
+   "efficiency": "Gold",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:40423231",
@@ -33329,6 +37639,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.245327",
+   "source": "eshop",
+   "title": "GIGABYTE AORUS ELITE P850W 80 PLUS PLATINUM 850W FULL MODULAR ATX 3.1",
+   "url": "https://www.e-shop.gr/psu-gigabyte-aorus-elite-p850w-80-plus-platinum-850w-full-modular-atx-31-p-PER.245327",
+   "price": 125.0,
+   "shopCount": null,
+   "brand": "Gigabyte",
+   "chip": "850W Platinum",
+   "watts": 850,
+   "efficiency": "Platinum",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:66239154",
    "source": "skroutz",
    "title": "Inter-Tech ARGUSnt HA-850BA3 850W Full Modular 80 Plus Platinum",
@@ -33374,6 +37699,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.260251",
+   "source": "eshop",
+   "title": "BE QUIET POWER ZONE 2 850W BP007 FULL MODULAR 80 PLUS PLATINUM",
+   "url": "https://www.e-shop.gr/psu-be-quiet-power-zone-2-850w-bp007-full-modular-80-plus-platinum-p-PER.260251",
+   "price": 129.21,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "850W Platinum",
+   "watts": 850,
+   "efficiency": "Platinum",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "skroutz:67600717",
    "source": "skroutz",
    "title": "FSP/Fortron VITA-850PM 850W Full Modular 80 Plus Platinum",
@@ -33404,6 +37744,21 @@
    "scrapedAt": "2026-09-29T18:39:10+00:00"
   },
   {
+   "id": "eshop:PER.645753",
+   "source": "eshop",
+   "title": "THERMALTAKE TOUGHPOWER PF1 850W 80 PLUS PLATINUM FULL MODULAR TT PREMIUM EDITION",
+   "url": "https://www.e-shop.gr/psu-thermaltake-toughpower-pf1-850w-80-plus-platinum-full-modular-tt-premium-edition-p-PER.645753",
+   "price": 134.81,
+   "shopCount": null,
+   "brand": "Thermaltake",
+   "chip": "850W Platinum",
+   "watts": 850,
+   "efficiency": "Platinum",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2163903761",
    "source": "bestprice",
    "title": "Deepcool PS850P 850W",
@@ -33417,6 +37772,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.274768",
+   "source": "eshop",
+   "title": "LIAN LI SP0850P BLACK - 850W 80+ PLATINUM PSU - 10 YEARS WARRANTY - 12V-2X6 - JAPANESE CAPACITORS",
+   "url": "https://www.e-shop.gr/lian-li-sp0850p-black-850w-80-platinum-psu-10-years-warranty-12v-2x6-japanese-capacitors-p-PER.274768",
+   "price": 139.76,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "850W Platinum",
+   "watts": 850,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:55720762",
@@ -33447,6 +37817,21 @@
    "modular": null,
    "formFactor": "SFX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.274769",
+   "source": "eshop",
+   "title": "LIAN LI SP0850P WHITE - 850W 80+ PLATINUM PSU - 10 YEARS WARRANTY - 12V-2X6 - JAPANESE CAPACITORS",
+   "url": "https://www.e-shop.gr/lian-li-sp0850p-white-850w-80-platinum-psu-10-years-warranty-12v-2x6-japanese-capacitors-p-PER.274769",
+   "price": 141.46,
+   "shopCount": null,
+   "brand": "Lian Li",
+   "chip": "850W Platinum",
+   "watts": 850,
+   "efficiency": "Platinum",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "bestprice:2163093967",
@@ -34154,6 +38539,21 @@
    "scrapedAt": "2026-09-29T18:38:16+00:00"
   },
   {
+   "id": "eshop:PER.820294",
+   "source": "eshop",
+   "title": "BE QUIET BN334 DARK POWER 13 TITANIUM 850W 80 PLUS",
+   "url": "https://www.e-shop.gr/psu-be-quiet-bn334-dark-power-13-titanium-850w-80-plus-p-PER.820294",
+   "price": 260.0,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "850W Standard",
+   "watts": 850,
+   "efficiency": "Standard",
+   "modular": null,
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
+  },
+  {
    "id": "bestprice:2163075607",
    "source": "bestprice",
    "title": "Be Quiet Dark Power 14 850W",
@@ -34167,6 +38567,21 @@
    "modular": null,
    "formFactor": "ATX",
    "scrapedAt": "2026-09-29T18:39:10+00:00"
+  },
+  {
+   "id": "eshop:PER.645772",
+   "source": "eshop",
+   "title": "BE QUIET DARK POWER 14 850W 80 PLUS TITANIUM CYBENETICS TITANIUM FULL MODULAR",
+   "url": "https://www.e-shop.gr/psu-be-quiet-dark-power-14-850w-80-plus-titanium-cybenetics-titanium-full-modular-p-PER.645772",
+   "price": 195.47,
+   "shopCount": null,
+   "brand": "Be Quiet",
+   "chip": "850W Titanium",
+   "watts": 850,
+   "efficiency": "Titanium",
+   "modular": "Full",
+   "formFactor": "ATX",
+   "scrapedAt": "2026-09-29T20:15:47+00:00"
   },
   {
    "id": "skroutz:64047109",
