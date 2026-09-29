@@ -9,17 +9,16 @@ from curl_cffi import CurlMime
 from selectolax.parser import HTMLParser
 
 import http_client as http
-from models import Listing
-from normalize import make_listing, now_iso
+from categories import Category
+from normalize import now_iso
 
 BASE = "https://www.bestprice.gr"
-CATEGORY = f"{BASE}/cat/2613/kartes-grafikwn.html"
 MAX_PAGES = 80
 
 
-def parse(html: str, scraped_at: str) -> list[Listing]:
+def parse(html: str, scraped_at: str, cat: Category) -> list:
     tree = HTMLParser(html)
-    out: list[Listing] = []
+    out = []
     for card in tree.css("div.p[data-id]"):
         title_el = card.css_first(".p__title a")
         cents = card.attributes.get("data-price")
@@ -27,7 +26,7 @@ def parse(html: str, scraped_at: str) -> list[Listing]:
             continue
         merchants = card.css_first(".p__merchants")
         shops = re.search(r"\d+", merchants.text()) if merchants else None
-        listing = make_listing(
+        listing = cat.make_listing(
             source="bestprice",
             native_id=card.attributes["data-id"] or "",
             title=title_el.attributes.get("title") or title_el.text(),
@@ -41,20 +40,21 @@ def parse(html: str, scraped_at: str) -> list[Listing]:
     return out
 
 
-def fetch() -> list[Listing]:
+def fetch(cat: Category) -> list:
+    category = BASE + cat.bestprice_path
     s = http.session()
     scraped_at = now_iso()
-    r = s.get(CATEGORY)
+    r = s.get(category)
     r.raise_for_status()
-    http.dump("bestprice_p1.html", r.text)
+    http.dump(f"bestprice_{cat.name}_p1.html", r.text)
 
     pagination = re.search(r'"pagination":(\{[^}]*\})', r.text)
     total_pages = json.loads(pagination.group(1))["totalPages"] if pagination else 1
     gid_m = re.search(r'"guestId":"([^"]+)"', r.text)
     gid = gid_m.group(1) if gid_m else ""
 
-    seen: dict[str, Listing] = {l.id: l for l in parse(r.text, scraped_at)}
-    print(f"  bestprice page 1/{total_pages}: {len(seen)} gpus")
+    seen: dict = {l.id: l for l in parse(r.text, scraped_at, cat)}
+    print(f"  bestprice {cat.name} page 1/{total_pages}: {len(seen)} items")
 
     for page in range(2, min(total_pages, MAX_PAGES) + 1):
         http.polite_sleep()
@@ -62,14 +62,14 @@ def fetch() -> list[Listing]:
         mp.addpart(name="fromPagination", data=b"1")
         mp.addpart(name="pg", data=str(page).encode())
         r = s.post(
-            CATEGORY,
+            category,
             multipart=mp,
-            headers={"X-GID": gid, "X-PAGINATION": "true", "X-BP-PAGE": "1", "Referer": CATEGORY},
+            headers={"X-GID": gid, "X-PAGINATION": "true", "X-BP-PAGE": "1", "Referer": category},
         )
         r.raise_for_status()
-        http.dump(f"bestprice_p{page}.html", r.text)
-        listings = parse(r.text, scraped_at)
+        http.dump(f"bestprice_{cat.name}_p{page}.html", r.text)
+        listings = parse(r.text, scraped_at, cat)
         for l in listings:
             seen.setdefault(l.id, l)
-        print(f"  bestprice page {page}/{total_pages}: {len(listings)} gpus")
+        print(f"  bestprice {cat.name} page {page}/{total_pages}: {len(listings)} items")
     return list(seen.values())
