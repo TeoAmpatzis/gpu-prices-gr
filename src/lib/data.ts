@@ -1,39 +1,40 @@
-import type { Brand, History, Latest, Listing, SourceName } from '../types';
+import type { BaseListing, Brand, Category, History, Latest, SourceName } from '../types';
+import type { CategoryConfig } from './categories';
 
-export async function loadData(): Promise<{ latest: Latest; history: History }> {
-  const [latest, history] = await Promise.all([
-    fetch('/data/latest.json', { cache: 'no-cache' }).then((r) => {
-      if (!r.ok) throw new Error(`latest.json: HTTP ${r.status}`);
-      return r.json() as Promise<Latest>;
-    }),
-    fetch('/data/history.json', { cache: 'no-cache' })
-      .then((r) => (r.ok ? (r.json() as Promise<History>) : {}))
-      .catch(() => ({})),
-  ]);
-  return { latest, history };
+const cache = new Map<Category, Promise<{ latest: Latest; history: History }>>();
+
+export function loadData<L extends BaseListing>(cat: Category): Promise<{ latest: Latest<L>; history: History }> {
+  let p = cache.get(cat);
+  if (!p) {
+    p = Promise.all([
+      fetch(`/data/${cat}/latest.json`, { cache: 'no-cache' }).then((r) => {
+        if (!r.ok) throw new Error(`${cat}/latest.json: HTTP ${r.status}`);
+        return r.json() as Promise<Latest>;
+      }),
+      fetch(`/data/${cat}/history.json`, { cache: 'no-cache' })
+        .then((r) => (r.ok ? (r.json() as Promise<History>) : {}))
+        .catch(() => ({})),
+    ]).then(([latest, history]) => ({ latest, history }));
+    p.catch(() => cache.delete(cat)); // allow a retry after a failed load
+    cache.set(cat, p);
+  }
+  return p as Promise<{ latest: Latest<L>; history: History }>;
 }
 
-/** Same key as scraper/main.py model_key(). */
-export const modelKey = (l: Pick<Listing, 'chip' | 'vram'>) => `${l.chip} ${l.vram}GB`;
-
-const WORKSTATION = /^(RTX PRO |RTX A\d|T\d|RTX \d{4} (Ada|\(Pro\)))/;
-export const isWorkstation = (chip: string) => WORKSTATION.test(chip);
-
-export interface Model {
+export interface Model<L extends BaseListing> {
   key: string;
   chip: string;
   brand: Brand;
-  vram: number;
-  workstation: boolean;
-  listings: Listing[]; // sorted by price ascending
-  cheapest: Listing;
+  pro: boolean; // workstation GPU / server-HEDT CPU
+  listings: L[]; // sorted by price ascending
+  cheapest: L;
   maxPrice: number;
 }
 
-export function groupModels(listings: Listing[]): Model[] {
-  const map = new Map<string, Listing[]>();
+export function groupModels<L extends BaseListing>(listings: L[], cfg: CategoryConfig<L>): Model<L>[] {
+  const map = new Map<string, L[]>();
   for (const l of listings) {
-    const k = modelKey(l);
+    const k = cfg.modelKey(l);
     const arr = map.get(k);
     if (arr) arr.push(l);
     else map.set(k, [l]);
@@ -45,8 +46,7 @@ export function groupModels(listings: Listing[]): Model[] {
       key,
       chip: first.chip,
       brand: first.brand,
-      vram: first.vram,
-      workstation: isWorkstation(first.chip),
+      pro: cfg.isPro(first.chip),
       listings: ls,
       cheapest: first,
       maxPrice: ls[ls.length - 1].price,
@@ -54,67 +54,70 @@ export function groupModels(listings: Listing[]): Model[] {
   });
 }
 
+/** Most frequent non-null value, e.g. a CPU model's socket across its listings. */
+export function mostCommon<T>(values: (T | null | undefined)[]): T | null {
+  const counts = new Map<T, number>();
+  for (const v of values) if (v != null) counts.set(v, (counts.get(v) ?? 0) + 1);
+  let best: T | null = null;
+  let n = 0;
+  for (const [v, c] of counts) if (c > n) [best, n] = [v, c];
+  return best;
+}
+
 export type SortKey = 'price-asc' | 'price-desc' | 'model' | 'offers';
-export type Category = 'gaming' | 'workstation' | 'all';
+export type Segment = 'main' | 'pro' | 'all';
 
 export interface Filters {
   query: string;
   brands: Brand[];
   sources: SourceName[];
-  category: Category;
-  minVram: number;
+  segment: Segment;
   maxPrice: number | null;
   sort: SortKey;
+  // Category-specific; ignored by categories that don't use them.
+  minVram: number;
+  socket: string; // '' = any
+  minCores: number;
 }
 
-export const DEFAULT_FILTERS: Filters = {
-  query: '',
-  brands: ['NVIDIA', 'AMD', 'Intel'],
-  sources: ['skroutz', 'bestprice'],
-  category: 'gaming',
-  minVram: 0,
-  maxPrice: null,
-  sort: 'model',
-};
-
-const BRAND_ORDER: Record<Brand, number> = { NVIDIA: 0, AMD: 1, Intel: 2 };
-
-/** Rough "newer/higher tier first" ordering from the model number. */
-function tierScore(chip: string): number {
-  const n = Number(chip.match(/\d{3,4}/)?.[0] ?? 0);
-  let score = n;
-  if (/\bArc B/.test(chip)) score += 10000;
-  if (/Ti Super|XTX/.test(chip)) score += 7;
-  else if (/\bTi\b|XT\b/.test(chip)) score += 5;
-  else if (/Super|GRE/.test(chip)) score += 3;
-  return score;
+export function defaultFilters(brands: Brand[]): Filters {
+  return {
+    query: '',
+    brands,
+    sources: ['skroutz', 'bestprice'],
+    segment: 'main',
+    maxPrice: null,
+    sort: 'model',
+    minVram: 0,
+    socket: '',
+    minCores: 0,
+  };
 }
 
-export function applyFilters(all: Listing[], f: Filters): Model[] {
+export function applyFilters<L extends BaseListing>(all: L[], f: Filters, cfg: CategoryConfig<L>): Model<L>[] {
   const q = f.query.trim().toLowerCase();
   const listings = all.filter(
     (l) =>
       f.brands.includes(l.brand) &&
       f.sources.includes(l.source) &&
-      l.vram >= f.minVram &&
-      (!q || `${l.chip} ${l.title} ${l.partner}`.toLowerCase().includes(q)),
+      (!q || cfg.searchText(l).toLowerCase().includes(q)),
   );
-  let models = groupModels(listings).filter(
+  const models = groupModels(listings, cfg).filter(
     (m) =>
-      (f.category === 'all' || (f.category === 'workstation') === m.workstation) &&
-      (f.maxPrice == null || m.cheapest.price <= f.maxPrice),
+      (f.segment === 'all' || (f.segment === 'pro') === m.pro) &&
+      (f.maxPrice == null || m.cheapest.price <= f.maxPrice) &&
+      cfg.matchesModel(m, f),
   );
-  const cmp: Record<SortKey, (a: Model, b: Model) => number> = {
+  const cmp: Record<SortKey, (a: Model<L>, b: Model<L>) => number> = {
     'price-asc': (a, b) => a.cheapest.price - b.cheapest.price,
     'price-desc': (a, b) => b.cheapest.price - a.cheapest.price,
     offers: (a, b) => b.listings.length - a.listings.length,
     model: (a, b) =>
-      BRAND_ORDER[a.brand] - BRAND_ORDER[b.brand] ||
-      tierScore(b.chip) - tierScore(a.chip) ||
-      b.vram - a.vram,
+      cfg.brands.indexOf(a.brand) - cfg.brands.indexOf(b.brand) ||
+      cfg.tierScore(b) - cfg.tierScore(a) ||
+      a.key.localeCompare(b.key),
   };
-  models = models.sort(cmp[f.sort]);
-  return models;
+  return models.sort(cmp[f.sort]);
 }
 
 const eur = new Intl.NumberFormat('el-GR', { style: 'currency', currency: 'EUR' });
