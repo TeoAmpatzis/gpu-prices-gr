@@ -1,20 +1,20 @@
 {
- "updatedAt": "2026-09-29T20:29:24+00:00",
+ "updatedAt": "2026-09-29T22:20:26+00:00",
  "sources": {
   "skroutz": {
    "count": 413,
-   "ok": true,
+   "ok": false,
    "updatedAt": "2026-09-29T20:29:24+00:00"
   },
   "bestprice": {
-   "count": 452,
+   "count": 449,
    "ok": true,
-   "updatedAt": "2026-09-29T20:29:24+00:00"
+   "updatedAt": "2026-09-29T22:20:26+00:00"
   },
   "eshop": {
-   "count": 105,
+   "count": 103,
    "ok": true,
-   "updatedAt": "2026-09-29T20:29:24+00:00"
+   "updatedAt": "2026-09-29T22:20:26+00:00"
   }
  },
  "listings": [
@@ -42,7 +42,7 @@
    "chip": "Athlon 3000G",
    "cores": 2,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156612803",
@@ -55,7 +55,7 @@
    "chip": "Athlon 3000G",
    "cores": 2,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:59450456",
@@ -107,7 +107,7 @@
    "chip": "Athlon 300GE",
    "cores": 2,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157515382",
@@ -120,7 +120,7 @@
    "chip": "Celeron G3900",
    "cores": 2,
    "socket": "LGA1151",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:25546686",
@@ -159,7 +159,7 @@
    "chip": "Celeron G5905",
    "cores": 2,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156193405",
@@ -172,7 +172,7 @@
    "chip": "Celeron G5920",
    "cores": 2,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:28207651",
@@ -219,12 +219,12 @@
    "title": "Intel Core Ultra 5 225 Box",
    "url": "https://www.bestprice.gr/item/2160277450/intel-core-ultra-5-225-box-epexergastis-10-pyrinon-gia-socket-1851.html",
    "price": 161.99,
-   "shopCount": 37,
+   "shopCount": 38,
    "brand": "Intel",
    "chip": "Core Ultra 5 225",
    "cores": 10,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160594100",
@@ -232,12 +232,12 @@
    "title": "Intel Core Ultra 5 225 Tray",
    "url": "https://www.bestprice.gr/item/2160594100/intel-core-ultra-5-225-tray-epexergastis-10-pyrinon-gia-socket-1851.html",
    "price": 172.09,
-   "shopCount": 7,
+   "shopCount": 6,
    "brand": "Intel",
    "chip": "Core Ultra 5 225",
    "cores": 10,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.260192",
@@ -250,7 +250,7 @@
    "chip": "Core Ultra 5 225",
    "cores": null,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:58302504",
@@ -271,12 +271,12 @@
    "title": "Intel Core Ultra 5 225F Tray",
    "url": "https://www.bestprice.gr/item/2160324547/intel-core-ultra-5-225f-tray-epexergastis-10-pyrinon-gia-socket-1851.html",
    "price": 122.72,
-   "shopCount": 7,
+   "shopCount": 6,
    "brand": "Intel",
    "chip": "Core Ultra 5 225F",
    "cores": 10,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:58602178",
@@ -302,7 +302,7 @@
    "chip": "Core Ultra 5 225F",
    "cores": 10,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.260191",
@@ -315,7 +315,7 @@
    "chip": "Core Ultra 5 225F",
    "cores": null,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:64871510",
@@ -336,12 +336,12 @@
    "title": "Intel Core Ultra 5 225T Tray",
    "url": "https://www.bestprice.gr/item/2160513178/intel-core-ultra-5-225t-tray-epexergastis-10-pyrinon-gia-socket-1851.html",
    "price": 300.5,
-   "shopCount": 2,
+   "shopCount": 1,
    "brand": "Intel",
    "chip": "Core Ultra 5 225T",
    "cores": 10,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:59294601",
@@ -362,12 +362,12 @@
    "title": "Intel Core Ultra 5 235 Box",
    "url": "https://www.bestprice.gr/item/2160277451/intel-core-ultra-5-235-box-epexergastis-14-pyrinon-gia-socket-1851.html",
    "price": 279.0,
-   "shopCount": 10,
+   "shopCount": 9,
    "brand": "Intel",
    "chip": "Core Ultra 5 235",
    "cores": 14,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:58296696",
@@ -388,12 +388,12 @@
    "title": "Intel Core Ultra 5 235 Tray",
    "url": "https://www.bestprice.gr/item/2160452360/intel-core-ultra-5-235-tray-epexergastis-14-pyrinon-gia-socket-1851.html",
    "price": 320.0,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "Intel",
    "chip": "Core Ultra 5 235",
    "cores": 14,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160452362",
@@ -401,12 +401,12 @@
    "title": "Intel Core Ultra 5 235T Tray",
    "url": "https://www.bestprice.gr/item/2160452362/intel-core-ultra-5-235t-tray-epexergastis-14-pyrinon-gia-socket-1851.html",
    "price": 275.95,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "Intel",
    "chip": "Core Ultra 5 235T",
    "cores": 14,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:61030946",
@@ -440,12 +440,12 @@
    "title": "Intel Core Ultra 5 245 Tray",
    "url": "https://www.bestprice.gr/item/2160575742/intel-core-ultra-5-245-tray-epexergastis-14-pyrinon-gia-socket-1851.html",
    "price": 321.9,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "Intel",
    "chip": "Core Ultra 5 245",
    "cores": 14,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160125757",
@@ -453,12 +453,12 @@
    "title": "Intel Core Ultra 5 245K Tray",
    "url": "https://www.bestprice.gr/item/2160125757/intel-core-ultra-5-245k-tray-epexergastis-14-pyrinon-gia-socket-1851.html",
    "price": 189.5,
-   "shopCount": 8,
+   "shopCount": 7,
    "brand": "Intel",
    "chip": "Core Ultra 5 245K",
    "cores": 14,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160067066",
@@ -466,12 +466,12 @@
    "title": "Intel Core Ultra 5 245K Box",
    "url": "https://www.bestprice.gr/item/2160067066/intel-core-ultra-5-245k-box-epexergastis-14-pyrinon-gia-socket-1851.html",
    "price": 189.63,
-   "shopCount": 21,
+   "shopCount": 20,
    "brand": "Intel",
    "chip": "Core Ultra 5 245K",
    "cores": 14,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:57424923",
@@ -497,7 +497,7 @@
    "chip": "Core Ultra 5 245K",
    "cores": null,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:57311333",
@@ -523,7 +523,7 @@
    "chip": "Core Ultra 5 245KF",
    "cores": null,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2160067065",
@@ -531,12 +531,12 @@
    "title": "Intel Core Ultra 5 245KF Box",
    "url": "https://www.bestprice.gr/item/2160067065/intel-core-ultra-5-245kf-box-epexergastis-14-pyrinon-gia-socket-1851.html",
    "price": 181.5,
-   "shopCount": 9,
+   "shopCount": 8,
    "brand": "Intel",
    "chip": "Core Ultra 5 245KF",
    "cores": 14,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:57654807",
@@ -570,12 +570,12 @@
    "title": "Intel Core Ultra 5 245KF Tray",
    "url": "https://www.bestprice.gr/item/2160125756/intel-core-ultra-5-245kf-tray-epexergastis-14-pyrinon-gia-socket-1851.html",
    "price": 208.1,
-   "shopCount": 4,
+   "shopCount": 3,
    "brand": "Intel",
    "chip": "Core Ultra 5 245KF",
    "cores": 14,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2163894577",
@@ -588,7 +588,7 @@
    "chip": "Core Ultra 5 250K Plus",
    "cores": 18,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.275653",
@@ -601,7 +601,7 @@
    "chip": "Core Ultra 5 250K Plus",
    "cores": null,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:66938833",
@@ -627,7 +627,7 @@
    "chip": "Core Ultra 5 250K Plus",
    "cores": 18,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2163894575",
@@ -640,7 +640,7 @@
    "chip": "Core Ultra 5 250KF Plus",
    "cores": 18,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:66244444",
@@ -666,7 +666,7 @@
    "chip": "Core Ultra 5 250KF Plus",
    "cores": null,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2160277452",
@@ -674,12 +674,12 @@
    "title": "Intel Core Ultra 7 265 Box",
    "url": "https://www.bestprice.gr/item/2160277452/intel-core-ultra-7-265-box-epexergastis-20-pyrinon-gia-socket-1851.html",
    "price": 351.0,
-   "shopCount": 33,
+   "shopCount": 32,
    "brand": "Intel",
    "chip": "Core Ultra 7 265",
    "cores": 20,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160546134",
@@ -687,12 +687,12 @@
    "title": "Intel Core Ultra 7 265 Tray",
    "url": "https://www.bestprice.gr/item/2160546134/intel-core-ultra-7-265-tray-epexergastis-20-pyrinon-gia-socket-1851.html",
    "price": 375.29,
-   "shopCount": 4,
+   "shopCount": 3,
    "brand": "Intel",
    "chip": "Core Ultra 7 265",
    "cores": 20,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:59086712",
@@ -718,7 +718,7 @@
    "chip": "Core Ultra 7 265",
    "cores": null,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:58982693",
@@ -738,13 +738,13 @@
    "source": "bestprice",
    "title": "Intel Core Ultra 7 265F Box",
    "url": "https://www.bestprice.gr/item/2160303390/intel-core-ultra-7-265f-box-epexergastis-20-pyrinon-gia-socket-1851.html",
-   "price": 345.56,
-   "shopCount": 14,
+   "price": 357.4,
+   "shopCount": 12,
    "brand": "Intel",
    "chip": "Core Ultra 7 265F",
    "cores": 20,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.260193",
@@ -757,7 +757,7 @@
    "chip": "Core Ultra 7 265F",
    "cores": null,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:58902037",
@@ -778,12 +778,12 @@
    "title": "Intel Core Ultra 7 265K Tray",
    "url": "https://www.bestprice.gr/item/2160125758/intel-core-ultra-7-265k-tray-epexergastis-20-pyrinon-gia-socket-1851.html",
    "price": 279.66,
-   "shopCount": 7,
+   "shopCount": 6,
    "brand": "Intel",
    "chip": "Core Ultra 7 265K",
    "cores": 20,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:57311071",
@@ -809,7 +809,7 @@
    "chip": "Core Ultra 7 265K",
    "cores": 20,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:57425013",
@@ -835,7 +835,7 @@
    "chip": "Core Ultra 7 265KF",
    "cores": 20,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160125759",
@@ -843,12 +843,12 @@
    "title": "Intel Core Ultra 7 265KF Tray",
    "url": "https://www.bestprice.gr/item/2160125759/intel-core-ultra-7-265kf-tray-epexergastis-20-pyrinon-gia-socket-1851.html",
    "price": 285.1,
-   "shopCount": 6,
+   "shopCount": 5,
    "brand": "Intel",
    "chip": "Core Ultra 7 265KF",
    "cores": 20,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:57311143",
@@ -869,12 +869,12 @@
    "title": "Intel Core Ultra 7 265T Tray",
    "url": "https://www.bestprice.gr/item/2160321741/intel-core-ultra-7-265t-tray-epexergastis-20-pyrinon-gia-socket-1851.html",
    "price": 368.43,
-   "shopCount": 4,
+   "shopCount": 3,
    "brand": "Intel",
    "chip": "Core Ultra 7 265T",
    "cores": 20,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:58485297",
@@ -900,7 +900,7 @@
    "chip": "Core Ultra 7 270K Plus",
    "cores": 24,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2163894578",
@@ -908,12 +908,12 @@
    "title": "Intel Core Ultra 7 270K Plus Box",
    "url": "https://www.bestprice.gr/item/2163894578/intel-core-ultra-7-270k-plus-box-epexergastis-24-pyrinon-gia-socket-1851.html",
    "price": 320.45,
-   "shopCount": 33,
+   "shopCount": 32,
    "brand": "Intel",
    "chip": "Core Ultra 7 270K Plus",
    "cores": 24,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.275655",
@@ -926,7 +926,7 @@
    "chip": "Core Ultra 7 270K Plus",
    "cores": null,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:66750214",
@@ -947,12 +947,12 @@
    "title": "Intel Core Ultra 9 285 Tray",
    "url": "https://www.bestprice.gr/item/2160324546/intel-core-ultra-9-285-tray-epexergastis-24-pyrinon-gia-socket-1851.html",
    "price": 527.46,
-   "shopCount": 6,
+   "shopCount": 5,
    "brand": "Intel",
    "chip": "Core Ultra 9 285",
    "cores": 24,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.260194",
@@ -965,20 +965,20 @@
    "chip": "Core Ultra 9 285",
    "cores": null,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2160277453",
    "source": "bestprice",
    "title": "Intel Core Ultra 9 285 Box",
    "url": "https://www.bestprice.gr/item/2160277453/intel-core-ultra-9-285-box-epexergastis-24-pyrinon-gia-socket-1851.html",
-   "price": 591.49,
-   "shopCount": 15,
+   "price": 601.21,
+   "shopCount": 14,
    "brand": "Intel",
    "chip": "Core Ultra 9 285",
    "cores": 24,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:58902442",
@@ -999,12 +999,12 @@
    "title": "Intel Core Ultra 9 285K Tray",
    "url": "https://www.bestprice.gr/item/2160152173/intel-core-ultra-9-285k-tray-epexergastis-24-pyrinon-gia-socket-1851.html",
    "price": 484.11,
-   "shopCount": 9,
+   "shopCount": 8,
    "brand": "Intel",
    "chip": "Core Ultra 9 285K",
    "cores": 24,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:57312697",
@@ -1025,12 +1025,12 @@
    "title": "Intel Core Ultra 9 285K Box",
    "url": "https://www.bestprice.gr/item/2160067067/intel-core-ultra-9-285k-box-epexergastis-24-pyrinon-gia-socket-1851.html",
    "price": 541.93,
-   "shopCount": 24,
+   "shopCount": 23,
    "brand": "Intel",
    "chip": "Core Ultra 9 285K",
    "cores": 24,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.608642",
@@ -1043,7 +1043,7 @@
    "chip": "Core Ultra 9 285K",
    "cores": null,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2160321742",
@@ -1051,12 +1051,12 @@
    "title": "Intel Core Ultra 9 285T Tray",
    "url": "https://www.bestprice.gr/item/2160321742/intel-core-ultra-9-285t-tray-epexergastis-24-pyrinon-gia-socket-1851.html",
    "price": 640.1,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "Intel",
    "chip": "Core Ultra 9 285T",
    "cores": 24,
    "socket": "LGA1851",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:58526773",
@@ -1082,7 +1082,7 @@
    "chip": "Core i3-10100",
    "cores": 4,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:23292376",
@@ -1134,7 +1134,7 @@
    "chip": "Core i3-10100F",
    "cores": 4,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:27738114",
@@ -1160,7 +1160,7 @@
    "chip": "Core i3-10105",
    "cores": 4,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156585958",
@@ -1173,7 +1173,7 @@
    "chip": "Core i3-10105F",
    "cores": 4,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156129589",
@@ -1186,7 +1186,7 @@
    "chip": "Core i3-10300",
    "cores": 4,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157319706",
@@ -1194,12 +1194,12 @@
    "title": "Intel Core i3-12100 Tray",
    "url": "https://www.bestprice.gr/item/2157319706/intel-core-i3-12100-tray-epexergastis-4-pyrinon-gia-socket-1700.html",
    "price": 105.02,
-   "shopCount": 9,
+   "shopCount": 8,
    "brand": "Intel",
    "chip": "Core i3-12100",
    "cores": 4,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157255816",
@@ -1207,12 +1207,12 @@
    "title": "Intel Core i3-12100 Box",
    "url": "https://www.bestprice.gr/item/2157255816/intel-core-i3-12100-box-epexergastis-4-pyrinon-gia-socket-1700-me-psyktra.html",
    "price": 114.47,
-   "shopCount": 16,
+   "shopCount": 15,
    "brand": "Intel",
    "chip": "Core i3-12100",
    "cores": 4,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:33896554",
@@ -1238,7 +1238,7 @@
    "chip": "Core i3-12100",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:33446702",
@@ -1259,12 +1259,12 @@
    "title": "Intel Core i3-12100F Tray",
    "url": "https://www.bestprice.gr/item/2157363297/intel-core-i3-12100f-tray-epexergastis-4-pyrinon-gia-socket-1700.html",
    "price": 80.63,
-   "shopCount": 6,
+   "shopCount": 5,
    "brand": "Intel",
    "chip": "Core i3-12100F",
    "cores": 4,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157255817",
@@ -1272,12 +1272,12 @@
    "title": "Intel Core i3-12100F Box",
    "url": "https://www.bestprice.gr/item/2157255817/intel-core-i3-12100f-box-epexergastis-4-pyrinon-gia-socket-1700-me-psyktra.html",
    "price": 87.77,
-   "shopCount": 14,
+   "shopCount": 13,
    "brand": "Intel",
    "chip": "Core i3-12100F",
    "cores": 4,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:33403595",
@@ -1303,7 +1303,7 @@
    "chip": "Core i3-12100F",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2158211385",
@@ -1311,12 +1311,12 @@
    "title": "Intel Core i3-13100 Tray",
    "url": "https://www.bestprice.gr/item/2158211385/intel-core-i3-13100-tray-epexergastis-4-pyrinon-gia-socket-1700.html",
    "price": 105.02,
-   "shopCount": 4,
+   "shopCount": 3,
    "brand": "Intel",
    "chip": "Core i3-13100",
    "cores": 4,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:40341057",
@@ -1342,7 +1342,7 @@
    "chip": "Core i3-13100",
    "cores": 4,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:40231566",
@@ -1368,7 +1368,7 @@
    "chip": "Core i3-13100F",
    "cores": 4,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:40221768",
@@ -1394,7 +1394,7 @@
    "chip": "Core i3-13100F",
    "cores": 4,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:40310722",
@@ -1410,30 +1410,17 @@
    "scrapedAt": "2026-09-29T20:29:24+00:00"
   },
   {
-   "id": "bestprice:2158211384",
-   "source": "bestprice",
-   "title": "Intel Core i3-13100T Tray",
-   "url": "https://www.bestprice.gr/item/2158211384/intel-core-i3-13100t-tray.html",
-   "price": 207.28,
-   "shopCount": 1,
-   "brand": "Intel",
-   "chip": "Core i3-13100T",
-   "cores": null,
-   "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
-  },
-  {
    "id": "bestprice:2159328492",
    "source": "bestprice",
    "title": "Intel Core i3-14100 Tray",
    "url": "https://www.bestprice.gr/item/2159328492/intel-core-i3-14100-tray-epexergastis-4-pyrinon-gia-socket-1700-me-psyktra.html",
    "price": 115.69,
-   "shopCount": 12,
+   "shopCount": 11,
    "brand": "Intel",
    "chip": "Core i3-14100",
    "cores": 4,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:49167958",
@@ -1454,12 +1441,12 @@
    "title": "Intel Core i3-14100 Box",
    "url": "https://www.bestprice.gr/item/2159328176/intel-core-i3-14100-box-epexergastis-4-pyrinon-gia-socket-1700-me-psyktra.html",
    "price": 126.22,
-   "shopCount": 57,
+   "shopCount": 56,
    "brand": "Intel",
    "chip": "Core i3-14100",
    "cores": 4,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:49204229",
@@ -1485,20 +1472,20 @@
    "chip": "Core i3-14100",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2159328490",
    "source": "bestprice",
    "title": "Intel Core i3-14100F Tray",
    "url": "https://www.bestprice.gr/item/2159328490/intel-core-i3-14100f-tray-epexergastis-4-pyrinon-gia-socket-1700-me-psyktra.html",
-   "price": 91.73,
-   "shopCount": 8,
+   "price": 89.9,
+   "shopCount": 7,
    "brand": "Intel",
    "chip": "Core i3-14100F",
    "cores": 4,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:49167921",
@@ -1524,7 +1511,7 @@
    "chip": "Core i3-14100F",
    "cores": 4,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.235582",
@@ -1537,7 +1524,7 @@
    "chip": "Core i3-14100F",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:49166947",
@@ -1563,7 +1550,7 @@
    "chip": "Core i3-14100T",
    "cores": 4,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:51095908",
@@ -1584,12 +1571,12 @@
    "title": "Intel Core i5-10400 Tray",
    "url": "https://www.bestprice.gr/item/2156122202/intel-core-i5-10400-tray-epexergastis-6-pyrinon-gia-socket-1200.html",
    "price": 154.25,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "Intel",
    "chip": "Core i5-10400",
    "cores": 6,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:24185250",
@@ -1610,12 +1597,12 @@
    "title": "Intel Core i5-10400 Box",
    "url": "https://www.bestprice.gr/item/2156117098/intel-core-i5-10400-box-epexergastis-6-pyrinon-gia-socket-1200-me-psyktra.html",
    "price": 156.1,
-   "shopCount": 7,
+   "shopCount": 6,
    "brand": "Intel",
    "chip": "Core i5-10400",
    "cores": 6,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156114818",
@@ -1628,7 +1615,7 @@
    "chip": "Core i5-10400F",
    "cores": 6,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156118510",
@@ -1641,7 +1628,7 @@
    "chip": "Core i5-10500",
    "cores": 6,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156126029",
@@ -1654,7 +1641,7 @@
    "chip": "Core i5-10600",
    "cores": 6,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:23723424",
@@ -1680,7 +1667,7 @@
    "chip": "Core i5-10600K",
    "cores": 6,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156114817",
@@ -1693,7 +1680,7 @@
    "chip": "Core i5-10600K",
    "cores": 6,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156304152",
@@ -1706,7 +1693,7 @@
    "chip": "Core i5-10600KF",
    "cores": 6,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:31058675",
@@ -1732,7 +1719,7 @@
    "chip": "Core i5-11400",
    "cores": 6,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156903126",
@@ -1745,7 +1732,7 @@
    "chip": "Core i5-11400",
    "cores": 6,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:27738633",
@@ -1761,19 +1748,6 @@
    "scrapedAt": "2026-09-29T20:29:24+00:00"
   },
   {
-   "id": "bestprice:2157025455",
-   "source": "bestprice",
-   "title": "Intel Core i5-11400F Tray",
-   "url": "https://www.bestprice.gr/item/2157025455/intel-core-i5-11400f-tray-epexergastis-6-pyrinon-gia-socket-1200.html",
-   "price": 190.65,
-   "shopCount": 2,
-   "brand": "Intel",
-   "chip": "Core i5-11400F",
-   "cores": 6,
-   "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
-  },
-  {
    "id": "skroutz:30477232",
    "source": "skroutz",
    "title": "Intel Core i5-11400F 2.6GHz Tray",
@@ -1787,6 +1761,19 @@
    "scrapedAt": "2026-09-29T20:29:24+00:00"
   },
   {
+   "id": "bestprice:2157025455",
+   "source": "bestprice",
+   "title": "Intel Core i5-11400F Tray",
+   "url": "https://www.bestprice.gr/item/2157025455/intel-core-i5-11400f-tray-epexergastis-6-pyrinon-gia-socket-1200.html",
+   "price": 196.64,
+   "shopCount": 1,
+   "brand": "Intel",
+   "chip": "Core i5-11400F",
+   "cores": 6,
+   "socket": "LGA1200",
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
+  },
+  {
    "id": "bestprice:2156585967",
    "source": "bestprice",
    "title": "Intel Core i5-11400F Box",
@@ -1797,7 +1784,7 @@
    "chip": "Core i5-11400F",
    "cores": 6,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156585965",
@@ -1810,7 +1797,7 @@
    "chip": "Core i5-11500",
    "cores": 6,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156585964",
@@ -1823,7 +1810,7 @@
    "chip": "Core i5-11600",
    "cores": 6,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156585963",
@@ -1836,7 +1823,7 @@
    "chip": "Core i5-11600K",
    "cores": 6,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156612811",
@@ -1849,7 +1836,20 @@
    "chip": "Core i5-11600KF",
    "cores": 6,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
+  },
+  {
+   "id": "bestprice:2157256225",
+   "source": "bestprice",
+   "title": "Intel Core i5-12400 Tray",
+   "url": "https://www.bestprice.gr/item/2157256225/intel-core-i5-12400-tray-epexergastis-6-pyrinon-gia-socket-1700.html",
+   "price": 155.19,
+   "shopCount": 4,
+   "brand": "Intel",
+   "chip": "Core i5-12400",
+   "cores": 6,
+   "socket": "LGA1700",
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157929457",
@@ -1862,7 +1862,7 @@
    "chip": "Core i5-12400",
    "cores": 6,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:33959277",
@@ -1883,25 +1883,12 @@
    "title": "Intel Core i5-12400 Box",
    "url": "https://www.bestprice.gr/item/2157255811/intel-core-i5-12400-box-epexergastis-6-pyrinon-gia-socket-1700-me-psyktra.html",
    "price": 155.65,
-   "shopCount": 25,
+   "shopCount": 24,
    "brand": "Intel",
    "chip": "Core i5-12400",
    "cores": 6,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
-  },
-  {
-   "id": "bestprice:2157256225",
-   "source": "bestprice",
-   "title": "Intel Core i5-12400 Tray",
-   "url": "https://www.bestprice.gr/item/2157256225/intel-core-i5-12400-tray-epexergastis-6-pyrinon-gia-socket-1700.html",
-   "price": 167.7,
-   "shopCount": 4,
-   "brand": "Intel",
-   "chip": "Core i5-12400",
-   "cores": 6,
-   "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.558925",
@@ -1914,7 +1901,7 @@
    "chip": "Core i5-12400",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2157256226",
@@ -1927,7 +1914,7 @@
    "chip": "Core i5-12400F",
    "cores": 6,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157392002",
@@ -1935,12 +1922,12 @@
    "title": "Intel Core i5-12400F H0 Tray",
    "url": "https://www.bestprice.gr/item/2157392002/intel-core-i5-12400f-h0-tray-epexergastis-6-pyrinon-gia-socket-1700.html",
    "price": 124.97,
-   "shopCount": 6,
+   "shopCount": 7,
    "brand": "Intel",
    "chip": "Core i5-12400F",
    "cores": 6,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:67330551",
@@ -1979,7 +1966,7 @@
    "chip": "Core i5-12400F",
    "cores": 6,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.548171",
@@ -1992,7 +1979,7 @@
    "chip": "Core i5-12400F",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "eshop:PER.558924",
@@ -2005,7 +1992,7 @@
    "chip": "Core i5-12400F",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2157497789",
@@ -2018,7 +2005,7 @@
    "chip": "Core i5-12400T",
    "cores": 6,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:33328276",
@@ -2039,12 +2026,12 @@
    "title": "Intel Core i5-12500 Box",
    "url": "https://www.bestprice.gr/item/2157255810/intel-core-i5-12500-box-epexergastis-6-pyrinon-gia-socket-1700-me-psyktra.html",
    "price": 217.97,
-   "shopCount": 6,
+   "shopCount": 5,
    "brand": "Intel",
    "chip": "Core i5-12500",
    "cores": 6,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157310745",
@@ -2052,12 +2039,12 @@
    "title": "Intel Core i5-12500 Tray",
    "url": "https://www.bestprice.gr/item/2157310745/intel-core-i5-12500-tray-epexergastis-6-pyrinon-gia-socket-1700.html",
    "price": 259.94,
-   "shopCount": 4,
+   "shopCount": 3,
    "brand": "Intel",
    "chip": "Core i5-12500",
    "cores": 6,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:33384183",
@@ -2078,12 +2065,12 @@
    "title": "Intel Core i5-12600 Box",
    "url": "https://www.bestprice.gr/item/2157255815/intel-core-i5-12600-box-epexergastis-6-pyrinon-gia-socket-1700.html",
    "price": 241.97,
-   "shopCount": 11,
+   "shopCount": 12,
    "brand": "Intel",
    "chip": "Core i5-12600",
    "cores": 6,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157117972",
@@ -2096,7 +2083,7 @@
    "chip": "Core i5-12600K",
    "cores": 10,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:32159735",
@@ -2122,7 +2109,7 @@
    "chip": "Core i5-12600K",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2157204277",
@@ -2130,12 +2117,12 @@
    "title": "Intel Core i5-12600K Tray",
    "url": "https://www.bestprice.gr/item/2157204277/intel-core-i5-12600k-tray-epexergastis-10-pyrinon-gia-socket-1700.html",
    "price": 215.64,
-   "shopCount": 6,
+   "shopCount": 5,
    "brand": "Intel",
    "chip": "Core i5-12600K",
    "cores": 10,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157204276",
@@ -2143,12 +2130,12 @@
    "title": "Intel Core i5-12600KF Tray",
    "url": "https://www.bestprice.gr/item/2157204276/intel-core-i5-12600kf-tray-epexergastis-10-pyrinon-gia-socket-1700.html",
    "price": 163.48,
-   "shopCount": 6,
+   "shopCount": 5,
    "brand": "Intel",
    "chip": "Core i5-12600KF",
    "cores": 10,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157123949",
@@ -2161,7 +2148,7 @@
    "chip": "Core i5-12600KF",
    "cores": 10,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:32227989",
@@ -2187,7 +2174,7 @@
    "chip": "Core i5-12600KF",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2158211395",
@@ -2195,12 +2182,12 @@
    "title": "Intel Core i5-13400 Tray",
    "url": "https://www.bestprice.gr/item/2158211395/intel-core-i5-13400-tray-epexergastis-10-pyrinon-gia-socket-1700.html",
    "price": 149.31,
-   "shopCount": 5,
+   "shopCount": 4,
    "brand": "Intel",
    "chip": "Core i5-13400",
    "cores": 10,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:59508563",
@@ -2221,12 +2208,12 @@
    "title": "Intel Core i5-13400 Box",
    "url": "https://www.bestprice.gr/item/2158211394/intel-core-i5-13400-box-epexergastis-10-pyrinon-gia-socket-1700.html",
    "price": 242.82,
-   "shopCount": 8,
+   "shopCount": 7,
    "brand": "Intel",
    "chip": "Core i5-13400",
    "cores": 10,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:40341168",
@@ -2242,19 +2229,6 @@
    "scrapedAt": "2026-09-29T20:29:24+00:00"
   },
   {
-   "id": "bestprice:2158211387",
-   "source": "bestprice",
-   "title": "Intel Core i5-13400F Tray",
-   "url": "https://www.bestprice.gr/item/2158211387/intel-core-i5-13400f-tray-epexergastis-10-pyrinon-gia-socket-1700.html",
-   "price": 189.12,
-   "shopCount": 2,
-   "brand": "Intel",
-   "chip": "Core i5-13400F",
-   "cores": 10,
-   "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
-  },
-  {
    "id": "skroutz:53943323",
    "source": "skroutz",
    "title": "Intel Core i5-13400F 2.5GHz Tray",
@@ -2268,6 +2242,19 @@
    "scrapedAt": "2026-09-29T20:29:24+00:00"
   },
   {
+   "id": "bestprice:2158211387",
+   "source": "bestprice",
+   "title": "Intel Core i5-13400F Tray",
+   "url": "https://www.bestprice.gr/item/2158211387/intel-core-i5-13400f-tray-epexergastis-10-pyrinon-gia-socket-1700.html",
+   "price": 205.94,
+   "shopCount": 1,
+   "brand": "Intel",
+   "chip": "Core i5-13400F",
+   "cores": 10,
+   "socket": "LGA1700",
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
+  },
+  {
    "id": "bestprice:2158211386",
    "source": "bestprice",
    "title": "Intel Core i5-13400F Box",
@@ -2278,7 +2265,7 @@
    "chip": "Core i5-13400F",
    "cores": 10,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:40864226",
@@ -2292,6 +2279,19 @@
    "cores": 14,
    "socket": "LGA1700",
    "scrapedAt": "2026-09-29T20:29:24+00:00"
+  },
+  {
+   "id": "bestprice:2158211388",
+   "source": "bestprice",
+   "title": "Intel Core i5-13500 Box",
+   "url": "https://www.bestprice.gr/item/2158211388/intel-core-i5-13500-box-epexergastis-14-pyrinon-gia-socket-1700.html",
+   "price": 331.28,
+   "shopCount": 1,
+   "brand": "Intel",
+   "chip": "Core i5-13500",
+   "cores": 14,
+   "socket": "LGA1700",
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:40221872",
@@ -2312,25 +2312,12 @@
    "title": "Intel Core i5-13500 Tray",
    "url": "https://www.bestprice.gr/item/2158405187/intel-core-i5-13500-tray-epexergastis-14-pyrinon-gia-socket-1700.html",
    "price": 335.7,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "Intel",
    "chip": "Core i5-13500",
    "cores": 14,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
-  },
-  {
-   "id": "bestprice:2158211388",
-   "source": "bestprice",
-   "title": "Intel Core i5-13500 Box",
-   "url": "https://www.bestprice.gr/item/2158211388/intel-core-i5-13500-box-epexergastis-14-pyrinon-gia-socket-1700.html",
-   "price": 340.49,
-   "shopCount": 1,
-   "brand": "Intel",
-   "chip": "Core i5-13500",
-   "cores": 14,
-   "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2158091139",
@@ -2338,12 +2325,12 @@
    "title": "Intel Core i5-13600KF Tray",
    "url": "https://www.bestprice.gr/item/2158091139/intel-core-i5-13600kf-tray-epexergastis-14-pyrinon-gia-socket-1700.html",
    "price": 248.5,
-   "shopCount": 6,
+   "shopCount": 5,
    "brand": "Intel",
    "chip": "Core i5-13600KF",
    "cores": 14,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:39603070",
@@ -2364,12 +2351,12 @@
    "title": "Intel Core i5-14400 Tray",
    "url": "https://www.bestprice.gr/item/2159333734/intel-core-i5-14400-tray-epexergastis-10-pyrinon-gia-socket-1700.html",
    "price": 143.96,
-   "shopCount": 15,
+   "shopCount": 14,
    "brand": "Intel",
    "chip": "Core i5-14400",
    "cores": 10,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:67048514",
@@ -2395,7 +2382,7 @@
    "chip": "Core i5-14400",
    "cores": 10,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50309291",
@@ -2421,7 +2408,7 @@
    "chip": "Core i5-14400",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2159493895",
@@ -2429,12 +2416,12 @@
    "title": "Intel Core i5-14400F C0 Tray",
    "url": "https://www.bestprice.gr/item/2159493895/intel-core-i5-14400f-c0-tray-epexergastis-10-pyrinon-gia-socket-1700.html",
    "price": 134.52,
-   "shopCount": 6,
+   "shopCount": 5,
    "brand": "Intel",
    "chip": "Core i5-14400F",
    "cores": 10,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159328489",
@@ -2442,12 +2429,12 @@
    "title": "Intel Core i5-14400F Tray",
    "url": "https://www.bestprice.gr/item/2159328489/intel-core-i5-14400f-tray-epexergastis-10-pyrinon-gia-socket-1700.html",
    "price": 150.77,
-   "shopCount": 14,
+   "shopCount": 13,
    "brand": "Intel",
    "chip": "Core i5-14400F",
    "cores": 10,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:49167819",
@@ -2473,7 +2460,7 @@
    "chip": "Core i5-14400F",
    "cores": 10,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:51996962",
@@ -2499,7 +2486,7 @@
    "chip": "Core i5-14400F",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "eshop:PER.275730",
@@ -2512,7 +2499,7 @@
    "chip": "Core i5-14400F",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2159611056",
@@ -2525,7 +2512,7 @@
    "chip": "Core i5-14400T",
    "cores": 10,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50639983",
@@ -2546,12 +2533,12 @@
    "title": "Intel Core i5-14500 Tray",
    "url": "https://www.bestprice.gr/item/2159328486/intel-core-i5-14500-tray-epexergastis-14-pyrinon-gia-socket-1700.html",
    "price": 233.58,
-   "shopCount": 9,
+   "shopCount": 8,
    "brand": "Intel",
    "chip": "Core i5-14500",
    "cores": 14,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159328178",
@@ -2559,12 +2546,12 @@
    "title": "Intel Core i5-14500 Box",
    "url": "https://www.bestprice.gr/item/2159328178/intel-core-i5-14500-box-epexergastis-14-pyrinon-gia-socket-1700-me-psyktra.html",
    "price": 241.9,
-   "shopCount": 39,
+   "shopCount": 38,
    "brand": "Intel",
    "chip": "Core i5-14500",
    "cores": 14,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:49168207",
@@ -2590,7 +2577,7 @@
    "chip": "Core i5-14500",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2159903531",
@@ -2603,7 +2590,7 @@
    "chip": "Core i5-14500T",
    "cores": 14,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50866862",
@@ -2624,12 +2611,12 @@
    "title": "Intel Core i5-14600 Tray",
    "url": "https://www.bestprice.gr/item/2159328494/intel-core-i5-14600-tray-epexergastis-14-pyrinon-gia-socket-1700.html",
    "price": 261.82,
-   "shopCount": 7,
+   "shopCount": 6,
    "brand": "Intel",
    "chip": "Core i5-14600",
    "cores": 14,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:49168535",
@@ -2650,12 +2637,12 @@
    "title": "Intel Core i5-14600K Tray",
    "url": "https://www.bestprice.gr/item/2159149838/intel-core-i5-14600k-tray-epexergastis-14-pyrinon-gia-socket-1700.html",
    "price": 231.28,
-   "shopCount": 11,
+   "shopCount": 10,
    "brand": "Intel",
    "chip": "Core i5-14600K",
    "cores": 14,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159149835",
@@ -2668,7 +2655,7 @@
    "chip": "Core i5-14600K",
    "cores": 14,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:46852089",
@@ -2694,7 +2681,7 @@
    "chip": "Core i5-14600K",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "eshop:PER.275217",
@@ -2707,7 +2694,7 @@
    "chip": "Core i5-14600K",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:46922201",
@@ -2733,20 +2720,20 @@
    "chip": "Core i5-14600KF",
    "cores": 14,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159149836",
    "source": "bestprice",
    "title": "Intel Core i5-14600KF Box",
    "url": "https://www.bestprice.gr/item/2159149836/intel-core-i5-14600kf-box-epexergastis-14-pyrinon-gia-socket-1700.html",
-   "price": 236.13,
-   "shopCount": 19,
+   "price": 233.0,
+   "shopCount": 18,
    "brand": "Intel",
    "chip": "Core i5-14600KF",
    "cores": 14,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:46852484",
@@ -2772,7 +2759,7 @@
    "chip": "Core i5-14600KF",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "eshop:PER.607485",
@@ -2785,7 +2772,7 @@
    "chip": "Core i5-14600KF",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:46922224",
@@ -2811,7 +2798,7 @@
    "chip": "Core i5-14600T",
    "cores": 14,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:53929407",
@@ -2850,7 +2837,7 @@
    "chip": "Core i5-8500",
    "cores": null,
    "socket": "LGA1151",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:17311441",
@@ -2876,7 +2863,7 @@
    "chip": "Core i5-9400F",
    "cores": null,
    "socket": "LGA1151",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:19802443",
@@ -2902,7 +2889,7 @@
    "chip": "Core i5-9500",
    "cores": null,
    "socket": "LGA1151",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2155443505",
@@ -2915,7 +2902,7 @@
    "chip": "Core i5-9600K",
    "cores": null,
    "socket": "LGA1151",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156126030",
@@ -2928,7 +2915,7 @@
    "chip": "Core i7-10700",
    "cores": 8,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156163288",
@@ -2941,7 +2928,7 @@
    "chip": "Core i7-10700F",
    "cores": 8,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156114816",
@@ -2954,7 +2941,7 @@
    "chip": "Core i7-10700K",
    "cores": 8,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156585962",
@@ -2967,7 +2954,7 @@
    "chip": "Core i7-11700",
    "cores": 8,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156585959",
@@ -2980,7 +2967,7 @@
    "chip": "Core i7-11700K",
    "cores": 8,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156612806",
@@ -2993,7 +2980,7 @@
    "chip": "Core i7-11700KF",
    "cores": 8,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157256223",
@@ -3001,12 +2988,12 @@
    "title": "Intel Core i7-12700 Tray",
    "url": "https://www.bestprice.gr/item/2157256223/intel-core-i7-12700-tray-epexergastis-12-pyrinon-gia-socket-1700.html",
    "price": 285.57,
-   "shopCount": 12,
+   "shopCount": 11,
    "brand": "Intel",
    "chip": "Core i7-12700",
    "cores": 12,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157255814",
@@ -3019,7 +3006,7 @@
    "chip": "Core i7-12700",
    "cores": 12,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:33663224",
@@ -3045,7 +3032,7 @@
    "chip": "Core i7-12700",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2157277078",
@@ -3053,12 +3040,12 @@
    "title": "Intel Core i7-12700F Box",
    "url": "https://www.bestprice.gr/item/2157277078/intel-core-i7-12700f-box-epexergastis-12-pyrinon-gia-socket-1700-me-psyktra.html",
    "price": 249.44,
-   "shopCount": 25,
+   "shopCount": 24,
    "brand": "Intel",
    "chip": "Core i7-12700F",
    "cores": 12,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157421391",
@@ -3071,7 +3058,7 @@
    "chip": "Core i7-12700F",
    "cores": 12,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:34396780",
@@ -3097,7 +3084,7 @@
    "chip": "Core i7-12700F",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2157117973",
@@ -3105,12 +3092,12 @@
    "title": "Intel Core i7-12700K Box",
    "url": "https://www.bestprice.gr/item/2157117973/intel-core-i7-12700k-box-epexergastis-12-pyrinon-gia-socket-1700.html",
    "price": 255.84,
-   "shopCount": 21,
+   "shopCount": 20,
    "brand": "Intel",
    "chip": "Core i7-12700K",
    "cores": 12,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:32106143",
@@ -3136,7 +3123,7 @@
    "chip": "Core i7-12700K",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2157168044",
@@ -3144,12 +3131,12 @@
    "title": "Intel Core i7-12700K Tray",
    "url": "https://www.bestprice.gr/item/2157168044/intel-core-i7-12700k-tray-epexergastis-12-pyrinon-gia-socket-1700.html",
    "price": 285.96,
-   "shopCount": 8,
+   "shopCount": 7,
    "brand": "Intel",
    "chip": "Core i7-12700K",
    "cores": 12,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157204275",
@@ -3157,12 +3144,12 @@
    "title": "Intel Core i7-12700KF Tray",
    "url": "https://www.bestprice.gr/item/2157204275/intel-core-i7-12700kf-tray-epexergastis-12-pyrinon-gia-socket-1700.html",
    "price": 212.4,
-   "shopCount": 9,
+   "shopCount": 8,
    "brand": "Intel",
    "chip": "Core i7-12700KF",
    "cores": 12,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157117971",
@@ -3170,12 +3157,12 @@
    "title": "Intel Core i7-12700KF Box",
    "url": "https://www.bestprice.gr/item/2157117971/intel-core-i7-12700kf-box-epexergastis-12-pyrinon-gia-socket-1700.html",
    "price": 222.19,
-   "shopCount": 25,
+   "shopCount": 24,
    "brand": "Intel",
    "chip": "Core i7-12700KF",
    "cores": 12,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:32106396",
@@ -3196,12 +3183,12 @@
    "title": "Intel Core i7-12700T Tray",
    "url": "https://www.bestprice.gr/item/2157510189/intel-core-i7-12700t-tray-epexergastis-12-pyrinon-gia-socket-1700.html",
    "price": 440.5,
-   "shopCount": 2,
+   "shopCount": 1,
    "brand": "Intel",
    "chip": "Core i7-12700T",
    "cores": 12,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:35274149",
@@ -3222,12 +3209,12 @@
    "title": "Intel Core i7-13700 Tray",
    "url": "https://www.bestprice.gr/item/2158211398/intel-core-i7-13700-tray-epexergastis-16-pyrinon-gia-socket-1700.html",
    "price": 352.55,
-   "shopCount": 6,
+   "shopCount": 5,
    "brand": "Intel",
    "chip": "Core i7-13700",
    "cores": 16,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:40221784",
@@ -3261,12 +3248,12 @@
    "title": "Intel Core i7-13700F Tray",
    "url": "https://www.bestprice.gr/item/2158211391/intel-core-i7-13700f-tray-epexergastis-16-pyrinon-gia-socket-1700.html",
    "price": 283.0,
-   "shopCount": 5,
+   "shopCount": 4,
    "brand": "Intel",
    "chip": "Core i7-13700F",
    "cores": 16,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2158211390",
@@ -3274,12 +3261,12 @@
    "title": "Intel Core i7-13700F Box",
    "url": "https://www.bestprice.gr/item/2158211390/intel-core-i7-13700f-box-epexergastis-16-pyrinon-gia-socket-1700.html",
    "price": 326.81,
-   "shopCount": 7,
+   "shopCount": 6,
    "brand": "Intel",
    "chip": "Core i7-13700F",
    "cores": 16,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:38970053",
@@ -3305,7 +3292,20 @@
    "chip": "Core i7-13700K",
    "cores": 16,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
+  },
+  {
+   "id": "bestprice:2158065581",
+   "source": "bestprice",
+   "title": "Intel Core i7-13700KF Tray",
+   "url": "https://www.bestprice.gr/item/2158065581/intel-core-i7-13700kf-tray-epexergastis-16-pyrinon-gia-socket-1700.html",
+   "price": 337.47,
+   "shopCount": 3,
+   "brand": "Intel",
+   "chip": "Core i7-13700KF",
+   "cores": 16,
+   "socket": "LGA1700",
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:39116801",
@@ -3319,19 +3319,6 @@
    "cores": 16,
    "socket": "LGA1700",
    "scrapedAt": "2026-09-29T20:29:24+00:00"
-  },
-  {
-   "id": "bestprice:2158065581",
-   "source": "bestprice",
-   "title": "Intel Core i7-13700KF Tray",
-   "url": "https://www.bestprice.gr/item/2158065581/intel-core-i7-13700kf-tray-epexergastis-16-pyrinon-gia-socket-1700.html",
-   "price": 348.23,
-   "shopCount": 3,
-   "brand": "Intel",
-   "chip": "Core i7-13700KF",
-   "cores": 16,
-   "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
   },
   {
    "id": "skroutz:38411806",
@@ -3357,7 +3344,7 @@
    "chip": "Core i7-13700KF",
    "cores": 16,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159328493",
@@ -3365,12 +3352,12 @@
    "title": "Intel Core i7-14700 Tray",
    "url": "https://www.bestprice.gr/item/2159328493/intel-core-i7-14700-tray-epexergastis-20-pyrinon-gia-socket-1700.html",
    "price": 306.8,
-   "shopCount": 10,
+   "shopCount": 9,
    "brand": "Intel",
    "chip": "Core i7-14700",
    "cores": 20,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159328172",
@@ -3383,7 +3370,7 @@
    "chip": "Core i7-14700",
    "cores": 20,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:49168455",
@@ -3409,7 +3396,7 @@
    "chip": "Core i7-14700",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2159328491",
@@ -3417,12 +3404,12 @@
    "title": "Intel Core i7-14700F Tray",
    "url": "https://www.bestprice.gr/item/2159328491/intel-core-i7-14700f-tray-epexergastis-20-pyrinon-gia-socket-1700-me-psyktra.html",
    "price": 298.54,
-   "shopCount": 18,
+   "shopCount": 17,
    "brand": "Intel",
    "chip": "Core i7-14700F",
    "cores": 20,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:49168481",
@@ -3443,12 +3430,12 @@
    "title": "Intel Core i7-14700F Box",
    "url": "https://www.bestprice.gr/item/2159328173/intel-core-i7-14700f-box-epexergastis-20-pyrinon-gia-socket-1700-me-psyktra.html",
    "price": 344.86,
-   "shopCount": 26,
+   "shopCount": 25,
    "brand": "Intel",
    "chip": "Core i7-14700F",
    "cores": 20,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159149834",
@@ -3461,7 +3448,7 @@
    "chip": "Core i7-14700K",
    "cores": 20,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:46852538",
@@ -3487,7 +3474,7 @@
    "chip": "Core i7-14700K",
    "cores": 20,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.607483",
@@ -3500,7 +3487,7 @@
    "chip": "Core i7-14700K",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2159149832",
@@ -3513,20 +3500,20 @@
    "chip": "Core i7-14700KF",
    "cores": 20,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159149833",
    "source": "bestprice",
    "title": "Intel Core i7-14700KF Tray",
    "url": "https://www.bestprice.gr/item/2159149833/intel-core-i7-14700kf-tray-epexergastis-20-pyrinon-gia-socket-1700.html",
-   "price": 340.07,
-   "shopCount": 9,
+   "price": 341.02,
+   "shopCount": 8,
    "brand": "Intel",
    "chip": "Core i7-14700KF",
    "cores": 20,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:46852383",
@@ -3552,7 +3539,7 @@
    "chip": "Core i7-14700KF",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "eshop:PER.558384",
@@ -3565,7 +3552,7 @@
    "chip": "Core i7-3970X",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:2626943",
@@ -3586,12 +3573,12 @@
    "title": "Intel Core i7-9700 Tray",
    "url": "https://www.bestprice.gr/item/2155747571/intel-core-i7-9700-tray-epexergastis-8-pyrinon-gia-socket-1151.html",
    "price": 362.15,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "Intel",
    "chip": "Core i7-9700",
    "cores": 8,
    "socket": "LGA1151",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:19127507",
@@ -3630,7 +3617,7 @@
    "chip": "Core i9-10900K",
    "cores": 10,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:22224118",
@@ -3669,7 +3656,7 @@
    "chip": "Core i9-11900",
    "cores": 8,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156585960",
@@ -3682,7 +3669,7 @@
    "chip": "Core i9-11900K",
    "cores": 8,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157256214",
@@ -3690,12 +3677,12 @@
    "title": "Intel Core i9-12900 Box",
    "url": "https://www.bestprice.gr/item/2157256214/intel-core-i9-12900-box-epexergastis-16-pyrinon-gia-socket-1700-me-psyktra.html",
    "price": 457.81,
-   "shopCount": 6,
+   "shopCount": 5,
    "brand": "Intel",
    "chip": "Core i9-12900",
    "cores": 16,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:33403804",
@@ -3721,7 +3708,7 @@
    "chip": "Core i9-12900",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:33403698",
@@ -3747,7 +3734,7 @@
    "chip": "Core i9-12900F",
    "cores": 16,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157117970",
@@ -3755,12 +3742,12 @@
    "title": "Intel Core i9-12900K Box",
    "url": "https://www.bestprice.gr/item/2157117970/intel-core-i9-12900k-box-epexergastis-16-pyrinon-gia-socket-1700.html",
    "price": 350.46,
-   "shopCount": 28,
+   "shopCount": 27,
    "brand": "Intel",
    "chip": "Core i9-12900K",
    "cores": 16,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:32106248",
@@ -3786,7 +3773,7 @@
    "chip": "Core i9-12900K",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2157143730",
@@ -3794,12 +3781,12 @@
    "title": "Intel Core i9-12900K Tray",
    "url": "https://www.bestprice.gr/item/2157143730/intel-core-i9-12900k-tray-epexergastis-16-pyrinon-gia-socket-1700.html",
    "price": 385.33,
-   "shopCount": 6,
+   "shopCount": 5,
    "brand": "Intel",
    "chip": "Core i9-12900K",
    "cores": 16,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.558914",
@@ -3812,7 +3799,7 @@
    "chip": "Core i9-12900KF",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2157117975",
@@ -3820,12 +3807,12 @@
    "title": "Intel Core i9-12900KF Box",
    "url": "https://www.bestprice.gr/item/2157117975/intel-core-i9-12900kf-box-epexergastis-16-pyrinon-gia-socket-1700.html",
    "price": 301.19,
-   "shopCount": 23,
+   "shopCount": 22,
    "brand": "Intel",
    "chip": "Core i9-12900KF",
    "cores": 16,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:32159644",
@@ -3846,12 +3833,12 @@
    "title": "Intel Core i9-12900KF Tray",
    "url": "https://www.bestprice.gr/item/2157213038/intel-core-i9-12900kf-tray-epexergastis-16-pyrinon-gia-socket-1700.html",
    "price": 338.78,
-   "shopCount": 9,
+   "shopCount": 8,
    "brand": "Intel",
    "chip": "Core i9-12900KF",
    "cores": 16,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:40231701",
@@ -3877,20 +3864,20 @@
    "chip": "Core i9-13900",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2158405189",
    "source": "bestprice",
    "title": "Intel Core i9-13900 Tray",
    "url": "https://www.bestprice.gr/item/2158405189/intel-core-i9-13900-tray-epexergastis-24-pyrinon-gia-socket-1700.html",
-   "price": 692.9,
-   "shopCount": 2,
+   "price": 819.42,
+   "shopCount": 1,
    "brand": "Intel",
    "chip": "Core i9-13900",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:40341424",
@@ -3916,7 +3903,7 @@
    "chip": "Core i9-13900F",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:38411251",
@@ -3942,7 +3929,7 @@
    "chip": "Core i9-13900K",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2158094114",
@@ -3950,12 +3937,12 @@
    "title": "Intel Core i9-13900K Tray",
    "url": "https://www.bestprice.gr/item/2158094114/intel-core-i9-13900k-tray-epexergastis-24-pyrinon-gia-socket-1700.html",
    "price": 579.3,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "Intel",
    "chip": "Core i9-13900K",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2158122062",
@@ -3963,12 +3950,12 @@
    "title": "Intel Core i9-13900KF Tray",
    "url": "https://www.bestprice.gr/item/2158122062/intel-core-i9-13900kf-tray-epexergastis-16-pyrinon-gia-socket-1700.html",
    "price": 413.01,
-   "shopCount": 8,
+   "shopCount": 7,
    "brand": "Intel",
    "chip": "Core i9-13900KF",
    "cores": 16,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:39152719",
@@ -4007,7 +3994,7 @@
    "chip": "Core i9-13900KS",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159328487",
@@ -4015,12 +4002,12 @@
    "title": "Intel Core i9-14900 Tray",
    "url": "https://www.bestprice.gr/item/2159328487/intel-core-i9-14900-tray-epexergastis-24-pyrinon-gia-socket-1700.html",
    "price": 535.42,
-   "shopCount": 6,
+   "shopCount": 5,
    "brand": "Intel",
    "chip": "Core i9-14900",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:49168559",
@@ -4041,12 +4028,12 @@
    "title": "Intel Core i9-14900 Box",
    "url": "https://www.bestprice.gr/item/2159328179/intel-core-i9-14900-box-epexergastis-24-pyrinon-gia-socket-1700-me-psyktra.html",
    "price": 580.93,
-   "shopCount": 26,
+   "shopCount": 25,
    "brand": "Intel",
    "chip": "Core i9-14900",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159328488",
@@ -4054,12 +4041,12 @@
    "title": "Intel Core i9-14900F Tray",
    "url": "https://www.bestprice.gr/item/2159328488/intel-core-i9-14900f-tray-epexergastis-24-pyrinon-gia-socket-1700.html",
    "price": 435.41,
-   "shopCount": 7,
+   "shopCount": 6,
    "brand": "Intel",
    "chip": "Core i9-14900F",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:49168727",
@@ -4080,12 +4067,12 @@
    "title": "Intel Core i9-14900F Box",
    "url": "https://www.bestprice.gr/item/2159328171/intel-core-i9-14900f-box-epexergastis-24-pyrinon-gia-socket-1700-me-psyktra.html",
    "price": 560.97,
-   "shopCount": 17,
+   "shopCount": 16,
    "brand": "Intel",
    "chip": "Core i9-14900F",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.607541",
@@ -4098,7 +4085,7 @@
    "chip": "Core i9-14900F",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2159149830",
@@ -4106,12 +4093,12 @@
    "title": "Intel Core i9-14900K Tray",
    "url": "https://www.bestprice.gr/item/2159149830/intel-core-i9-14900k-tray-epexergastis-24-pyrinon-gia-socket-1700.html",
    "price": 428.34,
-   "shopCount": 10,
+   "shopCount": 9,
    "brand": "Intel",
    "chip": "Core i9-14900K",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159149827",
@@ -4119,12 +4106,12 @@
    "title": "Intel Core i9-14900K Box",
    "url": "https://www.bestprice.gr/item/2159149827/intel-core-i9-14900k-box-epexergastis-24-pyrinon-gia-socket-1700.html",
    "price": 449.94,
-   "shopCount": 42,
+   "shopCount": 41,
    "brand": "Intel",
    "chip": "Core i9-14900K",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:46852152",
@@ -4150,7 +4137,7 @@
    "chip": "Core i9-14900K",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2159149829",
@@ -4158,12 +4145,12 @@
    "title": "Intel Core i9-14900KF Tray",
    "url": "https://www.bestprice.gr/item/2159149829/intel-core-i9-14900kf-tray-epexergastis-24-pyrinon-gia-socket-1700.html",
    "price": 434.63,
-   "shopCount": 7,
+   "shopCount": 6,
    "brand": "Intel",
    "chip": "Core i9-14900KF",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159149828",
@@ -4176,7 +4163,7 @@
    "chip": "Core i9-14900KF",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.607480",
@@ -4189,7 +4176,7 @@
    "chip": "Core i9-14900KF",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:46852630",
@@ -4210,12 +4197,12 @@
    "title": "Intel Core i9-14900KS Box",
    "url": "https://www.bestprice.gr/item/2159442064/intel-core-i9-14900ks-box-epexergastis-24-pyrinon-gia-socket-1700.html",
    "price": 633.66,
-   "shopCount": 8,
+   "shopCount": 7,
    "brand": "Intel",
    "chip": "Core i9-14900KS",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.235584",
@@ -4228,7 +4215,7 @@
    "chip": "Core i9-14900KS",
    "cores": null,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:51850284",
@@ -4254,7 +4241,7 @@
    "chip": "Core i9-14900KS",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160321740",
@@ -4262,12 +4249,12 @@
    "title": "Intel Core i9 14900T Tray",
    "url": "https://www.bestprice.gr/item/2160321740/intel-core-i9-14900t-tray-epexergastis-24-pyrinon-gia-socket-1700.html",
    "price": 556.71,
-   "shopCount": 4,
+   "shopCount": 3,
    "brand": "Intel",
    "chip": "Core i9-14900T",
    "cores": 24,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50640684",
@@ -4293,7 +4280,7 @@
    "chip": "EPYC 4124P",
    "cores": 4,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:55413502",
@@ -4319,7 +4306,7 @@
    "chip": "EPYC 4244P",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:55364085",
@@ -4358,7 +4345,7 @@
    "chip": "EPYC 4344P",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2164268439",
@@ -4371,7 +4358,7 @@
    "chip": "EPYC 4345P",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:61817586",
@@ -4397,7 +4384,7 @@
    "chip": "EPYC 4364P",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:55413681",
@@ -4436,7 +4423,7 @@
    "chip": "EPYC 4464P",
    "cores": 12,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2164124379",
@@ -4444,12 +4431,12 @@
    "title": "AMD Epyc 4465P Tray",
    "url": "https://www.bestprice.gr/item/2164124379/amd-epyc-4465p-tray-epexergastis-12-pyrinon-gia-socket-am5.html",
    "price": 455.06,
-   "shopCount": 8,
+   "shopCount": 7,
    "brand": "AMD",
    "chip": "EPYC 4465P",
    "cores": 12,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:63878327",
@@ -4488,7 +4475,7 @@
    "chip": "EPYC 4545P",
    "cores": 16,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159791483",
@@ -4501,7 +4488,7 @@
    "chip": "EPYC 4564P",
    "cores": 16,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:55413658",
@@ -4527,7 +4514,7 @@
    "chip": "EPYC 4565P",
    "cores": 16,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:68412122",
@@ -4553,7 +4540,7 @@
    "chip": "EPYC 4584PX",
    "cores": 16,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:55501603",
@@ -4618,7 +4605,7 @@
    "chip": "EPYC 7303",
    "cores": 16,
    "socket": "SP3",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:37990224",
@@ -4696,7 +4683,7 @@
    "chip": "EPYC 7451",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:37990419",
@@ -4722,7 +4709,7 @@
    "chip": "EPYC 7513",
    "cores": 32,
    "socket": "SP3",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:41537358",
@@ -4761,7 +4748,7 @@
    "chip": "EPYC 8124P",
    "cores": 16,
    "socket": "SP6",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:53966506",
@@ -4787,7 +4774,7 @@
    "chip": "EPYC 8224P",
    "cores": 24,
    "socket": "SP6",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159658640",
@@ -4800,7 +4787,7 @@
    "chip": "EPYC 8324P",
    "cores": 32,
    "socket": "SP6",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:53965031",
@@ -4839,7 +4826,7 @@
    "chip": "EPYC 8324PN",
    "cores": 32,
    "socket": "SP6",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:53965160",
@@ -4865,7 +4852,7 @@
    "chip": "EPYC 8434P",
    "cores": 48,
    "socket": "SP6",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159686408",
@@ -4878,7 +4865,7 @@
    "chip": "EPYC 8534P",
    "cores": 64,
    "socket": "SP6",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:54355919",
@@ -4917,7 +4904,7 @@
    "chip": "EPYC 9124",
    "cores": 16,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:53546809",
@@ -4956,7 +4943,7 @@
    "chip": "EPYC 9174F",
    "cores": 16,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:61031024",
@@ -5008,7 +4995,7 @@
    "chip": "EPYC 9224",
    "cores": 24,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:53961037",
@@ -5034,7 +5021,7 @@
    "chip": "EPYC 9254",
    "cores": 24,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:45246278",
@@ -5060,7 +5047,7 @@
    "chip": "EPYC 9274F",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:60125201",
@@ -5086,7 +5073,7 @@
    "chip": "EPYC 9275F",
    "cores": 24,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159010564",
@@ -5099,7 +5086,7 @@
    "chip": "EPYC 9334",
    "cores": 32,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:45463835",
@@ -5138,7 +5125,7 @@
    "chip": "EPYC 9335",
    "cores": 32,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:41656252",
@@ -5164,7 +5151,7 @@
    "chip": "EPYC 9354",
    "cores": 32,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:41656291",
@@ -5190,7 +5177,7 @@
    "chip": "EPYC 9354P",
    "cores": 32,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160406116",
@@ -5203,7 +5190,7 @@
    "chip": "EPYC 9355",
    "cores": 32,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:59759380",
@@ -5255,7 +5242,7 @@
    "chip": "EPYC 9365",
    "cores": 36,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:41656274",
@@ -5281,7 +5268,7 @@
    "chip": "EPYC 9374F",
    "cores": 32,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:63801466",
@@ -5320,7 +5307,7 @@
    "chip": "EPYC 9454",
    "cores": 48,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:53949719",
@@ -5346,7 +5333,7 @@
    "chip": "EPYC 9454P",
    "cores": 48,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:63878250",
@@ -5385,7 +5372,7 @@
    "chip": "EPYC 9455P",
    "cores": 48,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:42123231",
@@ -5411,7 +5398,7 @@
    "chip": "EPYC 9474F",
    "cores": 48,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:59830604",
@@ -5437,7 +5424,7 @@
    "chip": "EPYC 9475F",
    "cores": 48,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:45463476",
@@ -5463,7 +5450,7 @@
    "chip": "EPYC 9534",
    "cores": 64,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:65210164",
@@ -5489,7 +5476,7 @@
    "chip": "EPYC 9535",
    "cores": 64,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:41656225",
@@ -5515,7 +5502,7 @@
    "chip": "EPYC 9554",
    "cores": 64,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:41656107",
@@ -5541,7 +5528,7 @@
    "chip": "EPYC 9554P",
    "cores": 64,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:59086847",
@@ -5567,7 +5554,7 @@
    "chip": "EPYC 9555",
    "cores": 64,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:61857041",
@@ -5619,7 +5606,7 @@
    "chip": "EPYC 9575F",
    "cores": 64,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:45463304",
@@ -5645,7 +5632,7 @@
    "chip": "EPYC 9634",
    "cores": 84,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2163047533",
@@ -5658,7 +5645,7 @@
    "chip": "EPYC 9645",
    "cores": 96,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:64210690",
@@ -5679,12 +5666,12 @@
    "title": "AMD Epyc 9654 Tray",
    "url": "https://www.bestprice.gr/item/2158727805/amd-epyc-9654-tray-epexergastis-96-pyrinon-gia-socket-sp5.html",
    "price": 2400.77,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "AMD",
    "chip": "EPYC 9654",
    "cores": 96,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:45054028",
@@ -5723,7 +5710,7 @@
    "chip": "EPYC 9655",
    "cores": 96,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:59339879",
@@ -5762,7 +5749,7 @@
    "chip": "EPYC 9655P",
    "cores": 96,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:53966961",
@@ -5788,7 +5775,7 @@
    "chip": "EPYC 9684X",
    "cores": 96,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:48925077",
@@ -5814,7 +5801,7 @@
    "chip": "EPYC 9734",
    "cores": 112,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2162829113",
@@ -5827,7 +5814,7 @@
    "chip": "EPYC 9745",
    "cores": 128,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:63878285",
@@ -5866,7 +5853,7 @@
    "chip": "EPYC 9754",
    "cores": 128,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160821125",
@@ -5879,7 +5866,7 @@
    "chip": "EPYC 9755",
    "cores": 128,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:60367587",
@@ -5931,20 +5918,20 @@
    "chip": "EPYC 9845",
    "cores": 160,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2162829115",
    "source": "bestprice",
    "title": "AMD Epyc 9965 Tray",
    "url": "https://www.bestprice.gr/item/2162829115/amd-epyc-9965-tray-epexergastis-192-pyrinon-gia-socket-sp5.html",
-   "price": 9313.06,
+   "price": 9579.15,
    "shopCount": 2,
    "brand": "AMD",
    "chip": "EPYC 9965",
    "cores": 192,
    "socket": "SP5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:63878061",
@@ -5970,7 +5957,7 @@
    "chip": "Pentium G4500",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:10787786",
@@ -5996,7 +5983,7 @@
    "chip": "Pentium G5420",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:23892721",
@@ -6022,7 +6009,7 @@
    "chip": "Pentium G6400",
    "cores": 2,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156643505",
@@ -6035,7 +6022,7 @@
    "chip": "Pentium G6400T",
    "cores": 2,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:25079109",
@@ -6061,7 +6048,7 @@
    "chip": "Pentium G6405",
    "cores": 2,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:27758901",
@@ -6100,7 +6087,7 @@
    "chip": "Pentium G6600",
    "cores": 2,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.235585",
@@ -6113,20 +6100,20 @@
    "chip": "Pentium G7400",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2157255818",
    "source": "bestprice",
    "title": "Intel Pentium Gold G7400 Box",
    "url": "https://www.bestprice.gr/item/2157255818/intel-pentium-gold-g7400-box-epexergastis-2-pyrinon-gia-socket-1700-me-psyktra.html",
-   "price": 99.16,
-   "shopCount": 12,
+   "price": 100.16,
+   "shopCount": 11,
    "brand": "Intel",
    "chip": "Pentium G7400",
    "cores": 2,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:33734890",
@@ -6147,12 +6134,12 @@
    "title": "Intel Pentium Gold G7400 Tray",
    "url": "https://www.bestprice.gr/item/2157401401/intel-pentium-gold-g7400-tray-epexergastis-2-pyrinon-gia-socket-1700.html",
    "price": 131.87,
-   "shopCount": 2,
+   "shopCount": 1,
    "brand": "Intel",
    "chip": "Pentium G7400",
    "cores": 2,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159328180",
@@ -6160,12 +6147,12 @@
    "title": "Intel 300 Box",
    "url": "https://www.bestprice.gr/item/2159328180/intel-300-box-epexergastis-2-pyrinon-gia-socket-1700.html",
    "price": 123.03,
-   "shopCount": 4,
+   "shopCount": 3,
    "brand": "Intel",
    "chip": "Processor 300",
    "cores": 2,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:49467263",
@@ -6204,7 +6191,7 @@
    "chip": "Ryzen 3 1200",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156323253",
@@ -6217,7 +6204,7 @@
    "chip": "Ryzen 3 3200G",
    "cores": 4,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:25034067",
@@ -6243,20 +6230,7 @@
    "chip": "Ryzen 3 3200G",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
-  },
-  {
-   "id": "bestprice:2155701962",
-   "source": "bestprice",
-   "title": "AMD Ryzen 3 3200G Box",
-   "url": "https://www.bestprice.gr/item/2155701962/amd-ryzen-3-3200g-box-epexergastis-4-pyrinon-gia-socket-am4-me-psyktra.html",
-   "price": 61.78,
-   "shopCount": 8,
-   "brand": "AMD",
-   "chip": "Ryzen 3 3200G",
-   "cores": 4,
-   "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "eshop:PER.559730",
@@ -6269,7 +6243,20 @@
    "chip": "Ryzen 3 3200G",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
+  },
+  {
+   "id": "bestprice:2155701962",
+   "source": "bestprice",
+   "title": "AMD Ryzen 3 3200G Box",
+   "url": "https://www.bestprice.gr/item/2155701962/amd-ryzen-3-3200g-box-epexergastis-4-pyrinon-gia-socket-am4-me-psyktra.html",
+   "price": 62.1,
+   "shopCount": 7,
+   "brand": "AMD",
+   "chip": "Ryzen 3 3200G",
+   "cores": 4,
+   "socket": "AM4",
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:19344792",
@@ -6290,25 +6277,12 @@
    "title": "AMD Ryzen 3 4100 Box",
    "url": "https://www.bestprice.gr/item/2157559478/amd-ryzen-3-4100-box-epexergastis-4-pyrinon-gia-socket-am4-me-psyktra.html",
    "price": 49.36,
-   "shopCount": 16,
+   "shopCount": 15,
    "brand": "AMD",
    "chip": "Ryzen 3 4100",
    "cores": 4,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
-  },
-  {
-   "id": "eshop:PER.606501",
-   "source": "eshop",
-   "title": "AMD RYZEN 3 4100 3.80GHZ 4-CORE WITH FAN BOX",
-   "url": "https://www.e-shop.gr/cpu-amd-ryzen-3-4100-380ghz-4-core-with-fan-box-p-PER.606501",
-   "price": 54.99,
-   "shopCount": null,
-   "brand": "AMD",
-   "chip": "Ryzen 3 4100",
-   "cores": null,
-   "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:35789872",
@@ -6329,12 +6303,12 @@
    "title": "AMD Ryzen 3 4100 Tray",
    "url": "https://www.bestprice.gr/item/2160008351/amd-ryzen-3-4100-tray-epexergastis-4-pyrinon-gia-socket-am4.html",
    "price": 95.9,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "AMD",
    "chip": "Ryzen 3 4100",
    "cores": 4,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157996414",
@@ -6347,7 +6321,7 @@
    "chip": "Ryzen 3 4300G",
    "cores": 4,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:47274117",
@@ -6373,7 +6347,7 @@
    "chip": "Ryzen 3 4300GE",
    "cores": 4,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.299489",
@@ -6386,7 +6360,7 @@
    "chip": "Ryzen 3 4300GE",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:29115231",
@@ -6438,7 +6412,7 @@
    "chip": "Ryzen 3 PRO 8300G",
    "cores": 4,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156032264",
@@ -6451,7 +6425,7 @@
    "chip": "Ryzen 5 1600",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2155320174",
@@ -6464,7 +6438,7 @@
    "chip": "Ryzen 5 2600X",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.274018",
@@ -6477,7 +6451,7 @@
    "chip": "Ryzen 5 3400G",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2155701957",
@@ -6490,7 +6464,7 @@
    "chip": "Ryzen 5 3400G",
    "cores": 4,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156102045",
@@ -6503,7 +6477,7 @@
    "chip": "Ryzen 5 3400G",
    "cores": 4,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:23137821",
@@ -6529,7 +6503,7 @@
    "chip": "Ryzen 5 3600",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:19434592",
@@ -6568,7 +6542,7 @@
    "chip": "Ryzen 5 3600",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156394479",
@@ -6581,7 +6555,7 @@
    "chip": "Ryzen 5 3600X",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:26118943",
@@ -6602,12 +6576,12 @@
    "title": "AMD Ryzen 5 4500 Box",
    "url": "https://www.bestprice.gr/item/2157554634/amd-ryzen-5-4500-box-epexergastis-6-pyrinon-gia-socket-am4-me-psyktra.html",
    "price": 59.6,
-   "shopCount": 19,
+   "shopCount": 18,
    "brand": "AMD",
    "chip": "Ryzen 5 4500",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.559771",
@@ -6620,7 +6594,7 @@
    "chip": "Ryzen 5 4500",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:35729536",
@@ -6646,7 +6620,7 @@
    "chip": "Ryzen 5 4500",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157554633",
@@ -6659,7 +6633,7 @@
    "chip": "Ryzen 5 4600G",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.274021",
@@ -6672,7 +6646,7 @@
    "chip": "Ryzen 5 5500",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2157489965",
@@ -6685,7 +6659,7 @@
    "chip": "Ryzen 5 5500",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2158827018",
@@ -6693,12 +6667,12 @@
    "title": "AMD Ryzen 5 5500 Tray",
    "url": "https://www.bestprice.gr/item/2158827018/amd-ryzen-5-5500-tray-epexergastis-6-pyrinon-gia-socket-am4.html",
    "price": 82.6,
-   "shopCount": 13,
+   "shopCount": 12,
    "brand": "AMD",
    "chip": "Ryzen 5 5500",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.559772",
@@ -6711,7 +6685,7 @@
    "chip": "Ryzen 5 5500",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:42688318",
@@ -6737,7 +6711,7 @@
    "chip": "Ryzen 5 5500F",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:69594063",
@@ -6763,7 +6737,7 @@
    "chip": "Ryzen 5 5500F",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2164526117",
@@ -6776,7 +6750,7 @@
    "chip": "Ryzen 5 5500F",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.274019",
@@ -6789,7 +6763,7 @@
    "chip": "Ryzen 5 5500GT",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2159808470",
@@ -6797,12 +6771,12 @@
    "title": "AMD Ryzen 5 5500GT Tray",
    "url": "https://www.bestprice.gr/item/2159808470/amd-ryzen-5-5500gt-tray-epexergastis-6-pyrinon-gia-socket-am4.html",
    "price": 153.0,
-   "shopCount": 6,
+   "shopCount": 5,
    "brand": "AMD",
    "chip": "Ryzen 5 5500GT",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159371037",
@@ -6815,7 +6789,7 @@
    "chip": "Ryzen 5 5500GT",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:51556420",
@@ -6836,12 +6810,12 @@
    "title": "AMD Ryzen 5 5600 Tray",
    "url": "https://www.bestprice.gr/item/2158554846/amd-ryzen-5-5600-tray-epexergastis-6-pyrinon-gia-socket-am4.html",
    "price": 107.3,
-   "shopCount": 13,
+   "shopCount": 12,
    "brand": "AMD",
    "chip": "Ryzen 5 5600",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.275414",
@@ -6854,7 +6828,7 @@
    "chip": "Ryzen 5 5600",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:40307413",
@@ -6875,12 +6849,12 @@
    "title": "AMD Ryzen 5 5600 Box",
    "url": "https://www.bestprice.gr/item/2157489966/amd-ryzen-5-5600-box-epexergastis-6-pyrinon-gia-socket-am4-me-psyktra.html",
    "price": 124.25,
-   "shopCount": 26,
+   "shopCount": 25,
    "brand": "AMD",
    "chip": "Ryzen 5 5600",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.559773",
@@ -6893,7 +6867,7 @@
    "chip": "Ryzen 5 5600",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2156903124",
@@ -6906,7 +6880,7 @@
    "chip": "Ryzen 5 5600G",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:65111604",
@@ -6927,12 +6901,12 @@
    "title": "AMD Ryzen 5 5600GT Tray",
    "url": "https://www.bestprice.gr/item/2159808468/amd-ryzen-5-5600gt-tray-epexergastis-6-pyrinon-gia-socket-am4.html",
    "price": 169.0,
-   "shopCount": 4,
+   "shopCount": 3,
    "brand": "AMD",
    "chip": "Ryzen 5 5600GT",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50308611",
@@ -6958,7 +6932,7 @@
    "chip": "Ryzen 5 5600T",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:57312127",
@@ -6984,7 +6958,7 @@
    "chip": "Ryzen 5 5600T",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156416103",
@@ -6992,12 +6966,12 @@
    "title": "AMD Ryzen 5 5600X Tray",
    "url": "https://www.bestprice.gr/item/2156416103/amd-ryzen-5-5600x-tray-epexergastis-6-pyrinon-gia-socket-am4.html",
    "price": 107.38,
-   "shopCount": 18,
+   "shopCount": 17,
    "brand": "AMD",
    "chip": "Ryzen 5 5600X",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:27205866",
@@ -7023,7 +6997,7 @@
    "chip": "Ryzen 5 5600X",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2156351449",
@@ -7031,12 +7005,12 @@
    "title": "AMD Ryzen 5 5600X Box",
    "url": "https://www.bestprice.gr/item/2156351449/amd-ryzen-5-5600x-box-epexergastis-6-pyrinon-gia-socket-am4-me-psyktra.html",
    "price": 141.6,
-   "shopCount": 24,
+   "shopCount": 23,
    "brand": "AMD",
    "chip": "Ryzen 5 5600X",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:59830619",
@@ -7062,7 +7036,7 @@
    "chip": "Ryzen 5 5600XT",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160125764",
@@ -7075,7 +7049,7 @@
    "chip": "Ryzen 5 5600XT",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.253147",
@@ -7088,7 +7062,7 @@
    "chip": "Ryzen 5 5600XT",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2163242381",
@@ -7096,12 +7070,12 @@
    "title": "AMD Ryzen 5 7400 Box",
    "url": "https://www.bestprice.gr/item/2163242381/amd-ryzen-5-7400-box-epexergastis-6-pyrinon-gia-socket-am5-me-psyktra.html",
    "price": 130.93,
-   "shopCount": 7,
+   "shopCount": 6,
    "brand": "AMD",
    "chip": "Ryzen 5 7400",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2163692308",
@@ -7114,7 +7088,7 @@
    "chip": "Ryzen 5 7400",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:65625732",
@@ -7140,7 +7114,7 @@
    "chip": "Ryzen 5 7400",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2164526116",
@@ -7153,7 +7127,7 @@
    "chip": "Ryzen 5 7500",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159010562",
@@ -7161,12 +7135,12 @@
    "title": "AMD Ryzen 5 7500F Tray",
    "url": "https://www.bestprice.gr/item/2159010562/amd-ryzen-5-7500f-tray-epexergastis-6-pyrinon-gia-socket-am5.html",
    "price": 111.51,
-   "shopCount": 22,
+   "shopCount": 21,
    "brand": "AMD",
    "chip": "Ryzen 5 7500F",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.275424",
@@ -7179,7 +7153,7 @@
    "chip": "Ryzen 5 7500F",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:45418318",
@@ -7205,7 +7179,7 @@
    "chip": "Ryzen 5 7500F",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2163236204",
@@ -7218,7 +7192,7 @@
    "chip": "Ryzen 5 7500X3D",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.275270",
@@ -7231,7 +7205,7 @@
    "chip": "Ryzen 5 7500X3D",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:64414231",
@@ -7252,25 +7226,12 @@
    "title": "AMD Ryzen 5 7600 Box",
    "url": "https://www.bestprice.gr/item/2158222848/amd-ryzen-5-7600-box-epexergastis-6-pyrinon-gia-socket-am5-me-psyktra.html",
    "price": 167.58,
-   "shopCount": 21,
+   "shopCount": 18,
    "brand": "AMD",
    "chip": "Ryzen 5 7600",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
-  },
-  {
-   "id": "eshop:PER.607252",
-   "source": "eshop",
-   "title": "AMD RYZEN 5 7600 5.20GHZ 6-CORE BOX",
-   "url": "https://www.e-shop.gr/cpu-amdryzen-5-7600-520ghz-6-core-box-p-PER.607252",
-   "price": 174.9,
-   "shopCount": null,
-   "brand": "AMD",
-   "chip": "Ryzen 5 7600",
-   "cores": null,
-   "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:40307498",
@@ -7291,12 +7252,12 @@
    "title": "AMD Ryzen 5 7600 Tray",
    "url": "https://www.bestprice.gr/item/2159328207/amd-ryzen-5-7600-tray-epexergastis-6-pyrinon-gia-socket-am5.html",
    "price": 199.8,
-   "shopCount": 5,
+   "shopCount": 4,
    "brand": "AMD",
    "chip": "Ryzen 5 7600",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:40624233",
@@ -7322,7 +7283,7 @@
    "chip": "Ryzen 5 7600",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157961645",
@@ -7335,7 +7296,7 @@
    "chip": "Ryzen 5 7600X",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:37822607",
@@ -7356,12 +7317,25 @@
    "title": "AMD Ryzen 5 7600X Tray",
    "url": "https://www.bestprice.gr/item/2158245468/amd-ryzen-5-7600x-tray-epexergastis-6-pyrinon-gia-socket-am5.html",
    "price": 146.32,
-   "shopCount": 7,
+   "shopCount": 6,
    "brand": "AMD",
    "chip": "Ryzen 5 7600X",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
+  },
+  {
+   "id": "eshop:PER.275271",
+   "source": "eshop",
+   "title": "AMD RYZEN 5 7600X 4.7GHZ 6-CORE 32MB L3 TRAY",
+   "url": "https://www.e-shop.gr/cpu-amd-ryzen-5-7600x-47ghz-6-core-32mb-l3-tray-p-PER.275271",
+   "price": 169.0,
+   "shopCount": null,
+   "brand": "AMD",
+   "chip": "Ryzen 5 7600X",
+   "cores": null,
+   "socket": "AM5",
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "eshop:PER.606596",
@@ -7374,7 +7348,7 @@
    "chip": "Ryzen 5 7600X",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "eshop:PER.274025",
@@ -7387,7 +7361,7 @@
    "chip": "Ryzen 5 8400F",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2159808471",
@@ -7395,12 +7369,12 @@
    "title": "AMD Ryzen 5 8400F Tray",
    "url": "https://www.bestprice.gr/item/2159808471/amd-ryzen-5-8400f-tray-epexergastis-6-pyrinon-gia-socket-am5.html",
    "price": 89.2,
-   "shopCount": 14,
+   "shopCount": 13,
    "brand": "AMD",
    "chip": "Ryzen 5 8400F",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:54679790",
@@ -7421,12 +7395,12 @@
    "title": "AMD Ryzen 5 8400F Box",
    "url": "https://www.bestprice.gr/item/2159611054/amd-ryzen-5-8400f-box-epexergastis-6-pyrinon-gia-socket-am5-me-psyktra.html",
    "price": 137.11,
-   "shopCount": 26,
+   "shopCount": 25,
    "brand": "AMD",
    "chip": "Ryzen 5 8400F",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.263686",
@@ -7439,7 +7413,7 @@
    "chip": "Ryzen 5 8400F",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2160654022",
@@ -7452,7 +7426,7 @@
    "chip": "Ryzen 5 8400F",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:53549647",
@@ -7473,12 +7447,12 @@
    "title": "AMD Ryzen 5 8500G Tray",
    "url": "https://www.bestprice.gr/item/2159808472/amd-ryzen-5-8500g-tray-epexergastis-6-pyrinon-gia-socket-am5.html",
    "price": 117.8,
-   "shopCount": 10,
+   "shopCount": 9,
    "brand": "AMD",
    "chip": "Ryzen 5 8500G",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50308895",
@@ -7504,7 +7478,7 @@
    "chip": "Ryzen 5 8500G",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2163743014",
@@ -7517,7 +7491,7 @@
    "chip": "Ryzen 5 8500G",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.607676",
@@ -7530,7 +7504,7 @@
    "chip": "Ryzen 5 8500G",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2159371036",
@@ -7543,7 +7517,20 @@
    "chip": "Ryzen 5 8500G",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
+  },
+  {
+   "id": "eshop:PER.275272",
+   "source": "eshop",
+   "title": "AMD RYZEN 5 8600G 3.6GHZ 6-CORES HREADS-12 L3 16MB 65W TRAY",
+   "url": "https://www.e-shop.gr/cpu-amd-ryzen-5-8600g-36ghz-6-cores-hreads-12-l3-16mb-65w-tray-p-PER.275272",
+   "price": 133.0,
+   "shopCount": null,
+   "brand": "AMD",
+   "chip": "Ryzen 5 8600G",
+   "cores": null,
+   "socket": "AM5",
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2159493896",
@@ -7551,12 +7538,12 @@
    "title": "AMD Ryzen 5 8600G Tray",
    "url": "https://www.bestprice.gr/item/2159493896/amd-ryzen-5-8600g-tray-epexergastis-6-pyrinon-gia-socket-am5.html",
    "price": 139.24,
-   "shopCount": 10,
+   "shopCount": 9,
    "brand": "AMD",
    "chip": "Ryzen 5 8600G",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50639538",
@@ -7577,12 +7564,12 @@
    "title": "AMD Ryzen 5 8600G Box",
    "url": "https://www.bestprice.gr/item/2159371034/amd-ryzen-5-8600g-box-epexergastis-6-pyrinon-gia-socket-am5-me-psyktra.html",
    "price": 166.6,
-   "shopCount": 30,
+   "shopCount": 29,
    "brand": "AMD",
    "chip": "Ryzen 5 8600G",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.607675",
@@ -7595,7 +7582,7 @@
    "chip": "Ryzen 5 8600G",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2162829110",
@@ -7608,7 +7595,7 @@
    "chip": "Ryzen 5 9500F",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:63801574",
@@ -7629,12 +7616,12 @@
    "title": "AMD Ryzen 5 9600 Box",
    "url": "https://www.bestprice.gr/item/2160452359/amd-ryzen-5-9600-box-epexergastis-6-pyrinon-gia-socket-am5.html",
    "price": 179.99,
-   "shopCount": 18,
+   "shopCount": 17,
    "brand": "AMD",
    "chip": "Ryzen 5 9600",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160465483",
@@ -7642,12 +7629,12 @@
    "title": "AMD Ryzen 5 9600 Tray",
    "url": "https://www.bestprice.gr/item/2160465483/amd-ryzen-5-9600-tray-epexergastis-6-pyrinon-gia-socket-am5.html",
    "price": 208.3,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "AMD",
    "chip": "Ryzen 5 9600",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:59086232",
@@ -7673,7 +7660,7 @@
    "chip": "Ryzen 5 9600",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:59759262",
@@ -7693,26 +7680,26 @@
    "source": "bestprice",
    "title": "AMD Ryzen 5 9600X Tray",
    "url": "https://www.bestprice.gr/item/2159968919/amd-ryzen-5-9600x-tray-epexergastis-6-pyrinon-gia-socket-am5.html",
-   "price": 174.25,
-   "shopCount": 13,
+   "price": 172.17,
+   "shopCount": 12,
    "brand": "AMD",
    "chip": "Ryzen 5 9600X",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159903286",
    "source": "bestprice",
    "title": "AMD Ryzen 5 9600X Box",
    "url": "https://www.bestprice.gr/item/2159903286/amd-ryzen-5-9600x-box-epexergastis-6-pyrinon-gia-socket-am5.html",
-   "price": 175.41,
+   "price": 174.77,
    "shopCount": 33,
    "brand": "AMD",
    "chip": "Ryzen 5 9600X",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:56282930",
@@ -7738,20 +7725,7 @@
    "chip": "Ryzen 5 9600X",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
-  },
-  {
-   "id": "eshop:PER.274030",
-   "source": "eshop",
-   "title": "AMD RYZEN 5 9600X 3.9 GHZ 38 MB L2 & L3",
-   "url": "https://www.e-shop.gr/cpu-amd-ryzen-5-9600x-39-ghz-38-mb-l2-l3-p-PER.274030",
-   "price": 188.0,
-   "shopCount": null,
-   "brand": "AMD",
-   "chip": "Ryzen 5 9600X",
-   "cores": null,
-   "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2162470957",
@@ -7764,7 +7738,7 @@
    "chip": "Ryzen 5 9600X",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:59086192",
@@ -7790,7 +7764,7 @@
    "chip": "Ryzen 5 PRO 5650G",
    "cores": 6,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50641235",
@@ -7816,7 +7790,7 @@
    "chip": "Ryzen 5 PRO 7645",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2163503010",
@@ -7829,7 +7803,7 @@
    "chip": "Ryzen 5 PRO 8500G",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:60264976",
@@ -7920,7 +7894,7 @@
    "chip": "Ryzen 5 PRO 9645",
    "cores": 6,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2155701959",
@@ -7933,7 +7907,7 @@
    "chip": "Ryzen 7 3800X",
    "cores": 8,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2163047031",
@@ -7946,7 +7920,7 @@
    "chip": "Ryzen 7 5700",
    "cores": 8,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159371038",
@@ -7954,12 +7928,12 @@
    "title": "AMD Ryzen 7 5700 Box",
    "url": "https://www.bestprice.gr/item/2159371038/amd-ryzen-7-5700-box-epexergastis-8-pyrinon-gia-socket-am4.html",
    "price": 147.5,
-   "shopCount": 14,
+   "shopCount": 13,
    "brand": "AMD",
    "chip": "Ryzen 7 5700",
    "cores": 8,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.607925",
@@ -7972,7 +7946,7 @@
    "chip": "Ryzen 7 5700",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:63878361",
@@ -7993,12 +7967,12 @@
    "title": "AMD Ryzen 7 5700G Tray",
    "url": "https://www.bestprice.gr/item/2157256215/amd-ryzen-7-5700g-tray-epexergastis-8-pyrinon-gia-socket-am4.html",
    "price": 193.78,
-   "shopCount": 14,
+   "shopCount": 13,
    "brand": "AMD",
    "chip": "Ryzen 7 5700G",
    "cores": 8,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.275427",
@@ -8011,7 +7985,7 @@
    "chip": "Ryzen 7 5700G",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2156903125",
@@ -8024,7 +7998,7 @@
    "chip": "Ryzen 7 5700G",
    "cores": 8,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.559765",
@@ -8037,7 +8011,7 @@
    "chip": "Ryzen 7 5700G",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:33646240",
@@ -8057,13 +8031,13 @@
    "source": "bestprice",
    "title": "AMD Ryzen 7 5700X Tray",
    "url": "https://www.bestprice.gr/item/2158823458/amd-ryzen-7-5700x-tray-epexergastis-8-pyrinon-gia-socket-am4.html",
-   "price": 144.05,
-   "shopCount": 22,
+   "price": 144.15,
+   "shopCount": 21,
    "brand": "AMD",
    "chip": "Ryzen 7 5700X",
    "cores": 8,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.275415",
@@ -8076,7 +8050,7 @@
    "chip": "Ryzen 7 5700X",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:40307319",
@@ -8097,12 +8071,12 @@
    "title": "AMD Ryzen 7 5700X Box",
    "url": "https://www.bestprice.gr/item/2157489967/amd-ryzen-7-5700x-box-epexergastis-8-pyrinon-gia-socket-am4.html",
    "price": 158.8,
-   "shopCount": 24,
+   "shopCount": 23,
    "brand": "AMD",
    "chip": "Ryzen 7 5700X",
    "cores": 8,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.559774",
@@ -8115,7 +8089,7 @@
    "chip": "Ryzen 7 5700X",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2156351448",
@@ -8123,12 +8097,12 @@
    "title": "AMD Ryzen 7 5800X Box",
    "url": "https://www.bestprice.gr/item/2156351448/amd-ryzen-7-5800x-box-epexergastis-8-pyrinon-gia-socket-am4.html",
    "price": 205.32,
-   "shopCount": 26,
+   "shopCount": 25,
    "brand": "AMD",
    "chip": "Ryzen 7 5800X",
    "cores": 8,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:25578831",
@@ -8154,7 +8128,7 @@
    "chip": "Ryzen 7 5800X",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2157526252",
@@ -8167,7 +8141,7 @@
    "chip": "Ryzen 7 5800X3D",
    "cores": 8,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:68225012",
@@ -8206,7 +8180,7 @@
    "chip": "Ryzen 7 5800XT",
    "cores": 8,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160067063",
@@ -8219,7 +8193,7 @@
    "chip": "Ryzen 7 5800XT",
    "cores": 8,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:55363656",
@@ -8239,13 +8213,13 @@
    "source": "bestprice",
    "title": "AMD Ryzen 7 7700 Tray",
    "url": "https://www.bestprice.gr/item/2159493897/amd-ryzen-7-7700-tray-epexergastis-8-pyrinon-gia-socket-am5.html",
-   "price": 180.4,
-   "shopCount": 14,
+   "price": 178.7,
+   "shopCount": 13,
    "brand": "AMD",
    "chip": "Ryzen 7 7700",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:40933326",
@@ -8266,12 +8240,12 @@
    "title": "AMD Ryzen 7 7700 Box",
    "url": "https://www.bestprice.gr/item/2158222847/amd-ryzen-7-7700-box-epexergastis-8-pyrinon-gia-socket-am5-me-psyktra.html",
    "price": 229.0,
-   "shopCount": 14,
+   "shopCount": 13,
    "brand": "AMD",
    "chip": "Ryzen 7 7700",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:65949440",
@@ -8297,7 +8271,7 @@
    "chip": "Ryzen 7 7700",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2158245470",
@@ -8310,7 +8284,7 @@
    "chip": "Ryzen 7 7700",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:65625761",
@@ -8331,12 +8305,12 @@
    "title": "AMD Ryzen 7 7700X Box",
    "url": "https://www.bestprice.gr/item/2157961644/amd-ryzen-7-7700x-box-epexergastis-8-pyrinon-gia-socket-am5.html",
    "price": 196.93,
-   "shopCount": 24,
+   "shopCount": 23,
    "brand": "AMD",
    "chip": "Ryzen 7 7700X",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2158245467",
@@ -8344,12 +8318,12 @@
    "title": "AMD Ryzen 7 7700X Tray",
    "url": "https://www.bestprice.gr/item/2158245467/amd-ryzen-7-7700x-tray-epexergastis-8-pyrinon-gia-socket-am5.html",
    "price": 198.24,
-   "shopCount": 6,
+   "shopCount": 5,
    "brand": "AMD",
    "chip": "Ryzen 7 7700X",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.606595",
@@ -8362,7 +8336,7 @@
    "chip": "Ryzen 7 7700X",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:37822611",
@@ -8401,7 +8375,7 @@
    "chip": "Ryzen 7 7700X3D",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2164268437",
@@ -8414,7 +8388,7 @@
    "chip": "Ryzen 7 7700X3D",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159387610",
@@ -8422,12 +8396,12 @@
    "title": "AMD Ryzen 7 7800X3D Tray",
    "url": "https://www.bestprice.gr/item/2159387610/amd-ryzen-7-7800x3d-tray-epexergastis-8-pyrinon-gia-socket-am5.html",
    "price": 271.17,
-   "shopCount": 15,
+   "shopCount": 14,
    "brand": "AMD",
    "chip": "Ryzen 7 7800X3D",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:41684337",
@@ -8453,7 +8427,7 @@
    "chip": "Ryzen 7 7800X3D",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2158524513",
@@ -8466,7 +8440,7 @@
    "chip": "Ryzen 7 7800X3D",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.208331",
@@ -8479,7 +8453,7 @@
    "chip": "Ryzen 7 7800X3D",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2159611060",
@@ -8487,12 +8461,12 @@
    "title": "AMD Ryzen 7 8700F Tray",
    "url": "https://www.bestprice.gr/item/2159611060/amd-ryzen-7-8700f-tray-epexergastis-8-pyrinon-gia-socket-am5.html",
    "price": 137.59,
-   "shopCount": 21,
+   "shopCount": 20,
    "brand": "AMD",
    "chip": "Ryzen 7 8700F",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:53549457",
@@ -8518,7 +8492,7 @@
    "chip": "Ryzen 7 8700F",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2159611053",
@@ -8526,12 +8500,12 @@
    "title": "AMD Ryzen 7 8700F Box",
    "url": "https://www.bestprice.gr/item/2159611053/amd-ryzen-7-8700f-box-epexergastis-8-pyrinon-gia-socket-am5-me-psyktra.html",
    "price": 193.25,
-   "shopCount": 20,
+   "shopCount": 19,
    "brand": "AMD",
    "chip": "Ryzen 7 8700F",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:68412092",
@@ -8557,7 +8531,7 @@
    "chip": "Ryzen 7 8700F",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2159454607",
@@ -8565,12 +8539,12 @@
    "title": "AMD Ryzen 7 8700G Tray",
    "url": "https://www.bestprice.gr/item/2159454607/amd-ryzen-7-8700g-tray-epexergastis-8-pyrinon-gia-socket-am5.html",
    "price": 215.94,
-   "shopCount": 13,
+   "shopCount": 12,
    "brand": "AMD",
    "chip": "Ryzen 7 8700G",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159371035",
@@ -8578,12 +8552,12 @@
    "title": "AMD Ryzen 7 8700G Box",
    "url": "https://www.bestprice.gr/item/2159371035/amd-ryzen-7-8700g-box-epexergastis-8-pyrinon-gia-socket-am5-me-psyktra.html",
    "price": 239.41,
-   "shopCount": 17,
+   "shopCount": 16,
    "brand": "AMD",
    "chip": "Ryzen 7 8700G",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50866908",
@@ -8609,7 +8583,7 @@
    "chip": "Ryzen 7 8700G",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2160125761",
@@ -8617,12 +8591,12 @@
    "title": "AMD Ryzen 7 9700X Tray",
    "url": "https://www.bestprice.gr/item/2160125761/amd-ryzen-7-9700x-tray-epexergastis-8-pyrinon-gia-socket-am5.html",
    "price": 232.68,
-   "shopCount": 25,
+   "shopCount": 24,
    "brand": "AMD",
    "chip": "Ryzen 7 9700X",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.275274",
@@ -8635,7 +8609,7 @@
    "chip": "Ryzen 7 9700X",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:57310081",
@@ -8661,7 +8635,7 @@
    "chip": "Ryzen 7 9700X",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.235688",
@@ -8674,7 +8648,7 @@
    "chip": "Ryzen 7 9700X",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2163328688",
@@ -8687,7 +8661,7 @@
    "chip": "Ryzen 7 9700X",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160308922",
@@ -8695,12 +8669,12 @@
    "title": "AMD Ryzen 7 9800X3D Tray",
    "url": "https://www.bestprice.gr/item/2160308922/amd-ryzen-7-9800x3d-tray-epexergastis-8-pyrinon-gia-socket-am5.html",
    "price": 388.69,
-   "shopCount": 17,
+   "shopCount": 16,
    "brand": "AMD",
    "chip": "Ryzen 7 9800X3D",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:58448602",
@@ -8726,7 +8700,7 @@
    "chip": "Ryzen 7 9800X3D",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "eshop:PER.242690",
@@ -8739,7 +8713,7 @@
    "chip": "Ryzen 7 9800X3D",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2160125755",
@@ -8752,7 +8726,7 @@
    "chip": "Ryzen 7 9800X3D",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.275417",
@@ -8765,7 +8739,7 @@
    "chip": "Ryzen 7 9850X3",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2163503067",
@@ -8778,7 +8752,7 @@
    "chip": "Ryzen 7 9850X3D",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.275394",
@@ -8791,7 +8765,7 @@
    "chip": "Ryzen 7 9850X3D",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2163503066",
@@ -8799,12 +8773,12 @@
    "title": "AMD Ryzen 7 9850X3D Box",
    "url": "https://www.bestprice.gr/item/2163503066/amd-ryzen-7-9850x3d-box-epexergastis-8-pyrinon-gia-socket-am5.html",
    "price": 435.87,
-   "shopCount": 21,
+   "shopCount": 20,
    "brand": "AMD",
    "chip": "Ryzen 7 9850X3D",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:65111589",
@@ -8856,7 +8830,7 @@
    "chip": "Ryzen 7 PRO 7745",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:60264844",
@@ -8882,7 +8856,7 @@
    "chip": "Ryzen 7 PRO 8700G",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:64624706",
@@ -8908,7 +8882,7 @@
    "chip": "Ryzen 7 PRO 9745",
    "cores": 8,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159824026",
@@ -8916,12 +8890,12 @@
    "title": "AMD Ryzen 9 5900XT Box",
    "url": "https://www.bestprice.gr/item/2159824026/amd-ryzen-9-5900xt-box-epexergastis-16-pyrinon-gia-socket-am4.html",
    "price": 305.73,
-   "shopCount": 18,
+   "shopCount": 17,
    "brand": "AMD",
    "chip": "Ryzen 9 5900XT",
    "cores": 16,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.235692",
@@ -8934,7 +8908,7 @@
    "chip": "Ryzen 9 5900XT",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "eshop:PER.275616",
@@ -8947,7 +8921,7 @@
    "chip": "Ryzen 9 5900XT",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:55363569",
@@ -8973,7 +8947,7 @@
    "chip": "Ryzen 9 5900XT",
    "cores": 16,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2156351447",
@@ -8981,12 +8955,12 @@
    "title": "AMD Ryzen 9 5950X Box",
    "url": "https://www.bestprice.gr/item/2156351447/amd-ryzen-9-5950x-box-epexergastis-16-pyrinon-gia-socket-am4.html",
    "price": 301.29,
-   "shopCount": 28,
+   "shopCount": 27,
    "brand": "AMD",
    "chip": "Ryzen 9 5950X",
    "cores": 16,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.559759",
@@ -8999,7 +8973,7 @@
    "chip": "Ryzen 9 5950X",
    "cores": null,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:25578869",
@@ -9025,7 +8999,7 @@
    "chip": "Ryzen 9 5950X",
    "cores": 16,
    "socket": "AM4",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2158222846",
@@ -9033,12 +9007,12 @@
    "title": "AMD Ryzen 9 7900 Box",
    "url": "https://www.bestprice.gr/item/2158222846/amd-ryzen-9-7900-box-epexergastis-12-pyrinon-gia-socket-am5-me-psyktra.html",
    "price": 292.02,
-   "shopCount": 13,
+   "shopCount": 12,
    "brand": "AMD",
    "chip": "Ryzen 9 7900",
    "cores": 12,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.275421",
@@ -9051,7 +9025,7 @@
    "chip": "Ryzen 9 7900",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "eshop:PER.208318",
@@ -9064,7 +9038,7 @@
    "chip": "Ryzen 9 7900",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2158914339",
@@ -9072,12 +9046,12 @@
    "title": "AMD Ryzen 9 7900 Tray",
    "url": "https://www.bestprice.gr/item/2158914339/amd-ryzen-9-7900-tray-epexergastis-12-pyrinon-gia-socket-am5.html",
    "price": 318.0,
-   "shopCount": 9,
+   "shopCount": 8,
    "brand": "AMD",
    "chip": "Ryzen 9 7900",
    "cores": 12,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:40933346",
@@ -9103,7 +9077,7 @@
    "chip": "Ryzen 9 7900X",
    "cores": 12,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:37822625",
@@ -9119,19 +9093,6 @@
    "scrapedAt": "2026-09-29T20:29:24+00:00"
   },
   {
-   "id": "eshop:PER.606594",
-   "source": "eshop",
-   "title": "AMD RYZEN 9 7900X 4.70GHZ 12-CORE BOXED",
-   "url": "https://www.e-shop.gr/cpu-amd-ryzen-9-7900x-470ghz-12-core-boxed-p-PER.606594",
-   "price": 329.0,
-   "shopCount": null,
-   "brand": "AMD",
-   "chip": "Ryzen 9 7900X",
-   "cores": null,
-   "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
-  },
-  {
    "id": "bestprice:2158245469",
    "source": "bestprice",
    "title": "AMD Ryzen 9 7900X Tray",
@@ -9142,7 +9103,7 @@
    "chip": "Ryzen 9 7900X",
    "cores": 12,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2158380155",
@@ -9155,7 +9116,7 @@
    "chip": "Ryzen 9 7900X3D",
    "cores": 12,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:42117910",
@@ -9181,7 +9142,7 @@
    "chip": "Ryzen 9 7900X3D",
    "cores": 12,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:40421037",
@@ -9207,7 +9168,7 @@
    "chip": "Ryzen 9 7950X",
    "cores": 16,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:37822641",
@@ -9246,7 +9207,7 @@
    "chip": "Ryzen 9 7950X3D",
    "cores": 16,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159902295",
@@ -9254,12 +9215,12 @@
    "title": "AMD Ryzen 9 9900X Box",
    "url": "https://www.bestprice.gr/item/2159902295/amd-ryzen-9-9900x-box-epexergastis-12-pyrinon-gia-socket-am5.html",
    "price": 313.28,
-   "shopCount": 32,
+   "shopCount": 31,
    "brand": "AMD",
    "chip": "Ryzen 9 9900X",
    "cores": 12,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:55501115",
@@ -9285,7 +9246,7 @@
    "chip": "Ryzen 9 9900X",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2160277449",
@@ -9293,12 +9254,12 @@
    "title": "AMD Ryzen 9 9900X Tray",
    "url": "https://www.bestprice.gr/item/2160277449/amd-ryzen-9-9900x-tray-epexergastis-12-pyrinon-gia-socket-am5.html",
    "price": 349.78,
-   "shopCount": 7,
+   "shopCount": 6,
    "brand": "AMD",
    "chip": "Ryzen 9 9900X",
    "cores": 12,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:58170455",
@@ -9324,7 +9285,7 @@
    "chip": "Ryzen 9 9900X3D",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2160456352",
@@ -9332,12 +9293,12 @@
    "title": "AMD Ryzen 9 9900X3D Box",
    "url": "https://www.bestprice.gr/item/2160456352/amd-ryzen-9-9900x3d-box-epexergastis-12-pyrinon-gia-socket-am5.html",
    "price": 481.74,
-   "shopCount": 25,
+   "shopCount": 24,
    "brand": "AMD",
    "chip": "Ryzen 9 9900X3D",
    "cores": 12,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160594102",
@@ -9345,12 +9306,12 @@
    "title": "AMD Ryzen 9 9900X3D Tray",
    "url": "https://www.bestprice.gr/item/2160594102/amd-ryzen-9-9900x3d-tray-epexergastis-12-pyrinon-gia-socket-am5.html",
    "price": 494.0,
-   "shopCount": 13,
+   "shopCount": 12,
    "brand": "AMD",
    "chip": "Ryzen 9 9900X3D",
    "cores": 12,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.260211",
@@ -9363,7 +9324,7 @@
    "chip": "Ryzen 9 9900X3D",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:59987533",
@@ -9384,12 +9345,12 @@
    "title": "AMD Ryzen 9 9950X Tray",
    "url": "https://www.bestprice.gr/item/2160204471/amd-ryzen-9-9950x-tray-epexergastis-16-pyrinon-gia-socket-am5.html",
    "price": 442.89,
-   "shopCount": 14,
+   "shopCount": 13,
    "brand": "AMD",
    "chip": "Ryzen 9 9950X",
    "cores": 16,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:55671806",
@@ -9415,7 +9376,7 @@
    "chip": "Ryzen 9 9950X",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2159902296",
@@ -9423,12 +9384,12 @@
    "title": "AMD Ryzen 9 9950X Box",
    "url": "https://www.bestprice.gr/item/2159902296/amd-ryzen-9-9950x-box-epexergastis-16-pyrinon-gia-socket-am5.html",
    "price": 478.16,
-   "shopCount": 34,
+   "shopCount": 32,
    "brand": "AMD",
    "chip": "Ryzen 9 9950X",
    "cores": 16,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.235691",
@@ -9441,7 +9402,7 @@
    "chip": "Ryzen 9 9950X",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2160528670",
@@ -9449,12 +9410,12 @@
    "title": "AMD Ryzen 9 9950X3D Tray",
    "url": "https://www.bestprice.gr/item/2160528670/amd-ryzen-9-9950x3d-tray-epexergastis-16-pyrinon-gia-socket-am5.html",
    "price": 466.6,
-   "shopCount": 10,
+   "shopCount": 9,
    "brand": "AMD",
    "chip": "Ryzen 9 9950X3D",
    "cores": 16,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160456332",
@@ -9467,7 +9428,7 @@
    "chip": "Ryzen 9 9950X3D",
    "cores": 16,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:59292439",
@@ -9493,7 +9454,7 @@
    "chip": "Ryzen 9 9950X3D",
    "cores": null,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2163951247",
@@ -9501,12 +9462,12 @@
    "title": "AMD Ryzen 9 9950X3D2 Box",
    "url": "https://www.bestprice.gr/item/2163951247/amd-ryzen-9-9950x3d2-box-epexergastis-16-pyrinon-gia-socket-am5.html",
    "price": 860.58,
-   "shopCount": 17,
+   "shopCount": 16,
    "brand": "AMD",
    "chip": "Ryzen 9 9950X3D2",
    "cores": 16,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2164151351",
@@ -9519,7 +9480,7 @@
    "chip": "Ryzen 9 9950X3D2",
    "cores": 16,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:66938458",
@@ -9571,7 +9532,7 @@
    "chip": "Ryzen 9 PRO 7945",
    "cores": 12,
    "socket": "AM5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:66792189",
@@ -9657,12 +9618,12 @@
    "title": "AMD Ryzen Threadripper 7960X Box",
    "url": "https://www.bestprice.gr/item/2159228613/amd-ryzen-threadripper-7960x-box-epexergastis-24-pyrinon-gia-socket-str5.html",
    "price": 1219.38,
-   "shopCount": 9,
+   "shopCount": 8,
    "brand": "AMD",
    "chip": "Threadripper 7960X",
    "cores": 24,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:48580939",
@@ -9683,12 +9644,12 @@
    "title": "AMD Ryzen Threadripper 7960X Tray",
    "url": "https://www.bestprice.gr/item/2159706663/amd-ryzen-threadripper-7960x-tray-epexergastis-24-pyrinon-gia-socket-str5.html",
    "price": 1724.0,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "AMD",
    "chip": "Threadripper 7960X",
    "cores": 24,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.275409",
@@ -9701,7 +9662,7 @@
    "chip": "Threadripper 7970X",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:48581000",
@@ -9722,12 +9683,12 @@
    "title": "AMD Ryzen Threadripper 7970X Box",
    "url": "https://www.bestprice.gr/item/2159228612/amd-ryzen-threadripper-7970x-box-epexergastis-32-pyrinon-gia-socket-str5.html",
    "price": 2189.0,
-   "shopCount": 7,
+   "shopCount": 6,
    "brand": "AMD",
    "chip": "Threadripper 7970X",
    "cores": 32,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159808473",
@@ -9735,12 +9696,12 @@
    "title": "AMD Ryzen Threadripper 7970X Tray",
    "url": "https://www.bestprice.gr/item/2159808473/amd-ryzen-threadripper-7970x-tray-epexergastis-32-pyrinon-gia-socket-str5.html",
    "price": 2375.0,
-   "shopCount": 5,
+   "shopCount": 4,
    "brand": "AMD",
    "chip": "Threadripper 7970X",
    "cores": 32,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:48580815",
@@ -9761,25 +9722,25 @@
    "title": "AMD Ryzen Threadripper 7980X Box",
    "url": "https://www.bestprice.gr/item/2159228609/amd-ryzen-threadripper-7980x-box-epexergastis-64-pyrinon-gia-socket-str5.html",
    "price": 5279.87,
-   "shopCount": 4,
+   "shopCount": 3,
    "brand": "AMD",
    "chip": "Threadripper 7980X",
    "cores": 64,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159808474",
    "source": "bestprice",
    "title": "AMD Ryzen Threadripper 7980X Tray",
    "url": "https://www.bestprice.gr/item/2159808474/amd-ryzen-threadripper-7980x-tray-epexergastis-64-pyrinon-gia-socket-str5.html",
-   "price": 5742.34,
-   "shopCount": 2,
+   "price": 5743.44,
+   "shopCount": 1,
    "brand": "AMD",
    "chip": "Threadripper 7980X",
    "cores": 64,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160882390",
@@ -9787,12 +9748,12 @@
    "title": "AMD Ryzen Threadripper 9960X Box",
    "url": "https://www.bestprice.gr/item/2160882390/amd-ryzen-threadripper-9960x-box-epexergastis-24-pyrinon-gia-socket-str5.html",
    "price": 1534.38,
-   "shopCount": 11,
+   "shopCount": 10,
    "brand": "AMD",
    "chip": "Threadripper 9960X",
    "cores": 24,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:61986842",
@@ -9818,7 +9779,7 @@
    "chip": "Threadripper 9960X",
    "cores": 24,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160882391",
@@ -9831,7 +9792,7 @@
    "chip": "Threadripper 9970X",
    "cores": 32,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:61986984",
@@ -9857,7 +9818,7 @@
    "chip": "Threadripper 9970X",
    "cores": 32,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160882394",
@@ -9865,12 +9826,12 @@
    "title": "AMD Ryzen Threadripper 9980X Box",
    "url": "https://www.bestprice.gr/item/2160882394/amd-ryzen-threadripper-9980x-box-epexergastis-64-pyrinon-gia-socket-str5.html",
    "price": 5007.27,
-   "shopCount": 7,
+   "shopCount": 6,
    "brand": "AMD",
    "chip": "Threadripper 9980X",
    "cores": 64,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:61986940",
@@ -9890,13 +9851,13 @@
    "source": "bestprice",
    "title": "AMD Ryzen Threadripper Pro 3945WX Tray",
    "url": "https://www.bestprice.gr/item/2159611062/amd-ryzen-threadripper-pro-3945wx-tray-epexergastis-12-pyrinon-gia-socket-swrx8.html",
-   "price": 141.57,
+   "price": 145.61,
    "shopCount": 3,
    "brand": "AMD",
    "chip": "Threadripper PRO 3945WX",
    "cores": 12,
    "socket": "sWRX8",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:54359039",
@@ -9922,7 +9883,7 @@
    "chip": "Threadripper PRO 5955WX",
    "cores": 16,
    "socket": "sWRX8",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2158324130",
@@ -9935,7 +9896,7 @@
    "chip": "Threadripper PRO 5965WX",
    "cores": 24,
    "socket": "sWRX8",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2158324131",
@@ -9948,7 +9909,7 @@
    "chip": "Threadripper PRO 5975WX",
    "cores": 32,
    "socket": "sWRX8",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2157795514",
@@ -9961,7 +9922,7 @@
    "chip": "Threadripper PRO 5975WX",
    "cores": 32,
    "socket": "sWRX8",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:38511212",
@@ -9987,7 +9948,7 @@
    "chip": "Threadripper PRO 5995WX",
    "cores": 64,
    "socket": "sWRX8",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:55391396",
@@ -10013,7 +9974,7 @@
    "chip": "Threadripper PRO 7955WX",
    "cores": 16,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160158589",
@@ -10026,7 +9987,7 @@
    "chip": "Threadripper PRO 7955WX",
    "cores": 16,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:48758420",
@@ -10047,12 +10008,12 @@
    "title": "AMD Ryzen Threadripper Pro 7965WX Box",
    "url": "https://www.bestprice.gr/item/2159228611/amd-ryzen-threadripper-pro-7965wx-box-epexergastis-24-pyrinon-gia-socket-str5.html",
    "price": 2753.78,
-   "shopCount": 6,
+   "shopCount": 5,
    "brand": "AMD",
    "chip": "Threadripper PRO 7965WX",
    "cores": 24,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159493899",
@@ -10060,12 +10021,12 @@
    "title": "AMD Ryzen Threadripper Pro 7965WX Tray",
    "url": "https://www.bestprice.gr/item/2159493899/amd-ryzen-threadripper-pro-7965wx-tray-epexergastis-24-pyrinon-gia-socket-str5.html",
    "price": 2908.0,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "AMD",
    "chip": "Threadripper PRO 7965WX",
    "cores": 24,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50300363",
@@ -10085,13 +10046,13 @@
    "source": "bestprice",
    "title": "AMD Ryzen Threadripper Pro 7975WX Tray",
    "url": "https://www.bestprice.gr/item/2159631779/amd-ryzen-threadripper-pro-7975wx-tray-epexergastis-32-pyrinon-gia-socket-str5.html",
-   "price": 4621.36,
-   "shopCount": 2,
+   "price": 4854.56,
+   "shopCount": 1,
    "brand": "AMD",
    "chip": "Threadripper PRO 7975WX",
    "cores": 32,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159228610",
@@ -10104,7 +10065,7 @@
    "chip": "Threadripper PRO 7975WX",
    "cores": 32,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159564771",
@@ -10117,7 +10078,7 @@
    "chip": "Threadripper PRO 7985WX",
    "cores": 64,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50300545",
@@ -10143,7 +10104,7 @@
    "chip": "Threadripper PRO 7985WX",
    "cores": 64,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159228607",
@@ -10156,7 +10117,7 @@
    "chip": "Threadripper PRO 7995WX",
    "cores": 96,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:48143546",
@@ -10182,7 +10143,7 @@
    "chip": "Threadripper PRO 7995WX",
    "cores": 96,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160918657",
@@ -10190,12 +10151,12 @@
    "title": "AMD Ryzen Threadripper Pro 9955WX Box",
    "url": "https://www.bestprice.gr/item/2160918657/amd-ryzen-threadripper-pro-9955wx-box-epexergastis-16-pyrinon-gia-socket-str5.html",
    "price": 1695.98,
-   "shopCount": 10,
+   "shopCount": 9,
    "brand": "AMD",
    "chip": "Threadripper PRO 9955WX",
    "cores": 16,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:61986864",
@@ -10229,12 +10190,12 @@
    "title": "AMD Ryzen Threadripper Pro 9965WX Box",
    "url": "https://www.bestprice.gr/item/2160882392/amd-ryzen-threadripper-pro-9965wx-box-epexergastis-24-pyrinon-gia-socket-str5.html",
    "price": 3135.02,
-   "shopCount": 5,
+   "shopCount": 4,
    "brand": "AMD",
    "chip": "Threadripper PRO 9965WX",
    "cores": 24,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2164151352",
@@ -10247,7 +10208,7 @@
    "chip": "Threadripper PRO 9965WX",
    "cores": 24,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:61857007",
@@ -10268,12 +10229,12 @@
    "title": "AMD Ryzen Threadripper Pro 9975WX Box",
    "url": "https://www.bestprice.gr/item/2160882393/amd-ryzen-threadripper-pro-9975wx-box-epexergastis-32-pyrinon-gia-socket-str5.html",
    "price": 4274.04,
-   "shopCount": 11,
+   "shopCount": 10,
    "brand": "AMD",
    "chip": "Threadripper PRO 9975WX",
    "cores": 32,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:61884877",
@@ -10299,7 +10260,7 @@
    "chip": "Threadripper PRO 9975WX",
    "cores": 32,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160882395",
@@ -10312,7 +10273,7 @@
    "chip": "Threadripper PRO 9985WX",
    "cores": 64,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160882396",
@@ -10320,12 +10281,12 @@
    "title": "AMD Ryzen Threadripper Pro 9995WX Box",
    "url": "https://www.bestprice.gr/item/2160882396/amd-ryzen-threadripper-pro-9995wx-box-epexergastis-96-pyrinon-gia-socket-str5.html",
    "price": 12999.0,
-   "shopCount": 5,
+   "shopCount": 4,
    "brand": "AMD",
    "chip": "Threadripper PRO 9995WX",
    "cores": 96,
    "socket": "sTR5",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:61986891",
@@ -10364,7 +10325,7 @@
    "chip": "Xeon 6315P",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "bestprice:2162508269",
@@ -10372,12 +10333,12 @@
    "title": "Intel Xeon 6315P Tray",
    "url": "https://www.bestprice.gr/item/2162508269/intel-xeon-6315p-tray-epexergastis-4-pyrinon-gia-socket-1700.html",
    "price": 346.0,
-   "shopCount": 4,
+   "shopCount": 3,
    "brand": "Intel",
    "chip": "Xeon 6315P",
    "cores": 4,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:64871412",
@@ -10468,7 +10429,7 @@
    "chip": "Xeon 6438Y",
    "cores": 32,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:64930061",
@@ -10520,7 +10481,7 @@
    "chip": "Xeon 6517P",
    "cores": 16,
    "socket": "LGA4710",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:68874252",
@@ -10546,7 +10507,7 @@
    "chip": "Xeon 6527P",
    "cores": 24,
    "socket": "LGA4710",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:67938676",
@@ -10572,7 +10533,7 @@
    "chip": "Xeon 6530P",
    "cores": 32,
    "socket": "LGA4710",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:69042788",
@@ -10611,7 +10572,7 @@
    "chip": "Xeon 6756E",
    "cores": 128,
    "socket": "LGA4710",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:69593699",
@@ -10676,7 +10637,7 @@
    "chip": "Xeon E-2314",
    "cores": 4,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:37460184",
@@ -10702,7 +10663,7 @@
    "chip": "Xeon E-2324G",
    "cores": 4,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:35105419",
@@ -10728,7 +10689,7 @@
    "chip": "Xeon E-2378G",
    "cores": 8,
    "socket": "LGA1200",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:37991077",
@@ -10793,7 +10754,7 @@
    "chip": "Xeon E-2456",
    "cores": 6,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:51849932",
@@ -10819,7 +10780,7 @@
    "chip": "Xeon E-2468",
    "cores": 8,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:53546151",
@@ -10845,7 +10806,7 @@
    "chip": "Xeon E-2478",
    "cores": 8,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:51124323",
@@ -10871,7 +10832,7 @@
    "chip": "Xeon E-2486",
    "cores": 6,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50866474",
@@ -10897,7 +10858,7 @@
    "chip": "Xeon E-2488",
    "cores": 8,
    "socket": "LGA1700",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:22224843",
@@ -10923,7 +10884,7 @@
    "chip": "Xeon E5-1620 v3",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:5775322",
@@ -10988,7 +10949,7 @@
    "chip": "Xeon E5-2603 v3",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:5775702",
@@ -11027,7 +10988,7 @@
    "chip": "Xeon E5-2620 v4",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:9399047",
@@ -11079,7 +11040,7 @@
    "chip": "Xeon E5-2643 v4",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "eshop:PER.558449",
@@ -11092,7 +11053,7 @@
    "chip": "Xeon E5-2650 v2",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:30:35+00:00"
+   "scrapedAt": "2026-09-29T22:21:25+00:00"
   },
   {
    "id": "skroutz:4045442",
@@ -11118,7 +11079,7 @@
    "chip": "Xeon E5-2650 v4",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:34275086",
@@ -11157,20 +11118,7 @@
    "chip": "Xeon Gold 5217",
    "cores": 8,
    "socket": "LGA3647",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
-  },
-  {
-   "id": "bestprice:2162728774",
-   "source": "bestprice",
-   "title": "Fujitsu Xeon Gold 5217 Tray",
-   "url": "https://www.bestprice.gr/item/2162728774/fujitsu-xeon-gold-5217-tray-epexergastis-8-pyrinon-gia-socket-3647.html",
-   "price": 3259.98,
-   "shopCount": 1,
-   "brand": "Intel",
-   "chip": "Xeon Gold 5217",
-   "cores": 8,
-   "socket": "LGA3647",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:19986577",
@@ -11196,7 +11144,7 @@
    "chip": "Xeon Gold 5222",
    "cores": 4,
    "socket": "LGA3647",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:37990493",
@@ -11235,7 +11183,7 @@
    "chip": "Xeon Gold 5317",
    "cores": 12,
    "socket": "LGA4189",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:37990982",
@@ -11261,7 +11209,7 @@
    "chip": "Xeon Gold 5318Y",
    "cores": 24,
    "socket": "LGA4189",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2159686409",
@@ -11274,7 +11222,7 @@
    "chip": "Xeon Gold 5415",
    "cores": 8,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160804344",
@@ -11287,7 +11235,7 @@
    "chip": "Xeon Gold 5415",
    "cores": 8,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:45576775",
@@ -11326,7 +11274,7 @@
    "chip": "Xeon Gold 5520",
    "cores": 28,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:17441141",
@@ -11352,7 +11300,7 @@
    "chip": "Xeon Gold 6126",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:18977302",
@@ -11386,12 +11334,12 @@
    "title": "Intel Xeon Gold 6252 Tray",
    "url": "https://www.bestprice.gr/item/2155841668/intel-xeon-gold-6252-tray-epexergastis-24-pyrinon-gia-socket-3647.html",
    "price": 1487.79,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "Intel",
    "chip": "Xeon Gold 6252",
    "cores": 24,
    "socket": "LGA3647",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:18977377",
@@ -11425,12 +11373,12 @@
    "title": "Intel Xeon Gold 6326 Tray",
    "url": "https://www.bestprice.gr/item/2157401403/intel-xeon-gold-6326-tray-epexergastis-16-pyrinon-gia-socket-4189.html",
    "price": 1875.0,
-   "shopCount": 2,
+   "shopCount": 1,
    "brand": "Intel",
    "chip": "Xeon Gold 6326",
    "cores": 16,
    "socket": "LGA4189",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:38086583",
@@ -11456,7 +11404,7 @@
    "chip": "Xeon Gold 6334",
    "cores": 8,
    "socket": "LGA4189",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:37990999",
@@ -11482,7 +11430,7 @@
    "chip": "Xeon Gold 6342",
    "cores": 24,
    "socket": "LGA4189",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:38086417",
@@ -11508,7 +11456,7 @@
    "chip": "Xeon Gold 6348",
    "cores": 28,
    "socket": "LGA4189",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:53966296",
@@ -11547,7 +11495,7 @@
    "chip": "Xeon Gold 6526Y",
    "cores": 16,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50866294",
@@ -11573,7 +11521,7 @@
    "chip": "Xeon Gold 6530",
    "cores": 32,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50866223",
@@ -11599,7 +11547,7 @@
    "chip": "Xeon Gold 6534",
    "cores": 8,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:67613768",
@@ -11625,7 +11573,7 @@
    "chip": "Xeon Gold 6538Y",
    "cores": 32,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50866370",
@@ -11651,7 +11599,7 @@
    "chip": "Xeon Gold 6542Y",
    "cores": 24,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50866311",
@@ -11677,7 +11625,7 @@
    "chip": "Xeon Gold 6544Y",
    "cores": 16,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:67757898",
@@ -11716,7 +11664,7 @@
    "chip": "Xeon Platinum 8461V",
    "cores": 48,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:20987601",
@@ -11742,7 +11690,7 @@
    "chip": "Xeon Silver 4208",
    "cores": 8,
    "socket": "LGA3647",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:24571273",
@@ -11807,7 +11755,7 @@
    "chip": "Xeon Silver 4210",
    "cores": 10,
    "socket": "LGA3647",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:24571354",
@@ -11846,20 +11794,7 @@
    "chip": "Xeon Silver 4210",
    "cores": 10,
    "socket": "LGA3647",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
-  },
-  {
-   "id": "bestprice:2162728773",
-   "source": "bestprice",
-   "title": "Fujitsu Xeon Silver 4210 Tray",
-   "url": "https://www.bestprice.gr/item/2162728773/fujitsu-xeon-silver-4210-tray-epexergastis-10-pyrinon-gia-socket-3647.html",
-   "price": 1051.41,
-   "shopCount": 1,
-   "brand": "Intel",
-   "chip": "Xeon Silver 4210",
-   "cores": 10,
-   "socket": "LGA3647",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:42669352",
@@ -11919,12 +11854,12 @@
    "title": "Supermicro Xeon Silver 4214R Tray",
    "url": "https://www.bestprice.gr/item/2163311875/supermicro-xeon-silver-4214r-tray-epexergastis-12-pyrinon-gia-socket-3647.html",
    "price": 1266.79,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "Intel",
    "chip": "Xeon Silver 4214R",
    "cores": 12,
    "socket": "LGA3647",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:35435987",
@@ -11945,12 +11880,12 @@
    "title": "Intel Xeon Silver 4309Y Tray",
    "url": "https://www.bestprice.gr/item/2158089824/intel-xeon-silver-4309y-tray-epexergastis-8-pyrinon-gia-socket-4189.html",
    "price": 539.63,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "Intel",
    "chip": "Xeon Silver 4309Y",
    "cores": 8,
    "socket": "LGA4189",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:38948731",
@@ -12002,7 +11937,7 @@
    "chip": "Xeon Silver 4310",
    "cores": 12,
    "socket": "LGA4189",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:32901291",
@@ -12023,12 +11958,12 @@
    "title": "Intel Xeon Silver 4310 Tray",
    "url": "https://www.bestprice.gr/item/2156899817/intel-xeon-silver-4310-tray-epexergastis-12-pyrinon-gia-socket-4189.html",
    "price": 901.97,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "Intel",
    "chip": "Xeon Silver 4310",
    "cores": 12,
    "socket": "LGA4189",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:36911722",
@@ -12054,7 +11989,7 @@
    "chip": "Xeon Silver 4314",
    "cores": 16,
    "socket": "LGA4189",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:33253343",
@@ -12080,7 +12015,7 @@
    "chip": "Xeon Silver 4314",
    "cores": 16,
    "socket": "LGA4189",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2160762297",
@@ -12088,12 +12023,12 @@
    "title": "Dell Xeon Silver 4410Y Tray",
    "url": "https://www.bestprice.gr/item/2160762297/dell-xeon-silver-4410y-tray-epexergastis-12-pyrinon-gia-socket-4677.html",
    "price": 791.6,
-   "shopCount": 14,
+   "shopCount": 13,
    "brand": "Intel",
    "chip": "Xeon Silver 4410Y",
    "cores": 12,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:54360995",
@@ -12132,7 +12067,7 @@
    "chip": "Xeon Silver 4410Y",
    "cores": 12,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:51555401",
@@ -12158,7 +12093,7 @@
    "chip": "Xeon Silver 4509Y",
    "cores": 8,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2164445205",
@@ -12171,7 +12106,7 @@
    "chip": "Xeon Silver 4510",
    "cores": 12,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:50866258",
@@ -12223,7 +12158,7 @@
    "chip": "Xeon Silver 4514Y",
    "cores": 16,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:59086799",
@@ -12301,7 +12236,7 @@
    "chip": "Xeon W-2223",
    "cores": 4,
    "socket": "LGA2066",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:33044628",
@@ -12327,7 +12262,7 @@
    "chip": "Xeon W-2225",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:22224790",
@@ -12392,7 +12327,7 @@
    "chip": "Xeon w3-2423",
    "cores": 6,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:42537381",
@@ -12418,7 +12353,7 @@
    "chip": "Xeon w3-2425",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:42537452",
@@ -12444,7 +12379,7 @@
    "chip": "Xeon w3-2435",
    "cores": 8,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:64722886",
@@ -12496,7 +12431,7 @@
    "chip": "Xeon w5-2455X",
    "cores": 12,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:53966224",
@@ -12535,7 +12470,7 @@
    "chip": "Xeon w5-2545",
    "cores": 12,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:43883653",
@@ -12587,7 +12522,7 @@
    "chip": "Xeon w7-2475X",
    "cores": null,
    "socket": null,
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "skroutz:43245575",
@@ -12613,7 +12548,7 @@
    "chip": "Xeon w7-3445",
    "cores": 20,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   },
   {
    "id": "bestprice:2164097184",
@@ -12626,7 +12561,7 @@
    "chip": "Xeon w9-3595X",
    "cores": 60,
    "socket": "LGA4677",
-   "scrapedAt": "2026-09-29T20:29:45+00:00"
+   "scrapedAt": "2026-09-29T22:20:26+00:00"
   }
  ]
 }
