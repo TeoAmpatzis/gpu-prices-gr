@@ -37,6 +37,10 @@ venv/Scripts/python scraper/main.py --only bestprice --debug   # one source, dum
 - `Listing`: `{id: 'source:nativeId', source, title, url, price, shopCount: number|null, brand: NVIDIA|AMD|Intel, chip, vram, partner, scrapedAt}`
 - `history.json`: `{ [model]: [{d: 'YYYY-MM-DD', min, source}] }` — model = `"<chip> <vram>GB"` (`model_key` in main.py = `modelKey` in data.ts); one point per model per day (min across runs), 365 days kept.
 
+## Deploy (Vercel)
+- Project `gpu-prices-gr` (Hobby, linked via `vercel link`, Git-connected → every push to `main` deploys).
+- **Commit author must map to the owner's GitHub account** or Vercel Hobby marks the deploy "Blocked" (CLI deploys too). Repo-local git identity = `TeoAmpatzis <189219701+TeoAmpatzis@users.noreply.github.com>`; the scrape workflow commits with the same identity. Don't switch it back to `github-actions[bot]`.
+
 ## Adding a source
 1. `scraper/sources/foo.py` with `fetch() -> list[Listing]` (use `normalize.make_listing`).
 2. Add to `SOURCES` in `main.py`; add colour/label in `src/lib/sources.ts`.
@@ -51,5 +55,5 @@ venv/Scripts/python scraper/main.py --only bestprice --debug   # one source, dum
 - [x] Scrapers (Skroutz, BestPrice) + normalize — ~1050 listings, ~90 models
 - [x] GitHub Actions cron (`17 */6 * * *`) — first run green
 - [x] Frontend: filters, model table, source badges, 7-day change, history chart
-- [ ] Owner: connect repo to Vercel (Vite preset, output `dist`)
+- [x] Vercel: linked + Git-connected (see Deploy)
 - [ ] Ideas: per-partner filter, price-drop highlights, URL-synced filters, merge identical products across sources
