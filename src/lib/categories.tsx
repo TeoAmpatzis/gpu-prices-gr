@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { CircuitBoard, Cpu, MemoryStick, type LucideIcon } from 'lucide-react';
-import type { BaseListing, Category, CpuListing, GpuListing, RamListing } from '../types';
+import { CircuitBoard, Cpu, MemoryStick, Plug, type LucideIcon } from 'lucide-react';
+import type { BaseListing, Category, CpuListing, GpuListing, PsuListing, RamListing } from '../types';
 import { mostCommon, type Filters, type Model } from './data';
 
 export interface Column<L extends BaseListing> {
@@ -11,7 +11,7 @@ export interface Column<L extends BaseListing> {
 
 /** A select in the filter bar that only applies to one category. */
 export interface ExtraFilter {
-  key: 'minVram' | 'socket' | 'minCores' | 'minCapacity' | 'minSpeed';
+  key: 'minVram' | 'socket' | 'minCores' | 'minCapacity' | 'minSpeed' | 'minWatts';
   options: (listings: BaseListing[]) => { value: string | number; label: string }[];
 }
 
@@ -28,6 +28,8 @@ export interface CategoryConfig<L extends BaseListing> {
   groups: string[];
   group: (l: L) => string;
   groupDot: Record<string, string>; // Tailwind bg class per group
+  /** Default true: "Μοντέλο" sort goes group by group before `tierScore`. */
+  sortByGroup?: boolean;
   segments: { main: string; pro: string };
   /** Same key as `model_key` in scraper/categories.py. */
   modelKey: (l: L) => string;
@@ -193,5 +195,43 @@ export const RAM: CategoryConfig<RamListing> = {
   after: [{ header: 'Κατασκευαστής', className: 'hidden sm:table-cell', cell: (m) => m.cheapest.brand }],
 };
 
-export const CATEGORIES = { gpu: GPU, cpu: CPU, ram: RAM } as const;
+// ---------- PSU ----------
+// Models are specs across vendors ("850W Gold"), split by form factor like RAM.
+
+const NO_RATING = 'Χωρίς ένδειξη';
+
+export const PSU: CategoryConfig<PsuListing> = {
+  id: 'psu',
+  tab: 'Τροφοδοτικά',
+  title: 'Τιμές Τροφοδοτικών',
+  subtitle: 'Οι χαμηλότερες τιμές τροφοδοτικών PC στην Ελλάδα ανά ισχύ και πιστοποίηση, από Skroutz και BestPrice.',
+  icon: Plug,
+  empty: 'Δεν βρέθηκαν τροφοδοτικά με αυτά τα φίλτρα.',
+  searchPlaceholder: 'Αναζήτηση (π.χ. 850W, RM850x, Seasonic)',
+  groups: ['Diamond', 'Titanium', 'Platinum', 'Gold', 'Silver', 'Bronze', 'Standard', NO_RATING],
+  group: (l) => l.efficiency ?? NO_RATING,
+  groupDot: {
+    Diamond: 'bg-cyan-400', Titanium: 'bg-slate-300', Platinum: 'bg-indigo-300', Gold: 'bg-yellow-500',
+    Silver: 'bg-zinc-400', Bronze: 'bg-amber-700', Standard: 'bg-zinc-500', [NO_RATING]: 'bg-zinc-600',
+  },
+  // Most-offered specs first (850W Gold, 650W Bronze…) rather than rare Titanium units.
+  sortByGroup: false,
+  segments: { main: 'ATX', pro: 'SFX / TFX / Flex' },
+  modelKey: (l) => `${l.chip} ${l.formFactor}`,
+  isPro: (l) => l.formFactor !== 'ATX',
+  tierScore: (m) => m.listings.length * 1e5 + m.cheapest.watts,
+  searchText: (l) => `${l.chip} ${l.title} ${l.brand} ${l.formFactor}`,
+  matchesModel: (m, f) => m.cheapest.watts >= f.minWatts,
+  extraFilters: [
+    {
+      key: 'minWatts',
+      options: () =>
+        [0, 450, 550, 650, 750, 850, 1000, 1200].map((v) => ({ value: v, label: v === 0 ? 'Όλες οι ισχύεις' : `≥ ${v}W` })),
+    },
+  ],
+  before: [{ header: 'Τύπος', className: 'hidden sm:table-cell', cell: (m) => m.cheapest.formFactor }],
+  after: [{ header: 'Κατασκευαστής', className: 'hidden sm:table-cell', cell: (m) => m.cheapest.brand }],
+};
+
+export const CATEGORIES = { gpu: GPU, cpu: CPU, ram: RAM, psu: PSU } as const;
 export const CATEGORY_IDS = Object.keys(CATEGORIES) as Category[];

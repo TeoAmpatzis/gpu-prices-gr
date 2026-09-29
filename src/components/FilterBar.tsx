@@ -67,21 +67,21 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
       </div>
 
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-        <div className="flex gap-1.5">
+        <div className="flex flex-wrap gap-1.5">
           {cfg.groups.map((b) => (
             <button key={b} className={pill(f.groups.includes(b))} onClick={() => set('groups', toggle(f.groups, b))}>
               {b}
             </button>
           ))}
         </div>
-        <div className="flex gap-1.5">
+        <div className="flex flex-wrap gap-1.5">
           {segments.map((c) => (
             <button key={c.value} className={pill(f.segment === c.value)} onClick={() => set('segment', c.value)}>
               {c.label}
             </button>
           ))}
         </div>
-        <div className="flex gap-1.5">
+        <div className="flex flex-wrap gap-1.5">
           {SOURCE_NAMES.map((s) => (
             <button key={s} className={pill(f.sources.includes(s))} onClick={() => set('sources', toggle(f.sources, s))}>
               {SOURCES[s].label}

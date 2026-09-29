@@ -80,6 +80,7 @@ export interface Filters {
   minCores: number;
   minCapacity: number;
   minSpeed: number;
+  minWatts: number;
 }
 
 export function defaultFilters(groups: string[]): Filters {
@@ -95,6 +96,7 @@ export function defaultFilters(groups: string[]): Filters {
     minCores: 0,
     minCapacity: 0,
     minSpeed: 0,
+    minWatts: 0,
   };
 }
 
@@ -117,7 +119,7 @@ export function applyFilters<L extends BaseListing>(all: L[], f: Filters, cfg: C
     'price-desc': (a, b) => b.cheapest.price - a.cheapest.price,
     offers: (a, b) => b.listings.length - a.listings.length,
     model: (a, b) =>
-      cfg.groups.indexOf(a.group) - cfg.groups.indexOf(b.group) ||
+      (cfg.sortByGroup === false ? 0 : cfg.groups.indexOf(a.group) - cfg.groups.indexOf(b.group)) ||
       cfg.tierScore(b) - cfg.tierScore(a) ||
       a.key.localeCompare(b.key),
   };

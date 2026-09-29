@@ -1,6 +1,6 @@
 // Mirror of the JSON written by scraper/main.py (see scraper/models.py).
 
-export type Category = 'gpu' | 'cpu' | 'ram';
+export type Category = 'gpu' | 'cpu' | 'ram' | 'psu';
 export type Brand = 'NVIDIA' | 'AMD' | 'Intel';
 export type SourceName = 'skroutz' | 'bestprice';
 
@@ -36,6 +36,15 @@ export interface RamListing extends BaseListing {
   modules: number;
   speed: number | null; // MHz
   formFactor: 'Desktop' | 'Laptop' | 'Server';
+}
+
+export interface PsuListing extends BaseListing {
+  brand: string; // vendor, e.g. "Corsair"
+  chip: string; // spec, e.g. "850W Gold"
+  watts: number;
+  efficiency: 'Titanium' | 'Platinum' | 'Gold' | 'Silver' | 'Bronze' | 'Diamond' | 'Standard' | null; // null = not stated
+  modular: 'Full' | 'Semi' | 'Non' | null; // null = unknown (BestPrice titles don't say)
+  formFactor: 'ATX' | 'SFX' | 'TFX' | 'Flex';
 }
 
 export interface SourceMeta {
