@@ -10,14 +10,15 @@
   --surface: 255 255 255;
   --sunken: 249 250 251;
   --hover: 243 244 246;
-  --line: 228 230 234;
-  --line-strong: 208 212 218;
-  --fg: 16 24 40;
-  --fg-soft: 52 64 84;
-  --muted: 71 84 103;
-  --faint: 102 112 133;
-  --accent: 4 120 87;
-  --up: 217 45 32;
+  /* Light greys are deliberately dark: thin text on white washes out on Windows. */
+  --line: 220 223 228;
+  --line-strong: 190 196 205;
+  --fg: 10 14 24;
+  --fg-soft: 30 38 54;
+  --muted: 52 62 80;
+  --faint: 78 88 106;
+  --accent: 4 108 78;
+  --up: 200 30 30;
 }
 
 .dark {
@@ -52,4 +53,13 @@
 
 body {
   -webkit-font-smoothing: antialiased;
+}
+
+/* Light mode: slightly heavier text (Inter is a variable font, see index.html) and thicker
+   icon strokes, so small grey text and 16px icons stay crisp on a white background. */
+:root:not(.dark) body {
+  font-weight: 450;
+}
+:root:not(.dark) svg.lucide {
+  stroke-width: 2.4;
 }
