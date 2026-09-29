@@ -83,6 +83,7 @@ export interface Filters {
   minWatts: number;
   window: string; // '' | 'yes' | 'no'
   rgb: string; // '' | 'yes' | 'no'
+  pack: string; // '' | 'single' | 'multi'
 }
 
 export function defaultFilters(groups: string[]): Filters {
@@ -101,6 +102,7 @@ export function defaultFilters(groups: string[]): Filters {
     minWatts: 0,
     window: '',
     rgb: '',
+    pack: '',
   };
 }
 

@@ -28,7 +28,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
   const delta = weekChange(history, m.cheapest.price);
   const colSpan = 4 + cfg.before.length + cfg.after.length;
   const td = (c: CategoryConfig<L>['before'][number]) => (
-    <td key={c.header} className={`px-2 text-sm text-fg-soft ${c.className ?? ''}`}>
+    <td key={c.header} className={`whitespace-nowrap px-2 text-sm text-fg-soft ${c.className ?? ''}`}>
       {c.cell(m)}
     </td>
   );
@@ -44,7 +44,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
         </td>
         {cfg.before.map(td)}
         <td className="px-2">
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-2 whitespace-nowrap">
             <span className="text-[15px] font-semibold tabular-nums text-accent">{formatPrice(m.cheapest.price)}</span>
             <SourceBadge source={m.cheapest.source} />
             {delta != null && Math.abs(delta) >= 1 && (
@@ -59,7 +59,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
           </div>
         </td>
         {cfg.after.map(td)}
-        <td className="hidden px-2 text-sm tabular-nums text-muted md:table-cell">
+        <td className="hidden whitespace-nowrap px-2 text-sm tabular-nums text-muted md:table-cell">
           {m.listings.length > 1 ? `έως ${formatPrice(m.maxPrice)}` : '—'}
         </td>
         <td className="pr-4 text-right text-sm tabular-nums text-muted">{m.listings.length}</td>

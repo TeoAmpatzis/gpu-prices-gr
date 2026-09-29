@@ -1,6 +1,6 @@
 // Mirror of the JSON written by scraper/main.py (see scraper/models.py).
 
-export type Category = 'gpu' | 'cpu' | 'ram' | 'psu' | 'case';
+export type Category = 'gpu' | 'cpu' | 'ram' | 'psu' | 'case' | 'fan' | 'cooler';
 export type Brand = 'NVIDIA' | 'AMD' | 'Intel';
 export type SourceName = 'skroutz' | 'bestprice';
 
@@ -52,6 +52,22 @@ export interface CaseListing extends BaseListing {
   chip: string; // vendor + model without colour, e.g. "Lian Li O11 Vision Compact"
   size: 'Full Tower' | 'Midi Tower' | 'Mini Tower' | 'SFF / Cube' | 'Άλλο';
   window: boolean;
+  rgb: boolean;
+}
+
+export interface FanListing extends BaseListing {
+  brand: string; // vendor
+  chip: string; // vendor + model + size (+ pack), e.g. "Arctic P12 Pro 120mm ×3"
+  size: number; // mm
+  pack: number; // fans in the box
+  rgb: boolean;
+}
+
+export interface CoolerListing extends BaseListing {
+  brand: string; // vendor
+  chip: string; // vendor + model, e.g. "Arctic Liquid Freezer III Pro 360"
+  type: 'Air' | 'AIO';
+  radiator: number | null; // AIO radiator length in mm
   rgb: boolean;
 }
 
