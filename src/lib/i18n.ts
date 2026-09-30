@@ -53,6 +53,7 @@ export const T = {
   listingsShort: { el: 'προϊόντα', en: 'listings' },
   clearFilters: { el: 'Καθαρισμός φίλτρων', en: 'Clear filters' },
   footerNav: { el: 'Πληροφορίες', en: 'Information' },
+  showResults: { el: 'Εμφάνιση', en: 'Show' },
   emptyHint: {
     el: 'Δοκίμασε λιγότερα φίλτρα ή άλλη αναζήτηση.',
     en: 'Try fewer filters or a different search.',

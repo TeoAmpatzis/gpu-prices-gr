@@ -31,7 +31,7 @@ function inline(text: string): ReactNode[] {
       );
     } else {
       out.push(
-        <code key={key} className="rounded bg-hover px-1 py-0.5 font-mono text-[0.85em] text-fg">
+        <code key={key} className="rounded bg-hover px-1 py-0.5 font-mono text-[0.9em] text-fg">
           {m[4]}
         </code>,
       );

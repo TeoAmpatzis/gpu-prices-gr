@@ -25,7 +25,7 @@ function Chip({ active, dot, onClick, children }: { active: boolean; dot?: strin
       type="button"
       aria-pressed={active}
       onClick={onClick}
-      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-sm font-medium ring-1 ring-inset transition ${
+      className={`tap inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-sm font-medium ring-1 ring-inset transition ${
         active
           ? 'bg-accent/10 text-accent ring-accent/30'
           : 'text-muted ring-line-strong hover:bg-hover hover:text-fg'
@@ -73,7 +73,7 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
         <button
           type="button"
           onClick={() => onChange(defaultFilters(cfg.groups))}
-          className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-medium text-muted transition hover:bg-hover hover:text-fg"
+          className="tap inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-medium text-muted transition hover:bg-hover hover:text-fg"
           title={t(T.resetTitle)}
         >
           <RotateCcw className="h-4 w-4" /> {t(T.reset)}
@@ -113,7 +113,7 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
                 type="button"
                 aria-pressed={f.segment === c.value}
                 onClick={() => set('segment', c.value)}
-                className={`flex-1 rounded-md px-2 py-1 text-sm font-medium transition ${
+                className={`tap flex-1 rounded-md px-2 py-1 text-sm font-medium transition ${
                   f.segment === c.value ? 'bg-panel text-fg shadow-sm ring-1 ring-line' : 'text-muted hover:text-fg'
                 }`}
               >

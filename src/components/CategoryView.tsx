@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, SlidersHorizontal } from 'lucide-react';
 import type { BaseListing } from '../types';
-import { applyFilters, defaultFilters, loadData, type CategoryData, type Filters } from '../lib/data';
+import { activeFilterCount, applyFilters, defaultFilters, loadData, type CategoryData, type Filters } from '../lib/data';
 import type { CategoryConfig } from '../lib/categories';
 import { T, tr, useLang } from '../lib/i18n';
 import FilterBar from './FilterBar';
@@ -15,6 +15,8 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
   const [data, setData] = useState<CategoryData<L> | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<Filters>(() => defaultFilters(cfg.groups));
+  // Phones and tablets (< lg): the filters are hidden behind a button.
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   useEffect(() => {
     loadData<L>(cfg.id)
@@ -42,11 +44,35 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
       </>
     );
   }
+  const active = activeFilterCount(filters, cfg.groups);
   return (
-    // Filters in a left sidebar (sticky on wide screens), stacked above the table on narrow ones.
+    // Filters in a left sidebar (sticky) on wide screens; below lg they open from a "Filters" button.
     <div className="grid items-start gap-4 lg:grid-cols-[17rem_minmax(0,1fr)]">
-      <aside className="lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">
+      <button
+        type="button"
+        aria-expanded={filtersOpen}
+        onClick={() => setFiltersOpen((o) => !o)}
+        className="tap card flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold transition-colors duration-150 hover:bg-hover lg:hidden"
+      >
+        <SlidersHorizontal className="h-4 w-4 text-accent" />
+        {tr(lang, T.filters)}
+        {active > 0 && (
+          <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1.5 text-xs font-semibold text-page">
+            {active}
+          </span>
+        )}
+      </button>
+      <aside
+        className={`${filtersOpen ? 'flex' : 'hidden'} flex-col gap-2 lg:sticky lg:top-4 lg:flex lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto`}
+      >
         <FilterBar cfg={cfg} listings={data.latest.listings} filters={filters} onChange={setFilters} />
+        <button
+          type="button"
+          onClick={() => setFiltersOpen(false)}
+          className="tap rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-page transition-opacity duration-150 hover:opacity-90 lg:hidden"
+        >
+          {tr(lang, T.showResults)} {models.length} {tr(lang, T.models)}
+        </button>
       </aside>
       <div className="flex min-w-0 flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-2 px-1 text-sm text-muted">

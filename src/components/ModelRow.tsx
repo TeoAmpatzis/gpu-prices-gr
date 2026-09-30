@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { Fragment, lazy, Suspense, type ReactNode } from 'react';
 import { ChevronDown, ExternalLink, TrendingDown, TrendingUp } from 'lucide-react';
 import type { BaseListing, HistoryPoint } from '../types';
 import { formatPrice, type Model } from '../lib/data';
@@ -36,6 +36,99 @@ interface Props<L extends BaseListing> {
   onToggle: () => void;
 }
 
+/** All-time low, sale and source badges of a model's cheapest offer. */
+function PriceBadges<L extends BaseListing>({ m, lang }: { m: Model<L>; lang: Lang }) {
+  return (
+    <>
+      {m.low && (
+        <span
+          className="badge badge-low"
+          title={`${tr(lang, T.allTimeLowHint)} ${new Date(m.low.since).toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB')}`}
+        >
+          {tr(lang, T.allTimeLow)}
+        </span>
+      )}
+      {m.sale && (
+        <span className="badge badge-sale" title={`${tr(lang, T.saleBy)} ${SOURCES[m.sale.source].label}`}>
+          −{m.sale.pct}%
+        </span>
+      )}
+      <SourceBadge source={m.cheapest.source} />
+    </>
+  );
+}
+
+/** "↓ €5  ·  €212 incl. shipping" under the price, when either is known. */
+function PriceExtras<L extends BaseListing>({ m, delta, lang }: { m: Model<L>; delta: number | null; lang: Lang }) {
+  const price = (n: number) => formatPrice(n, lang);
+  const moved = delta != null && Math.abs(delta) >= 1;
+  if (!m.bestTotal && !moved) return null;
+  return (
+    <>
+      {moved && (
+        <span
+          className={`inline-flex items-center gap-0.5 ${delta! < 0 ? 'text-accent' : 'text-up'}`}
+          title={tr(lang, T.weekChange)}
+        >
+          {delta! < 0 ? <TrendingDown className="h-3.5 w-3.5" /> : <TrendingUp className="h-3.5 w-3.5" />}
+          {price(Math.abs(delta!))}
+        </span>
+      )}
+      {m.bestTotal && (
+        <span title={totalHint(m.bestTotal, lang)}>
+          {price(m.bestTotal.total!)} {tr(lang, T.withShipping)}
+        </span>
+      )}
+    </>
+  );
+}
+
+/** Every offer of the model (links to the shops) and its price history chart. */
+function ModelDetails<L extends BaseListing>({ m, history, lang }: { m: Model<L>; history?: HistoryPoint[]; lang: Lang }) {
+  const price = (n: number) => formatPrice(n, lang);
+  return (
+    <div className="grid gap-4 lg:grid-cols-[1fr_22rem]">
+      <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-xl bg-panel ring-1 ring-line">
+        {m.listings.map((l) => (
+          <li key={l.id}>
+            <a
+              href={l.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tap flex items-center gap-3 px-3 py-2 text-sm tabular-nums transition-colors duration-150 hover:bg-hover"
+            >
+              <span className="w-20 shrink-0 text-right font-medium sm:w-24">{price(l.price)}</span>
+              {l.drop != null && l.drop >= 5 && <span className="badge badge-sale">−{l.drop}%</span>}
+              <SourceBadge source={l.source} />
+              <span className="min-w-0 flex-1 truncate text-fg-soft" title={l.title}>
+                {l.title}
+              </span>
+              {l.total != null && (
+                <span className="hidden shrink-0 text-xs tabular-nums text-muted sm:inline" title={totalHint(l, lang)}>
+                  {price(l.total)} {tr(lang, T.withShipping)}
+                </span>
+              )}
+              {l.shopCount != null && (
+                <span className="hidden shrink-0 text-xs text-faint sm:inline">
+                  {l.shopCount} {tr(lang, T.shops)}
+                </span>
+              )}
+              <ExternalLink className="h-3.5 w-3.5 shrink-0 text-faint" />
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div>
+        <div className="mb-1.5 text-xs text-faint">{tr(lang, T.dailyLow)}</div>
+        <Suspense fallback={<div className="h-48 rounded-lg bg-panel ring-1 ring-line" />}>
+          <PriceChart points={history} />
+        </Suspense>
+      </div>
+    </div>
+  );
+}
+
+/** Table row (tablet and desktop); the details open in a full-width row under it. */
 export default function ModelRow<L extends BaseListing>({ cfg, model: m, history, open, onToggle }: Props<L>) {
   const lang = useLang();
   const price = (n: number) => formatPrice(n, lang);
@@ -57,7 +150,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
       >
         <td className="py-3 pl-4 pr-2">
           {/* A real button so the row opens from the keyboard too (Tab, Enter); the click reaches the row. */}
-          <button type="button" aria-expanded={open} className="flex items-center gap-2 rounded-md text-left">
+          <button type="button" aria-expanded={open} className="tap flex items-center gap-2 rounded-md text-left">
             <ChevronDown
               className={`h-4 w-4 shrink-0 text-faint transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
             />
@@ -70,108 +163,87 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
         </td>
         {cfg.before.map(td)}
         <td className="px-2 text-right">
-          {/* Prices line up on the right edge of the column: badges sit to their left on wide screens
-              and underneath on phones (column-reverse puts the price, the last child, on top). */}
-          <div className="flex flex-col-reverse items-end gap-1 sm:flex-row sm:items-center sm:justify-end sm:gap-1.5">
-            <div className="flex flex-wrap justify-end gap-1">
-              {m.low && (
-                <span
-                  className="badge badge-low"
-                  title={`${tr(lang, T.allTimeLowHint)} ${new Date(m.low.since).toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB')}`}
-                >
-                  {tr(lang, T.allTimeLow)}
-                </span>
-              )}
-              {m.sale && (
-                <span
-                  className="badge badge-sale"
-                  title={`${tr(lang, T.saleBy)} ${SOURCES[m.sale.source].label}`}
-                >
-                  −{m.sale.pct}%
-                </span>
-              )}
-              <SourceBadge source={m.cheapest.source} />
-            </div>
-            <span className="whitespace-nowrap text-[15px] font-semibold text-accent sm:ml-0.5">
-              {price(m.cheapest.price)}
-            </span>
+          {/* Badges first and the price last, so prices line up on the right edge of the column. */}
+          <div className="flex items-center justify-end gap-1.5 whitespace-nowrap">
+            <PriceBadges m={m} lang={lang} />
+            <span className="ml-0.5 text-[15px] font-semibold text-accent">{price(m.cheapest.price)}</span>
           </div>
-          {(m.bestTotal || (delta != null && Math.abs(delta) >= 1)) && (
-            <div className="mt-0.5 flex flex-wrap items-center justify-end gap-x-2 text-xs text-muted">
-              {delta != null && Math.abs(delta) >= 1 && (
-                <span
-                  className={`inline-flex items-center gap-0.5 ${delta < 0 ? 'text-accent' : 'text-up'}`}
-                  title={tr(lang, T.weekChange)}
-                >
-                  {delta < 0 ? <TrendingDown className="h-3.5 w-3.5" /> : <TrendingUp className="h-3.5 w-3.5" />}
-                  {price(Math.abs(delta))}
-                </span>
-              )}
-              {m.bestTotal && (
-                <span title={totalHint(m.bestTotal, lang)}>
-                  {price(m.bestTotal.total!)} {tr(lang, T.withShipping)}
-                </span>
-              )}
-            </div>
-          )}
+          <div className="mt-0.5 flex flex-wrap items-center justify-end gap-x-2 text-xs text-muted">
+            <PriceExtras m={m} delta={delta} lang={lang} />
+          </div>
         </td>
         {cfg.after.map(td)}
         <td className="hidden whitespace-nowrap px-2 text-right text-sm text-muted md:table-cell">
           {m.listings.length > 1 ? `${tr(lang, T.upTo)} ${price(m.maxPrice)}` : '—'}
         </td>
-        <td className="hidden pl-2 pr-4 text-right text-sm text-muted sm:table-cell">{m.listings.length}</td>
+        <td className="pl-2 pr-4 text-right text-sm text-muted">{m.listings.length}</td>
       </tr>
       {open && (
         <tr className="bg-sunken">
           <td colSpan={colSpan} className="border-t border-line px-4 pb-5 pt-4">
-            <div className="grid gap-4 lg:grid-cols-[1fr_22rem]">
-              <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-xl bg-panel ring-1 ring-line">
-                {m.listings.map((l) => (
-                  <li key={l.id}>
-                    <a
-                      href={l.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3 px-3 py-2 text-sm tabular-nums transition-colors duration-150 hover:bg-hover"
-                    >
-                      <span className="w-24 shrink-0 text-right font-medium">{price(l.price)}</span>
-                      {l.drop != null && l.drop >= 5 && (
-                        <span className="badge badge-sale">
-                          −{l.drop}%
-                        </span>
-                      )}
-                      <SourceBadge source={l.source} />
-                      <span className="min-w-0 flex-1 truncate text-fg-soft" title={l.title}>
-                        {l.title}
-                      </span>
-                      {l.total != null && (
-                        <span
-                          className="hidden shrink-0 text-xs tabular-nums text-muted sm:inline"
-                          title={totalHint(l, lang)}
-                        >
-                          {price(l.total)} {tr(lang, T.withShipping)}
-                        </span>
-                      )}
-                      {l.shopCount != null && (
-                        <span className="hidden shrink-0 text-xs text-faint sm:inline">
-                          {l.shopCount} {tr(lang, T.shops)}
-                        </span>
-                      )}
-                      <ExternalLink className="h-3.5 w-3.5 shrink-0 text-faint" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-              <div>
-                <div className="mb-1.5 text-xs text-faint">{tr(lang, T.dailyLow)}</div>
-                <Suspense fallback={<div className="h-48 rounded-lg bg-panel ring-1 ring-line" />}>
-                  <PriceChart points={history} />
-                </Suspense>
-              </div>
-            </div>
+            <ModelDetails m={m} history={history} lang={lang} />
           </td>
         </tr>
       )}
     </>
+  );
+}
+
+/**
+ * Phone and tablet layout (< 1024px): one card per model instead of a table row — name and price on top, the
+ * category's spec columns as one line, badges and listing count below. Tapping opens the details.
+ */
+export function ModelCard<L extends BaseListing>({ cfg, model: m, history, open, onToggle }: Props<L>) {
+  const lang = useLang();
+  const delta = weekChange(history, m.cheapest.price);
+  // The same values as the table columns, without headers; empty ones ("—") are skipped.
+  const specs: ReactNode[] = [...cfg.before, ...cfg.after]
+    .map((c) => c.cell(m, lang))
+    .filter((v) => v != null && v !== '' && v !== '—');
+  return (
+    <li className="card overflow-hidden">
+      <button
+        type="button"
+        aria-expanded={open}
+        onClick={onToggle}
+        className="flex w-full flex-col gap-2 p-4 text-left transition-colors duration-150 active:bg-hover"
+      >
+        <div className="flex w-full items-start gap-3">
+          <span
+            className={`mt-2 h-2 w-2 shrink-0 rounded-full ${cfg.groupDot[m.group] ?? 'bg-idle'}`}
+            title={groupName(m.group, lang)}
+          />
+          <span className="min-w-0 flex-1 font-semibold leading-snug tracking-tight">{m.chip}</span>
+          <span className="whitespace-nowrap text-lg font-semibold tabular-nums text-accent">
+            {formatPrice(m.cheapest.price, lang)}
+          </span>
+        </div>
+        {specs.length > 0 && (
+          <div className="pl-5 text-sm text-muted">
+            {specs.map((s, i) => (
+              <Fragment key={i}>
+                {i > 0 && ' · '}
+                {s}
+              </Fragment>
+            ))}
+          </div>
+        )}
+        <div className="flex w-full flex-wrap items-center gap-1.5 pl-5">
+          <PriceBadges m={m} lang={lang} />
+          <span className="ml-auto flex items-center gap-1 text-sm text-muted">
+            {m.listings.length} {tr(lang, T.listingsShort)}
+            <ChevronDown className={`h-4 w-4 transition-transform duration-150 ${open ? 'rotate-180' : ''}`} />
+          </span>
+        </div>
+        <div className="flex flex-wrap items-center gap-x-2 pl-5 text-sm tabular-nums text-muted empty:hidden">
+          <PriceExtras m={m} delta={delta} lang={lang} />
+        </div>
+      </button>
+      {open && (
+        <div className="border-t border-line bg-sunken p-3">
+          <ModelDetails m={m} history={history} lang={lang} />
+        </div>
+      )}
+    </li>
   );
 }
