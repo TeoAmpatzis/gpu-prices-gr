@@ -72,7 +72,7 @@ export default function BuildGuide() {
   const lang = useLang();
   return (
     <details className="card group p-4" open>
-      <summary className="flex cursor-pointer list-none items-center gap-2 text-sm font-semibold">
+      <summary className="tap flex cursor-pointer list-none items-center gap-2 text-sm font-semibold">
         <BookOpen className="h-4 w-4 text-accent" />
         {tr(lang, {
           el: 'Οδηγός: πώς διαλέγουμε εξαρτήματα, βήμα-βήμα',

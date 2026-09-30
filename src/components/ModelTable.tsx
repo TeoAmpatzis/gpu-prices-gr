@@ -4,7 +4,8 @@ import type { BaseListing, History } from '../types';
 import type { Model } from '../lib/data';
 import type { CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Text } from '../lib/i18n';
-import ModelRow from './ModelRow';
+import { useMedia } from '../lib/useMedia';
+import ModelRow, { ModelCard } from './ModelRow';
 
 interface Props<L extends BaseListing> {
   cfg: CategoryConfig<L>;
@@ -17,6 +18,8 @@ interface Props<L extends BaseListing> {
 export default function ModelTable<L extends BaseListing>({ cfg, models, history, onReset }: Props<L>) {
   const lang = useLang();
   const [openKey, setOpenKey] = useState<string | null>(null);
+  // The table needs a desktop-wide column (≥ 1024px); phones and tablets get cards.
+  const wide = useMedia('(min-width: 1024px)');
 
   if (!models.length) {
     return (
@@ -31,11 +34,28 @@ export default function ModelTable<L extends BaseListing>({ cfg, models, history
         <button
           type="button"
           onClick={onReset}
-          className="mt-1 inline-flex items-center gap-1.5 rounded-lg bg-accent/10 px-3 py-2 text-sm font-medium text-accent ring-1 ring-inset ring-accent/30 transition-colors duration-150 hover:bg-accent/15"
+          className="tap mt-1 inline-flex items-center gap-1.5 rounded-lg bg-accent/10 px-3 py-2 text-sm font-medium text-accent ring-1 ring-inset ring-accent/30 transition-colors duration-150 hover:bg-accent/15"
         >
           <RotateCcw className="h-4 w-4" /> {tr(lang, T.clearFilters)}
         </button>
       </div>
+    );
+  }
+  if (!wide) {
+    // Phones (one column) and tablets (two): cards instead of a table, so nothing scrolls sideways.
+    return (
+      <ul className="grid items-start gap-2 sm:grid-cols-2">
+        {models.map((m) => (
+          <ModelCard
+            key={m.key}
+            cfg={cfg}
+            model={m}
+            history={history[m.key]}
+            open={openKey === m.key}
+            onToggle={() => setOpenKey(openKey === m.key ? null : m.key)}
+          />
+        ))}
+      </ul>
     );
   }
   const th = (c: { header: Text; className?: string; numeric?: boolean }) => (
@@ -54,7 +74,7 @@ export default function ModelTable<L extends BaseListing>({ cfg, models, history
             <th className="px-2 text-right font-semibold">{tr(lang, T.colCheapest)}</th>
             {cfg.after.map(th)}
             <th className="hidden px-2 text-right font-semibold md:table-cell">{tr(lang, T.colRange)}</th>
-            <th className="hidden pl-2 pr-4 text-right font-semibold sm:table-cell">{tr(lang, T.colOffers)}</th>
+            <th className="pl-2 pr-4 text-right font-semibold">{tr(lang, T.colOffers)}</th>
           </tr>
         </thead>
         <tbody>

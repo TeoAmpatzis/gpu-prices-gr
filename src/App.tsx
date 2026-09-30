@@ -108,10 +108,11 @@ export default function App() {
   return (
     <>
       <Backdrop />
-      <div className="mx-auto max-w-7xl px-4 py-5 sm:py-8">
+      {/* On the builder, room at the bottom for its fixed summary bar (below lg). */}
+      <div className={`mx-auto max-w-7xl px-4 py-5 sm:py-8 ${active === 'builder' ? 'pb-32 sm:pb-32 lg:pb-8' : ''}`}>
         <header className="mb-6 flex flex-col gap-6">
           <div className="flex items-center justify-between gap-4">
-            <a href="/" onClick={goHome} className="flex min-w-0 items-center gap-2.5" aria-label={t(T.homeLabel)}>
+            <a href="/" onClick={goHome} className="tap flex min-w-0 items-center gap-2.5" aria-label={t(T.homeLabel)}>
               <Logo className="h-8 w-8 shrink-0 text-accent" />
               <span className="min-w-0 leading-tight">
                 <span className="block text-[17px] font-bold tracking-tight">
@@ -137,7 +138,7 @@ export default function App() {
                   key={id}
                   href={`#${id}`}
                   aria-current={id === active ? 'page' : undefined}
-                  className={`inline-flex shrink-0 items-center gap-2 whitespace-nowrap border-b-2 px-3 pb-3 pt-1 text-sm font-medium transition ${
+                  className={`tap inline-flex shrink-0 items-center gap-2 whitespace-nowrap border-b-2 px-3 pb-3 pt-1 text-sm font-medium transition ${
                     id === active
                       ? 'border-accent text-fg'
                       : 'border-transparent text-muted hover:border-line-strong hover:text-fg'
@@ -151,7 +152,7 @@ export default function App() {
             <a
               href="#builder"
               aria-current={active === 'builder' ? 'page' : undefined}
-              className={`ml-auto inline-flex shrink-0 items-center gap-2 whitespace-nowrap border-b-2 px-3 pb-3 pt-1 text-sm font-semibold transition ${
+              className={`tap ml-auto inline-flex shrink-0 items-center gap-2 whitespace-nowrap border-b-2 px-3 pb-3 pt-1 text-sm font-semibold transition ${
                 active === 'builder'
                   ? 'border-accent text-accent'
                   : 'border-transparent text-accent/80 hover:text-accent'
@@ -195,7 +196,7 @@ export default function App() {
                 key={id}
                 href={`#${id}`}
                 aria-current={active === id ? 'page' : undefined}
-                className={`rounded transition-colors duration-150 hover:text-fg ${active === id ? 'font-medium text-fg' : 'text-muted'}`}
+                className={`tap inline-flex items-center rounded transition-colors duration-150 hover:text-fg ${active === id ? 'font-medium text-fg' : 'text-muted'}`}
               >
                 {t(INFO[id].title)}
               </a>

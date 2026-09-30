@@ -164,6 +164,21 @@ export function defaultFilters(groups: string[]): Filters {
   };
 }
 
+/** How many filters differ from the defaults (shown on the phone/tablet "Filters" button). */
+export function activeFilterCount(f: Filters, groups: string[]): number {
+  const d = defaultFilters(groups);
+  return (
+    (f.query.trim() ? 1 : 0) +
+    (f.groups.length !== d.groups.length ? 1 : 0) +
+    (f.sources.length !== d.sources.length ? 1 : 0) +
+    (f.segment !== d.segment ? 1 : 0) +
+    (f.maxPrice != null ? 1 : 0) +
+    Object.values(f.extra).filter(Boolean).length +
+    (f.saleOnly ? 1 : 0) +
+    (f.lowOnly ? 1 : 0)
+  );
+}
+
 export function applyFilters<L extends BaseListing>(
   all: L[],
   f: Filters,

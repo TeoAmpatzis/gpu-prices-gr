@@ -230,3 +230,32 @@ body {
 :root:not(.dark) svg.lucide {
   stroke-width: 2.4;
 }
+
+/*
+ * Touch screens — phones and tablets (< 1024px): no text under 14px and touch targets of at least 44px (WCAG 2.5.5).
+ * Tailwind's small sizes are raised here once, instead of on every element; `.tap` marks
+ * controls that need the 44px minimum. Inline links inside paragraphs are exempt.
+ */
+@media (max-width: 1023px) {
+  .text-xs,
+  .text-\[11px\],
+  .label,
+  code {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  .badge {
+    height: 1.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 0.875rem;
+  }
+  .tap,
+  .field {
+    min-height: 2.75rem;
+  }
+  .tap-square {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+  }
+}

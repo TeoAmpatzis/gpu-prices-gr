@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Clock } from 'lucide-react';
 import type { Latest } from '../types';
 import { shortAgo, timeAgo } from '../lib/data';
 import { T, tr, useLang } from '../lib/i18n';
@@ -55,12 +55,16 @@ export default function SourcesStatus({ latest }: { latest: Latest }) {
         // Mouse/tap clicks (detail ≥ 1) open it — a mouse has usually opened it by hovering already;
         // Enter/Space (detail 0) toggles it.
         onClick={(e) => setOpen((o) => (e.detail === 0 ? !o : true))}
-        className="inline-flex items-center gap-1.5 rounded-full bg-panel px-2.5 py-1 text-xs text-muted ring-1 ring-inset ring-line transition-colors duration-150 hover:text-fg"
+        className="tap inline-flex items-center gap-1.5 rounded-full bg-panel px-2.5 py-1 text-xs text-muted ring-1 ring-inset ring-line transition-colors duration-150 hover:text-fg"
       >
         <span className={`h-2 w-2 rounded-full ${delayed ? 'bg-warn' : 'bg-ok'}`} />
-        <span className="tabular-nums">
-          {active.length} {t(T.stores)} · {t(T.updated)} {shortAgo(newest, lang)}
-          {t(T.agoSuffix)}
+        {/* Phones: "5 stores · 🕒 39′"; wider screens spell out "updated … ago". */}
+        <span className="whitespace-nowrap tabular-nums">
+          {active.length} {t(T.stores)} ·{' '}
+          <Clock className="inline h-3.5 w-3.5 align-[-2px] sm:hidden" aria-hidden="true" />
+          <span className="sr-only sm:not-sr-only">{t(T.updated)} </span>
+          {shortAgo(newest, lang)}
+          <span className="sr-only sm:not-sr-only">{t(T.agoSuffix)}</span>
         </span>
         <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-150 ${open ? 'rotate-180' : ''}`} />
       </button>
