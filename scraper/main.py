@@ -16,14 +16,17 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 import http_client  # noqa: E402
 import shipping  # noqa: E402
+import site_history  # noqa: E402
 import specs  # noqa: E402
 from categories import CATEGORIES, Category  # noqa: E402
 from normalize import now_iso  # noqa: E402
-from sources import bestprice, eshop, skroutz  # noqa: E402
+from sources import bestprice, eshop, shopflix, skroutz, snif  # noqa: E402
 
 SOURCES = {
     "skroutz": skroutz.fetch,
     "bestprice": bestprice.fetch,
+    "snif": snif.fetch,
+    "shopflix": shopflix.fetch,
     "eshop": eshop.fetch,
 }
 
@@ -182,6 +185,8 @@ def main() -> int:
     ap.add_argument("--no-shipping", action="store_true", help="skip the price + shipping refresh (cache still applied)")
     ap.add_argument("--specs-budget", type=int, default=specs.BUDGET, help="product pages per category for specs")
     ap.add_argument("--specs-only", action="store_true", help="only backfill specs into the existing latest.json")
+    ap.add_argument("--history-only", action="store_true", help="only import Skroutz price history into history.json")
+    ap.add_argument("--history-budget", type=int, default=site_history.BUDGET, help="price_graph requests per category")
     args = ap.parse_args()
     sys.stdout.reconfigure(encoding="utf-8")
     http_client.debug = args.debug
@@ -189,6 +194,13 @@ def main() -> int:
     if args.no_shipping:
         shipping.BUDGET = {src: 0 for src in shipping.BUDGET}
     cats = [cat for name, cat in CATEGORIES.items() if not args.category or name in args.category]
+    if args.history_only:
+        for cat in cats:
+            data = load_json(DATA_DIR / cat.name / "latest.json", None)
+            if data:
+                print(f"[{cat.name}] price history…")
+                site_history.enrich(cat.name, DATA_DIR / cat.name, data["listings"], cat.model_key, args.history_budget)
+        return 0
     if args.specs_only:
         for cat in cats:
             specs_only(cat, args.specs_budget)
