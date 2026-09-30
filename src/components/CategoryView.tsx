@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AlertTriangle, Loader2 } from 'lucide-react';
-import type { BaseListing, History, Latest } from '../types';
-import { applyFilters, defaultFilters, loadData, timeAgo, type Filters } from '../lib/data';
+import type { BaseListing } from '../types';
+import { applyFilters, defaultFilters, loadData, timeAgo, type CategoryData, type Filters } from '../lib/data';
 import type { CategoryConfig } from '../lib/categories';
 import { T, tr, useLang } from '../lib/i18n';
 import { SOURCES, SOURCE_NAMES } from '../lib/sources';
@@ -11,7 +11,7 @@ import ModelTable from './ModelTable';
 /** One category page (one tab): source status, filters and the model table. */
 export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: CategoryConfig<L> }) {
   const lang = useLang();
-  const [data, setData] = useState<{ latest: Latest<L>; history: History } | null>(null);
+  const [data, setData] = useState<CategoryData<L> | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<Filters>(() => defaultFilters(cfg.groups));
 
@@ -21,7 +21,7 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
       .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)));
   }, [cfg.id]);
 
-  const models = useMemo(() => (data ? applyFilters(data.latest.listings, filters, cfg, data.history) : []), [data, filters, cfg]);
+  const models = useMemo(() => (data ? applyFilters(data.latest.listings, filters, cfg, data.history, data.imported) : []), [data, filters, cfg]);
 
   if (error) {
     return (

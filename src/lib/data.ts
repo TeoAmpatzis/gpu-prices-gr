@@ -1,11 +1,23 @@
-import type { BaseListing, Category, History, HistoryPoint, Latest, SourceName } from '../types';
+import type { BaseListing, Category, History, HistoryPoint, Imported, Latest, SourceName } from '../types';
 import type { Lang } from './i18n';
 import { SOURCE_NAMES } from './sources';
 import type { CategoryConfig } from './categories';
 
-const cache = new Map<Category, Promise<{ latest: Latest; history: History }>>();
+export interface CategoryData<L extends BaseListing = BaseListing> {
+  latest: Latest<L>;
+  history: History;
+  imported: Imported; // Skroutz history import: all-time lows
+}
 
-export function loadData<L extends BaseListing>(cat: Category): Promise<{ latest: Latest<L>; history: History }> {
+const cache = new Map<Category, Promise<CategoryData>>();
+
+/** JSON file that may be missing (history, imports): an empty object then. */
+const optional = <T>(url: string): Promise<T> =>
+  fetch(url, { cache: 'no-cache' })
+    .then((r) => (r.ok ? (r.json() as Promise<T>) : ({} as T)))
+    .catch(() => ({}) as T);
+
+export function loadData<L extends BaseListing>(cat: Category): Promise<CategoryData<L>> {
   let p = cache.get(cat);
   if (!p) {
     p = Promise.all([
@@ -13,14 +25,13 @@ export function loadData<L extends BaseListing>(cat: Category): Promise<{ latest
         if (!r.ok) throw new Error(`${cat}/latest.json: HTTP ${r.status}`);
         return r.json() as Promise<Latest>;
       }),
-      fetch(`/data/${cat}/history.json`, { cache: 'no-cache' })
-        .then((r) => (r.ok ? (r.json() as Promise<History>) : {}))
-        .catch(() => ({})),
-    ]).then(([latest, history]) => ({ latest, history }));
+      optional<History>(`/data/${cat}/history.json`),
+      optional<Imported>(`/data/${cat}/history_imported.json`),
+    ]).then(([latest, history, imported]) => ({ latest, history, imported }));
     p.catch(() => cache.delete(cat)); // allow a retry after a failed load
     cache.set(cat, p);
   }
-  return p as Promise<{ latest: Latest<L>; history: History }>;
+  return p as Promise<CategoryData<L>>;
 }
 
 export interface Model<L extends BaseListing> {
@@ -33,33 +44,51 @@ export interface Model<L extends BaseListing> {
   maxPrice: number;
   /** Listing with the lowest known price + shipping, if any has one. */
   bestTotal: L | null;
-  /** Set by applyFilters from the price history: the cheapest price is well below the usual one. */
+  /** On sale according to the site selling it (set by applyFilters). */
   sale?: Sale | null;
+  /** At its lowest price in all the history we have (set by applyFilters). */
+  low?: AllTimeLow | null;
 }
 
+/** A discount the site itself announces: Skroutz/BestPrice price-drop badge, Shopflix "Προσφορά", e-shop RRP. */
 export interface Sale {
-  pct: number; // discount vs the typical price, e.g. 12 for −12%
-  typical: number; // median of the daily lowest prices over the previous 30 days
+  pct: number; // e.g. 12 for −12%
+  source: SourceName;
 }
 
-// A part is "on sale" when today's lowest price is at least 10% (and €5) under the median of its
-// daily lowest prices over the previous 30 days, with at least 5 days of history to compare with.
-const SALE_DAYS = 30;
-const SALE_MIN_POINTS = 5;
-const SALE_MIN_PCT = 10;
-const SALE_MIN_EUR = 5;
+/** The model's own offers at (about) its lowest price that the site marks as a price drop. */
+export function saleOf<L extends BaseListing>(ls: L[], cheapest: L): Sale | null {
+  let best: Sale | null = null;
+  for (const l of ls) {
+    // Only offers within 2% of the cheapest count: a discounted offer that is still dearer isn't a deal.
+    if (l.drop != null && l.drop >= 5 && l.price <= cheapest.price * 1.02 && (!best || l.drop > best.pct)) {
+      best = { pct: l.drop, source: l.source };
+    }
+  }
+  return best;
+}
 
-export function saleOf(points: HistoryPoint[] | undefined, current: number): Sale | null {
-  if (!points?.length) return null;
+export interface AllTimeLow {
+  since: string; // first day of the history it is compared with (YYYY-MM-DD)
+}
+
+/** Needs this much history before "lowest ever" means something. */
+const LOW_MIN_DAYS = 60;
+
+/**
+ * Today's price is at (or under) every earlier daily low: our own history plus the lowest price in
+ * Skroutz's whole history for that model (`imported[key].low`, ~2 years).
+ */
+export function allTimeLow(points: HistoryPoint[] | undefined, imp: Imported[string] | undefined, price: number): AllTimeLow | null {
   const today = new Date().toISOString().slice(0, 10);
-  const since = new Date(Date.now() - SALE_DAYS * 864e5).toISOString().slice(0, 10);
-  // Only our own all-sites daily lows: imported Skroutz history (`i`) runs higher than the real minimum.
-  const past = points.filter((p) => !p.i && p.d >= since && p.d < today).map((p) => p.min).sort((a, b) => a - b);
-  if (past.length < SALE_MIN_POINTS) return null;
-  const mid = past.length >> 1;
-  const typical = past.length % 2 ? past[mid] : (past[mid - 1] + past[mid]) / 2;
-  const pct = Math.round((100 * (typical - current)) / typical);
-  return pct >= SALE_MIN_PCT && typical - current >= SALE_MIN_EUR ? { pct, typical } : null;
+  const past = (points ?? []).filter((p) => p.d < today);
+  const importedLow = typeof imp === 'object' ? imp : undefined;
+  const firstDays = [past[0]?.d, importedLow?.since].filter((d): d is string => !!d).sort();
+  const since = firstDays[0];
+  if (!since || Date.now() - new Date(since).getTime() < LOW_MIN_DAYS * 864e5) return null;
+  const lows = past.map((p) => p.min);
+  if (importedLow?.low != null) lows.push(importedLow.low);
+  return lows.length && price <= Math.min(...lows) + 0.005 ? { since } : null;
 }
 
 /**
@@ -118,6 +147,7 @@ export interface Filters {
   /** Category-specific filters (`CategoryConfig.extraFilters`) by key; '' or missing = any. */
   extra: Record<string, string>;
   saleOnly: boolean;
+  lowOnly: boolean;
 }
 
 export function defaultFilters(groups: string[]): Filters {
@@ -130,6 +160,7 @@ export function defaultFilters(groups: string[]): Filters {
     sort: 'model',
     extra: {},
     saleOnly: false,
+    lowOnly: false,
   };
 }
 
@@ -138,6 +169,7 @@ export function applyFilters<L extends BaseListing>(
   f: Filters,
   cfg: CategoryConfig<L>,
   history: History = {},
+  imported: Imported = {},
 ): Model<L>[] {
   const q = f.query.trim().toLowerCase();
   const listings = all.filter(
@@ -148,19 +180,24 @@ export function applyFilters<L extends BaseListing>(
       // Per listing, so a model's price is that of a listing that matches (e.g. the CL30 kit).
       cfg.extraFilters.every((x) => !f.extra[x.key] || x.test(l, f.extra[x.key])),
   );
-  const grouped = groupModels(listings, cfg).map((m) => ({ ...m, sale: saleOf(history[m.key], m.cheapest.price) }));
+  const grouped = groupModels(listings, cfg).map((m) => ({
+    ...m,
+    sale: saleOf(m.listings, m.cheapest),
+    low: allTimeLow(history[m.key], imported[m.key], m.cheapest.price),
+  }));
   const models = grouped.filter(
     (m) =>
       (!cfg.segments || f.segment === 'all' || (f.segment === 'pro') === m.pro) &&
       (f.maxPrice == null || m.cheapest.price <= f.maxPrice) &&
-      (!f.saleOnly || m.sale != null),
+      (!f.saleOnly || m.sale != null) &&
+      (!f.lowOnly || m.low != null),
   );
   // "Recommended": best value for money first where the category has a value score (performance
   // or capacity per euro); a part on sale gets an extra boost. Elsewhere, parts on sale come first.
   const SALE_BOOST = 1.15;
   const recommended = (m: Model<L>) => {
     const v = cfg.value?.(m);
-    return v == null ? null : v * (m.sale ? SALE_BOOST : 1);
+    return v == null ? null : v * (m.sale || m.low ? SALE_BOOST : 1);
   };
   const cmp: Record<SortKey, (a: Model<L>, b: Model<L>) => number> = {
     'price-asc': (a, b) => a.cheapest.price - b.cheapest.price,
@@ -172,7 +209,7 @@ export function applyFilters<L extends BaseListing>(
       const vb = recommended(b);
       if (va != null || vb != null) return (vb ?? -1) - (va ?? -1) || a.cheapest.price - b.cheapest.price;
       return (
-        (b.sale ? 1 : 0) - (a.sale ? 1 : 0) ||
+        (b.sale || b.low ? 1 : 0) - (a.sale || a.low ? 1 : 0) ||
         (cfg.sortByGroup === false ? 0 : cfg.groups.indexOf(a.group) - cfg.groups.indexOf(b.group)) ||
         cfg.tierScore(b) - cfg.tierScore(a) ||
         a.key.localeCompare(b.key)
