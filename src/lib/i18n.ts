@@ -54,6 +54,11 @@ export const T = {
   clearFilters: { el: 'Καθαρισμός φίλτρων', en: 'Clear filters' },
   footerNav: { el: 'Πληροφορίες', en: 'Information' },
   showResults: { el: 'Εμφάνιση', en: 'Show' },
+  results: { el: 'αποτελεσμάτων', en: 'results' },
+  activeFilters: { el: 'Ενεργά φίλτρα', en: 'Active filters' },
+  removeFilter: { el: 'Αφαίρεση φίλτρου', en: 'Remove filter' },
+  clearAll: { el: 'Καθαρισμός όλων', en: 'Clear all' },
+  close: { el: 'Κλείσιμο', en: 'Close' },
   emptyHint: {
     el: 'Δοκίμασε λιγότερα φίλτρα ή άλλη αναζήτηση.',
     en: 'Try fewer filters or a different search.',

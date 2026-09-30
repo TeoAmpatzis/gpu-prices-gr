@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Check, RotateCcw, Search } from 'lucide-react';
 import type { BaseListing } from '../types';
 import { defaultFilters, type Filters, type Segment, type SortKey } from '../lib/data';
+import type { FacetCounts } from '../lib/facets';
 import { groupName, type CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Text } from '../lib/i18n';
 import { SOURCES, SOURCE_NAMES } from '../lib/sources';
@@ -19,29 +20,34 @@ function toggle<T>(arr: T[], v: T): T[] {
   return arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v];
 }
 
-/** Multi-select chip. */
+/** Multi-select chip with its faceted count; a chip that would show nothing is greyed out and inert. */
 function Chip({
   active,
   dot,
+  count,
   onClick,
   children,
 }: {
   active: boolean;
   dot?: string;
+  count?: number;
   onClick: () => void;
   children: ReactNode;
 }) {
+  const empty = count === 0 && !active;
   return (
     <button
       type="button"
       aria-pressed={active}
+      disabled={empty}
       onClick={onClick}
-      className={`tap inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-sm font-medium ring-1 ring-inset transition ${
-        active ? 'bg-accent/10 text-accent ring-accent/30' : 'text-muted ring-line-strong hover:bg-hover hover:text-fg'
+      className={`tap inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-sm font-medium ring-1 ring-inset transition disabled:cursor-not-allowed disabled:opacity-40 ${
+        active ? 'bg-accent/10 text-accent ring-accent/30' : 'text-muted ring-line-strong enabled:hover:bg-hover enabled:hover:text-fg'
       }`}
     >
       {active ? <Check className="h-3.5 w-3.5" /> : dot && <span className={`h-2 w-2 rounded-full ${dot}`} />}
       {children}
+      {count != null && <span className="text-xs tabular-nums opacity-70">{count}</span>}
     </button>
   );
 }
@@ -57,13 +63,18 @@ function Section({ label, children }: { label: string; children: ReactNode }) {
 
 interface Props<L extends BaseListing> {
   cfg: CategoryConfig<L>;
-  listings: L[];
   filters: Filters;
   onChange: (f: Filters) => void;
+  /** Options of each extra filter (computed once per data load). */
+  options: Record<string, { value: string; label: Text }[]>;
+  /** Faceted counts; missing while they are being computed. */
+  counts?: FacetCounts;
+  /** Inside the phone bottom sheet: no card frame and no own title row. */
+  bare?: boolean;
 }
 
-/** Filter sidebar: search + sort, group pills, segment, sources, category-specific specs, max price. */
-export default function FilterBar<L extends BaseListing>({ cfg, listings, filters: f, onChange }: Props<L>) {
+/** Filters: search + sort, group pills, segment, sales, sources, category-specific specs, max price. */
+export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onChange, options, counts, bare }: Props<L>) {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
   const set = <K extends keyof Filters>(k: K, v: Filters[K]) => onChange({ ...f, [k]: v });
@@ -76,24 +87,27 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
     : [];
 
   return (
-    <div className="card flex flex-col gap-3 p-4">
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-semibold">{t(T.filters)}</span>
-        <button
-          type="button"
-          onClick={() => onChange(defaultFilters(cfg.groups))}
-          className="tap inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-medium text-muted transition hover:bg-hover hover:text-fg"
-          title={t(T.resetTitle)}
-        >
-          <RotateCcw className="h-4 w-4" /> {t(T.reset)}
-        </button>
-      </div>
+    <div className={bare ? 'flex flex-col gap-3' : 'card flex flex-col gap-3 p-4'}>
+      {!bare && (
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-semibold">{t(T.filters)}</span>
+          <button
+            type="button"
+            onClick={() => onChange(defaultFilters(cfg.groups))}
+            className="tap inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-medium text-muted transition hover:bg-hover hover:text-fg"
+            title={t(T.resetTitle)}
+          >
+            <RotateCcw className="h-4 w-4" /> {t(T.reset)}
+          </button>
+        </div>
+      )}
       <label className="relative">
         <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
         <input
           value={f.query}
           onChange={(e) => set('query', e.target.value)}
           placeholder={t(cfg.searchPlaceholder)}
+          aria-label={t(cfg.searchPlaceholder)}
           className="field w-full py-2 pl-9 pr-3"
         />
       </label>
@@ -119,6 +133,7 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
             key={g}
             active={f.groups.includes(g)}
             dot={cfg.groupDot[g]}
+            count={counts?.groups[g]}
             onClick={() => set('groups', toggle(f.groups, g))}
           >
             {groupName(g, lang)}
@@ -129,35 +144,46 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
       {cfg.segments && (
         <Section label={t(T.segment)}>
           <div className="flex w-full rounded-lg bg-hover p-0.5 ring-1 ring-inset ring-line">
-            {segments.map((c) => (
-              <button
-                key={c.value}
-                type="button"
-                aria-pressed={f.segment === c.value}
-                onClick={() => set('segment', c.value)}
-                className={`tap flex-1 rounded-md px-2 py-1 text-sm font-medium transition ${
-                  f.segment === c.value ? 'bg-panel text-fg shadow-sm ring-1 ring-line' : 'text-muted hover:text-fg'
-                }`}
-              >
-                {t(c.label)}
-              </button>
-            ))}
+            {segments.map((c) => {
+              const n = counts?.segment[c.value];
+              const selected = f.segment === c.value;
+              return (
+                <button
+                  key={c.value}
+                  type="button"
+                  aria-pressed={selected}
+                  disabled={n === 0 && !selected}
+                  onClick={() => set('segment', c.value)}
+                  className={`tap flex-1 rounded-md px-2 py-1 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40 ${
+                    selected ? 'bg-panel text-fg shadow-sm ring-1 ring-line' : 'text-muted enabled:hover:text-fg'
+                  }`}
+                >
+                  {t(c.label)}
+                  {n != null && <span className="ml-1 text-xs tabular-nums opacity-70">{n}</span>}
+                </button>
+              );
+            })}
           </div>
         </Section>
       )}
 
       <Section label={t(T.sales)}>
-        <Chip active={f.saleOnly} dot="bg-sale-fg" onClick={() => set('saleOnly', !f.saleOnly)}>
+        <Chip active={f.saleOnly} dot="bg-sale-fg" count={counts?.sale} onClick={() => set('saleOnly', !f.saleOnly)}>
           {t(T.saleOnly)}
         </Chip>
-        <Chip active={f.lowOnly} dot="bg-low-fg" onClick={() => set('lowOnly', !f.lowOnly)}>
+        <Chip active={f.lowOnly} dot="bg-low-fg" count={counts?.low} onClick={() => set('lowOnly', !f.lowOnly)}>
           {t(T.lowOnly)}
         </Chip>
       </Section>
 
       <Section label={t(T.source)}>
         {SOURCE_NAMES.map((s) => (
-          <Chip key={s} active={f.sources.includes(s)} onClick={() => set('sources', toggle(f.sources, s))}>
+          <Chip
+            key={s}
+            active={f.sources.includes(s)}
+            count={counts?.sources[s]}
+            onClick={() => set('sources', toggle(f.sources, s))}
+          >
             {SOURCES[s].label}
           </Chip>
         ))}
@@ -174,11 +200,16 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
                 onChange={(e) => set('extra', { ...f.extra, [x.key]: e.target.value })}
               >
                 <option value="">{t(T.any)}</option>
-                {x.options(listings).map((o) => (
-                  <option key={o.value} value={o.value}>
-                    {t(o.label)}
-                  </option>
-                ))}
+                {(options[x.key] ?? []).map((o) => {
+                  const n = counts?.extra[x.key]?.[o.value];
+                  // Options that would show nothing are disabled (the selected one never is).
+                  return (
+                    <option key={o.value} value={o.value} disabled={n === 0 && f.extra[x.key] !== o.value}>
+                      {t(o.label)}
+                      {n != null ? ` (${n})` : ''}
+                    </option>
+                  );
+                })}
               </select>
             </label>
           ))}

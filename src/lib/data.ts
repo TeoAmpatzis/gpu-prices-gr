@@ -190,6 +190,8 @@ export function applyFilters<L extends BaseListing>(
   cfg: CategoryConfig<L>,
   history: History = {},
   imported: Imported = {},
+  /** Facet counting only needs the matching models, not their order. */
+  opts: { sort?: boolean } = {},
 ): Model<L>[] {
   const q = f.query.trim().toLowerCase();
   const listings = all.filter(
@@ -214,6 +216,7 @@ export function applyFilters<L extends BaseListing>(
   );
   // "Recommended": popularity, modern platform, sensible price and value for money, weighted per
   // category in src/lib/ranking.ts. Workstation/server models always come after the rest.
+  if (opts.sort === false) return models;
   const score = f.sort === 'model' ? recommendedScores(models, cfg.id, cfg.value) : new Map<string, number>();
   const cmp: Record<SortKey, (a: Model<L>, b: Model<L>) => number> = {
     'price-asc': (a, b) => a.cheapest.price - b.cheapest.price,

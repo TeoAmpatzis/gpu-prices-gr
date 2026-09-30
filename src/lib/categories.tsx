@@ -14,6 +14,7 @@ import type {
   RamListing,
 } from '../types';
 import { formatPrice, mostCommon, type Model } from './data';
+import { slug } from './slug';
 import { T, tr, type Lang, type Text } from './i18n';
 import { fanValue, gpuValue, psuValue, ramValue } from './value';
 
@@ -48,6 +49,8 @@ export interface CategoryConfig<L extends BaseListing> {
   /** Pill filter values (data keys), in display/sort order: brands for GPU/CPU, memory type for RAM… */
   groups: string[];
   groupLabel: Text; // heading above the pills
+  /** URL parameter for the pills (e.g. "type" → #ram?type=ddr5,ddr4). */
+  groupParam: string;
   group: (l: L) => string;
   groupDot: Record<string, string>; // Tailwind bg class per group
   /** Default true: the "Recommended" sort goes group by group before `tierScore`. */
@@ -122,7 +125,7 @@ interface OneOfOptions {
   fmt?: (v: string) => Text;
 }
 
-/** Exact match on one value ("Chipset: B850"). */
+/** Exact match on one value ("Chipset: B850"). Option values are URL slugs ("micro-atx"). */
 function oneOf<L extends BaseListing>(key: string, label: Text, get: (l: L) => Value, o: OneOfOptions = {}): ExtraFilter<L> {
   return {
     key,
@@ -130,9 +133,12 @@ function oneOf<L extends BaseListing>(key: string, label: Text, get: (l: L) => V
     options: (ls) => {
       const values = (o.fixed ?? distinct(ls, get, o.order ?? 'count', o.minCount)).map(String);
       if (o.rank) values.sort((a, b) => o.rank!(a) - o.rank!(b));
-      return values.map((v) => ({ value: v, label: o.fmt ? o.fmt(v) : v }));
+      return values.map((v) => ({ value: slug(v), label: o.fmt ? o.fmt(v) : v }));
     },
-    test: (l, v) => String(get(l) ?? '') === v,
+    test: (l, v) => {
+      const x = get(l);
+      return x != null && slug(String(x)) === v;
+    },
   };
 }
 
@@ -209,6 +215,7 @@ export const GPU: CategoryConfig<GpuListing> = {
   searchPlaceholder: search('5070 Ti, Sapphire'),
   groups: ['NVIDIA', 'AMD', 'Intel'],
   groupLabel: VENDOR,
+  groupParam: 'brand',
   group: (l) => l.brand,
   groupDot: { NVIDIA: 'bg-green-500', AMD: 'bg-red-500', Intel: 'bg-sky-500' },
   segments: { main: 'Gaming', pro: 'Workstation' },
@@ -272,6 +279,7 @@ export const CPU: CategoryConfig<CpuListing> = {
   searchPlaceholder: search('9800X3D, 14600K, AM5'),
   groups: ['AMD', 'Intel'],
   groupLabel: VENDOR,
+  groupParam: 'brand',
   group: (l) => l.brand,
   groupDot: { AMD: 'bg-red-500', Intel: 'bg-sky-500' },
   segments: { main: 'Desktop', pro: 'Server / HEDT' },
@@ -326,6 +334,7 @@ export const MOBO: CategoryConfig<MoboListing> = {
   searchPlaceholder: search('B850, Tomahawk, Z890'),
   groups: [...MOBO_SOCKETS, OTHER],
   groupLabel: 'Socket',
+  groupParam: 'sock',
   group: (l) => (l.socket && MOBO_SOCKETS.includes(l.socket) ? l.socket : OTHER),
   groupDot: {
     AM5: 'bg-red-500', AM4: 'bg-orange-400', LGA1851: 'bg-sky-500', LGA1700: 'bg-indigo-400', [OTHER]: 'bg-zinc-400',
@@ -385,6 +394,7 @@ export const RAM: CategoryConfig<RamListing> = {
   searchPlaceholder: search('2x16GB 6000, Kingston Fury'),
   groups: ['DDR5', 'DDR4', 'DDR3', 'DDR2'],
   groupLabel: { el: 'Τύπος μνήμης', en: 'Memory type' },
+  groupParam: 'type',
   group: (l) => l.type,
   groupDot: { DDR5: 'bg-violet-500', DDR4: 'bg-sky-500', DDR3: 'bg-amber-500', DDR2: 'bg-zinc-400' },
   segments: { main: 'Desktop', pro: 'Laptop / Server' },
@@ -439,6 +449,7 @@ export const PSU: CategoryConfig<PsuListing> = {
   searchPlaceholder: search('850W, RM850x, Seasonic'),
   groups: ['Diamond', 'Titanium', 'Platinum', 'Gold', 'Silver', 'Bronze', 'Standard', NO_RATING],
   groupLabel: { el: 'Πιστοποίηση', en: 'Efficiency' },
+  groupParam: 'eff',
   group: (l) => l.efficiency ?? NO_RATING,
   groupDot: {
     Diamond: 'bg-cyan-400', Titanium: 'bg-slate-300', Platinum: 'bg-indigo-300', Gold: 'bg-yellow-500',
@@ -489,6 +500,7 @@ export const CASE: CategoryConfig<CaseListing> = {
   searchPlaceholder: search('Lancool 216, NZXT H5, O11'),
   groups: ['Full Tower', 'Midi Tower', 'Mini Tower', 'SFF / Cube', OTHER],
   groupLabel: SIZE,
+  groupParam: 'size',
   group: (l) => l.size,
   groupDot: {
     'Full Tower': 'bg-violet-500', 'Midi Tower': 'bg-sky-500', 'Mini Tower': 'bg-teal-500',
@@ -504,8 +516,8 @@ export const CASE: CategoryConfig<CaseListing> = {
     {
       key: 'fits',
       label: { el: 'Χωράει μητρική', en: 'Fits motherboard' },
-      options: () => BOARD_RANK.map((b) => ({ value: b, label: b })),
-      test: (l, v) => BOARD_RANK.indexOf(caseMaxBoard(l)) >= BOARD_RANK.indexOf(v as BoardSize),
+      options: () => BOARD_RANK.map((b) => ({ value: slug(b), label: b })),
+      test: (l, v) => BOARD_RANK.indexOf(caseMaxBoard(l)) >= BOARD_RANK.findIndex((b) => slug(b) === v),
     },
     yesNo('window', { el: 'Πλαϊνό παράθυρο', en: 'Side window' }, (l) => l.window),
     yesNo('rgb', 'RGB', (l) => l.rgb),
@@ -537,6 +549,7 @@ export const FAN: CategoryConfig<FanListing> = {
   searchPlaceholder: search('P12 Pro, Uni Fan, Noctua'),
   groups: ['120mm', '140mm', '80–92mm', '180mm+', OTHER],
   groupLabel: SIZE,
+  groupParam: 'size',
   group: (l) => fanGroup(l.size),
   groupDot: {
     '120mm': 'bg-sky-500', '140mm': 'bg-violet-500', '80–92mm': 'bg-teal-500', '180mm+': 'bg-amber-500',
@@ -588,6 +601,7 @@ export const COOLER: CategoryConfig<CoolerListing> = {
   searchPlaceholder: search('Peerless Assassin, Liquid Freezer, NH-D15'),
   groups: [AIR, 'AIO 120–140', 'AIO 240–280', 'AIO 360–420'],
   groupLabel: TYPE,
+  groupParam: 'type',
   group: coolerGroup,
   groupDot: { [AIR]: 'bg-sky-500', 'AIO 120–140': 'bg-teal-500', 'AIO 240–280': 'bg-violet-500', 'AIO 360–420': 'bg-fuchsia-500' },
   sortByGroup: false,
