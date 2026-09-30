@@ -36,7 +36,7 @@ export default function App() {
   const Icon = cfg.icon;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-5 sm:py-8">
+    <div className="mx-auto max-w-7xl px-4 py-5 sm:py-8">
       <header className="mb-6 flex flex-col gap-6">
         <div className="flex items-center justify-between gap-4">
           <a href="#gpu" className="flex items-center gap-2.5">
@@ -96,6 +96,7 @@ export default function App() {
 
       <footer className="mt-10 border-t border-line pt-6 text-center text-xs text-faint">
         {t(T.footer)}
+        <div className="mt-1">© 2026 Teo Ampatzis · {t(T.notAffiliated)}</div>
       </footer>
     </div>
   );

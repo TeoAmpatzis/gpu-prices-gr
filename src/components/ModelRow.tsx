@@ -3,7 +3,7 @@ import { ChevronDown, ExternalLink, TrendingDown, TrendingUp } from 'lucide-reac
 import type { BaseListing, HistoryPoint } from '../types';
 import { formatPrice, type Model } from '../lib/data';
 import { groupName, type CategoryConfig } from '../lib/categories';
-import { T, tr, useLang } from '../lib/i18n';
+import { T, tr, useLang, type Lang } from '../lib/i18n';
 import SourceBadge from './SourceBadge';
 
 // Recharts is heavy and only needed once a row is expanded.
@@ -15,6 +15,15 @@ function weekChange(points: HistoryPoint[] | undefined, current: number): number
   const cutoff = new Date(Date.now() - 7 * 864e5).toISOString().slice(0, 10);
   const past = [...points].reverse().find((p) => p.d <= cutoff);
   return past ? current - past.min : null;
+}
+
+/** "Shop: €48.99 + €2.50 shipping" for the best-total tooltip. */
+function totalHint(l: BaseListing, lang: Lang): string {
+  const fee = l.shipping ?? 0;
+  const parts = fee > 0
+    ? `${formatPrice(l.total! - fee, lang)} + ${formatPrice(fee, lang)} ${tr(lang, T.shipping)}`
+    : `${formatPrice(l.total!, lang)}, ${tr(lang, T.freeShipping)}`;
+  return l.merchant ? `${l.merchant}: ${parts}` : parts;
 }
 
 interface Props<L extends BaseListing> {
@@ -60,6 +69,11 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
               </span>
             )}
           </div>
+          {m.bestTotal && (
+            <div className="mt-0.5 whitespace-nowrap text-xs tabular-nums text-muted" title={totalHint(m.bestTotal, lang)}>
+              {price(m.bestTotal.total!)} {tr(lang, T.withShipping)}
+            </div>
+          )}
         </td>
         {cfg.after.map(td)}
         <td className="hidden whitespace-nowrap px-2 text-sm tabular-nums text-muted md:table-cell">
@@ -85,6 +99,11 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
                       <span className="min-w-0 flex-1 truncate text-fg-soft" title={l.title}>
                         {l.title}
                       </span>
+                      {l.total != null && (
+                        <span className="hidden shrink-0 text-xs tabular-nums text-muted sm:inline" title={totalHint(l, lang)}>
+                          {price(l.total)} {tr(lang, T.withShipping)}
+                        </span>
+                      )}
                       {l.shopCount != null && (
                         <span className="hidden shrink-0 text-xs text-faint sm:inline">{l.shopCount} {tr(lang, T.shops)}</span>
                       )}

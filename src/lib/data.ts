@@ -31,6 +31,17 @@ export interface Model<L extends BaseListing> {
   listings: L[]; // sorted by price ascending
   cheapest: L;
   maxPrice: number;
+  /** Listing with the lowest known price + shipping, if any has one. */
+  bestTotal: L | null;
+}
+
+/**
+ * Listing with the lowest known price + shipping, or null when a listing whose shipping isn't known
+ * yet is cheaper than that total before shipping (it could well be the real best deal).
+ */
+function bestTotal<L extends BaseListing>(ls: L[]): L | null {
+  const best = ls.reduce<L | null>((b, l) => (l.total != null && (b == null || l.total < b.total!) ? l : b), null);
+  return best && !ls.some((l) => l.total == null && l.price < best.total!) ? best : null;
 }
 
 export function groupModels<L extends BaseListing>(listings: L[], cfg: CategoryConfig<L>): Model<L>[] {
@@ -52,6 +63,7 @@ export function groupModels<L extends BaseListing>(listings: L[], cfg: CategoryC
       listings: ls,
       cheapest: first,
       maxPrice: ls[ls.length - 1].price,
+      bestTotal: bestTotal(ls),
     };
   });
 }
@@ -76,20 +88,8 @@ export interface Filters {
   segment: Segment;
   maxPrice: number | null;
   sort: SortKey;
-  // Category-specific; ignored by categories that don't use them.
-  minVram: number;
-  socket: string; // '' = any
-  minCores: number;
-  minCapacity: number;
-  minSpeed: number;
-  minWatts: number;
-  window: string; // '' | 'yes' | 'no'
-  rgb: string; // '' | 'yes' | 'no'
-  pack: string; // '' | 'single' | 'multi'
-  chipset: string; // '' = any
-  formFactor: string; // '' = any
-  memory: string; // '' | 'DDR4' | 'DDR5'
-  wifi: string; // '' | 'yes' | 'no'
+  /** Category-specific filters (`CategoryConfig.extraFilters`) by key; '' or missing = any. */
+  extra: Record<string, string>;
 }
 
 export function defaultFilters(groups: string[]): Filters {
@@ -100,19 +100,7 @@ export function defaultFilters(groups: string[]): Filters {
     segment: 'main',
     maxPrice: null,
     sort: 'model',
-    minVram: 0,
-    socket: '',
-    minCores: 0,
-    minCapacity: 0,
-    minSpeed: 0,
-    minWatts: 0,
-    window: '',
-    rgb: '',
-    pack: '',
-    chipset: '',
-    formFactor: '',
-    memory: '',
-    wifi: '',
+    extra: {},
   };
 }
 
@@ -122,13 +110,14 @@ export function applyFilters<L extends BaseListing>(all: L[], f: Filters, cfg: C
     (l) =>
       f.groups.includes(cfg.group(l)) &&
       f.sources.includes(l.source) &&
-      (!q || cfg.searchText(l).toLowerCase().includes(q)),
+      (!q || cfg.searchText(l).toLowerCase().includes(q)) &&
+      // Per listing, so a model's price is that of a listing that matches (e.g. the CL30 kit).
+      cfg.extraFilters.every((x) => !f.extra[x.key] || x.test(l, f.extra[x.key])),
   );
   const models = groupModels(listings, cfg).filter(
     (m) =>
       (!cfg.segments || f.segment === 'all' || (f.segment === 'pro') === m.pro) &&
-      (f.maxPrice == null || m.cheapest.price <= f.maxPrice) &&
-      cfg.matchesModel(m, f),
+      (f.maxPrice == null || m.cheapest.price <= f.maxPrice),
   );
   const cmp: Record<SortKey, (a: Model<L>, b: Model<L>) => number> = {
     'price-asc': (a, b) => a.cheapest.price - b.cheapest.price,

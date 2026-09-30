@@ -2,6 +2,7 @@
 
 export type Category = 'gpu' | 'cpu' | 'mobo' | 'ram' | 'psu' | 'case' | 'fan' | 'cooler';
 export type Brand = 'NVIDIA' | 'AMD' | 'Intel';
+export type BoardSize = 'E-ATX' | 'ATX' | 'Micro ATX' | 'Mini ITX';
 export type SourceName = 'skroutz' | 'bestprice' | 'eshop';
 
 export interface BaseListing {
@@ -14,18 +15,26 @@ export interface BaseListing {
   brand: string;
   chip: string;
   scrapedAt: string;
+  // Best price + delivery across the product's shops (scraper/shipping.py); VAT is always included.
+  // null = not known (not checked yet, or the shop doesn't publish its fee); absent in older data.
+  shipping?: number | null;
+  total?: number | null;
+  merchant?: string | null; // shop with that best total
 }
 
 export interface GpuListing extends BaseListing {
   brand: Brand;
   vram: number;
   partner: string;
+  memType?: string | null; // "GDDR7", "GDDR6X"…
 }
 
 export interface CpuListing extends BaseListing {
   brand: Exclude<Brand, 'NVIDIA'>;
   cores: number | null;
   socket: string | null; // e.g. "AM5", "LGA1851"
+  packaging?: 'Box' | 'Tray' | null;
+  igpu?: boolean; // integrated graphics
 }
 
 export interface MoboListing extends BaseListing {
@@ -33,9 +42,10 @@ export interface MoboListing extends BaseListing {
   chip: string; // vendor + board name, e.g. "Asus TUF Gaming B850-Plus WiFi"
   chipset: string | null; // e.g. "B850", "X870E"; null for boards without one in the name (server)
   socket: string | null; // e.g. "AM5", "LGA1851"
-  formFactor: 'ATX' | 'Micro ATX' | 'Mini ITX' | 'E-ATX' | 'Άλλο';
+  formFactor: BoardSize | 'Άλλο';
   memory: 'DDR4' | 'DDR5' | null; // null = unknown (LGA1700 boards come in both)
   wifi: boolean;
+  ramSlots?: number | null;
 }
 
 export interface RamListing extends BaseListing {
@@ -45,6 +55,7 @@ export interface RamListing extends BaseListing {
   capacity: number; // total GB
   modules: number;
   speed: number | null; // MHz
+  cas?: number | null; // CAS latency (CL)
   formFactor: 'Desktop' | 'Laptop' | 'Server';
 }
 
@@ -63,6 +74,7 @@ export interface CaseListing extends BaseListing {
   size: 'Full Tower' | 'Midi Tower' | 'Mini Tower' | 'SFF / Cube' | 'Άλλο';
   window: boolean;
   rgb: boolean;
+  maxBoard?: BoardSize | null; // largest motherboard it takes, if stated
 }
 
 export interface FanListing extends BaseListing {
@@ -71,6 +83,7 @@ export interface FanListing extends BaseListing {
   size: number; // mm
   pack: number; // fans in the box
   rgb: boolean;
+  pwm?: boolean;
 }
 
 export interface CoolerListing extends BaseListing {

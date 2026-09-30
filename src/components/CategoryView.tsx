@@ -38,29 +38,34 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
     );
   }
   return (
-    <div className="flex flex-col gap-4">
-      <FilterBar cfg={cfg} listings={data.latest.listings} filters={filters} onChange={setFilters} />
-      <div className="flex flex-wrap items-center justify-between gap-2 px-1 text-sm text-muted">
-        <span>
-          <span className="font-semibold text-fg">{models.length}</span> {tr(lang, T.models)}
-        </span>
-        <div className="flex flex-wrap gap-2 text-xs text-muted">
-          {SOURCE_NAMES.map((s) => {
-            const meta = data.latest.sources[s];
-            return (
-              <span
-                key={s}
-                className="inline-flex items-center gap-1.5 rounded-full bg-panel px-2.5 py-1 ring-1 ring-inset ring-line"
-                title={meta?.ok ? undefined : tr(lang, T.staleSource)}
-              >
-                <span className={`h-2 w-2 rounded-full ${meta?.ok ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-                {SOURCES[s].label}: {meta?.count ?? 0} · {timeAgo(meta?.updatedAt, lang)}
-              </span>
-            );
-          })}
+    // Filters in a left sidebar (sticky on wide screens), stacked above the table on narrow ones.
+    <div className="grid items-start gap-4 lg:grid-cols-[17rem_minmax(0,1fr)]">
+      <aside className="lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">
+        <FilterBar cfg={cfg} listings={data.latest.listings} filters={filters} onChange={setFilters} />
+      </aside>
+      <div className="flex min-w-0 flex-col gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-2 px-1 text-sm text-muted">
+          <span>
+            <span className="font-semibold text-fg">{models.length}</span> {tr(lang, T.models)}
+          </span>
+          <div className="flex flex-wrap gap-2 text-xs text-muted">
+            {SOURCE_NAMES.map((s) => {
+              const meta = data.latest.sources[s];
+              return (
+                <span
+                  key={s}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-panel px-2.5 py-1 ring-1 ring-inset ring-line"
+                  title={meta?.ok ? undefined : tr(lang, T.staleSource)}
+                >
+                  <span className={`h-2 w-2 rounded-full ${meta?.ok ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                  {SOURCES[s].label}: {meta?.count ?? 0} · {timeAgo(meta?.updatedAt, lang)}
+                </span>
+              );
+            })}
+          </div>
         </div>
+        <ModelTable cfg={cfg} models={models} history={data.history} />
       </div>
-      <ModelTable cfg={cfg} models={models} history={data.history} />
     </div>
   );
 }

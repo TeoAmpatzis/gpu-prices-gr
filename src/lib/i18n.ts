@@ -33,6 +33,10 @@ export const useLang = () => useSyncExternalStore(subscribe, getLang);
 export const T = {
   siteName: { el: 'Τιμές Hardware', en: 'Hardware Prices' },
   siteTagline: { el: 'Skroutz · BestPrice · e-shop.gr', en: 'Skroutz · BestPrice · e-shop.gr' },
+  notAffiliated: {
+    el: 'Δεν συνδέεται με τα Skroutz, BestPrice και e-shop.gr. Τα εμπορικά σήματα ανήκουν στους κατόχους τους.',
+    en: 'Not affiliated with Skroutz, BestPrice or e-shop.gr. Trademarks belong to their owners.',
+  },
   footer: {
     el: 'Οι τιμές ενημερώνονται αυτόματα κάθε 6 ώρες και ενδέχεται να διαφέρουν από τις τρέχουσες στα καταστήματα.',
     en: 'Prices update automatically every 6 hours and may differ from current prices in the shops.',
@@ -52,6 +56,9 @@ export const T = {
   upTo: { el: 'έως', en: 'up to' },
   weekChange: { el: 'Μεταβολή 7 ημερών', en: '7-day change' },
   shops: { el: 'καταστ.', en: 'shops' },
+  withShipping: { el: 'με μεταφορικά', en: 'incl. shipping' },
+  shipping: { el: 'μεταφορικά', en: 'shipping' },
+  freeShipping: { el: 'δωρεάν μεταφορικά', en: 'free shipping' },
   dailyLow: { el: 'Χαμηλότερη τιμή ανά ημέρα', en: 'Lowest price per day' },
   lowest: { el: 'Χαμηλότερη', en: 'Lowest' },
   noHistory: {
@@ -63,6 +70,10 @@ export const T = {
   segment: { el: 'Κατηγορία', en: 'Category' },
   source: { el: 'Πηγή', en: 'Source' },
   specsPrice: { el: 'Προδιαγραφές & τιμή', en: 'Specs & price' },
+  filters: { el: 'Φίλτρα', en: 'Filters' },
+  any: { el: 'Όλα', en: 'Any' },
+  yes: { el: 'Ναι', en: 'Yes' },
+  no: { el: 'Όχι', en: 'No' },
   maxPrice: { el: 'Έως', en: 'Max' },
   maxPriceLabel: { el: 'Μέγιστη τιμή', en: 'Maximum price' },
   sortModel: { el: 'Προτεινόμενα', en: 'Recommended' },
