@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Box, CircuitBoard, Cpu, Fan, MemoryStick, Microchip, Plug, Snowflake, type LucideIcon } from 'lucide-react';
 import type {
   BaseListing,
+  BoardSize,
   CaseListing,
   Category,
   CoolerListing,
@@ -12,8 +13,8 @@ import type {
   PsuListing,
   RamListing,
 } from '../types';
-import { formatPrice, mostCommon, type Filters, type Model } from './data';
-import { tr, type Lang, type Text } from './i18n';
+import { formatPrice, mostCommon, type Model } from './data';
+import { T, tr, type Lang, type Text } from './i18n';
 
 export interface Column<L extends BaseListing> {
   header: Text;
@@ -21,11 +22,16 @@ export interface Column<L extends BaseListing> {
   cell: (m: Model<L>, lang: Lang) => ReactNode;
 }
 
-/** A select in the filter bar that only applies to one category. */
-export interface ExtraFilter {
-  key: 'minVram' | 'socket' | 'minCores' | 'minCapacity' | 'minSpeed' | 'minWatts' | 'window' | 'rgb' | 'pack'
-    | 'chipset' | 'formFactor' | 'memory' | 'wifi';
-  options: (listings: BaseListing[]) => { value: string | number; label: Text }[];
+/**
+ * A category-specific select in the filter sidebar. It is applied per listing, before listings are
+ * grouped into models, so a model shows the price of a listing that actually matches.
+ */
+export interface ExtraFilter<L extends BaseListing> {
+  key: string; // key in Filters.extra
+  label: Text;
+  /** Choices besides "any", in display order. */
+  options: (listings: L[]) => { value: string; label: Text }[];
+  test: (l: L, value: string) => boolean;
 }
 
 /** Everything that differs between the category pages. */
@@ -52,8 +58,7 @@ export interface CategoryConfig<L extends BaseListing> {
   /** Higher = listed first when sorting by model. */
   tierScore: (m: Model<L>) => number;
   searchText: (l: L) => string;
-  matchesModel: (m: Model<L>, f: Filters) => boolean;
-  extraFilters: ExtraFilter[];
+  extraFilters: ExtraFilter<L>[];
   /** Columns between the model name and the price, and after the price. */
   before: Column<L>[];
   after: Column<L>[];
@@ -74,6 +79,8 @@ export const groupName = (g: string, lang: Lang) => tr(lang, GROUP_NAMES[g] ?? g
 const VENDOR: Text = { el: 'Κατασκευαστής', en: 'Manufacturer' };
 const TYPE: Text = { el: 'Τύπος', en: 'Type' };
 const SIZE: Text = { el: 'Μέγεθος', en: 'Size' };
+const SERIES: Text = { el: 'Σειρά', en: 'Series' };
+const MEMORY: Text = { el: 'Μνήμη', en: 'Memory' };
 const search = (examples: string): Text => ({ el: `Αναζήτηση (π.χ. ${examples})`, en: `Search (e.g. ${examples})` });
 const noResults = (el: string, en: string): Text => ({
   el: `Δεν βρέθηκαν ${el} με αυτά τα φίλτρα.`,
@@ -83,9 +90,83 @@ const subtitle = (el: string, en: string): Text => ({
   el: `Οι χαμηλότερες τιμές ${el} στην Ελλάδα, από Skroutz, BestPrice και e-shop.gr.`,
   en: `The lowest ${en} prices in Greece, from Skroutz, BestPrice and e-shop.gr.`,
 });
-/** Options for a numeric "at least" select: 0 = any. */
-const atLeast = (values: number[], any: Text, label: (v: number) => Text) => () =>
-  values.map((v) => ({ value: v, label: v === 0 ? any : label(v) }));
+
+// ---------- Filter builders ----------
+
+type Value = string | number | null | undefined;
+
+/** Distinct values of `get` seen at least `minCount` times: most common first, or ascending. */
+function distinct<L>(listings: L[], get: (l: L) => Value, order: 'count' | 'asc', minCount = 1): (string | number)[] {
+  const counts = new Map<string | number, number>();
+  for (const l of listings) {
+    const v = get(l);
+    if (v != null && v !== '') counts.set(v, (counts.get(v) ?? 0) + 1);
+  }
+  const values = [...counts.keys()].filter((v) => counts.get(v)! >= minCount);
+  return order === 'asc'
+    ? values.sort((a, b) => Number(a) - Number(b))
+    : values.sort((a, b) => counts.get(b)! - counts.get(a)!);
+}
+
+interface OneOfOptions {
+  order?: 'count' | 'asc';
+  minCount?: number;
+  /** Fixed choices instead of the values found in the data. */
+  fixed?: (string | number)[];
+  /** Stable re-sort after `order` (e.g. current sockets first). */
+  rank?: (v: string) => number;
+  fmt?: (v: string) => Text;
+}
+
+/** Exact match on one value ("Chipset: B850"). */
+function oneOf<L extends BaseListing>(key: string, label: Text, get: (l: L) => Value, o: OneOfOptions = {}): ExtraFilter<L> {
+  return {
+    key,
+    label,
+    options: (ls) => {
+      const values = (o.fixed ?? distinct(ls, get, o.order ?? 'count', o.minCount)).map(String);
+      if (o.rank) values.sort((a, b) => o.rank!(a) - o.rank!(b));
+      return values.map((v) => ({ value: v, label: o.fmt ? o.fmt(v) : v }));
+    },
+    test: (l, v) => String(get(l) ?? '') === v,
+  };
+}
+
+/** Numeric threshold: "≥ 16GB", or "≤ CL30" with `max`. */
+function threshold<L extends BaseListing>(
+  key: string,
+  label: Text,
+  get: (l: L) => number | null | undefined,
+  fmt: (v: number) => Text,
+  o: { fixed?: number[]; max?: boolean; minCount?: number } = {},
+): ExtraFilter<L> {
+  return {
+    key,
+    label,
+    options: (ls) =>
+      (o.fixed ?? (distinct(ls, get, 'asc', o.minCount) as number[])).map((v) => ({ value: String(v), label: fmt(v) })),
+    test: (l, v) => {
+      const x = get(l);
+      return x != null && (o.max ? x <= Number(v) : x >= Number(v));
+    },
+  };
+}
+
+function yesNo<L extends BaseListing>(key: string, label: Text, get: (l: L) => boolean | undefined): ExtraFilter<L> {
+  return {
+    key,
+    label,
+    options: () => [
+      { value: 'yes', label: T.yes },
+      { value: 'no', label: T.no },
+    ],
+    test: (l, v) => (v === 'yes') === !!get(l),
+  };
+}
+
+const vendorFilter = <L extends BaseListing>(): ExtraFilter<L> => oneOf<L>('brand', VENDOR, (l) => l.brand);
+const atLeastLabel = (label: Text): Text =>
+  typeof label === 'string' ? label : { el: `${label.el} (τουλάχιστον)`, en: `${label.en} (at least)` };
 
 // ---------- GPU ----------
 
@@ -100,6 +181,16 @@ function gpuChipScore(chip: string): number {
   else if (/\bTi\b|XT\b/.test(chip)) score += 5;
   else if (/Super|GRE/.test(chip)) score += 3;
   return score;
+}
+
+/** "RTX 50", "GTX 16", "RX 9000", "Arc B". */
+function gpuSeries(chip: string): string {
+  let m;
+  if (GPU_WORKSTATION.test(chip)) return 'Workstation';
+  if ((m = chip.match(/^(RTX|GTX) (\d{2})\d{2}/))) return `${m[1]} ${m[2]}`;
+  if ((m = chip.match(/^RX (\d)\d{3}/))) return `RX ${m[1]}000`;
+  if ((m = chip.match(/^Arc ([AB])/))) return `Arc ${m[1]}`;
+  return OTHER;
 }
 
 const gpuVram = (m: Model<GpuListing>) => m.cheapest.vram;
@@ -121,14 +212,16 @@ export const GPU: CategoryConfig<GpuListing> = {
   isPro: (l) => GPU_WORKSTATION.test(l.chip),
   tierScore: (m) => gpuChipScore(m.chip) * 100 + gpuVram(m),
   searchText: (l) => `${l.chip} ${l.title} ${l.partner}`,
-  matchesModel: (m, f) => gpuVram(m) >= f.minVram,
   extraFilters: [
-    {
-      key: 'minVram',
-      options: atLeast([0, 8, 12, 16, 24], { el: 'Όλα τα VRAM', en: 'Any VRAM' }, (v) => `VRAM ≥ ${v}GB`),
-    },
+    threshold('vram', atLeastLabel('VRAM'), (l) => l.vram, (v) => `≥ ${v}GB`),
+    oneOf('memType', { el: 'Τύπος μνήμης', en: 'Memory type' }, (l) => l.memType),
+    oneOf('series', SERIES, (l) => gpuSeries(l.chip), { fmt: (v) => GROUP_NAMES[v] ?? v }),
+    oneOf('partner', { el: 'Κατασκευαστής κάρτας', en: 'Card maker' }, (l) => l.partner),
   ],
-  before: [{ header: 'VRAM', cell: (m) => `${gpuVram(m)}GB` }],
+  before: [
+    { header: 'VRAM', cell: (m) => `${gpuVram(m)}GB` },
+    { header: MEMORY, className: 'hidden md:table-cell', cell: (m) => mostCommon(m.listings.map((l) => l.memType)) ?? '—' },
+  ],
   after: [{ header: VENDOR, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.partner }],
 };
 
@@ -155,6 +248,13 @@ function cpuTierScore(chip: string): number {
   return (CPU_FAMILIES.length - (family < 0 ? CPU_FAMILIES.length : family)) * 1e7 + tier * 1e6 + num * 10 + bonus;
 }
 
+/** "Ryzen 7", "Core Ultra 5", "Core i5", "Xeon Gold", "Threadripper PRO". */
+function cpuSeries(chip: string): string {
+  const xeon = chip.match(/^Xeon (Platinum|Gold|Silver|Bronze|w\d)/);
+  if (xeon) return `Xeon ${xeon[1]}`;
+  return chip.match(/^(Threadripper PRO|Threadripper|EPYC|Ryzen \d|Core Ultra \d|Core i\d|Core \d|Xeon|Athlon|Pentium|Celeron)/)?.[1] ?? OTHER;
+}
+
 const socketRank = (s: string) => (/^(AM5|LGA1851|LGA1700|AM4)$/.test(s) ? 0 : 1);
 
 export const CPU: CategoryConfig<CpuListing> = {
@@ -174,35 +274,92 @@ export const CPU: CategoryConfig<CpuListing> = {
   isPro: (l) => /^(EPYC|Threadripper|Xeon)/.test(l.chip),
   tierScore: (m) => cpuTierScore(m.chip),
   searchText: (l) => `${l.chip} ${l.title} ${l.socket ?? ''}`,
-  matchesModel: (m, f) => (!f.socket || cpuSocket(m) === f.socket) && (cpuCores(m) ?? 0) >= f.minCores,
   extraFilters: [
-    {
-      key: 'socket',
-      options: (listings) => {
-        const counts = new Map<string, number>();
-        for (const l of listings as CpuListing[]) if (l.socket) counts.set(l.socket, (counts.get(l.socket) ?? 0) + 1);
-        const sockets = [...counts.keys()].sort(
-          (a, b) => socketRank(a) - socketRank(b) || counts.get(b)! - counts.get(a)!,
-        );
-        return [
-          { value: '', label: { el: 'Όλα τα socket', en: 'Any socket' } },
-          ...sockets.map((s) => ({ value: s, label: s })),
-        ];
-      },
-    },
-    {
-      key: 'minCores',
-      options: atLeast([0, 6, 8, 12, 16, 24], { el: 'Όλοι οι πυρήνες', en: 'Any core count' }, (v) => ({
-        el: `≥ ${v} πυρήνες`,
-        en: `≥ ${v} cores`,
-      })),
-    },
+    oneOf('socket', 'Socket', (l) => l.socket, { rank: socketRank }),
+    threshold('cores', atLeastLabel({ el: 'Πυρήνες', en: 'Cores' }), (l) => l.cores, (v) => ({
+      el: `≥ ${v} πυρήνες`,
+      en: `≥ ${v} cores`,
+    })),
+    oneOf('series', SERIES, (l) => cpuSeries(l.chip), { fmt: (v) => GROUP_NAMES[v] ?? v }),
+    yesNo('igpu', { el: 'Ενσωματωμένα γραφικά', en: 'Integrated graphics' }, (l) => l.igpu),
+    oneOf('packaging', { el: 'Συσκευασία', en: 'Packaging' }, (l) => l.packaging, {
+      fixed: ['Box', 'Tray'],
+      fmt: (v) => (v === 'Box' ? { el: 'Box (σε κουτί)', en: 'Box (retail)' } : { el: 'Tray (χωρίς κουτί)', en: 'Tray (OEM)' }),
+    }),
   ],
   before: [
     { header: { el: 'Πυρήνες', en: 'Cores' }, cell: (m) => cpuCores(m) ?? '—' },
     { header: 'Socket', className: 'hidden sm:table-cell', cell: (m) => cpuSocket(m) ?? '—' },
   ],
   after: [],
+};
+
+// ---------- Motherboards ----------
+// Like cases, a board is its own model (vendor + board name); pills are the CPU socket.
+
+const moboSocket = (m: Model<MoboListing>) => mostCommon(m.listings.map((l) => l.socket));
+const moboChipset = (m: Model<MoboListing>) => mostCommon(m.listings.map((l) => l.chipset));
+const moboForm = (m: Model<MoboListing>) => mostCommon(m.listings.map((l) => l.formFactor)) ?? m.cheapest.formFactor;
+const moboMemory = (m: Model<MoboListing>) => mostCommon(m.listings.map((l) => l.memory));
+const moboSlots = (m: Model<MoboListing>) => mostCommon(m.listings.map((l) => l.ramSlots));
+const moboPlatform = (socket: string | null) =>
+  !socket ? null : /^LGA/.test(socket) ? 'Intel' : /^(AM|s?TR|SP|sWRX)/i.test(socket) ? 'AMD' : null;
+const DESKTOP_SOCKETS = /^(AM5|AM4|AM3\+?|LGA(1851|1700|1200|1151|1150|1155))$/;
+const MOBO_SOCKETS = ['AM5', 'AM4', 'LGA1851', 'LGA1700'];
+const BOARD_SIZES: BoardSize[] = ['ATX', 'Micro ATX', 'Mini ITX', 'E-ATX'];
+
+export const MOBO: CategoryConfig<MoboListing> = {
+  id: 'mobo',
+  tab: { el: 'Μητρικές', en: 'Motherboards' },
+  title: { el: 'Τιμές Μητρικών', en: 'Motherboard Prices' },
+  subtitle: {
+    el: 'Οι χαμηλότερες τιμές για κάθε μητρική στην Ελλάδα, από Skroutz, BestPrice και e-shop.gr.',
+    en: 'The lowest price for every motherboard in Greece, from Skroutz, BestPrice and e-shop.gr.',
+  },
+  icon: Microchip,
+  empty: noResults('μητρικές', 'motherboards'),
+  searchPlaceholder: search('B850, Tomahawk, Z890'),
+  groups: [...MOBO_SOCKETS, OTHER],
+  groupLabel: 'Socket',
+  group: (l) => (l.socket && MOBO_SOCKETS.includes(l.socket) ? l.socket : OTHER),
+  groupDot: {
+    AM5: 'bg-red-500', AM4: 'bg-orange-400', LGA1851: 'bg-sky-500', LGA1700: 'bg-indigo-400', [OTHER]: 'bg-zinc-400',
+  },
+  // Most-offered boards first rather than socket by socket.
+  sortByGroup: false,
+  segments: { main: 'Desktop', pro: 'Server / Workstation' },
+  modelKey: (l) => productKey(l.chip),
+  // Server/HEDT sockets, workstation chipsets (W790, C266…) and server boards without a chipset name.
+  isPro: (l) => !DESKTOP_SOCKETS.test(l.socket ?? '') || !l.chipset || /^[WC]/.test(l.chipset),
+  tierScore: (m) => m.listings.length,
+  searchText: (l) => `${l.chip} ${l.title} ${l.chipset ?? ''} ${l.socket ?? ''} ${l.formFactor}`,
+  extraFilters: [
+    oneOf('platform', { el: 'Πλατφόρμα', en: 'Platform' }, (l) => moboPlatform(l.socket), { fixed: ['AMD', 'Intel'] }),
+    oneOf('socket', 'Socket', (l) => l.socket, { rank: socketRank }),
+    oneOf('chipset', 'Chipset', (l) => l.chipset),
+    oneOf('formFactor', SIZE, (l) => l.formFactor, { fixed: BOARD_SIZES }),
+    oneOf('memory', MEMORY, (l) => l.memory, { fixed: ['DDR5', 'DDR4'] }),
+    oneOf('ramSlots', { el: 'Υποδοχές RAM', en: 'RAM slots' }, (l) => l.ramSlots, { order: 'asc' }),
+    yesNo('wifi', 'WiFi', (l) => l.wifi),
+    vendorFilter(),
+  ],
+  before: [
+    { header: 'Chipset', cell: (m) => moboChipset(m) ?? '—' },
+    { header: 'Socket', className: 'hidden md:table-cell', cell: (m) => moboSocket(m) ?? '—' },
+    { header: SIZE, className: 'hidden sm:table-cell', cell: (m, lang) => groupName(moboForm(m), lang) },
+  ],
+  after: [
+    {
+      header: MEMORY,
+      className: 'hidden sm:table-cell',
+      cell: (m, lang) => {
+        const slots = moboSlots(m);
+        const mem = moboMemory(m);
+        const parts = [mem, slots != null ? `${slots} ${tr(lang, { el: 'υποδ.', en: 'slots' })}` : null];
+        return parts.filter(Boolean).join(' · ') || '—';
+      },
+    },
+  ],
 };
 
 // ---------- RAM ----------
@@ -231,23 +388,37 @@ export const RAM: CategoryConfig<RamListing> = {
   // Most-offered kits first (DDR5 32GB 6000 over a lone 384GB kit), then bigger, then faster.
   tierScore: (m) => m.listings.length * 1e7 + m.cheapest.capacity * 1e4 + (m.cheapest.speed ?? 0) / 10,
   searchText: (l) => `${l.chip} ${l.modules}x${l.capacity / l.modules}GB ${l.title} ${l.brand}`,
-  matchesModel: (m, f) => m.cheapest.capacity >= f.minCapacity && (m.cheapest.speed ?? 0) >= f.minSpeed,
   extraFilters: [
-    {
-      key: 'minCapacity',
-      options: atLeast([0, 8, 16, 32, 64, 128], { el: 'Όλες οι χωρητικότητες', en: 'Any capacity' }, (v) => `≥ ${v}GB`),
-    },
-    {
-      key: 'minSpeed',
-      options: atLeast([0, 3200, 3600, 5600, 6000, 6400, 8000], { el: 'Όλες οι ταχύτητες', en: 'Any speed' }, (v) => `≥ ${v}MHz`),
-    },
+    threshold('capacity', atLeastLabel({ el: 'Χωρητικότητα', en: 'Capacity' }), (l) => l.capacity, (v) => `≥ ${v}GB`, {
+      fixed: [4, 8, 16, 32, 48, 64, 96, 128, 192, 256],
+    }),
+    // Speeds seen on at least 10 listings, so odd one-offs don't flood the list.
+    threshold('speed', atLeastLabel({ el: 'Ταχύτητα', en: 'Speed' }), (l) => l.speed, (v) => `≥ ${v}MHz`, { minCount: 10 }),
+    oneOf('modules', { el: 'Τεμάχια στο kit', en: 'Sticks in kit' }, (l) => l.modules, {
+      order: 'asc',
+      fmt: (v) => ({ el: `${v} × module`, en: `${v} × stick` }),
+    }),
+    threshold('cas', { el: 'Latency (το πολύ)', en: 'Latency (at most)' }, (l) => l.cas, (v) => `≤ CL${v}`, {
+      max: true,
+      minCount: 5,
+    }),
+    vendorFilter(),
   ],
   before: [{ header: TYPE, className: 'hidden sm:table-cell', cell: (m) => FORM_LABEL[m.cheapest.formFactor] }],
-  after: [{ header: VENDOR, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.brand }],
+  after: [
+    { header: 'CL', className: 'hidden md:table-cell', cell: (m) => m.cheapest.cas ?? '—' },
+    { header: VENDOR, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.brand },
+  ],
 };
 
 // ---------- PSU ----------
 // Models are specs across vendors ("850W Gold"), split by form factor like RAM.
+
+const MODULAR_LABEL: Record<string, Text> = {
+  Full: { el: 'Πλήρως modular', en: 'Fully modular' },
+  Semi: 'Semi-modular',
+  Non: { el: 'Μη modular', en: 'Non-modular' },
+};
 
 export const PSU: CategoryConfig<PsuListing> = {
   id: 'psu',
@@ -274,12 +445,12 @@ export const PSU: CategoryConfig<PsuListing> = {
   isPro: (l) => l.formFactor !== 'ATX',
   tierScore: (m) => m.listings.length * 1e5 + m.cheapest.watts,
   searchText: (l) => `${l.chip} ${l.title} ${l.brand} ${l.formFactor}`,
-  matchesModel: (m, f) => m.cheapest.watts >= f.minWatts,
   extraFilters: [
-    {
-      key: 'minWatts',
-      options: atLeast([0, 450, 550, 650, 750, 850, 1000, 1200], { el: 'Όλες οι ισχύεις', en: 'Any wattage' }, (v) => `≥ ${v}W`),
-    },
+    threshold('watts', atLeastLabel({ el: 'Ισχύς', en: 'Wattage' }), (l) => l.watts, (v) => `≥ ${v}W`, {
+      fixed: [300, 400, 450, 500, 550, 600, 650, 700, 750, 850, 1000, 1200, 1300, 1500, 1600],
+    }),
+    oneOf('modular', 'Modular', (l) => l.modular, { fixed: ['Full', 'Semi', 'Non'], fmt: (v) => MODULAR_LABEL[v] }),
+    vendorFilter(),
   ],
   before: [{ header: TYPE, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.formFactor }],
   after: [{ header: VENDOR, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.brand }],
@@ -290,17 +461,13 @@ export const PSU: CategoryConfig<PsuListing> = {
 
 /** Same as `model_key` in scraper/names.py: letters and digits only. */
 const productKey = (chip: string) => chip.toLowerCase().replace(/[^a-z0-9]/g, '');
-const yesNo = (all: Text, yes: Text, no: Text) => () => [
-  { value: '', label: all },
-  { value: 'yes', label: yes },
-  { value: 'no', label: no },
-];
-const matchYesNo = (want: string, has: boolean) => !want || (want === 'yes') === has;
-const rgbFilter: ExtraFilter = {
-  key: 'rgb',
-  options: yesNo({ el: 'RGB: όλα', en: 'RGB: any' }, { el: 'Με RGB', en: 'With RGB' }, { el: 'Χωρίς RGB', en: 'No RGB' }),
+
+const BOARD_RANK: BoardSize[] = ['Mini ITX', 'Micro ATX', 'ATX', 'E-ATX'];
+const BOARD_BY_CASE_SIZE: Record<CaseListing['size'], BoardSize> = {
+  'Full Tower': 'E-ATX', 'Midi Tower': 'ATX', 'Mini Tower': 'Micro ATX', 'SFF / Cube': 'Mini ITX', [OTHER]: 'ATX',
 };
-const anyRgb = (m: { listings: { rgb: boolean }[] }) => m.listings.some((l) => l.rgb);
+/** Largest board a case takes: as stated (Skroutz), else the usual one for its size. */
+export const caseMaxBoard = (l: CaseListing): BoardSize => l.maxBoard ?? BOARD_BY_CASE_SIZE[l.size];
 
 export const CASE: CategoryConfig<CaseListing> = {
   id: 'case',
@@ -326,20 +493,25 @@ export const CASE: CategoryConfig<CaseListing> = {
   isPro: () => false,
   tierScore: (m) => m.listings.length,
   searchText: (l) => `${l.chip} ${l.title} ${l.size}`,
-  matchesModel: (m, f) => matchYesNo(f.window, m.listings.some((l) => l.window)) && matchYesNo(f.rgb, anyRgb(m)),
   extraFilters: [
     {
-      key: 'window',
-      options: yesNo(
-        { el: 'Παράθυρο: όλα', en: 'Window: any' },
-        { el: 'Με πλαϊνό παράθυρο', en: 'With side window' },
-        { el: 'Χωρίς παράθυρο', en: 'No window' },
-      ),
+      key: 'fits',
+      label: { el: 'Χωράει μητρική', en: 'Fits motherboard' },
+      options: () => BOARD_RANK.map((b) => ({ value: b, label: b })),
+      test: (l, v) => BOARD_RANK.indexOf(caseMaxBoard(l)) >= BOARD_RANK.indexOf(v as BoardSize),
     },
-    rgbFilter,
+    yesNo('window', { el: 'Πλαϊνό παράθυρο', en: 'Side window' }, (l) => l.window),
+    yesNo('rgb', 'RGB', (l) => l.rgb),
+    vendorFilter(),
   ],
   before: [{ header: SIZE, className: 'hidden sm:table-cell', cell: (m, lang) => groupName(m.cheapest.size, lang) }],
-  after: [],
+  after: [
+    {
+      header: { el: 'Έως μητρική', en: 'Max board' },
+      className: 'hidden md:table-cell',
+      cell: (m) => mostCommon(m.listings.map(caseMaxBoard)),
+    },
+  ],
 };
 
 const fanGroup = (size: number) =>
@@ -369,17 +541,11 @@ export const FAN: CategoryConfig<FanListing> = {
   isPro: () => false,
   tierScore: (m) => m.listings.length,
   searchText: (l) => `${l.chip} ${l.title}`,
-  matchesModel: (m, f) => matchYesNo(f.rgb, anyRgb(m)) && (!f.pack || (f.pack === 'multi') === m.cheapest.pack > 1),
   extraFilters: [
-    {
-      key: 'pack',
-      options: () => [
-        { value: '', label: { el: 'Συσκευασία: όλες', en: 'Pack: any' } },
-        { value: 'single', label: { el: 'Μονός', en: 'Single' } },
-        { value: 'multi', label: { el: 'Πακέτο (2+)', en: 'Multi-pack (2+)' } },
-      ],
-    },
-    rgbFilter,
+    oneOf('pack', { el: 'Τεμάχια στη συσκευασία', en: 'Fans in pack' }, (l) => l.pack, { order: 'asc', minCount: 3 }),
+    yesNo('rgb', 'RGB', (l) => l.rgb),
+    yesNo('pwm', { el: 'PWM (έλεγχος στροφών)', en: 'PWM (speed control)' }, (l) => l.pwm),
+    vendorFilter(),
   ],
   before: [{ header: { el: 'Τεμάχια', en: 'Pack' }, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.pack }],
   after: [
@@ -420,8 +586,15 @@ export const COOLER: CategoryConfig<CoolerListing> = {
   isPro: () => false,
   tierScore: (m) => m.listings.length,
   searchText: (l) => `${l.chip} ${l.title}`,
-  matchesModel: (m, f) => matchYesNo(f.rgb, anyRgb(m)),
-  extraFilters: [rgbFilter],
+  extraFilters: [
+    oneOf('radiator', { el: 'Ψυγείο AIO', en: 'AIO radiator' }, (l) => l.radiator, {
+      order: 'asc',
+      minCount: 3,
+      fmt: (v) => `${v}mm`,
+    }),
+    yesNo('rgb', 'RGB', (l) => l.rgb),
+    vendorFilter(),
+  ],
   before: [
     {
       header: TYPE,
@@ -430,88 +603,6 @@ export const COOLER: CategoryConfig<CoolerListing> = {
     },
   ],
   after: [],
-};
-
-// ---------- Motherboards ----------
-// Like cases, a board is its own model (vendor + board name); pills are the CPU socket.
-
-const moboSocket = (m: Model<MoboListing>) => mostCommon(m.listings.map((l) => l.socket));
-const moboChipset = (m: Model<MoboListing>) => mostCommon(m.listings.map((l) => l.chipset));
-const moboForm = (m: Model<MoboListing>) => mostCommon(m.listings.map((l) => l.formFactor)) ?? m.cheapest.formFactor;
-const moboMemory = (m: Model<MoboListing>) => mostCommon(m.listings.map((l) => l.memory));
-const DESKTOP_SOCKETS = /^(AM5|AM4|AM3\+?|LGA(1851|1700|1200|1151|1150|1155))$/;
-const MOBO_SOCKETS = ['AM5', 'AM4', 'LGA1851', 'LGA1700'];
-
-export const MOBO: CategoryConfig<MoboListing> = {
-  id: 'mobo',
-  tab: { el: 'Μητρικές', en: 'Motherboards' },
-  title: { el: 'Τιμές Μητρικών', en: 'Motherboard Prices' },
-  subtitle: {
-    el: 'Οι χαμηλότερες τιμές για κάθε μητρική στην Ελλάδα, από Skroutz, BestPrice και e-shop.gr.',
-    en: 'The lowest price for every motherboard in Greece, from Skroutz, BestPrice and e-shop.gr.',
-  },
-  icon: Microchip,
-  empty: noResults('μητρικές', 'motherboards'),
-  searchPlaceholder: search('B850, Tomahawk, Z890'),
-  groups: [...MOBO_SOCKETS, OTHER],
-  groupLabel: { el: 'Socket', en: 'Socket' },
-  group: (l) => (l.socket && MOBO_SOCKETS.includes(l.socket) ? l.socket : OTHER),
-  groupDot: {
-    AM5: 'bg-red-500', AM4: 'bg-orange-400', LGA1851: 'bg-sky-500', LGA1700: 'bg-indigo-400', [OTHER]: 'bg-zinc-400',
-  },
-  // Most-offered boards first rather than socket by socket.
-  sortByGroup: false,
-  segments: { main: 'Desktop', pro: 'Server / Workstation' },
-  modelKey: (l) => productKey(l.chip),
-  // Server/HEDT sockets, workstation chipsets (W790, C266…) and server boards without a chipset name.
-  isPro: (l) => !DESKTOP_SOCKETS.test(l.socket ?? '') || !l.chipset || /^[WC]/.test(l.chipset),
-  tierScore: (m) => m.listings.length,
-  searchText: (l) => `${l.chip} ${l.title} ${l.chipset ?? ''} ${l.socket ?? ''} ${l.formFactor}`,
-  matchesModel: (m, f) =>
-    (!f.chipset || moboChipset(m) === f.chipset) &&
-    (!f.formFactor || moboForm(m) === f.formFactor) &&
-    (!f.memory || moboMemory(m) === f.memory) &&
-    matchYesNo(f.wifi, m.listings.some((l) => l.wifi)),
-  extraFilters: [
-    {
-      key: 'chipset',
-      options: (listings) => {
-        const counts = new Map<string, number>();
-        for (const l of listings as MoboListing[]) if (l.chipset) counts.set(l.chipset, (counts.get(l.chipset) ?? 0) + 1);
-        return [
-          { value: '', label: { el: 'Όλα τα chipset', en: 'Any chipset' } },
-          ...[...counts.keys()].sort((a, b) => counts.get(b)! - counts.get(a)!).map((c) => ({ value: c, label: c })),
-        ];
-      },
-    },
-    {
-      key: 'formFactor',
-      options: () => [
-        { value: '', label: { el: 'Όλα τα μεγέθη', en: 'Any size' } },
-        ...['ATX', 'Micro ATX', 'Mini ITX', 'E-ATX'].map((v) => ({ value: v, label: v })),
-      ],
-    },
-    {
-      key: 'memory',
-      options: () => [
-        { value: '', label: { el: 'Όλες οι μνήμες', en: 'Any memory' } },
-        { value: 'DDR5', label: 'DDR5' },
-        { value: 'DDR4', label: 'DDR4' },
-      ],
-    },
-    {
-      key: 'wifi',
-      options: yesNo({ el: 'WiFi: όλα', en: 'WiFi: any' }, { el: 'Με WiFi', en: 'With WiFi' }, { el: 'Χωρίς WiFi', en: 'No WiFi' }),
-    },
-  ],
-  before: [
-    { header: 'Chipset', cell: (m) => moboChipset(m) ?? '—' },
-    { header: 'Socket', className: 'hidden md:table-cell', cell: (m) => moboSocket(m) ?? '—' },
-    { header: SIZE, className: 'hidden sm:table-cell', cell: (m, lang) => groupName(moboForm(m), lang) },
-  ],
-  after: [
-    { header: { el: 'Μνήμη', en: 'Memory' }, className: 'hidden sm:table-cell', cell: (m) => moboMemory(m) ?? '—' },
-  ],
 };
 
 export const CATEGORIES = {
