@@ -136,6 +136,92 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/*
+ * Page background (Backdrop.tsx): three decorative layers behind the content, each with its own
+ * intensity variable — set one to 0 to turn that layer off. Cards and tables keep their solid
+ * bg-panel on top, so text never sits on the pattern.
+ *   --bg-grid    blueprint grid: 1px lines every 32px at the top of the page, fading downwards
+ *   --bg-glow    soft green glow behind each page title
+ *   --bg-traces  faint circuit traces in the side margins (wide screens only, never behind the table)
+ */
+:root {
+  --bg-grid: 0.05;
+  --bg-glow: 0.1;
+  --bg-traces: 0.08;
+}
+.dark {
+  --bg-grid: 0.055;
+  --bg-glow: 0.16;
+  --bg-traces: 0.13;
+}
+
+.bd-grid {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 44rem;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgb(var(--fg) / var(--bg-grid)) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(var(--fg) / var(--bg-grid)) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: center top;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.6) 40%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.6) 40%, transparent 100%);
+}
+
+/* Behind the page title: the parent is `relative isolate`, so -z-10 stays behind its text. */
+.bd-glow {
+  position: absolute;
+  left: -6rem;
+  top: -7rem;
+  width: 36rem;
+  height: 20rem;
+  max-width: 100vw;
+  z-index: -10;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgb(var(--accent) / var(--bg-glow)), transparent);
+}
+
+/* Side margins outside the 80rem content column; shown only when they are at least 4rem wide. */
+.bd-traces {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: calc((100vw - 80rem) / 2);
+  z-index: -1;
+  pointer-events: none;
+  display: none;
+  /* Fade out towards the content. */
+  -webkit-mask-image: linear-gradient(to var(--bd-fade), #000 30%, transparent);
+  mask-image: linear-gradient(to var(--bd-fade), #000 30%, transparent);
+}
+.bd-traces--left {
+  left: 0;
+  --bd-fade: right;
+}
+.bd-traces--right {
+  right: 0;
+  --bd-fade: left;
+}
+@media (min-width: 88rem) {
+  .bd-traces {
+    display: block;
+  }
+}
+/* The traces themselves: the accent colour, cut out by a small repeating SVG tile (~1 KB). */
+.bd-traces > div {
+  position: absolute;
+  inset: 0;
+  background: rgb(var(--accent) / var(--bg-traces));
+  -webkit-mask: var(--bd-trace-svg) repeat-y 16px 0 / 160px 320px;
+  mask: var(--bd-trace-svg) repeat-y 16px 0 / 160px 320px;
+  --bd-trace-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='320' viewBox='0 0 160 320' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M24 0v56l24 24v96l-24 24v120'/%3E%3Cpath d='M72 0v24l32 32v64'/%3E%3Ccircle cx='104' cy='124' r='4'/%3E%3Cpath d='M120 320v-72l-24-24v-40'/%3E%3Ccircle cx='96' cy='180' r='4'/%3E%3Cpath d='M48 320v-40l32-32h24'/%3E%3Ccircle cx='108' cy='248' r='4'/%3E%3Cpath d='M144 0v120l-16 16v48'/%3E%3Ccircle cx='128' cy='188' r='3'/%3E%3C/svg%3E");
+}
+.bd-traces--right > div {
+  transform: scaleX(-1);
+}
+
 /* Light mode: slightly heavier text (Inter is a variable font, see index.html) and thicker
    icon strokes, so small grey text and 16px icons stay crisp on a white background. */
 :root:not(.dark) body {
