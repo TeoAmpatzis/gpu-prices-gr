@@ -1,21 +1,34 @@
 import { useEffect, useState } from 'react';
-import { TrendingDown } from 'lucide-react';
+import { TrendingDown, Wrench } from 'lucide-react';
 import type { BaseListing, Category } from './types';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './lib/categories';
+import Builder from './components/Builder';
 import CategoryView from './components/CategoryView';
 import LangToggle from './components/LangToggle';
 import ThemeToggle from './components/ThemeToggle';
 import { T, tr, useLang } from './lib/i18n';
 
-const fromHash = (): Category => {
+type Page = Category | 'builder';
+
+const fromHash = (): Page => {
   const id = location.hash.slice(1);
-  return (CATEGORY_IDS as string[]).includes(id) ? (id as Category) : 'gpu';
+  return id === 'builder' || (CATEGORY_IDS as string[]).includes(id) ? (id as Page) : 'gpu';
+};
+
+const BUILDER = {
+  tab: { el: 'Συναρμολόγηση PC', en: 'PC Builder' },
+  title: { el: 'Συναρμολόγηση PC', en: 'PC Builder' },
+  subtitle: {
+    el: 'Διαλέξτε συμβατά εξαρτήματα με τις τρέχουσες τιμές της ελληνικής αγοράς.',
+    en: 'Pick compatible parts at current Greek market prices.',
+  },
+  icon: Wrench,
 };
 
 export default function App() {
-  const [active, setActive] = useState<Category>(fromHash);
+  const [active, setActive] = useState<Page>(fromHash);
   // Keep visited tabs mounted so their filters survive switching back and forth.
-  const [visited, setVisited] = useState<Set<Category>>(() => new Set([fromHash()]));
+  const [visited, setVisited] = useState<Set<Page>>(() => new Set([fromHash()]));
 
   useEffect(() => {
     const onHash = () => setActive(fromHash());
@@ -28,7 +41,7 @@ export default function App() {
 
   const lang = useLang();
   const t = (x: Parameters<typeof tr>[1]) => tr(lang, x);
-  const cfg = CATEGORIES[active];
+  const cfg = active === 'builder' ? BUILDER : CATEGORIES[active];
 
   useEffect(() => {
     document.title = `${t(cfg.title)} — ${t(T.siteName)}`;
@@ -73,6 +86,16 @@ export default function App() {
               </a>
             );
           })}
+          {/* The builder sits apart, at the right end of the tab bar. */}
+          <a
+            href="#builder"
+            aria-current={active === 'builder' ? 'page' : undefined}
+            className={`ml-auto inline-flex shrink-0 items-center gap-2 whitespace-nowrap border-b-2 px-3 pb-3 pt-1 text-sm font-semibold transition ${
+              active === 'builder' ? 'border-accent text-accent' : 'border-transparent text-accent/80 hover:text-accent'
+            }`}
+          >
+            <Wrench className="h-4 w-4" /> {t(BUILDER.tab)}
+          </a>
         </nav>
 
         <div className="flex items-start gap-3">
@@ -93,6 +116,11 @@ export default function App() {
           <CategoryView cfg={CATEGORIES[id] as unknown as CategoryConfig<BaseListing>} />
         </div>
       ))}
+      {visited.has('builder') && (
+        <div hidden={active !== 'builder'}>
+          <Builder />
+        </div>
+      )}
 
       <footer className="mt-10 border-t border-line pt-6 text-center text-xs text-faint">
         {t(T.footer)}
