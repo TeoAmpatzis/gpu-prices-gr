@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { TrendingDown, Wrench } from 'lucide-react';
+import { Wrench } from 'lucide-react';
 import type { BaseListing, Category } from './types';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './lib/categories';
 import Builder from './components/Builder';
 import CategoryView from './components/CategoryView';
+import Logo from './components/Logo';
 import LangToggle from './components/LangToggle';
 import ThemeToggle from './components/ThemeToggle';
 import { T, tr, useLang } from './lib/i18n';
@@ -47,18 +48,25 @@ export default function App() {
     document.title = `${t(cfg.title)} — ${t(T.siteName)}`;
   });
   const Icon = cfg.icon;
+  // The logo goes to the home page ("/", which shows the first tab) without reloading the app.
+  const goHome = (e: React.MouseEvent) => {
+    e.preventDefault();
+    history.pushState(null, '', '/');
+    setActive('gpu');
+    window.scrollTo({ top: 0 });
+  };
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-5 sm:py-8">
       <header className="mb-6 flex flex-col gap-6">
         <div className="flex items-center justify-between gap-4">
-          <a href="#gpu" className="flex items-center gap-2.5">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-accent text-page shadow-sm">
-              <TrendingDown className="h-5 w-5" strokeWidth={2.5} />
-            </span>
-            <span className="leading-tight">
-              <span className="block text-[15px] font-semibold tracking-tight">{t(T.siteName)}</span>
-              <span className="block text-xs text-faint">{t(T.siteTagline)}</span>
+          <a href="/" onClick={goHome} className="flex min-w-0 items-center gap-2.5" aria-label={t(T.homeLabel)}>
+            <Logo className="h-8 w-8 shrink-0 text-accent" />
+            <span className="min-w-0 leading-tight">
+              <span className="block text-[17px] font-bold tracking-tight">
+                BuildDraft<span className="text-accent">.gr</span>
+              </span>
+              <span className="block truncate text-xs text-faint">{t(T.siteTagline)}</span>
             </span>
           </a>
           <div className="flex items-center gap-2">
@@ -124,7 +132,7 @@ export default function App() {
 
       <footer className="mt-10 border-t border-line pt-6 text-center text-xs text-faint">
         {t(T.footer)}
-        <div className="mt-1">© 2026 Teo Ampatzis · {t(T.notAffiliated)}</div>
+        <div className="mt-1">BuildDraft.gr · © 2026 Teo Ampatzis · {t(T.notAffiliated)}</div>
       </footer>
     </div>
   );
