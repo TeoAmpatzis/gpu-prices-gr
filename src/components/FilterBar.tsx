@@ -5,6 +5,7 @@ import { defaultFilters, type Filters, type Segment, type SortKey } from '../lib
 import { groupName, type CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Text } from '../lib/i18n';
 import { SOURCES, SOURCE_NAMES } from '../lib/sources';
+import SortHelp from './SortHelp';
 
 const SORTS: { value: SortKey; label: Text }[] = [
   { value: 'model', label: T.sortModel },
@@ -19,16 +20,24 @@ function toggle<T>(arr: T[], v: T): T[] {
 }
 
 /** Multi-select chip. */
-function Chip({ active, dot, onClick, children }: { active: boolean; dot?: string; onClick: () => void; children: ReactNode }) {
+function Chip({
+  active,
+  dot,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  dot?: string;
+  onClick: () => void;
+  children: ReactNode;
+}) {
   return (
     <button
       type="button"
       aria-pressed={active}
       onClick={onClick}
       className={`tap inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-sm font-medium ring-1 ring-inset transition ${
-        active
-          ? 'bg-accent/10 text-accent ring-accent/30'
-          : 'text-muted ring-line-strong hover:bg-hover hover:text-fg'
+        active ? 'bg-accent/10 text-accent ring-accent/30' : 'text-muted ring-line-strong hover:bg-hover hover:text-fg'
       }`}
     >
       {active ? <Check className="h-3.5 w-3.5" /> : dot && <span className={`h-2 w-2 rounded-full ${dot}`} />}
@@ -88,17 +97,30 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
           className="field w-full py-2 pl-9 pr-3"
         />
       </label>
-      <select className="field w-full px-3 py-2" value={f.sort} onChange={(e) => set('sort', e.target.value as SortKey)}>
-        {SORTS.map((s) => (
-          <option key={s.value} value={s.value}>
-            {t(s.label)}
-          </option>
-        ))}
-      </select>
+      <div className="relative flex items-center gap-2">
+        <select
+          className="field min-w-0 flex-1 px-3 py-2"
+          value={f.sort}
+          onChange={(e) => set('sort', e.target.value as SortKey)}
+          aria-label={t(T.sortLabel)}
+        >
+          {SORTS.map((s) => (
+            <option key={s.value} value={s.value}>
+              {t(s.label)}
+            </option>
+          ))}
+        </select>
+        <SortHelp />
+      </div>
 
       <Section label={t(cfg.groupLabel)}>
         {cfg.groups.map((g) => (
-          <Chip key={g} active={f.groups.includes(g)} dot={cfg.groupDot[g]} onClick={() => set('groups', toggle(f.groups, g))}>
+          <Chip
+            key={g}
+            active={f.groups.includes(g)}
+            dot={cfg.groupDot[g]}
+            onClick={() => set('groups', toggle(f.groups, g))}
+          >
             {groupName(g, lang)}
           </Chip>
         ))}
@@ -172,7 +194,9 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
                 placeholder={t(T.maxPrice)}
                 className="field w-full py-1.5 pl-2.5 pr-7"
               />
-              <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-sm text-faint">€</span>
+              <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-sm text-faint">
+                €
+              </span>
             </span>
           </label>
         </div>

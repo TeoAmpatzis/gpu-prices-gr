@@ -95,6 +95,12 @@ export const T = {
   sortPriceDesc: { el: 'Τιμή: υψηλή → χαμηλή', en: 'Price: high → low' },
   sortOffers: { el: 'Περισσότερα προϊόντα', en: 'Most listings' },
   sortDiscount: { el: 'Μεγαλύτερη έκπτωση', en: 'Biggest discount' },
+  sortLabel: { el: 'Ταξινόμηση', en: 'Sort' },
+  sortHelpTitle: { el: 'Πώς ταξινομούνται;', en: 'How is this sorted?' },
+  sortHelp: {
+    el: 'Στα «Προτεινόμενα» προηγούνται τα προϊόντα που πουλούν πολλά καταστήματα, της τρέχουσας γενιάς ή πλατφόρμας (π.χ. DDR5, AM5, RTX 50) και με λογική τιμή για την κατηγορία. Όπου μετράει, λαμβάνεται υπόψη και η αξία για τα λεφτά. Οι προσφορές ανεβαίνουν λίγο. Τα workstation και server εμφανίζονται μετά.',
+    en: 'In "Recommended", products sold by many shops come first, along with current-generation platforms (e.g. DDR5, AM5, RTX 50) and sensible prices for the category. Value for money counts where it applies. Items on sale get a small boost. Workstation and server parts come after the rest.',
+  },
   sales: { el: 'Προσφορές', en: 'Sales' },
   saleOnly: { el: 'Μόνο προσφορές', en: 'On sale only' },
   saleBy: { el: 'Προσφορά σύμφωνα με', en: 'On sale according to' },
