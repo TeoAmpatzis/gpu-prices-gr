@@ -27,6 +27,9 @@ export interface GpuListing extends BaseListing {
   vram: number;
   partner: string;
   memType?: string | null; // "GDDR7", "GDDR6X"…
+  // From the Skroutz product page (scraper/specs.py); Skroutz listings only.
+  lengthMm?: number | null;
+  minPsu?: number | null; // card maker's minimum PSU watts
 }
 
 export interface CpuListing extends BaseListing {
@@ -35,6 +38,8 @@ export interface CpuListing extends BaseListing {
   socket: string | null; // e.g. "AM5", "LGA1851"
   packaging?: 'Box' | 'Tray' | null;
   igpu?: boolean; // integrated graphics
+  coolerIncluded?: boolean | null; // a cooler in the box; null = not stated
+  tdp?: number | null; // W
 }
 
 export interface MoboListing extends BaseListing {
@@ -75,6 +80,10 @@ export interface CaseListing extends BaseListing {
   window: boolean;
   rgb: boolean;
   maxBoard?: BoardSize | null; // largest motherboard it takes, if stated
+  gpuMaxMm?: number | null; // longest graphics card it takes
+  coolerMaxMm?: number | null; // tallest CPU air cooler it takes
+  fanSlots?: number | null; // fan positions (front + rear + top + …)
+  radiatorMounts?: string | null; // e.g. "Άνω, Κάτω, Μπροστά"
 }
 
 export interface FanListing extends BaseListing {
@@ -92,6 +101,8 @@ export interface CoolerListing extends BaseListing {
   type: 'Air' | 'AIO';
   radiator: number | null; // AIO radiator length in mm
   rgb: boolean;
+  sockets?: string | null; // supported sockets, comma-joined: "AM4,AM5,LGA1700,LGA1851"
+  heightMm?: number | null; // air coolers
 }
 
 export interface SourceMeta {
