@@ -58,6 +58,7 @@ export const T = {
   activeFilters: { el: 'Ενεργά φίλτρα', en: 'Active filters' },
   removeFilter: { el: 'Αφαίρεση φίλτρου', en: 'Remove filter' },
   clearAll: { el: 'Καθαρισμός όλων', en: 'Clear all' },
+  search: { el: 'Αναζήτηση', en: 'Search' },
   close: { el: 'Κλείσιμο', en: 'Close' },
   emptyHint: {
     el: 'Δοκίμασε λιγότερα φίλτρα ή άλλη αναζήτηση.',

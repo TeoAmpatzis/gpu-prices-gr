@@ -46,6 +46,8 @@ export interface CategoryConfig<L extends BaseListing> {
   icon: LucideIcon;
   empty: Text;
   searchPlaceholder: Text;
+  /** Added to a model's name when its chip comes in several variants (GPU: "16GB"). */
+  variant?: (l: L) => string;
   /** Pill filter values (data keys), in display/sort order: brands for GPU/CPU, memory type for RAM… */
   groups: string[];
   groupLabel: Text; // heading above the pills
@@ -88,7 +90,8 @@ const TYPE: Text = { el: 'Τύπος', en: 'Type' };
 const SIZE: Text = { el: 'Μέγεθος', en: 'Size' };
 const SERIES: Text = { el: 'Σειρά', en: 'Series' };
 const MEMORY: Text = { el: 'Μνήμη', en: 'Memory' };
-const search = (examples: string): Text => ({ el: `Αναζήτηση (π.χ. ${examples})`, en: `Search (e.g. ${examples})` });
+// Short enough to fit the 17rem sidebar and the builder picker (longer ones end in "…").
+const search = (examples: string): Text => ({ el: `π.χ. ${examples}`, en: `e.g. ${examples}` });
 const noResults = (el: string, en: string): Text => ({
   el: `Δεν βρέθηκαν ${el} με αυτά τα φίλτρα.`,
   en: `No ${en} match these filters.`,
@@ -220,8 +223,9 @@ export const GPU: CategoryConfig<GpuListing> = {
   groupDot: { NVIDIA: 'bg-green-500', AMD: 'bg-red-500', Intel: 'bg-sky-500' },
   segments: { main: 'Gaming', pro: 'Workstation' },
   modelKey: (l) => `${l.chip} ${l.vram}GB`,
+  variant: (l) => `${l.vram}GB`,
   isPro: (l) => GPU_WORKSTATION.test(l.chip),
-  tierScore: (m) => gpuChipScore(m.chip) * 100 + gpuVram(m),
+  tierScore: (m) => gpuChipScore(m.cheapest.chip) * 100 + gpuVram(m),
   value: gpuValue,
   searchText: (l) => `${l.chip} ${l.title} ${l.partner}`,
   extraFilters: [
@@ -276,7 +280,7 @@ export const CPU: CategoryConfig<CpuListing> = {
   subtitle: subtitle('CPU', 'CPU'),
   icon: Cpu,
   empty: noResults('επεξεργαστές', 'processors'),
-  searchPlaceholder: search('9800X3D, 14600K, AM5'),
+  searchPlaceholder: search('9800X3D, 14600K'),
   groups: ['AMD', 'Intel'],
   groupLabel: VENDOR,
   groupParam: 'brand',
@@ -331,7 +335,7 @@ export const MOBO: CategoryConfig<MoboListing> = {
   },
   icon: Microchip,
   empty: noResults('μητρικές', 'motherboards'),
-  searchPlaceholder: search('B850, Tomahawk, Z890'),
+  searchPlaceholder: search('B850, Tomahawk'),
   groups: [...MOBO_SOCKETS, OTHER],
   groupLabel: 'Socket',
   groupParam: 'sock',
@@ -391,7 +395,7 @@ export const RAM: CategoryConfig<RamListing> = {
   },
   icon: MemoryStick,
   empty: noResults('μνήμες', 'memory kits'),
-  searchPlaceholder: search('2x16GB 6000, Kingston Fury'),
+  searchPlaceholder: search('2x16GB 6000, Fury'),
   groups: ['DDR5', 'DDR4', 'DDR3', 'DDR2'],
   groupLabel: { el: 'Τύπος μνήμης', en: 'Memory type' },
   groupParam: 'type',
@@ -446,7 +450,7 @@ export const PSU: CategoryConfig<PsuListing> = {
   },
   icon: Plug,
   empty: noResults('τροφοδοτικά', 'power supplies'),
-  searchPlaceholder: search('850W, RM850x, Seasonic'),
+  searchPlaceholder: search('850W, RM850x'),
   groups: ['Diamond', 'Titanium', 'Platinum', 'Gold', 'Silver', 'Bronze', 'Standard', NO_RATING],
   groupLabel: { el: 'Πιστοποίηση', en: 'Efficiency' },
   groupParam: 'eff',
@@ -497,7 +501,7 @@ export const CASE: CategoryConfig<CaseListing> = {
   },
   icon: Box,
   empty: noResults('κουτιά', 'cases'),
-  searchPlaceholder: search('Lancool 216, NZXT H5, O11'),
+  searchPlaceholder: search('Lancool 216, H5'),
   groups: ['Full Tower', 'Midi Tower', 'Mini Tower', 'SFF / Cube', OTHER],
   groupLabel: SIZE,
   groupParam: 'size',
@@ -546,7 +550,7 @@ export const FAN: CategoryConfig<FanListing> = {
   },
   icon: Fan,
   empty: noResults('ανεμιστήρες', 'fans'),
-  searchPlaceholder: search('P12 Pro, Uni Fan, Noctua'),
+  searchPlaceholder: search('P12 Pro, Uni Fan'),
   groups: ['120mm', '140mm', '80–92mm', '180mm+', OTHER],
   groupLabel: SIZE,
   groupParam: 'size',
@@ -598,7 +602,7 @@ export const COOLER: CategoryConfig<CoolerListing> = {
   },
   icon: Snowflake,
   empty: noResults('ψύκτρες', 'coolers'),
-  searchPlaceholder: search('Peerless Assassin, Liquid Freezer, NH-D15'),
+  searchPlaceholder: search('Peerless Assassin'),
   groups: [AIR, 'AIO 120–140', 'AIO 240–280', 'AIO 360–420'],
   groupLabel: TYPE,
   groupParam: 'type',
