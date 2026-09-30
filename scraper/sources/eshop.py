@@ -77,6 +77,16 @@ def parse(html: str, scraped_at: str, cat: Category, specs: str) -> tuple[list, 
             specs=specs,
         )
         if listing:
+            # e-shop shows "Ελάχιστη 30 ημερών": the lowest price of the previous 30 days, the reference
+            # the EU Omnibus rule requires for announcing a discount. Under it = a real price drop. (The
+            # "Προτεινόμενη λιανική" RRP isn't used: most products sit under it permanently.)
+            cell = re.sub(r"\s+", " ", box.css_first("td.web-product-price").text().replace("\xa0", " "))
+            low30 = re.search(r"Ελάχιστη 30 ημερών ([\d.,]+)", cell)
+            low_v = parse_price(low30.group(1)) if low30 else None
+            if low_v and price < low_v:
+                pct = round(100 * (low_v - price) / low_v)
+                if pct >= 5:
+                    listing.drop = pct
             out.append(listing)
     return out, ids
 

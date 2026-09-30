@@ -1,6 +1,14 @@
 from dataclasses import dataclass, asdict
 
 
+def listing_dict(listing) -> dict:
+    """Dataclass fields plus extras a source set on the listing afterwards, e.g. `drop`: the discount
+    (%) the site itself shows for it ("-11% πτώση τιμής", "Προσφορά -13%")."""
+    d = asdict(listing)
+    d.update({k: v for k, v in vars(listing).items() if k not in d})
+    return d
+
+
 @dataclass
 class Listing:
     """One GPU offer as seen on an aggregator. Mirrored in src/types.ts (GpuListing)."""
@@ -19,7 +27,7 @@ class Listing:
     scrapedAt: str  # ISO timestamp (UTC)
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        return listing_dict(self)
 
 
 @dataclass
@@ -41,7 +49,7 @@ class CpuListing:
     scrapedAt: str
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        return listing_dict(self)
 
 
 @dataclass
@@ -65,7 +73,7 @@ class RamListing:
     scrapedAt: str
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        return listing_dict(self)
 
 
 @dataclass
@@ -87,7 +95,7 @@ class PsuListing:
     scrapedAt: str
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        return listing_dict(self)
 
 
 @dataclass
@@ -109,7 +117,7 @@ class CaseListing:
     scrapedAt: str
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        return listing_dict(self)
 
 
 @dataclass
@@ -131,7 +139,7 @@ class FanListing:
     scrapedAt: str
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        return listing_dict(self)
 
 
 @dataclass
@@ -152,7 +160,7 @@ class CoolerListing:
     scrapedAt: str
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        return listing_dict(self)
 
 
 @dataclass
@@ -176,4 +184,4 @@ class MoboListing:
     scrapedAt: str
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        return listing_dict(self)

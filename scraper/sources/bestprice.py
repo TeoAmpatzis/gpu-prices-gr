@@ -36,6 +36,10 @@ def parse(html: str, scraped_at: str, cat: Category) -> list:
             scraped_at=scraped_at,
         )
         if listing:
+            # BestPrice's own price-drop badge ("-12%", vs the product's previous price).
+            drop = card.css_first(".p__badge--drop")
+            if drop and (m := re.search(r"-\s*(\d{1,2})\s*%", drop.text())):
+                listing.drop = int(m.group(1))
             out.append(listing)
     return out
 
