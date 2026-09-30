@@ -9,6 +9,8 @@ Skroutz:   "Gigabyte B650 GAMING X AX V2 rev. 1.x", specs "ATX, Socket: AMD AM5,
            the slug repeats the BestPrice-style tail ("...-Motherboard-Micro-ATX-me-AMD-AM5-Socket").
 e-shop.gr: "ASROCK B650M-H/M.2+ D5 RETAIL" (after the "ΜΗΤΡΙΚΗ" prefix), no socket or form factor
            most of the time, so those fall back to the chipset.
+Shopflix/Snif: the BestPrice tail without "Motherboard" ("… Pro4 ATX με AMD AM4 Socket", "… Micro ATX
+           sAM5", "… AMD A520 Mini ITX με Socket AMD AM4", "…, AMD AM5 Socket, 90-MXBT50-A0UAYZ").
 """
 
 import re
@@ -23,10 +25,34 @@ VENDORS = {
 }
 
 # Everything from "Motherboard" on is the spec tail (BestPrice); e-shop adds "RETAIL"/"BOX" and a size.
-TAIL = re.compile(r"\s(?:Motherboard|Μητρική)\b.*$", re.I)
+TAIL = re.compile(r"\s(?:Motherboard|Mainboard|Μητρική)\b.*$", re.I)
+# Greek capitals typed for Latin ones in model names ("Χ870", "Ζ890", "WiFi ΙΙ", "(ΜΤΧ)"): a token of only
+# such letters (+ Latin/digits) is converted when it has a digit or Latin letter, or is a roman numeral /
+# size code (Greek words like "ΜΕ" stay Greek).
+LOOKALIKE = str.maketrans("ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ", "ABEZHIKMNOPTYX")
+LOOKALIKE_TOKEN = re.compile(r"(?<![\w-])[ΑΒΕΖΗΙΚΜΝΟΡΤΥΧA-Z0-9-]*[ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ][ΑΒΕΖΗΙΚΜΝΟΡΤΥΧA-Z0-9-]*(?![\w-])")
+
+
+def _latin(title: str) -> str:
+    def fix(m: re.Match) -> str:
+        tok = m.group()
+        latin = re.search(r"[A-Z0-9]", tok) or re.fullmatch(r"Ι+|[ΜΑΙ]ΤΧ", tok)
+        return tok.translate(LOOKALIKE) if latin else tok
+    return LOOKALIKE_TOKEN.sub(fix, title)
+
+
+# The same spec tail without "Motherboard" (Shopflix, Snif, e-shop): from the first size word, "με",
+# platform + chipset/socket ("AMD A520", "Intel 1700"), "sAM5"/"s1700", "Socket" or a part number on.
+# Needs a space/comma before it, so "A520M-ITX" and "B650I" stay whole.
+SPEC_TAIL = re.compile(
+    r"(?:\s|,)\s*(?:(?:Extended[\s-])?E-?ATX|Micro(?:[\s-]?ATX)?|Mini(?:[\s-]?(?:ITX|DTX|ATX|STX))?|m-?ATX|uATX|"
+    r"ATX|ITX|με|Socket|(?:AMD|Intel)\s+(?:[ABHQXZWC]\d{3}E?|AM[2-5]|LGA\s?\d{3,4}|\d{4})|"
+    r"s(?:AM[2-5]|\d{4})|\d{2}-?[A-Z0-9]{4,}-[A-Z0-9]{4,})(?![\w-]).*$",
+    re.I,
+)
 NOISE = re.compile(
     r"(?<![\w-])(?:(?:rev|ver)\.?\s*\d+(?:\.[\dx]+)?|v\d+\.[\dx]+|retail|box|bulk|soc|(?:micro|mini|m|e)?-?atx|"
-    r"mini-?itx|itx|lga\s?\d{4}|socket\s+\w+|(?:amd\s+)?am[45]|amd|intel|asro)(?![\w-])",
+    r"mini-?itx|itx|mtx|lga\s?\d{3,4}|socket\s+\w+|(?:amd\s+)?am[45]|amd|intel|asro)(?![\w-])",
     re.I,
 )
 # Same board, spelled differently: "Wi-Fi"/"WIFI" -> "WiFi", "DDR5" -> "D5" (e-shop and the MSI/ASRock
@@ -71,7 +97,7 @@ MEMORY = re.compile(r"\b(?:DDR|D)([45])\b", re.I)
 WIFI = re.compile(r"Wi-?Fi|\bAX\b", re.I)
 EXCLUDE = re.compile(
     r"\bbundle\b|\bcombo\b|\+\s*(?:AMD|Intel|Ryzen|Core|CPU)|\bI/?O\s*shield|\briser\b|\bbracket\b|"
-    r"\bkit\b|καλώδι|\bcable\b|adapter|αντάπτορ|\bTPM\b|\bmodule\b",
+    r"\bkit\b|καλώδι|\bcable\b|adapter|αντάπτορ|\bTPM\b|\bmodule\b|μεταχειρισμέν|\bused\b|refurbished",
     re.I,
 )
 
@@ -92,7 +118,7 @@ def make_listing(
     *, source: str, native_id: str, title: str, url: str, price: float,
     shop_count: int | None, scraped_at: str, specs: str = "",
 ) -> MoboListing | None:
-    title = re.sub(r"\s+", " ", title).strip()
+    title = _latin(re.sub(r"\s+", " ", title).strip())
     if price <= 0 or EXCLUDE.search(title):
         return None
     slug = url.rsplit("/", 1)[-1].replace("-", " ")
@@ -102,14 +128,18 @@ def make_listing(
     vendor = VENDORS.get(vendor_raw.lower())
     if vendor is None:
         return None  # not a board maker ("Κάρτα", accessories, unknown brands)
-    name = NOISE.sub(" ", rest)
+    spec_tail = SPEC_TAIL.search(f" {rest}")
+    name = NOISE.sub(" ", SPEC_TAIL.sub("", f" {rest}"))
     for pattern, repl in SPELLING:
         name = pattern.sub(repl, name)
     if re.search(r"\bAX\b", name):  # Skroutz: "Gigabyte B650 Eagle AX Wi-Fi", BestPrice: "… Eagle AX"
         name = re.sub(r"\bWiFi\b(?!\s\d)", " ", name)
     name = re.sub(r"\s\+.*$", "", name)  # e-shop: "A68N-2100K +ONBOARD CPU AMD E1-6010 …"
+    name = re.sub(r"\(\s*\)", " ", name)  # "(ΜΤΧ)" once the size word is gone
     name = re.sub(r"\s+", " ", name).strip(" -,/+")
-    if not name or re.fullmatch(r"WiFi(?: \d)?", name):  # broken Skroutz titles ("ASRock Wi-Fi")
+    # Broken titles ("ASRock Wi-Fi" on Skroutz, "Asus Desktop ATX με LGA 1700 Socket" on Snif): every
+    # real board name has a number in it (digits or a roman numeral: "ROG Crosshair VIII Impact").
+    if not name or re.fullmatch(r"WiFi(?: \d)?", name) or not re.search(r"\d|\b[IVX]{2,}\b", name):
         return None
 
     chip_m = CHIPSET.search(name)
@@ -126,6 +156,8 @@ def make_listing(
     if form is None and chip_m:
         suffix = name[chip_m.end(): chip_m.end() + 1].upper()
         form = {"M": "Micro ATX", "I": "Mini ITX", "N": "Mini ITX"}.get(suffix)
+    if form is None and spec_tail and source != "eshop":  # Shopflix/Snif size word (e-shop's is unreliable)
+        form = next((v for pattern, v in FORM if pattern.search(spec_tail.group())), None)
     if form is None:
         form = next((v for pattern, v in FORM if pattern.search(title)), "ATX")
 
