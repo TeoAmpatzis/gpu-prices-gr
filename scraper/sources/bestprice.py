@@ -48,7 +48,12 @@ def fetch(cat: Category) -> list:
         if i:
             http.polite_sleep()
         label = cat.name if len(cat.bestprice_paths) == 1 else f"{cat.name}{i + 1}"
-        fetch_slice(s, BASE + path, label, cat, scraped_at, seen)
+        found: dict = {}
+        fetch_slice(s, BASE + path, label, cat, scraped_at, found)
+        for listing in found.values():
+            for k, v in (cat.bestprice_tags[i] if cat.bestprice_tags else {}).items():
+                setattr(listing, k, v)
+            seen.setdefault(listing.id, listing)
     return list(seen.values())
 
 

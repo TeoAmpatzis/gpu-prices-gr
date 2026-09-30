@@ -154,5 +154,6 @@ def make_listing(
         formFactor=form,
         memory=memory,
         wifi=bool(WIFI.search(name)),
+        ramSlots=2 if form == "Mini ITX" else None,  # the rest comes from BestPrice's slot slices
         scrapedAt=scraped_at,
     )

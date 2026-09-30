@@ -48,6 +48,25 @@ EXCLUDE = re.compile(
 )
 WINDOW = re.compile(r"Παράθυρο|Parathyro|Window|Tempered\s*Glass|\bTG\b|Glass", re.I)
 RGB = re.compile(r"\bA?RGB\b|Fotismo|Φωτισμό", re.I)
+# Board sizes, largest first. Skroutz lists them ("Μέγεθος Μητρικής: Extended ATX / ATX / Mini ITX"),
+# e-shop sometimes names one ("PC CASE MICRO-ATX"). Bigger names are blanked out once matched, so
+# the "ATX" inside "Micro ATX" doesn't count as full ATX.
+BOARDS = [
+    (re.compile(r"\b(?:Extended[\s-]?ATX|E-?ATX|SSI[\s-]?EEB|EEB)\b", re.I), "E-ATX"),
+    (re.compile(r"\b(?:Micro[\s-]?ATX|m-?ATX|uATX)\b", re.I), "Micro ATX"),
+    (re.compile(r"\b(?:Mini[\s-]?(?:ITX|DTX)|ITX)\b", re.I), "Mini ITX"),
+    (re.compile(r"\bATX\b", re.I), "ATX"),
+]
+BOARD_RANK = ["Mini ITX", "Micro ATX", "ATX", "E-ATX"]
+
+
+def max_board(text: str) -> str | None:
+    found = []
+    for pattern, board in BOARDS:
+        if pattern.search(text):
+            found.append(board)
+            text = pattern.sub(" ", text)
+    return max(found, key=BOARD_RANK.index) if found else None
 
 
 def make_listing(
@@ -79,6 +98,7 @@ def make_listing(
         size=size,
         window=bool(WINDOW.search(text)),
         rgb=bool(RGB.search(text)),
+        maxBoard=max_board(f"{title} {specs}"),
         scrapedAt=scraped_at,
     )
 

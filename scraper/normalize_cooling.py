@@ -80,6 +80,7 @@ def make_fan_listing(
         size=size,
         pack=pack,
         rgb=bool(RGB.search(text)) and not NO_LED.search(text),
+        pwm=bool(re.search(r"PWM", text, re.I)),
         scrapedAt=scraped_at,
     )
 

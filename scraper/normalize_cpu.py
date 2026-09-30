@@ -35,7 +35,25 @@ CHIPS: list[tuple[re.Pattern, str, callable]] = [
 ]
 
 # BestPrice: "... Επεξεργαστής 8 Πυρήνων για Socket AM4"; Skroutz slug: "...-8-Pyrinon-gia-Socket-AM5".
-CORES = re.compile(r"(\d{1,3})[\s-]*(?:Πυρήν|Pyrinon)", re.I)
+# Skroutz spec line: "AM5 Socket, 8 Cores, 16 Threads"; e-shop: "… LGA1851 14 CORE BOX".
+CORES = re.compile(r"(\d{1,3})[\s-]*(?:Πυρήν|Pyrinon|Cores?\b)", re.I)
+BOX = re.compile(r"\bBox(?:ed)?\b", re.I)
+TRAY = re.compile(r"\b(?:Tray|OEM|MPK)\b", re.I)
+
+
+def has_igpu(chip: str) -> bool:
+    """Integrated graphics from the model number: Intel F/KF have none, Ryzen 7000+ and G models do."""
+    m = re.search(r"\d([A-Z0-9]*)(?: Plus| v\d)?$", chip)  # "14600KF" -> "4600KF"; only its letters matter
+    suffix = m.group(1) if m else ""
+    if chip.startswith(("Core", "Pentium", "Celeron", "Processor")):
+        return "F" not in suffix
+    if chip.startswith("Xeon"):
+        return "G" in suffix  # Xeon E-2xxxG
+    if chip.startswith("Athlon"):
+        return True
+    if m := re.match(r"Ryzen \d (?:PRO )?(\d)\d{3}", chip):
+        return "G" in suffix or (int(m.group(1)) >= 7 and "F" not in suffix)
+    return False  # Threadripper, EPYC
 SOCKET = re.compile(r"Socket[\s-]+(?:LGA[\s-]*)?([A-Za-z]*\d+[A-Za-z0-9]*)", re.I)
 
 
@@ -95,5 +113,7 @@ def make_listing(
         chip=chip,
         cores=int(cores.group(1)) if cores else None,
         socket=normalize_socket(socket.group(1)) if socket else infer_socket(chip),
+        packaging="Box" if BOX.search(specs) else "Tray" if TRAY.search(specs) else None,
+        igpu=has_igpu(chip),
         scrapedAt=scraped_at,
     )
