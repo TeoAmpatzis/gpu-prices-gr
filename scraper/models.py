@@ -147,3 +147,26 @@ class CoolerListing:
 
     def to_dict(self) -> dict:
         return asdict(self)
+
+
+@dataclass
+class MoboListing:
+    """One motherboard offer. Mirrored in src/types.ts (MoboListing)."""
+
+    id: str
+    source: str
+    title: str
+    url: str
+    price: float
+    shopCount: int | None
+    brand: str  # vendor, e.g. "Asus"
+    chip: str  # vendor + board name, e.g. "Asus TUF Gaming B850-Plus WiFi"
+    chipset: str | None  # e.g. "B850", "X870E", "Z890"; None if the name has none (server boards)
+    socket: str | None  # e.g. "AM5", "LGA1851", "sTR5"
+    formFactor: str  # ATX | Micro ATX | Mini ITX | E-ATX | Άλλο
+    memory: str | None  # DDR4 | DDR5; None if unknown (LGA1700 boards come in both)
+    wifi: bool
+    scrapedAt: str
+
+    def to_dict(self) -> dict:
+        return asdict(self)

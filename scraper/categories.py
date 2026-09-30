@@ -8,6 +8,7 @@ import normalize
 import normalize_case
 import normalize_cooling
 import normalize_cpu
+import normalize_mobo
 import normalize_psu
 import normalize_ram
 
@@ -42,6 +43,18 @@ CATEGORIES = {
         make_listing=normalize_cpu.make_listing,
         model_key=lambda l: l["chip"],
         eshop_categories=(("ypologistes-epeksergastes-cpu-list", "ΕΠΕΞΕΡΓΑΣΤΗΣ - CPU"),),
+    ),
+    "mobo": Category(
+        name="mobo",
+        skroutz_paths=("/c/31/motherboards-mhtrikes.html",),
+        # ~850 products: sliced by price (cents).
+        bestprice_paths=tuple(
+            f"/cat/2611/motherboards.html?{q}"
+            for q in ("max=9999", "min=10000&max=14999", "min=15000&max=24999", "min=25000")
+        ),
+        make_listing=normalize_mobo.make_listing,
+        model_key=lambda l: names.model_key(l["chip"]),
+        eshop_categories=(("ypologistes-mitrikes-motherboards-list", "ΜΗΤΡΙΚΗ ΚΑΡΤΑ"),),
     ),
     "ram": Category(
         name="ram",
