@@ -65,6 +65,10 @@ def parse(html: str, scraped_at: str, cat: Category) -> tuple[list, bool]:
             scraped_at=scraped_at,
         )
         if listing:
+            # Skroutz's own price-drop badge: "-11%πτώση τιμής".
+            drop = card.css_first(".badge-price_drop_bottom_badge")
+            if drop and (m := re.search(r"-\s*(\d{1,2})\s*%", drop.text())):
+                listing.drop = int(m.group(1))
             out.append(listing)
     has_next = re.search(r'<link rel="next"', html) is not None
     return out, has_next

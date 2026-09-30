@@ -6,8 +6,9 @@ the product's daily lowest price in consecutive segments (`min_price.graphData` 
 "3_months", "6_months", "all"; ~2 years), each value `{timestamp, value, shop_name}`; a timestamp
 is midnight Athens time.
 
-A model is imported once (remembered in public/data/<cat>/history_imported.json); after that our own
-daily points continue it. Models that group several products by spec (GPU chip + VRAM, RAM kit, PSU
+A model is imported once (remembered in public/data/<cat>/history_imported.json as
+`{model: {d: import date, low: lowest price in Skroutz's whole history, since: its first day}}`; the
+site reads `low`/`since` for the "all-time low" badge); after that our own daily points continue it. Models that group several products by spec (GPU chip + VRAM, RAM kit, PSU
 wattage) take the daily minimum over their few cheapest Skroutz products, so the imported past isn't
 higher than the real market minimum (which would make ordinary prices look like sales).
 Skroutz throttles quick bursts (see specs.py), so this runs slowly, from its own daily workflow:
@@ -84,7 +85,8 @@ def enrich(cat: str, out_dir: Path, listings: list[dict], model_key, budget: int
     todo = [
         (key, sorted((l for l in ls if l["source"] == "skroutz"), key=lambda l: l["price"])[: SPEC_GROUPED.get(cat, 1)])
         for key, ls in sorted(models.items(), key=lambda kv: len(kv[1]), reverse=True)  # most-listed first
-        if key not in done and any(l["source"] == "skroutz" for l in ls)
+        # Old entries (just a date) predate the all-time low: fetched once more to get it.
+        if not isinstance(done.get(key), dict) and any(l["source"] == "skroutz" for l in ls)
     ]
 
     def save() -> None:
@@ -116,12 +118,15 @@ def enrich(cat: str, out_dir: Path, listings: list[dict], model_key, budget: int
             continue  # retried next run
         if daily:
             history[key] = merge(history.get(key, []), daily, today)
-        done[key] = today
+        # The whole Skroutz history (~2 years, longer than the 365 days kept in history.json): its
+        # lowest price backs the "all-time low" badge on the site.
+        past = [v for d, v in daily.items() if d < today]
+        done[key] = {"d": today, **({"low": round(min(past), 2), "since": min(daily)} if past else {})}
         imported += 1
         if imported % 20 == 0:
             save()
     if failures >= MAX_FAILURES:
         print(f"  history {cat}: {failures} failures in a row, Skroutz is throttling; stopping for this run")
     save()
-    left = sum(1 for key, _ in todo if key not in done)
+    left = sum(1 for key, _ in todo if not isinstance(done.get(key), dict))
     print(f"  history {cat}: imported {imported} models ({requests} requests), {left} left")

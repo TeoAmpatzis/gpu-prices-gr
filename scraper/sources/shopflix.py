@@ -27,7 +27,8 @@ INDEX = "prod_GR_spryker"
 FACET = "string-facet.facet-map.categoryLinks"
 MAX_HITS = 1000  # Algolia's pagination limit
 FIELDS = ["search-result-data.name", "search-result-data.sku", "search-result-data.slug",
-          "search-result-data.price", "search-result-data.vendorOfferPrices", "search-result-data.vendorIds"]
+          "search-result-data.price", "search-result-data.vendorOfferPrices", "search-result-data.vendorIds",
+          "search-result-data.discount"]
 
 _credentials: tuple[str, str] | None = None
 
@@ -100,6 +101,10 @@ def fetch(cat: Category) -> list:
                     scraped_at=scraped_at,
                 )
                 if listing:
+                    # Shopflix's "Προσφορά" label: `discount` (%) of the featured offer vs its list price,
+                    # used when that offer is the lowest one.
+                    if (p.get("discount") or 0) >= 1 and price >= (p.get("price") or 0) - 0.01:
+                        listing.drop = int(p["discount"])
                     seen.setdefault(listing.id, listing)
                     kept += 1
             print(f"  shopflix {cat.name} {path} €{lo:g}–{hi:g}: {len(d.get('hits', []))} products, {kept} kept")
