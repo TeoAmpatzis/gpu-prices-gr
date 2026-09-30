@@ -3,7 +3,7 @@
 export type Category = 'gpu' | 'cpu' | 'mobo' | 'ram' | 'psu' | 'case' | 'fan' | 'cooler';
 export type Brand = 'NVIDIA' | 'AMD' | 'Intel';
 export type BoardSize = 'E-ATX' | 'ATX' | 'Micro ATX' | 'Mini ITX';
-export type SourceName = 'skroutz' | 'bestprice' | 'eshop';
+export type SourceName = 'skroutz' | 'bestprice' | 'eshop' | 'shopflix' | 'snif';
 
 export interface BaseListing {
   id: string;
@@ -121,6 +121,7 @@ export interface HistoryPoint {
   d: string; // YYYY-MM-DD
   min: number;
   source: SourceName;
+  i?: 1; // imported from Skroutz's price history (Skroutz-only, so not used for sale detection)
 }
 
 /** Keyed by model, e.g. "RTX 5060 Ti 16GB", "Ryzen 7 9800X3D", "DDR5 32GB (2×16GB) 6000MHz Desktop". */

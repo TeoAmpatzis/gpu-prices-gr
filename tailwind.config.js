@@ -13,6 +13,8 @@ export default {
         skroutz: '#f68b24',
         bestprice: '#2563eb',
         eshop: '#e11d48',
+        shopflix: '#7c3aed',
+        snif: '#0891b2',
         // Theme tokens, defined in src/index.css for light and .dark.
         page: token('page'),
         panel: token('panel'),

@@ -15,6 +15,7 @@ import type {
 } from '../types';
 import { formatPrice, mostCommon, type Model } from './data';
 import { T, tr, type Lang, type Text } from './i18n';
+import { fanValue, gpuValue, psuValue, ramValue } from './value';
 
 export interface Column<L extends BaseListing> {
   header: Text;
@@ -55,8 +56,10 @@ export interface CategoryConfig<L extends BaseListing> {
   /** Same key as `model_key` in scraper/categories.py. */
   modelKey: (l: L) => string;
   isPro: (l: L) => boolean;
-  /** Higher = listed first when sorting by model. */
+  /** Higher = listed first when sorting by model (categories without a `value` score). */
   tierScore: (m: Model<L>) => number;
+  /** Value for money (higher = more for the money); drives the "Recommended" sort when set. */
+  value?: (m: Model<L>) => number | null;
   searchText: (l: L) => string;
   extraFilters: ExtraFilter<L>[];
   /** Columns between the model name and the price, and after the price. */
@@ -87,8 +90,8 @@ const noResults = (el: string, en: string): Text => ({
   en: `No ${en} match these filters.`,
 });
 const subtitle = (el: string, en: string): Text => ({
-  el: `Οι χαμηλότερες τιμές ${el} στην Ελλάδα, από Skroutz, BestPrice και e-shop.gr.`,
-  en: `The lowest ${en} prices in Greece, from Skroutz, BestPrice and e-shop.gr.`,
+  el: `Οι χαμηλότερες τιμές ${el} στην Ελλάδα, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.`,
+  en: `The lowest ${en} prices in Greece, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.`,
 });
 
 // ---------- Filter builders ----------
@@ -211,6 +214,7 @@ export const GPU: CategoryConfig<GpuListing> = {
   modelKey: (l) => `${l.chip} ${l.vram}GB`,
   isPro: (l) => GPU_WORKSTATION.test(l.chip),
   tierScore: (m) => gpuChipScore(m.chip) * 100 + gpuVram(m),
+  value: gpuValue,
   searchText: (l) => `${l.chip} ${l.title} ${l.partner}`,
   extraFilters: [
     threshold('vram', atLeastLabel('VRAM'), (l) => l.vram, (v) => `≥ ${v}GB`),
@@ -313,8 +317,8 @@ export const MOBO: CategoryConfig<MoboListing> = {
   tab: { el: 'Μητρικές', en: 'Motherboards' },
   title: { el: 'Τιμές Μητρικών', en: 'Motherboard Prices' },
   subtitle: {
-    el: 'Οι χαμηλότερες τιμές για κάθε μητρική στην Ελλάδα, από Skroutz, BestPrice και e-shop.gr.',
-    en: 'The lowest price for every motherboard in Greece, from Skroutz, BestPrice and e-shop.gr.',
+    el: 'Οι χαμηλότερες τιμές για κάθε μητρική στην Ελλάδα, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
+    en: 'The lowest price for every motherboard in Greece, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
   },
   icon: Microchip,
   empty: noResults('μητρικές', 'motherboards'),
@@ -372,8 +376,8 @@ export const RAM: CategoryConfig<RamListing> = {
   tab: { el: 'Μνήμες RAM', en: 'Memory (RAM)' },
   title: { el: 'Τιμές Μνημών RAM', en: 'Memory (RAM) Prices' },
   subtitle: {
-    el: 'Οι χαμηλότερες τιμές RAM στην Ελλάδα ανά χωρητικότητα και ταχύτητα, από Skroutz, BestPrice και e-shop.gr.',
-    en: 'The lowest RAM prices in Greece by capacity and speed, from Skroutz, BestPrice and e-shop.gr.',
+    el: 'Οι χαμηλότερες τιμές RAM στην Ελλάδα ανά χωρητικότητα και ταχύτητα, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
+    en: 'The lowest RAM prices in Greece by capacity and speed, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
   },
   icon: MemoryStick,
   empty: noResults('μνήμες', 'memory kits'),
@@ -387,6 +391,7 @@ export const RAM: CategoryConfig<RamListing> = {
   isPro: (l) => l.formFactor !== 'Desktop',
   // Most-offered kits first (DDR5 32GB 6000 over a lone 384GB kit), then bigger, then faster.
   tierScore: (m) => m.listings.length * 1e7 + m.cheapest.capacity * 1e4 + (m.cheapest.speed ?? 0) / 10,
+  value: ramValue,
   searchText: (l) => `${l.chip} ${l.modules}x${l.capacity / l.modules}GB ${l.title} ${l.brand}`,
   extraFilters: [
     threshold('capacity', atLeastLabel({ el: 'Χωρητικότητα', en: 'Capacity' }), (l) => l.capacity, (v) => `≥ ${v}GB`, {
@@ -425,8 +430,8 @@ export const PSU: CategoryConfig<PsuListing> = {
   tab: { el: 'Τροφοδοτικά', en: 'Power Supplies' },
   title: { el: 'Τιμές Τροφοδοτικών', en: 'Power Supply Prices' },
   subtitle: {
-    el: 'Οι χαμηλότερες τιμές τροφοδοτικών PC στην Ελλάδα ανά ισχύ και πιστοποίηση, από Skroutz, BestPrice και e-shop.gr.',
-    en: 'The lowest PC power supply prices in Greece by wattage and efficiency rating, from Skroutz, BestPrice and e-shop.gr.',
+    el: 'Οι χαμηλότερες τιμές τροφοδοτικών PC στην Ελλάδα ανά ισχύ και πιστοποίηση, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
+    en: 'The lowest PC power supply prices in Greece by wattage and efficiency rating, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
   },
   icon: Plug,
   empty: noResults('τροφοδοτικά', 'power supplies'),
@@ -444,6 +449,7 @@ export const PSU: CategoryConfig<PsuListing> = {
   modelKey: (l) => `${l.chip} ${l.formFactor}`,
   isPro: (l) => l.formFactor !== 'ATX',
   tierScore: (m) => m.listings.length * 1e5 + m.cheapest.watts,
+  value: psuValue,
   searchText: (l) => `${l.chip} ${l.title} ${l.brand} ${l.formFactor}`,
   extraFilters: [
     threshold('watts', atLeastLabel({ el: 'Ισχύς', en: 'Wattage' }), (l) => l.watts, (v) => `≥ ${v}W`, {
@@ -474,8 +480,8 @@ export const CASE: CategoryConfig<CaseListing> = {
   tab: { el: 'Κουτιά', en: 'Cases' },
   title: { el: 'Τιμές Κουτιών PC', en: 'PC Case Prices' },
   subtitle: {
-    el: 'Οι χαμηλότερες τιμές για κάθε κουτί υπολογιστή στην Ελλάδα, από Skroutz, BestPrice και e-shop.gr.',
-    en: 'The lowest price for every PC case in Greece, from Skroutz, BestPrice and e-shop.gr.',
+    el: 'Οι χαμηλότερες τιμές για κάθε κουτί υπολογιστή στην Ελλάδα, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
+    en: 'The lowest price for every PC case in Greece, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
   },
   icon: Box,
   empty: noResults('κουτιά', 'cases'),
@@ -522,8 +528,8 @@ export const FAN: CategoryConfig<FanListing> = {
   tab: { el: 'Ανεμιστήρες', en: 'Case Fans' },
   title: { el: 'Τιμές Ανεμιστήρων', en: 'Case Fan Prices' },
   subtitle: {
-    el: 'Οι χαμηλότερες τιμές ανεμιστήρων κουτιού στην Ελλάδα, ανά μοντέλο και συσκευασία, από Skroutz, BestPrice και e-shop.gr.',
-    en: 'The lowest case fan prices in Greece, by model and pack size, from Skroutz, BestPrice and e-shop.gr.',
+    el: 'Οι χαμηλότερες τιμές ανεμιστήρων κουτιού στην Ελλάδα, ανά μοντέλο και συσκευασία, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
+    en: 'The lowest case fan prices in Greece, by model and pack size, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
   },
   icon: Fan,
   empty: noResults('ανεμιστήρες', 'fans'),
@@ -540,6 +546,7 @@ export const FAN: CategoryConfig<FanListing> = {
   modelKey: (l) => productKey(l.chip),
   isPro: () => false,
   tierScore: (m) => m.listings.length,
+  value: fanValue,
   searchText: (l) => `${l.chip} ${l.title}`,
   extraFilters: [
     oneOf('pack', { el: 'Τεμάχια στη συσκευασία', en: 'Fans in pack' }, (l) => l.pack, { order: 'asc', minCount: 3 }),
@@ -571,8 +578,8 @@ export const COOLER: CategoryConfig<CoolerListing> = {
   tab: { el: 'Ψύκτρες CPU', en: 'CPU Coolers' },
   title: { el: 'Τιμές Ψυκτρών CPU', en: 'CPU Cooler Prices' },
   subtitle: {
-    el: 'Οι χαμηλότερες τιμές για ψύκτρες αέρα και υδροψύξεις AIO στην Ελλάδα, από Skroutz, BestPrice και e-shop.gr.',
-    en: 'The lowest prices for air coolers and AIO liquid coolers in Greece, from Skroutz, BestPrice and e-shop.gr.',
+    el: 'Οι χαμηλότερες τιμές για ψύκτρες αέρα και υδροψύξεις AIO στην Ελλάδα, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
+    en: 'The lowest prices for air coolers and AIO liquid coolers in Greece, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
   },
   icon: Snowflake,
   empty: noResults('ψύκτρες', 'coolers'),

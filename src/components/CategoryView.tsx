@@ -21,7 +21,7 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
       .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)));
   }, [cfg.id]);
 
-  const models = useMemo(() => (data ? applyFilters(data.latest.listings, filters, cfg) : []), [data, filters, cfg]);
+  const models = useMemo(() => (data ? applyFilters(data.latest.listings, filters, cfg, data.history) : []), [data, filters, cfg]);
 
   if (error) {
     return (
