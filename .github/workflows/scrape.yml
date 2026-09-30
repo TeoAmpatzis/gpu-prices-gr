@@ -42,6 +42,7 @@ jobs:
             echo "No changes"
           else
             git commit -m "chore(data): update prices $(date -u +'%Y-%m-%d %H:%M')"
-            git pull --rebase
+            # Data files can conflict with a commit pushed meanwhile: this run's fresh data wins.
+            git pull --rebase -X theirs
             git push
           fi
