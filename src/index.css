@@ -2,23 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Theme tokens as "r g b" so Tailwind opacity modifiers work (see tailwind.config.js). */
+/*
+ * Design tokens — every colour on the site. "r g b" triplets so Tailwind opacity modifiers work
+ * (tailwind.config.js maps each to a class: bg-page, text-muted, bg-skroutz-bg…). Light values are
+ * picked for WCAG AA (4.5:1) text contrast; the ratios are listed in CLAUDE.md.
+ */
 :root {
   color-scheme: light;
-  --page: 245 246 248;
-  --panel: 255 255 255;
+  /* Surfaces */
+  --page: 246 247 249; /* #F6F7F9 */
+  --panel: 255 255 255; /* cards, tables, popovers */
   --surface: 255 255 255;
-  --sunken: 249 250 251;
-  --hover: 243 244 246;
-  /* Light greys are deliberately dark: thin text on white washes out on Windows. */
-  --line: 220 223 228;
-  --line-strong: 190 196 205;
-  --fg: 10 14 24;
-  --fg-soft: 30 38 54;
-  --muted: 52 62 80;
-  --faint: 78 88 106;
-  --accent: 4 108 78;
-  --up: 200 30 30;
+  --sunken: 249 250 251; /* table headers, inputs, expanded rows */
+  --hover: 241 243 246;
+  --line: 227 230 234; /* #E3E6EA borders */
+  --line-strong: 128 136 150; /* #808896 input borders, unselected chips: ≥3:1 vs white (WCAG UI) */
+  /* Text */
+  --fg: 17 24 39; /* #111827 */
+  --fg-soft: 31 41 55; /* #1F2937 */
+  --muted: 75 85 99; /* #4B5563 secondary */
+  --faint: 95 104 118; /* #5F6876 labels, hints */
+  /* Brand / state */
+  --accent: 4 120 87; /* #047857 prices, active filters */
+  --up: 185 28 28; /* price went up */
+  --ok: 5 150 105; /* status dots */
+  --warn: 217 119 6;
+  --idle: 156 163 175;
+  --warn-bg: 254 243 199;
+  --warn-fg: 146 64 14;
+  --danger-bg: 255 228 230;
+  --danger-fg: 159 18 57;
+  /* Badges: soft solid background, dark text of the same hue */
+  --sale-bg: 255 228 230;
+  --sale-fg: 190 18 60;
+  --low-bg: 209 250 229;
+  --low-fg: 6 95 70;
+  --skroutz-bg: 255 237 213;
+  --skroutz-fg: 154 52 18;
+  --bestprice-bg: 219 234 254;
+  --bestprice-fg: 30 64 175;
+  --eshop-bg: 255 228 230;
+  --eshop-fg: 159 18 57;
+  --shopflix-bg: 237 233 254;
+  --shopflix-fg: 91 33 182;
+  --snif-bg: 207 250 254;
+  --snif-fg: 21 94 117;
+  /* Very light card shadow (dark mode relies on the border only) */
+  --card-shadow: 0 1px 2px rgb(16 24 40 / 0.04), 0 1px 3px rgb(16 24 40 / 0.05);
 }
 
 .dark {
@@ -29,19 +59,41 @@
   --sunken: 12 12 14;
   --hover: 30 30 34;
   --line: 39 39 44;
-  --line-strong: 63 63 70;
+  --line-strong: 113 113 122; /* ≥3:1 vs the dark card */
   --fg: 244 244 245;
   --fg-soft: 212 212 216;
   --muted: 161 161 170;
-  --faint: 113 113 122;
+  --faint: 139 139 148;
   --accent: 52 211 153;
   --up: 251 113 133;
+  --ok: 16 185 129;
+  --warn: 245 158 11;
+  --idle: 113 113 122;
+  --warn-bg: 69 39 5;
+  --warn-fg: 252 211 77;
+  --danger-bg: 76 5 25;
+  --danger-fg: 253 164 175;
+  --sale-bg: 76 5 25;
+  --sale-fg: 253 164 175;
+  --low-bg: 2 44 34;
+  --low-fg: 110 231 183;
+  --skroutz-bg: 67 38 14;
+  --skroutz-fg: 253 186 116;
+  --bestprice-bg: 23 37 84;
+  --bestprice-fg: 147 197 253;
+  --eshop-bg: 76 5 25;
+  --eshop-fg: 253 164 175;
+  --shopflix-bg: 46 16 101;
+  --shopflix-fg: 196 181 253;
+  --snif-bg: 8 51 68;
+  --snif-fg: 103 232 249;
+  --card-shadow: none;
 }
 
 @layer components {
-  /* Raised container: soft shadow in light mode, ring only in dark. */
+  /* Raised container (cards, tables, popovers): 1px border + a very light shadow in light mode. */
   .card {
-    @apply rounded-2xl bg-panel ring-1 ring-line shadow-[0_1px_2px_rgb(16_24_40/0.04),0_1px_3px_rgb(16_24_40/0.06)] dark:shadow-none;
+    @apply rounded-2xl bg-panel ring-1 ring-line shadow-[var(--card-shadow)];
   }
   .field {
     @apply rounded-lg bg-sunken text-sm text-fg ring-1 ring-inset ring-line-strong transition placeholder:text-faint hover:ring-faint/60 focus:outline-none focus:ring-2 focus:ring-accent/50;
@@ -49,9 +101,22 @@
   .label {
     @apply text-[11px] font-semibold uppercase tracking-wider text-faint;
   }
-  /* One shape for every small badge (sources, "−12%", "all-time low"); colours come from the caller. */
+  /* One shape for every small badge; colours are soft solid tokens (bg-*-bg + text-*-fg). */
   .badge {
-    @apply inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-md px-1.5 text-[11px] font-semibold leading-none ring-1 ring-inset;
+    @apply inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-md px-1.5 text-[11px] font-semibold leading-none;
+  }
+  .badge-sale {
+    @apply bg-sale-bg text-sale-fg;
+  }
+  .badge-low {
+    @apply bg-low-bg text-low-fg;
+  }
+  /* Inline notices: warning (builder) and error (failed load). */
+  .notice-warn {
+    @apply rounded-xl bg-warn-bg text-warn-fg;
+  }
+  .notice-danger {
+    @apply rounded-lg bg-danger-bg text-danger-fg;
   }
   /* Loading placeholder bar (see Skeleton.tsx); pulses only when motion is allowed. */
   .skeleton {

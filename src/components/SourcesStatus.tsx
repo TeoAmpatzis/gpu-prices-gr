@@ -57,7 +57,7 @@ export default function SourcesStatus({ latest }: { latest: Latest }) {
         onClick={(e) => setOpen((o) => (e.detail === 0 ? !o : true))}
         className="inline-flex items-center gap-1.5 rounded-full bg-panel px-2.5 py-1 text-xs text-muted ring-1 ring-inset ring-line transition-colors duration-150 hover:text-fg"
       >
-        <span className={`h-2 w-2 rounded-full ${delayed ? 'bg-amber-500' : 'bg-emerald-500'}`} />
+        <span className={`h-2 w-2 rounded-full ${delayed ? 'bg-warn' : 'bg-ok'}`} />
         <span className="tabular-nums">
           {active.length} {t(T.stores)} · {t(T.updated)} {shortAgo(newest, lang)}
           {t(T.agoSuffix)}
@@ -79,7 +79,7 @@ export default function SourcesStatus({ latest }: { latest: Latest }) {
                 title={meta && !meta.ok ? t(T.staleSource) : undefined}
               >
                 <span
-                  className={`h-2 w-2 shrink-0 rounded-full ${!meta ? 'bg-zinc-400' : meta.ok ? 'bg-emerald-500' : 'bg-amber-500'}`}
+                  className={`h-2 w-2 shrink-0 rounded-full ${!meta ? 'bg-idle' : meta.ok ? 'bg-ok' : 'bg-warn'}`}
                 />
                 <SourceBadge source={source} />
                 <span className="ml-auto whitespace-nowrap tabular-nums text-fg-soft">

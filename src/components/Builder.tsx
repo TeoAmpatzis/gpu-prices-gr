@@ -208,7 +208,7 @@ export default function Builder() {
 
   if (error) {
     return (
-      <div className="flex items-center gap-2 rounded-lg bg-rose-50 p-4 text-rose-700 ring-1 ring-rose-200 dark:bg-rose-950/50 dark:text-rose-300 dark:ring-rose-900">
+      <div className="notice-danger flex items-center gap-2 p-4">
         <AlertTriangle className="h-5 w-5" /> {t(T.loadError)}: {error}
       </div>
     );
@@ -243,8 +243,8 @@ export default function Builder() {
       <div className="flex min-w-0 flex-col gap-4">
         <BuildGuide />
         {collecting && (
-          <div className="flex gap-2 rounded-xl bg-amber-500/10 p-3 text-sm ring-1 ring-inset ring-amber-500/30">
-            <Info className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
+          <div className="notice-warn flex gap-2 p-3 text-sm">
+            <Info className="mt-0.5 h-4 w-4 shrink-0" />
             <span>
               {t({
                 el: `Οι διαστάσεις για τον έλεγχο συμβατότητας συλλέγονται σταδιακά (κάρτες γραφικών ${coverage.gpu}%, κουτιά ${coverage.case}%, ψύκτρες ${coverage.cooler}%). Όσα δεν έχουν ακόμα στοιχεία δεν εμφανίζονται· προστίθενται καθημερινά.`,
@@ -353,7 +353,7 @@ export default function Builder() {
                               {(() => {
                                 const sale = saleOf(o.listings, o.cheapest);
                                 return sale ? (
-                                  <span className="text-[11px] font-semibold text-rose-600 dark:text-rose-400">−{sale.pct}%</span>
+                                  <span className="badge badge-sale">−{sale.pct}%</span>
                                 ) : null;
                               })()}
                               <span className="font-semibold tabular-nums">{formatPrice(o.cheapest.price, lang)}</span>
@@ -397,7 +397,7 @@ export default function Builder() {
           {notes.map((n, i) => (
             <li key={i} className={`flex gap-2 ${n.level === 'error' ? 'text-fg' : 'text-muted'}`}>
               {n.level === 'error' ? (
-                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
+                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warn" />
               ) : (
                 <Info className="mt-0.5 h-4 w-4 shrink-0 text-faint" />
               )}

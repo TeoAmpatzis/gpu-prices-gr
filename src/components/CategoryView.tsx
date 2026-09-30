@@ -29,7 +29,7 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
 
   if (error) {
     return (
-      <div className="flex items-center gap-2 rounded-lg bg-rose-50 p-4 text-rose-700 ring-1 ring-rose-200 dark:bg-rose-950/50 dark:text-rose-300 dark:ring-rose-900">
+      <div className="notice-danger flex items-center gap-2 p-4">
         <AlertTriangle className="h-5 w-5" /> {tr(lang, T.loadError)}: {error}
       </div>
     );
