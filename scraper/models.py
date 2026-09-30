@@ -15,6 +15,7 @@ class Listing:
     chip: str  # e.g. "RTX 5070 Ti", "RX 9070 XT", "Arc B580"
     vram: int  # GB
     partner: str  # board partner, e.g. "Asus"; "Other" if unknown
+    memType: str | None  # GDDR7 | GDDR6X | GDDR6 | … ; None if not stated
     scrapedAt: str  # ISO timestamp (UTC)
 
     def to_dict(self) -> dict:
@@ -35,6 +36,8 @@ class CpuListing:
     chip: str  # e.g. "Ryzen 7 9800X3D", "Core Ultra 7 265K", "Xeon Silver 4309Y"
     cores: int | None
     socket: str | None  # e.g. "AM5", "LGA1851"
+    packaging: str | None  # Box | Tray; None if the title doesn't say
+    igpu: bool  # integrated graphics (from the model number)
     scrapedAt: str
 
     def to_dict(self) -> dict:
@@ -57,6 +60,7 @@ class RamListing:
     capacity: int  # total GB across modules
     modules: int
     speed: int | None  # MHz (MT/s)
+    cas: int | None  # CAS latency (CL30); None if not stated
     formFactor: str  # Desktop | Laptop | Server
     scrapedAt: str
 
@@ -101,6 +105,7 @@ class CaseListing:
     size: str  # Full Tower | Midi Tower | Mini Tower | SFF / Cube | Άλλο
     window: bool  # side window / tempered glass
     rgb: bool
+    maxBoard: str | None  # largest motherboard it takes: E-ATX | ATX | Micro ATX | Mini ITX; None if not stated
     scrapedAt: str
 
     def to_dict(self) -> dict:
@@ -122,6 +127,7 @@ class FanListing:
     size: int  # mm
     pack: int  # fans in the box
     rgb: bool
+    pwm: bool  # 4-pin PWM speed control
     scrapedAt: str
 
     def to_dict(self) -> dict:
@@ -166,6 +172,7 @@ class MoboListing:
     formFactor: str  # ATX | Micro ATX | Mini ITX | E-ATX | Άλλο
     memory: str | None  # DDR4 | DDR5; None if unknown (LGA1700 boards come in both)
     wifi: bool
+    ramSlots: int | None  # DIMM slots (BestPrice filter slices; Mini ITX = 2); None if unknown
     scrapedAt: str
 
     def to_dict(self) -> dict:

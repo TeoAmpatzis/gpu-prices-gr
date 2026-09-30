@@ -25,7 +25,17 @@ class Category:
     # e-shop.gr lists as (path, category name): `<path>?offset=N&table=PER&category=<name>`.
     # The path matters — the generic `ypologistes-list` ignores `offset` (see sources/eshop.py).
     eshop_categories: tuple[tuple[str, str], ...] = ()
+    # Optional attributes stamped on every listing of the BestPrice slice at the same index, when
+    # a slice is a spec filter ("4 RAM slots") rather than a price range.
+    bestprice_tags: tuple[dict, ...] = ()
+    # Fields shared by every listing of a model (see main.share_fields): a missing value is filled
+    # from the model's other listings (bools: true if any listing says so), so a spec only one site
+    # states reaches all of them.
+    shared: tuple[str, ...] = ()
 
+
+# BestPrice motherboard RAM-slot filter values: (url part, slots).
+MOBO_SLOTS = (("9230/2", 2), ("6661/4", 4), ("9242/8", 8), ("73677/12", 12), ("9255/16", 16), ("73675/24", 24))
 
 CATEGORIES = {
     "gpu": Category(
@@ -34,6 +44,7 @@ CATEGORIES = {
         bestprice_paths=("/cat/2613/kartes-grafikwn.html",),
         make_listing=normalize.make_listing,
         model_key=lambda l: f"{l['chip']} {l['vram']}GB",
+        shared=("memType",),
         eshop_categories=(("ypologistes-kartes-grafikon-gpu-list", "ΚΑΡΤΑ ΓΡΑΦΙΚΩΝ"),),
     ),
     "cpu": Category(
@@ -42,19 +53,19 @@ CATEGORIES = {
         bestprice_paths=("/cat/2606/epeksergastes.html",),
         make_listing=normalize_cpu.make_listing,
         model_key=lambda l: l["chip"],
+        shared=("cores", "socket"),
         eshop_categories=(("ypologistes-epeksergastes-cpu-list", "ΕΠΕΞΕΡΓΑΣΤΗΣ - CPU"),),
     ),
     "mobo": Category(
         name="mobo",
         skroutz_paths=("/c/31/motherboards-mhtrikes.html",),
-        # ~850 products: sliced by price (cents).
-        bestprice_paths=tuple(
-            f"/cat/2611/motherboards.html?{q}"
-            for q in ("max=9999", "min=10000&max=14999", "min=15000&max=24999", "min=25000")
-        ),
+        # ~850 products: sliced by RAM slot count, which also tags each board with it.
+        bestprice_paths=tuple(f"/cat/2611/motherboards/f/865_{f}.html" for f, _ in MOBO_SLOTS),
+        bestprice_tags=tuple({"ramSlots": n} for _, n in MOBO_SLOTS),
         make_listing=normalize_mobo.make_listing,
         model_key=lambda l: names.model_key(l["chip"]),
         eshop_categories=(("ypologistes-mitrikes-motherboards-list", "ΜΗΤΡΙΚΗ ΚΑΡΤΑ"),),
+        shared=("ramSlots", "chipset", "socket", "memory"),
     ),
     "ram": Category(
         name="ram",
@@ -97,6 +108,7 @@ CATEGORIES = {
         make_listing=normalize_case.make_listing,
         model_key=lambda l: names.model_key(l["chip"]),
         eshop_categories=(("ypologistes-koutia-cases-list", "ΚΟΥΤΙΑ - CASES"),),
+        shared=("maxBoard", "window", "rgb"),
     ),
     "fan": Category(
         name="fan",
@@ -108,6 +120,7 @@ CATEGORIES = {
         make_listing=normalize_cooling.make_fan_listing,
         model_key=lambda l: names.model_key(l["chip"]),
         eshop_categories=(("ypologistes-case-modding-fans-list", "ΑΝΕΜΙΣΤΗΡΑΣ ΚΟΥΤΙΟΥ"),),
+        shared=("pwm", "rgb"),
     ),
     "cooler": Category(
         name="cooler",

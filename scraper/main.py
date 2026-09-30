@@ -8,11 +8,14 @@ import argparse
 import json
 import sys
 import traceback
+from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
 import http_client  # noqa: E402
+import shipping  # noqa: E402
 from categories import CATEGORIES, Category  # noqa: E402
 from normalize import now_iso  # noqa: E402
 from sources import bestprice, eshop, skroutz  # noqa: E402
@@ -34,6 +37,28 @@ def load_json(path: Path, default):
         return default
 
 
+def share_fields(listings: list[dict], fields: tuple[str, ...], model_key) -> None:
+    """Fill each model's missing `fields` from its other listings: bools become true if any listing
+    says so, other values take the model's most common one (a spec only one site states)."""
+    models: dict[str, list[dict]] = {}
+    for l in listings:
+        models.setdefault(model_key(l), []).append(l)
+    for ls in models.values():
+        for f in fields:
+            values = [l.get(f) for l in ls if l.get(f) is not None]
+            if not values:
+                continue
+            if all(isinstance(v, bool) for v in values):
+                if any(values):
+                    for l in ls:
+                        l[f] = True
+                continue
+            common = Counter(values).most_common(1)[0][0]
+            for l in ls:
+                if l.get(f) is None:
+                    l[f] = common
+
+
 def update_history(history: dict, listings: list[dict], day: str, model_key) -> dict:
     """One point per model per day: the lowest price seen that day across runs."""
     cheapest: dict[str, dict] = {}
@@ -53,7 +78,7 @@ def update_history(history: dict, listings: list[dict], day: str, model_key) -> 
     return dict(sorted(history.items()))
 
 
-def scrape_category(cat: Category, only: list[str] | None) -> bool:
+def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool = True) -> bool:
     """Scrape one category and write its JSON files. Returns True if any source succeeded."""
     out_dir = DATA_DIR / cat.name
     latest_path, history_path = out_dir / "latest.json", out_dir / "history.json"
@@ -65,19 +90,28 @@ def scrape_category(cat: Category, only: list[str] | None) -> bool:
     run_at = now_iso()
     sources_meta: dict[str, dict] = {}
     listings: list[dict] = []
-    for name, fetch in SOURCES.items():
-        if only and name not in only:
+
+    def run(name: str) -> list[dict]:
+        print(f"[{cat.name}/{name}] fetching…")
+        try:
+            return [l.to_dict() for l in SOURCES[name](cat)]
+        except Exception:
+            traceback.print_exc()
+            return []
+
+    # Sources are different sites, so they run in parallel; each stays polite to its own host.
+    wanted = [name for name in SOURCES if not only or name in only]
+    with ThreadPoolExecutor(max_workers=len(wanted) or 1) as pool:
+        results = dict(zip(wanted, pool.map(run, wanted)))
+
+    for name in SOURCES:
+        if name not in results:
             old = prev_by_source.get(name, [])
             listings += old
             if name in prev.get("sources", {}):
                 sources_meta[name] = prev["sources"][name]
             continue
-        print(f"[{cat.name}/{name}] fetching…")
-        try:
-            got = [l.to_dict() for l in fetch(cat)]
-        except Exception:
-            traceback.print_exc()
-            got = []
+        got = results[name]
         if got:
             listings += got
             sources_meta[name] = {"count": len(got), "ok": True, "updatedAt": run_at}
@@ -89,8 +123,12 @@ def scrape_category(cat: Category, only: list[str] | None) -> bool:
             sources_meta[name] = {"count": len(old), "ok": False, "updatedAt": prev_meta.get("updatedAt")}
             print(f"[{cat.name}/{name}] FAILED — keeping {len(old)} previous listings")
 
+    share_fields(listings, cat.shared, cat.model_key)
     listings.sort(key=lambda l: (l["chip"], l["price"]))
     out_dir.mkdir(parents=True, exist_ok=True)
+    if with_shipping:
+        print(f"[{cat.name}] best totals (price + shipping)…")
+        shipping.enrich(out_dir, listings, cat.model_key)
     latest_path.write_text(
         json.dumps({"updatedAt": run_at, "sources": sources_meta, "listings": listings}, ensure_ascii=False, indent=1),
         encoding="utf-8",
@@ -107,10 +145,13 @@ def main() -> int:
     ap.add_argument("--only", choices=SOURCES.keys(), action="append")
     ap.add_argument("--category", choices=CATEGORIES.keys(), action="append")
     ap.add_argument("--debug", action="store_true", help="dump fetched HTML to scraper/debug/")
+    ap.add_argument("--no-shipping", action="store_true", help="skip the price + shipping refresh (cache still applied)")
     args = ap.parse_args()
     sys.stdout.reconfigure(encoding="utf-8")
     http_client.debug = args.debug
 
+    if args.no_shipping:
+        shipping.BUDGET = {src: 0 for src in shipping.BUDGET}
     ok = [scrape_category(cat, args.only) for name, cat in CATEGORIES.items()
           if not args.category or name in args.category]
     return 0 if any(ok) else 1

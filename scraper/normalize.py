@@ -93,6 +93,10 @@ def now_iso() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
 
 
+# "GDDR7", "GDDR6X" in the title/slug/Skroutz spec line; HBM on some workstation cards.
+MEM_TYPE = re.compile(r"\b(GDDR\s?\dX?|HBM\d?e?)\b", re.I)
+
+
 def make_listing(
     *, source: str, native_id: str, title: str, url: str, price: float,
     shop_count: int | None, scraped_at: str, specs: str = "",
@@ -104,6 +108,7 @@ def make_listing(
     if not info or price <= 0:
         return None
     brand, chip, vram = info
+    mem = MEM_TYPE.search(f"{title} {specs} {url.replace('-', ' ')}")
     return Listing(
         id=f"{source}:{native_id}",
         source=source,
@@ -115,5 +120,6 @@ def make_listing(
         chip=chip,
         vram=vram,
         partner=partner_of(title, brand),
+        memType=re.sub(r"\s", "", mem.group(1)).upper() if mem else None,
         scrapedAt=scraped_at,
     )

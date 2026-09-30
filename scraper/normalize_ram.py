@@ -18,6 +18,8 @@ CAPACITY = re.compile(r"\b(\d{1,3})\s*GB\b", re.I)
 MODULE_SIZES = {1, 2, 4, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256}
 MULTI = re.compile(r"\b[2-9][\s-]*Modules\b", re.I)
 SPEED = re.compile(r"\b(\d{3,5})\s*(?:MHz|MT/s)\b|Tachytita-(\d{3,5})\b", re.I)
+# CAS latency: "CL30"/"C30" in titles, or inside the part number ("F4-3200C16D-32GIS", "CMK32GX5M2B6000C30").
+CAS = re.compile(r"(?:\bCL?\s?|\d{3}C)(\d{1,2})(?![\d.])", re.I)
 SLUG_FORM = re.compile(r"-gia-(Desktop|Laptop|Server)\b", re.I)
 SERVER = re.compile(r"\b(ECC|Registered|RDIMM|LRDIMM|Reg)\b", re.I)
 LAPTOP = re.compile(r"\bSO-?DIMM\b", re.I)
@@ -94,6 +96,7 @@ def make_listing(
         capacity=capacity,
         modules=modules,
         speed=speed,
+        cas=next((int(c) for c in CAS.findall(specs) if 9 <= int(c) <= 60), None),
         formFactor=form,
         scrapedAt=scraped_at,
     )
