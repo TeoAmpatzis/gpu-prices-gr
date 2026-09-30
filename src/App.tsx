@@ -54,7 +54,8 @@ const INFO_IDS = Object.keys(INFO) as InfoId[];
 const isInfo = (p: Page): p is InfoId => (INFO_IDS as string[]).includes(p);
 
 const fromHash = (): Page => {
-  const id = location.hash.slice(1);
+  // "#ram?type=ddr5" → "ram": filters live after the "?" (src/lib/filterUrl.ts).
+  const id = location.hash.slice(1).split('?')[0];
   return id === 'builder' || (CATEGORY_IDS as string[]).includes(id) || (INFO_IDS as string[]).includes(id)
     ? (id as Page)
     : 'gpu';

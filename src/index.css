@@ -259,3 +259,11 @@ body {
     min-height: 2.75rem;
   }
 }
+
+/* Bottom sheet (BottomSheet.tsx): backdrop fade and slide up; only when motion is allowed. */
+@keyframes fadeIn {
+  from { opacity: 0; }
+}
+@keyframes sheetUp {
+  from { transform: translateY(100%); }
+}
