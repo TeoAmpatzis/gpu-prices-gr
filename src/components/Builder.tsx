@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { AlertTriangle, ExternalLink, Info, Loader2, Search, X } from 'lucide-react';
 import type { BaseListing, Category } from '../types';
 import { CATEGORIES, groupName } from '../lib/categories';
-import { formatPrice, loadData, type Model } from '../lib/data';
+import { formatPrice, loadData, saleOf, type Model } from '../lib/data';
 import {
   OPTIONAL,
   SLOTS,
@@ -350,6 +350,12 @@ export default function Builder() {
                                 <span className="block truncate font-medium">{o.chip}</span>
                                 <span className="block truncate text-xs text-muted">{specLine(slot, o, lang)}</span>
                               </span>
+                              {(() => {
+                                const sale = saleOf(o.listings, o.cheapest);
+                                return sale ? (
+                                  <span className="text-[11px] font-semibold text-rose-600 dark:text-rose-400">−{sale.pct}%</span>
+                                ) : null;
+                              })()}
                               <span className="font-semibold tabular-nums">{formatPrice(o.cheapest.price, lang)}</span>
                               <SourceBadge source={o.cheapest.source} />
                             </button>

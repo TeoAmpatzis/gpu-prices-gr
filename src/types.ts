@@ -20,6 +20,7 @@ export interface BaseListing {
   shipping?: number | null;
   total?: number | null;
   merchant?: string | null; // shop with that best total
+  drop?: number | null; // discount (%) the site itself shows for this offer
 }
 
 export interface GpuListing extends BaseListing {
@@ -123,6 +124,9 @@ export interface HistoryPoint {
   source: SourceName;
   i?: 1; // imported from Skroutz's price history (Skroutz-only, so not used for sale detection)
 }
+
+/** history_imported.json: models whose Skroutz history was imported (older files: just the date). */
+export type Imported = Record<string, string | { d: string; low?: number; since?: string }>;
 
 /** Keyed by model, e.g. "RTX 5060 Ti 16GB", "Ryzen 7 9800X3D", "DDR5 32GB (2×16GB) 6000MHz Desktop". */
 export type History = Record<string, HistoryPoint[]>;

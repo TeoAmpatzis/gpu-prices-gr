@@ -4,6 +4,7 @@ import type { BaseListing, HistoryPoint } from '../types';
 import { formatPrice, type Model } from '../lib/data';
 import { groupName, type CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Lang } from '../lib/i18n';
+import { SOURCES } from '../lib/sources';
 import SourceBadge from './SourceBadge';
 
 // Recharts is heavy and only needed once a row is expanded.
@@ -62,9 +63,17 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
             {m.sale && (
               <span
                 className="rounded bg-rose-500/15 px-1.5 py-0.5 text-[11px] font-semibold text-rose-600 ring-1 ring-inset ring-rose-500/30 dark:text-rose-400"
-                title={`${tr(lang, T.saleHint)} · ${tr(lang, T.usualPrice)}: ${price(m.sale.typical)}`}
+                title={`${tr(lang, T.saleBy)} ${SOURCES[m.sale.source].label}`}
               >
                 −{m.sale.pct}%
+              </span>
+            )}
+            {m.low && (
+              <span
+                className="rounded bg-emerald-500/15 px-1.5 py-0.5 text-[11px] font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-500/30 dark:text-emerald-400"
+                title={`${tr(lang, T.allTimeLowHint)} ${new Date(m.low.since).toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB')}`}
+              >
+                {tr(lang, T.allTimeLow)}
               </span>
             )}
             {delta != null && Math.abs(delta) >= 1 && (
@@ -103,6 +112,9 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
                       className="flex items-center gap-3 px-3 py-2 text-sm hover:bg-hover"
                     >
                       <span className="w-24 shrink-0 font-medium tabular-nums">{price(l.price)}</span>
+                      {l.drop != null && l.drop >= 5 && (
+                        <span className="shrink-0 text-[11px] font-semibold text-rose-600 dark:text-rose-400">−{l.drop}%</span>
+                      )}
                       <SourceBadge source={l.source} />
                       <span className="min-w-0 flex-1 truncate text-fg-soft" title={l.title}>
                         {l.title}

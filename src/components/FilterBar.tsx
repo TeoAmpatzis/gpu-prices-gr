@@ -128,6 +128,9 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
         <Chip active={f.saleOnly} dot="bg-rose-500" onClick={() => set('saleOnly', !f.saleOnly)}>
           {t(T.saleOnly)}
         </Chip>
+        <Chip active={f.lowOnly} dot="bg-emerald-500" onClick={() => set('lowOnly', !f.lowOnly)}>
+          {t(T.lowOnly)}
+        </Chip>
       </Section>
 
       <Section label={t(T.source)}>
