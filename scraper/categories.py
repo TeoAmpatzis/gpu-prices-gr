@@ -32,6 +32,9 @@ class Category:
     # from the model's other listings (bools: true if any listing says so), so a spec only one site
     # states reaches all of them.
     shared: tuple[str, ...] = ()
+    # Like `shared`, but within a narrower group than the model: (fields, key function); a key of
+    # None leaves that listing alone (e.g. a CPU's cooler is shared per chip + packaging).
+    shared_by: tuple[tuple[tuple[str, ...], Callable[[dict], str | None]], ...] = ()
 
 
 # BestPrice motherboard RAM-slot filter values: (url part, slots).
@@ -53,7 +56,8 @@ CATEGORIES = {
         bestprice_paths=("/cat/2606/epeksergastes.html",),
         make_listing=normalize_cpu.make_listing,
         model_key=lambda l: l["chip"],
-        shared=("cores", "socket"),
+        shared=("cores", "socket", "tdp"),
+        shared_by=((("coolerIncluded",), lambda l: f"{l['chip']}|{l['packaging']}" if l.get("packaging") else None),),
         eshop_categories=(("ypologistes-epeksergastes-cpu-list", "ΕΠΕΞΕΡΓΑΣΤΗΣ - CPU"),),
     ),
     "mobo": Category(
@@ -108,7 +112,7 @@ CATEGORIES = {
         make_listing=normalize_case.make_listing,
         model_key=lambda l: names.model_key(l["chip"]),
         eshop_categories=(("ypologistes-koutia-cases-list", "ΚΟΥΤΙΑ - CASES"),),
-        shared=("maxBoard", "window", "rgb"),
+        shared=("maxBoard", "window", "rgb", "gpuMaxMm", "coolerMaxMm", "fanSlots", "radiatorMounts"),
     ),
     "fan": Category(
         name="fan",
@@ -129,6 +133,7 @@ CATEGORIES = {
         bestprice_paths=("/cat/2614/psyktres-epeksergaston.html", "/cat/8397/ydropsyksi.html"),
         make_listing=normalize_cooling.make_cooler_listing,
         model_key=lambda l: names.model_key(l["chip"]),
+        shared=("sockets", "heightMm"),
         eshop_categories=(("ypologistes-epeksergastes-cpu-psyktres-coolers-list", "ΣΥΣΤΗΜΑ ΨΥΞΗΣ ΕΠΕΞΕΡΓΑΣΤΗ"), ("ypologistes-ydropsyksi-water-cooling-list", "ΥΔΡΟΨΥΞΗ")),
     ),
 }
