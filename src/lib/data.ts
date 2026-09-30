@@ -2,6 +2,7 @@ import type { BaseListing, Category, History, HistoryPoint, Imported, Latest, So
 import type { Lang } from './i18n';
 import { SOURCE_NAMES } from './sources';
 import type { CategoryConfig } from './categories';
+import { recommendedScores } from './ranking';
 
 export interface CategoryData<L extends BaseListing = BaseListing> {
   latest: Latest<L>;
@@ -79,7 +80,11 @@ const LOW_MIN_DAYS = 60;
  * Today's price is at (or under) every earlier daily low: our own history plus the lowest price in
  * Skroutz's whole history for that model (`imported[key].low`, ~2 years).
  */
-export function allTimeLow(points: HistoryPoint[] | undefined, imp: Imported[string] | undefined, price: number): AllTimeLow | null {
+export function allTimeLow(
+  points: HistoryPoint[] | undefined,
+  imp: Imported[string] | undefined,
+  price: number,
+): AllTimeLow | null {
   const today = new Date().toISOString().slice(0, 10);
   const past = (points ?? []).filter((p) => p.d < today);
   const importedLow = typeof imp === 'object' ? imp : undefined;
@@ -207,29 +212,19 @@ export function applyFilters<L extends BaseListing>(
       (!f.saleOnly || m.sale != null) &&
       (!f.lowOnly || m.low != null),
   );
-  // "Recommended": best value for money first where the category has a value score (performance
-  // or capacity per euro); a part on sale gets an extra boost. Elsewhere, parts on sale come first.
-  const SALE_BOOST = 1.15;
-  const recommended = (m: Model<L>) => {
-    const v = cfg.value?.(m);
-    return v == null ? null : v * (m.sale || m.low ? SALE_BOOST : 1);
-  };
+  // "Recommended": popularity, modern platform, sensible price and value for money, weighted per
+  // category in src/lib/ranking.ts. Workstation/server models always come after the rest.
+  const score = f.sort === 'model' ? recommendedScores(models, cfg.id, cfg.value) : new Map<string, number>();
   const cmp: Record<SortKey, (a: Model<L>, b: Model<L>) => number> = {
     'price-asc': (a, b) => a.cheapest.price - b.cheapest.price,
     'price-desc': (a, b) => b.cheapest.price - a.cheapest.price,
     offers: (a, b) => b.listings.length - a.listings.length,
     discount: (a, b) => (b.sale?.pct ?? 0) - (a.sale?.pct ?? 0) || a.cheapest.price - b.cheapest.price,
-    model: (a, b) => {
-      const va = recommended(a);
-      const vb = recommended(b);
-      if (va != null || vb != null) return (vb ?? -1) - (va ?? -1) || a.cheapest.price - b.cheapest.price;
-      return (
-        (b.sale || b.low ? 1 : 0) - (a.sale || a.low ? 1 : 0) ||
-        (cfg.sortByGroup === false ? 0 : cfg.groups.indexOf(a.group) - cfg.groups.indexOf(b.group)) ||
-        cfg.tierScore(b) - cfg.tierScore(a) ||
-        a.key.localeCompare(b.key)
-      );
-    },
+    model: (a, b) =>
+      Number(a.pro) - Number(b.pro) ||
+      (score.get(b.key) ?? 0) - (score.get(a.key) ?? 0) ||
+      cfg.tierScore(b) - cfg.tierScore(a) ||
+      a.key.localeCompare(b.key),
   };
   return models.sort(cmp[f.sort]);
 }
