@@ -62,7 +62,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
               className={`h-4 w-4 shrink-0 text-faint transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
             />
             <span
-              className={`h-2 w-2 shrink-0 rounded-full ${cfg.groupDot[m.group] ?? 'bg-zinc-400'}`}
+              className={`h-2 w-2 shrink-0 rounded-full ${cfg.groupDot[m.group] ?? 'bg-idle'}`}
               title={groupName(m.group, lang)}
             />
             <span className="font-semibold tracking-tight">{m.chip}</span>
@@ -76,7 +76,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
             <div className="flex flex-wrap justify-end gap-1">
               {m.low && (
                 <span
-                  className="badge bg-emerald-500/15 text-emerald-700 ring-emerald-500/30 dark:text-emerald-400"
+                  className="badge badge-low"
                   title={`${tr(lang, T.allTimeLowHint)} ${new Date(m.low.since).toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB')}`}
                 >
                   {tr(lang, T.allTimeLow)}
@@ -84,7 +84,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
               )}
               {m.sale && (
                 <span
-                  className="badge bg-rose-500/15 text-rose-600 ring-rose-500/30 dark:text-rose-400"
+                  className="badge badge-sale"
                   title={`${tr(lang, T.saleBy)} ${SOURCES[m.sale.source].label}`}
                 >
                   −{m.sale.pct}%
@@ -136,7 +136,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
                     >
                       <span className="w-24 shrink-0 text-right font-medium">{price(l.price)}</span>
                       {l.drop != null && l.drop >= 5 && (
-                        <span className="badge bg-rose-500/15 text-rose-600 ring-rose-500/30 dark:text-rose-400">
+                        <span className="badge badge-sale">
                           −{l.drop}%
                         </span>
                       )}

@@ -5,11 +5,20 @@ import { SOURCES } from '../lib/sources';
 import { useTheme } from '../lib/theme';
 import { T, tr, useLang } from '../lib/i18n';
 
-// SVG attributes can't use the CSS theme tokens, so the chart keeps its own palette.
-const PALETTE = {
-  dark: { grid: '#27272a', axis: '#3f3f46', tick: '#a1a1aa', tipBg: '#18181b', tipBorder: '#3f3f46', line: '#34d399' },
-  light: { grid: '#e6e8ec', axis: '#bec4cd', tick: '#3e4a5e', tipBg: '#ffffff', tipBorder: '#d6dae0', line: '#046c4e' },
-};
+/** A design token ("r g b" in src/index.css) as a colour string that SVG attributes accept. */
+const token = (name: string) =>
+  `rgb(${getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim().split(/\s+/).join(',')})`;
+
+// Recharts draws SVG, whose attributes can't reference CSS variables directly, so the current
+// theme's tokens are read on every render (useTheme re-renders the chart when the theme changes).
+const palette = () => ({
+  grid: token('line'),
+  axis: token('line-strong'),
+  tick: token('muted'),
+  tipBg: token('panel'),
+  tipBorder: token('line'),
+  line: token('accent'),
+});
 
 const shortDate = (d: string) => {
   const [, m, day] = d.split('-');
@@ -17,7 +26,8 @@ const shortDate = (d: string) => {
 };
 
 export default function PriceChart({ points }: { points: HistoryPoint[] | undefined }) {
-  const c = PALETTE[useTheme()];
+  useTheme(); // re-render on theme change
+  const c = palette();
   const lang = useLang();
   if (!points || points.length < 2) {
     return (
