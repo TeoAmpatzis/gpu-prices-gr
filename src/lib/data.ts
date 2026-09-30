@@ -231,6 +231,17 @@ const RELATIVE: Record<Lang, Intl.RelativeTimeFormat> = {
   en: new Intl.RelativeTimeFormat('en', { numeric: 'auto' }),
 };
 
+/** Compact age for tight spots: "39′", "2 ώρ." / "2 h", "3 ημ." / "3 d". */
+export function shortAgo(iso: string | null | undefined, lang: Lang): string {
+  if (!iso) return '—';
+  const mins = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 60000));
+  if (mins < 60) return `${mins}′`;
+  const h = Math.round(mins / 60);
+  if (h < 48) return lang === 'el' ? `${h} ώρ.` : `${h} h`;
+  const d = Math.round(h / 24);
+  return lang === 'el' ? `${d} ημ.` : `${d} d`;
+}
+
 export function timeAgo(iso: string | null | undefined, lang: Lang): string {
   if (!iso) return '—';
   const mins = Math.round((Date.now() - new Date(iso).getTime()) / 60000);

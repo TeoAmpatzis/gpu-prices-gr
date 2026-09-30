@@ -20,6 +20,7 @@ import { fanValue, gpuValue, psuValue, ramValue } from './value';
 export interface Column<L extends BaseListing> {
   header: Text;
   className?: string; // applied to both <th> and <td>, e.g. responsive hiding
+  numeric?: boolean; // right-aligned (numbers are tabular everywhere in the table)
   cell: (m: Model<L>, lang: Lang) => ReactNode;
 }
 
@@ -223,7 +224,7 @@ export const GPU: CategoryConfig<GpuListing> = {
     oneOf('partner', { el: 'Κατασκευαστής κάρτας', en: 'Card maker' }, (l) => l.partner),
   ],
   before: [
-    { header: 'VRAM', cell: (m) => `${gpuVram(m)}GB` },
+    { header: 'VRAM', numeric: true, cell: (m) => `${gpuVram(m)}GB` },
     { header: MEMORY, className: 'hidden md:table-cell', cell: (m) => mostCommon(m.listings.map((l) => l.memType)) ?? '—' },
   ],
   after: [{ header: VENDOR, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.partner }],
@@ -292,7 +293,7 @@ export const CPU: CategoryConfig<CpuListing> = {
     }),
   ],
   before: [
-    { header: { el: 'Πυρήνες', en: 'Cores' }, cell: (m) => cpuCores(m) ?? '—' },
+    { header: { el: 'Πυρήνες', en: 'Cores' }, numeric: true, cell: (m) => cpuCores(m) ?? '—' },
     { header: 'Socket', className: 'hidden sm:table-cell', cell: (m) => cpuSocket(m) ?? '—' },
   ],
   after: [],
@@ -411,7 +412,7 @@ export const RAM: CategoryConfig<RamListing> = {
   ],
   before: [{ header: TYPE, className: 'hidden sm:table-cell', cell: (m) => FORM_LABEL[m.cheapest.formFactor] }],
   after: [
-    { header: 'CL', className: 'hidden md:table-cell', cell: (m) => m.cheapest.cas ?? '—' },
+    { header: 'CL', className: 'hidden md:table-cell', numeric: true, cell: (m) => m.cheapest.cas ?? '—' },
     { header: VENDOR, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.brand },
   ],
 };
@@ -554,11 +555,12 @@ export const FAN: CategoryConfig<FanListing> = {
     yesNo('pwm', { el: 'PWM (έλεγχος στροφών)', en: 'PWM (speed control)' }, (l) => l.pwm),
     vendorFilter(),
   ],
-  before: [{ header: { el: 'Τεμάχια', en: 'Pack' }, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.pack }],
+  before: [{ header: { el: 'Τεμάχια', en: 'Pack' }, className: 'hidden sm:table-cell', numeric: true, cell: (m) => m.cheapest.pack }],
   after: [
     {
       header: { el: 'Ανά τεμάχιο', en: 'Per fan' },
-      className: 'hidden sm:table-cell tabular-nums',
+      className: 'hidden sm:table-cell',
+      numeric: true,
       cell: (m, lang) => (m.cheapest.pack > 1 ? formatPrice(m.cheapest.price / m.cheapest.pack, lang) : '—'),
     },
   ],
