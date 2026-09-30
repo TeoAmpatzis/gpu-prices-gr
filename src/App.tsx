@@ -1,20 +1,63 @@
 import { useEffect, useState } from 'react';
-import { Wrench } from 'lucide-react';
+import { Info, Mail, ShieldCheck, Wrench } from 'lucide-react';
 import type { BaseListing, Category } from './types';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './lib/categories';
 import Backdrop from './components/Backdrop';
 import Builder from './components/Builder';
 import CategoryView from './components/CategoryView';
+import InfoPage from './components/InfoPage';
 import Logo from './components/Logo';
 import LangToggle from './components/LangToggle';
 import ThemeToggle from './components/ThemeToggle';
 import { T, tr, useLang } from './lib/i18n';
+import { ABOUT, CONTACT, PRIVACY, type InfoPageContent } from './content/pages';
 
-type Page = Category | 'builder';
+type InfoId = 'about' | 'contact' | 'privacy';
+type Page = Category | 'builder' | InfoId;
+
+/** Text pages, linked from the footer (#about, #contact, #privacy). */
+const INFO: Record<
+  InfoId,
+  {
+    title: { el: string; en: string };
+    subtitle: { el: string; en: string };
+    icon: typeof Info;
+    content: InfoPageContent;
+  }
+> = {
+  about: {
+    title: { el: 'Σχετικά', en: 'About' },
+    subtitle: {
+      el: 'Τι είναι το BuildDraft.gr και από πού έρχονται οι τιμές.',
+      en: 'What BuildDraft.gr is and where the prices come from.',
+    },
+    icon: Info,
+    content: ABOUT,
+  },
+  contact: {
+    title: { el: 'Επικοινωνία', en: 'Contact' },
+    subtitle: { el: 'Ερωτήσεις, διορθώσεις και προτάσεις.', en: 'Questions, corrections and suggestions.' },
+    icon: Mail,
+    content: CONTACT,
+  },
+  privacy: {
+    title: { el: 'Πολιτική απορρήτου', en: 'Privacy policy' },
+    subtitle: {
+      el: 'Ποια δεδομένα επεξεργάζονται και ποια είναι τα δικαιώματά σας.',
+      en: 'What data is processed and what your rights are.',
+    },
+    icon: ShieldCheck,
+    content: PRIVACY,
+  },
+};
+const INFO_IDS = Object.keys(INFO) as InfoId[];
+const isInfo = (p: Page): p is InfoId => (INFO_IDS as string[]).includes(p);
 
 const fromHash = (): Page => {
   const id = location.hash.slice(1);
-  return id === 'builder' || (CATEGORY_IDS as string[]).includes(id) ? (id as Page) : 'gpu';
+  return id === 'builder' || (CATEGORY_IDS as string[]).includes(id) || (INFO_IDS as string[]).includes(id)
+    ? (id as Page)
+    : 'gpu';
 };
 
 const BUILDER = {
@@ -43,7 +86,12 @@ export default function App() {
 
   const lang = useLang();
   const t = (x: Parameters<typeof tr>[1]) => tr(lang, x);
-  const cfg = active === 'builder' ? BUILDER : CATEGORIES[active];
+  const cfg = active === 'builder' ? BUILDER : isInfo(active) ? INFO[active] : CATEGORIES[active];
+
+  // Text pages open at the top, like a new page.
+  useEffect(() => {
+    if (isInfo(active)) window.scrollTo({ top: 0 });
+  }, [active]);
 
   useEffect(() => {
     document.title = `${t(cfg.title)} — ${t(T.siteName)}`;
@@ -138,8 +186,21 @@ export default function App() {
             <Builder />
           </div>
         )}
+        {isInfo(active) && <InfoPage content={INFO[active].content} />}
 
         <footer className="mt-10 border-t border-line pt-6 text-center text-xs text-faint">
+          <nav aria-label={t(T.footerNav)} className="mb-3 flex flex-wrap justify-center gap-x-5 gap-y-1 text-sm">
+            {INFO_IDS.map((id) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                aria-current={active === id ? 'page' : undefined}
+                className={`rounded transition-colors duration-150 hover:text-fg ${active === id ? 'font-medium text-fg' : 'text-muted'}`}
+              >
+                {t(INFO[id].title)}
+              </a>
+            ))}
+          </nav>
           {t(T.footer)}
           <div className="mt-1">BuildDraft.gr · © 2026 Teo Ampatzis · {t(T.notAffiliated)}</div>
         </footer>
