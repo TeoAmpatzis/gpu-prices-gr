@@ -2,6 +2,9 @@
   "name": "gpu-prices-gr",
   "private": true,
   "version": "0.1.0",
+  "description": "PC hardware prices in the Greek market from Skroutz, BestPrice and e-shop.gr",
+  "author": "Teo Ampatzis (https://github.com/TeoAmpatzis)",
+  "license": "PolyForm-Noncommercial-1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

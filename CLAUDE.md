@@ -5,19 +5,20 @@ Read this first; it is kept current so you don't need to re-explore the repo.
 ## What & rules
 - Static site listing **PC hardware prices in the Greek market** (GPU, CPU, motherboards, RAM, PSU, cases, case fans, CPU coolers) from aggregators **Skroutz** + **BestPrice** and the shop **e-shop.gr**. Greece only. Eight tabs (`#gpu #cpu #mobo #ram #psu #case #fan #cooler`), light/dark theme toggle.
 - **€0/month is a hard rule**: no paid APIs/SaaS. Free tiers only (GitHub Actions, Vercel Hobby).
-- Private repo: `github.com/TeoAmpatzis/gpu-prices-gr`. Owner deploys on Vercel (Vite preset, output `dist`).
+- **Public** repo (unlimited free Actions minutes): `github.com/TeoAmpatzis/gpu-prices-gr`. Owner deploys on Vercel (Vite preset, output `dist`). Never commit secrets or personal emails — commits use the GitHub no-reply identity.
+- **License: PolyForm Noncommercial 1.0.0** (`LICENSE`, with the `Required Notice: Copyright (c) 2026 Teo Ampatzis` line). Code is readable/usable non-commercially; commercial use needs the owner's permission; Teo Ampatzis keeps all copyright (plans to invest/commercialize from v1.0). Keep the notice, `README.txt` (ownership, license summary, data/trademark disclaimer), the `package.json` `license`/`author` fields and the footer "© 2026 Teo Ampatzis · not affiliated" line intact.
 - UI text is bilingual (Greek default for Greek browsers, else English; toggle in the header): every visible string is a `Text` (`{el, en}`) from `src/lib/i18n.ts` — shared strings in `T`, per-category ones in `categories.tsx`. Never hardcode Greek in components. Icons: `lucide-react` only. Strict TS; `npm run build` is the only check (no tests/lint).
 - Git: conventional commits, commit + push after each unit of work, stage files explicitly, never commit `node_modules/ dist/ venv/ .env`.
 
 ## Data flow
-`GitHub Actions cron (6h)` → `python scraper/main.py` → for each category writes `public/data/<category>/latest.json` + `history.json` → commit/push → Vercel redeploys → React app fetches `/data/<cat>/*.json`.
+`GitHub Actions cron (6h)` → `python scraper/main.py` → for each category writes `public/data/<category>/latest.json` + `history.json` (+ the `offers.json` shipping cache) → commit/push → Vercel redeploys → React app fetches `/data/<cat>/*.json`.
 
 ## Commands
 ```bash
 npm install && npm run dev            # site on :5174
 npm run build                         # tsc + vite build (gate before commit)
 python -m venv venv && venv/Scripts/pip install -r scraper/requirements.txt   # curl_cffi + selectolax, no browser
-venv/Scripts/python scraper/main.py                     # all categories × sources (~45 min, ~1350 requests; workflow timeout 60)
+venv/Scripts/python scraper/main.py                     # all categories × sources (~40 min incl. shipping, sources in parallel; workflow timeout 90)
 venv/Scripts/python scraper/main.py --category cpu      # one category
 venv/Scripts/python scraper/main.py --only bestprice --debug   # one source, dump HTML to scraper/debug/<source>_<cat>_pN.html
 ```
@@ -37,24 +38,25 @@ venv/Scripts/python scraper/main.py --only bestprice --debug   # one source, dum
 - All `make_listing(...)` take an optional `specs` string: Skroutz passes the card's `p.specs` line (e.g. `"Τύπος:ATX / SFX"`)
 - `scraper/sources/<name>.py` — each exposes `fetch(cat: Category) -> list`; registered in `main.py` `SOURCES` (skroutz, bestprice, eshop)
 - `scraper/sources/eshop.py` — e-shop.gr lists: `<path>?offset=N&table=PER&category=<Greek, iso-8859-7>`; strips category prefixes (`VGA`, `CPU`, `ΘΗΚΗ ΥΠΟΛΟΓΙΣΤΗ`…) before the shared normalizers; skips products without a basket button
-- `scraper/main.py` — per category: runs sources isolated, keeps previous data for a source that returns 0, writes JSON
+- `scraper/main.py` — per category: runs the three sources in parallel threads (different hosts, each still polite), keeps previous data for a source that returns 0, `share_fields` (fills `Category.shared` fields across a model's listings: missing values from the most common one, bools true if any listing says so — a spec only one site states reaches all), adds shipping totals, writes JSON. `--no-shipping` skips the shipping refresh (cached totals still applied)
+- `scraper/shipping.py` — best price + delivery per listing (VAT is always included in Greek prices). Skroutz: `/s/<sku>/shops_list?order_by=final_price` (header `Turbo-Frame: shops-list-frame`; cards `li.product-card-redesigned[data-raw-price]`, fee `.product-card-fee-value` "Δωρεάν"/"2,50 €", shop `.merchant-logo img[alt]`). BestPrice: product page `.prices__product[data-price][data-shipping-cost]` (cents), shop from the embedded `"merchantsHash"`. e-shop.gr: free delivery from 90€, below that unknown. Cached in `public/data/<cat>/offers.json` (`{id: {price, shipping, total, merchant, listingPrice, checked}}`); per run it refreshes `BUDGET` (60) cheapest-per-model listings per site per category, most-listed models first, missing before stale (>36h) ones; a cached total is dropped once the listing price moves >1%
 - `src/types.ts` — TS mirror of JSON schema (`GpuListing`, `CpuListing`); `src/lib/data.ts` — generic load/group/filter/sort
-- `src/lib/categories.tsx` — `CategoryConfig` per category: model key, pill `groups` (brand for GPU/CPU, socket for motherboards, DDR type for RAM, efficiency for PSU, size for cases/fans, air/AIO size for coolers), optional `segments`, pro split (workstation GPUs / server+HEDT CPUs / server+workstation boards / laptop+server RAM / non-ATX PSUs), `sortByGroup` (mobo/PSU/cases/fans/coolers: false → most-offered first), tier sort, extra filters (VRAM; socket, cores; chipset, size, memory, WiFi; capacity, speed; watts; window, RGB; pack), table columns
+- `src/lib/categories.tsx` — `CategoryConfig` per category: model key, pill `groups` (brand for GPU/CPU, socket for motherboards, DDR type for RAM, efficiency for PSU, size for cases/fans, air/AIO size for coolers), optional `segments`, pro split (workstation GPUs / server+HEDT CPUs / server+workstation boards / laptop+server RAM / non-ATX PSUs), `sortByGroup` (mobo/PSU/cases/fans/coolers: false → most-offered first), tier sort, table columns, `extraFilters` = sidebar selects built with `oneOf` (exact value), `threshold` (≥ / ≤), `yesNo`, `vendorFilter`; each has `test(listing, value)` and is applied **per listing before grouping** (so a model shows the price of a listing that matches); values live in `Filters.extra[key]`. GPU: VRAM, memory type, series, card maker. CPU: socket, cores, series, iGPU, Box/Tray. Mobo: platform, socket, chipset, size, memory, RAM slots, WiFi, maker. RAM: capacity, speed, sticks, CL, maker. PSU: watts, modular, maker. Case: fits board (`caseMaxBoard`: stated, else by size), window, RGB, maker. Fans: pack, RGB, PWM, maker. Coolers: AIO radiator, RGB, maker
 - `src/lib/i18n.ts` — language store (`<html lang>`, localStorage `lang`, set before paint by the inline script in `index.html`), `useLang`, `tr(lang, text)`, shared strings `T`. `formatPrice`/`timeAgo` in data.ts take the lang. Group keys that come from the data in Greek (`Άλλο`, `Αέρα`, `Χωρίς ένδειξη`) are displayed via `groupName()`
 - `src/lib/theme.ts` — light/dark store (`.dark` on `<html>`, localStorage `theme`, follows OS until chosen); inline script in `index.html` avoids flash. Colours are CSS-variable tokens (`bg-page`, `text-muted`, `ring-line`, `text-accent`…) in `src/index.css` + `tailwind.config.js` — use them instead of raw `zinc-*`
 - `src/lib/sources.ts` — per-source label/colour (e-shop.gr = rose)
-- `src/components/*` — CategoryView (one tab), FilterBar, ModelTable/ModelRow (expandable: all listings + chart), PriceChart (lazy-loaded recharts, own light/dark palette), SourceBadge, ThemeToggle, LangToggle
+- `src/components/*` — CategoryView (one tab: filter sidebar left, sticky on `lg`; table right), FilterBar (the sidebar), ModelTable/ModelRow (expandable: all listings + chart), PriceChart (lazy-loaded recharts, own light/dark palette), SourceBadge, ThemeToggle, LangToggle
 - `.github/workflows/scrape.yml` — cron + `workflow_dispatch`, commits data with `contents: write`
 
 ## JSON schemas
-- `latest.json`: `{updatedAt, sources: {name: {count, ok, updatedAt}}, listings: Listing[]}`
-- GPU `Listing`: `{id: 'source:nativeId', source, title, url, price, shopCount: number|null, brand: NVIDIA|AMD|Intel, chip, vram, partner, scrapedAt}`
-- `MoboListing`: base fields (brand = vendor, chip = vendor + board name) + `chipset: string|null, socket: string|null, formFactor: ATX|Micro ATX|Mini ITX|E-ATX|Άλλο, memory: DDR4|DDR5|null, wifi`
-- `CpuListing`: same base fields + `cores: number|null, socket: string|null` (`AM5`, `LGA1851`, `sTR5`…), brand AMD|Intel
-- `RamListing`: base fields (brand = vendor, chip = kit spec) + `type: DDR2..DDR5, capacity (total GB), modules, speed: number|null, formFactor: Desktop|Laptop|Server`
+- `latest.json`: `{updatedAt, sources: {name: {count, ok, updatedAt}}, listings: Listing[]}`; every listing also has `shipping, total, merchant` (number/string or null = unknown) — best price + delivery across its shops, shown as "incl. shipping" under the price
+- GPU `Listing`: `{id: 'source:nativeId', source, title, url, price, shopCount: number|null, brand: NVIDIA|AMD|Intel, chip, vram, partner, memType: GDDR7|GDDR6X|…|null, scrapedAt}`
+- `MoboListing`: base fields (brand = vendor, chip = vendor + board name) + `chipset: string|null, socket: string|null, formFactor: ATX|Micro ATX|Mini ITX|E-ATX|Άλλο, memory: DDR4|DDR5|null, wifi, ramSlots: number|null` (BestPrice's mobo slices are its RAM-slot filter pages, tagged via `Category.bestprice_tags`; Mini ITX = 2)
+- `CpuListing`: same base fields + `cores: number|null, socket: string|null` (`AM5`, `LGA1851`, `sTR5`…), `packaging: Box|Tray|null, igpu` (from the model number: Intel F/KF none, Ryzen 7000+/G yes), brand AMD|Intel
+- `RamListing`: base fields (brand = vendor, chip = kit spec) + `type: DDR2..DDR5, capacity (total GB), modules, speed: number|null, cas: number|null` (CL from title or part number `…6000C30`), `formFactor: Desktop|Laptop|Server`
 - `PsuListing`: base fields (brand = vendor, chip = `"<W>W <efficiency>"`) + `watts, efficiency: Titanium|Platinum|Gold|Silver|Bronze|Diamond|Standard|null, modular: Full|Semi|Non|null, formFactor: ATX|SFX|TFX|Flex`
-- `CaseListing`: base fields (brand = vendor, chip = vendor + model) + `size: Full Tower|Midi Tower|Mini Tower|SFF / Cube|Άλλο, window, rgb`
-- `FanListing`: + `size (mm), pack, rgb`; `CoolerListing`: + `type: Air|AIO, radiator: number|null, rgb`
+- `CaseListing`: base fields (brand = vendor, chip = vendor + model) + `size: Full Tower|Midi Tower|Mini Tower|SFF / Cube|Άλλο, window, rgb, maxBoard: E-ATX|ATX|Micro ATX|Mini ITX|null` (Skroutz spec "Μέγεθος Μητρικής: …", largest wins)
+- `FanListing`: + `size (mm), pack, rgb, pwm`; `CoolerListing`: + `type: Air|AIO, radiator: number|null, rgb`
 - `history.json`: `{ [model]: [{d: 'YYYY-MM-DD', min, source}] }` — model = GPU `"<chip> <vram>GB"`, CPU `"<chip>"`, RAM/PSU `"<chip> <formFactor>"`, mobo/case/fan/cooler = chip lowercased, letters+digits only (`model_key` in categories.py = `modelKey` in categories.tsx); one point per model per day (min across runs), 365 days kept.
 
 ## Deploy (Vercel)
@@ -87,7 +89,10 @@ venv/Scripts/python scraper/main.py --only bestprice --debug   # one source, dum
 - [x] Cases tab (~4000 listings, ~2200 models, ~930 on both sites)
 - [x] e-shop.gr as a third source for every category
 - [x] Motherboards tab (~2050 listings, ~1120 boards, ~640 on 2+ sites)
+- [x] Price incl. shipping (best total + shop per model and per listing; `scraper/shipping.py`)
 - [x] Fans tab (~2500 listings, ~1600 models) + CPU coolers tab (~2600 listings, ~1570 models, air + AIO)
 - Heredoc/`python -` edits that contain regexes: `` in a non-raw string becomes a backspace — write edit scripts to a file or use the Edit tool
 - Headless Chrome screenshots can't go below ~500px wide — a `--window-size=390` shot is a cropped 500px layout, not real overflow
+- [x] More spec filters + filter sidebar (groundwork for the PC builder: socket/memory/board-size/slot data)
+- [ ] PC builder (next): compatibility = CPU socket ↔ mobo socket, mobo memory ↔ RAM type, RAM sticks ≤ `ramSlots`, mobo size ≤ case `caseMaxBoard`, PSU watts vs CPU+GPU power (needs a per-chip TDP table), iGPU when no GPU
 - [ ] Ideas: per-partner filter, price-drop highlights, URL-synced filters, merge identical products across sources
