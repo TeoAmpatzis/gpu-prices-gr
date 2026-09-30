@@ -330,7 +330,8 @@ export default function Builder() {
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         placeholder={t(cfg.searchPlaceholder)}
-                        className="field w-full py-2 pl-9 pr-3"
+                        aria-label={t(T.search)}
+                        className="field w-full text-ellipsis py-2 pl-9 pr-3"
                       />
                     </label>
                     <div className="mb-1.5 text-xs text-muted">

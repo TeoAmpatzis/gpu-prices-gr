@@ -107,8 +107,8 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
           value={f.query}
           onChange={(e) => set('query', e.target.value)}
           placeholder={t(cfg.searchPlaceholder)}
-          aria-label={t(cfg.searchPlaceholder)}
-          className="field w-full py-2 pl-9 pr-3"
+          aria-label={t(T.search)}
+          className="field w-full text-ellipsis py-2 pl-9 pr-3"
         />
       </label>
       <div className="relative flex items-center gap-2">

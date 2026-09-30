@@ -105,7 +105,21 @@ function bestTotal<L extends BaseListing>(ls: L[]): L | null {
   return best && !ls.some((l) => l.total == null && l.price < best.total!) ? best : null;
 }
 
-export function groupModels<L extends BaseListing>(listings: L[], cfg: CategoryConfig<L>): Model<L>[] {
+/**
+ * `listings` are grouped into models; `all` (the unfiltered list) decides which names need their
+ * variant (GPU: VRAM) so "RX 9060 XT 8GB" and "RX 9060 XT 16GB" read differently whatever the filters.
+ */
+export function groupModels<L extends BaseListing>(listings: L[], cfg: CategoryConfig<L>, all: L[] = listings): Model<L>[] {
+  const several = new Set<string>();
+  if (cfg.variant) {
+    const seen = new Map<string, string>();
+    for (const l of all) {
+      const v = cfg.variant(l);
+      const prev = seen.get(l.chip);
+      if (prev === undefined) seen.set(l.chip, v);
+      else if (prev !== v) several.add(l.chip);
+    }
+  }
   const map = new Map<string, L[]>();
   for (const l of listings) {
     const k = cfg.modelKey(l);
@@ -118,7 +132,7 @@ export function groupModels<L extends BaseListing>(listings: L[], cfg: CategoryC
     const first = ls[0];
     return {
       key,
-      chip: first.chip,
+      chip: several.has(first.chip) ? `${first.chip} ${cfg.variant!(first)}` : first.chip,
       group: cfg.group(first),
       pro: cfg.isPro(first),
       listings: ls,
@@ -202,7 +216,7 @@ export function applyFilters<L extends BaseListing>(
       // Per listing, so a model's price is that of a listing that matches (e.g. the CL30 kit).
       cfg.extraFilters.every((x) => !f.extra[x.key] || x.test(l, f.extra[x.key])),
   );
-  const grouped = groupModels(listings, cfg).map((m) => ({
+  const grouped = groupModels(listings, cfg, all).map((m) => ({
     ...m,
     sale: saleOf(m.listings, m.cheapest),
     low: allTimeLow(history[m.key], imported[m.key], m.cheapest.price),
