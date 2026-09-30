@@ -25,6 +25,10 @@ class Category:
     # e-shop.gr lists as (path, category name): `<path>?offset=N&table=PER&category=<name>`.
     # The path matters — the generic `ypologistes-list` ignores `offset` (see sources/eshop.py).
     eshop_categories: tuple[tuple[str, str], ...] = ()
+    # snif.gr category ids: `https://www.snif.gr/category/<id>/?page=N` (see sources/snif.py).
+    snif_categories: tuple[str, ...] = ()
+    # shopflix.gr categories as their Algolia facet value, "<name>*:::*/c/<id>/<slug>" (see sources/shopflix.py).
+    shopflix_categories: tuple[str, ...] = ()
     # Optional attributes stamped on every listing of the BestPrice slice at the same index, when
     # a slice is a spec filter ("4 RAM slots") rather than a price range.
     bestprice_tags: tuple[dict, ...] = ()
@@ -43,6 +47,8 @@ MOBO_SLOTS = (("9230/2", 2), ("6661/4", 4), ("9242/8", 8), ("73677/12", 12), ("9
 CATEGORIES = {
     "gpu": Category(
         name="gpu",
+        shopflix_categories=("Κάρτες Γραφικών*:::*/c/3215/kartes-grafikon",),
+        snif_categories=("192112",),
         skroutz_paths=("/c/55/kartes-grafikwn.html",),
         bestprice_paths=("/cat/2613/kartes-grafikwn.html",),
         make_listing=normalize.make_listing,
@@ -52,6 +58,8 @@ CATEGORIES = {
     ),
     "cpu": Category(
         name="cpu",
+        shopflix_categories=("Επεξεργαστές*:::*/c/3147/epeksergastes",),
+        snif_categories=("192111",),
         skroutz_paths=("/c/32/cpu-epeksergastes.html",),
         bestprice_paths=("/cat/2606/epeksergastes.html",),
         make_listing=normalize_cpu.make_listing,
@@ -62,6 +70,8 @@ CATEGORIES = {
     ),
     "mobo": Category(
         name="mobo",
+        shopflix_categories=("Μητρικές Κάρτες*:::*/c/3232/mitrikes-kartes",),
+        snif_categories=("192115",),
         skroutz_paths=("/c/31/motherboards-mhtrikes.html",),
         # ~850 products: sliced by RAM slot count, which also tags each board with it.
         bestprice_paths=tuple(f"/cat/2611/motherboards/f/865_{f}.html" for f, _ in MOBO_SLOTS),
@@ -73,6 +83,8 @@ CATEGORIES = {
     ),
     "ram": Category(
         name="ram",
+        shopflix_categories=("Μνήμες RAM*:::*/c/3126/mnimes-ram",),
+        snif_categories=("192118",),
         skroutz_paths=("/c/56/mnhmes-pc-ram.html",),
         # ~2000 products: sliced by capacity filter (every product has one).
         bestprice_paths=tuple(
@@ -88,6 +100,8 @@ CATEGORIES = {
     ),
     "psu": Category(
         name="psu",
+        shopflix_categories=("Τροφοδοτικά Υπολογιστή*:::*/c/3238/trofodotika-ypologisti",),
+        snif_categories=("192117",),
         skroutz_paths=("/c/30/psu-trofodotika.html",),
         # ~1200 products: sliced by wattage filter.
         bestprice_paths=tuple(
@@ -103,6 +117,8 @@ CATEGORIES = {
     ),
     "case": Category(
         name="case",
+        shopflix_categories=("Κουτιά Υπολογιστών*:::*/c/3225/koytia-ypologiston",),
+        snif_categories=("192114",),
         skroutz_paths=("/c/28/cases-koutia.html",),
         # ~2050 products: sliced by price (BestPrice's ?min/?max are in cents).
         bestprice_paths=tuple(
@@ -116,6 +132,8 @@ CATEGORIES = {
     ),
     "fan": Category(
         name="fan",
+        shopflix_categories=("Case Fans*:::*/c/4899/case-fans",),
+        snif_categories=("19211033",),
         skroutz_paths=("/c/674/case-fans.html",),
         # ~1400 products: sliced by price (cents).
         bestprice_paths=tuple(
@@ -128,6 +146,8 @@ CATEGORIES = {
     ),
     "cooler": Category(
         name="cooler",
+        shopflix_categories=("Ψύκτρες Επεξεργαστών*:::*/c/4906/psyktres-epeksergaston", "Υδρόψυξη*:::*/c/4886/ydropsyksi",),
+        snif_categories=("19211032", "19211031"),
         # Air coolers + water cooling (AIOs; custom-loop parts are dropped by the normalizer).
         skroutz_paths=("/c/673/cpu-fans.html", "/c/677/water-cooling.html"),
         bestprice_paths=("/cat/2614/psyktres-epeksergaston.html", "/cat/8397/ydropsyksi.html"),
