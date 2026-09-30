@@ -1,6 +1,6 @@
 // Mirror of the JSON written by scraper/main.py (see scraper/models.py).
 
-export type Category = 'gpu' | 'cpu' | 'ram' | 'psu' | 'case' | 'fan' | 'cooler';
+export type Category = 'gpu' | 'cpu' | 'mobo' | 'ram' | 'psu' | 'case' | 'fan' | 'cooler';
 export type Brand = 'NVIDIA' | 'AMD' | 'Intel';
 export type SourceName = 'skroutz' | 'bestprice' | 'eshop';
 
@@ -26,6 +26,16 @@ export interface CpuListing extends BaseListing {
   brand: Exclude<Brand, 'NVIDIA'>;
   cores: number | null;
   socket: string | null; // e.g. "AM5", "LGA1851"
+}
+
+export interface MoboListing extends BaseListing {
+  brand: string; // vendor, e.g. "Asus"
+  chip: string; // vendor + board name, e.g. "Asus TUF Gaming B850-Plus WiFi"
+  chipset: string | null; // e.g. "B850", "X870E"; null for boards without one in the name (server)
+  socket: string | null; // e.g. "AM5", "LGA1851"
+  formFactor: 'ATX' | 'Micro ATX' | 'Mini ITX' | 'E-ATX' | 'Άλλο';
+  memory: 'DDR4' | 'DDR5' | null; // null = unknown (LGA1700 boards come in both)
+  wifi: boolean;
 }
 
 export interface RamListing extends BaseListing {
