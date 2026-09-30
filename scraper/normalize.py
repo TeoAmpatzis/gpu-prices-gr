@@ -27,6 +27,27 @@ NVIDIA_PRO = [
 WORKSTATION_NUMBERS = {2000, 4000, 4500, 5000, 6000}
 INTEL = re.compile(r"\bArc\s*(?:Pro\s*)?([AB]\d{3})\b", re.I)
 VRAM = re.compile(r"\b(\d{1,2})(?:[.,]0)?\s*GB\b", re.I)  # "8GB", "2.0GB"
+VRAM_SHORT = re.compile(r"\b(\d{1,2})G\b")  # "… Windforce OC 8G" (snif.gr)
+# Gigabyte part numbers used as the whole title ("GIGABYTE VGA GV-N507TEAGLEOC ICE-16GD, 16GB"):
+# N + 3 digits + 0/T/S = RTX xx70 / xx70 Ti / xx70 Super; R + 4 digits (+XT/XTX/GRE) = RX; "-16GD" = 16GB.
+GIGABYTE_NV = re.compile(r"\bGV-N(\d{3})([0TS])", re.I)
+GIGABYTE_AMD = re.compile(r"\bGV-R(\d{4})(XTX|XT|GRE)?", re.I)
+GIGABYTE_VRAM = re.compile(r"-(\d{1,2})GD\b", re.I)
+
+
+def expand_part_numbers(title: str) -> str:
+    """Append the chip/VRAM a Gigabyte part number encodes, so the patterns below can match it."""
+    extra = []
+    if m := GIGABYTE_NV.search(title):
+        num = int(m.group(1)) * 10
+        prefix = "RTX" if num >= 2000 else "GTX" if num >= 1600 else "GT"
+        suffix = {"T": " Ti", "S": " Super"}.get(m.group(2).upper(), "")
+        extra.append(f"{prefix} {num}{suffix}")
+    if m := GIGABYTE_AMD.search(title):
+        extra.append(f"RX {m.group(1)} {(m.group(2) or '').upper()}".strip())
+    if (m := GIGABYTE_VRAM.search(title)) and not VRAM.search(title):
+        extra.append(f"{m.group(1)}GB")
+    return f"{title} {' '.join(extra)}" if extra else title
 
 # Checked in order against the start of the title, then anywhere.
 PARTNERS = [
@@ -44,7 +65,8 @@ def classify(title: str, hint: str = "") -> tuple[str, str, int] | None:
     `hint` (e.g. the URL slug) is only used to find VRAM when the title omits it."""
     if EXCLUDE.search(title):
         return None
-    vram_m = VRAM.search(title) or re.search(r"[-_](\d{1,2})GB[-_.]", hint, re.I)
+    title = expand_part_numbers(re.sub(r"GeForce(?=RTX|GTX|GT\b)", "GeForce ", title, flags=re.I))
+    vram_m = VRAM.search(title) or re.search(r"[-_](\d{1,2})GB[-_.]", hint, re.I) or VRAM_SHORT.search(title)
     if not vram_m:
         return None
     vram = int(vram_m.group(1))

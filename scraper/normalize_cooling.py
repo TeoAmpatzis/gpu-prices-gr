@@ -33,6 +33,9 @@ FAN_SIZE = re.compile(r"(?<!\d)(\d{2,3})\s*mm\b", re.I)
 FAN_SIZE_CM = re.compile(r"(?<!\d)(\d{1,2})\s*cm\b", re.I)  # e-shop: "12CM"
 # Fallback: the size in the model name ("NZXT F140Q", "Corsair RS140", "Endorfy Zephyr 120").
 NAME_SIZE = re.compile(r"(?<!\d)(40|50|60|70|80|92|120|140|180|200|230)(?!\d)")
+# Arctic encodes it in centimetres: P12/F12 = 120mm, P14 = 140mm, P8 = 80mm, P9 = 92mm (Shopflix titles).
+ARCTIC_SIZE = re.compile(r"\bArctic\s+(?:BioniX\s+)?[PF](8|9|12|14)\b", re.I)
+ARCTIC_MM = {"8": 80, "9": 92, "12": 120, "14": 140}
 PACK = re.compile(r"(?<!\d)(\d{1,2})\s*(?:τμχ|tmch|pcs\b|-?Pack\b|x\s*Fans?\b)", re.I)
 PACK_WORD = {"dual": 2, "triple": 3}
 PACK_WORDS = re.compile(r"\b(Dual|Triple)\s+Pack\b", re.I)
@@ -57,6 +60,8 @@ def make_fan_listing(
         size = int(size_m.group(1)) * 10
     elif size_m := NAME_SIZE.search(title):
         size = int(size_m.group(1))
+    elif size_m := ARCTIC_SIZE.search(title):
+        size = ARCTIC_MM[size_m.group(1)]
     else:
         return None
     pack_m = PACK.search(title) or PACK.search(slug)
