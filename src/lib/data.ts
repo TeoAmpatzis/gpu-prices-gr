@@ -86,6 +86,10 @@ export interface Filters {
   window: string; // '' | 'yes' | 'no'
   rgb: string; // '' | 'yes' | 'no'
   pack: string; // '' | 'single' | 'multi'
+  chipset: string; // '' = any
+  formFactor: string; // '' = any
+  memory: string; // '' | 'DDR4' | 'DDR5'
+  wifi: string; // '' | 'yes' | 'no'
 }
 
 export function defaultFilters(groups: string[]): Filters {
@@ -105,6 +109,10 @@ export function defaultFilters(groups: string[]): Filters {
     window: '',
     rgb: '',
     pack: '',
+    chipset: '',
+    formFactor: '',
+    memory: '',
+    wifi: '',
   };
 }
 

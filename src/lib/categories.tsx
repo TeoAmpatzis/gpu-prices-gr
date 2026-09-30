@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Box, CircuitBoard, Cpu, Fan, MemoryStick, Plug, Snowflake, type LucideIcon } from 'lucide-react';
+import { Box, CircuitBoard, Cpu, Fan, MemoryStick, Microchip, Plug, Snowflake, type LucideIcon } from 'lucide-react';
 import type {
   BaseListing,
   CaseListing,
@@ -8,6 +8,7 @@ import type {
   CpuListing,
   FanListing,
   GpuListing,
+  MoboListing,
   PsuListing,
   RamListing,
 } from '../types';
@@ -22,7 +23,8 @@ export interface Column<L extends BaseListing> {
 
 /** A select in the filter bar that only applies to one category. */
 export interface ExtraFilter {
-  key: 'minVram' | 'socket' | 'minCores' | 'minCapacity' | 'minSpeed' | 'minWatts' | 'window' | 'rgb' | 'pack';
+  key: 'minVram' | 'socket' | 'minCores' | 'minCapacity' | 'minSpeed' | 'minWatts' | 'window' | 'rgb' | 'pack'
+    | 'chipset' | 'formFactor' | 'memory' | 'wifi';
   options: (listings: BaseListing[]) => { value: string | number; label: Text }[];
 }
 
@@ -430,5 +432,89 @@ export const COOLER: CategoryConfig<CoolerListing> = {
   after: [],
 };
 
-export const CATEGORIES = { gpu: GPU, cpu: CPU, ram: RAM, psu: PSU, case: CASE, fan: FAN, cooler: COOLER } as const;
+// ---------- Motherboards ----------
+// Like cases, a board is its own model (vendor + board name); pills are the CPU socket.
+
+const moboSocket = (m: Model<MoboListing>) => mostCommon(m.listings.map((l) => l.socket));
+const moboChipset = (m: Model<MoboListing>) => mostCommon(m.listings.map((l) => l.chipset));
+const moboForm = (m: Model<MoboListing>) => mostCommon(m.listings.map((l) => l.formFactor)) ?? m.cheapest.formFactor;
+const moboMemory = (m: Model<MoboListing>) => mostCommon(m.listings.map((l) => l.memory));
+const DESKTOP_SOCKETS = /^(AM5|AM4|AM3\+?|LGA(1851|1700|1200|1151|1150|1155))$/;
+const MOBO_SOCKETS = ['AM5', 'AM4', 'LGA1851', 'LGA1700'];
+
+export const MOBO: CategoryConfig<MoboListing> = {
+  id: 'mobo',
+  tab: { el: 'Μητρικές', en: 'Motherboards' },
+  title: { el: 'Τιμές Μητρικών', en: 'Motherboard Prices' },
+  subtitle: {
+    el: 'Οι χαμηλότερες τιμές για κάθε μητρική στην Ελλάδα, από Skroutz, BestPrice και e-shop.gr.',
+    en: 'The lowest price for every motherboard in Greece, from Skroutz, BestPrice and e-shop.gr.',
+  },
+  icon: Microchip,
+  empty: noResults('μητρικές', 'motherboards'),
+  searchPlaceholder: search('B850, Tomahawk, Z890'),
+  groups: [...MOBO_SOCKETS, OTHER],
+  groupLabel: { el: 'Socket', en: 'Socket' },
+  group: (l) => (l.socket && MOBO_SOCKETS.includes(l.socket) ? l.socket : OTHER),
+  groupDot: {
+    AM5: 'bg-red-500', AM4: 'bg-orange-400', LGA1851: 'bg-sky-500', LGA1700: 'bg-indigo-400', [OTHER]: 'bg-zinc-400',
+  },
+  // Most-offered boards first rather than socket by socket.
+  sortByGroup: false,
+  segments: { main: 'Desktop', pro: 'Server / Workstation' },
+  modelKey: (l) => productKey(l.chip),
+  // Server/HEDT sockets, workstation chipsets (W790, C266…) and server boards without a chipset name.
+  isPro: (l) => !DESKTOP_SOCKETS.test(l.socket ?? '') || !l.chipset || /^[WC]/.test(l.chipset),
+  tierScore: (m) => m.listings.length,
+  searchText: (l) => `${l.chip} ${l.title} ${l.chipset ?? ''} ${l.socket ?? ''} ${l.formFactor}`,
+  matchesModel: (m, f) =>
+    (!f.chipset || moboChipset(m) === f.chipset) &&
+    (!f.formFactor || moboForm(m) === f.formFactor) &&
+    (!f.memory || moboMemory(m) === f.memory) &&
+    matchYesNo(f.wifi, m.listings.some((l) => l.wifi)),
+  extraFilters: [
+    {
+      key: 'chipset',
+      options: (listings) => {
+        const counts = new Map<string, number>();
+        for (const l of listings as MoboListing[]) if (l.chipset) counts.set(l.chipset, (counts.get(l.chipset) ?? 0) + 1);
+        return [
+          { value: '', label: { el: 'Όλα τα chipset', en: 'Any chipset' } },
+          ...[...counts.keys()].sort((a, b) => counts.get(b)! - counts.get(a)!).map((c) => ({ value: c, label: c })),
+        ];
+      },
+    },
+    {
+      key: 'formFactor',
+      options: () => [
+        { value: '', label: { el: 'Όλα τα μεγέθη', en: 'Any size' } },
+        ...['ATX', 'Micro ATX', 'Mini ITX', 'E-ATX'].map((v) => ({ value: v, label: v })),
+      ],
+    },
+    {
+      key: 'memory',
+      options: () => [
+        { value: '', label: { el: 'Όλες οι μνήμες', en: 'Any memory' } },
+        { value: 'DDR5', label: 'DDR5' },
+        { value: 'DDR4', label: 'DDR4' },
+      ],
+    },
+    {
+      key: 'wifi',
+      options: yesNo({ el: 'WiFi: όλα', en: 'WiFi: any' }, { el: 'Με WiFi', en: 'With WiFi' }, { el: 'Χωρίς WiFi', en: 'No WiFi' }),
+    },
+  ],
+  before: [
+    { header: 'Chipset', cell: (m) => moboChipset(m) ?? '—' },
+    { header: 'Socket', className: 'hidden md:table-cell', cell: (m) => moboSocket(m) ?? '—' },
+    { header: SIZE, className: 'hidden sm:table-cell', cell: (m, lang) => groupName(moboForm(m), lang) },
+  ],
+  after: [
+    { header: { el: 'Μνήμη', en: 'Memory' }, className: 'hidden sm:table-cell', cell: (m) => moboMemory(m) ?? '—' },
+  ],
+};
+
+export const CATEGORIES = {
+  gpu: GPU, cpu: CPU, mobo: MOBO, ram: RAM, psu: PSU, case: CASE, fan: FAN, cooler: COOLER,
+} as const;
 export const CATEGORY_IDS = Object.keys(CATEGORIES) as Category[];
