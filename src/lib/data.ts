@@ -1,4 +1,4 @@
-import type { BaseListing, Category, History, Latest, SourceName } from '../types';
+import type { BaseListing, Category, History, HistoryPoint, Latest, SourceName } from '../types';
 import type { Lang } from './i18n';
 import { SOURCE_NAMES } from './sources';
 import type { CategoryConfig } from './categories';
@@ -33,6 +33,33 @@ export interface Model<L extends BaseListing> {
   maxPrice: number;
   /** Listing with the lowest known price + shipping, if any has one. */
   bestTotal: L | null;
+  /** Set by applyFilters from the price history: the cheapest price is well below the usual one. */
+  sale?: Sale | null;
+}
+
+export interface Sale {
+  pct: number; // discount vs the typical price, e.g. 12 for −12%
+  typical: number; // median of the daily lowest prices over the previous 30 days
+}
+
+// A part is "on sale" when today's lowest price is at least 10% (and €5) under the median of its
+// daily lowest prices over the previous 30 days, with at least 5 days of history to compare with.
+const SALE_DAYS = 30;
+const SALE_MIN_POINTS = 5;
+const SALE_MIN_PCT = 10;
+const SALE_MIN_EUR = 5;
+
+export function saleOf(points: HistoryPoint[] | undefined, current: number): Sale | null {
+  if (!points?.length) return null;
+  const today = new Date().toISOString().slice(0, 10);
+  const since = new Date(Date.now() - SALE_DAYS * 864e5).toISOString().slice(0, 10);
+  // Only our own all-sites daily lows: imported Skroutz history (`i`) runs higher than the real minimum.
+  const past = points.filter((p) => !p.i && p.d >= since && p.d < today).map((p) => p.min).sort((a, b) => a - b);
+  if (past.length < SALE_MIN_POINTS) return null;
+  const mid = past.length >> 1;
+  const typical = past.length % 2 ? past[mid] : (past[mid - 1] + past[mid]) / 2;
+  const pct = Math.round((100 * (typical - current)) / typical);
+  return pct >= SALE_MIN_PCT && typical - current >= SALE_MIN_EUR ? { pct, typical } : null;
 }
 
 /**
@@ -78,7 +105,7 @@ export function mostCommon<T>(values: (T | null | undefined)[]): T | null {
   return best;
 }
 
-export type SortKey = 'price-asc' | 'price-desc' | 'model' | 'offers';
+export type SortKey = 'price-asc' | 'price-desc' | 'model' | 'offers' | 'discount';
 export type Segment = 'main' | 'pro' | 'all';
 
 export interface Filters {
@@ -90,6 +117,7 @@ export interface Filters {
   sort: SortKey;
   /** Category-specific filters (`CategoryConfig.extraFilters`) by key; '' or missing = any. */
   extra: Record<string, string>;
+  saleOnly: boolean;
 }
 
 export function defaultFilters(groups: string[]): Filters {
@@ -101,10 +129,16 @@ export function defaultFilters(groups: string[]): Filters {
     maxPrice: null,
     sort: 'model',
     extra: {},
+    saleOnly: false,
   };
 }
 
-export function applyFilters<L extends BaseListing>(all: L[], f: Filters, cfg: CategoryConfig<L>): Model<L>[] {
+export function applyFilters<L extends BaseListing>(
+  all: L[],
+  f: Filters,
+  cfg: CategoryConfig<L>,
+  history: History = {},
+): Model<L>[] {
   const q = f.query.trim().toLowerCase();
   const listings = all.filter(
     (l) =>
@@ -114,19 +148,36 @@ export function applyFilters<L extends BaseListing>(all: L[], f: Filters, cfg: C
       // Per listing, so a model's price is that of a listing that matches (e.g. the CL30 kit).
       cfg.extraFilters.every((x) => !f.extra[x.key] || x.test(l, f.extra[x.key])),
   );
-  const models = groupModels(listings, cfg).filter(
+  const grouped = groupModels(listings, cfg).map((m) => ({ ...m, sale: saleOf(history[m.key], m.cheapest.price) }));
+  const models = grouped.filter(
     (m) =>
       (!cfg.segments || f.segment === 'all' || (f.segment === 'pro') === m.pro) &&
-      (f.maxPrice == null || m.cheapest.price <= f.maxPrice),
+      (f.maxPrice == null || m.cheapest.price <= f.maxPrice) &&
+      (!f.saleOnly || m.sale != null),
   );
+  // "Recommended": best value for money first where the category has a value score (performance
+  // or capacity per euro); a part on sale gets an extra boost. Elsewhere, parts on sale come first.
+  const SALE_BOOST = 1.15;
+  const recommended = (m: Model<L>) => {
+    const v = cfg.value?.(m);
+    return v == null ? null : v * (m.sale ? SALE_BOOST : 1);
+  };
   const cmp: Record<SortKey, (a: Model<L>, b: Model<L>) => number> = {
     'price-asc': (a, b) => a.cheapest.price - b.cheapest.price,
     'price-desc': (a, b) => b.cheapest.price - a.cheapest.price,
     offers: (a, b) => b.listings.length - a.listings.length,
-    model: (a, b) =>
-      (cfg.sortByGroup === false ? 0 : cfg.groups.indexOf(a.group) - cfg.groups.indexOf(b.group)) ||
-      cfg.tierScore(b) - cfg.tierScore(a) ||
-      a.key.localeCompare(b.key),
+    discount: (a, b) => (b.sale?.pct ?? 0) - (a.sale?.pct ?? 0) || a.cheapest.price - b.cheapest.price,
+    model: (a, b) => {
+      const va = recommended(a);
+      const vb = recommended(b);
+      if (va != null || vb != null) return (vb ?? -1) - (va ?? -1) || a.cheapest.price - b.cheapest.price;
+      return (
+        (b.sale ? 1 : 0) - (a.sale ? 1 : 0) ||
+        (cfg.sortByGroup === false ? 0 : cfg.groups.indexOf(a.group) - cfg.groups.indexOf(b.group)) ||
+        cfg.tierScore(b) - cfg.tierScore(a) ||
+        a.key.localeCompare(b.key)
+      );
+    },
   };
   return models.sort(cmp[f.sort]);
 }

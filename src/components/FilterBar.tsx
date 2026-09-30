@@ -11,6 +11,7 @@ const SORTS: { value: SortKey; label: Text }[] = [
   { value: 'price-asc', label: T.sortPriceAsc },
   { value: 'price-desc', label: T.sortPriceDesc },
   { value: 'offers', label: T.sortOffers },
+  { value: 'discount', label: T.sortDiscount },
 ];
 
 function toggle<T>(arr: T[], v: T): T[] {
@@ -122,6 +123,12 @@ export default function FilterBar<L extends BaseListing>({ cfg, listings, filter
           </div>
         </Section>
       )}
+
+      <Section label={t(T.sales)}>
+        <Chip active={f.saleOnly} dot="bg-rose-500" onClick={() => set('saleOnly', !f.saleOnly)}>
+          {t(T.saleOnly)}
+        </Chip>
+      </Section>
 
       <Section label={t(T.source)}>
         {SOURCE_NAMES.map((s) => (

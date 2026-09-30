@@ -59,6 +59,14 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
           <div className="flex items-center gap-2 whitespace-nowrap">
             <span className="text-[15px] font-semibold tabular-nums text-accent">{price(m.cheapest.price)}</span>
             <SourceBadge source={m.cheapest.source} />
+            {m.sale && (
+              <span
+                className="rounded bg-rose-500/15 px-1.5 py-0.5 text-[11px] font-semibold text-rose-600 ring-1 ring-inset ring-rose-500/30 dark:text-rose-400"
+                title={`${tr(lang, T.saleHint)} · ${tr(lang, T.usualPrice)}: ${price(m.sale.typical)}`}
+              >
+                −{m.sale.pct}%
+              </span>
+            )}
             {delta != null && Math.abs(delta) >= 1 && (
               <span
                 className={`inline-flex items-center gap-0.5 text-xs ${delta < 0 ? 'text-accent' : 'text-up'}`}

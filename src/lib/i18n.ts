@@ -32,10 +32,10 @@ export const useLang = () => useSyncExternalStore(subscribe, getLang);
 /** Shared strings used by more than one component. */
 export const T = {
   siteName: { el: 'Τιμές Hardware', en: 'Hardware Prices' },
-  siteTagline: { el: 'Skroutz · BestPrice · e-shop.gr', en: 'Skroutz · BestPrice · e-shop.gr' },
+  siteTagline: { el: 'Skroutz · BestPrice · Shopflix · Snif · e-shop.gr', en: 'Skroutz · BestPrice · Shopflix · Snif · e-shop.gr' },
   notAffiliated: {
-    el: 'Δεν συνδέεται με τα Skroutz, BestPrice και e-shop.gr. Τα εμπορικά σήματα ανήκουν στους κατόχους τους.',
-    en: 'Not affiliated with Skroutz, BestPrice or e-shop.gr. Trademarks belong to their owners.',
+    el: 'Δεν συνδέεται με τα Skroutz, BestPrice, Shopflix, Snif και e-shop.gr. Τα εμπορικά σήματα ανήκουν στους κατόχους τους.',
+    en: 'Not affiliated with Skroutz, BestPrice, Shopflix, Snif or e-shop.gr. Trademarks belong to their owners.',
   },
   footer: {
     el: 'Οι τιμές ενημερώνονται αυτόματα κάθε 6 ώρες και ενδέχεται να διαφέρουν από τις τρέχουσες στα καταστήματα.',
@@ -80,6 +80,14 @@ export const T = {
   sortPriceAsc: { el: 'Τιμή: χαμηλή → υψηλή', en: 'Price: low → high' },
   sortPriceDesc: { el: 'Τιμή: υψηλή → χαμηλή', en: 'Price: high → low' },
   sortOffers: { el: 'Περισσότερα προϊόντα', en: 'Most listings' },
+  sortDiscount: { el: 'Μεγαλύτερη έκπτωση', en: 'Biggest discount' },
+  sales: { el: 'Προσφορές', en: 'Sales' },
+  saleOnly: { el: 'Μόνο προσφορές', en: 'On sale only' },
+  saleHint: {
+    el: 'Κάτω από τη συνηθισμένη τιμή των τελευταίων 30 ημερών',
+    en: 'Below its usual price over the last 30 days',
+  },
+  usualPrice: { el: 'Συνήθης τιμή', en: 'Usual price' },
   darkTheme: { el: 'Σκούρο θέμα', en: 'Dark theme' },
   lightTheme: { el: 'Φωτεινό θέμα', en: 'Light theme' },
   switchLang: { el: 'Switch to English', en: 'Αλλαγή σε Ελληνικά' },
