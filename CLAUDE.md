@@ -1,14 +1,23 @@
-# CLAUDE.md — PC Hardware Prices GR (reference sheet)
+# CLAUDE.md — BuildDraft.gr (reference sheet)
 
 Read this first; it is kept current so you don't need to re-explore the repo.
 
+## Κανόνες εργασίας (από τον ιδιοκτήτη — ισχύουν σε κάθε task)
+- Το site λέγεται **BuildDraft.gr**.
+- **Κόστος 0 (προσωρινά)**: μόνο δωρεάν υπηρεσίες και βιβλιοθήκες, τίποτα που απαιτεί πληρωμένο plan — μέχρι να αποφασίσει αλλιώς ο ιδιοκτήτης.
+- Κάθε κείμενο UI υπάρχει σε **Ελληνικά και Αγγλικά**, μέσα από το υπάρχον σύστημα μεταφράσεων (`src/lib/i18n.ts`, `Text` = `{el, en}`).
+- Κάθε αλλαγή εμφάνισης πρέπει να δουλεύει σε **dark και light mode**, σε **desktop και σε κινητό (360px)**.
+- **Μην αλλάξεις το routing** (`#ram`, `#gpu` κ.λπ.) αν δεν το ζητήσει ο ιδιοκτήτης.
+- Πριν γράψεις κώδικα, διάβασε τα σχετικά αρχεία και δώσε **σύντομο πλάνο**. **Περίμενε έγκριση** όταν το task αλλάζει τη δομή των δεδομένων (JSON schema, `models.py`, `types.ts`) ή τον scraper.
+- Στο τέλος κάθε task: τρέξε **build και lint**, και γράψε τι άλλαξε και πώς να ελεγχθεί.
+
 ## What & rules
 - Static site listing **PC hardware prices in the Greek market** (GPU, CPU, motherboards, RAM, PSU, cases, case fans, CPU coolers) from aggregators **Skroutz**, **BestPrice**, **Snif**, the marketplace **Shopflix** and the shop **e-shop.gr**. Greece only. Eight tabs (`#gpu #cpu #mobo #ram #psu #case #fan #cooler`), light/dark theme toggle.
-- **€0/month is a hard rule**: no paid APIs/SaaS. Free tiers only (GitHub Actions, Vercel Hobby).
+- **€0/month, for now** (the owner may allow paid services later): no paid APIs/SaaS. Free tiers only (GitHub Actions, Vercel Hobby).
 - **Public** repo (unlimited free Actions minutes): `github.com/TeoAmpatzis/gpu-prices-gr`. Owner deploys on Vercel (Vite preset, output `dist`). Never commit secrets or personal emails — commits use the GitHub no-reply identity.
 - **License: PolyForm Noncommercial 1.0.0** (`LICENSE`, with the `Required Notice: Copyright (c) 2026 Teo Ampatzis` line). Code is readable/usable non-commercially; commercial use needs the owner's permission; Teo Ampatzis keeps all copyright. Keep the notice, `README.md` (the GitHub page, **in Greek**: what it is, how it works, license summary, data/trademark disclaimer, ownership), the `package.json` `license`/`author` fields and the footer "© 2026 Teo Ampatzis · not affiliated" line intact.
 - **Owner's plans**: a free, non-profit site. No plan to make money from it; ads may be added only to cover costs if a paid subscription/service ever becomes necessary. No launch deadline — prefer doing things properly over fast.
-- UI text is bilingual (Greek default for Greek browsers, else English; toggle in the header): every visible string is a `Text` (`{el, en}`) from `src/lib/i18n.ts` — shared strings in `T`, per-category ones in `categories.tsx`. Never hardcode Greek in components. Icons: `lucide-react` only. Strict TS; `npm run build` is the only check (no tests/lint).
+- UI text is bilingual (Greek default for Greek browsers, else English; toggle in the header): every visible string is a `Text` (`{el, en}`) from `src/lib/i18n.ts` — shared strings in `T`, per-category ones in `categories.tsx`. Never hardcode Greek in components. Icons: `lucide-react` only. Strict TS; `npm run build` (tsc + vite) is the check. No tests; **no linter is set up yet** (the rules above ask for lint at the end of every task — until one is added, say so in the report).
 - Git: conventional commits, commit + push after each unit of work, stage files explicitly, never commit `node_modules/ dist/ venv/ .env`. **Don't push `public/data` from a local run** while the workflows own it (a local data push made a running scrape's rebase conflict and lose its data); push code and let the scrape workflow (`gh workflow run scrape.yml`) regenerate data. Workflows rebase with `-X theirs` so their fresh data wins a conflict.
 
 ## Data flow
