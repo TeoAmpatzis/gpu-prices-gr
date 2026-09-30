@@ -9,8 +9,15 @@ import {
   buildNotes,
   candidates,
   caseBoard,
+  caseCoolerMax,
+  caseFanSlots,
+  caseGpuMax,
+  coolerHeight,
+  coolerSockets,
+  cpuCooler,
   cpuHasIgpu,
   cpuSocket,
+  gpuLength,
   gpuPsu,
   moboForm,
   moboMemory,
@@ -23,6 +30,7 @@ import {
   type SlotListing,
 } from '../lib/builder';
 import { T, tr, useLang, type Lang, type Text } from '../lib/i18n';
+import BuildGuide from './BuildGuide';
 import SourceBadge from './SourceBadge';
 
 type Models = { [S in Slot]: Model<SlotListing[S]>[] };
@@ -54,15 +62,29 @@ const S: Record<string, Text> = {
   slots: { el: 'υποδοχές', en: 'slots' },
   psu: { el: 'τροφ.', en: 'PSU' },
   upTo: { el: 'έως', en: 'up to' },
+  withCooler: { el: 'με ψύκτρα', en: 'cooler included' },
+  noCooler: { el: 'χωρίς ψύκτρα', en: 'no cooler' },
+  coolerUnknown: { el: 'ψύκτρα: δεν αναφέρεται', en: 'cooler: not stated' },
+  coolerShort: { el: 'ψύκτρα', en: 'cooler' },
+  fanPositions: { el: 'θέσεις ανεμ.', en: 'fan positions' },
 };
 
 /** One-line specs under a part's name, from the same fields the rules use. */
 function specLine(slot: Slot, m: AnyModel, lang: Lang): string {
   const t = (x: Text) => tr(lang, x);
+  const mm = (v: number | null | undefined) => (v != null ? `${v} mm` : null);
   switch (slot) {
     case 'cpu': {
       const c = m as Model<SlotListing['cpu']>;
-      return [cpuSocket(c), c.cheapest.cores && `${c.cheapest.cores} ${t(S.cores)}`, cpuHasIgpu(c) && 'iGPU'].filter(Boolean).join(' · ');
+      const cooler = cpuCooler(c);
+      return [
+        cpuSocket(c),
+        c.cheapest.cores && `${c.cheapest.cores} ${t(S.cores)}`,
+        cpuHasIgpu(c) && 'iGPU',
+        t(cooler ? S.withCooler : cooler === false ? S.noCooler : S.coolerUnknown),
+      ]
+        .filter(Boolean)
+        .join(' · ');
     }
     case 'mobo': {
       const b = m as Model<SlotListing['mobo']>;
@@ -76,19 +98,49 @@ function specLine(slot: Slot, m: AnyModel, lang: Lang): string {
     }
     case 'gpu': {
       const g = m as Model<SlotListing['gpu']>;
-      return `${g.cheapest.vram}GB · ${t(S.psu)} ≥ ${gpuPsu(g.chip)}W`;
-    }
-    case 'psu': {
-      const p = m as Model<SlotListing['psu']>;
-      return [p.cheapest.formFactor, p.cheapest.modular && `${p.cheapest.modular} modular`, p.cheapest.brand].filter(Boolean).join(' · ');
-    }
-    case 'case': {
-      const c = m as Model<SlotListing['case']>;
-      return `${groupName(c.cheapest.size, lang)} · ${t(S.upTo)} ${caseBoard(c)}`;
+      return [`${g.cheapest.vram}GB`, mm(gpuLength(g)), `${t(S.psu)} ≥ ${gpuPsu(g.cheapest)}W`]
+        .filter(Boolean)
+        .join(' · ');
     }
     case 'cooler': {
       const c = m as Model<SlotListing['cooler']>;
-      return c.cheapest.type === 'Air' ? groupName('Αέρα', lang) : `AIO ${c.cheapest.radiator ?? ''}mm`;
+      const kind = c.cheapest.type === 'Air' ? groupName('Αέρα', lang) : `AIO ${c.cheapest.radiator ?? ''}mm`;
+      return [
+        kind,
+        c.cheapest.type === 'Air' && mm(coolerHeight(c)),
+        coolerSockets(c)
+          .filter((x) => /^(AM[45]|LGA1[78]\d\d)$/.test(x))
+          .join('/'),
+      ]
+        .filter(Boolean)
+        .join(' · ');
+    }
+    case 'case': {
+      const c = m as Model<SlotListing['case']>;
+      const gpu = caseGpuMax(c);
+      const cooler = caseCoolerMax(c);
+      const fans = caseFanSlots(c);
+      return [
+        groupName(c.cheapest.size, lang),
+        `${t(S.upTo)} ${caseBoard(c)}`,
+        gpu != null && `GPU ≤ ${gpu} mm`,
+        cooler != null && `${t(S.coolerShort)} ≤ ${cooler} mm`,
+        fans != null && `${fans} ${t(S.fanPositions)}`,
+      ]
+        .filter(Boolean)
+        .join(' · ');
+    }
+    case 'fan': {
+      const f = m as Model<SlotListing['fan']>;
+      return [`${f.cheapest.size} mm × ${f.cheapest.pack}`, f.cheapest.pwm && 'PWM', f.cheapest.rgb && 'RGB']
+        .filter(Boolean)
+        .join(' · ');
+    }
+    case 'psu': {
+      const p = m as Model<SlotListing['psu']>;
+      return [p.cheapest.formFactor, p.cheapest.modular && `${p.cheapest.modular} modular`, p.cheapest.brand]
+        .filter(Boolean)
+        .join(' · ');
     }
   }
 }
@@ -103,7 +155,10 @@ function loadSaved(): Partial<Record<Slot, string>> {
 
 function save(b: Build) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(Object.fromEntries(SLOTS.filter((s) => b[s]).map((s) => [s, b[s]!.key]))));
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(Object.fromEntries(SLOTS.filter((s) => b[s]).map((s) => [s, b[s]!.key]))),
+    );
   } catch {
     /* storage unavailable (private mode): the build just isn't remembered */
   }
@@ -170,116 +225,144 @@ export default function Builder() {
   const total = chosen.reduce((sum, m) => sum + m.cheapest.price, 0);
   const watts = requiredWatts(build);
   const notes = buildNotes(build);
+  // Share of parts whose measurements are known yet (they're collected gradually, see scraper/specs.py).
+  const share = <L extends BaseListing>(ms: Model<L>[], known: (m: Model<L>) => boolean) =>
+    ms.length ? Math.round((100 * ms.filter(known).length) / ms.length) : 100;
+  const coverage = {
+    gpu: share(
+      models.gpu.filter((m) => !m.pro),
+      (m) => gpuLength(m) != null,
+    ),
+    case: share(models.case, (m) => caseGpuMax(m) != null),
+    cooler: share(models.cooler, (m) => coolerSockets(m).length > 0),
+  };
+  const collecting = Object.values(coverage).some((v) => v < 90);
 
   return (
     <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
-      <div className="card divide-y divide-line">
-        {SLOTS.map((slot) => {
-          const cfg = CATEGORIES[slot as Category];
-          const Icon = cfg.icon;
-          const m = build[slot] as AnyModel | undefined;
-          const isOpen = open === slot;
-          return (
-            <div key={slot} className="p-4">
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent/10 text-accent">
-                  <Icon className="h-4 w-4" />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <div className="text-xs text-muted">
-                    {t(cfg.tab)}
-                    {OPTIONAL.includes(slot) && <span className="text-faint"> · {t(S.optional)}</span>}
-                  </div>
-                  {m ? (
-                    <div className="truncate font-semibold">
-                      {m.chip}
-                      <span className="ml-2 text-xs font-normal text-muted">{specLine(slot, m, lang)}</span>
+      <div className="flex min-w-0 flex-col gap-4">
+        <BuildGuide />
+        {collecting && (
+          <div className="flex gap-2 rounded-xl bg-amber-500/10 p-3 text-sm ring-1 ring-inset ring-amber-500/30">
+            <Info className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
+            <span>
+              {t({
+                el: `Οι διαστάσεις για τον έλεγχο συμβατότητας συλλέγονται σταδιακά (κάρτες γραφικών ${coverage.gpu}%, κουτιά ${coverage.case}%, ψύκτρες ${coverage.cooler}%). Όσα δεν έχουν ακόμα στοιχεία δεν εμφανίζονται· προστίθενται καθημερινά.`,
+                en: `Measurements for the compatibility check are being collected gradually (graphics cards ${coverage.gpu}%, cases ${coverage.case}%, coolers ${coverage.cooler}%). Parts without them are hidden for now; more are added every day.`,
+              })}
+            </span>
+          </div>
+        )}
+        <div className="card divide-y divide-line">
+          {SLOTS.map((slot) => {
+            const cfg = CATEGORIES[slot as Category];
+            const Icon = cfg.icon;
+            const m = build[slot] as AnyModel | undefined;
+            const isOpen = open === slot;
+            return (
+              <div key={slot} className="p-4">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent/10 text-accent">
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-xs text-muted">
+                      {t(cfg.tab)}
+                      {OPTIONAL.includes(slot) && <span className="text-faint"> · {t(S.optional)}</span>}
                     </div>
-                  ) : (
-                    <div className="text-sm text-faint">—</div>
-                  )}
-                </div>
-                {m && (
-                  <a
-                    href={m.cheapest.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 whitespace-nowrap"
-                  >
-                    <span className="font-semibold tabular-nums text-accent">{formatPrice(m.cheapest.price, lang)}</span>
-                    <SourceBadge source={m.cheapest.source} />
-                    <ExternalLink className="h-3.5 w-3.5 text-faint" />
-                  </a>
-                )}
-                <div className="flex gap-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setOpen(isOpen ? null : slot);
-                      setQuery('');
-                    }}
-                    className="rounded-lg px-3 py-1.5 text-sm font-medium text-accent ring-1 ring-inset ring-accent/30 hover:bg-accent/10"
-                  >
-                    {t(m ? S.change : S.choose)}
-                  </button>
+                    {m ? (
+                      <div className="truncate font-semibold">
+                        {m.chip}
+                        <span className="ml-2 text-xs font-normal text-muted">{specLine(slot, m, lang)}</span>
+                      </div>
+                    ) : (
+                      <div className="text-sm text-faint">—</div>
+                    )}
+                  </div>
                   {m && (
+                    <a
+                      href={m.cheapest.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 whitespace-nowrap"
+                    >
+                      <span className="font-semibold tabular-nums text-accent">
+                        {formatPrice(m.cheapest.price, lang)}
+                      </span>
+                      <SourceBadge source={m.cheapest.source} />
+                      <ExternalLink className="h-3.5 w-3.5 text-faint" />
+                    </a>
+                  )}
+                  <div className="flex gap-1">
                     <button
                       type="button"
-                      onClick={() => update({ ...build, [slot]: undefined })}
-                      title={t(S.remove)}
-                      className="rounded-lg p-1.5 text-muted hover:bg-hover hover:text-fg"
+                      onClick={() => {
+                        setOpen(isOpen ? null : slot);
+                        setQuery('');
+                      }}
+                      className="rounded-lg px-3 py-1.5 text-sm font-medium text-accent ring-1 ring-inset ring-accent/30 hover:bg-accent/10"
                     >
-                      <X className="h-4 w-4" />
+                      {t(m ? S.change : S.choose)}
                     </button>
-                  )}
-                </div>
-              </div>
-
-              {isOpen && (
-                <div className="mt-3 rounded-xl bg-sunken p-3 ring-1 ring-line">
-                  <label className="relative mb-2 block">
-                    <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
-                    <input
-                      autoFocus
-                      value={query}
-                      onChange={(e) => setQuery(e.target.value)}
-                      placeholder={t(cfg.searchPlaceholder)}
-                      className="field w-full py-2 pl-9 pr-3"
-                    />
-                  </label>
-                  <div className="mb-1.5 text-xs text-muted">
-                    {options.length} {t(S.compatible)}
+                    {m && (
+                      <button
+                        type="button"
+                        onClick={() => update({ ...build, [slot]: undefined })}
+                        title={t(S.remove)}
+                        className="rounded-lg p-1.5 text-muted hover:bg-hover hover:text-fg"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    )}
                   </div>
-                  {options.length === 0 ? (
-                    <div className="p-3 text-sm text-muted">{t(S.noneCompatible)}</div>
-                  ) : (
-                    <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-lg bg-panel ring-1 ring-line">
-                      {options.slice(0, PICKER_LIMIT).map((o) => (
-                        <li key={o.key}>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              update({ ...build, [slot]: o });
-                              setOpen(null);
-                            }}
-                            className="flex w-full items-center gap-3 px-3 py-2 text-left text-sm hover:bg-hover"
-                          >
-                            <span className="min-w-0 flex-1">
-                              <span className="block truncate font-medium">{o.chip}</span>
-                              <span className="block truncate text-xs text-muted">{specLine(slot, o, lang)}</span>
-                            </span>
-                            <span className="font-semibold tabular-nums">{formatPrice(o.cheapest.price, lang)}</span>
-                            <SourceBadge source={o.cheapest.source} />
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
                 </div>
-              )}
-            </div>
-          );
-        })}
+
+                {isOpen && (
+                  <div className="mt-3 rounded-xl bg-sunken p-3 ring-1 ring-line">
+                    <label className="relative mb-2 block">
+                      <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
+                      <input
+                        autoFocus
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        placeholder={t(cfg.searchPlaceholder)}
+                        className="field w-full py-2 pl-9 pr-3"
+                      />
+                    </label>
+                    <div className="mb-1.5 text-xs text-muted">
+                      {options.length} {t(S.compatible)}
+                    </div>
+                    {options.length === 0 ? (
+                      <div className="p-3 text-sm text-muted">{t(S.noneCompatible)}</div>
+                    ) : (
+                      <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-lg bg-panel ring-1 ring-line">
+                        {options.slice(0, PICKER_LIMIT).map((o) => (
+                          <li key={o.key}>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                update({ ...build, [slot]: o });
+                                setOpen(null);
+                              }}
+                              className="flex w-full items-center gap-3 px-3 py-2 text-left text-sm hover:bg-hover"
+                            >
+                              <span className="min-w-0 flex-1">
+                                <span className="block truncate font-medium">{o.chip}</span>
+                                <span className="block truncate text-xs text-muted">{specLine(slot, o, lang)}</span>
+                              </span>
+                              <span className="font-semibold tabular-nums">{formatPrice(o.cheapest.price, lang)}</span>
+                              <SourceBadge source={o.cheapest.source} />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <aside className="card flex flex-col gap-3 p-4 lg:sticky lg:top-4">
