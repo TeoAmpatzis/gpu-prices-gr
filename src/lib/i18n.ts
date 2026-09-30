@@ -45,6 +45,17 @@ export const T = {
   all: { el: 'Όλα', en: 'All' },
   models: { el: 'μοντέλα', en: 'models' },
   loading: { el: 'Φόρτωση…', en: 'Loading…' },
+  stores: { el: 'καταστήματα', en: 'stores' },
+  updated: { el: 'ενημέρωση πριν από', en: 'updated' },
+  agoSuffix: { el: '', en: ' ago' },
+  delayed: { el: 'καθυστερεί', en: 'delayed' },
+  updatesByStore: { el: 'Ενημέρωση ανά κατάστημα', en: 'Updates by store' },
+  listingsShort: { el: 'προϊόντα', en: 'listings' },
+  clearFilters: { el: 'Καθαρισμός φίλτρων', en: 'Clear filters' },
+  emptyHint: {
+    el: 'Δοκίμασε λιγότερα φίλτρα ή άλλη αναζήτηση.',
+    en: 'Try fewer filters or a different search.',
+  },
   loadError: { el: 'Αποτυχία φόρτωσης δεδομένων', en: 'Failed to load data' },
   staleSource: {
     el: 'Η τελευταία ενημέρωση απέτυχε — εμφανίζονται παλαιότερα δεδομένα',

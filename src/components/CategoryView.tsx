@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
-import { AlertTriangle, Loader2 } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import type { BaseListing } from '../types';
-import { applyFilters, defaultFilters, loadData, timeAgo, type CategoryData, type Filters } from '../lib/data';
+import { applyFilters, defaultFilters, loadData, type CategoryData, type Filters } from '../lib/data';
 import type { CategoryConfig } from '../lib/categories';
 import { T, tr, useLang } from '../lib/i18n';
-import { SOURCES, SOURCE_NAMES } from '../lib/sources';
 import FilterBar from './FilterBar';
 import ModelTable from './ModelTable';
+import Skeleton from './Skeleton';
+import SourcesStatus from './SourcesStatus';
 
 /** One category page (one tab): source status, filters and the model table. */
 export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: CategoryConfig<L> }) {
@@ -21,7 +22,10 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
       .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)));
   }, [cfg.id]);
 
-  const models = useMemo(() => (data ? applyFilters(data.latest.listings, filters, cfg, data.history, data.imported) : []), [data, filters, cfg]);
+  const models = useMemo(
+    () => (data ? applyFilters(data.latest.listings, filters, cfg, data.history, data.imported) : []),
+    [data, filters, cfg],
+  );
 
   if (error) {
     return (
@@ -32,9 +36,10 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
   }
   if (!data) {
     return (
-      <div className="flex items-center justify-center gap-2 py-24 text-faint">
-        <Loader2 className="h-5 w-5 animate-spin" /> {tr(lang, T.loading)}
-      </div>
+      <>
+        <span className="sr-only">{tr(lang, T.loading)}</span>
+        <Skeleton />
+      </>
     );
   }
   return (
@@ -48,23 +53,14 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
           <span>
             <span className="font-semibold text-fg">{models.length}</span> {tr(lang, T.models)}
           </span>
-          <div className="flex flex-wrap gap-2 text-xs text-muted">
-            {SOURCE_NAMES.map((s) => {
-              const meta = data.latest.sources[s];
-              return (
-                <span
-                  key={s}
-                  className="inline-flex items-center gap-1.5 rounded-full bg-panel px-2.5 py-1 ring-1 ring-inset ring-line"
-                  title={meta?.ok ? undefined : tr(lang, T.staleSource)}
-                >
-                  <span className={`h-2 w-2 rounded-full ${meta?.ok ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-                  {SOURCES[s].label}: {meta?.count ?? 0} · {timeAgo(meta?.updatedAt, lang)}
-                </span>
-              );
-            })}
-          </div>
+          <SourcesStatus latest={data.latest} />
         </div>
-        <ModelTable cfg={cfg} models={models} history={data.history} />
+        <ModelTable
+          cfg={cfg}
+          models={models}
+          history={data.history}
+          onReset={() => setFilters(defaultFilters(cfg.groups))}
+        />
       </div>
     </div>
   );

@@ -49,6 +49,22 @@
   .label {
     @apply text-[11px] font-semibold uppercase tracking-wider text-faint;
   }
+  /* One shape for every small badge (sources, "−12%", "all-time low"); colours come from the caller. */
+  .badge {
+    @apply inline-flex h-5 shrink-0 items-center whitespace-nowrap rounded-md px-1.5 text-[11px] font-semibold leading-none ring-1 ring-inset;
+  }
+  /* Loading placeholder bar (see Skeleton.tsx); pulses only when motion is allowed. */
+  .skeleton {
+    @apply rounded-md bg-hover motion-safe:animate-pulse;
+  }
+}
+
+@layer base {
+  /* Visible focus ring for keyboard users only (mouse clicks don't show it). */
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 2px;
+  }
 }
 
 body {
