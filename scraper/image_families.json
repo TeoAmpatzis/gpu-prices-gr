@@ -1,0 +1,95 @@
+{
+  "_comment": "CPU family photos (Wikimedia Commons, openly licensed, checked by hand). Shown with a 'representative photo' caption for every CPU of the family and packaging; families without an entry use the shop's photo of the model. `match`: chip regex + socket (null = any). New entries need the owner's OK before `approved` is true. Used by scraper/images.py (files) and src/lib/images.ts + the credits page.",
+  "families": [
+    {
+      "slug": "amd-ryzen-am5-tray",
+      "label": "AMD Ryzen (AM5)",
+      "packaging": "tray",
+      "match": { "chip": "^Ryzen (3|5|7|9)\\b", "socket": "AM5" },
+      "file": "File:AMD@5nmCCD(6nmIOD)@Zen4@Raphael@Ryzen 7 7800X3D@100-000000910 BS 2312PGY 9LW3390030138 DSCx01.jpg",
+      "author": "FritzchensFritz",
+      "license": "CC0",
+      "approved": true
+    },
+    {
+      "slug": "amd-ryzen-am4-tray",
+      "label": "AMD Ryzen (AM4)",
+      "packaging": "tray",
+      "match": { "chip": "^Ryzen (3|5|7|9)\\b", "socket": "AM4" },
+      "file": "File:AMD@7nm(12nmIO)@Zen2@Matisse@Ryzen 5 3600@100-000000031 BF 1923SUT 9HM6935R90062 DSCx1.jpg",
+      "author": "Fritzchens Fritz",
+      "license": "CC0",
+      "approved": true
+    },
+    {
+      "slug": "amd-athlon-am4-tray",
+      "label": "AMD Athlon (AM4)",
+      "packaging": "tray",
+      "match": { "chip": "^Athlon\\b", "socket": "AM4" },
+      "file": "File:AMD@14nm@Zen@Dali@Athlon 3000G@YD3000C6M20FH A0 2002PGT DSCx1.jpg",
+      "author": "Fritzchens Fritz",
+      "license": "CC0",
+      "approved": true
+    },
+    {
+      "slug": "amd-threadripper-box",
+      "label": "AMD Ryzen Threadripper",
+      "packaging": "box",
+      "match": { "chip": "Threadripper", "socket": null },
+      "file": "File:Threadripper 7970X in the Box 20240402 HOF1231 000221.png",
+      "author": "PantheraLeo1359531",
+      "license": "CC BY 4.0",
+      "approved": true
+    },
+    {
+      "slug": "amd-threadripper-tray",
+      "label": "AMD Ryzen Threadripper",
+      "packaging": "tray",
+      "match": { "chip": "Threadripper", "socket": null },
+      "file": "File:Scan des AMD Ryzen Threadripper 7970X 20240407 075.jpg",
+      "author": "PantheraLeo1359531",
+      "license": "CC BY 4.0",
+      "approved": false
+    },
+    {
+      "slug": "intel-core-lga1700-tray",
+      "label": "Intel Core (LGA1700)",
+      "packaging": "tray",
+      "match": { "chip": "^Core i[3579]-", "socket": "LGA1700" },
+      "file": "File:Intel Core i7 12700K.jpg",
+      "author": "4300streetcar",
+      "license": "CC BY 4.0",
+      "approved": true
+    },
+    {
+      "slug": "intel-core-lga1700-box",
+      "label": "Intel Core (LGA1700)",
+      "packaging": "box",
+      "match": { "chip": "^Core i[3579]-", "socket": "LGA1700" },
+      "file": "File:2023 Intel Core i7 12700KF (1).jpg",
+      "author": "Jacek Halicki",
+      "license": "CC BY-SA 4.0",
+      "approved": true
+    },
+    {
+      "slug": "intel-core-lga1151-1200-tray",
+      "label": "Intel Core (LGA1151 / LGA1200)",
+      "packaging": "tray",
+      "match": { "chip": "^Core i[3579]-", "socket": "^LGA(1151|1200)$" },
+      "file": "File:Intel i7 8700K.jpg",
+      "author": "ElooKoN",
+      "license": "CC BY-SA 4.0",
+      "approved": true
+    },
+    {
+      "slug": "intel-xeon-tray",
+      "label": "Intel Xeon",
+      "packaging": "tray",
+      "match": { "chip": "^Xeon\\b", "socket": null },
+      "file": "File:E5-2450v2 IvyBridge-EP, Package.jpg",
+      "author": "IrisChronomia",
+      "license": "CC BY-SA 4.0",
+      "approved": false
+    }
+  ]
+}

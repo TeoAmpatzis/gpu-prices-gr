@@ -21,6 +21,7 @@ export interface BaseListing {
   total?: number | null;
   merchant?: string | null; // shop with that best total
   drop?: number | null; // discount (%) the site itself shows for this offer
+  img?: string | null; // builder.json rows only: the model's stored photo ("<cat>/<id>")
 }
 
 export interface GpuListing extends BaseListing {
@@ -152,6 +153,8 @@ export interface ListFile extends Columns {
   /** Per model, the few daily lows that give the same week change and all-time low as the full history. */
   hist: Record<string, [string, number][]>;
   imported: Imported;
+  /** Model key → its stored photo ("<cat>/<id>", served as /img/<cat>/<id>-96|320.webp); none = no photo. */
+  img?: Record<string, string>;
 }
 
 /** /data/<cat>/detail.json — listing id → shop URL (loaded when a product is opened). */

@@ -55,6 +55,10 @@ def parse(html: str, scraped_at: str, cat: Category) -> tuple[list, set[str]]:
             scraped_at=scraped_at,
         )
         if listing:
+            # The selling shop's own photo (schema.org image): last-resort source for the images workflow.
+            img = row.css_first("[itemprop=image][content]")
+            if img and (img.attributes.get("content") or "").startswith("http"):
+                listing.image = img.attributes["content"]
             out.append(listing)
     return out, ids
 

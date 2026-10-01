@@ -1,11 +1,13 @@
 import { Fragment, lazy, Suspense, useEffect, useState, type ReactNode } from 'react';
-import { ChevronDown, ExternalLink, TrendingDown, TrendingUp } from 'lucide-react';
+import { ChevronDown, ExternalLink, TrendingDown, TrendingUp, type LucideIcon } from 'lucide-react';
 import type { BaseListing, Category, DailyLow } from '../types';
 import { formatPrice, loadDetails, type CategoryDetails, type Model } from '../lib/data';
 import { groupName, type CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Lang } from '../lib/i18n';
 import { SOURCES } from '../lib/sources';
 import SourceBadge from './SourceBadge';
+import ProductPhoto from './ProductPhoto';
+import type { ProductImage } from '../lib/images';
 
 // The chart is only needed once a row is expanded.
 const PriceChart = lazy(() => import('./PriceChart'));
@@ -32,6 +34,8 @@ interface Props<L extends BaseListing> {
   cfg: CategoryConfig<L>;
   model: Model<L>;
   history: DailyLow[] | undefined;
+  /** Its photo (src/lib/images.ts productImage), or null for the category icon. */
+  image: ProductImage | null;
   open: boolean;
   onToggle: () => void;
 }
@@ -99,7 +103,19 @@ function useDetails(cat: Category): CategoryDetails | null {
 }
 
 /** Every offer of the model (links to the shops) and its price history chart. */
-function ModelDetails<L extends BaseListing>({ cat, m, lang }: { cat: Category; m: Model<L>; lang: Lang }) {
+function ModelDetails<L extends BaseListing>({
+  cat,
+  m,
+  image,
+  icon,
+  lang,
+}: {
+  cat: Category;
+  m: Model<L>;
+  image: ProductImage | null;
+  icon: LucideIcon;
+  lang: Lang;
+}) {
   const price = (n: number) => formatPrice(n, lang);
   const details = useDetails(cat);
   return (
@@ -145,22 +161,32 @@ function ModelDetails<L extends BaseListing>({ cat, m, lang }: { cat: Category; 
           </li>
         ))}
       </ul>
-      <div>
-        <div className="mb-1.5 text-xs text-faint">{tr(lang, T.dailyLow)}</div>
-        {details ? (
-          <Suspense fallback={<div className="h-48 rounded-xl bg-panel ring-1 ring-edge" />}>
-            <PriceChart points={details.history[m.key]} />
-          </Suspense>
-        ) : (
-          <div className="skeleton h-48 rounded-xl" />
-        )}
+      <div className="flex flex-col gap-3">
+        <figure className="flex items-center gap-3">
+          <ProductPhoto image={image} size="lg" icon={icon} alt={m.chip} />
+          {image?.family && (
+            <figcaption className="text-xs text-muted">
+              {tr(lang, T.representativePhoto)}: {image.family}
+            </figcaption>
+          )}
+        </figure>
+        <div>
+          <div className="mb-1.5 text-xs text-faint">{tr(lang, T.dailyLow)}</div>
+          {details ? (
+            <Suspense fallback={<div className="h-48 rounded-xl bg-panel ring-1 ring-edge" />}>
+              <PriceChart points={details.history[m.key]} />
+            </Suspense>
+          ) : (
+            <div className="skeleton h-48 rounded-xl" />
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
 /** Table row (tablet and desktop); the details open in a full-width row under it. */
-export default function ModelRow<L extends BaseListing>({ cfg, model: m, history, open, onToggle }: Props<L>) {
+export default function ModelRow<L extends BaseListing>({ cfg, model: m, history, image, open, onToggle }: Props<L>) {
   const lang = useLang();
   const price = (n: number) => formatPrice(n, lang);
   const delta = weekChange(history, m.cheapest.price);
@@ -185,6 +211,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
             <ChevronDown
               className={`h-4 w-4 shrink-0 text-faint transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
             />
+            <ProductPhoto image={image} size="sm" icon={cfg.icon} alt="" />
             <span
               className={`h-2 w-2 shrink-0 rounded-full ${cfg.groupDot[m.group] ?? 'bg-idle'}`}
               title={groupName(m.group, lang)}
@@ -212,7 +239,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
       {open && (
         <tr className="bg-sunken">
           <td colSpan={colSpan} className="border-t border-line px-4 pb-5 pt-4">
-            <ModelDetails cat={cfg.id} m={m} lang={lang} />
+            <ModelDetails cat={cfg.id} m={m} image={image} icon={cfg.icon} lang={lang} />
           </td>
         </tr>
       )}
@@ -224,7 +251,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
  * Phone and tablet layout (< 1024px): one card per model instead of a table row — name and price on top, the
  * category's spec columns as one line, badges and listing count below. Tapping opens the details.
  */
-export function ModelCard<L extends BaseListing>({ cfg, model: m, history, open, onToggle }: Props<L>) {
+export function ModelCard<L extends BaseListing>({ cfg, model: m, history, image, open, onToggle }: Props<L>) {
   const lang = useLang();
   const delta = weekChange(history, m.cheapest.price);
   // The same values as the table columns, without headers; empty ones ("—") are skipped.
@@ -237,8 +264,10 @@ export function ModelCard<L extends BaseListing>({ cfg, model: m, history, open,
         type="button"
         aria-expanded={open}
         onClick={onToggle}
-        className="flex w-full flex-col gap-2 p-4 text-left transition-colors duration-150 active:bg-hover"
+        className="flex w-full items-start gap-3 p-4 text-left transition-colors duration-150 active:bg-hover"
       >
+        <ProductPhoto image={image} size="md" icon={cfg.icon} alt="" />
+        <div className="flex min-w-0 flex-1 flex-col gap-2">
         <div className="flex w-full items-start gap-3">
           <span
             className={`mt-2 h-2 w-2 shrink-0 rounded-full ${cfg.groupDot[m.group] ?? 'bg-idle'}`}
@@ -269,10 +298,11 @@ export function ModelCard<L extends BaseListing>({ cfg, model: m, history, open,
         <div className="flex flex-wrap items-center gap-x-2 pl-5 text-sm tabular-nums text-muted empty:hidden">
           <PriceExtras m={m} delta={delta} lang={lang} />
         </div>
+        </div>
       </button>
       {open && (
         <div className="border-t border-line bg-sunken p-3">
-          <ModelDetails cat={cfg.id} m={m} lang={lang} />
+          <ModelDetails cat={cfg.id} m={m} image={image} icon={cfg.icon} lang={lang} />
         </div>
       )}
     </li>

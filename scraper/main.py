@@ -76,6 +76,35 @@ def share_fields(listings: list[dict], fields: tuple[str, ...], model_key) -> No
 TRI_STATE = {"coolerIncluded"}
 
 
+# Product photos: the sources read a photo URL from the pages they already fetch (no extra request);
+# the images workflow (scraper/images.py, run in the images repo) downloads one per model.
+IMAGE_PREFERENCE = ["bestprice", "shopflix", "skroutz", "snif"]  # 500px, 530px, 250px, the shop's own
+IMAGE_CANDIDATES = 4
+
+
+def write_image_urls(out_dir: Path, listings: list[dict], model_key) -> None:
+    """public/data/<cat>/image_urls.json: {model key: [photo URLs, best first]}. Takes the `image`
+    field off the listings (latest.json stays as it was) and keeps the previous candidates of models
+    still listed, since a source that failed this run reuses its previous listings, which have none."""
+    path = out_dir / "image_urls.json"
+    prev = load_json(path, {})
+    found: dict[str, dict[str, str]] = {}
+    keys = set()
+    for l in listings:
+        key = model_key(l)
+        keys.add(key)
+        url = l.pop("image", None)
+        if url:
+            found.setdefault(key, {}).setdefault(l["source"], url)
+    out = {}
+    for key in sorted(keys):
+        now = [found.get(key, {})[s] for s in IMAGE_PREFERENCE if s in found.get(key, {})]
+        urls = list(dict.fromkeys(now + prev.get(key, [])))[:IMAGE_CANDIDATES]
+        if urls:
+            out[key] = urls
+    path.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+
+
 def update_history(history: dict, listings: list[dict], day: str, model_key) -> dict:
     """One point per model per day: the lowest price seen that day across runs."""
     cheapest: dict[str, dict] = {}
@@ -163,6 +192,7 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
             print(f"[{cat.name}/{name}] FAILED — keeping {len(old)} previous listings")
 
     out_dir.mkdir(parents=True, exist_ok=True)
+    write_image_urls(out_dir, listings, cat.model_key)
     finish(cat, out_dir, listings, specs_budget)
     listings.sort(key=lambda l: (l["chip"], l["price"]))
     if with_shipping:

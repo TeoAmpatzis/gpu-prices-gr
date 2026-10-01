@@ -1,5 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/img/:path*",
+      "destination": "https://teoampatzis.github.io/builddraft-images/img/:path*"
+    }
+  ],
   "headers": [
     {
       "source": "/fonts/(.*).woff2",
@@ -8,6 +14,13 @@
     {
       "source": "/data/(.*).json",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=300, stale-while-revalidate=3600" }]
+    },
+    {
+      "source": "/img/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400" },
+        { "key": "CDN-Cache-Control", "value": "max-age=86400" }
+      ]
     }
   ]
 }

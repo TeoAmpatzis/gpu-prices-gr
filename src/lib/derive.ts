@@ -18,6 +18,7 @@ import type {
   Category,
   Columns,
   CoolerListing,
+  CpuListing,
   DailyLow,
   GpuListing,
   History,
@@ -30,6 +31,7 @@ import type {
 } from '../types';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './categories';
 import { fromColumns } from './columns';
+import { cpuPackaging } from './images';
 import { groupModels, mostCommon, saleOf, type Model } from './data';
 import {
   SLOTS,
@@ -104,7 +106,10 @@ export interface CategoryInput {
   imported: Imported;
 }
 
-export function listFile(cat: Category, input: CategoryInput, builtAt: string): ListFile {
+/** Stored photo of a model ("<cat>/<id>", from the images repo's index), if any. */
+export type ImageLookup = (cat: Category, modelKey: string) => string | undefined;
+
+export function listFile(cat: Category, input: CategoryInput, builtAt: string, image?: ImageLookup): ListFile {
   const day = builtAt.slice(0, 10);
   const cfg = cfgOf(cat);
   // Only models that are listed now (history.json also keeps a year of delisted ones).
@@ -114,6 +119,11 @@ export function listFile(cat: Category, input: CategoryInput, builtAt: string): 
     if (keys.has(k)) hist[k] = reduceHistory(pts as HistoryPoint[], day);
   }
   const imported = Object.fromEntries(Object.entries(input.imported).filter(([k]) => keys.has(k)));
+  const img: Record<string, string> = {};
+  for (const k of keys) {
+    const path = image?.(cat, k);
+    if (path) img[k] = path;
+  }
   return {
     v: 1,
     builtAt,
@@ -122,6 +132,7 @@ export function listFile(cat: Category, input: CategoryInput, builtAt: string): 
     ...toColumns(input.latest.listings),
     hist,
     imported,
+    img,
   };
 }
 
@@ -184,6 +195,7 @@ const share = <L extends BaseListing>(ms: Model<L>[], known: (m: Model<L>) => bo
 export function builderFile(
   all: Partial<Record<Category, Latest>>,
   builtAt: string,
+  image?: ImageLookup,
 ): { file: BuilderFile; extra: BuilderExtra } {
   const slots: BuilderFile['slots'] = {};
   const extra: BuilderExtra = { urls: {}, titles: {} };
@@ -196,6 +208,9 @@ export function builderFile(
     // Links and search titles are only needed after the builder has appeared: builder-extra.json.
     for (const r of rows) {
       const id = r.id as string;
+      r.img = image?.(slot as Category, cfgOf(slot as Category).modelKey(r as unknown as BaseListing)) ?? null;
+      // Box or tray decided here, while the row still has its own title (the family photo).
+      if (slot === 'cpu') r.packaging = cpuPackaging(r as unknown as CpuListing) === 'box' ? 'Box' : 'Tray';
       extra.urls[id] = r.url as string;
       r.url = null;
       if (slot !== 'gpu') {

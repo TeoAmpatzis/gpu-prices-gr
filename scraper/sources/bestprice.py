@@ -40,6 +40,11 @@ def parse(html: str, scraped_at: str, cat: Category) -> list:
             drop = card.css_first(".p__badge--drop")
             if drop and (m := re.search(r"-\s*(\d{1,2})\s*%", drop.text())):
                 listing.drop = int(m.group(1))
+            # Product photo (pstatic.gr): the srcset's 2x variant is 500px ("…_SX500Y500/…webp").
+            img = card.css_first("img")
+            if img:
+                srcset = img.attributes.get("srcset") or ""
+                listing.image = srcset.split(" ")[0] if srcset.startswith("http") else img.attributes.get("src")
             out.append(listing)
     return out
 
