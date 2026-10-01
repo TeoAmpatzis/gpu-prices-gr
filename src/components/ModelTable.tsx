@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { RotateCcw, SearchX } from 'lucide-react';
-import type { BaseListing, History } from '../types';
+import type { BaseListing, DailyLow } from '../types';
 import type { Model } from '../lib/data';
 import type { CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Text } from '../lib/i18n';
@@ -10,7 +10,7 @@ import ModelRow, { ModelCard } from './ModelRow';
 interface Props<L extends BaseListing> {
   cfg: CategoryConfig<L>;
   models: Model<L>[];
-  history: History;
+  history: Record<string, DailyLow[]>;
   /** Resets every filter (the empty state's "Clear filters" button). */
   onReset: () => void;
 }

@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AlertTriangle, ExternalLink, Info, Loader2, Search, X, ChevronUp } from 'lucide-react';
-import type { BaseListing, Category } from '../types';
+import type { BaseListing, BuilderFile, Category } from '../types';
 import { CATEGORIES, groupName } from '../lib/categories';
-import { formatPrice, loadData, saleOf, type Model } from '../lib/data';
+import { formatPrice, loadBuilder, loadBuilderExtra, saleOf, type Model } from '../lib/data';
+import { fromColumns } from '../lib/columns';
 import {
   OPTIONAL,
   SLOTS,
@@ -169,6 +170,8 @@ export default function Builder() {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
   const [models, setModels] = useState<Models | null>(null);
+  const [coverage, setCoverage] = useState<BuilderFile['coverage']>({ gpu: 100, case: 100, cooler: 100 });
+  const [extraVersion, setExtraVersion] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [build, setBuild] = useState<Build>({});
   const [open, setOpen] = useState<Slot | null>(null);
@@ -177,11 +180,13 @@ export default function Builder() {
   const [summaryOpen, setSummaryOpen] = useState(false);
 
   useEffect(() => {
-    Promise.all(SLOTS.map((s) => loadData(s as Category)))
-      .then((all) => {
+    // builder.json: one row per model the builder can offer, prepared at build time (src/lib/derive.ts).
+    loadBuilder('all')
+      .then((file) => {
         const m = Object.fromEntries(
-          SLOTS.map((s, i) => [s, slotModels(s, all[i].latest.listings as SlotListing[typeof s][])]),
+          SLOTS.map((s) => [s, slotModels(s, fromColumns<SlotListing[typeof s]>(file.slots[s] ?? { cols: [], rows: [] }))]),
         ) as unknown as Models;
+        setCoverage(file.coverage);
         setModels(m);
         // Restore the saved build; parts that disappeared from the market are dropped.
         const saved = loadSaved();
@@ -191,6 +196,20 @@ export default function Builder() {
           if (found) (restored as Record<Slot, AnyModel>)[s] = found;
         }
         setBuild(restored);
+        // Then the shop links and the search titles (builder-extra.json), written onto each model's
+        // one row; `extraVersion` makes the picker search and the links pick them up.
+        loadBuilderExtra(file.builtAt)
+          .then((extra) => {
+            for (const s of SLOTS) {
+              for (const model of m[s] as AnyModel[]) {
+                const row = model.cheapest;
+                row.url = extra.urls[row.id] ?? row.url;
+                if (!row.title) row.title = extra.titles[row.id] ?? '';
+              }
+            }
+            setExtraVersion((v) => v + 1);
+          })
+          .catch(() => {}); // the builder still works; links and title search just stay missing
       })
       .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)));
   }, []);
@@ -207,7 +226,7 @@ export default function Builder() {
     return (candidates(open, models[open] as never, build) as AnyModel[])
       .filter((m) => !q || m.listings.some((l) => cfg.searchText(l).toLowerCase().includes(q)))
       .sort((a, b) => a.cheapest.price - b.cheapest.price);
-  }, [models, open, query, build]);
+  }, [models, open, query, build, extraVersion]);
 
   if (error) {
     return (
@@ -229,17 +248,8 @@ export default function Builder() {
   const watts = requiredWatts(build);
   const notes = buildNotes(build);
   const errors = notes.filter((n) => n.level === 'error').length;
-  // Share of parts whose measurements are known yet (they're collected gradually, see scraper/specs.py).
-  const share = <L extends BaseListing>(ms: Model<L>[], known: (m: Model<L>) => boolean) =>
-    ms.length ? Math.round((100 * ms.filter(known).length) / ms.length) : 100;
-  const coverage = {
-    gpu: share(
-      models.gpu.filter((m) => !m.pro),
-      (m) => gpuLength(m) != null,
-    ),
-    case: share(models.case, (m) => caseGpuMax(m) != null),
-    cooler: share(models.cooler, (m) => coolerSockets(m).length > 0),
-  };
+  // Share of parts whose measurements are known yet (collected gradually, see scraper/specs.py),
+  // counted at build time over every product, not just the ones the builder can offer.
   const collecting = Object.values(coverage).some((v) => v < 90);
 
   return (

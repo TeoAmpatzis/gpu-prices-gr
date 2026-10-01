@@ -1,0 +1,285 @@
+// Smaller files for the site, derived at build time from the scraper's JSON (latest.json,
+// history.json, history_imported.json stay exactly as the scraper writes them).
+//
+// - /data/<cat>/list.json   the category page: every listing (filters and counts need all of them)
+//   as columns, without shop URLs and scrape times, plus a few daily lows per model;
+// - /data/<cat>/detail.json listing id → shop URL, loaded when a product is opened (together with
+//   the full history.json for the chart);
+// - /data/builder.json      only the parts the PC builder can offer, grouped by the same code;
+// - /data/manifest.json     counts, which the next build compares its data with (see checkData).
+//
+// Pure functions only: vite-plugin-data.ts does the file reading and writing.
+
+import type {
+  BaseListing,
+  BuilderExtra,
+  BuilderFile,
+  CaseListing,
+  Category,
+  Columns,
+  CoolerListing,
+  DailyLow,
+  GpuListing,
+  History,
+  HistoryPoint,
+  Imported,
+  Latest,
+  ListFile,
+  Manifest,
+  MoboListing,
+} from '../types';
+import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './categories';
+import { fromColumns } from './columns';
+import { groupModels, mostCommon, saleOf, type Model } from './data';
+import {
+  SLOTS,
+  candidates,
+  caseBoard,
+  caseCoolerMax,
+  caseFanSlots,
+  caseGpuMax,
+  caseRadiators,
+  coolerHeight,
+  coolerSockets,
+  cpuHasIgpu,
+  cpuSocket,
+  gpuLength,
+  moboForm,
+  moboMemory,
+  moboSocket,
+  slotModels,
+  type Slot,
+  type SlotListing,
+} from './builder';
+
+/** Only needed when a product is opened (URL) or never shown (scrape time). */
+const DETAIL_ONLY = new Set(['url', 'scrapedAt']);
+
+export function toColumns(listings: object[], skip: Set<string> = DETAIL_ONLY): Columns {
+  const cols: string[] = [];
+  const seen = new Set<string>();
+  for (const l of listings) {
+    for (const k of Object.keys(l)) {
+      if (!seen.has(k) && !skip.has(k)) {
+        seen.add(k);
+        cols.push(k);
+      }
+    }
+  }
+  const rows = listings.map((l) => cols.map((c) => (l as Record<string, unknown>)[c] ?? null));
+  return { cols, rows };
+}
+
+const shiftDay = (day: string, days: number) => new Date(Date.parse(`${day}T00:00:00Z`) + days * 864e5).toISOString().slice(0, 10);
+
+/**
+ * The daily lows the table needs from a model's history, chosen so that `allTimeLow` and the week
+ * change (ModelRow) give exactly the same result as with the full history on the build day and the
+ * day after (builds run every 6 hours): the first point (start of the history), the lowest point
+ * before `day`, every point from `day` on, and the points the 7-day comparison can land on.
+ */
+export function reduceHistory(points: DailyLow[], day: string): [string, number][] {
+  if (!points.length) return [];
+  const sorted = [...points].sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0));
+  const keep = new Set<DailyLow>([sorted[0]]);
+  const weekAgo = shiftDay(day, -7);
+  const weekAgoTomorrow = shiftDay(day, -6);
+  let lowest: DailyLow | null = null;
+  let lastBeforeWeek: DailyLow | null = null;
+  for (const p of sorted) {
+    if (p.d < day && (!lowest || p.min < lowest.min)) lowest = p;
+    if (p.d <= weekAgo) lastBeforeWeek = p;
+    if ((p.d > weekAgo && p.d <= weekAgoTomorrow) || p.d >= day) keep.add(p);
+  }
+  if (lowest) keep.add(lowest);
+  if (lastBeforeWeek) keep.add(lastBeforeWeek);
+  return sorted.filter((p) => keep.has(p)).map((p) => [p.d, p.min]);
+}
+
+const cfgOf = (cat: Category) => CATEGORIES[cat] as unknown as CategoryConfig<BaseListing>;
+
+export interface CategoryInput {
+  latest: Latest;
+  history: History;
+  imported: Imported;
+}
+
+export function listFile(cat: Category, input: CategoryInput, builtAt: string): ListFile {
+  const day = builtAt.slice(0, 10);
+  const cfg = cfgOf(cat);
+  // Only models that are listed now (history.json also keeps a year of delisted ones).
+  const keys = new Set(input.latest.listings.map((l) => cfg.modelKey(l)));
+  const hist: ListFile['hist'] = {};
+  for (const [k, pts] of Object.entries(input.history)) {
+    if (keys.has(k)) hist[k] = reduceHistory(pts as HistoryPoint[], day);
+  }
+  const imported = Object.fromEntries(Object.entries(input.imported).filter(([k]) => keys.has(k)));
+  return {
+    v: 1,
+    builtAt,
+    updatedAt: input.latest.updatedAt,
+    sources: input.latest.sources,
+    ...toColumns(input.latest.listings),
+    hist,
+    imported,
+  };
+}
+
+export const detailFile = (latest: Latest): Record<string, string> =>
+  Object.fromEntries(latest.listings.map((l) => [l.id, l.url]));
+
+/** Fields the builder never reads. */
+const BUILDER_SKIP = new Set(['scrapedAt', 'shopCount', 'shipping', 'total', 'merchant']);
+
+/**
+ * One row per offered model: its cheapest listing, with the values the rules take across all of the
+ * model's listings (most common socket, board size, measurements…) written onto it, so the
+ * builder's functions return the same thing for the one-row model as for the full one:
+ * - `title`: the model's distinct shop titles, for the picker search (graphics cards are one
+ *   listing each and show their title as their name, so theirs stays as it is);
+ * - `drop`: the model's sale (`saleOf`, the picker's "−N%"), which may come from another listing.
+ */
+function builderRow<S extends Slot>(slot: S, m: Model<SlotListing[S]>): Record<string, unknown> {
+  const most = <V>(get: (l: SlotListing[S]) => V | null | undefined) => mostCommon(m.listings.map(get));
+  const sale = saleOf(m.listings, m.cheapest);
+  const row: Record<string, unknown> = { ...m.cheapest, drop: sale?.pct ?? null };
+  if (slot !== 'gpu') row.title = [...new Set(m.listings.map((l) => l.title))].join(' | ');
+  const any = m as Model<never>;
+  switch (slot) {
+    case 'cpu':
+      Object.assign(row, { socket: cpuSocket(any), igpu: cpuHasIgpu(any) });
+      break;
+    case 'mobo':
+      Object.assign(row, {
+        socket: moboSocket(any),
+        memory: moboMemory(any),
+        formFactor: moboForm(any),
+        ramSlots: most((l) => (l as MoboListing).ramSlots),
+      });
+      break;
+    case 'case':
+      Object.assign(row, {
+        maxBoard: caseBoard(any),
+        gpuMaxMm: caseGpuMax(any),
+        coolerMaxMm: caseCoolerMax(any),
+        fanSlots: caseFanSlots(any),
+        radiatorMounts: caseRadiators(any),
+      });
+      break;
+    case 'cooler':
+      Object.assign(row, { sockets: most((l) => (l as CoolerListing).sockets), heightMm: coolerHeight(any) });
+      break;
+  }
+  return row;
+}
+
+/** Share (%) of the parts whose measurements are known yet; the builder shows a notice under 90%. */
+const share = <L extends BaseListing>(ms: Model<L>[], known: (m: Model<L>) => boolean) =>
+  ms.length ? Math.round((100 * ms.filter(known).length) / ms.length) : 100;
+
+/**
+ * Per builder slot, one row per model it can offer (`candidates` with an empty build is exactly the
+ * "enough known data" rule); grouping the rows again in the browser gives the same models.
+ */
+export function builderFile(
+  all: Partial<Record<Category, Latest>>,
+  builtAt: string,
+): { file: BuilderFile; extra: BuilderExtra } {
+  const slots: BuilderFile['slots'] = {};
+  const extra: BuilderExtra = { urls: {}, titles: {} };
+  const models: Partial<Record<Slot, Model<BaseListing>[]>> = {};
+  for (const slot of SLOTS) {
+    const listings = (all[slot as Category]?.listings ?? []) as SlotListing[typeof slot][];
+    const grouped = slotModels(slot, listings);
+    models[slot] = grouped as Model<BaseListing>[];
+    const rows = candidates(slot, grouped, {}).map((m) => builderRow(slot, m));
+    // Links and search titles are only needed after the builder has appeared: builder-extra.json.
+    for (const r of rows) {
+      const id = r.id as string;
+      extra.urls[id] = r.url as string;
+      r.url = null;
+      if (slot !== 'gpu') {
+        extra.titles[id] = r.title as string;
+        r.title = '';
+      }
+    }
+    slots[slot] = toColumns(rows, BUILDER_SKIP);
+  }
+  const coverage = {
+    gpu: share((models.gpu ?? []).filter((m) => !m.pro) as Model<GpuListing>[], (m) => gpuLength(m) != null),
+    case: share((models.case ?? []) as Model<CaseListing>[], (m) => caseGpuMax(m) != null),
+    cooler: share((models.cooler ?? []) as Model<CoolerListing>[], (m) => coolerSockets(m).length > 0),
+  };
+  return { file: { v: 1, builtAt, slots, coverage }, extra };
+}
+
+export function manifest(all: Partial<Record<Category, Latest>>, builder: BuilderFile, builtAt: string): Manifest {
+  const cats: Manifest['cats'] = {};
+  for (const cat of CATEGORY_IDS) {
+    const latest = all[cat];
+    if (!latest) continue;
+    cats[cat] = {
+      models: groupModels(latest.listings, cfgOf(cat)).length,
+      listings: latest.listings.length,
+      updatedAt: latest.updatedAt,
+    };
+  }
+  const offered = Object.fromEntries(
+    Object.entries(builder.slots).map(([slot, c]) => [
+      slot,
+      slotModels(slot as (typeof SLOTS)[number], fromColumns(c)).length,
+    ]),
+  );
+  return { builtAt, cats, builder: offered };
+}
+
+// ---------- Publishing check ----------
+
+/**
+ * A new build may lose at most this share of a category's models or listings compared with the
+ * site that is live now. A failing source keeps its previous listings in the scraper, so normal
+ * runs move by a few percent; a bigger drop means broken data, and the build stops so Vercel keeps
+ * the live version. (Set DATA_CHECK=off for an intentional drop, e.g. removing a source.)
+ */
+export const MAX_DROP = 0.3;
+
+/**
+ * Minimum models per category when there is no live manifest to compare with (first deploy, or
+ * the live site unreachable): about half of the 2026-10-01 counts.
+ */
+export const MIN_MODELS: Record<Category, number> = {
+  gpu: 49, // of 98
+  cpu: 208, // of 417
+  mobo: 606, // of 1212
+  ram: 244, // of 489
+  psu: 93, // of 186
+  case: 1365, // of 2730
+  fan: 1003, // of 2006
+  cooler: 1059, // of 2118
+};
+
+/** Every problem found; an empty list means the data can be published. */
+export function checkData(next: Manifest, live: Manifest | null): string[] {
+  const problems: string[] = [];
+  for (const cat of CATEGORY_IDS) {
+    const n = next.cats[cat];
+    if (!n || n.listings === 0 || n.models === 0) {
+      problems.push(`${cat}: no listings`);
+      continue;
+    }
+    const was = live?.cats[cat];
+    if (was) {
+      for (const field of ['models', 'listings'] as const) {
+        if (n[field] < was[field] * (1 - MAX_DROP)) {
+          problems.push(`${cat}: ${n[field]} ${field}, live site has ${was[field]} (more than ${MAX_DROP * 100}% fewer)`);
+        }
+      }
+    } else if (n.models < MIN_MODELS[cat]) {
+      problems.push(`${cat}: only ${n.models} models (minimum ${MIN_MODELS[cat]} without a live site to compare with)`);
+    }
+  }
+  for (const slot of SLOTS) {
+    if (!next.builder[slot]) problems.push(`builder: nothing to offer for ${slot}`);
+  }
+  return problems;
+}
