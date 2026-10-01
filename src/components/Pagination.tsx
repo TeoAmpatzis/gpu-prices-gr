@@ -12,7 +12,7 @@ interface Props {
 }
 
 /** Page numbers around the current one: 1 … 4 5 6 … 20 (at most 7 entries). */
-export function pageList(page: number, pages: number): (number | '…')[] {
+function pageList(page: number, pages: number): (number | '…')[] {
   if (pages <= 7) return Array.from({ length: pages }, (_, i) => i + 1);
   const from = Math.max(2, Math.min(page - 1, pages - 4));
   const to = Math.min(pages - 1, Math.max(page + 1, 5));

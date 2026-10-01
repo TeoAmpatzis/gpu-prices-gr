@@ -226,6 +226,8 @@ export default function Builder() {
     return (candidates(open, models[open] as never, build) as AnyModel[])
       .filter((m) => !q || m.listings.some((l) => cfg.searchText(l).toLowerCase().includes(q)))
       .sort((a, b) => a.cheapest.price - b.cheapest.price);
+    // extraVersion: the extra file fills the rows in place, so the memo must re-run when it arrives.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [models, open, query, build, extraVersion]);
 
   if (error) {
