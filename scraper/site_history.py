@@ -52,16 +52,15 @@ def price_graph(s, url: str) -> dict[str, float]:
 
 
 def merge(points: list[dict], imported: dict[str, float], today: str) -> list[dict]:
-    """Our points win on days we have (lower of the two); imported days fill the rest; 365 days kept.
+    """Imported days fill the days we have no point for; a day with our own scraped point keeps it
+    (between two imported points the lower wins). 365 days kept; same rule as merge_history._pick.
     Imported points carry `"i": 1`: they are Skroutz-only, so sale detection ignores them."""
     by_day = {p["d"]: p for p in points}
     for day, price in imported.items():
         if day >= today:
             continue  # today belongs to our own run
-        if day in by_day:
-            if price < by_day[day]["min"]:
-                by_day[day] = {"d": day, "min": round(price, 2), "source": "skroutz", "i": 1}
-        else:
+        have = by_day.get(day)
+        if have is None or (have.get("i") and price < have["min"]):
             by_day[day] = {"d": day, "min": round(price, 2), "source": "skroutz", "i": 1}
     days = sorted(by_day)[-KEEP_DAYS:]
     return [by_day[d] for d in days]
