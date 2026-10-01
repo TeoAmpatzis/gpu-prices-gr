@@ -46,6 +46,36 @@ FAN_EXCLUDE = re.compile(
 )
 
 
+# Airflow vs static pressure, only where the maker's own series name says it (owner's rule): Corsair
+# SP = Static Pressure / AF = AirFlow, Arctic P = Pressure-optimised / F, Noctua NF-P = Pressure,
+# Fractal Venturi HP = High Pressure. Noctua's NF-A (their all-round A-series) says neither.
+FAN_TYPES = [
+    (re.compile(r"\bCorsair\b.*\bSP\s?(?:120|140)\b", re.I), "pressure"),
+    (re.compile(r"\bCorsair\b.*\bAF\s?(?:120|140)\b", re.I), "airflow"),
+    (re.compile(r"\bArctic\b.*\bP(?:8|9|12|14)\b", re.I), "pressure"),
+    (re.compile(r"\bArctic\b.*\bF(?:8|9|12|14)\b", re.I), "airflow"),
+    (re.compile(r"\bNoctua\b.*\bNF-?P\d", re.I), "pressure"),
+    (re.compile(r"\bFractal\b.*\bHP-?(?:12|14)\b", re.I), "pressure"),
+]
+
+
+def fan_type(title: str) -> str | None:
+    return next((t for pattern, t in FAN_TYPES if pattern.search(title)), None)
+
+
+# BestPrice titles end with the connector from its spec table: "… με Σύνδεση 4-Pin PWM", "… 3-Pin".
+TITLE_CONNECTOR = re.compile(r"Σύνδεση\s+(.{0,30})", re.I)
+
+
+def title_connector(title: str) -> str | None:
+    """"με Σύνδεση 3-Pin 4-Pin" -> "4-pin PWM" (4-pin fans are PWM; adapters listed too); "3-Pin" -> "3-pin"."""
+    m = TITLE_CONNECTOR.search(title)
+    said = m.group(1).lower() if m else ""
+    if "4-pin" in said or "pwm" in said:
+        return "4-pin PWM"
+    return "3-pin" if "3-pin" in said else None
+
+
 def make_fan_listing(
     *, source: str, native_id: str, title: str, url: str, price: float,
     shop_count: int | None, scraped_at: str, specs: str = "",
@@ -87,6 +117,8 @@ def make_fan_listing(
         rgb=bool(RGB.search(text)) and not NO_LED.search(text),
         pwm=bool(re.search(r"PWM", text, re.I)),
         scrapedAt=scraped_at,
+        fanType=fan_type(title),
+        connector=title_connector(title),
     )
 
 

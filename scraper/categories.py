@@ -144,7 +144,7 @@ CATEGORIES = {
         make_listing=normalize_cooling.make_fan_listing,
         model_key=lambda l: names.model_key(l["chip"]),
         eshop_categories=(("ypologistes-case-modding-fans-list", "ΑΝΕΜΙΣΤΗΡΑΣ ΚΟΥΤΙΟΥ"),),
-        shared=("pwm", "rgb"),
+        shared=("pwm", "rgb", "connector", "airflowCfm", "pressureMm", "fanType"),
     ),
     "cooler": Category(
         name="cooler",

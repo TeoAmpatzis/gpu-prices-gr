@@ -137,6 +137,11 @@ class FanListing:
     rgb: bool
     pwm: bool  # 4-pin PWM speed control
     scrapedAt: str
+    # "airflow" | "pressure" only when the maker's series name says so (normalize_cooling.fan_type).
+    # Product pages add (specs.py) airflowCfm and pressureMm (mmH2O), and the connector when the title
+    # doesn't state it.
+    fanType: str | None = None
+    connector: str | None = None  # "3-pin" | "4-pin PWM"
 
     def to_dict(self) -> dict:
         return listing_dict(self)

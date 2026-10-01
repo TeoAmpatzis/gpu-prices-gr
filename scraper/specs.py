@@ -1,39 +1,52 @@
-"""Product specs from Skroutz product pages, for the PC builder's compatibility checks.
+"""Product specs from shop product pages (Skroutz, then BestPrice), for the PC builder's checks.
 
-List pages only carry a short spec line; the product page has the full table (`dl` of `dt`/`dd`):
-  GPU:    "Μήκος: 290 mm", "Ελάχιστη Ισχύς Τροφοδοτικού: 750 W"
-  CPU:    "Περιλαμβάνει Ψύκτρα: Ναι", "Thermal Design Power (TDP): 65 W"
-  Case:   "Μέγιστο Μήκος Κάρτας Γραφικών: 392 mm", "Μέγιστο Ύψος Ψύκτρας Επεξεργαστή: 180,5 mm",
-          fan positions "Μπροστινές Θέσεις: 3" / "Πίσω Θέσεις: 1" / "Άνω Θέσεις: 3",
-          "Θέση Ψυγείου: Άνω, Κάτω, Μπροστά", "Συμβατές Μητρικές: ATX, Extended ATX, …"
-  Cooler: "Socket: 1150/1151/1155/1156, 1700, AM4, AM5", "Ύψος: 155 mm"
+Both sites' product pages have a spec table (`dl` of `dt`/`dd`) with nearly the same labels:
+  GPU:    "Μήκος: 290 mm" / "290mm"; Skroutz also "Ελάχιστη Ισχύς Τροφοδοτικού: 750 W"
+  CPU:    Skroutz only: "Περιλαμβάνει Ψύκτρα: Ναι", "Thermal Design Power (TDP): 65 W"
+  Case:   "Μέγιστο Μήκος Κάρτας Γραφικών: 392 mm"; Skroutz only "Μέγιστο Ύψος Ψύκτρας Επεξεργαστή: 180,5 mm";
+          fan positions "Μπροστινές Θέσεις: 3" / "Μπροστινές Θέσεις Ανεμιστήρων: 3";
+          "Θέση Ψυγείου: Άνω, Κάτω" / "Θέση Ψυγείου Υδρόψυξης: Μπροστά • Άνω";
+          "Συμβατές Μητρικές: ATX, Extended ATX" / "Μέγεθος Μητρικής: ATX • micro-ATX"
+  Cooler: "Socket: 1150/1151, 1700, AM4" / "Υποστηριζόμενοι Επεξεργαστές: Socket AM4 • Socket 1700";
+          "Ύψος: 155 mm" / "37mm"
+  Fan:    "Σύνδεση: 4-Pin PWM" / "3-Pin"; "Ροή Αέρα (Max): 77 cfm" / "Ροή Αέρα: 77cfm";
+          Skroutz only "Πίεση Αέρα: 6,9 mmH₂O"
 
-Specs don't change, so each product page is fetched once and cached in public/data/<cat>/specs.json
-({listing id: {fields…, checked}}). Each run fetches a budget of pages not seen yet, most-listed
-models first; `main.py --specs-only --specs-budget N` backfills the cache without scraping.
-GPU and CPU specs are per listing (partner cards differ in length; Box and Tray differ in the
-cooler); for cases and coolers one page per model is enough and `share_fields` spreads it.
+Specs don't change, so each page is fetched once and cached in public/data/<cat>/specs.json
+({listing id: {fields…, checked}}; the id names the site). `collect` runs once per scrape, after
+every category's list: one queue per site over all categories (taken in turn), and within a
+category the products with the most listings first. A product is the model for cases, coolers and
+fans, the card for graphics cards (normalize.card_key), chip + Box/Tray for CPUs. A product gets at
+most one page per site: Skroutz first, BestPrice for products Skroutz doesn't list or whose Skroutz
+page left a needed field empty. `apply` copies the cache onto the listings; main.finish then shares
+the values across each product's listings (the safer value when sites disagree).
 """
 
 import json
 import random
 import re
+import threading
 import time
+from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Callable
 
 from selectolax.parser import HTMLParser
 
 import http_client as http
+import normalize
 import normalize_case
 from normalize import now_iso
 
-# Skroutz throttles product pages (502s and timeouts after ~200 quick requests), so this goes slowly
-# and gives up for the run after a few failures in a row; the next run carries on. A blocked page
-# (403 from GitHub's runners) is first retried by http.get, so it only counts as a failure after that.
-BUDGET = 30  # product pages per category per run
-PAUSE = (5.0, 8.0)  # seconds between product pages
-MAX_FAILURES = 3  # consecutive errors before stopping this category for the run
+# Skroutz throttles product pages (502s and timeouts after ~200 quick requests), so pages go slowly
+# and a site is given up for the run after a few failures in a row; the next run carries on. A
+# blocked Skroutz page (403 from GitHub's runners) is first retried by http.get. BestPrice is a
+# different host, so it runs at the same time with the same pace.
+BUDGET = {"skroutz": 150, "bestprice": 150}  # product pages per run, all categories together
+PAUSE = (5.0, 8.0)  # seconds between pages of one site
+MAX_FAILURES = 3  # errors in a row before a site stops for this run
+SAVE_EVERY = 25
 
 
 def page_specs(s, url: str) -> dict[str, str]:
@@ -48,17 +61,21 @@ def page_specs(s, url: str) -> dict[str, str]:
     return out
 
 
+def _first(sp: dict[str, str], *labels: str) -> str | None:
+    return next((sp[k] for k in labels if sp.get(k)), None)
+
+
 def _number(text: str | None, unit: str) -> float | None:
-    m = re.search(rf"(\d+(?:[.,]\d+)?)\s*{unit}\b", text or "", re.I)
+    m = re.search(rf"(\d+(?:[.,]\d+)?)\s*{unit}", text or "", re.I)
     return float(m.group(1).replace(",", ".")) if m else None
 
 
 def _mm(text: str | None) -> float | None:
-    return _number(text, "mm")
+    return _number(text, r"mm\b")
 
 
 def _watts(text: str | None) -> int | None:
-    w = _number(text, "W")
+    w = _number(text, r"W\b")
     return int(w) if w else None
 
 
@@ -66,14 +83,20 @@ def _yes_no(text: str | None) -> bool | None:
     return {"ναι": True, "όχι": False}.get((text or "").strip().lower())
 
 
+def _list(text: str | None) -> str | None:
+    """"Μπροστά • Πίσω • Άνω" (BestPrice) -> "Μπροστά, Πίσω, Άνω" (as Skroutz writes it)."""
+    return ", ".join(p.strip() for p in re.split(r"\s*[•,]\s*", text or "") if p.strip()) or None
+
+
 def _sockets(text: str | None) -> str | None:
-    """"1150/1151/1155/1156, 1700, AM4, AM5" -> "AM4,AM5,LGA1150,LGA1151,…" (sorted, comma-joined).
+    """"1150/1151/1155/1156, 1700, AM4, AM5" or "Socket AM4 • Socket 1700" -> "AM4,AM5,LGA1150,…"
+    (sorted, comma-joined).
 
     Mounting-compatible sockets are added: LGA1851 boards take LGA1700 coolers and AM5 boards take
     AM4 coolers (same hole spacing, per Intel and AMD).
     """
     found: set[str] = set()
-    for tok in re.split(r"[,/\s]+", text or ""):
+    for tok in re.split(r"[,/\s•]+", text or ""):
         tok = tok.strip().upper().replace("LGA", "")
         if re.fullmatch(r"\d{3,4}(-\d)?", tok):
             found.add(f"LGA{tok}")
@@ -86,6 +109,18 @@ def _sockets(text: str | None) -> str | None:
     return ",".join(sorted(found)) or None
 
 
+def _connector(text: str | None) -> str | None:
+    """"4-Pin PWM" -> "4-pin PWM", "3-Pin" -> "3-pin"; anything else as written."""
+    low = (text or "").lower()
+    if not low:
+        return None
+    if "4-pin" in low or "4 pin" in low or "pwm" in low:
+        return "4-pin PWM"
+    if "3-pin" in low or "3 pin" in low:
+        return "3-pin"
+    return text.strip()
+
+
 def parse_gpu(sp: dict[str, str]) -> dict:
     return {"lengthMm": _mm(sp.get("Μήκος")), "minPsu": _watts(sp.get("Ελάχιστη Ισχύς Τροφοδοτικού"))}
 
@@ -95,80 +130,155 @@ def parse_cpu(sp: dict[str, str]) -> dict:
 
 
 def parse_case(sp: dict[str, str]) -> dict:
-    # "Μπροστινές Θέσεις", "Πίσω Θέσεις", "Άνω Θέσεις", "Κάτω Θέσεις", "Πλαϊνές Θέσεις": fan positions.
-    positions = [int(v) for k, v in sp.items() if k.endswith("Θέσεις") and v.isdigit()]
-    boards = sp.get("Συμβατές Μητρικές")
+    # Fan positions: "Μπροστινές/Πίσω/Άνω/Κάτω/Πλαϊνές Θέσεις" (Skroutz) or "… Θέσεις Ανεμιστήρων"
+    # (BestPrice); drive bays ("Eξωτερικές Θέσεις 5.25\"", "Εσωτερικές Θέσεις 3.5''") end differently.
+    positions = [int(v) for k, v in sp.items() if k.endswith(("Θέσεις", "Θέσεις Ανεμιστήρων")) and v.isdigit()]
+    boards = _first(sp, "Συμβατές Μητρικές", "Μέγεθος Μητρικής")
+    board = normalize_case.max_board(boards) if boards else None
     return {
         "gpuMaxMm": _mm(sp.get("Μέγιστο Μήκος Κάρτας Γραφικών")),
-        "coolerMaxMm": _mm(sp.get("Μέγιστο Ύψος Ψύκτρας Επεξεργαστή")),
+        "coolerMaxMm": _mm(_first(sp, "Μέγιστο Ύψος Ψύκτρας Επεξεργαστή", "Μέγιστο Ύψος Ψύκτρας")),
         "fanSlots": sum(positions) if positions else None,
-        "radiatorMounts": sp.get("Θέση Ψυγείου") or None,
+        "radiatorMounts": _list(_first(sp, "Θέση Ψυγείου", "Θέση Ψυγείου Υδρόψυξης")),
         # The product page's board list beats the one guessed from the title.
-        **({"maxBoard": normalize_case.max_board(boards)} if boards and normalize_case.max_board(boards) else {}),
+        **({"maxBoard": board} if board else {}),
     }
 
 
 def parse_cooler(sp: dict[str, str]) -> dict:
-    return {"sockets": _sockets(sp.get("Socket")), "heightMm": _mm(sp.get("Ύψος"))}
+    return {"sockets": _sockets(_first(sp, "Socket", "Υποστηριζόμενοι Επεξεργαστές")), "heightMm": _mm(sp.get("Ύψος"))}
+
+
+def parse_fan(sp: dict[str, str]) -> dict:
+    return {
+        "connector": _connector(sp.get("Σύνδεση")),
+        "airflowCfm": _number(_first(sp, "Ροή Αέρα (Max)", "Ροή Αέρα"), r"cfm"),
+        "pressureMm": _number(sp.get("Πίεση Αέρα"), r"mmH"),
+    }
 
 
 PARSERS: dict[str, Callable[[dict[str, str]], dict]] = {
-    "gpu": parse_gpu, "cpu": parse_cpu, "case": parse_case, "cooler": parse_cooler,
+    "gpu": parse_gpu, "cpu": parse_cpu, "case": parse_case, "cooler": parse_cooler, "fan": parse_fan,
 }
-PER_MODEL = {"case", "cooler"}  # one product page per model (colour variants share specs)
 EMPTY = {cat: parse({}) for cat, parse in PARSERS.items()}
+# Sites per category, in order of preference (BestPrice states nothing about a CPU's cooler).
+SITES = {"gpu": ("skroutz", "bestprice"), "cpu": ("skroutz",), "case": ("skroutz", "bestprice"),
+         "cooler": ("skroutz", "bestprice"), "fan": ("skroutz", "bestprice")}
+# A product still needs a page while one of these is unknown (air coolers also need their height).
+NEEDED = {"gpu": ("lengthMm",), "cpu": ("coolerIncluded",), "case": ("gpuMaxMm", "coolerMaxMm"),
+          "cooler": ("sockets",), "fan": ("connector",)}
+# Workstation/server parts the builder never offers.
+NOT_DESKTOP = re.compile(r"^(RTX PRO|RTX A\d|RTX \d+ (Ada|\(Pro\))|T\d+$|Quadro|EPYC|Xeon|Ryzen Threadripper)")
 
 
-def enrich(cat: str, out_dir: Path, listings: list[dict], model_key, budget: int = BUDGET) -> None:
-    """Fetch up to `budget` new product pages, then copy cached spec fields onto the listings."""
-    parse = PARSERS.get(cat)
-    if parse is None:
-        return
-    path = out_dir / "specs.json"
-    try:
-        cache = json.loads(path.read_text(encoding="utf-8"))
-    except (FileNotFoundError, json.JSONDecodeError):
-        cache = {}
+def product_key(cat: str, model_key) -> Callable[[dict], str]:
+    if cat == "gpu":
+        return lambda l: normalize.card_key(l) or l["id"]
+    if cat == "cpu":
+        return lambda l: f"{l['chip']}|{l['packaging']}" if l.get("packaging") else l["id"]
+    return model_key
 
-    models: dict[str, list[dict]] = {}
+
+def _needs(cat: str, ls: list[dict]) -> bool:
+    fields = NEEDED[cat] + (("heightMm",) if cat == "cooler" and ls[0].get("type") == "Air" else ())
+    return any(all(l.get(f) is None for l in ls) for f in fields)
+
+
+def queue(cat: str, listings: list[dict], cache: dict, model_key) -> dict[str, list[dict]]:
+    """Per site, the listings whose page to fetch, most-listed products first."""
+    key = product_key(cat, model_key)
+    products: dict[str, list[dict]] = {}
     for l in listings:
-        models.setdefault(model_key(l), []).append(l)
-    todo: list[dict] = []
-    for ls in sorted(models.values(), key=len, reverse=True):  # most-listed models first
-        mine = sorted((l for l in ls if l["source"] == "skroutz"), key=lambda l: l["price"])
-        if cat in PER_MODEL:
-            if mine and not any(l["id"] in cache for l in mine):
-                todo.append(mine[0])
-        else:
-            todo += [l for l in mine if l["id"] not in cache]
+        if not NOT_DESKTOP.match(l["chip"]):
+            products.setdefault(key(l), []).append(l)
+    listed = Counter(model_key(l) for l in listings)
+    out: dict[str, list[dict]] = {site: [] for site in SITES[cat]}
+    for ls in sorted(products.values(), key=lambda ls: (-len(ls), -listed[model_key(ls[0])])):
+        if not _needs(cat, ls):
+            continue
+        fetched = {l["source"] for l in ls if l["id"] in cache}
+        sources = {l["source"] for l in ls}
+        for site in SITES[cat]:
+            if site in fetched or site not in sources:
+                continue
+            out[site].append(min((l for l in ls if l["source"] == site), key=lambda l: l["price"]))
+            break  # one site at a time: BestPrice only once Skroutz has been tried (or has none)
+    return out
 
-    live = {l["id"] for l in listings}
+
+def _load(path: Path) -> dict:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
+def collect(cats: list[tuple[str, Path, list[dict], Callable]], budget: dict[str, int] | None = None) -> None:
+    """Fetch new product pages for every category: (name, out dir, listings, model key) each."""
+    budget = budget or BUDGET
+    lock = threading.Lock()
+    caches = {name: _load(out_dir / "specs.json") for name, out_dir, _, _ in cats if name in PARSERS}
+    live = {name: {l["id"] for l in listings} for name, _, listings, _ in cats}
 
     def save() -> None:
-        kept = {k: v for k, v in cache.items() if k in live}  # forget delisted products
-        path.write_text(json.dumps(kept, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        with lock:
+            for name, out_dir, _, _ in cats:
+                if name in caches:
+                    kept = {k: v for k, v in caches[name].items() if k in live[name]}  # forget delisted products
+                    (out_dir / "specs.json").write_text(json.dumps(kept, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
-    s = http.session()
-    done = failures = 0
-    for i, l in enumerate(todo[:budget]):
-        if i:
-            time.sleep(random.uniform(*PAUSE))
-        try:
-            cache[l["id"]] = {**parse(page_specs(s, l["url"])), "checked": now_iso()}
-            done += 1
+    # One queue per site: the categories take turns, each most-listed first.
+    per_cat = {name: queue(name, listings, caches[name], model_key)
+               for name, _, listings, model_key in cats if name in PARSERS}
+    queues: dict[str, list[tuple[str, dict]]] = {}
+    for site in budget:
+        lists = [[(name, l) for l in q.get(site, [])] for name, q in per_cat.items()]
+        queues[site] = [item for row in zip_longest_all(lists) for item in row]
+        waiting = Counter(name for name, _ in queues[site])
+        print(f"  specs {site}: {len(queues[site])} products waiting {dict(waiting)}; budget {budget[site]}")
+
+    def work(site: str) -> None:
+        s = http.session()
+        done, failures, got = Counter(), 0, Counter()
+        for i, (name, l) in enumerate(queues[site][: budget[site]]):
+            if i:
+                time.sleep(random.uniform(*PAUSE))
+            try:
+                entry = PARSERS[name](page_specs(s, l["url"]))
+            except Exception as e:
+                failures += 1
+                print(f"  specs {site}/{name}: {type(e).__name__}: {str(e)[:120]}")
+                if failures >= MAX_FAILURES:
+                    print(f"  specs {site}: {failures} failures in a row, stopping for this run")
+                    break
+                continue
             failures = 0
-        except Exception as e:
-            failures += 1
-            print(f"  specs {cat}: {type(e).__name__}: {str(e)[:120]}")
-            if failures >= MAX_FAILURES:
-                print(f"  specs {cat}: {failures} failures in a row, Skroutz is throttling; stopping for this run")
-                break
-        if done and done % 25 == 0:
-            save()  # long backfills keep their progress if interrupted
-            print(f"  specs {cat}: {done}/{min(budget, len(todo))}")
-    print(f"  specs {cat}: fetched {done}/{min(budget, len(todo))} (still missing {max(len(todo) - done, 0)})")
+            with lock:
+                caches[name][l["id"]] = {**entry, "checked": now_iso()}
+            done[name] += 1
+            got[name] += any(entry.get(f) is not None for f in NEEDED[name])
+            if sum(done.values()) % SAVE_EVERY == 0:
+                save()
+        print(f"  specs {site}: fetched {dict(done)}, with the needed measurement {dict(got)}")
+
+    with ThreadPoolExecutor(max_workers=len(budget)) as pool:
+        list(pool.map(work, [site for site in budget if queues[site] and budget[site] > 0]))
     save()
 
+
+def zip_longest_all(lists: list[list]) -> list[list]:
+    """[[a1, a2], [b1]] -> [[a1, b1], [a2]]: one from each list in turn."""
+    rows = []
+    for i in range(max((len(x) for x in lists), default=0)):
+        rows.append([x[i] for x in lists if i < len(x)])
+    return rows
+
+
+def apply(cat: str, out_dir: Path, listings: list[dict]) -> None:
+    """Copy the cached spec fields onto the listings (fields not stated stay None)."""
+    if cat not in PARSERS:
+        return
+    cache = _load(out_dir / "specs.json")
     for l in listings:
         for k, v in EMPTY[cat].items():
             l.setdefault(k, v)
@@ -177,3 +287,5 @@ def enrich(cat: str, out_dir: Path, listings: list[dict], model_key, budget: int
             l.update({k: v for k, v in entry.items() if k != "checked" and v is not None})
         if cat == "cpu" and l.get("packaging") == "Tray" and l.get("coolerIncluded") is None:
             l["coolerIncluded"] = False  # a tray CPU is the bare chip
+        if cat == "fan" and l.get("connector") == "4-pin PWM":
+            l["pwm"] = True

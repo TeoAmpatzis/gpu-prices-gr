@@ -29,7 +29,8 @@ export interface GpuListing extends BaseListing {
   vram: number;
   partner: string;
   memType?: string | null; // "GDDR7", "GDDR6X"…
-  // From the Skroutz product page (scraper/specs.py); Skroutz listings only.
+  // From a product page (scraper/specs.py: Skroutz, BestPrice), shared with the same card on the other
+  // sites (normalize.card_key); the safer value when sites disagree.
   lengthMm?: number | null;
   minPsu?: number | null; // card maker's minimum PSU watts
 }
@@ -86,6 +87,21 @@ export interface CaseListing extends BaseListing {
   coolerMaxMm?: number | null; // tallest CPU air cooler it takes
   fanSlots?: number | null; // fan positions (front + rear + top + …)
   radiatorMounts?: string | null; // e.g. "Άνω, Κάτω, Μπροστά"
+  // From the case maker's own page (scraper/makers): per position and fan size.
+  fanMounts?: CaseFans[] | null; // positions: front 3 × 120 or 2 × 140 = two entries
+  fansIncluded?: CaseFans[] | null; // fans in the box, e.g. front 3 × 120, rear 1 × 120
+  radiators?: CaseRadiator[] | null; // radiator sizes per position, e.g. front [240, 280, 360]
+}
+
+export type CasePosition = 'front' | 'rear' | 'top' | 'bottom' | 'side';
+export interface CaseFans {
+  pos: CasePosition;
+  size: number; // mm
+  n: number;
+}
+export interface CaseRadiator {
+  pos: CasePosition;
+  sizes: number[]; // mm
 }
 
 export interface FanListing extends BaseListing {
@@ -95,6 +111,10 @@ export interface FanListing extends BaseListing {
   pack: number; // fans in the box
   rgb: boolean;
   pwm?: boolean;
+  connector?: '3-pin' | '4-pin PWM' | string | null; // stated by the site (title or product page)
+  airflowCfm?: number | null; // product page
+  pressureMm?: number | null; // static pressure, mmH2O (Skroutz product page)
+  fanType?: 'airflow' | 'pressure' | null; // only when the maker's series name says so
 }
 
 export interface CoolerListing extends BaseListing {
