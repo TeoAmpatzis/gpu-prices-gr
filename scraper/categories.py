@@ -54,6 +54,8 @@ CATEGORIES = {
         make_listing=normalize.make_listing,
         model_key=lambda l: f"{l['chip']} {l['vram']}GB",
         shared=("memType",),
+        # A card measured on one site gives its length to the same card on the others.
+        shared_by=((("lengthMm", "minPsu"), normalize.card_key),),
         eshop_categories=(("ypologistes-kartes-grafikon-gpu-list", "ΚΑΡΤΑ ΓΡΑΦΙΚΩΝ"),),
     ),
     "cpu": Category(

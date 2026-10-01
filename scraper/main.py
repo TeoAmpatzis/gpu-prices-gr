@@ -55,6 +55,13 @@ def share_fields(listings: list[dict], fields: tuple[str, ...], model_key) -> No
             values = [l.get(f) for l in ls if l.get(f) is not None]
             if not values:
                 continue
+            if f in SAFER:  # measurements: when sites disagree, every listing gets the safer value
+                safe = SAFER[f](values)
+                if max(values) - min(values) > 5:
+                    disagreements[f] += 1
+                for l in ls:
+                    l[f] = safe
+                continue
             if f in TRI_STATE:  # an explicit "no" is information too: only fill gaps
                 common = Counter(values).most_common(1)[0][0]
                 for l in ls:
@@ -74,6 +81,10 @@ def share_fields(listings: list[dict], fields: tuple[str, ...], model_key) -> No
 
 # Bool fields where None means "not stated": shared by majority, not by "any true".
 TRI_STATE = {"coolerIncluded"}
+# Measurements the builder checks, and which of two disagreeing values is the safe one to assume:
+# the longer card / taller cooler / higher PSU minimum, the smaller case clearance.
+SAFER = {"lengthMm": max, "minPsu": max, "heightMm": max, "gpuMaxMm": min, "coolerMaxMm": min}
+disagreements: Counter = Counter()  # per run, logged by finish()
 
 
 # Product photos: the sources read a photo URL from the pages they already fetch (no extra request);
@@ -129,9 +140,12 @@ def finish(cat: Category, out_dir: Path, listings: list[dict], specs_budget: int
     """Product-page specs, then fields shared across a model's listings."""
     print(f"[{cat.name}] specs…")
     specs.enrich(cat.name, out_dir, listings, cat.model_key, specs_budget)
+    disagreements.clear()
     share_fields(listings, cat.shared, cat.model_key)
     for fields, key in cat.shared_by:
         share_fields(listings, fields, key)
+    if disagreements:
+        print(f"[{cat.name}] sites disagree by >5 (safer value kept): {dict(disagreements)}")
 
 
 def specs_only(cat: Category, budget: int) -> None:
