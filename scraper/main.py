@@ -7,6 +7,7 @@ so one broken scraper never blanks the site."""
 import argparse
 import json
 import sys
+import time
 import traceback
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
@@ -205,8 +206,28 @@ def main() -> int:
         for cat in cats:
             specs_only(cat, args.specs_budget)
         return 0
+    cats = run_order(cats)
+    print("order: " + ", ".join(cat.name for cat in cats))
     ok = [scrape_category(cat, args.only, specs_budget=args.specs_budget) for cat in cats]
     return 0 if any(ok) else 1
+
+
+def run_order(cats: list[Category]) -> list[Category]:
+    """Categories whose Skroutz scrape failed last run go first, then the rest; each group is rotated
+    by the 6-hour run slot. Retry waiting is capped per run (http_client.RETRY_CAP), so this keeps the
+    same category from always being the one that finds the allowance used up."""
+    slot = int(time.time() // (6 * 3600))
+
+    def failed(cat: Category) -> bool:
+        prev = load_json(DATA_DIR / cat.name / "latest.json", {})
+        return prev.get("sources", {}).get("skroutz", {}).get("ok") is False
+
+    def rotate(xs: list[Category]) -> list[Category]:
+        k = slot % len(xs) if xs else 0
+        return xs[k:] + xs[:k]
+
+    bad = [cat for cat in cats if failed(cat)]
+    return rotate(bad) + rotate([cat for cat in cats if cat.name not in {b.name for b in bad}])
 
 
 if __name__ == "__main__":

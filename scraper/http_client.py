@@ -17,7 +17,9 @@ debug = False
 
 RETRY_STATUS = {403, 429, 502, 503, 504}
 RETRY_WAITS = (20.0, 60.0, 120.0)  # seconds before the 1st, 2nd and 3rd retry
-RETRY_CAP = 8 * 60.0  # total retry waiting per run (all threads), so the run fits its 90 min timeout
+# Total retry waiting per run (all threads). Blocks cleared within 80 s in practice (14 in one run,
+# 460 s in all); 12 min still fits the slowest run seen (80 min) inside the 90 min timeout.
+RETRY_CAP = 12 * 60.0
 _retry_waited = 0.0
 _retry_lock = threading.Lock()
 
