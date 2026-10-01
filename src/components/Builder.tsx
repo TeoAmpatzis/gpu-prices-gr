@@ -289,7 +289,9 @@ export default function Builder() {
                       <Icon className="h-4 w-4" />
                     </span>
                   )}
-                  <div className="min-w-0 flex-1">
+                  {/* At least 9rem, so on phones the price and buttons wrap to their own line instead
+                      of squeezing the name. */}
+                  <div className="min-w-[9rem] flex-1">
                     <div className="text-xs text-muted">
                       {t(cfg.tab)}
                       {OPTIONAL.includes(slot) && <span className="text-faint"> · {t(S.optional)}</span>}
@@ -371,7 +373,7 @@ export default function Builder() {
                               }}
                               className="tap flex w-full items-center gap-3 px-3 py-2 text-left text-sm hover:bg-hover"
                             >
-                              <ProductPhoto image={partImage(o)} size="sm" icon={Icon} alt="" />
+                              <ProductPhoto image={partImage(o)} size="sm" icon={Icon} alt="" hideOnPhone />
                               <span className="min-w-0 flex-1">
                                 <span className="block truncate font-medium">{o.chip}</span>
                                 <span className="block truncate text-xs text-muted">{specLine(slot, o, lang)}</span>
