@@ -150,18 +150,14 @@ export const PRIVACY: InfoPageContent = {
           en: 'BuildDraft.gr **has no accounts, forms or cookies** and does not collect details such as your name, email or location. No tracking or advertising cookies are used.',
         },
         {
-          el: 'Κατά την επίσκεψη, ορισμένα τεχνικά στοιχεία επεξεργάζονται από τρίτους που είναι απαραίτητοι για τη λειτουργία του site:',
-          en: 'When you visit, some technical data is processed by third parties the site needs in order to work:',
+          el: 'Κατά την επίσκεψη, ορισμένα τεχνικά στοιχεία επεξεργάζεται η εταιρεία φιλοξενίας, που είναι απαραίτητη για τη λειτουργία του site. Η γραμματοσειρά και όλα τα αρχεία φορτώνονται από τον ίδιο διακομιστή, όχι από τρίτους:',
+          en: 'When you visit, some technical data is processed by the hosting company, which the site needs in order to work. The font and all other files load from the same server, not from third parties:',
         },
       ],
       bullets: [
         {
           el: '**Φιλοξενία (Vercel Inc.)**: ο διακομιστής καταγράφει τη διεύθυνση IP, τον τύπο του browser, την ώρα και τη σελίδα που ζητήθηκε, για την παράδοση της σελίδας και την ασφάλεια. Η Vercel μπορεί να επεξεργάζεται δεδομένα εκτός ΕΕ, με τις εγγυήσεις του EU-US Data Privacy Framework ή των τυποποιημένων συμβατικών ρητρών. Νομική βάση: έννομο συμφέρον (άρθρο 6 παρ. 1 στ΄ ΓΚΠΔ).',
           en: '**Hosting (Vercel Inc.)**: the server logs your IP address, browser type, time and requested page to deliver the page and keep it secure. Vercel may process data outside the EU under the EU-US Data Privacy Framework or standard contractual clauses. Legal basis: legitimate interest (Art. 6(1)(f) GDPR).',
-        },
-        {
-          el: '**Γραμματοσειρά (Google Fonts)**: η γραμματοσειρά Inter φορτώνεται από διακομιστές της Google, που βλέπουν τη διεύθυνση IP σας. Νομική βάση: έννομο συμφέρον (εμφάνιση του site).',
-          en: '**Font (Google Fonts)**: the Inter font is loaded from Google servers, which see your IP address. Legal basis: legitimate interest (displaying the site).',
         },
       ],
     },

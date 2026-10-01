@@ -49,7 +49,7 @@ function Chip({
     >
       {active ? <Check className="h-3.5 w-3.5" /> : dot && <span className={`h-2 w-2 rounded-full ${dot}`} />}
       {children}
-      {count != null && <span className="text-xs tabular-nums opacity-70">{count}</span>}
+      {count != null && <span className="text-xs tabular-nums text-faint">{count}</span>}
     </button>
   );
 }
@@ -163,7 +163,7 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
                   }`}
                 >
                   <span className="max-w-full [overflow-wrap:anywhere]">{t(c.label)}</span>
-                  {n != null && <span className="text-xs tabular-nums opacity-70">{n}</span>}
+                  {n != null && <span className="text-xs tabular-nums text-faint">{n}</span>}
                 </button>
               );
             })}
