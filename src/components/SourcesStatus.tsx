@@ -55,7 +55,7 @@ export default function SourcesStatus({ latest }: { latest: Latest }) {
         // Mouse/tap clicks (detail ≥ 1) open it — a mouse has usually opened it by hovering already;
         // Enter/Space (detail 0) toggles it.
         onClick={(e) => setOpen((o) => (e.detail === 0 ? !o : true))}
-        className="tap inline-flex items-center gap-1.5 rounded-full bg-panel px-2.5 py-1 text-xs text-muted ring-1 ring-inset ring-line transition-colors duration-150 hover:text-fg"
+        className="tap inline-flex items-center gap-1.5 rounded-full bg-panel px-2.5 py-1 text-xs text-muted edge transition-colors duration-150 hover:text-fg"
       >
         <span className={`h-2 w-2 rounded-full ${delayed ? 'bg-warn' : 'bg-ok'}`} />
         {/* Phones: "5 stores · 🕒 39′"; wider screens spell out "updated … ago". */}
@@ -72,7 +72,7 @@ export default function SourcesStatus({ latest }: { latest: Latest }) {
         <div
           role="dialog"
           aria-label={t(T.updatesByStore)}
-          className="absolute right-0 z-20 mt-2 w-[min(22rem,calc(100vw-2rem))] rounded-xl bg-panel p-3 text-xs shadow-lg ring-1 ring-line"
+          className="absolute right-0 z-20 mt-2 w-[min(22rem,calc(100vw-2rem))] rounded-xl bg-panel p-3 text-xs shadow-lg ring-1 ring-edge"
         >
           <div className="label mb-2">{t(T.updatesByStore)}</div>
           <ul className="flex flex-col gap-2">

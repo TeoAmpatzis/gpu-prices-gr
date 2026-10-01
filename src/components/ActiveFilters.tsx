@@ -62,7 +62,7 @@ export default function ActiveFilters<L extends BaseListing>({ cfg, filters: f, 
           type="button"
           onClick={() => onChange({ ...f, ...c.clear })}
           title={t(T.removeFilter)}
-          className="tap inline-flex items-center gap-1.5 rounded-full bg-accent/10 py-1 pl-3 pr-2 text-sm font-medium text-accent ring-1 ring-inset ring-accent/30 transition-colors duration-150 hover:bg-accent/15"
+          className="tap inline-flex items-center gap-1.5 rounded-full bg-accent/10 py-1 pl-3 pr-2 text-sm font-medium text-accent ring-1 ring-inset ring-accent transition-colors dark:ring-accent/30 duration-150 hover:bg-accent/15"
         >
           {c.label}
           <X className="h-3.5 w-3.5" aria-label={t(T.removeFilter)} />
@@ -71,7 +71,7 @@ export default function ActiveFilters<L extends BaseListing>({ cfg, filters: f, 
       <button
         type="button"
         onClick={() => onChange({ ...d, sort: f.sort })}
-        className="tap rounded-full px-3 py-1 text-sm font-medium text-muted underline-offset-2 transition-colors duration-150 hover:text-fg hover:underline"
+        className="tap rounded-full px-3 py-1 text-sm font-medium text-muted edge underline-offset-2 transition-colors duration-150 hover:text-fg hover:underline dark:ring-0"
       >
         {t(T.clearAll)}
       </button>

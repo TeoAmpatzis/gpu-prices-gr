@@ -68,7 +68,7 @@ export default function BottomSheet({ open, onClose, title, footer, children }: 
         aria-label={title}
         tabIndex={-1}
         style={{ transform: drag ? `translateY(${drag}px)` : undefined }}
-        className={`absolute inset-x-0 bottom-0 flex max-h-[88vh] flex-col rounded-t-2xl bg-panel shadow-[0_-8px_30px_rgb(0_0_0/0.2)] ring-1 ring-line focus:outline-none ${
+        className={`absolute inset-x-0 bottom-0 flex max-h-[88vh] flex-col rounded-t-2xl bg-panel shadow-[0_-8px_30px_rgb(0_0_0/0.2)] ring-1 ring-edge focus:outline-none ${
           drag ? '' : 'transition-transform duration-200 motion-safe:animate-[sheetUp_200ms_ease-out]'
         }`}
       >
@@ -93,7 +93,7 @@ export default function BottomSheet({ open, onClose, title, footer, children }: 
             </button>
           </div>
         </div>
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-4">{children}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-4 scrollbar-none">{children}</div>
         {footer && (
           <div className="shrink-0 border-t border-line px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3">{footer}</div>
         )}

@@ -9,7 +9,7 @@ export default function LangToggle() {
   return (
     <button
       onClick={() => setLang(next)}
-      className="tap inline-flex h-9 items-center gap-1.5 rounded-lg bg-panel px-2.5 text-sm font-semibold text-muted shadow-sm ring-1 ring-inset ring-line transition hover:text-fg dark:shadow-none"
+      className="tap inline-flex h-9 items-center gap-1.5 rounded-lg bg-panel px-2.5 text-sm font-semibold text-muted shadow-sm edge transition hover:text-fg dark:shadow-none"
       title={label}
       aria-label={label}
     >

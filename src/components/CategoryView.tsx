@@ -69,13 +69,13 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
         aria-haspopup="dialog"
         aria-expanded={sheetOpen}
         onClick={() => setSheetOpen(true)}
-        className="tap card flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold transition-colors duration-150 hover:bg-hover lg:hidden"
+        className="tap card flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold transition-colors duration-150 hover:bg-hover hover:ring-edge-hover lg:hidden"
       >
         <SlidersHorizontal className="h-4 w-4 text-accent" />
         {tr(lang, T.filters)}
         {active > 0 && <span className="tabular-nums">({active})</span>}
       </button>
-      <aside className="hidden flex-col gap-2 lg:sticky lg:top-4 lg:flex lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">
+      <aside className="hidden flex-col gap-2 lg:sticky lg:top-4 lg:flex lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto scrollbar-none">
         <FilterBar cfg={cfg} filters={filters} onChange={setFilters} options={options} counts={counts} />
       </aside>
       <BottomSheet
@@ -88,7 +88,7 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
               <button
                 type="button"
                 onClick={reset}
-                className="tap rounded-xl px-4 py-2.5 text-sm font-semibold text-muted ring-1 ring-inset ring-line-strong transition-colors duration-150 hover:bg-hover hover:text-fg"
+                className="tap rounded-xl px-4 py-2.5 text-sm font-semibold text-muted ring-1 ring-inset ring-line-strong transition-colors duration-150 hover:bg-hover hover:text-fg hover:ring-muted dark:hover:ring-line-strong"
               >
                 {tr(lang, T.clearAll)}
               </button>

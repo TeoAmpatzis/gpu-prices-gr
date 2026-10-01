@@ -52,6 +52,10 @@ const INFO: Record<
   },
 };
 const INFO_IDS = Object.keys(INFO) as InfoId[];
+
+/** Top-nav tab: outlined with an open bottom in light mode; dark keeps only the 2px underline. */
+const TAB =
+  'inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-t-lg border border-b-2 px-2 pb-3 pt-1 text-sm transition dark:rounded-none dark:border-x-0 dark:border-t-0';
 const isInfo = (p: Page): p is InfoId => (INFO_IDS as string[]).includes(p);
 
 const fromHash = (): Page => {
@@ -120,7 +124,7 @@ export default function App() {
                 <span className="block text-[17px] font-bold tracking-tight">
                   BuildDraft<span className="text-accent">.gr</span>
                 </span>
-                <span className="block truncate text-xs text-faint">{t(T.siteTagline)}</span>
+                <span className="block text-xs text-faint">{t(T.siteTagline)}</span>
               </span>
             </a>
             <div className="flex items-center gap-2">
@@ -131,7 +135,7 @@ export default function App() {
 
           {/* Bottom rule is an inset shadow so the active tab's underline can sit on it without
             causing vertical overflow; tabs scroll sideways on narrow screens. */}
-          <nav className="flex gap-1 overflow-x-auto shadow-[inset_0_-1px_0_rgb(var(--line))] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <nav className="flex gap-0.5 overflow-x-auto shadow-[inset_0_-1px_0_rgb(var(--line))] scrollbar-none">
             {CATEGORY_IDS.map((id) => {
               const c = CATEGORIES[id];
               const TabIcon = c.icon;
@@ -140,10 +144,10 @@ export default function App() {
                   key={id}
                   href={`#${id}`}
                   aria-current={id === active ? 'page' : undefined}
-                  className={`tap inline-flex shrink-0 items-center gap-2 whitespace-nowrap border-b-2 px-3 pb-3 pt-1 text-sm font-medium transition ${
+                  className={`tap ${TAB} font-medium ${
                     id === active
                       ? 'border-accent text-fg'
-                      : 'border-transparent text-muted hover:border-line-strong hover:text-fg'
+                      : 'border-edge border-b-transparent text-muted hover:border-edge-hover hover:border-b-line-strong hover:text-fg'
                   }`}
                 >
                   <TabIcon className={`h-4 w-4 ${id === active ? 'text-accent' : ''}`} /> {t(c.tab)}
@@ -154,10 +158,10 @@ export default function App() {
             <a
               href="#builder"
               aria-current={active === 'builder' ? 'page' : undefined}
-              className={`tap ml-auto inline-flex shrink-0 items-center gap-2 whitespace-nowrap border-b-2 px-3 pb-3 pt-1 text-sm font-semibold transition ${
+              className={`tap ml-auto ${TAB} font-semibold ${
                 active === 'builder'
                   ? 'border-accent text-accent'
-                  : 'border-transparent text-accent/80 hover:text-accent'
+                  : 'border-edge border-b-transparent text-accent/80 hover:border-edge-hover hover:border-b-transparent hover:text-accent'
               }`}
             >
               <Wrench className="h-4 w-4" /> {t(BUILDER.tab)}
