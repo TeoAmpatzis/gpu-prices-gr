@@ -162,14 +162,7 @@ function ModelDetails<L extends BaseListing>({
         ))}
       </ul>
       <div className="flex flex-col gap-3">
-        <figure className="flex items-center gap-3">
-          <ProductPhoto image={image} size="lg" icon={icon} alt={m.chip} />
-          {image?.family && (
-            <figcaption className="text-xs text-muted">
-              {tr(lang, T.representativePhoto)}: {image.family}
-            </figcaption>
-          )}
-        </figure>
+        <ProductPhoto image={image} size="lg" icon={icon} alt={m.chip} />
         <div>
           <div className="mb-1.5 text-xs text-faint">{tr(lang, T.dailyLow)}</div>
           {details ? (

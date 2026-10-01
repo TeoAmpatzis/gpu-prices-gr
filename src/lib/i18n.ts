@@ -123,5 +123,4 @@ export const T = {
   prevPage: { el: 'Προηγούμενη σελίδα', en: 'Previous page' },
   nextPage: { el: 'Επόμενη σελίδα', en: 'Next page' },
   perPage: { el: 'Ανά σελίδα', en: 'Per page' },
-  representativePhoto: { el: 'Ενδεικτική φωτογραφία της οικογένειας', en: 'Representative photo of the family' },
 } satisfies Record<string, Text>;

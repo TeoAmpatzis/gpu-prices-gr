@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
-import { Image as ImageIcon, Info, Loader2, Mail, ShieldCheck, Wrench } from 'lucide-react';
+import { Info, Loader2, Mail, ShieldCheck, Wrench } from 'lucide-react';
 import type { BaseListing, Category } from './types';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './lib/categories';
 import Backdrop from './components/Backdrop';
@@ -11,7 +11,7 @@ import { T, tr, useLang } from './lib/i18n';
 import { prefetch } from './lib/data';
 import { OWNER_NAME } from './lib/site';
 
-type InfoId = 'about' | 'contact' | 'privacy' | 'credits';
+type InfoId = 'about' | 'contact' | 'privacy';
 type Page = Category | 'builder' | InfoId;
 
 // The PC builder and the text pages are separate chunks, loaded when opened (or when their link is
@@ -31,7 +31,7 @@ function PageLoading() {
   );
 }
 
-/** Text pages, linked from the footer (#about, #contact, #privacy, #credits). */
+/** Text pages, linked from the footer (#about, #contact, #privacy). */
 const INFO: Record<
   InfoId,
   {
@@ -60,14 +60,6 @@ const INFO: Record<
       en: 'What data is processed and what your rights are.',
     },
     icon: ShieldCheck,
-  },
-  credits: {
-    title: { el: 'Πηγές φωτογραφιών', en: 'Image credits' },
-    subtitle: {
-      el: 'Από πού προέρχονται οι φωτογραφίες και με ποια άδεια.',
-      en: 'Where the photos come from and under which license.',
-    },
-    icon: ImageIcon,
   },
 };
 const INFO_IDS = Object.keys(INFO) as InfoId[];

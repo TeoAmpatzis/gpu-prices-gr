@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { ABOUT, CONTACT, CREDITS, PRIVACY, type InfoPageContent } from '../content/pages';
+import { ABOUT, CONTACT, PRIVACY, type InfoPageContent } from '../content/pages';
 import { tr, useLang } from '../lib/i18n';
 
 // Inline markup allowed in page text: [label](url), **bold**, `code`.
@@ -42,12 +42,7 @@ function inline(text: string): ReactNode[] {
   return out;
 }
 
-const CONTENT: Record<'about' | 'contact' | 'privacy' | 'credits', InfoPageContent> = {
-  about: ABOUT,
-  contact: CONTACT,
-  privacy: PRIVACY,
-  credits: CREDITS,
-};
+const CONTENT: Record<'about' | 'contact' | 'privacy', InfoPageContent> = { about: ABOUT, contact: CONTACT, privacy: PRIVACY };
 
 /**
  * A text page (About, Contact, Privacy): sections of paragraphs and bullet lists on a card. Loaded
