@@ -31,13 +31,13 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
   const lang = useLang();
   if (!points || points.length < 2) {
     return (
-      <div className="flex h-40 items-center justify-center rounded-xl bg-panel px-4 text-center text-sm text-faint ring-1 ring-line">
+      <div className="flex h-40 items-center justify-center rounded-xl bg-panel px-4 text-center text-sm text-faint ring-1 ring-edge">
         {tr(lang, T.noHistory)}
       </div>
     );
   }
   return (
-    <div className="h-48 rounded-xl bg-panel p-2 ring-1 ring-line">
+    <div className="h-48 rounded-xl bg-panel p-2 ring-1 ring-edge">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={points} margin={{ top: 8, right: 12, bottom: 0, left: 0 }}>
           <CartesianGrid stroke={c.grid} vertical={false} />

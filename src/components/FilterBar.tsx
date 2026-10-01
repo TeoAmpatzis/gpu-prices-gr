@@ -42,7 +42,9 @@ function Chip({
       disabled={empty}
       onClick={onClick}
       className={`tap inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-sm font-medium ring-1 ring-inset transition disabled:cursor-not-allowed disabled:opacity-40 ${
-        active ? 'bg-accent/10 text-accent ring-accent/30' : 'text-muted ring-line-strong enabled:hover:bg-hover enabled:hover:text-fg'
+        active
+          ? 'bg-accent/10 text-accent ring-accent dark:ring-accent/30'
+          : 'text-muted ring-line-strong enabled:hover:bg-hover enabled:hover:text-fg enabled:hover:ring-muted dark:enabled:hover:ring-line-strong'
       }`}
     >
       {active ? <Check className="h-3.5 w-3.5" /> : dot && <span className={`h-2 w-2 rounded-full ${dot}`} />}
@@ -94,7 +96,7 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
           <button
             type="button"
             onClick={() => onChange(defaultFilters(cfg.groups))}
-            className="tap inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-medium text-muted transition hover:bg-hover hover:text-fg"
+            className="tap inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-medium text-muted edge transition hover:bg-hover hover:text-fg dark:ring-0"
             title={t(T.resetTitle)}
           >
             <RotateCcw className="h-4 w-4" /> {t(T.reset)}
@@ -143,7 +145,9 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
 
       {cfg.segments && (
         <Section label={t(T.segment)}>
-          <div className="flex w-full rounded-lg bg-hover p-0.5 ring-1 ring-inset ring-line">
+          {/* Each option is as wide as its label (count below it), so long labels such as
+              "Server / Workstation" wrap inside the control instead of pushing out of the panel. */}
+          <div className="flex w-full gap-0.5 rounded-lg bg-hover p-0.5 ring-1 ring-inset ring-edge">
             {segments.map((c) => {
               const n = counts?.segment[c.value];
               const selected = f.segment === c.value;
@@ -154,12 +158,12 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
                   aria-pressed={selected}
                   disabled={n === 0 && !selected}
                   onClick={() => set('segment', c.value)}
-                  className={`tap flex-1 rounded-md px-2 py-1 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40 ${
-                    selected ? 'bg-panel text-fg shadow-sm ring-1 ring-line' : 'text-muted enabled:hover:text-fg'
+                  className={`tap flex min-w-0 flex-auto flex-col items-center justify-center rounded-md px-1.5 py-1 text-center text-sm font-medium leading-tight transition disabled:cursor-not-allowed disabled:opacity-40 ${
+                    selected ? 'bg-panel text-fg shadow-sm ring-1 ring-accent dark:ring-line' : 'text-muted enabled:hover:text-fg'
                   }`}
                 >
-                  {t(c.label)}
-                  {n != null && <span className="ml-1 text-xs tabular-nums opacity-70">{n}</span>}
+                  <span className="max-w-full [overflow-wrap:anywhere]">{t(c.label)}</span>
+                  {n != null && <span className="text-xs tabular-nums opacity-70">{n}</span>}
                 </button>
               );
             })}

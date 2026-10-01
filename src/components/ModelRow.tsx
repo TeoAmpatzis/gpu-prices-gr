@@ -88,7 +88,7 @@ function ModelDetails<L extends BaseListing>({ m, history, lang }: { m: Model<L>
   const price = (n: number) => formatPrice(n, lang);
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_22rem]">
-      <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-xl bg-panel ring-1 ring-line">
+      <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-xl bg-panel ring-1 ring-edge">
         {m.listings.map((l) => (
           <li key={l.id}>
             <a
@@ -98,21 +98,32 @@ function ModelDetails<L extends BaseListing>({ m, history, lang }: { m: Model<L>
               className="tap flex items-center gap-3 px-3 py-2 text-sm tabular-nums transition-colors duration-150 hover:bg-hover"
             >
               <span className="w-20 shrink-0 text-right font-medium sm:w-24">{price(l.price)}</span>
-              {l.drop != null && l.drop >= 5 && <span className="badge badge-sale">−{l.drop}%</span>}
-              <SourceBadge source={l.source} />
-              <span className="min-w-0 flex-1 truncate text-fg-soft" title={l.title}>
-                {l.title}
+              {/* Narrow boxes (cards, the list beside the chart): badges, then the title across the
+                  full width, then shipping and shop count, each on its own line. From xl all on one
+                  line. Either way a row never gets wider than its box. */}
+              <span className="flex min-w-0 flex-1 flex-col items-start gap-0.5 xl:flex-row xl:items-center xl:gap-3">
+                <span className="flex shrink-0 items-center gap-1.5">
+                  {l.drop != null && l.drop >= 5 && <span className="badge badge-sale">−{l.drop}%</span>}
+                  <SourceBadge source={l.source} />
+                </span>
+                <span className="line-clamp-2 min-w-0 text-fg-soft [overflow-wrap:anywhere] xl:line-clamp-1 xl:flex-1" title={l.title}>
+                  {l.title}
+                </span>
+                {(l.total != null || l.shopCount != null) && (
+                  <span className="flex flex-wrap gap-x-3 text-xs xl:shrink-0">
+                    {l.total != null && (
+                      <span className="text-muted" title={totalHint(l, lang)}>
+                        {price(l.total)} {tr(lang, T.withShipping)}
+                      </span>
+                    )}
+                    {l.shopCount != null && (
+                      <span className="text-faint">
+                        {l.shopCount} {tr(lang, T.shops)}
+                      </span>
+                    )}
+                  </span>
+                )}
               </span>
-              {l.total != null && (
-                <span className="hidden shrink-0 text-xs tabular-nums text-muted sm:inline" title={totalHint(l, lang)}>
-                  {price(l.total)} {tr(lang, T.withShipping)}
-                </span>
-              )}
-              {l.shopCount != null && (
-                <span className="hidden shrink-0 text-xs text-faint sm:inline">
-                  {l.shopCount} {tr(lang, T.shops)}
-                </span>
-              )}
               <ExternalLink className="h-3.5 w-3.5 shrink-0 text-faint" />
             </a>
           </li>
@@ -120,7 +131,7 @@ function ModelDetails<L extends BaseListing>({ m, history, lang }: { m: Model<L>
       </ul>
       <div>
         <div className="mb-1.5 text-xs text-faint">{tr(lang, T.dailyLow)}</div>
-        <Suspense fallback={<div className="h-48 rounded-lg bg-panel ring-1 ring-line" />}>
+        <Suspense fallback={<div className="h-48 rounded-lg bg-panel ring-1 ring-edge" />}>
           <PriceChart points={history} />
         </Suspense>
       </div>
@@ -173,7 +184,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
           </div>
         </td>
         {cfg.after.map(td)}
-        <td className="hidden whitespace-nowrap px-2 text-right text-sm text-muted md:table-cell">
+        <td className="hidden whitespace-nowrap px-2 text-right text-sm text-muted xl:table-cell">
           {m.listings.length > 1 ? `${tr(lang, T.upTo)} ${price(m.maxPrice)}` : '—'}
         </td>
         <td className="pl-2 pr-4 text-right text-sm text-muted">{m.listings.length}</td>

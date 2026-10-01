@@ -73,7 +73,7 @@ export default function ModelTable<L extends BaseListing>({ cfg, models, history
             {cfg.before.map(th)}
             <th className="px-2 text-right font-semibold">{tr(lang, T.colCheapest)}</th>
             {cfg.after.map(th)}
-            <th className="hidden px-2 text-right font-semibold md:table-cell">{tr(lang, T.colRange)}</th>
+            <th className="hidden px-2 text-right font-semibold xl:table-cell">{tr(lang, T.colRange)}</th>
             <th className="pl-2 pr-4 text-right font-semibold">{tr(lang, T.colOffers)}</th>
           </tr>
         </thead>

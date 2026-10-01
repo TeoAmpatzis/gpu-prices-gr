@@ -313,7 +313,7 @@ export default function Builder() {
                         type="button"
                         onClick={() => update({ ...build, [slot]: undefined })}
                         title={t(S.remove)}
-                        className="tap-square grid place-items-center rounded-lg p-1.5 text-muted hover:bg-hover hover:text-fg"
+                        className="tap-square grid place-items-center rounded-lg p-1.5 text-muted edge hover:bg-hover hover:text-fg dark:ring-0"
                       >
                         <X className="h-4 w-4" />
                       </button>
@@ -322,7 +322,7 @@ export default function Builder() {
                 </div>
 
                 {isOpen && (
-                  <div className="mt-3 rounded-xl bg-sunken p-3 ring-1 ring-line">
+                  <div className="mt-3 rounded-xl bg-sunken p-3 ring-1 ring-edge">
                     <label className="relative mb-2 block">
                       <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
                       <input
@@ -340,7 +340,7 @@ export default function Builder() {
                     {options.length === 0 ? (
                       <div className="p-3 text-sm text-muted">{t(S.noneCompatible)}</div>
                     ) : (
-                      <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-lg bg-panel ring-1 ring-line">
+                      <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-lg bg-panel ring-1 ring-edge">
                         {options.slice(0, PICKER_LIMIT).map((o) => (
                           <li key={o.key}>
                             <button
@@ -376,7 +376,7 @@ export default function Builder() {
 
       {/* Phones and tablets (< lg): a bar fixed to the bottom of the screen with the total; the details
           (PSU, notes, clear) open from it. Wide screens: a sticky card beside the parts. */}
-      <aside className="fixed inset-x-0 bottom-0 z-30 flex flex-col gap-3 rounded-t-2xl bg-panel px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-4px_20px_rgb(0_0_0/0.12)] ring-1 ring-line lg:card lg:sticky lg:top-4 lg:inset-auto lg:z-auto lg:p-4">
+      <aside className="fixed inset-x-0 bottom-0 z-30 flex flex-col gap-3 rounded-t-2xl bg-panel px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-4px_20px_rgb(0_0_0/0.12)] ring-1 ring-edge lg:card lg:sticky lg:top-4 lg:inset-auto lg:z-auto lg:p-4">
         <button
           type="button"
           aria-expanded={summaryOpen}

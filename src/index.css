@@ -17,6 +17,8 @@
   --hover: 241 243 246;
   --line: 227 230 234; /* #E3E6EA borders */
   --line-strong: 128 136 150; /* #808896 input borders, unselected chips: ≥3:1 vs white (WCAG UI) */
+  --edge: 209 213 219; /* #D1D5DB outline of cards, panels, buttons, tabs (dividers stay --line) */
+  --edge-hover: 156 163 175; /* #9CA3AF the same outline on hover */
   /* Text */
   --fg: 17 24 39; /* #111827 */
   --fg-soft: 31 41 55; /* #1F2937 */
@@ -60,6 +62,8 @@
   --hover: 30 30 34;
   --line: 39 39 44;
   --line-strong: 113 113 122; /* ≥3:1 vs the dark card */
+  --edge: 39 39 44; /* = --line: dark outlines are unchanged */
+  --edge-hover: 39 39 44; /* no outline change on hover in dark */
   --fg: 244 244 245;
   --fg-soft: 212 212 216;
   --muted: 161 161 170;
@@ -93,10 +97,15 @@
 @layer components {
   /* Raised container (cards, tables, popovers): 1px border + a very light shadow in light mode. */
   .card {
-    @apply rounded-2xl bg-panel ring-1 ring-line shadow-[var(--card-shadow)];
+    @apply rounded-2xl bg-panel ring-1 ring-edge shadow-[var(--card-shadow)];
   }
+  /* Inputs and selects keep the darker --line-strong outline (WCAG 3:1 for form controls). */
   .field {
-    @apply rounded-lg bg-sunken text-sm text-fg ring-1 ring-inset ring-line-strong transition placeholder:text-faint hover:ring-faint/60 focus:outline-none focus:ring-2 focus:ring-accent/50;
+    @apply rounded-lg bg-sunken text-sm text-fg ring-1 ring-inset ring-line-strong transition placeholder:text-faint hover:ring-muted focus:outline-none focus:ring-2 focus:ring-accent dark:hover:ring-faint/60 dark:focus:ring-accent/50;
+  }
+  /* Bordered button outline in light mode (cards, toggles, popover buttons); dark keeps its look via the tokens. */
+  .edge {
+    @apply ring-1 ring-inset ring-edge hover:ring-edge-hover;
   }
   .label {
     @apply text-[11px] font-semibold uppercase tracking-wider text-faint;
@@ -121,6 +130,13 @@
   /* Loading placeholder bar (see Skeleton.tsx); pulses only when motion is allowed. */
   .skeleton {
     @apply rounded-md bg-hover motion-safe:animate-pulse;
+  }
+  /* Scrolls (wheel, touch, keyboard) without a visible scrollbar: tab bar, filter panel. */
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
   }
 }
 

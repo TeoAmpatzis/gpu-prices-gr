@@ -29,7 +29,7 @@ export default function SortHelp() {
         aria-label={tr(lang, T.sortHelpTitle)}
         title={tr(lang, T.sortHelpTitle)}
         onClick={() => setOpen((o) => !o)}
-        className="tap-square grid h-9 w-9 place-items-center rounded-lg text-muted ring-1 ring-inset ring-line transition-colors duration-150 hover:bg-hover hover:text-fg"
+        className="tap-square grid h-9 w-9 place-items-center rounded-lg text-muted edge transition-colors duration-150 hover:bg-hover hover:text-fg"
       >
         <HelpCircle className="h-4 w-4" />
       </button>
@@ -37,7 +37,7 @@ export default function SortHelp() {
         <div
           role="dialog"
           aria-label={tr(lang, T.sortHelpTitle)}
-          className="absolute inset-x-0 top-full z-20 mt-2 rounded-xl bg-panel p-3 text-sm shadow-lg ring-1 ring-line"
+          className="absolute inset-x-0 top-full z-20 mt-2 rounded-xl bg-panel p-3 text-sm shadow-lg ring-1 ring-edge"
         >
           <div className="mb-1.5 font-semibold">{tr(lang, T.sortHelpTitle)}</div>
           <p className="text-fg-soft">{tr(lang, T.sortHelp)}</p>

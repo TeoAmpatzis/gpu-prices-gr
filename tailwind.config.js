@@ -38,6 +38,8 @@ export default {
         sunken: token('sunken'),
         hover: token('hover'),
         line: token('line'),
+        edge: token('edge'),
+        'edge-hover': token('edge-hover'),
         'line-strong': token('line-strong'),
         fg: token('fg'),
         'fg-soft': token('fg-soft'),
