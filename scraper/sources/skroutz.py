@@ -69,6 +69,10 @@ def parse(html: str, scraped_at: str, cat: Category) -> tuple[list, bool]:
             drop = card.css_first(".badge-price_drop_bottom_badge")
             if drop and (m := re.search(r"-\s*(\d{1,2})\s*%", drop.text())):
                 listing.drop = int(m.group(1))
+            # Product photo on Skroutz's image host (scdn.gr), for the images workflow (main.image_urls).
+            img = card.css_first('img[src*="sku_main_images"]')
+            if img:
+                listing.image = img.attributes["src"]
             out.append(listing)
     has_next = re.search(r'<link rel="next"', html) is not None
     return out, has_next

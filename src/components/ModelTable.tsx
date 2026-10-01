@@ -6,16 +6,19 @@ import type { CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Text } from '../lib/i18n';
 import { useMedia } from '../lib/useMedia';
 import ModelRow, { ModelCard } from './ModelRow';
+import { productImage } from '../lib/images';
 
 interface Props<L extends BaseListing> {
   cfg: CategoryConfig<L>;
   models: Model<L>[];
   history: Record<string, DailyLow[]>;
+  /** Model key → stored photo (list.json `img`). */
+  img: Record<string, string>;
   /** Resets every filter (the empty state's "Clear filters" button). */
   onReset: () => void;
 }
 
-export default function ModelTable<L extends BaseListing>({ cfg, models, history, onReset }: Props<L>) {
+export default function ModelTable<L extends BaseListing>({ cfg, models, history, img, onReset }: Props<L>) {
   const lang = useLang();
   const [openKey, setOpenKey] = useState<string | null>(null);
   // The table needs a desktop-wide column (≥ 1024px); phones and tablets get cards.
@@ -51,6 +54,7 @@ export default function ModelTable<L extends BaseListing>({ cfg, models, history
             cfg={cfg}
             model={m}
             history={history[m.key]}
+            image={productImage(cfg.id, m.cheapest, img[m.key])}
             open={openKey === m.key}
             onToggle={() => setOpenKey(openKey === m.key ? null : m.key)}
           />
@@ -84,6 +88,7 @@ export default function ModelTable<L extends BaseListing>({ cfg, models, history
               cfg={cfg}
               model={m}
               history={history[m.key]}
+              image={productImage(cfg.id, m.cheapest, img[m.key])}
               open={openKey === m.key}
               onToggle={() => setOpenKey(openKey === m.key ? null : m.key)}
             />

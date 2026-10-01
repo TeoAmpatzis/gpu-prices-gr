@@ -9,12 +9,13 @@
 //   are logged and the build publishes. DATA_CHECK_BASE overrides the live site address.
 // - `vite` (dev): serves the same files from memory, re-derived when the scraper's files change.
 
+import { createHash } from 'node:crypto';
 import { readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import type { Plugin } from 'vite';
 import type { Category, History, Imported, Latest, Manifest } from './src/types';
 import { CATEGORY_IDS } from './src/lib/categories';
-import { builderFile, checkData, detailFile, listFile, manifest, type CategoryInput } from './src/lib/derive';
+import { builderFile, checkData, detailFile, listFile, manifest, type CategoryInput, type ImageLookup } from './src/lib/derive';
 
 const DATA_DIR = join(process.cwd(), 'public', 'data');
 const LIVE_SITE = 'https://gpu-prices-gr.vercel.app';
@@ -42,8 +43,27 @@ function readInputs(): Partial<Record<Category, CategoryInput>> {
   return out;
 }
 
+/** The images repo's index (scraper/images.py): photo id → {c: category, s: source, d: date}. */
+const IMAGES_INDEX = 'https://teoampatzis.github.io/builddraft-images/index.json';
+
+async function imageLookup(): Promise<{ lookup: ImageLookup; count: number }> {
+  try {
+    const r = await fetch(process.env.IMAGES_INDEX || IMAGES_INDEX, { signal: AbortSignal.timeout(10_000) });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const index = (await r.json()) as Record<string, { c: string }>;
+    // Same id as scraper/images.py model_id(): sha1("<cat>\0<model key>"), first 12 hex digits.
+    const lookup: ImageLookup = (cat, key) => {
+      const id = createHash('sha1').update(`${cat}\0${key}`, 'utf8').digest('hex').slice(0, 12);
+      return index[id] ? `${cat}/${id}` : undefined;
+    };
+    return { lookup, count: Object.keys(index).length };
+  } catch {
+    return { lookup: () => undefined, count: 0 }; // no photos (category icons), the build still publishes
+  }
+}
+
 /** Every derived file, by its path under the site root. */
-function derive(builtAt: string): { files: Record<string, string>; manifest: Manifest } {
+function derive(builtAt: string, image?: ImageLookup): { files: Record<string, string>; manifest: Manifest } {
   const inputs = readInputs();
   const files: Record<string, string> = {};
   const latest: Partial<Record<Category, Latest>> = {};
@@ -53,10 +73,10 @@ function derive(builtAt: string): { files: Record<string, string>; manifest: Man
     if (!input) continue;
     latest[cat] = input.latest;
     history[cat] = input.history;
-    files[`data/${cat}/list.json`] = JSON.stringify(listFile(cat, input, builtAt));
+    files[`data/${cat}/list.json`] = JSON.stringify(listFile(cat, input, builtAt, image));
     files[`data/${cat}/detail.json`] = JSON.stringify(detailFile(input.latest));
   }
-  const { file: builder, extra } = builderFile(latest, builtAt);
+  const { file: builder, extra } = builderFile(latest, builtAt, image);
   files['data/builder.json'] = JSON.stringify(builder);
   files['data/builder-extra.json'] = JSON.stringify(extra);
   const m = manifest(latest, builder, builtAt, history);
@@ -78,6 +98,7 @@ const kb = (s: string) => `${(Buffer.byteLength(s) / 1024).toFixed(0)} KB`;
 
 export default function dataFiles(): Plugin {
   let cache: { key: string; files: Record<string, string> } | null = null;
+  let devImages: ImageLookup | undefined;
   // Dev: re-derive when any scraper file changed (its modification times are the cache key).
   const devFiles = () => {
     const key = CATEGORY_IDS.map((c) => {
@@ -87,13 +108,14 @@ export default function dataFiles(): Plugin {
         return 0;
       }
     }).join(',');
-    if (cache?.key !== key) cache = { key, files: derive(new Date().toISOString()).files };
+    if (cache?.key !== key) cache = { key, files: derive(new Date().toISOString(), devImages).files };
     return cache.files;
   };
 
   return {
     name: 'builddraft-data',
-    configureServer(server) {
+    async configureServer(server) {
+      devImages = (await imageLookup()).lookup;
       server.middlewares.use((req, res, next) => {
         const path = (req.url ?? '').split('?')[0].replace(/^\//, '');
         const body = path.startsWith('data/') ? devFiles()[path] : undefined;
@@ -104,7 +126,9 @@ export default function dataFiles(): Plugin {
     },
     async generateBundle() {
       const builtAt = new Date().toISOString();
-      const { files, manifest: next } = derive(builtAt);
+      const images = await imageLookup();
+      this.info(`product photos: ${images.count} in the images index`);
+      const { files, manifest: next } = derive(builtAt, images.lookup);
       // Deliberate overrides for planned data changes (e.g. merging duplicate products): the
       // problems are still listed in the build log, then published anyway.
       const override =

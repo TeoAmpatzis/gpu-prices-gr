@@ -26,6 +26,8 @@ export interface CategoryData<L extends BaseListing = BaseListing> {
   history: Record<string, DailyLow[]>;
   imported: Imported; // Skroutz history import: all-time lows
   builtAt: string;
+  /** Model key → stored photo ("<cat>/<id>"); see src/lib/images.ts. */
+  img: Record<string, string>;
 }
 
 /** Shop links and the full price history (chart), loaded when a product is first opened. */
@@ -61,6 +63,7 @@ const loadList = memo(
       history: expandHistory(f.hist),
       imported: f.imported,
       builtAt: f.builtAt,
+      img: f.img ?? {},
     })),
 );
 

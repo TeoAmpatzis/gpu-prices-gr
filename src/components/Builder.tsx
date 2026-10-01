@@ -32,6 +32,8 @@ import {
 } from '../lib/builder';
 import { T, tr, useLang, type Lang, type Text } from '../lib/i18n';
 import BuildGuide from './BuildGuide';
+import ProductPhoto from './ProductPhoto';
+import { productImage } from '../lib/images';
 import SourceBadge from './SourceBadge';
 
 type Models = { [S in Slot]: Model<SlotListing[S]>[] };
@@ -146,6 +148,9 @@ function specLine(slot: Slot, m: AnyModel, lang: Lang): string {
     }
   }
 }
+
+/** A builder part's photo: builder.json rows carry the stored photo (`img`); CPUs use their family photo. */
+const partImage = (slot: Slot, m: AnyModel) => productImage(slot, m.cheapest, m.cheapest.img ?? undefined);
 
 function loadSaved(): Partial<Record<Slot, string>> {
   try {
@@ -276,9 +281,14 @@ export default function Builder() {
             return (
               <div key={slot} className="p-4">
                 <div className="flex flex-wrap items-center gap-3">
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent/10 text-accent">
-                    <Icon className="h-4 w-4" />
-                  </span>
+                  {m ? (
+                    // The chosen part's photo (its family photo for CPUs), the category icon if none.
+                    <ProductPhoto image={partImage(slot, m)} size="md" icon={Icon} alt={m.chip} />
+                  ) : (
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent/10 text-accent">
+                      <Icon className="h-4 w-4" />
+                    </span>
+                  )}
                   <div className="min-w-0 flex-1">
                     <div className="text-xs text-muted">
                       {t(cfg.tab)}
@@ -361,6 +371,7 @@ export default function Builder() {
                               }}
                               className="tap flex w-full items-center gap-3 px-3 py-2 text-left text-sm hover:bg-hover"
                             >
+                              <ProductPhoto image={partImage(slot, o)} size="sm" icon={Icon} alt="" />
                               <span className="min-w-0 flex-1">
                                 <span className="block truncate font-medium">{o.chip}</span>
                                 <span className="block truncate text-xs text-muted">{specLine(slot, o, lang)}</span>

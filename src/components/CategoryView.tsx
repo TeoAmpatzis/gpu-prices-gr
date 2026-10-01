@@ -119,7 +119,7 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
         </div>
         <ActiveFilters cfg={cfg} filters={filters} onChange={setFilters} options={options} />
         {/* Filters, counts and sorting run on every model; only the rows of one page are rendered. */}
-        <ModelTable cfg={cfg} models={models.slice((page - 1) * filters.per, page * filters.per)} history={data.history} onReset={reset} />
+        <ModelTable cfg={cfg} models={models.slice((page - 1) * filters.per, page * filters.per)} history={data.history} img={data.img} onReset={reset} />
         {models.length > PER_PAGE[0] && (
           <Pagination
             page={page}
