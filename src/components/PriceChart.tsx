@@ -52,6 +52,7 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
   const box = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
   const [active, setActive] = useState<number | null>(null);
+  const drawable = (points?.length ?? 0) >= 2; // the box only exists once there is something to draw
 
   useLayoutEffect(() => {
     const el = box.current;
@@ -60,7 +61,7 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
     ro.observe(el);
     setWidth(Math.floor(el.getBoundingClientRect().width));
     return () => ro.disconnect();
-  }, [(points?.length ?? 0) < 2]); // the box only exists once there is something to draw
+  }, [drawable]);
 
   const data = useMemo(() => [...(points ?? [])].sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0)), [points]);
 
