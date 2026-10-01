@@ -8,24 +8,31 @@ const PX = { sm: 40, md: 56, lg: 160 } as const;
 /**
  * A product photo with fixed dimensions (no layout shift), lazy-loaded, on a white rounded tile (shop
  * photos are on white, in both themes). No photo, or one that fails to load: the category icon.
+ * `hideOnPhone`: not shown below 640px (tight lists such as the builder's picker).
  */
 export default function ProductPhoto({
   image,
   size,
   icon: Icon,
   alt,
+  hideOnPhone = false,
 }: {
   image: ProductImage | null;
   size: keyof typeof PX;
   icon: LucideIcon;
   alt: string;
+  hideOnPhone?: boolean;
 }) {
   const [failed, setFailed] = useState<string | null>(null);
   const px = PX[size];
   const tile = 'shrink-0 rounded-lg ring-1 ring-edge';
   if (!image || failed === image.src) {
     return (
-      <span style={{ width: px, height: px }} className={`${tile} grid place-items-center bg-sunken text-faint`} aria-hidden="true">
+      <span
+        style={{ width: px, height: px }}
+        className={`${tile} ${hideOnPhone ? 'hidden sm:grid' : 'grid'} place-items-center bg-sunken text-faint`}
+        aria-hidden="true"
+      >
         <Icon className={size === 'lg' ? 'h-10 w-10' : 'h-5 w-5'} />
       </span>
     );
@@ -39,7 +46,7 @@ export default function ProductPhoto({
       decoding="async"
       alt={alt}
       onError={() => setFailed(image.src)}
-      className={`${tile} bg-white object-contain`}
+      className={`${tile} ${hideOnPhone ? 'hidden sm:block' : ''} bg-white object-contain`}
     />
   );
 }

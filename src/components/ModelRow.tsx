@@ -215,9 +215,10 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
         {cfg.before.map(td)}
         <td className="px-2 text-right">
           {/* Badges first and the price last, so prices line up on the right edge of the column. */}
-          <div className="flex items-center justify-end gap-1.5 whitespace-nowrap">
+          {/* Badges may wrap above the price when the column is tight (photos widen the name column). */}
+          <div className="flex flex-wrap items-center justify-end gap-1.5">
             <PriceBadges m={m} lang={lang} />
-            <span className="ml-0.5 text-[15px] font-semibold text-accent">{price(m.cheapest.price)}</span>
+            <span className="ml-0.5 whitespace-nowrap text-[15px] font-semibold text-accent">{price(m.cheapest.price)}</span>
           </div>
           <div className="mt-0.5 flex flex-wrap items-center justify-end gap-x-2 text-xs text-muted">
             <PriceExtras m={m} delta={delta} lang={lang} />
