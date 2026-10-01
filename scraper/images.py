@@ -14,8 +14,6 @@ Runs in the images repo's own workflow (github.com/TeoAmpatzis/builddraft-images
 - blocklist.json (removal requests): a listed model is never downloaded, and its files and index
   entry are deleted on the next run. Entries: {"cat": "gpu", "model": "<model key>", "reason": ...}
   or {"id": "<id>"}.
-- CPU family photos (scraper/image_families.json, approved entries only) are generated once from
-  Wikimedia Commons as img/family/<slug>-96/-320.webp; credits.json lists their authors and licenses.
 - A model whose candidates all fail is retried after RETRY_FAILED_DAYS (failed.json).
 """
 
@@ -39,9 +37,6 @@ SIZES = (96, 320)
 QUALITY = 80
 PAUSE = (0.3, 0.7)  # seconds between downloads (image CDNs, not the shops' pages)
 RETRY_FAILED_DAYS = 7
-COMMONS_API = "https://commons.wikimedia.org/w/api.php"
-UA = {"User-Agent": "BuildDraftImages/1.0 (https://github.com/TeoAmpatzis/gpu-prices-gr)"}
-FAMILIES = Path(__file__).with_name("image_families.json")
 
 
 def model_id(cat: str, key: str) -> str:
@@ -97,31 +92,6 @@ def blocked_ids(blocklist: list[dict]) -> set[str]:
     return out
 
 
-def families(out: Path, s) -> None:
-    """CPU family photos from Commons (approved entries, generated once) and credits.json."""
-    credits = []
-    for f in json.loads(FAMILIES.read_text(encoding="utf-8"))["families"]:
-        if not f.get("approved"):
-            continue
-        target = out / "img" / "family"
-        if not (target / f"{f['slug']}-320.webp").exists():
-            info = http.get(s, COMMONS_API, params={
-                "action": "query", "format": "json", "titles": f["file"], "prop": "imageinfo",
-                "iiprop": "url", "iiurlwidth": 800,
-            }, headers=UA).json()
-            page = next(iter(info["query"]["pages"].values()))
-            url = page["imageinfo"][0]["thumburl"]
-            write_sizes(http.get(s, url, headers=UA).content, target, f["slug"])
-            print(f"family photo {f['slug']}: {f['file']}")
-            time.sleep(1)
-        credits.append({
-            "slug": f["slug"], "label": f["label"], "packaging": f["packaging"], "file": f["file"],
-            "author": f["author"], "license": f["license"],
-            "url": "https://commons.wikimedia.org/wiki/" + f["file"].replace(" ", "_"),
-        })
-    dump(out / "credits.json", credits)
-
-
 def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8")
     if len(sys.argv) == 4 and sys.argv[1] == "--id":  # images.py --id gpu "RTX 5060 8GB" -> its photo id
@@ -145,8 +115,6 @@ def main() -> int:
         for size in SIZES:
             (out / "img" / cat / f"{mid}-{size}.webp").unlink(missing_ok=True)
         print(f"removed {cat}/{mid} (blocklist)")
-
-    families(out, s)
 
     todo = []
     for cat in CATEGORIES:
