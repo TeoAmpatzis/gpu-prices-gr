@@ -10,6 +10,7 @@ Development checks (not part of the site or the scraper runs). Run from the repo
 | History incident replay | `venv/Scripts/python scripts/checks/test_history_git.py` | with real git: the old commit step loses an import (2026-09-30 incident), the new one keeps it; reverse order, push race, guard, `--allow-shrink` |
 | Derived data = full data | `npx tsx scripts/checks/data-equivalence.test.mts` | `list.json` / `builder.json` give the same models, prices, sales, all-time lows, week changes and builder options as the scraper's full files |
 | Build publishing check | `npm run build`, then `npx tsx scripts/checks/data-check.test.mts` | `derive.checkData`: empty category, >30% drop (models, listings, history points), builder slots |
+| PC builder data coverage | `npx tsx scripts/checks/builder-coverage.mts [--save f.json] [--compare f.json]` | per builder slot and field (lengths, clearances, sockets, fan/radiator details…), how many models have it, overall and for the most-listed quarter; snapshots per phase in `coverage/` |
 | Lighthouse | `npx lighthouse@12 <url>/#gpu --output=json --output-path=<dir>/x-gpu-mobile.json` (add `--preset=desktop`), then `node scripts/checks/lighthouse-summary.mjs <dir> x` | scores, LCP/CLS/FCP, bytes downloaded, which data files load |
 
 The browser checks need Chrome installed; they use ports 9333 (layout audit) and 9345 (site check).
