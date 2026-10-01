@@ -87,7 +87,8 @@ def update_history(history: dict, listings: list[dict], day: str, model_key) -> 
     for key, l in cheapest.items():
         points = history.setdefault(key, [])
         if points and points[-1]["d"] == day:
-            if l["price"] < points[-1]["min"]:
+            # Our own point beats an imported one for the same day (merge_history._pick).
+            if points[-1].get("i") or l["price"] < points[-1]["min"]:
                 points[-1] = {"d": day, "min": l["price"], "source": l["source"]}
         else:
             points.append({"d": day, "min": l["price"], "source": l["source"]})

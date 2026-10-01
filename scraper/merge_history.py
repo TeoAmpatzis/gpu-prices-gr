@@ -19,8 +19,8 @@ This script makes that impossible:
                                  point lose their marker, so the importer fetches them again.
 
 History rules (the same as main.update_history and site_history.merge): one point per model and
-day; on a day both sides have, the lower price wins (on a tie our own point beats an imported
-`"i": 1` one); at most KEEP points per model, the newest.
+day; on a day both sides have, our own scraped point beats an imported `"i": 1` one, and between
+two of the same kind the lower price wins; at most KEEP points per model, the newest.
 """
 
 import json
@@ -37,10 +37,11 @@ CATEGORIES = ["gpu", "cpu", "mobo", "ram", "psu", "case", "fan", "cooler"]
 # ---------- history.json ----------
 
 def _pick(a: dict, b: dict) -> dict:
-    """Two points for the same model and day: the lower price; on a tie our own (not imported)."""
-    if a["min"] != b["min"]:
-        return a if a["min"] < b["min"] else b
-    return a if not a.get("i") else b
+    """Two points for the same model and day: our own scraped point beats an imported one (`"i": 1`,
+    Skroutz-only); between two of the same kind the lower price wins (on a tie, `a`)."""
+    if bool(a.get("i")) != bool(b.get("i")):
+        return b if a.get("i") else a
+    return b if b["min"] < a["min"] else a
 
 
 def _by_day(points: list[dict]) -> dict[str, dict]:
