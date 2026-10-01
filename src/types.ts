@@ -175,6 +175,7 @@ export interface BuilderExtra {
 /** /data/manifest.json — counts per category; the next build compares its data against them. */
 export interface Manifest {
   builtAt: string;
-  cats: Partial<Record<Category, { models: number; listings: number; updatedAt: string }>>;
+  /** historyPoints: all daily lows in history.json (a drop means history was lost; optional in older manifests). */
+  cats: Partial<Record<Category, { models: number; listings: number; historyPoints?: number; updatedAt: string }>>;
   builder: Record<string, number>; // models offered per builder slot
 }

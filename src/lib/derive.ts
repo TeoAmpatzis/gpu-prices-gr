@@ -213,7 +213,12 @@ export function builderFile(
   return { file: { v: 1, builtAt, slots, coverage }, extra };
 }
 
-export function manifest(all: Partial<Record<Category, Latest>>, builder: BuilderFile, builtAt: string): Manifest {
+export function manifest(
+  all: Partial<Record<Category, Latest>>,
+  builder: BuilderFile,
+  builtAt: string,
+  history: Partial<Record<Category, History>> = {},
+): Manifest {
   const cats: Manifest['cats'] = {};
   for (const cat of CATEGORY_IDS) {
     const latest = all[cat];
@@ -221,6 +226,7 @@ export function manifest(all: Partial<Record<Category, Latest>>, builder: Builde
     cats[cat] = {
       models: groupModels(latest.listings, cfgOf(cat)).length,
       listings: latest.listings.length,
+      historyPoints: Object.values(history[cat] ?? {}).reduce((n, pts) => n + pts.length, 0),
       updatedAt: latest.updatedAt,
     };
   }
@@ -239,7 +245,9 @@ export function manifest(all: Partial<Record<Category, Latest>>, builder: Builde
  * A new build may lose at most this share of a category's models or listings compared with the
  * site that is live now. A failing source keeps its previous listings in the scraper, so normal
  * runs move by a few percent; a bigger drop means broken data, and the build stops so Vercel keeps
- * the live version. (Set DATA_CHECK=off for an intentional drop, e.g. removing a source.)
+ * the live version. History points count too (history must never shrink, scraper/merge_history.py).
+ * For a planned drop (merging duplicate products, removing a source) tag the commit message with
+ * [allow-data-drop] or set DATA_CHECK=off (vite-plugin-data.ts).
  */
 export const MAX_DROP = 0.3;
 
@@ -269,9 +277,11 @@ export function checkData(next: Manifest, live: Manifest | null): string[] {
     }
     const was = live?.cats[cat];
     if (was) {
-      for (const field of ['models', 'listings'] as const) {
-        if (n[field] < was[field] * (1 - MAX_DROP)) {
-          problems.push(`${cat}: ${n[field]} ${field}, live site has ${was[field]} (more than ${MAX_DROP * 100}% fewer)`);
+      for (const field of ['models', 'listings', 'historyPoints'] as const) {
+        const now = n[field] ?? 0;
+        const before = was[field];
+        if (before != null && now < before * (1 - MAX_DROP)) {
+          problems.push(`${cat}: ${now} ${field}, live site has ${before} (more than ${MAX_DROP * 100}% fewer)`);
         }
       }
     } else if (n.models < MIN_MODELS[cat]) {

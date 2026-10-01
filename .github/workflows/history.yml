@@ -1,12 +1,21 @@
 name: history
 
 # Imports Skroutz's own price history for models not imported yet (scraper/site_history.py),
-# a slow batch per day so Skroutz isn't flooded. Shares the "scrape" group so it never runs at the
-# same time as a price scrape (both commit public/data).
+# a slow batch per day so Skroutz isn't flooded. Shares the "scrape" concurrency group so it never
+# runs at the same time as a price scrape (both commit public/data).
 on:
   schedule:
     - cron: "37 3 * * *"
   workflow_dispatch:
+    inputs:
+      restore_from:
+        description: "Recovery: merge the history files of this commit into the current ones instead of importing (scraper/merge_history.py restore)"
+        type: string
+        default: ""
+      allow_history_shrink:
+        description: "Planned data change: let history points disappear in this run only (they are logged)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -21,7 +30,10 @@ jobs:
     # 8 categories × 60 requests × ~6.5 s ≈ 52 min.
     timeout-minutes: 90
     steps:
+      # The latest main when the job starts (see scrape.yml).
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - uses: actions/setup-python@v5
         with:
@@ -31,20 +43,38 @@ jobs:
 
       - run: pip install -r scraper/requirements.txt
 
+      - name: Restore history from a commit
+        if: inputs.restore_from != ''
+        env:
+          COMMIT: ${{ inputs.restore_from }}
+        run: |
+          git fetch --depth=1 origin "$COMMIT"
+          python scraper/merge_history.py restore "$COMMIT"
+
       - name: Import price history
+        if: inputs.restore_from == ''
         run: python scraper/main.py --history-only
 
       - name: Commit data
+        env:
+          ALLOW_SHRINK: ${{ inputs.allow_history_shrink && '--allow-shrink' || '' }}
+          WHAT: ${{ inputs.restore_from != '' && format('restore price history from {0}', inputs.restore_from) || 'import price history' }}
         run: |
           # Same identity as the scrape workflow: Vercel Hobby only deploys commits it can map to the owner.
           git config user.name "TeoAmpatzis"
           git config user.email "189219701+TeoAmpatzis@users.noreply.github.com"
+          git config merge.history.driver "python scraper/merge_history.py driver %O %A %B %P"
           git add public/data
           if git diff --cached --quiet; then
             echo "No changes"
-          else
-            git commit -m "chore(data): import price history $(date -u +'%Y-%m-%d')"
-            # Data files can conflict with a commit pushed meanwhile: this run's fresh data wins.
-            git pull --rebase -X theirs
-            git push
+            exit 0
           fi
+          git commit -m "chore(data): $WHAT $(date -u +'%Y-%m-%d')"
+          for attempt in 1 2 3; do
+            git pull --rebase -X theirs origin main
+            python scraper/merge_history.py check origin/main $ALLOW_SHRINK
+            if git push origin HEAD:main; then exit 0; fi
+            echo "main moved during the push (attempt $attempt); retrying"
+            sleep 10
+          done
+          exit 1

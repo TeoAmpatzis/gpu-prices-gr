@@ -1,0 +1,4 @@
+# History files are merged point by point, never replaced (scraper/merge_history.py). Both data
+# workflows register the "history" driver; without it (a local clone) git merges them as text.
+public/data/*/history.json merge=history
+public/data/*/history_imported.json merge=history

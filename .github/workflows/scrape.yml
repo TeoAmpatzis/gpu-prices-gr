@@ -4,10 +4,21 @@ on:
   schedule:
     - cron: "17 */6 * * *"
   workflow_dispatch:
+    inputs:
+      allow_history_shrink:
+        description: "Planned data change (e.g. merging duplicate products): let history points disappear in this run only (they are logged)"
+        type: boolean
+        default: false
+      allow_data_drop:
+        description: "Planned data change: let the next Vercel build publish more than 30% fewer models/listings (tags the commit [allow-data-drop])"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
 
+# Shared with history.yml: the two data workflows never run at the same time; a new run waits
+# (it is not cancelled) until the running one has pushed. Keep the group name identical in both.
 concurrency:
   group: scrape
   cancel-in-progress: false
@@ -18,7 +29,11 @@ jobs:
     # A full run (8 categories + the shipping refresh) takes ~40 min; the rest is headroom.
     timeout-minutes: 90
     steps:
+      # The latest main when the job starts, not the commit of the moment it was triggered: a run
+      # that waited in the queue must see what the run before it pushed (2026-09-30 data loss).
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - uses: actions/setup-python@v5
         with:
@@ -32,17 +47,29 @@ jobs:
         run: python scraper/main.py
 
       - name: Commit data
+        env:
+          ALLOW_SHRINK: ${{ inputs.allow_history_shrink && '--allow-shrink' || '' }}
+          DROP_TAG: ${{ inputs.allow_data_drop && ' [allow-data-drop]' || '' }}
         run: |
           # Commit as the repo owner: Vercel Hobby blocks deploys of commits by
           # authors it cannot map to the owner's Git account (e.g. github-actions[bot]).
           git config user.name "TeoAmpatzis"
           git config user.email "189219701+TeoAmpatzis@users.noreply.github.com"
+          # History files merge point by point (.gitattributes); other data files: this run wins.
+          git config merge.history.driver "python scraper/merge_history.py driver %O %A %B %P"
           git add public/data
           if git diff --cached --quiet; then
             echo "No changes"
-          else
-            git commit -m "chore(data): update prices $(date -u +'%Y-%m-%d %H:%M')"
-            # Data files can conflict with a commit pushed meanwhile: this run's fresh data wins.
-            git pull --rebase -X theirs
-            git push
+            exit 0
           fi
+          git commit -m "chore(data): update prices $(date -u +'%Y-%m-%d %H:%M')${DROP_TAG}"
+          # Replay this commit on the latest main right before pushing, check that no history was
+          # lost, push; if main moved again in between, do it again (3 tries).
+          for attempt in 1 2 3; do
+            git pull --rebase -X theirs origin main
+            python scraper/merge_history.py check origin/main $ALLOW_SHRINK
+            if git push origin HEAD:main; then exit 0; fi
+            echo "main moved during the push (attempt $attempt); retrying"
+            sleep 10
+          done
+          exit 1
