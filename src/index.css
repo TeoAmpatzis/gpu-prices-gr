@@ -161,6 +161,16 @@
   .badge-low {
     @apply bg-low-bg text-low-fg;
   }
+  /* PC builder fit labels: fits (measured), likely fits (estimate), fit not verified (no data). */
+  .badge-fits {
+    @apply bg-low-bg text-low-fg;
+  }
+  .badge-likely {
+    @apply bg-warn-bg text-warn-fg;
+  }
+  .badge-unverified {
+    @apply bg-sunken text-muted ring-1 ring-inset ring-line-strong;
+  }
   /* Inline notices: warning (builder) and error (failed load). */
   .notice-warn {
     @apply rounded-xl bg-warn-bg text-warn-fg;

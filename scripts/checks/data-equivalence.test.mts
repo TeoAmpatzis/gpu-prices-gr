@@ -120,11 +120,17 @@ const spec = (slot: string, m: { cheapest: Record<string, unknown> } & Record<st
       slot === 'cpu' && [B.cpuSocket(m), B.cpuHasIgpu(m), B.cpuCooler(m), m.cheapest.cores],
       slot === 'mobo' && [B.moboSocket(m), B.moboMemory(m), B.moboForm(m), B.moboSlots(m), m.cheapest.chipset],
       slot === 'gpu' && [B.gpuLength(m), B.gpuPsu(m.cheapest), m.cheapest.vram],
-      slot === 'case' && [B.caseBoard(m), B.caseGpuMax(m), B.caseCoolerMax(m), B.caseFanSlots(m), B.caseRadiators(m)],
+      slot === 'case' && [
+        B.caseBoard(m), B.caseBoardStated(m), B.caseGpuMax(m), B.caseCoolerMax(m), B.caseFanSlots(m), B.caseRadiators(m),
+        B.caseFanMounts(m), B.caseFansIncluded(m), B.caseRadiatorSizes(m),
+      ],
       slot === 'cooler' && [B.coolerSockets(m), B.coolerHeight(m), m.cheapest.type, m.cheapest.radiator],
       slot === 'ram' && [m.cheapest.type, m.cheapest.modules, m.cheapest.formFactor, m.cheapest.cas, m.cheapest.brand],
       slot === 'psu' && [m.cheapest.watts, m.cheapest.formFactor, m.cheapest.modular, m.cheapest.brand],
-      slot === 'fan' && [m.cheapest.size, m.cheapest.pack, m.cheapest.pwm, m.cheapest.rgb],
+      slot === 'fan' && [
+        m.cheapest.size, m.cheapest.pack, m.cheapest.pwm, m.cheapest.rgb,
+        m.cheapest.connector, m.cheapest.airflowCfm, m.cheapest.pressureMm, m.cheapest.fanType,
+      ],
       // Not m.group: the builder never reads it, and a one-row model takes it from its cheapest listing,
       // which can disagree with the most common value (one board listed as AM4 and AM5 by shops).
       m.pro, JSON.stringify(saleOf(m.listings, m.cheapest)?.pct ?? null),
@@ -159,9 +165,16 @@ for (const slot of B.SLOTS) {
   }
   console.log(`builder ${slot}: ${full.length} models compared`);
 }
-// Compatibility with sample builds: one random part per slot, then every other slot's options.
+// Graphics chip length ranges ("Likely fits"): the same from the rows as from the full data.
+const ctxOld = B.fitContext(oldModels.gpu);
+const ctxNew = B.fitContext(newModels.gpu);
+const ctxJson = (c: any) => JSON.stringify([...c.chips.entries()].sort());
+if (ctxJson(ctxOld) !== ctxJson(ctxNew)) fail('builder chip length ranges differ');
+console.log(`builder chip length ranges: ${ctxOld.chips.size} chips with enough measured cards`);
+// Compatibility with sample builds: one random part per slot, then every other slot's options and labels.
 let rand = 7;
 const pick = <T,>(xs: T[]) => xs[(rand = (rand * 48271) % 2147483647) % xs.length];
+const labels: Record<string, number> = {};
 for (let t = 0; t < 40; t++) {
   const slots = B.SLOTS.filter(() => pick([0, 1]) === 1);
   const buildOld: any = {};
@@ -173,14 +186,20 @@ for (let t = 0; t < 40; t++) {
     buildNew[s] = newModels[s].find((x: any) => x.key === m.key);
   }
   for (const s of B.SLOTS) {
-    const a = B.candidates(s, oldModels[s], buildOld).map((m: any) => m.key).sort().join('|');
-    const b = B.candidates(s, newModels[s], buildNew).map((m: any) => m.key).sort().join('|');
-    if (a !== b) fail(`builder compat test ${t} slot ${s} differs (build: ${Object.keys(buildOld).join(',')})`);
+    const rated = (ms: any[], b: any, ctx: any) =>
+      B.candidates(s, ms, b, ctx)
+        .map((m: any) => `${m.key}=${B.rate(s, m, { ...b, [s]: undefined }, ctx).fit}`)
+        .sort();
+    const a = rated(oldModels[s], buildOld, ctxOld);
+    const b = rated(newModels[s], buildNew, ctxNew);
+    if (a.join('|') !== b.join('|')) fail(`builder compat test ${t} slot ${s} differs (build: ${Object.keys(buildOld).join(',')})`);
+    for (const x of a) labels[x.split('=').pop()!] = (labels[x.split('=').pop()!] ?? 0) + 1;
   }
-  const n1 = JSON.stringify(B.buildNotes(buildOld));
-  const n2 = JSON.stringify(B.buildNotes(buildNew));
+  const n1 = JSON.stringify(B.buildNotes(buildOld, ctxOld));
+  const n2 = JSON.stringify(B.buildNotes(buildNew, ctxNew));
   if (n1 !== n2) fail(`builder notes test ${t} differ`);
 }
+console.log(`builder labels in the sample builds: ${JSON.stringify(labels)}`);
 console.log(`coverage: ${JSON.stringify(bf.coverage)}`);
 console.log(failures ? `\n${failures} FAILURES` : '\nALL EQUAL');
 process.exit(failures ? 1 : 0);

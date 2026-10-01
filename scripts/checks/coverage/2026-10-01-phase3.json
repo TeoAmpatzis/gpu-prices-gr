@@ -1,0 +1,61 @@
+{
+ "cpu": {
+  "offered": 96.3,
+  "socket": 98,
+  "cooler in the box (stated)": 52.2,
+  "TDP": 59
+ },
+ "mobo": {
+  "offered": 97.1,
+  "socket": 100,
+  "memory type": 97.2,
+  "form factor": 99.9,
+  "RAM slots (stated)": 75.3
+ },
+ "ram": {
+  "offered": 81.4,
+  "type": 100,
+  "form factor": 100,
+  "sticks": 100
+ },
+ "gpu": {
+  "offered": 99.9,
+  "length (measured)": 42.2,
+  "length measured or chip estimate": 63.1,
+  "minimum PSU (stated)": 45.5,
+  "PSU wattage (stated or chip table)": 99.9
+ },
+ "cooler": {
+  "offered": 100,
+  "sockets": 11,
+  "height (air coolers)": 9.9,
+  "radiator size (AIO)": 100
+ },
+ "case": {
+  "offered": 100,
+  "max graphics card length": 7.3,
+  "max cooler height": 7.2,
+  "board size (stated)": 70.4,
+  "board size (stated or by case size)": 100,
+  "fan positions (total)": 6.8,
+  "fan positions per size": 0,
+  "140 mm fan support": 0,
+  "included fans": 0,
+  "radiator positions": 6.6,
+  "radiator sizes per position": 0
+ },
+ "fan": {
+  "offered": 85.9,
+  "size": 100,
+  "pack": 100,
+  "connector (3-pin / 4-pin PWM)": 0,
+  "airflow (CFM)": 0,
+  "static pressure (mmH2O)": 0,
+  "airflow / pressure type (brand)": 0
+ },
+ "psu": {
+  "offered": 100,
+  "wattage": 100,
+  "form factor": 100
+ }
+}
