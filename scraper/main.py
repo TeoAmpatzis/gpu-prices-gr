@@ -136,10 +136,9 @@ def update_history(history: dict, listings: list[dict], day: str, model_key) -> 
     return dict(sorted(history.items()))
 
 
-def finish(cat: Category, out_dir: Path, listings: list[dict], specs_budget: int) -> None:
-    """Product-page specs, then fields shared across a model's listings."""
-    print(f"[{cat.name}] specs…")
-    specs.enrich(cat.name, out_dir, listings, cat.model_key, specs_budget)
+def finish(cat: Category, out_dir: Path, listings: list[dict]) -> None:
+    """Cached product-page specs, then fields shared across a model's listings."""
+    specs.apply(cat.name, out_dir, listings)
     disagreements.clear()
     share_fields(listings, cat.shared, cat.model_key)
     for fields, key in cat.shared_by:
@@ -148,19 +147,22 @@ def finish(cat: Category, out_dir: Path, listings: list[dict], specs_budget: int
         print(f"[{cat.name}] sites disagree by >5 (safer value kept): {dict(disagreements)}")
 
 
-def specs_only(cat: Category, budget: int) -> None:
-    """Backfill product-page specs into the current latest.json without scraping (--specs-only)."""
-    out_dir = DATA_DIR / cat.name
-    path = out_dir / "latest.json"
-    data = load_json(path, None)
-    if not data or cat.name not in specs.PARSERS:
-        return
-    finish(cat, out_dir, data["listings"], budget)
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+def collect_specs(cats: list[Category], budget: dict[str, int]) -> None:
+    """New product pages for every category (one queue per site, see specs.collect), then the
+    specs re-applied to each latest.json. Runs after all the lists, and alone with --specs-only."""
+    loaded = []
+    for cat in cats:
+        data = load_json(DATA_DIR / cat.name / "latest.json", None)
+        if data and cat.name in specs.PARSERS:
+            loaded.append((cat, data))
+    print("specs…")
+    specs.collect([(cat.name, DATA_DIR / cat.name, data["listings"], cat.model_key) for cat, data in loaded], budget)
+    for cat, data in loaded:
+        finish(cat, DATA_DIR / cat.name, data["listings"])
+        (DATA_DIR / cat.name / "latest.json").write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
-def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool = True,
-                    specs_budget: int = specs.BUDGET) -> bool:
+def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool = True) -> bool:
     """Scrape one category and write its JSON files. Returns True if any source succeeded."""
     out_dir = DATA_DIR / cat.name
     latest_path, history_path = out_dir / "latest.json", out_dir / "history.json"
@@ -207,7 +209,7 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
 
     out_dir.mkdir(parents=True, exist_ok=True)
     write_image_urls(out_dir, listings, cat.model_key)
-    finish(cat, out_dir, listings, specs_budget)
+    finish(cat, out_dir, listings)
     listings.sort(key=lambda l: (l["chip"], l["price"]))
     if with_shipping:
         print(f"[{cat.name}] best totals (price + shipping)…")
@@ -229,7 +231,7 @@ def main() -> int:
     ap.add_argument("--category", choices=CATEGORIES.keys(), action="append")
     ap.add_argument("--debug", action="store_true", help="dump fetched HTML to scraper/debug/")
     ap.add_argument("--no-shipping", action="store_true", help="skip the price + shipping refresh (cache still applied)")
-    ap.add_argument("--specs-budget", type=int, default=specs.BUDGET, help="product pages per category for specs")
+    ap.add_argument("--specs-budget", type=int, help="product pages per site for specs (default: specs.BUDGET)")
     ap.add_argument("--specs-only", action="store_true", help="only backfill specs into the existing latest.json")
     ap.add_argument("--history-only", action="store_true", help="only import Skroutz price history into history.json")
     ap.add_argument("--history-budget", type=int, default=site_history.BUDGET, help="price_graph requests per category")
@@ -247,13 +249,14 @@ def main() -> int:
                 print(f"[{cat.name}] price history…")
                 site_history.enrich(cat.name, DATA_DIR / cat.name, data["listings"], cat.model_key, args.history_budget)
         return 0
+    budget = specs.BUDGET if args.specs_budget is None else {site: args.specs_budget for site in specs.BUDGET}
     if args.specs_only:
-        for cat in cats:
-            specs_only(cat, args.specs_budget)
+        collect_specs(cats, budget)
         return 0
     cats = run_order(cats)
     print("order: " + ", ".join(cat.name for cat in cats))
-    ok = [scrape_category(cat, args.only, specs_budget=args.specs_budget) for cat in cats]
+    ok = [scrape_category(cat, args.only) for cat in cats]
+    collect_specs(cats, budget)
     return 0 if any(ok) else 1
 
 
