@@ -73,7 +73,9 @@ def make_listing(
     *, source: str, native_id: str, title: str, url: str, price: float,
     shop_count: int | None, scraped_at: str, specs: str = "",
 ) -> CaseListing | None:
-    title = re.sub(r"\s+", " ", title).strip()
+    # Snif starts every case title with "Desktop" ("Desktop Aerocool Cylon Midi-Tower - Μαύρο"), which
+    # would otherwise be taken for the vendor.
+    title = re.sub(r"^Desktop\s+", "", re.sub(r"\s+", " ", title).strip(), flags=re.I)
     text = f"{title} {url.replace('-', ' ')} {specs}"
     if price <= 0 or not IS_CASE.search(text):
         return None
