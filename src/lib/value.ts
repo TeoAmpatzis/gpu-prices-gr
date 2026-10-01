@@ -23,8 +23,11 @@ const GPU_PERF: Record<string, number> = {
   'Arc B580': 105, 'Arc B570': 92, 'Arc A770': 90, 'Arc A750': 82, 'Arc A580': 75, 'Arc A380': 35, 'Arc A310': 25,
 };
 
+/** Relative gaming performance of a GPU chip (RTX 4060 = 100), or null when not in the table. */
+export const gpuPerf = (chip: string): number | null => GPU_PERF[chip] ?? null;
+
 export const gpuValue = (m: Model<GpuListing>): number | null => {
-  const perf = GPU_PERF[m.cheapest.chip];
+  const perf = gpuPerf(m.cheapest.chip);
   return perf ? perf / m.cheapest.price : null;
 };
 
