@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Check, RotateCcw, Search } from 'lucide-react';
 import type { BaseListing } from '../types';
 import { defaultFilters, type Filters, type Segment, type SortKey } from '../lib/data';
@@ -7,6 +7,9 @@ import { groupName, type CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Text } from '../lib/i18n';
 import { SOURCES, SOURCE_NAMES } from '../lib/sources';
 import SortHelp from './SortHelp';
+
+/** Search waits this long after the last keystroke before filtering (ms). */
+const SEARCH_DELAY = 150;
 
 const SORTS: { value: SortKey; label: Text }[] = [
   { value: 'model', label: T.sortModel },
@@ -80,6 +83,27 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
   const set = <K extends keyof Filters>(k: K, v: Filters[K]) => onChange({ ...f, [k]: v });
+
+  // Search: the box updates at once, the results 150 ms after the last keystroke.
+  const [query, setQuery] = useState(f.query);
+  const latest = useRef({ f, onChange });
+  latest.current = { f, onChange };
+  const sent = useRef(f.query);
+  useEffect(() => {
+    // A change that didn't come from typing here (reset, a removed chip, the URL) replaces the text.
+    if (f.query !== sent.current) {
+      sent.current = f.query;
+      setQuery(f.query);
+    }
+  }, [f.query]);
+  useEffect(() => {
+    if (query === sent.current) return;
+    const id = setTimeout(() => {
+      sent.current = query;
+      latest.current.onChange({ ...latest.current.f, query });
+    }, SEARCH_DELAY);
+    return () => clearTimeout(id);
+  }, [query]);
   const segments: { value: Segment; label: Text }[] = cfg.segments
     ? [
         { value: 'main', label: cfg.segments.main },
@@ -95,7 +119,7 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
           <span className="text-sm font-semibold">{t(T.filters)}</span>
           <button
             type="button"
-            onClick={() => onChange(defaultFilters(cfg.groups))}
+            onClick={() => onChange({ ...defaultFilters(cfg.groups), per: f.per })}
             className="tap inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-medium text-muted edge transition hover:bg-hover hover:text-fg dark:ring-0"
             title={t(T.resetTitle)}
           >
@@ -106,8 +130,8 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
       <label className="relative">
         <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
         <input
-          value={f.query}
-          onChange={(e) => set('query', e.target.value)}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
           placeholder={t(cfg.searchPlaceholder)}
           aria-label={t(T.search)}
           className="field w-full text-ellipsis py-2 pl-9 pr-3"

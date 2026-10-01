@@ -1,11 +1,11 @@
-// Filters ⇄ URL, inside the hash route: "#ram?type=ddr5&cap=32&kit=2&cl=30&sort=price-asc".
+// Filters ⇄ URL, inside the hash route: "#ram?type=ddr5&cap=32&kit=2&cl=30&sort=price-asc&page=2&per=100".
 // Generic for every category: the pill group, sources, segment, sale/low chips, max price, sort and
 // every `extraFilters` entry are encoded from the category config, so new filters get URLs for free.
 
 import type { BaseListing, Category } from '../types';
 import type { CategoryConfig } from './categories';
 import { groupName } from './categories';
-import { defaultFilters, type Filters, type Segment, type SortKey } from './data';
+import { PER_PAGE, defaultFilters, type Filters, type Segment, type SortKey } from './data';
 import { SOURCE_NAMES } from './sources';
 
 import { slug } from './slug';
@@ -49,6 +49,8 @@ export function encodeFilters<L extends BaseListing>(f: Filters, cfg: CategoryCo
   if (f.lowOnly) p.set('low', '1');
   if (f.maxPrice != null) p.set('max', String(f.maxPrice));
   if (f.sort !== d.sort) p.set('sort', f.sort);
+  if (f.page !== d.page) p.set('page', String(f.page));
+  if (f.per !== d.per) p.set('per', String(f.per));
   // Keep commas readable in shared links.
   return p.toString().replace(/%2C/gi, ',');
 }
@@ -79,6 +81,10 @@ export function decodeFilters<L extends BaseListing>(p: URLSearchParams, cfg: Ca
   if (p.get('max') && Number.isFinite(max) && max > 0) f.maxPrice = max;
   const sort = p.get('sort') as SortKey | null;
   if (sort && SORTS.includes(sort)) f.sort = sort;
+  const page = Number(p.get('page'));
+  if (Number.isInteger(page) && page > 1) f.page = page;
+  const per = Number(p.get('per'));
+  if ((PER_PAGE as readonly number[]).includes(per)) f.per = per;
   return f;
 }
 

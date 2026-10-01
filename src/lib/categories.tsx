@@ -363,7 +363,8 @@ export const MOBO: CategoryConfig<MoboListing> = {
   ],
   before: [
     { header: 'Chipset', cell: (m) => moboChipset(m) ?? '—' },
-    { header: 'Socket', className: 'hidden md:table-cell', cell: (m) => moboSocket(m) ?? '—' },
+    // From xl only: at 1024–1279px eight columns don't fit (the chipset already tells the platform).
+    { header: 'Socket', className: 'hidden xl:table-cell', cell: (m) => moboSocket(m) ?? '—' },
     { header: SIZE, className: 'hidden sm:table-cell', cell: (m, lang) => groupName(moboForm(m), lang) },
   ],
   after: [

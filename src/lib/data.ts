@@ -219,7 +219,14 @@ export interface Filters {
   extra: Record<string, string>;
   saleOnly: boolean;
   lowOnly: boolean;
+  /** Pagination (not a filter: not counted, not a chip); any filter change goes back to page 1. */
+  page: number;
+  per: number;
 }
+
+/** Results per page offered (Modrinth-style); 50 is the default. */
+export const PER_PAGE = [20, 50, 100] as const;
+export const DEFAULT_PER = 50;
 
 export function defaultFilters(groups: string[]): Filters {
   return {
@@ -232,6 +239,8 @@ export function defaultFilters(groups: string[]): Filters {
     extra: {},
     saleOnly: false,
     lowOnly: false,
+    page: 1,
+    per: DEFAULT_PER,
   };
 }
 

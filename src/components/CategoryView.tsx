@@ -1,7 +1,7 @@
-import { useCallback, useDeferredValue, useEffect, useMemo, useState } from 'react';
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { AlertTriangle, SlidersHorizontal } from 'lucide-react';
 import type { BaseListing } from '../types';
-import { activeFilterCount, applyFilters, defaultFilters, loadData, type CategoryData } from '../lib/data';
+import { PER_PAGE, activeFilterCount, applyFilters, defaultFilters, loadData, type CategoryData } from '../lib/data';
 import type { CategoryConfig } from '../lib/categories';
 import { facetCounts } from '../lib/facets';
 import { T, tr, useLang } from '../lib/i18n';
@@ -10,6 +10,7 @@ import ActiveFilters from './ActiveFilters';
 import BottomSheet from './BottomSheet';
 import FilterBar from './FilterBar';
 import ModelTable from './ModelTable';
+import Pagination from './Pagination';
 import Skeleton from './Skeleton';
 import SourcesStatus from './SourcesStatus';
 
@@ -22,6 +23,7 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
   // Phones and tablets (< lg): the filters open in a bottom sheet.
   const [sheetOpen, setSheetOpen] = useState(false);
   const closeSheet = useCallback(() => setSheetOpen(false), []);
+  const top = useRef<HTMLDivElement>(null); // the results column (pager scrolls back to it)
 
   useEffect(() => {
     loadData<L>(cfg.id)
@@ -60,7 +62,10 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
     );
   }
   const active = activeFilterCount(filters, cfg.groups);
-  const reset = () => setFilters({ ...defaultFilters(cfg.groups), sort: filters.sort });
+  // A page number from an old link may be past the end now: show the last page instead.
+  const pages = Math.max(1, Math.ceil(models.length / filters.per));
+  const page = Math.min(filters.page, pages);
+  const reset = () => setFilters({ ...defaultFilters(cfg.groups), sort: filters.sort, per: filters.per });
   return (
     // Filters in a left sidebar (sticky) on wide screens; below lg they open in a bottom sheet.
     <div className="grid items-start gap-4 lg:grid-cols-[17rem_minmax(0,1fr)]">
@@ -105,7 +110,7 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
       >
         <FilterBar bare cfg={cfg} filters={filters} onChange={setFilters} options={options} counts={counts} />
       </BottomSheet>
-      <div className="flex min-w-0 flex-col gap-3">
+      <div ref={top} className="flex min-w-0 scroll-mt-4 flex-col gap-3">
         <div className="flex flex-wrap items-center justify-between gap-2 px-1 text-sm text-muted">
           <span>
             <span className="font-semibold text-fg">{models.length}</span> {tr(lang, T.models)}
@@ -113,7 +118,22 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
           <SourcesStatus latest={data.latest} />
         </div>
         <ActiveFilters cfg={cfg} filters={filters} onChange={setFilters} options={options} />
-        <ModelTable cfg={cfg} models={models} history={data.history} onReset={reset} />
+        {/* Filters, counts and sorting run on every model; only the rows of one page are rendered. */}
+        <ModelTable cfg={cfg} models={models.slice((page - 1) * filters.per, page * filters.per)} history={data.history} onReset={reset} />
+        {models.length > PER_PAGE[0] && (
+          <Pagination
+            page={page}
+            pages={pages}
+            per={filters.per}
+            total={models.length}
+            onPage={(p) => {
+              setFilters({ ...filters, page: p });
+              // Start the new page from its first row, like turning a page.
+              if ((top.current?.getBoundingClientRect().top ?? 0) < 0) top.current?.scrollIntoView({ block: 'start' });
+            }}
+            onPer={(per) => setFilters({ ...filters, per })}
+          />
+        )}
       </div>
     </div>
   );
