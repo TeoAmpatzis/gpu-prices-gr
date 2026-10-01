@@ -3,7 +3,6 @@
 
 import type { Text } from '../lib/i18n';
 import { CONTACT_EMAIL, OWNER_LOCATION, OWNER_NAME, PRIVACY_UPDATED, REPO_URL } from '../lib/site';
-import { FAMILY_CREDITS } from '../lib/images';
 
 export interface InfoSection {
   heading: Text;
@@ -83,8 +82,8 @@ export const ABOUT: InfoPageContent = {
       heading: { el: 'Φωτογραφίες προϊόντων', en: 'Product photos' },
       paragraphs: [
         {
-          el: `Οι φωτογραφίες των προϊόντων ανήκουν στους κατόχους τους (κατασκευαστές και καταστήματα) και αφαιρούνται κατόπιν αιτήματος: γράψτε στο ${mail}. Οι ενδεικτικές φωτογραφίες επεξεργαστών είναι από το Wikimedia Commons με ελεύθερη άδεια· δείτε τις [Πηγές φωτογραφιών](#credits).`,
-          en: `Product photos belong to their respective owners (manufacturers and shops) and are removed on request: write to ${mail}. The representative processor photos are from Wikimedia Commons under open licenses; see [Image credits](#credits).`,
+          el: `Οι φωτογραφίες των προϊόντων προέρχονται από τις σελίδες των BestPrice, Shopflix, Skroutz και Snif. Ανήκουν στους κατόχους τους (κατασκευαστές και καταστήματα) και αφαιρούνται κατόπιν αιτήματος: γράψτε στο ${mail}.`,
+          en: `Product photos come from the pages of BestPrice, Shopflix, Skroutz and Snif. They belong to their respective owners (manufacturers and shops) and are removed on request: write to ${mail}.`,
         },
       ],
     },
@@ -96,45 +95,6 @@ export const ABOUT: InfoPageContent = {
           en: `BuildDraft.gr is a non-profit project by ${OWNER_NAME.en}. The code is available on [GitHub](${REPO_URL}) under the PolyForm Noncommercial 1.0.0 license.`,
         },
       ],
-    },
-  ],
-};
-
-const LICENSE_URL: Record<string, string> = {
-  CC0: 'https://creativecommons.org/publicdomain/zero/1.0/',
-  'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
-  'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
-};
-const license = (l: string) => (LICENSE_URL[l] ? `[${l}](${LICENSE_URL[l]})` : l);
-
-/** Image credits (#credits): every openly licensed photo, from scraper/image_families.json. */
-export const CREDITS: InfoPageContent = {
-  sections: [
-    {
-      heading: { el: 'Φωτογραφίες προϊόντων', en: 'Product photos' },
-      paragraphs: [
-        {
-          el: `Οι φωτογραφίες των προϊόντων προέρχονται από τις σελίδες των BestPrice, Shopflix, Skroutz και Snif και ανήκουν στους κατόχους τους (κατασκευαστές και καταστήματα). Αφαιρούνται κατόπιν αιτήματος: γράψτε στο ${mail}.`,
-          en: `Product photos come from the pages of BestPrice, Shopflix, Skroutz and Snif and belong to their respective owners (manufacturers and shops). They are removed on request: write to ${mail}.`,
-        },
-      ],
-    },
-    {
-      heading: { el: 'Ενδεικτικές φωτογραφίες επεξεργαστών', en: 'Representative processor photos' },
-      paragraphs: [
-        {
-          el: 'Για τους επεξεργαστές εμφανίζεται μία φωτογραφία ανά οικογένεια και συσκευασία (κουτί ή tray), με τη σημείωση «Ενδεικτική φωτογραφία». Είναι από το Wikimedia Commons με ελεύθερες άδειες· έχουν σμικρυνθεί και μετατραπεί σε WebP σε λευκό φόντο.',
-          en: 'Processors show one photo per family and packaging (box or tray), marked "Representative photo". They are from Wikimedia Commons under open licenses; they have been resized and converted to WebP on a white background.',
-        },
-      ],
-      bullets: FAMILY_CREDITS.map((f) => {
-        const pack = { el: f.packaging === 'box' ? 'κουτί' : 'tray', en: f.packaging === 'box' ? 'box' : 'tray' };
-        const file = `[${f.file.replace(/^File:/, '')}](${f.url})`;
-        return {
-          el: `**${f.label}** (${pack.el}): ${file}, ${f.author}, ${license(f.license)}`,
-          en: `**${f.label}** (${pack.en}): ${file}, ${f.author}, ${license(f.license)}`,
-        };
-      }),
     },
   ],
 };

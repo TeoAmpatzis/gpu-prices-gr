@@ -54,7 +54,7 @@ export default function ModelTable<L extends BaseListing>({ cfg, models, history
             cfg={cfg}
             model={m}
             history={history[m.key]}
-            image={productImage(cfg.id, m.cheapest, img[m.key])}
+            image={productImage(img[m.key])}
             open={openKey === m.key}
             onToggle={() => setOpenKey(openKey === m.key ? null : m.key)}
           />
@@ -88,7 +88,7 @@ export default function ModelTable<L extends BaseListing>({ cfg, models, history
               cfg={cfg}
               model={m}
               history={history[m.key]}
-              image={productImage(cfg.id, m.cheapest, img[m.key])}
+              image={productImage(img[m.key])}
               open={openKey === m.key}
               onToggle={() => setOpenKey(openKey === m.key ? null : m.key)}
             />

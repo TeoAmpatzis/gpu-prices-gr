@@ -18,7 +18,6 @@ import type {
   Category,
   Columns,
   CoolerListing,
-  CpuListing,
   DailyLow,
   GpuListing,
   History,
@@ -31,7 +30,6 @@ import type {
 } from '../types';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './categories';
 import { fromColumns } from './columns';
-import { cpuPackaging } from './images';
 import { groupModels, mostCommon, saleOf, type Model } from './data';
 import {
   SLOTS,
@@ -209,8 +207,6 @@ export function builderFile(
     for (const r of rows) {
       const id = r.id as string;
       r.img = image?.(slot as Category, cfgOf(slot as Category).modelKey(r as unknown as BaseListing)) ?? null;
-      // Box or tray decided here, while the row still has its own title (the family photo).
-      if (slot === 'cpu') r.packaging = cpuPackaging(r as unknown as CpuListing) === 'box' ? 'Box' : 'Tray';
       extra.urls[id] = r.url as string;
       r.url = null;
       if (slot !== 'gpu') {
