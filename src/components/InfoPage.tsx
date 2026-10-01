@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { InfoPageContent } from '../content/pages';
+import { ABOUT, CONTACT, PRIVACY, type InfoPageContent } from '../content/pages';
 import { tr, useLang } from '../lib/i18n';
 
 // Inline markup allowed in page text: [label](url), **bold**, `code`.
@@ -42,9 +42,15 @@ function inline(text: string): ReactNode[] {
   return out;
 }
 
-/** A text page (About, Contact, Privacy): sections of paragraphs and bullet lists on a card. */
-export default function InfoPage({ content }: { content: InfoPageContent }) {
+const CONTENT: Record<'about' | 'contact' | 'privacy', InfoPageContent> = { about: ABOUT, contact: CONTACT, privacy: PRIVACY };
+
+/**
+ * A text page (About, Contact, Privacy): sections of paragraphs and bullet lists on a card. Loaded
+ * lazily with its texts (App.tsx), so other pages don't download them.
+ */
+export default function InfoPage({ page }: { page: keyof typeof CONTENT }) {
   const lang = useLang();
+  const content = CONTENT[page];
   return (
     <article className="card max-w-3xl p-5 sm:p-8">
       <div className="flex flex-col gap-7">

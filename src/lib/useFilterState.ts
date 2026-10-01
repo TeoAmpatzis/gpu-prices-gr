@@ -38,7 +38,11 @@ export function useFilterState<L extends BaseListing>(cfg: CategoryConfig<L>) {
   }, [cfg]);
 
   const setFilters = useCallback(
-    (f: Filters) => {
+    (next: Filters) => {
+      // Any change other than the page itself starts again at page 1 (the old page may not exist).
+      const { page: _old, ...was } = ref.current;
+      const { page: _new, ...now } = next;
+      const f = JSON.stringify(was) === JSON.stringify(now) ? next : { ...next, page: 1 };
       setState(f);
       const { page } = parseHash();
       if (page === cfg.id || (cfg.id === 'gpu' && isHome(page))) writeFiltersToUrl(cfg, f, cfg.id);

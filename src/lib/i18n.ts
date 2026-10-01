@@ -117,4 +117,10 @@ export const T = {
   darkTheme: { el: 'Σκούρο θέμα', en: 'Dark theme' },
   lightTheme: { el: 'Φωτεινό θέμα', en: 'Light theme' },
   switchLang: { el: 'Switch to English', en: 'Αλλαγή σε Ελληνικά' },
+  pagination: { el: 'Σελίδες αποτελεσμάτων', en: 'Result pages' },
+  page: { el: 'Σελίδα', en: 'Page' },
+  of: { el: 'από', en: 'of' },
+  prevPage: { el: 'Προηγούμενη σελίδα', en: 'Previous page' },
+  nextPage: { el: 'Επόμενη σελίδα', en: 'Next page' },
+  perPage: { el: 'Ανά σελίδα', en: 'Per page' },
 } satisfies Record<string, Text>;

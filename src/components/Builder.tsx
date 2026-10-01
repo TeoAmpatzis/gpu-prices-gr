@@ -285,10 +285,10 @@ export default function Builder() {
                       {OPTIONAL.includes(slot) && <span className="text-faint"> · {t(S.optional)}</span>}
                     </div>
                     {m ? (
-                      <div className="truncate font-semibold">
-                        {m.chip}
-                        <span className="ml-2 text-xs font-normal text-muted">{specLine(slot, m, lang)}</span>
-                      </div>
+                      <>
+                        <div className="font-semibold [overflow-wrap:anywhere]">{m.chip}</div>
+                        <div className="text-xs text-muted">{specLine(slot, m, lang)}</div>
+                      </>
                     ) : (
                       <div className="text-sm text-faint">—</div>
                     )}

@@ -1,20 +1,35 @@
-import { useEffect, useState } from 'react';
-import { Info, Mail, ShieldCheck, Wrench } from 'lucide-react';
+import { lazy, Suspense, useEffect, useState } from 'react';
+import { Info, Loader2, Mail, ShieldCheck, Wrench } from 'lucide-react';
 import type { BaseListing, Category } from './types';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './lib/categories';
 import Backdrop from './components/Backdrop';
-import Builder from './components/Builder';
 import CategoryView from './components/CategoryView';
-import InfoPage from './components/InfoPage';
 import Logo from './components/Logo';
 import LangToggle from './components/LangToggle';
 import ThemeToggle from './components/ThemeToggle';
 import { T, tr, useLang } from './lib/i18n';
-import { ABOUT, CONTACT, PRIVACY, type InfoPageContent } from './content/pages';
+import { prefetch } from './lib/data';
 import { OWNER_NAME } from './lib/site';
 
 type InfoId = 'about' | 'contact' | 'privacy';
 type Page = Category | 'builder' | InfoId;
+
+// The PC builder and the text pages are separate chunks, loaded when opened (or when their link is
+// hovered/focused/touched, together with the builder's data).
+const loadBuilderView = () => import('./components/Builder');
+const loadInfoView = () => import('./components/InfoPage');
+const Builder = lazy(loadBuilderView);
+const InfoPage = lazy(loadInfoView);
+
+/** While a lazily loaded page's code arrives (same look as the builder's own loading state). */
+function PageLoading() {
+  const lang = useLang();
+  return (
+    <div className="flex items-center justify-center gap-2 py-24 text-faint">
+      <Loader2 className="h-5 w-5 animate-spin" /> {tr(lang, T.loading)}
+    </div>
+  );
+}
 
 /** Text pages, linked from the footer (#about, #contact, #privacy). */
 const INFO: Record<
@@ -23,7 +38,6 @@ const INFO: Record<
     title: { el: string; en: string };
     subtitle: { el: string; en: string };
     icon: typeof Info;
-    content: InfoPageContent;
   }
 > = {
   about: {
@@ -33,13 +47,11 @@ const INFO: Record<
       en: 'What BuildDraft.gr is and where the prices come from.',
     },
     icon: Info,
-    content: ABOUT,
   },
   contact: {
     title: { el: 'Επικοινωνία', en: 'Contact' },
     subtitle: { el: 'Ερωτήσεις, διορθώσεις και προτάσεις.', en: 'Questions, corrections and suggestions.' },
     icon: Mail,
-    content: CONTACT,
   },
   privacy: {
     title: { el: 'Πολιτική απορρήτου', en: 'Privacy policy' },
@@ -48,7 +60,6 @@ const INFO: Record<
       en: 'What data is processed and what your rights are.',
     },
     icon: ShieldCheck,
-    content: PRIVACY,
   },
 };
 const INFO_IDS = Object.keys(INFO) as InfoId[];
@@ -57,6 +68,16 @@ const INFO_IDS = Object.keys(INFO) as InfoId[];
 const TAB =
   'inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-t-lg border border-b-2 px-2 pb-3 pt-1 text-sm transition dark:rounded-none dark:border-x-0 dark:border-t-0';
 const isInfo = (p: Page): p is InfoId => (INFO_IDS as string[]).includes(p);
+
+/** Tab link props that start loading the tab's data on hover, keyboard focus or touch (data.ts prefetch). */
+const prefetchOn = (page: string) => {
+  const go = () => {
+    prefetch(page);
+    if (page === 'builder') void loadBuilderView();
+    if ((INFO_IDS as string[]).includes(page)) void loadInfoView();
+  };
+  return { onMouseEnter: go, onFocus: go, onTouchStart: go };
+};
 
 const fromHash = (): Page => {
   // "#ram?type=ddr5" → "ram": filters live after the "?" (src/lib/filterUrl.ts).
@@ -144,6 +165,7 @@ export default function App() {
                 <a
                   key={id}
                   href={`#${id}`}
+                  {...prefetchOn(id)}
                   aria-current={id === active ? 'page' : undefined}
                   className={`tap ${TAB} font-medium ${
                     id === active
@@ -158,6 +180,7 @@ export default function App() {
             {/* The builder sits apart, at the right end of the tab bar. */}
             <a
               href="#builder"
+              {...prefetchOn('builder')}
               aria-current={active === 'builder' ? 'page' : undefined}
               className={`tap ml-auto ${TAB} font-semibold ${
                 active === 'builder'
@@ -194,10 +217,16 @@ export default function App() {
           ))}
           {visited.has('builder') && (
             <div hidden={active !== 'builder'}>
+              <Suspense fallback={<PageLoading />}>
               <Builder />
+            </Suspense>
             </div>
           )}
-          {isInfo(active) && <InfoPage content={INFO[active].content} />}
+          {isInfo(active) && (
+            <Suspense fallback={<PageLoading />}>
+              <InfoPage page={active} />
+            </Suspense>
+          )}
         </main>
 
         <footer className="mt-10 border-t border-line pt-6 text-center text-xs text-faint">
@@ -206,6 +235,7 @@ export default function App() {
               <a
                 key={id}
                 href={`#${id}`}
+                {...prefetchOn(id)}
                 aria-current={active === id ? 'page' : undefined}
                 className={`tap inline-flex items-center rounded transition-colors duration-150 hover:text-fg ${active === id ? 'font-medium text-fg' : 'text-muted'}`}
               >

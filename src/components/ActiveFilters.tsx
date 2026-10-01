@@ -70,7 +70,7 @@ export default function ActiveFilters<L extends BaseListing>({ cfg, filters: f, 
       ))}
       <button
         type="button"
-        onClick={() => onChange({ ...d, sort: f.sort })}
+        onClick={() => onChange({ ...d, sort: f.sort, per: f.per })}
         className="tap rounded-full px-3 py-1 text-sm font-medium text-muted edge underline-offset-2 transition-colors duration-150 hover:text-fg hover:underline dark:ring-0"
       >
         {t(T.clearAll)}
