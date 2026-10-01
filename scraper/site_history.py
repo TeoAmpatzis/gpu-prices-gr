@@ -38,8 +38,7 @@ def price_graph(s, url: str) -> dict[str, float]:
     m = re.search(r"(https://www\.skroutz\.gr/s/\d+/[^?#]+?)(?:\.html)?(?:[?#].*)?$", url)
     if not m:
         return {}
-    r = s.get(f"{m.group(1)}/price_graph?currency=EUR&shipping_country=GR", headers={"Accept": "application/json"})
-    r.raise_for_status()
+    r = http.get(s, f"{m.group(1)}/price_graph?currency=EUR&shipping_country=GR", headers={"Accept": "application/json"})
     out: dict[str, float] = {}
     for segment in (r.json().get("min_price") or {}).get("graphData", {}).values():
         for v in segment.get("values", []):

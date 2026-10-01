@@ -39,11 +39,11 @@ def skroutz_offer(s, url: str) -> dict | None:
     sku = re.search(r"/s/(\d+)/", url)
     if not sku:
         return None
-    r = s.get(
+    r = http.get(
+        s,
         f"https://www.skroutz.gr/s/{sku.group(1)}/shops_list?order_by=final_price",
         headers={"Turbo-Frame": "shops-list-frame"},
     )
-    r.raise_for_status()
     best = None
     for card in HTMLParser(r.text).css("li.product-card-redesigned"):
         fee_el = card.css_first(".product-card-fee-value")
