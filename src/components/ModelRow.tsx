@@ -1,17 +1,17 @@
-import { Fragment, lazy, Suspense, type ReactNode } from 'react';
+import { Fragment, lazy, Suspense, useEffect, useState, type ReactNode } from 'react';
 import { ChevronDown, ExternalLink, TrendingDown, TrendingUp } from 'lucide-react';
-import type { BaseListing, HistoryPoint } from '../types';
-import { formatPrice, type Model } from '../lib/data';
+import type { BaseListing, Category, DailyLow } from '../types';
+import { formatPrice, loadDetails, type CategoryDetails, type Model } from '../lib/data';
 import { groupName, type CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Lang } from '../lib/i18n';
 import { SOURCES } from '../lib/sources';
 import SourceBadge from './SourceBadge';
 
-// Recharts is heavy and only needed once a row is expanded.
+// The chart is only needed once a row is expanded.
 const PriceChart = lazy(() => import('./PriceChart'));
 
 /** Change vs. the most recent history point at least 7 days old. */
-function weekChange(points: HistoryPoint[] | undefined, current: number): number | null {
+function weekChange(points: DailyLow[] | undefined, current: number): number | null {
   if (!points?.length) return null;
   const cutoff = new Date(Date.now() - 7 * 864e5).toISOString().slice(0, 10);
   const past = [...points].reverse().find((p) => p.d <= cutoff);
@@ -31,7 +31,7 @@ function totalHint(l: BaseListing, lang: Lang): string {
 interface Props<L extends BaseListing> {
   cfg: CategoryConfig<L>;
   model: Model<L>;
-  history: HistoryPoint[] | undefined;
+  history: DailyLow[] | undefined;
   open: boolean;
   onToggle: () => void;
 }
@@ -83,16 +83,32 @@ function PriceExtras<L extends BaseListing>({ m, delta, lang }: { m: Model<L>; d
   );
 }
 
+/** Shop links and full price history of a category, loaded the first time one of its products opens. */
+function useDetails(cat: Category): CategoryDetails | null {
+  const [details, setDetails] = useState<CategoryDetails | null>(null);
+  useEffect(() => {
+    let live = true;
+    loadDetails(cat)
+      .then((d) => live && setDetails(d))
+      .catch(() => live && setDetails({ urls: {}, history: {} }));
+    return () => {
+      live = false;
+    };
+  }, [cat]);
+  return details;
+}
+
 /** Every offer of the model (links to the shops) and its price history chart. */
-function ModelDetails<L extends BaseListing>({ m, history, lang }: { m: Model<L>; history?: HistoryPoint[]; lang: Lang }) {
+function ModelDetails<L extends BaseListing>({ cat, m, lang }: { cat: Category; m: Model<L>; lang: Lang }) {
   const price = (n: number) => formatPrice(n, lang);
+  const details = useDetails(cat);
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_22rem]">
       <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-xl bg-panel ring-1 ring-edge">
         {m.listings.map((l) => (
           <li key={l.id}>
             <a
-              href={l.url}
+              href={details?.urls[l.id]}
               target="_blank"
               rel="noopener noreferrer"
               className="tap flex items-center gap-3 px-3 py-2 text-sm tabular-nums transition-colors duration-150 hover:bg-hover"
@@ -131,9 +147,13 @@ function ModelDetails<L extends BaseListing>({ m, history, lang }: { m: Model<L>
       </ul>
       <div>
         <div className="mb-1.5 text-xs text-faint">{tr(lang, T.dailyLow)}</div>
-        <Suspense fallback={<div className="h-48 rounded-lg bg-panel ring-1 ring-edge" />}>
-          <PriceChart points={history} />
-        </Suspense>
+        {details ? (
+          <Suspense fallback={<div className="h-48 rounded-xl bg-panel ring-1 ring-edge" />}>
+            <PriceChart points={details.history[m.key]} />
+          </Suspense>
+        ) : (
+          <div className="skeleton h-48 rounded-xl" />
+        )}
       </div>
     </div>
   );
@@ -192,7 +212,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
       {open && (
         <tr className="bg-sunken">
           <td colSpan={colSpan} className="border-t border-line px-4 pb-5 pt-4">
-            <ModelDetails m={m} history={history} lang={lang} />
+            <ModelDetails cat={cfg.id} m={m} lang={lang} />
           </td>
         </tr>
       )}
@@ -252,7 +272,7 @@ export function ModelCard<L extends BaseListing>({ cfg, model: m, history, open,
       </button>
       {open && (
         <div className="border-t border-line bg-sunken p-3">
-          <ModelDetails m={m} history={history} lang={lang} />
+          <ModelDetails cat={cfg.id} m={m} lang={lang} />
         </div>
       )}
     </li>

@@ -2,7 +2,7 @@
 // given all the *other* active filters (the option's own group is left out, as shops usually do).
 // One applyFilters run per group (not per option), then the options are counted on its result.
 
-import type { BaseListing, History, Imported, SourceName } from '../types';
+import type { BaseListing, DailyLow, Imported, SourceName } from '../types';
 import type { CategoryConfig } from './categories';
 import { applyFilters, defaultFilters, type Filters, type Model, type Segment } from './data';
 import { SOURCE_NAMES } from './sources';
@@ -21,7 +21,7 @@ export function facetCounts<L extends BaseListing>(
   all: L[],
   f: Filters,
   cfg: CategoryConfig<L>,
-  history: History,
+  history: Record<string, DailyLow[]>,
   imported: Imported,
   /** Options of each extra filter (as shown in the sidebar). */
   options: Record<string, { value: string }[]>,

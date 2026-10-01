@@ -1,38 +1,90 @@
-import type { BaseListing, Category, History, HistoryPoint, Imported, Latest, SourceName } from '../types';
+import type {
+  BaseListing,
+  BuilderExtra,
+  BuilderFile,
+  Category,
+  DailyLow,
+  DetailFile,
+  History,
+  Imported,
+  Latest,
+  ListFile,
+  SourceName,
+} from '../types';
 import type { Lang } from './i18n';
 import { SOURCE_NAMES } from './sources';
 import type { CategoryConfig } from './categories';
 import { recommendedScores } from './ranking';
+import { expandHistory, fromColumns } from './columns';
+
+// The site reads files derived at build time (src/lib/derive.ts); browsers cache them for a few
+// minutes (vercel.json), so switching tabs back and forth or reopening the site doesn't refetch.
 
 export interface CategoryData<L extends BaseListing = BaseListing> {
   latest: Latest<L>;
-  history: History;
+  /** The few daily lows per model that the badges and the week change need (see derive.reduceHistory). */
+  history: Record<string, DailyLow[]>;
   imported: Imported; // Skroutz history import: all-time lows
+  builtAt: string;
 }
 
-const cache = new Map<Category, Promise<CategoryData>>();
+/** Shop links and the full price history (chart), loaded when a product is first opened. */
+export interface CategoryDetails {
+  urls: DetailFile;
+  history: History;
+}
 
-/** JSON file that may be missing (history, imports): an empty object then. */
-const optional = <T>(url: string): Promise<T> =>
-  fetch(url, { cache: 'no-cache' })
-    .then((r) => (r.ok ? (r.json() as Promise<T>) : ({} as T)))
-    .catch(() => ({}) as T);
+const getJson = <T>(url: string): Promise<T> =>
+  fetch(url).then((r) => {
+    if (!r.ok) throw new Error(`${url}: HTTP ${r.status}`);
+    return r.json() as Promise<T>;
+  });
 
-export function loadData<L extends BaseListing>(cat: Category): Promise<CategoryData<L>> {
-  let p = cache.get(cat);
-  if (!p) {
-    p = Promise.all([
-      fetch(`/data/${cat}/latest.json`, { cache: 'no-cache' }).then((r) => {
-        if (!r.ok) throw new Error(`${cat}/latest.json: HTTP ${r.status}`);
-        return r.json() as Promise<Latest>;
-      }),
-      optional<History>(`/data/${cat}/history.json`),
-      optional<Imported>(`/data/${cat}/history_imported.json`),
-    ]).then(([latest, history, imported]) => ({ latest, history, imported }));
-    p.catch(() => cache.delete(cat)); // allow a retry after a failed load
-    cache.set(cat, p);
-  }
-  return p as Promise<CategoryData<L>>;
+/** A promise per key that is forgotten if it fails, so the next call retries. */
+function memo<K, V>(load: (k: K) => Promise<V>): (k: K) => Promise<V> {
+  const cache = new Map<K, Promise<V>>();
+  return (k) => {
+    let p = cache.get(k);
+    if (!p) {
+      p = load(k);
+      p.catch(() => cache.delete(k));
+      cache.set(k, p);
+    }
+    return p;
+  };
+}
+
+const loadList = memo(
+  (cat: Category): Promise<CategoryData> =>
+    getJson<ListFile>(`/data/${cat}/list.json`).then((f) => ({
+      latest: { updatedAt: f.updatedAt, sources: f.sources, listings: fromColumns<BaseListing>(f) },
+      history: expandHistory(f.hist),
+      imported: f.imported,
+      builtAt: f.builtAt,
+    })),
+);
+
+export const loadData = <L extends BaseListing>(cat: Category) => loadList(cat) as Promise<CategoryData<L>>;
+
+/** Same build as the list (`?v=`), so a deploy in between can't mix files of two scrapes. */
+export const loadDetails = memo(
+  (cat: Category): Promise<CategoryDetails> =>
+    loadList(cat).then(({ builtAt }) =>
+      Promise.all([
+        getJson<DetailFile>(`/data/${cat}/detail.json?v=${builtAt}`),
+        getJson<History>(`/data/${cat}/history.json?v=${builtAt}`).catch(() => ({}) as History),
+      ]).then(([urls, history]) => ({ urls, history })),
+    ),
+);
+
+export const loadBuilder = memo((_: 'all') => getJson<BuilderFile>('/data/builder.json'));
+/** Shop links and picker-search titles of the builder's rows; fetched once the builder has appeared. */
+export const loadBuilderExtra = memo((builtAt: string) => getJson<BuilderExtra>(`/data/builder-extra.json?v=${builtAt}`));
+
+/** Start loading a page's data before it is opened (tab hover/focus/touch), so the switch is instant. */
+export function prefetch(page: string) {
+  if (page === 'builder') void loadBuilder('all').catch(() => {});
+  else if (/^(gpu|cpu|mobo|ram|psu|case|fan|cooler)$/.test(page)) void loadList(page as Category).catch(() => {});
 }
 
 export interface Model<L extends BaseListing> {
@@ -81,7 +133,7 @@ const LOW_MIN_DAYS = 60;
  * Skroutz's whole history for that model (`imported[key].low`, ~2 years).
  */
 export function allTimeLow(
-  points: HistoryPoint[] | undefined,
+  points: DailyLow[] | undefined,
   imp: Imported[string] | undefined,
   price: number,
 ): AllTimeLow | null {
@@ -202,7 +254,7 @@ export function applyFilters<L extends BaseListing>(
   all: L[],
   f: Filters,
   cfg: CategoryConfig<L>,
-  history: History = {},
+  history: Record<string, DailyLow[]> = {},
   imported: Imported = {},
   /** Facet counting only needs the matching models, not their order. */
   opts: { sort?: boolean } = {},

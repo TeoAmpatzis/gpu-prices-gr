@@ -130,3 +130,51 @@ export type Imported = Record<string, string | { d: string; low?: number; since?
 
 /** Keyed by model, e.g. "RTX 5060 Ti 16GB", "Ryzen 7 9800X3D", "DDR5 32GB (2×16GB) 6000MHz Desktop". */
 export type History = Record<string, HistoryPoint[]>;
+
+/** A daily low as the table needs it (no source); see src/lib/derive.ts `reduceHistory`. */
+export type DailyLow = Pick<HistoryPoint, 'd' | 'min'>;
+
+// ---- Files generated at build time from the scraper's JSON (src/lib/derive.ts, vite-plugin-data.ts).
+// The scraper's own files above are unchanged; these are derived in the Vercel build, not committed.
+
+/** Listings as columns: field names once, then one array per listing (a missing field is null). */
+export interface Columns {
+  cols: string[];
+  rows: unknown[][];
+}
+
+/** /data/<cat>/list.json — everything a category page needs, without links and full history. */
+export interface ListFile extends Columns {
+  v: 1;
+  builtAt: string; // ISO time of the build; also the version for detail/history requests
+  updatedAt: string;
+  sources: Latest['sources'];
+  /** Per model, the few daily lows that give the same week change and all-time low as the full history. */
+  hist: Record<string, [string, number][]>;
+  imported: Imported;
+}
+
+/** /data/<cat>/detail.json — listing id → shop URL (loaded when a product is opened). */
+export type DetailFile = Record<string, string>;
+
+/** /data/builder.json — one row per model the PC builder can offer, per slot (src/lib/derive.ts). */
+export interface BuilderFile {
+  v: 1;
+  builtAt: string;
+  slots: Record<string, Columns>;
+  /** % of graphics cards / cases / coolers whose measurements are known (all models, not just offered). */
+  coverage: { gpu: number; case: number; cooler: number };
+}
+
+/** /data/builder-extra.json — by builder row id: shop URL, and the model's shop titles (picker search). */
+export interface BuilderExtra {
+  urls: Record<string, string>;
+  titles: Record<string, string>;
+}
+
+/** /data/manifest.json — counts per category; the next build compares its data against them. */
+export interface Manifest {
+  builtAt: string;
+  cats: Partial<Record<Category, { models: number; listings: number; updatedAt: string }>>;
+  builder: Record<string, number>; // models offered per builder slot
+}
