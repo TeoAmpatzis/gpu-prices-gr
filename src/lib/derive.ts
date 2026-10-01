@@ -34,10 +34,13 @@ import { groupModels, mostCommon, saleOf, type Model } from './data';
 import {
   SLOTS,
   candidates,
-  caseBoard,
+  caseBoardStated,
   caseCoolerMax,
+  caseFanMounts,
   caseFanSlots,
+  caseFansIncluded,
   caseGpuMax,
+  caseRadiatorSizes,
   caseRadiators,
   coolerHeight,
   coolerSockets,
@@ -168,11 +171,15 @@ function builderRow<S extends Slot>(slot: S, m: Model<SlotListing[S]>): Record<s
       break;
     case 'case':
       Object.assign(row, {
-        maxBoard: caseBoard(any),
+        // Only the stated size: the builder tells it apart from the guess by case size.
+        maxBoard: caseBoardStated(any),
         gpuMaxMm: caseGpuMax(any),
         coolerMaxMm: caseCoolerMax(any),
         fanSlots: caseFanSlots(any),
         radiatorMounts: caseRadiators(any),
+        fanMounts: caseFanMounts(any),
+        fansIncluded: caseFansIncluded(any),
+        radiators: caseRadiatorSizes(any),
       });
       break;
     case 'cooler':

@@ -27,8 +27,8 @@ const STEPS: { title: Text; body: Text }[] = [
   {
     title: { el: 'Κάρτα γραφικών', en: 'Graphics card' },
     body: {
-      el: 'Το πιο σημαντικό κομμάτι για gaming. Για 1080p αρκούν 8GB VRAM, για 1440p προτιμήστε 12–16GB. Κάθε κάρτα έχει διαφορετικό μήκος: ο builder κρατά μόνο κουτιά που τη χωράνε και ορίζει το ελάχιστο τροφοδοτικό που προτείνει ο κατασκευαστής.',
-      en: 'The most important part for gaming. 8GB of VRAM is enough for 1080p; for 1440p prefer 12–16GB. Every card has its own length: the builder only keeps cases that fit it and sets the minimum power supply its maker recommends.',
+      el: 'Το πιο σημαντικό κομμάτι για gaming. Για 1080p αρκούν 8GB VRAM, για 1440p προτιμήστε 12–16GB. Κάθε κάρτα έχει διαφορετικό μήκος: ο builder κρύβει τα κουτιά που σίγουρα δεν τη χωράνε, σημειώνει τα υπόλοιπα «Χωράει» (μετρημένο), «Πιθανότατα χωράει» (εκτίμηση με περιθώριο) ή «Χωρίς επιβεβαίωση» (λείπουν στοιχεία) και ορίζει το ελάχιστο τροφοδοτικό που προτείνει ο κατασκευαστής.',
+      en: 'The most important part for gaming. 8GB of VRAM is enough for 1080p; for 1440p prefer 12–16GB. Every card has its own length: the builder hides cases that certainly can’t take it, labels the rest "Fits" (measured), "Likely fits" (an estimate with a margin) or "Fit not verified" (data missing), and sets the minimum power supply its maker recommends.',
     },
   },
   {

@@ -5,10 +5,13 @@ import { CATEGORIES, groupName } from '../lib/categories';
 import { formatPrice, loadBuilder, loadBuilderExtra, saleOf, type Model } from '../lib/data';
 import { fromColumns } from '../lib/columns';
 import {
+  FIT_LABEL,
   OPTIONAL,
   SLOTS,
   buildNotes,
   candidates,
+  fitContext,
+  rate,
   caseBoard,
   caseCoolerMax,
   caseFanSlots,
@@ -27,6 +30,8 @@ import {
   requiredWatts,
   slotModels,
   type Build,
+  type Fit,
+  type Rating,
   type Slot,
   type SlotListing,
 } from '../lib/builder';
@@ -47,7 +52,12 @@ const S: Record<string, Text> = {
   change: { el: 'Αλλαγή', en: 'Change' },
   remove: { el: 'Αφαίρεση', en: 'Remove' },
   optional: { el: 'προαιρετικό', en: 'optional' },
-  compatible: { el: 'συμβατά', en: 'compatible' },
+  options: { el: 'επιλογές', en: 'options' },
+  verifiedOnly: { el: 'Μόνο επιβεβαιωμένα', en: 'Verified only' },
+  verifiedOnlyHint: {
+    el: 'Κρύβει όσα δεν έχουν στοιχεία για έλεγχο («Χωρίς επιβεβαίωση»).',
+    en: 'Hides parts without the data to check them ("Fit not verified").',
+  },
   noneCompatible: {
     el: 'Κανένα συμβατό προϊόν με την τρέχουσα επιλογή. Αφαιρέστε κάποιο εξάρτημα για περισσότερες επιλογές.',
     en: 'Nothing compatible with the current build. Remove a part to see more options.',
@@ -71,7 +81,28 @@ const S: Record<string, Text> = {
   coolerUnknown: { el: 'ψύκτρα: δεν αναφέρεται', en: 'cooler: not stated' },
   coolerShort: { el: 'ψύκτρα', en: 'cooler' },
   fanPositions: { el: 'θέσεις ανεμ.', en: 'fan positions' },
+  airflow: { el: 'για ροή αέρα', en: 'airflow type' },
+  pressure: { el: 'για στατική πίεση', en: 'static pressure type' },
 };
+
+// Written out in full so Tailwind keeps the classes (index.css).
+const FIT_CLASS: Record<Exclude<Fit, 'no'>, string> = {
+  fits: 'badge badge-fits',
+  likely: 'badge badge-likely',
+  unverified: 'badge badge-unverified',
+};
+
+/** A part's fit label against the parts already chosen; nothing when there was nothing to check. */
+function FitBadge({ rating, lang }: { rating: Rating; lang: Lang }) {
+  const fit = rating.fit as Exclude<Fit, 'no'> | null;
+  if (!fit) return null;
+  const why = rating.reasons.map((r) => tr(lang, r)).join(' ');
+  return (
+    <span className={FIT_CLASS[fit]} title={why || undefined}>
+      {tr(lang, FIT_LABEL[fit])}
+    </span>
+  );
+}
 
 /** One-line specs under a part's name, from the same fields the rules use. */
 function specLine(slot: Slot, m: AnyModel, lang: Lang): string {
@@ -136,7 +167,15 @@ function specLine(slot: Slot, m: AnyModel, lang: Lang): string {
     }
     case 'fan': {
       const f = m as Model<SlotListing['fan']>;
-      return [`${f.cheapest.size} mm × ${f.cheapest.pack}`, f.cheapest.pwm && 'PWM', f.cheapest.rgb && 'RGB']
+      const { size, pack, connector, pwm, rgb, airflowCfm, pressureMm, fanType } = f.cheapest;
+      return [
+        `${size} mm × ${pack}`,
+        connector ?? (pwm && 'PWM'),
+        fanType && t(fanType === 'airflow' ? S.airflow : S.pressure),
+        airflowCfm != null && `${airflowCfm} CFM`,
+        pressureMm != null && `${pressureMm} mmH₂O`,
+        rgb && 'RGB',
+      ]
         .filter(Boolean)
         .join(' · ');
     }
@@ -181,6 +220,8 @@ export default function Builder() {
   const [build, setBuild] = useState<Build>({});
   const [open, setOpen] = useState<Slot | null>(null);
   const [query, setQuery] = useState('');
+  // Picker toggle: hide parts whose fit can't be checked. Not remembered (the privacy page lists the stored keys).
+  const [verifiedOnly, setVerifiedOnly] = useState(false);
   // Phones and tablets: the summary bar at the bottom is collapsed to the total until opened.
   const [summaryOpen, setSummaryOpen] = useState(false);
 
@@ -224,14 +265,25 @@ export default function Builder() {
     save(b);
   };
 
-  const options = useMemo(() => {
+  // Measured length range per graphics chip, for "Likely fits" (src/lib/builder.ts fitContext).
+  const ctx = useMemo(() => fitContext(models?.gpu ?? []), [models]);
+
+  // Picker: every part that doesn't definitely clash, cheapest first, each with its fit label.
+  const rated = useMemo(() => {
     if (!models || !open) return [];
     const q = query.trim().toLowerCase();
     const cfg = CATEGORIES[open as Category] as unknown as { searchText: (l: BaseListing) => string };
-    return (candidates(open, models[open] as never, build) as AnyModel[])
+    const rest: Build = { ...build, [open]: undefined };
+    return (candidates(open, models[open] as never, build, ctx) as AnyModel[])
       .filter((m) => !q || m.listings.some((l) => cfg.searchText(l).toLowerCase().includes(q)))
-      .sort((a, b) => a.cheapest.price - b.cheapest.price);
-  }, [models, open, query, build, extraVersion]);
+      .sort((a, b) => a.cheapest.price - b.cheapest.price)
+      .map((m) => ({ m, rating: rate(open, m as never, rest, ctx) }));
+  }, [models, open, query, build, ctx, extraVersion]);
+  const options = verifiedOnly ? rated.filter((o) => o.rating.fit !== 'unverified') : rated;
+  const fitCounts = rated.reduce<Partial<Record<Fit, number>>>((n, o) => {
+    if (o.rating.fit) n[o.rating.fit] = (n[o.rating.fit] ?? 0) + 1;
+    return n;
+  }, {});
 
   if (error) {
     return (
@@ -251,7 +303,7 @@ export default function Builder() {
   const chosen = SLOTS.filter((s) => build[s]).map((s) => build[s] as AnyModel);
   const total = chosen.reduce((sum, m) => sum + m.cheapest.price, 0);
   const watts = requiredWatts(build);
-  const notes = buildNotes(build);
+  const notes = buildNotes(build, ctx);
   const errors = notes.filter((n) => n.level === 'error').length;
   // Share of parts whose measurements are known yet (collected gradually, see scraper/specs.py),
   // counted at build time over every product, not just the ones the builder can offer.
@@ -266,8 +318,8 @@ export default function Builder() {
             <Info className="mt-0.5 h-4 w-4 shrink-0" />
             <span>
               {t({
-                el: `Οι διαστάσεις για τον έλεγχο συμβατότητας συλλέγονται σταδιακά (κάρτες γραφικών ${coverage.gpu}%, κουτιά ${coverage.case}%, ψύκτρες ${coverage.cooler}%). Όσα δεν έχουν ακόμα στοιχεία δεν εμφανίζονται· προστίθενται καθημερινά.`,
-                en: `Measurements for the compatibility check are being collected gradually (graphics cards ${coverage.gpu}%, cases ${coverage.case}%, coolers ${coverage.cooler}%). Parts without them are hidden for now; more are added every day.`,
+                el: `Οι διαστάσεις για τον έλεγχο συμβατότητας συλλέγονται σταδιακά (κάρτες γραφικών ${coverage.gpu}%, κουτιά ${coverage.case}%, ψύκτρες ${coverage.cooler}%). Όσα δεν έχουν ακόμα στοιχεία εμφανίζονται ως «Χωρίς επιβεβαίωση»· προστίθενται καθημερινά.`,
+                en: `Measurements for the compatibility check are being collected gradually (graphics cards ${coverage.gpu}%, cases ${coverage.case}%, coolers ${coverage.cooler}%). Parts without them are shown as "Fit not verified"; more are added every day.`,
               })}
             </span>
           </div>
@@ -300,6 +352,9 @@ export default function Builder() {
                       <>
                         <div className="font-semibold [overflow-wrap:anywhere]">{m.chip}</div>
                         <div className="text-xs text-muted">{specLine(slot, m, lang)}</div>
+                        <div className="mt-1 empty:hidden">
+                          <FitBadge rating={rate(slot, m as never, build, ctx)} lang={lang} />
+                        </div>
                       </>
                     ) : (
                       <div className="text-sm text-faint">—</div>
@@ -356,37 +411,70 @@ export default function Builder() {
                         className="field w-full text-ellipsis py-2 pl-9 pr-3"
                       />
                     </label>
-                    <div className="mb-1.5 text-xs text-muted">
-                      {options.length} {t(S.compatible)}
+                    <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-muted">
+                      <span>
+                        {options.length} {t(S.options)}
+                        {(['fits', 'likely', 'unverified'] as const)
+                          .filter((f) => fitCounts[f])
+                          .map((f) => ` · ${fitCounts[f]} ${t(FIT_LABEL[f]).toLowerCase()}`)
+                          .join('')}
+                      </span>
+                      {fitCounts.unverified ? (
+                        <button
+                          type="button"
+                          aria-pressed={verifiedOnly}
+                          title={t(S.verifiedOnlyHint)}
+                          onClick={() => setVerifiedOnly((v) => !v)}
+                          className={`tap ml-auto inline-flex items-center rounded-full px-2.5 py-1 text-sm font-medium ring-1 ring-inset transition ${
+                            verifiedOnly
+                              ? 'bg-accent/10 text-accent ring-accent dark:ring-accent/30'
+                              : 'text-muted ring-line-strong hover:bg-hover hover:text-fg hover:ring-muted dark:hover:ring-line-strong'
+                          }`}
+                        >
+                          {t(S.verifiedOnly)}
+                        </button>
+                      ) : null}
                     </div>
                     {options.length === 0 ? (
                       <div className="p-3 text-sm text-muted">{t(S.noneCompatible)}</div>
                     ) : (
                       <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-lg bg-panel ring-1 ring-edge">
-                        {options.slice(0, PICKER_LIMIT).map((o) => (
-                          <li key={o.key}>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                update({ ...build, [slot]: o });
-                                setOpen(null);
-                              }}
-                              className="tap flex w-full items-center gap-3 px-3 py-2 text-left text-sm hover:bg-hover"
-                            >
-                              <ProductPhoto image={partImage(o)} size="sm" icon={Icon} alt="" hideOnPhone />
-                              <span className="min-w-0 flex-1">
-                                <span className="block truncate font-medium">{o.chip}</span>
-                                <span className="block truncate text-xs text-muted">{specLine(slot, o, lang)}</span>
-                              </span>
-                              {(() => {
-                                const sale = saleOf(o.listings, o.cheapest);
-                                return sale ? <span className="badge badge-sale">−{sale.pct}%</span> : null;
-                              })()}
+                        {options.slice(0, PICKER_LIMIT).map(({ m: o, rating }) => {
+                          const sale = saleOf(o.listings, o.cheapest);
+                          const price = (
+                            <>
+                              {sale && <span className="badge badge-sale">−{sale.pct}%</span>}
                               <span className="font-semibold tabular-nums">{formatPrice(o.cheapest.price, lang)}</span>
                               <SourceBadge source={o.cheapest.source} />
-                            </button>
-                          </li>
-                        ))}
+                            </>
+                          );
+                          return (
+                            <li key={o.key}>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  update({ ...build, [slot]: o });
+                                  setOpen(null);
+                                }}
+                                className="tap flex w-full items-center gap-3 px-3 py-2 text-left text-sm hover:bg-hover"
+                              >
+                                <ProductPhoto image={partImage(o)} size="sm" icon={Icon} alt="" hideOnPhone />
+                                {/* Phones: the name and specs wrap, and the price and shop move to the bottom
+                                    line beside the fit label; from 640px they sit on the right. */}
+                                <span className="min-w-0 flex-1">
+                                  <span className="line-clamp-2 font-medium [overflow-wrap:anywhere] sm:hidden">{o.chip}</span>
+                                  <span className="hidden truncate font-medium sm:block">{o.chip}</span>
+                                  <span className="block text-xs text-muted sm:truncate">{specLine(slot, o, lang)}</span>
+                                  <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 empty:hidden sm:mt-0.5">
+                                    <FitBadge rating={rating} lang={lang} />
+                                    <span className="flex items-center gap-2 sm:hidden">{price}</span>
+                                  </span>
+                                </span>
+                                <span className="hidden items-center gap-3 sm:flex">{price}</span>
+                              </button>
+                            </li>
+                          );
+                        })}
                       </ul>
                     )}
                   </div>

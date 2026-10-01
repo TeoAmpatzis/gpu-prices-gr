@@ -486,7 +486,8 @@ export const PSU: CategoryConfig<PsuListing> = {
 const productKey = (chip: string) => chip.toLowerCase().replace(/[^a-z0-9]/g, '');
 
 const BOARD_RANK: BoardSize[] = ['Mini ITX', 'Micro ATX', 'ATX', 'E-ATX'];
-const BOARD_BY_CASE_SIZE: Record<CaseListing['size'], BoardSize> = {
+/** The usual largest board for a case size, when the case doesn't state it (a guess). */
+export const BOARD_BY_CASE_SIZE: Record<CaseListing['size'], BoardSize> = {
   'Full Tower': 'E-ATX', 'Midi Tower': 'ATX', 'Mini Tower': 'Micro ATX', 'SFF / Cube': 'Mini ITX', [OTHER]: 'ATX',
 };
 /** Largest board a case takes: as stated (Skroutz), else the usual one for its size. */

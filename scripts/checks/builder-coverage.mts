@@ -20,6 +20,7 @@ const arg = (name: string) => {
 };
 const read = (cat: string) => JSON.parse(readFileSync(join(ROOT, 'public/data', cat, 'latest.json'), 'utf8'));
 
+const gpuCtx = B.fitContext(B.slotModels('gpu', read('gpu').listings));
 type Get = (m: any) => unknown;
 const any = (f: (l: any) => unknown): Get => (m) => m.listings.map(f).find((v: unknown) => known(v)) ?? null;
 const known = (v: unknown) => v != null && v !== '' && v !== false && !(Array.isArray(v) && v.length === 0);
@@ -44,6 +45,8 @@ const FIELDS: Record<string, [string, Get, ((m: any) => boolean)?][]> = {
   ],
   gpu: [
     ['length (measured)', (m) => B.gpuLength(m)],
+    // "Likely fits" possible: no length, but the chip has a measured range (B.fitContext) and isn't water-cooled.
+    ['length measured or chip estimate', (m) => B.gpuLength(m) ?? (!B.gpuWaterCooled(m.cheapest) && gpuCtx.chips.get(m.cheapest.chip)) ?? null],
     ['minimum PSU (stated)', (m) => m.cheapest.minPsu],
     ['PSU wattage (stated or chip table)', (m) => B.gpuPsu(m.cheapest)],
   ],
