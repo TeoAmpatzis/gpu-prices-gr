@@ -82,8 +82,8 @@ export const ABOUT: InfoPageContent = {
       heading: { el: 'Ποιος το φτιάχνει', en: 'Who makes it' },
       paragraphs: [
         {
-          el: `Το BuildDraft.gr είναι μη κερδοσκοπικό έργο του ${OWNER_NAME}. Ο κώδικας είναι διαθέσιμος στο [GitHub](${REPO_URL}) με την άδεια PolyForm Noncommercial 1.0.0.`,
-          en: `BuildDraft.gr is a non-profit project by ${OWNER_NAME}. The code is available on [GitHub](${REPO_URL}) under the PolyForm Noncommercial 1.0.0 license.`,
+          el: `Το BuildDraft.gr είναι μη κερδοσκοπικό έργο. Δημιουργός: ${OWNER_NAME.el}. Ο κώδικας είναι διαθέσιμος στο [GitHub](${REPO_URL}) με την άδεια PolyForm Noncommercial 1.0.0.`,
+          en: `BuildDraft.gr is a non-profit project by ${OWNER_NAME.en}. The code is available on [GitHub](${REPO_URL}) under the PolyForm Noncommercial 1.0.0 license.`,
         },
       ],
     },
@@ -137,8 +137,8 @@ export const PRIVACY: InfoPageContent = {
       heading: { el: 'Υπεύθυνος επεξεργασίας', en: 'Data controller' },
       paragraphs: [
         {
-          el: `Υπεύθυνος για την επεξεργασία δεδομένων στο BuildDraft.gr είναι ο ${OWNER_NAME} (${OWNER_LOCATION.el}). Επικοινωνία: ${mail}.`,
-          en: `The data controller for BuildDraft.gr is ${OWNER_NAME} (${OWNER_LOCATION.en}). Contact: ${mail}.`,
+          el: `Υπεύθυνος για την επεξεργασία δεδομένων στο BuildDraft.gr είναι ο ${OWNER_NAME.el} (${OWNER_LOCATION.el}). Επικοινωνία: ${mail}.`,
+          en: `The data controller for BuildDraft.gr is ${OWNER_NAME.en} (${OWNER_LOCATION.en}). Contact: ${mail}.`,
         },
       ],
     },
