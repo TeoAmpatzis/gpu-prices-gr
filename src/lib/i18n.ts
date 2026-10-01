@@ -32,7 +32,8 @@ export const useLang = () => useSyncExternalStore(subscribe, getLang);
 /** Shared strings used by more than one component. */
 export const T = {
   siteName: 'BuildDraft.gr',
-  homeLabel: { el: 'BuildDraft.gr — αρχική σελίδα', en: 'BuildDraft.gr — home page' },
+  /** Read after the logo's visible text by screen readers (the link's name keeps the visible text). */
+  homeLabel: { el: '(αρχική σελίδα)', en: '(home page)' },
   siteTagline: { el: 'Skroutz · BestPrice · Shopflix · Snif · e-shop.gr', en: 'Skroutz · BestPrice · Shopflix · Snif · e-shop.gr' },
   notAffiliated: {
     el: 'Δεν συνδέεται με τα Skroutz, BestPrice, Shopflix, Snif και e-shop.gr. Τα εμπορικά σήματα ανήκουν στους κατόχους τους.',

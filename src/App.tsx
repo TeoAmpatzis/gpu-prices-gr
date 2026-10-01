@@ -118,13 +118,14 @@ export default function App() {
       <div className={`mx-auto max-w-7xl px-4 py-5 sm:py-8 ${active === 'builder' ? 'pb-32 sm:pb-32 lg:pb-8' : ''}`}>
         <header className="mb-6 flex flex-col gap-6">
           <div className="flex items-center justify-between gap-4">
-            <a href="/" onClick={goHome} className="tap flex min-w-0 items-center gap-2.5" aria-label={t(T.homeLabel)}>
+            <a href="/" onClick={goHome} className="tap flex min-w-0 items-center gap-2.5">
               <Logo className="h-8 w-8 shrink-0 text-accent" />
               <span className="min-w-0 leading-tight">
                 <span className="block text-[17px] font-bold tracking-tight">
                   BuildDraft<span className="text-accent">.gr</span>
                 </span>
                 <span className="block text-xs text-faint">{t(T.siteTagline)}</span>
+                <span className="sr-only"> {t(T.homeLabel)}</span>
               </span>
             </a>
             <div className="flex items-center gap-2">
@@ -181,19 +182,23 @@ export default function App() {
           </div>
         </header>
 
-        {/* Visited tabs stay mounted (hidden) so their filters survive switching back and forth.
-          Each config is typed for its own listing type, so it is widened here. */}
-        {CATEGORY_IDS.filter((id) => visited.has(id)).map((id) => (
-          <div key={id} hidden={active !== id}>
-            <CategoryView cfg={CATEGORIES[id] as unknown as CategoryConfig<BaseListing>} />
-          </div>
-        ))}
-        {visited.has('builder') && (
-          <div hidden={active !== 'builder'}>
-            <Builder />
-          </div>
-        )}
-        {isInfo(active) && <InfoPage content={INFO[active].content} />}
+        {/* Pages with data are at least a screen tall, so the footer starts below the fold while
+            they load and is not pushed down (a layout shift) when the table arrives. */}
+        <main className={isInfo(active) ? undefined : 'min-h-screen'}>
+          {/* Visited tabs stay mounted (hidden) so their filters survive switching back and forth.
+            Each config is typed for its own listing type, so it is widened here. */}
+          {CATEGORY_IDS.filter((id) => visited.has(id)).map((id) => (
+            <div key={id} hidden={active !== id}>
+              <CategoryView cfg={CATEGORIES[id] as unknown as CategoryConfig<BaseListing>} />
+            </div>
+          ))}
+          {visited.has('builder') && (
+            <div hidden={active !== 'builder'}>
+              <Builder />
+            </div>
+          )}
+          {isInfo(active) && <InfoPage content={INFO[active].content} />}
+        </main>
 
         <footer className="mt-10 border-t border-line pt-6 text-center text-xs text-faint">
           <nav aria-label={t(T.footerNav)} className="mb-3 flex flex-wrap justify-center gap-x-5 gap-y-1 text-sm">
