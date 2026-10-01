@@ -17,13 +17,13 @@ VENDORS = [
     "Mars Gaming", "Monarch Gear", "Redragon", "Xilence", "LC-Power", "Akyga", "Spacer", "Tacens", "Nox",
     "Lancool", "Sama", "Apnx", "Ocypus", "Azza", "Genesis", "Rebeltec", "Powertech", "Supercase",
     "Noctua", "ID-Cooling", "Scythe", "Alphacool", "EKWB", "EK", "Cryorig", "PCCooler", "Gelid", "Akasa",
-    "Noiseblocker", "Upsiren", "Valkyrie", "Coolermaster",
+    "Noiseblocker", "Upsiren", "Valkyrie", "Coolermaster", "White Shark", "Pro Gamersware",
     "Power Train",  # no model names in its case titles, so those get dropped (empty name)
 ]
 VENDOR_ALIASES = {
     "bequiet": "Be Quiet", "be quiet!": "Be Quiet", "coolermaster": "Cooler Master", "cm": "Cooler Master",
     "fsp/fortron": "FSP", "fsp fortron": "FSP", "natec genesis": "Genesis", "id cooling": "ID-Cooling",
-    "ek-quantum": "EKWB", "ek": "EKWB", "deep cool": "Deepcool",
+    "ek-quantum": "EKWB", "ek": "EKWB", "deep cool": "Deepcool", "lian-li": "Lian Li",
 }
 
 # BestPrice often has marketing colour names; Skroutz keeps the colour only in the slug.
