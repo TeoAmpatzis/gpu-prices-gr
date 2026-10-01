@@ -68,5 +68,6 @@ export const FAMILY_CREDITS = (families.families as (Family & { file: string; au
     file: f.file,
     author: f.author,
     license: f.license,
-    url: `https://commons.wikimedia.org/wiki/${encodeURI(f.file.replace(/ /g, '_'))}`,
+    // Parentheses encoded too: page text links are [label](url), and a ")" would end the URL early.
+    url: `https://commons.wikimedia.org/wiki/${encodeURI(f.file.replace(/ /g, '_')).replace(/\(/g, '%28').replace(/\)/g, '%29')}`,
   }));
