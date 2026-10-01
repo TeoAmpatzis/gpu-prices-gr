@@ -11,6 +11,7 @@ import LangToggle from './components/LangToggle';
 import ThemeToggle from './components/ThemeToggle';
 import { T, tr, useLang } from './lib/i18n';
 import { ABOUT, CONTACT, PRIVACY, type InfoPageContent } from './content/pages';
+import { OWNER_NAME } from './lib/site';
 
 type InfoId = 'about' | 'contact' | 'privacy';
 type Page = Category | 'builder' | InfoId;
@@ -204,7 +205,7 @@ export default function App() {
             ))}
           </nav>
           {t(T.footer)}
-          <div className="mt-1">BuildDraft.gr · © 2026 Teo Ampatzis · {t(T.notAffiliated)}</div>
+          <div className="mt-1">BuildDraft.gr · © 2026 {t(OWNER_NAME)} · {t(T.notAffiliated)}</div>
         </footer>
       </div>
     </>
