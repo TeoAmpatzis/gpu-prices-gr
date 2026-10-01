@@ -30,11 +30,13 @@ import {
   type Slot,
   type SlotListing,
 } from '../lib/builder';
+import type { SlotModels } from '../lib/autobuild';
 import { T, tr, useLang, type Lang, type Text } from '../lib/i18n';
+import AutoBuild from './AutoBuild';
 import BuildGuide from './BuildGuide';
 import SourceBadge from './SourceBadge';
 
-type Models = { [S in Slot]: Model<SlotListing[S]>[] };
+type Models = SlotModels;
 type AnyModel = Model<BaseListing>;
 
 const STORAGE_KEY = 'pcBuild'; // { slot: model key }, per-browser convenience only
@@ -267,6 +269,14 @@ export default function Builder() {
             </span>
           </div>
         )}
+        <AutoBuild
+          models={models}
+          build={build}
+          onApply={(b) => {
+            update(b);
+            setOpen(null);
+          }}
+        />
         <div className="card divide-y divide-line">
           {SLOTS.map((slot) => {
             const cfg = CATEGORIES[slot as Category];

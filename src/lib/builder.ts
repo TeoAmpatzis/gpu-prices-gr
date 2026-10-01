@@ -130,7 +130,7 @@ const GPU_PSU: Record<string, number> = {
 export const gpuPsu = (g: GpuListing): number | null => g.minPsu ?? GPU_PSU[g.chip] ?? null;
 
 /** Top-tier desktop CPUs draw well over their rated TDP under load; give them extra headroom. */
-const HIGH_END_CPU = /^(Ryzen 9|Core i9|Core Ultra 9)\b/;
+export const HIGH_END_CPU = /^(Ryzen 9|Core i9|Core Ultra 9)\b/;
 const NO_GPU_PSU = 350;
 
 /** Smallest PSU the build should have, or null until a CPU or GPU is chosen. */
@@ -254,8 +254,12 @@ export function candidates<S extends Slot>(
   models: Model<SlotListing[S]>[],
   build: Build,
 ): Model<SlotListing[S]>[] {
-  const rest: Build = { ...build, [slot]: undefined };
-  return models.filter((m) => usable[slot](m) && fits[slot](m, rest));
+  return models.filter((m) => fitsBuild(slot, m, build));
+}
+
+/** Can `m` go in `slot` of this build (whatever the slot holds now is ignored)? */
+export function fitsBuild<S extends Slot>(slot: S, m: Model<SlotListing[S]>, build: Build): boolean {
+  return usable[slot](m) && fits[slot](m, { ...build, [slot]: undefined });
 }
 
 /**
