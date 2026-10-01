@@ -90,10 +90,7 @@ def fetch_category(s, category: str, label: str, cat: Category, scraped_at: str,
     """Fetch every page of one category URL into `seen` (id -> listing)."""
     for page in range(1, MAX_PAGES + 1):
         url = category if page == 1 else f"{category}?page={page}"
-        r = s.get(url)
-        r.raise_for_status()
-        if "Just a moment" in r.text[:2000]:
-            raise RuntimeError("Cloudflare challenge")
+        r = http.get(s, url)  # waits and retries a blocked page
         http.dump(f"skroutz_{label}_p{page}.html", r.text)
         listings, has_next = parse(r.text, scraped_at, cat)
         before = len(seen)

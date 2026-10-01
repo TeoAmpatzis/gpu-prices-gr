@@ -29,15 +29,15 @@ import normalize_case
 from normalize import now_iso
 
 # Skroutz throttles product pages (502s and timeouts after ~200 quick requests), so this goes slowly
-# and gives up for the run after a few failures in a row; the next run carries on.
+# and gives up for the run after a few failures in a row; the next run carries on. A blocked page
+# (403 from GitHub's runners) is first retried by http.get, so it only counts as a failure after that.
 BUDGET = 30  # product pages per category per run
 PAUSE = (5.0, 8.0)  # seconds between product pages
 MAX_FAILURES = 3  # consecutive errors before stopping this category for the run
 
 
 def page_specs(s, url: str) -> dict[str, str]:
-    r = s.get(url)
-    r.raise_for_status()
+    r = http.get(s, url)
     out: dict[str, str] = {}
     for dt in HTMLParser(r.text).css("dl dt"):
         dd = dt.next
