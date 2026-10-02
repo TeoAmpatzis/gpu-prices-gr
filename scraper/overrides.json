@@ -1,0 +1,13 @@
+{
+ "overrides": [
+  {
+   "cat": "case",
+   "model": ["lianlio11dynamicevo", "lianlio11devo"],
+   "title": "\\bEVO\\s+RGB\\b",
+   "set": {"gpuMaxMm": 455.7, "coolerMaxMm": 167},
+   "source": "https://lian-li.com/product/o11d-evo-rgb/",
+   "date": "2026-10-02",
+   "note": "Lian Li O11 Dynamic EVO RGB (455.7 mm GPU, 167 mm cooler per Lian Li's own page). normalize_case drops the word RGB, so the EVO RGB shares the model key of the older plain O11 Dynamic EVO (426 mm), and makers/lianli.py matched the plain EVO page to it; the safer-value rule then kept 426. Skroutz/Shopflix write it 'O11D EVO RGB' (second key). Only listings whose title says 'EVO RGB' are set, so a plain EVO listing keeps its own value. Remove once the case normalizer keeps RGB in this model's name (or lianli.py reaches the o11d-evo-rgb page itself)."
+  }
+ ]
+}

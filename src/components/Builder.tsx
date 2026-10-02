@@ -214,7 +214,7 @@ export default function Builder() {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
   const [models, setModels] = useState<Models | null>(null);
-  const [coverage, setCoverage] = useState<BuilderFile['coverage']>({ gpu: 100, case: 100, cooler: 100 });
+  const [coverage, setCoverage] = useState<BuilderFile['coverage'] | null>(null);
   const [extraVersion, setExtraVersion] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [build, setBuild] = useState<Build>({});
@@ -292,13 +292,9 @@ export default function Builder() {
       </div>
     );
   }
-  if (!models) {
-    return (
-      <div className="flex items-center justify-center gap-2 py-24 text-faint">
-        <Loader2 className="h-5 w-5 animate-spin" /> {t(T.loading)}
-      </div>
-    );
-  }
+  // The page (guide, parts, summary) renders before builder.json arrives: the guide is the largest
+  // element, and waiting for ~270 KB of data before showing it cost 1.7 s of LCP on phones.
+  const loading = !models;
 
   const chosen = SLOTS.filter((s) => build[s]).map((s) => build[s] as AnyModel);
   const total = chosen.reduce((sum, m) => sum + m.cheapest.price, 0);
@@ -307,7 +303,8 @@ export default function Builder() {
   const errors = notes.filter((n) => n.level === 'error').length;
   // Share of parts whose measurements are known yet (collected gradually, see scraper/specs.py),
   // counted at build time over every product, not just the ones the builder can offer.
-  const collecting = Object.values(coverage).some((v) => v < 90);
+  // While loading the notice shows without the percentages, so it doesn't push the parts down later.
+  const collecting = !coverage || Object.values(coverage).some((v) => v < 90);
 
   return (
     <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
@@ -318,8 +315,8 @@ export default function Builder() {
             <Info className="mt-0.5 h-4 w-4 shrink-0" />
             <span>
               {t({
-                el: `Οι διαστάσεις για τον έλεγχο συμβατότητας συλλέγονται σταδιακά (κάρτες γραφικών ${coverage.gpu}%, κουτιά ${coverage.case}%, ψύκτρες ${coverage.cooler}%). Όσα δεν έχουν ακόμα στοιχεία εμφανίζονται ως «Χωρίς επιβεβαίωση»· προστίθενται καθημερινά.`,
-                en: `Measurements for the compatibility check are being collected gradually (graphics cards ${coverage.gpu}%, cases ${coverage.case}%, coolers ${coverage.cooler}%). Parts without them are shown as "Fit not verified"; more are added every day.`,
+                el: `Οι διαστάσεις για τον έλεγχο συμβατότητας συλλέγονται σταδιακά${coverage ? ` (κάρτες γραφικών ${coverage.gpu}%, κουτιά ${coverage.case}%, ψύκτρες ${coverage.cooler}%)` : ''}. Όσα δεν έχουν ακόμα στοιχεία εμφανίζονται ως «Χωρίς επιβεβαίωση»· προστίθενται καθημερινά.`,
+                en: `Measurements for the compatibility check are being collected gradually${coverage ? ` (graphics cards ${coverage.gpu}%, cases ${coverage.case}%, coolers ${coverage.cooler}%)` : ''}. Parts without them are shown as "Fit not verified"; more are added every day.`,
               })}
             </span>
           </div>
@@ -412,7 +409,7 @@ export default function Builder() {
                       />
                     </label>
                     <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-muted">
-                      <span>
+                      <span className={loading ? 'invisible' : undefined}>
                         {options.length} {t(S.options)}
                         {(['fits', 'likely', 'unverified'] as const)
                           .filter((f) => fitCounts[f])
@@ -435,7 +432,11 @@ export default function Builder() {
                         </button>
                       ) : null}
                     </div>
-                    {options.length === 0 ? (
+                    {loading ? (
+                      <div className="flex items-center gap-2 p-3 text-sm text-faint">
+                        <Loader2 className="h-4 w-4 animate-spin" /> {t(T.loading)}
+                      </div>
+                    ) : options.length === 0 ? (
                       <div className="p-3 text-sm text-muted">{t(S.noneCompatible)}</div>
                     ) : (
                       <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-lg bg-panel ring-1 ring-edge">
