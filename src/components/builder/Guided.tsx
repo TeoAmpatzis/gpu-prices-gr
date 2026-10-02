@@ -7,7 +7,6 @@ import {
   Check,
   ChevronLeft,
   ChevronRight,
-  ExternalLink,
   Gamepad2,
   HelpCircle,
   Loader2,
@@ -15,11 +14,10 @@ import {
   Search,
 } from 'lucide-react';
 import type { BaseListing, CaseListing, Category, FanListing } from '../../types';
-import { fanPlan } from '../../lib/fans';
-import { CaseFansLine, FanAdviceBox } from './FanAdvice';
 import { CATEGORIES } from '../../lib/categories';
 import { formatPrice, saleOf, type Model } from '../../lib/data';
-import { SLOTS, rate, rateAll, type Build, type Rating, type Slot } from '../../lib/builder';
+import { SLOTS, rateAll, type Build, type Rating, type Slot } from '../../lib/builder';
+import { fanPlan } from '../../lib/fans';
 import { USES, builderParams, writeBuilderParams, type AnyModel, type BuilderState, type Prefs, type Use } from '../../lib/builderState';
 import {
   GUIDE_INDEX,
@@ -39,6 +37,8 @@ import { T, tr, useLang, type Lang, type Text } from '../../lib/i18n';
 import { GUIDE_STEPS } from '../BuildGuide';
 import ProductPhoto from '../ProductPhoto';
 import SourceBadge from '../SourceBadge';
+import { CaseFansLine, FanAdviceBox } from './FanAdvice';
+import Review from './Review';
 import Summary from './Summary';
 import { FitBadge, partImage, specLine } from './parts';
 
@@ -74,9 +74,6 @@ const G = {
     en: "It never hides parts; it shows what's left and a suggested amount per part.",
   },
   split: { el: 'Συνήθης κατανομή', en: 'Usual split' },
-  // Review
-  missing: { el: 'Λείπει', en: 'Missing' },
-  total: { el: 'Σύνολο', en: 'Total' },
 } satisfies Record<string, Text>;
 
 const USE_INFO: Record<Use, { label: Text; desc: Text; icon: typeof Gamepad2 }> = {
@@ -124,8 +121,11 @@ function Chip({ on, onClick, children, title }: { on: boolean; onClick: () => vo
 }
 
 function initialStep(): StepId {
-  const s = builderParams().get('step') as StepId | null;
-  return s && STEPS.includes(s) ? s : 'use';
+  const p = builderParams();
+  const s = p.get('step') as StepId | null;
+  if (s && STEPS.includes(s)) return s;
+  // A shared build opens on its review.
+  return SLOTS.some((slot) => p.has(slot)) ? 'review' : 'use';
 }
 
 export default function Guided({ state, header }: { state: BuilderState; header: ReactNode }) {
@@ -575,60 +575,5 @@ function PartCard({
         )}
       </div>
     </li>
-  );
-}
-
-/** Every chosen part with photo, price and shop; what's still missing. (Copy list and share link: part D.) */
-function Review({ state, lang, onGo }: { state: BuilderState; lang: Lang; onGo: (s: StepId) => void }) {
-  const t = (x: Text) => tr(lang, x);
-  const { build, ctx } = state;
-  const total = SLOTS.reduce((sum, s) => sum + (build[s]?.cheapest.price ?? 0), 0);
-  return (
-    <div className="flex flex-col gap-3">
-      <ul className="divide-y divide-line rounded-xl ring-1 ring-edge">
-        {SLOTS.map((s) => {
-          const m = build[s] as AnyModel | undefined;
-          const Icon = CATEGORIES[s as Category].icon;
-          const opt = optional(s, build);
-          return (
-            <li key={s} className="flex flex-wrap items-center gap-3 p-3">
-              {m ? (
-                <ProductPhoto image={partImage(m)} size="md" icon={Icon} alt="" />
-              ) : (
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent/10 text-accent">
-                  <Icon className="h-4 w-4" />
-                </span>
-              )}
-              <div className="min-w-[9rem] flex-1">
-                <div className="text-xs text-muted">{t(STEP_NAME[s])}</div>
-                {m ? (
-                  <>
-                    <div className="font-medium [overflow-wrap:anywhere]">{m.chip}</div>
-                    <div className="mt-1 empty:hidden">
-                      <FitBadge rating={rate(s, m as never, build, ctx)} lang={lang} />
-                    </div>
-                  </>
-                ) : (
-                  <button type="button" onClick={() => onGo(s)} className="tap text-sm font-medium text-accent hover:underline">
-                    {opt.optional ? '—' : t(G.missing)} · {t(G.choose)}
-                  </button>
-                )}
-              </div>
-              {m && (
-                <a href={m.cheapest.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 whitespace-nowrap">
-                  <span className="font-semibold tabular-nums text-accent">{formatPrice(m.cheapest.price, lang)}</span>
-                  <SourceBadge source={m.cheapest.source} />
-                  <ExternalLink className="h-3.5 w-3.5 text-faint" />
-                </a>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-      <div className="flex items-baseline justify-between">
-        <span className="text-sm text-muted">{t(G.total)}</span>
-        <span className="text-2xl font-semibold tabular-nums text-accent">{formatPrice(total, lang)}</span>
-      </div>
-    </div>
   );
 }
