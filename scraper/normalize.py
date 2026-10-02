@@ -115,8 +115,9 @@ def partner_of(title: str, brand: str) -> str:
 CARD_GENERIC = {
     "geforce", "radeon", "nvidia", "amd", "intel", "arc", "graphics", "card", "videocard", "vga", "pci", "pcie",
     "express", "e", "x16", "x8", "gen5", "gen4", "hdmi", "dp", "displayport", "dvi", "karta", "grafikon", "rtx",
-    "gtx", "gt", "rx", "ti", "super", "xt", "xtx", "gre", "edition", "gddr7", "gddr6x", "gddr6", "gddr5", "bit",
-    "the", "with", "for", "fan", "fans", "retail", "bulk", "box",
+    "gtx", "gt", "rx", "ti", "super", "xt", "xtx", "gre", "edition", "gddr7", "gddr6x", "gddr6", "gddr5", "gddr4",
+    "ddr5", "ddr4", "ddr3", "d7", "d6", "d5", "d4", "d3", "bit", "the", "with", "for", "fan", "fans", "retail",
+    "bulk", "box",
 }
 CARD_WORD = re.compile(r"[a-z0-9]+")  # Greek words are descriptors ("αερόψυκτη"), never the product line
 PART_NUMBER = re.compile(r"^(?=[a-z0-9]*\d)(?=[a-z0-9]*[a-z])[a-z0-9]{7,}$")  # "vcg50608sfxpb1", "90yv0kz0"
@@ -131,7 +132,11 @@ def card_key(l: dict) -> str | None:
     low = l["title"].lower()
     low = re.sub(r"\b\d{1,2}\s*gb\b|\b\d{1,2}g\b", " ", low)
     low = re.sub(r"\b(?:gv|rx|c\d{5})-[\w-]+", " ", low)  # dashed part numbers: GV-N5070…, RX-97T…, C50803-…
-    skip = set(CARD_WORD.findall(l["chip"].lower())) | set(CARD_WORD.findall(l["partner"].lower())) | {"inno", "3d"}
+    chip = l["chip"].lower()
+    skip = set(CARD_WORD.findall(chip)) | set(CARD_WORD.findall(l["partner"].lower())) | {"inno", "3d"}
+    # The chip written as one word ("GT1030", "RTX5060TI", "5060TI" in e-shop titles).
+    fused = re.sub(r"[^a-z0-9]", "", chip)
+    skip |= {fused, re.sub(r"^[a-z]+", "", fused)}
     words = {
         w for w in CARD_WORD.findall(low)
         if w not in CARD_GENERIC and w not in skip and not w.isdigit() and not PART_NUMBER.match(w)

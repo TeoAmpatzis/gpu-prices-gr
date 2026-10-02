@@ -167,6 +167,10 @@ SITES = {"gpu": ("skroutz", "bestprice"), "cpu": ("skroutz",), "case": ("skroutz
 # A product still needs a page while one of these is unknown (air coolers also need their height).
 NEEDED = {"gpu": ("lengthMm",), "cpu": ("coolerIncluded",), "case": ("gpuMaxMm", "coolerMaxMm"),
           "cooler": ("sockets",), "fan": ("connector",)}
+# Measurements the builder checks, and which of two disagreeing values is the safe one to assume
+# (sites, or a site and the maker): the longer card / taller cooler / higher PSU minimum, the
+# smaller case clearance.
+SAFER = {"lengthMm": max, "minPsu": max, "heightMm": max, "gpuMaxMm": min, "coolerMaxMm": min}
 # Workstation/server parts the builder never offers.
 NOT_DESKTOP = re.compile(r"^(RTX PRO|RTX A\d|RTX \d+ (Ada|\(Pro\))|T\d+$|Quadro|EPYC|Xeon|Ryzen Threadripper)")
 

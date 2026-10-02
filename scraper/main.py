@@ -16,6 +16,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 import http_client  # noqa: E402
+import makers  # noqa: E402
 import shipping  # noqa: E402
 import site_history  # noqa: E402
 import specs  # noqa: E402
@@ -81,9 +82,7 @@ def share_fields(listings: list[dict], fields: tuple[str, ...], model_key) -> No
 
 # Bool fields where None means "not stated": shared by majority, not by "any true".
 TRI_STATE = {"coolerIncluded"}
-# Measurements the builder checks, and which of two disagreeing values is the safe one to assume:
-# the longer card / taller cooler / higher PSU minimum, the smaller case clearance.
-SAFER = {"lengthMm": max, "minPsu": max, "heightMm": max, "gpuMaxMm": min, "coolerMaxMm": min}
+SAFER = specs.SAFER  # measurements: the safer of two disagreeing values
 disagreements: Counter = Counter()  # per run, logged by finish()
 
 
@@ -137,8 +136,9 @@ def update_history(history: dict, listings: list[dict], day: str, model_key) -> 
 
 
 def finish(cat: Category, out_dir: Path, listings: list[dict]) -> None:
-    """Cached product-page specs, then fields shared across a model's listings."""
+    """Cached product-page specs (shops, then makers), then fields shared across a model's listings."""
     specs.apply(cat.name, out_dir, listings)
+    makers.apply(cat.name, listings)
     disagreements.clear()
     share_fields(listings, cat.shared, cat.model_key)
     for fields, key in cat.shared_by:
@@ -147,16 +147,22 @@ def finish(cat: Category, out_dir: Path, listings: list[dict]) -> None:
         print(f"[{cat.name}] sites disagree by >5 (safer value kept): {dict(disagreements)}")
 
 
-def collect_specs(cats: list[Category], budget: dict[str, int]) -> None:
-    """New product pages for every category (one queue per site, see specs.collect), then the
-    specs re-applied to each latest.json. Runs after all the lists, and alone with --specs-only."""
+def collect_specs(cats: list[Category], budget: dict[str, int], makers_budget: int) -> None:
+    """New product pages for every category — the shops' (one queue per site, see specs.collect) and
+    the makers' (makers.collect), all hosts in parallel — then the specs re-applied to each
+    latest.json. Runs after all the lists, and alone with --specs-only."""
     loaded = []
     for cat in cats:
         data = load_json(DATA_DIR / cat.name / "latest.json", None)
         if data and cat.name in specs.PARSERS:
             loaded.append((cat, data))
     print("specs…")
-    specs.collect([(cat.name, DATA_DIR / cat.name, data["listings"], cat.model_key) for cat, data in loaded], budget)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        shops = pool.submit(specs.collect, [(cat.name, DATA_DIR / cat.name, data["listings"], cat.model_key)
+                                            for cat, data in loaded], budget)
+        makers_done = pool.submit(makers.collect, {cat.name: data["listings"] for cat, data in loaded}, makers_budget)
+        shops.result()
+        makers_done.result()
     for cat, data in loaded:
         finish(cat, DATA_DIR / cat.name, data["listings"])
         (DATA_DIR / cat.name / "latest.json").write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -232,6 +238,7 @@ def main() -> int:
     ap.add_argument("--debug", action="store_true", help="dump fetched HTML to scraper/debug/")
     ap.add_argument("--no-shipping", action="store_true", help="skip the price + shipping refresh (cache still applied)")
     ap.add_argument("--specs-budget", type=int, help="product pages per site for specs (default: specs.BUDGET)")
+    ap.add_argument("--makers-budget", type=int, default=makers.BUDGET, help="makers' product pages per maker")
     ap.add_argument("--specs-only", action="store_true", help="only backfill specs into the existing latest.json")
     ap.add_argument("--history-only", action="store_true", help="only import Skroutz price history into history.json")
     ap.add_argument("--history-budget", type=int, default=site_history.BUDGET, help="price_graph requests per category")
@@ -251,12 +258,12 @@ def main() -> int:
         return 0
     budget = specs.BUDGET if args.specs_budget is None else {site: args.specs_budget for site in specs.BUDGET}
     if args.specs_only:
-        collect_specs(cats, budget)
+        collect_specs(cats, budget, args.makers_budget)
         return 0
     cats = run_order(cats)
     print("order: " + ", ".join(cat.name for cat in cats))
     ok = [scrape_category(cat, args.only) for cat in cats]
-    collect_specs(cats, budget)
+    collect_specs(cats, budget, args.makers_budget)
     return 0 if any(ok) else 1
 
 

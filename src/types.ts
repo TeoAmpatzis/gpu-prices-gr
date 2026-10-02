@@ -95,7 +95,7 @@ export interface CaseListing extends BaseListing {
 
 export type CasePosition = 'front' | 'rear' | 'top' | 'bottom' | 'side';
 export interface CaseFans {
-  pos: CasePosition;
+  pos: CasePosition | null; // null: the maker lists included fans without a position
   size: number; // mm
   n: number;
 }
