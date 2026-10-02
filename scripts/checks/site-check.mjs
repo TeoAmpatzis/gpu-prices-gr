@@ -71,13 +71,17 @@ const details = await waitFor(`[...document.querySelectorAll('main tbody ul a')]
 const d = await evaluate(`({ offers: document.querySelectorAll('main tbody ul a').length, links: [...document.querySelectorAll('main tbody ul a')].filter(a => a.getAttribute('href')).length, photo: [...document.querySelectorAll('main tbody img')].some(i => i.width >= 150 && i.naturalWidth > 0) })`);
 check(details && d.links === d.offers && d.photo, 'product details: shop links, chart, large photo', `${d.links}/${d.offers} links, photo ${d.photo}`);
 
-// ---- PC builder
-await open('builder');
+// ---- PC builder: Quick list (the first part's picker) and Guided (the processor step's cards)
+await open('builder?mode=quick');
 const builder = await waitFor(`[...document.querySelectorAll('main button')].some(b => /^(Επιλογή|Choose)$/.test(b.textContent.trim()))`);
 await evaluate(`[...document.querySelectorAll('main button')].find(b => /^(Επιλογή|Choose)$/.test(b.textContent.trim())).click(); true`);
 await sleep(600);
 const options = await evaluate(`document.querySelectorAll('main ul.max-h-80 li').length`);
-check(builder && options > 0, 'PC builder offers parts', `${options} options for the first slot`);
+check(builder && options > 0, 'PC builder (Quick list) offers parts', `${options} options for the first slot`);
+await open('builder?step=cpu');
+const guided = await waitFor(`document.querySelectorAll('main li.card').length > 0`);
+const cards = await evaluate(`document.querySelectorAll('main li.card').length`);
+check(guided && cards > 0, 'PC builder (Guided) shows part cards', `${cards} cards on the processor step`);
 
 // ---- text pages
 for (const page of ['about', 'contact', 'privacy']) {

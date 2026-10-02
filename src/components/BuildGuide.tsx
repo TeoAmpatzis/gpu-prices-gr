@@ -1,8 +1,10 @@
 import { BookOpen } from 'lucide-react';
 import { tr, useLang, type Text } from '../lib/i18n';
 
-/** Short step-by-step guide to choosing parts, shown above the builder. Steps follow the slot order. */
-const STEPS: { title: Text; body: Text }[] = [
+/** Short step-by-step guide to choosing parts, shown above the builder (and per step in the guided
+ * builder: GUIDE_STEPS[i] — 0 budget/use, 1 CPU + board, 2 RAM, 3 GPU, 4 cooler, 5 case, 6 fans,
+ * 7 PSU, 8 storage). */
+export const GUIDE_STEPS: { title: Text; body: Text }[] = [
   {
     title: { el: 'Προϋπολογισμός και χρήση', en: 'Budget and use' },
     body: {
@@ -86,7 +88,7 @@ export default function BuildGuide() {
         </span>
       </summary>
       <ol className="mt-3 grid gap-3 sm:grid-cols-2">
-        {STEPS.map((s, i) => (
+        {GUIDE_STEPS.map((s, i) => (
           <li key={i} className="flex gap-3">
             <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-accent/10 text-xs font-semibold text-accent">
               {i + 1}

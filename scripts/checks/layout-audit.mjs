@@ -6,7 +6,7 @@ import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
 
 const BASE = process.argv[2];
 const OUT = process.argv[3];
-const PAGES = (process.argv[4] || 'gpu,cpu,mobo,ram,psu,case,fan,cooler,builder,about,contact,privacy').split(',');
+const PAGES = (process.argv[4] || 'gpu,cpu,mobo,ram,psu,case,fan,cooler,builder,builder?mode=quick,about,contact,privacy').split(',');
 const WIDTHS = (process.argv[5] || '1920,1366,768,360').split(',').map(Number);
 const LANGS = ['el', 'en'];
 const THEMES = ['light', 'dark'];
@@ -105,15 +105,33 @@ for (const width of WIDTHS) {
   for (const lang of LANGS) {
     await evaluate(`localStorage.setItem('lang', '${lang}'); localStorage.setItem('theme', 'light'); localStorage.removeItem('pcBuild'); true`);
     for (const page of PAGES) {
-      await send('Page.navigate', { url: `${BASE}/#${page}` });
-      await send('Page.reload', { ignoreCache: false });
+      // A query string per page forces a full load (a hash-only change could leave the last page shown).
+      await send('Page.navigate', { url: `${BASE}/?audit=${encodeURIComponent(page)}#${page}` });
+      await send('Page.reload', { ignoreCache: false }); // the same URL as before is only a hash change
       if (!(await waitReady())) { record(`${width} ${lang} ${page}`, [{ kind: 'PAGE did not load', el: page, px: 0 }]); continue; }
       const states = [['', async () => {}]];
-      if (!['builder', 'about', 'contact', 'privacy'].includes(page)) {
+      const builder = page.startsWith('builder');
+      if (!builder && !['about', 'contact', 'privacy'].includes(page)) {
         states.push(['details', async () => click('tbody button[aria-expanded="false"], li.card button[aria-expanded="false"], main button[aria-expanded="false"]')]);
         if (width < 1024) states.push(['filter-sheet', async () => { await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape'}))`); return click('button[aria-haspopup="dialog"]'); }]);
       }
-      if (page === 'builder') {
+      if (builder && !page.includes('mode=quick')) {
+        // Guided: pick a use and a budget, open the CPU cards, then walk every step choosing its
+        // first compatible part (Next / Skip) down to the Review.
+        states.push(['use', async () => { await click('button[aria-pressed="false"]', '/Gaming/'); return click('button[aria-pressed="false"]', '/^1000 €$/'); }]);
+        states.push(['cards', async () => { await click('button', '/^\\s*(Επόμενο|Next)\\s*$/'); await sleep(1500); return true; }]);
+        states.push(['walk', async () => {
+          for (let i = 0; i < 12; i++) {
+            await click('li.card button:not([disabled])', '/^(Επιλογή|Choose)$/');
+            await sleep(300);
+            if (!(await click('button', '/^\\s*(Επόμενο|Next|Παράλειψη|Skip)\\s*$/'))) break;
+            await sleep(600);
+          }
+          return true;
+        }]);
+        if (width < 1024) states.push(['summary-open', async () => click('aside button[aria-expanded="false"]')]);
+      }
+      if (builder && page.includes('mode=quick')) {
         states.push(['picker', async () => click('button', '/^(Επιλογή|Choose)$/')]);
         // Fill every slot with its first compatible part, then audit the full build.
         states.push(['full-build', async () => {
@@ -136,7 +154,7 @@ for (const width of WIDTHS) {
           await sleep(100);
           const where = `${width} ${lang} ${theme} ${page}${state ? ' ' + state : ''}`;
           record(where, await evaluate(AUDIT));
-          if (theme === 'light' || width === 360) await screenshot(`${width}-${lang}-${theme}-${page}${state ? '-' + state : ''}`);
+          if (theme === 'light' || width === 360) await screenshot(`${width}-${lang}-${theme}-${page.replace(/[^a-z0-9-]/gi, '_')}${state ? '-' + state : ''}`);
         }
       }
     }
