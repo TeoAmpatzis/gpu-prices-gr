@@ -31,6 +31,7 @@ import type {
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './categories';
 import { fromColumns } from './columns';
 import { groupModels, mostCommon, saleOf, type Model } from './data';
+import { POP_SCALE, popularityRaw } from './ranking';
 import {
   SLOTS,
   candidates,
@@ -156,7 +157,9 @@ const BUILDER_SKIP = new Set(['scrapedAt', 'shopCount', 'shipping', 'total', 'me
 function builderRow<S extends Slot>(slot: S, m: Model<SlotListing[S]>): Record<string, unknown> {
   const most = <V>(get: (l: SlotListing[S]) => V | null | undefined) => mostCommon(m.listings.map(get));
   const sale = saleOf(m.listings, m.cheapest);
-  const row: Record<string, unknown> = { ...m.cheapest, drop: sale?.pct ?? null };
+  // `pop`: the model's popularity (listings, shops, sites), the one input of the Recommended sort a
+  // one-row model can't recompute (src/lib/ranking.ts popularityRaw), as a small integer.
+  const row: Record<string, unknown> = { ...m.cheapest, drop: sale?.pct ?? null, pop: Math.round(POP_SCALE * popularityRaw(m)) };
   if (slot !== 'gpu') row.title = [...new Set(m.listings.map((l) => l.title))].join(' | ');
   const any = m as Model<never>;
   switch (slot) {

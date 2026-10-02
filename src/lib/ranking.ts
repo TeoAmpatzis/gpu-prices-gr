@@ -140,6 +140,18 @@ function priceFit(price: number, lo: number, hi: number): number {
   return Math.max(0, 1 - Math.abs(Math.log2(price / edge)) * 0.5);
 }
 
+/** builder.json rows carry popularityRaw × POP_SCALE, rounded (`pop`): 2 costs 7 KB gzipped. */
+export const POP_SCALE = 2;
+
+/** How much a model is on offer: its listings, its shops, the sites listing it (log-scaled). A builder
+ * row (one listing per model there) carries the full model's value as `pop`. */
+export function popularityRaw(m: Model<BaseListing>): number {
+  if (m.cheapest.pop != null) return m.cheapest.pop / POP_SCALE;
+  const shops = Math.max(0, ...m.listings.map((l) => l.shopCount ?? 0));
+  const sources = new Set(m.listings.map((l) => l.source)).size;
+  return Math.log1p(m.listings.length) + 0.5 * Math.log1p(shops) + 0.3 * sources;
+}
+
 /**
  * Recommended score per model key, relative to the models being shown (so filters change the scale).
  * `value` is the category's value-for-money function, if it has one.
@@ -153,12 +165,7 @@ export function recommendedScores<L extends BaseListing>(
   const w = rc.weights;
   const total = w.popularity + w.modern + w.price + w.value || 1;
 
-  const popularityRaw = models.map((m) => {
-    const shops = Math.max(0, ...m.listings.map((l) => l.shopCount ?? 0));
-    const sources = new Set(m.listings.map((l) => l.source)).size;
-    return Math.log1p(m.listings.length) + 0.5 * Math.log1p(shops) + 0.3 * sources;
-  });
-  const popularity = percentiles(popularityRaw);
+  const popularity = percentiles(models.map(popularityRaw));
   const valueRaw = models.map((m) => value?.(m) ?? null);
   const knownValues = valueRaw.filter((v): v is number => v != null);
   const valuePct = percentiles(knownValues);

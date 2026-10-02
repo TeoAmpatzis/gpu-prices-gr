@@ -22,6 +22,7 @@ export interface BaseListing {
   merchant?: string | null; // shop with that best total
   drop?: number | null; // discount (%) the site itself shows for this offer
   img?: string | null; // builder.json rows only: the model's stored photo ("<cat>/<id>")
+  pop?: number | null; // builder.json rows only: the model's popularity × POP_SCALE (src/lib/ranking.ts popularityRaw)
 }
 
 export interface GpuListing extends BaseListing {
