@@ -171,6 +171,9 @@
   .badge-unverified {
     @apply bg-sunken text-muted ring-1 ring-inset ring-line-strong;
   }
+  .badge-no {
+    @apply bg-danger-bg text-danger-fg;
+  }
   /* Inline notices: warning (builder) and error (failed load). */
   .notice-warn {
     @apply rounded-xl bg-warn-bg text-warn-fg;

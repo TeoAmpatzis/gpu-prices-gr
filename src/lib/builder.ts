@@ -294,28 +294,57 @@ const gpuEstimate = (chip: string, max: number, ctx: FitContext): Text | null =>
   };
 };
 
+const tooManyFans = (pack: number, slots: number): Text => ({
+  el: `${pack} ανεμιστήρες, το κουτί έχει ${slots} θέσεις.`,
+  en: `${pack} fans; the case has ${slots} fan positions.`,
+});
+
 /** Every check between the parts of a complete or partial build. */
 function checks(b: Build, ctx: FitContext): Check[] {
   const out: Check[] = [];
   const add = (slots: [Slot, Slot], fit: Fit, why?: Text) => out.push({ slots, fit, why });
 
-  if (b.cpu && b.mobo) add(['cpu', 'mobo'], cpuSocket(b.cpu) === moboSocket(b.mobo) ? 'fits' : 'no');
+  // A clash says why too: the guided builder shows clashing parts greyed out with the reason.
+  const either = (slots: [Slot, Slot], ok: boolean, why: Text) => (ok ? add(slots, 'fits') : add(slots, 'no', why));
+
+  if (b.cpu && b.mobo) {
+    const [c, m] = [cpuSocket(b.cpu), moboSocket(b.mobo)];
+    either(['cpu', 'mobo'], c === m, { el: `Socket ${c} ≠ μητρικής ${m}.`, en: `Socket ${c} ≠ the board's ${m}.` });
+  }
   if (b.cpu && b.cooler) {
     const sockets = coolerSockets(b.cooler);
+    const socket = cpuSocket(b.cpu) ?? '';
     if (!sockets.length) add(['cpu', 'cooler'], 'unverified', W.coolerSockets);
-    else add(['cpu', 'cooler'], sockets.includes(cpuSocket(b.cpu) ?? '') ? 'fits' : 'no');
+    else
+      either(['cpu', 'cooler'], sockets.includes(socket), {
+        el: `Η ψύκτρα δεν υποστηρίζει ${socket}.`,
+        en: `The cooler doesn't support ${socket}.`,
+      });
   }
   if (b.mobo && b.ram) {
     const sticks = b.ram.cheapest.modules;
     const slots = moboSlotsStated(b.mobo);
-    if (moboMemory(b.mobo) !== b.ram.cheapest.type) add(['mobo', 'ram'], 'no');
-    else if (slots != null) add(['mobo', 'ram'], sticks <= slots ? 'fits' : 'no');
+    const memory = moboMemory(b.mobo);
+    if (memory !== b.ram.cheapest.type)
+      add(['mobo', 'ram'], 'no', {
+        el: `Η μητρική θέλει ${memory}, η μνήμη είναι ${b.ram.cheapest.type}.`,
+        en: `The board takes ${memory}; this memory is ${b.ram.cheapest.type}.`,
+      });
+    else if (slots != null)
+      either(['mobo', 'ram'], sticks <= slots, {
+        el: `${sticks} τεμάχια, η μητρική έχει ${slots} υποδοχές.`,
+        en: `${sticks} sticks; the board has ${slots} slots.`,
+      });
     else add(['mobo', 'ram'], sticks <= 2 ? 'fits' : 'unverified', W.ramSlots);
   }
   if (b.mobo && b.case) {
     const stated = caseBoardStated(b.case);
     const form = moboForm(b.mobo);
-    if (stated) add(['mobo', 'case'], boardFits(form, stated) ? 'fits' : 'no');
+    if (stated)
+      either(['mobo', 'case'], boardFits(form, stated), {
+        el: `Μητρική ${form}, το κουτί χωράει έως ${stated}.`,
+        en: `${form} board; the case takes up to ${stated}.`,
+      });
     else if (b.case.cheapest.size !== 'Άλλο' && boardFits(form, BOARD_BY_CASE_SIZE[b.case.cheapest.size]))
       add(['mobo', 'case'], 'likely', W.boardGuess);
     else add(['mobo', 'case'], 'unverified', W.boardUnknown);
@@ -324,7 +353,11 @@ function checks(b: Build, ctx: FitContext): Check[] {
     const max = caseGpuMax(b.case);
     const len = gpuLength(b.gpu);
     if (max == null) add(['gpu', 'case'], 'unverified', W.gpuMaxUnknown);
-    else if (len != null) add(['gpu', 'case'], len <= max ? 'fits' : 'no');
+    else if (len != null)
+      either(['gpu', 'case'], len <= max, {
+        el: `Κάρτα ${len} mm, το κουτί χωράει έως ${max} mm.`,
+        en: `${len} mm card; the case takes up to ${max} mm.`,
+      });
     else {
       const est = gpuWaterCooled(b.gpu.cheapest) ? null : gpuEstimate(b.gpu.cheapest.chip, max, ctx);
       add(['gpu', 'case'], est ? 'likely' : 'unverified', est ?? W.gpuLengthUnknown);
@@ -361,7 +394,11 @@ function checks(b: Build, ctx: FitContext): Check[] {
       const h = coolerHeight(b.cooler);
       const max = caseCoolerMax(b.case);
       if (h == null || max == null) add(['cooler', 'case'], 'unverified', W.coolerHeightUnknown);
-      else add(['cooler', 'case'], h <= max ? 'fits' : 'no');
+      else
+        either(['cooler', 'case'], h <= max, {
+          el: `Ψύκτρα ${h} mm, το κουτί χωράει έως ${max} mm.`,
+          en: `${h} mm cooler; the case takes up to ${max} mm.`,
+        });
     }
   }
   if (b.fan && b.case) {
@@ -375,22 +412,26 @@ function checks(b: Build, ctx: FitContext): Check[] {
       if (pack <= total - taken) add(['fan', 'case'], 'fits');
       else if (pack <= total) add(['fan', 'case'], 'likely', W.fansTaken);
       // More fans than the maker lists positions for: hidden only if the shop's total count agrees.
-      else if (slots != null && pack > slots) add(['fan', 'case'], 'no');
+      else if (slots != null && pack > slots) add(['fan', 'case'], 'no', tooManyFans(pack, slots));
       else
         add(['fan', 'case'], 'unverified', {
           el: `Ο κατασκευαστής αναφέρει ${total} θέσεις ${size} mm.`,
           en: `The maker lists ${total} positions for ${size} mm fans.`,
         });
     } else if (slots == null) add(['fan', 'case'], 'unverified', W.fanSlotsUnknown);
-    else if (pack > slots) add(['fan', 'case'], 'no');
+    else if (pack > slots) add(['fan', 'case'], 'no', tooManyFans(pack, slots));
     else add(['fan', 'case'], size === 120 ? 'likely' : 'unverified', W.fanSizesUnknown);
   }
   if (b.psu) {
     const watts = requiredWatts(b);
     if (watts != null) {
-      const fit: Fit = b.psu.cheapest.watts >= watts ? 'fits' : 'no';
-      if (b.gpu) add(['psu', 'gpu'], fit);
-      if (b.cpu) add(['psu', 'cpu'], fit);
+      const ok = b.psu.cheapest.watts >= watts;
+      const why = {
+        el: `Τροφοδοτικό ${b.psu.cheapest.watts} W, χρειάζεται τουλάχιστον ${watts} W.`,
+        en: `${b.psu.cheapest.watts} W power supply; at least ${watts} W is needed.`,
+      };
+      if (b.gpu) either(['psu', 'gpu'], ok, why);
+      if (b.cpu) either(['psu', 'cpu'], ok, why);
     }
     if (b.case?.cheapest.size === 'SFF / Cube') add(['psu', 'case'], 'unverified', W.sffPsu);
   }
@@ -436,6 +477,25 @@ export function candidates<S extends Slot>(
 ): Model<SlotListing[S]>[] {
   const rest: Build = { ...build, [slot]: undefined };
   return models.filter((m) => usable[slot](m) && rate(slot, m, rest, ctx).fit !== 'no');
+}
+
+/** Every model `slot` can offer with its rating against the rest of the build, clashes included
+ * (the guided builder shows them greyed out when "Only compatible" is off). */
+export function rateAll<S extends Slot>(
+  slot: S,
+  models: Model<SlotListing[S]>[],
+  build: Build,
+  ctx: FitContext = NO_CONTEXT,
+): { m: Model<SlotListing[S]>; rating: Rating }[] {
+  const rest: Build = { ...build, [slot]: undefined };
+  return models.filter((m) => usable[slot](m)).map((m) => ({ m, rating: rate(slot, m, rest, ctx) }));
+}
+
+/** How many checks between the chosen parts fit, are estimates, can't be verified or clash. */
+export function buildStatus(b: Build, ctx: FitContext = NO_CONTEXT): Record<Fit, number> {
+  const out: Record<Fit, number> = { fits: 0, likely: 0, unverified: 0, no: 0 };
+  for (const c of checks(b, ctx)) out[c.fit]++;
+  return out;
 }
 
 /**
