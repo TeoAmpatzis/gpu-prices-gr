@@ -4,9 +4,8 @@
 
 import { useState, type ReactNode } from 'react';
 import { AlertTriangle, CheckCircle2, ChevronUp, Info } from 'lucide-react';
-import type { Category } from '../../types';
-import { CATEGORIES } from '../../lib/categories';
 import { formatPrice } from '../../lib/data';
+import { STEP_SHORT } from '../../lib/wizard';
 import { SLOTS, buildNotes, buildStatus, requiredWatts, type Slot } from '../../lib/builder';
 import type { AnyModel, BuilderState } from '../../lib/builderState';
 import { tr, useLang, type Text } from '../../lib/i18n';
@@ -175,8 +174,10 @@ export default function Summary({ state, onSlot, back, next }: Props) {
                     onClick={() => onSlot(s)}
                     className="tap flex w-full items-baseline gap-2 rounded py-1 text-left hover:text-fg"
                   >
-                    <span className="w-20 shrink-0 text-xs text-muted">{t(CATEGORIES[s as Category].tab)}</span>
-                    <span className={`min-w-0 flex-1 truncate ${m ? 'font-medium' : 'text-faint'}`}>{m ? m.chip : '—'}</span>
+                    <span className="w-24 shrink-0 truncate text-xs text-muted">{t(STEP_SHORT[s])}</span>
+                    <span className={`line-clamp-2 min-w-0 flex-1 [overflow-wrap:anywhere] ${m ? 'font-medium' : 'text-faint'}`}>
+                      {m ? m.chip : '—'}
+                    </span>
                     {m && <span className="shrink-0 tabular-nums text-muted">{formatPrice(m.cheapest.price, lang)}</span>}
                   </button>
                 </li>
