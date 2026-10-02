@@ -70,6 +70,8 @@ def _needy(maker, listings: dict[str, list[dict]]) -> dict[str, list[dict]]:
 
 def collect(listings: dict[str, list[dict]], budget: int = BUDGET) -> None:
     """Fetch new product pages from every maker (one thread each)."""
+    if budget <= 0:  # --makers-budget 0: re-apply the caches only, no requests (not even catalogues)
+        return
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     def work(maker) -> None:

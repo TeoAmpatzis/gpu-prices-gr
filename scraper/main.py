@@ -17,6 +17,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 import http_client  # noqa: E402
 import makers  # noqa: E402
+import overrides  # noqa: E402
 import shipping  # noqa: E402
 import site_history  # noqa: E402
 import specs  # noqa: E402
@@ -145,6 +146,7 @@ def finish(cat: Category, out_dir: Path, listings: list[dict]) -> None:
         share_fields(listings, fields, key)
     if disagreements:
         print(f"[{cat.name}] sites disagree by >5 (safer value kept): {dict(disagreements)}")
+    overrides.apply(cat.name, listings, cat.model_key)  # manual fixes win over everything above
 
 
 def collect_specs(cats: list[Category], budget: dict[str, int], makers_budget: int) -> None:
