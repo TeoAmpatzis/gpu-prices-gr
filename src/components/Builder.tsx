@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AlertTriangle, ExternalLink, Info, Loader2, Search, X, ChevronUp } from 'lucide-react';
 import type { BaseListing, BuilderFile, Category } from '../types';
 import { CATEGORIES, groupName } from '../lib/categories';
@@ -46,6 +46,7 @@ type AnyModel = Model<BaseListing>;
 
 const STORAGE_KEY = 'pcBuild'; // { slot: model key }, per-browser convenience only
 const PICKER_LIMIT = 60;
+const EXTRA_DELAY = 5000; // ms after the parts load before builder-extra.json is fetched unasked
 
 const S: Record<string, Text> = {
   choose: { el: 'Επιλογή', en: 'Choose' },
@@ -224,6 +225,8 @@ export default function Builder() {
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   // Phones and tablets: the summary bar at the bottom is collapsed to the total until opened.
   const [summaryOpen, setSummaryOpen] = useState(false);
+  const extraRef = useRef<(() => void) | null>(null);
+  const extraTimer = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     // builder.json: one row per model the builder can offer, prepared at build time (src/lib/derive.ts).
@@ -242,23 +245,37 @@ export default function Builder() {
           if (found) (restored as Record<Slot, AnyModel>)[s] = found;
         }
         setBuild(restored);
-        // Then the shop links and the search titles (builder-extra.json), written onto each model's
-        // one row; `extraVersion` makes the picker search and the links pick them up.
-        loadBuilderExtra(file.builtAt)
-          .then((extra) => {
-            for (const s of SLOTS) {
-              for (const model of m[s] as AnyModel[]) {
-                const row = model.cheapest;
-                row.url = extra.urls[row.id] ?? row.url;
-                if (!row.title) row.title = extra.titles[row.id] ?? '';
+        // Then the shop links and the search titles (builder-extra.json, ~430 KB gzipped), written
+        // onto each model's one row; `extraVersion` makes the picker search and the links pick them
+        // up. Only when needed: at once for a restored build (its parts need their links), else on
+        // the first picker / interaction, or EXTRA_DELAY after the parts load, so a phone's first
+        // seconds download the parts only.
+        let requested = false;
+        extraRef.current = () => {
+          if (requested) return;
+          requested = true;
+          window.clearTimeout(extraTimer.current);
+          loadBuilderExtra(file.builtAt)
+            .then((extra) => {
+              for (const s of SLOTS) {
+                for (const model of m[s] as AnyModel[]) {
+                  const row = model.cheapest;
+                  row.url = extra.urls[row.id] ?? row.url;
+                  if (!row.title) row.title = extra.titles[row.id] ?? '';
+                }
               }
-            }
-            setExtraVersion((v) => v + 1);
-          })
-          .catch(() => {}); // the builder still works; links and title search just stay missing
+              setExtraVersion((v) => v + 1);
+            })
+            .catch(() => {}); // the builder still works; links and title search just stay missing
+        };
+        if (Object.keys(restored).length) extraRef.current();
+        else extraTimer.current = window.setTimeout(() => extraRef.current?.(), EXTRA_DELAY);
       })
       .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)));
+    return () => window.clearTimeout(extraTimer.current);
   }, []);
+  /** Load builder-extra.json now (picker opened, first interaction); no-op before builder.json. */
+  const wantExtra = () => extraRef.current?.();
 
   const update = (b: Build) => {
     setBuild(b);
@@ -307,7 +324,12 @@ export default function Builder() {
   const collecting = !coverage || Object.values(coverage).some((v) => v < 90);
 
   return (
-    <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
+    // Any click, tap or keyboard focus in the builder fetches the shop links and search titles.
+    <div
+      className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]"
+      onPointerDownCapture={wantExtra}
+      onFocusCapture={wantExtra}
+    >
       <div className="flex min-w-0 flex-col gap-4">
         <BuildGuide />
         {collecting && (
