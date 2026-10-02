@@ -57,6 +57,8 @@ import {
 
 /** Only needed when a product is opened (URL) or never shown (scrape time). */
 const DETAIL_ONLY = new Set(['url', 'scrapedAt']);
+/** Not in list.json either: only the builder reads them (builder.json keeps them). */
+const LIST_SKIP = new Set([...DETAIL_ONLY, 'fanMounts', 'fansIncluded', 'radiators', 'airflowCfm', 'pressureMm']);
 
 export function toColumns(listings: object[], skip: Set<string> = DETAIL_ONLY): Columns {
   const cols: string[] = [];
@@ -130,7 +132,7 @@ export function listFile(cat: Category, input: CategoryInput, builtAt: string, i
     builtAt,
     updatedAt: input.latest.updatedAt,
     sources: input.latest.sources,
-    ...toColumns(input.latest.listings),
+    ...toColumns(input.latest.listings, LIST_SKIP),
     hist,
     imported,
     img,

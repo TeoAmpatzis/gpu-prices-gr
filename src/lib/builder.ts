@@ -335,8 +335,18 @@ function checks(b: Build, ctx: FitContext): Check[] {
       const size = b.cooler.cheapest.radiator;
       const sizes = caseRadiatorSizes(b.case);
       const mounts = caseRadiators(b.case);
-      if (sizes && size != null) add(['cooler', 'case'], sizes.some((r) => r.sizes.includes(size)) ? 'fits' : 'no');
-      else if (mounts && size === 120)
+      if (sizes && size != null) {
+        // A position taking a 360 also takes a 240 or 120 (same fan width), not a 280 (140 mm fans).
+        const width = (s: number) => (s % 140 === 0 && s % 120 !== 0 ? 140 : 120);
+        const listed = [...new Set(sizes.flatMap((r) => r.sizes))].sort((a, b) => a - b);
+        if (listed.some((s) => s === size || (width(s) === width(size) && s >= size))) add(['cooler', 'case'], 'fits');
+        else
+          // Not hidden: a maker's list read wrongly must never hide a part that fits.
+          add(['cooler', 'case'], 'unverified', {
+            el: `Ο κατασκευαστής του κουτιού αναφέρει ψυγεία ${listed.join('/')} mm· ψυγείο ${size} mm δεν αναφέρεται.`,
+            en: `The case maker lists ${listed.join('/')} mm radiators; a ${size} mm one isn't listed.`,
+          });
+      } else if (mounts && size === 120)
         add(['cooler', 'case'], 'likely', {
           el: `Το κουτί έχει θέσεις ψυγείου (${mounts}) και κάθε θέση δέχεται 120 mm· τα μεγέθη δεν αναφέρονται.`,
           en: `The case has radiator positions (${mounts}) and any position takes 120 mm; sizes are not stated.`,
@@ -359,11 +369,18 @@ function checks(b: Build, ctx: FitContext): Check[] {
     const mounts = caseFanMounts(b.case);
     const slots = caseFanSlots(b.case);
     if (mounts) {
+      // Per position the maker lists alternatives ("3 × 120 or 2 × 140"); count this size only.
       const total = mounts.filter((f) => f.size === size).reduce((n, f) => n + f.n, 0);
       const taken = (caseFansIncluded(b.case) ?? []).filter((f) => f.size === size).reduce((n, f) => n + f.n, 0);
       if (pack <= total - taken) add(['fan', 'case'], 'fits');
       else if (pack <= total) add(['fan', 'case'], 'likely', W.fansTaken);
-      else add(['fan', 'case'], 'no');
+      // More fans than the maker lists positions for: hidden only if the shop's total count agrees.
+      else if (slots != null && pack > slots) add(['fan', 'case'], 'no');
+      else
+        add(['fan', 'case'], 'unverified', {
+          el: `Ο κατασκευαστής αναφέρει ${total} θέσεις ${size} mm.`,
+          en: `The maker lists ${total} positions for ${size} mm fans.`,
+        });
     } else if (slots == null) add(['fan', 'case'], 'unverified', W.fanSlotsUnknown);
     else if (pack > slots) add(['fan', 'case'], 'no');
     else add(['fan', 'case'], size === 120 ? 'likely' : 'unverified', W.fanSizesUnknown);
