@@ -90,14 +90,15 @@ export interface CaseListing extends BaseListing {
   radiatorMounts?: string | null; // e.g. "Άνω, Κάτω, Μπροστά"
   // From the case maker's own page (scraper/makers): per position and fan size.
   fanMounts?: CaseFans[] | null; // positions: front 3 × 120 or 2 × 140 = two entries
-  fansIncluded?: CaseFans[] | null; // fans in the box, e.g. front 3 × 120, rear 1 × 120
+  fansIncluded?: CaseFans[] | null; // fans in the box, e.g. front 3 × 120, rear 1 × 120; [] = the maker says none
+  hasFans?: boolean | null; // "comes with fans", count not stated (BestPrice "Προεγκατεστημένοι Ανεμιστήρες")
   radiators?: CaseRadiator[] | null; // radiator sizes per position, e.g. front [240, 280, 360]
 }
 
 export type CasePosition = 'front' | 'rear' | 'top' | 'bottom' | 'side';
 export interface CaseFans {
   pos: CasePosition | null; // null: the maker lists included fans without a position
-  size: number; // mm
+  size: number | null; // mm; null when a shop title gives only the count ("WITH 3 ARGB FANS")
   n: number;
 }
 export interface CaseRadiator {

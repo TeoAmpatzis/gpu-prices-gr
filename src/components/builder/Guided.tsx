@@ -14,7 +14,9 @@ import {
   Palette,
   Search,
 } from 'lucide-react';
-import type { BaseListing, Category } from '../../types';
+import type { BaseListing, CaseListing, Category, FanListing } from '../../types';
+import { fanPlan } from '../../lib/fans';
+import { CaseFansLine, FanAdviceBox } from './FanAdvice';
 import { CATEGORIES } from '../../lib/categories';
 import { formatPrice, saleOf, type Model } from '../../lib/data';
 import { SLOTS, rate, rateAll, type Build, type Rating, type Slot } from '../../lib/builder';
@@ -57,6 +59,8 @@ const G = {
   verifiedOnly: { el: 'Μόνο επιβεβαιωμένα', en: 'Verified only' },
   withinBudget: { el: 'Εντός προϋπολογισμού', en: 'Within budget' },
   shown: { el: 'εμφανίζονται', en: 'shown' },
+  airflowType: { el: 'Ροής αέρα', en: 'Airflow' },
+  pressureType: { el: 'Στατικής πίεσης', en: 'Static pressure' },
   hidden: { el: 'ασύμβατα κρυμμένα', en: 'incompatible hidden' },
   showMore: { el: 'Περισσότερα', en: 'Show more' },
   none: { el: 'Κανένα προϊόν με αυτά τα φίλτρα.', en: 'No parts match these filters.' },
@@ -373,6 +377,13 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [withinBudget, setWithinBudget] = useState(false);
   const [limit, setLimit] = useState(PAGE);
+  // Fans step: sizes the chosen case needs (from the fan plan), and the type named in the product.
+  const planSizes = useMemo(() => (slot === 'fan' && build.case ? [...new Set(fanPlan(build).add.map((a) => a.size))] : []), [slot, build]);
+  const [sizes, setSizes] = useState<number[]>(planSizes);
+  // A saved build arrives with builder.json, after the first render: follow the plan when it changes.
+  const planKey = planSizes.join();
+  useEffect(() => setSizes(planSizes), [planKey]);
+  const [fanType, setFanType] = useState<'airflow' | 'pressure' | null>(null);
 
   const rated: Rated[] = useMemo(() => (models ? (rateAll(slot, models[slot] as never, build, ctx) as Rated[]) : []), [models, slot, build, ctx]);
   const order = useMemo(() => sorter(slot, rated.map((r) => r.m), sort), [slot, rated, sort]);
@@ -386,16 +397,19 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
     if (onlyCompatible) list = list.filter((r) => r.rating.fit !== 'no');
     if (verifiedOnly) list = list.filter((r) => r.rating.fit !== 'unverified');
     if (withinBudget && left != null) list = list.filter((r) => r.m.cheapest.price <= left);
+    if (slot === 'fan' && sizes.length) list = list.filter((r) => sizes.includes((r.m as Model<FanListing>).cheapest.size));
+    if (slot === 'fan' && fanType) list = list.filter((r) => (r.m as Model<FanListing>).cheapest.fanType === fanType);
     // Clashes (shown when "Only compatible" is off) go last, greyed out.
     return { shown: [...list].sort((a, b) => Number(a.rating.fit === 'no') - Number(b.rating.fit === 'no') || order(a, b)), hidden: clashes };
     // extraVersion: search titles arrive later (builder-extra.json).
-  }, [rated, order, query, onlyCompatible, verifiedOnly, withinBudget, left, cfg, extraVersion]);
-  useEffect(() => setLimit(PAGE), [query, sort, onlyCompatible, verifiedOnly, withinBudget]);
+  }, [rated, order, query, onlyCompatible, verifiedOnly, withinBudget, left, cfg, extraVersion, slot, sizes, fanType]);
+  useEffect(() => setLimit(PAGE), [query, sort, onlyCompatible, verifiedOnly, withinBudget, sizes, fanType]);
 
   const chosen = build[slot] as AnyModel | undefined;
 
   return (
     <div className="flex flex-col gap-3">
+      {(slot === 'case' || slot === 'fan') && <FanAdviceBox build={build} step={slot} lang={lang} />}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
         <label className="relative block flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
@@ -430,6 +444,18 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
             {t(G.withinBudget)}
           </Chip>
         )}
+        {slot === 'fan' &&
+          [120, 140].map((s) => (
+            <Chip key={s} on={sizes.includes(s)} onClick={() => setSizes((v) => (v.includes(s) ? v.filter((x) => x !== s) : [...v, s]))}>
+              {s} mm
+            </Chip>
+          ))}
+        {slot === 'fan' &&
+          (['airflow', 'pressure'] as const).map((k) => (
+            <Chip key={k} on={fanType === k} onClick={() => setFanType((v) => (v === k ? null : k))}>
+              {t(k === 'airflow' ? G.airflowType : G.pressureType)}
+            </Chip>
+          ))}
         <span className={`text-sm text-muted ${loading ? 'invisible' : ''}`}>
           {shown.length} {t(G.shown)}
           {onlyCompatible && hidden > 0 && (
@@ -460,7 +486,9 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
                 onChoose={() => update({ ...build, [slot]: r.m })}
                 onRemove={() => update({ ...build, [slot]: undefined })}
                 lang={lang}
-              />
+              >
+                {slot === 'case' && <CaseFansLine c={r.m as Model<CaseListing>} build={build} lang={lang} />}
+              </PartCard>
             ))}
           </ul>
           {shown.length > limit && (
