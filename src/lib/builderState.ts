@@ -101,6 +101,7 @@ export function useBuilderState() {
   const [prefs, setPrefsState] = useState<Prefs>(() => (sharedAtStart ?? readSaved()).prefs);
   const [shared, setShared] = useState(sharedAtStart != null);
   const [extraVersion, setExtraVersion] = useState(0);
+  const [builtAt, setBuiltAt] = useState<string | null>(null);
   const extraRef = useRef<(() => void) | null>(null);
   const extraTimer = useRef<number | undefined>(undefined);
 
@@ -112,6 +113,7 @@ export function useBuilderState() {
           SLOTS.map((s) => [s, slotModels(s, fromColumns<SlotListing[typeof s]>(file.slots[s] ?? { cols: [], rows: [] }))]),
         ) as unknown as Models;
         setCoverage(file.coverage);
+        setBuiltAt(file.builtAt);
         setModels(m);
         // The shared or the saved build; parts that disappeared from the market are dropped.
         const parts = (sharedAtStart ?? readSaved()).parts;
@@ -183,6 +185,8 @@ export function useBuilderState() {
     setPrefs,
     shared,
     extraVersion,
+    /** When the site's data was built (the prices' date). */
+    builtAt,
     /** Load builder-extra.json now (first interaction); a no-op before builder.json has arrived. */
     wantExtra: () => extraRef.current?.(),
   };

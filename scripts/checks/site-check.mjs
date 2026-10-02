@@ -75,7 +75,8 @@ check(details && d.links === d.offers && d.photo, 'product details: shop links, 
 await open('builder?mode=quick');
 const builder = await waitFor(`[...document.querySelectorAll('main button')].some(b => /^(Επιλογή|Choose)$/.test(b.textContent.trim()))`);
 await evaluate(`[...document.querySelectorAll('main button')].find(b => /^(Επιλογή|Choose)$/.test(b.textContent.trim())).click(); true`);
-await sleep(600);
+// The page shows before builder.json arrives; the picker fills in when it has.
+await waitFor(`document.querySelectorAll('main ul.max-h-80 li').length > 0`, 10000);
 const options = await evaluate(`document.querySelectorAll('main ul.max-h-80 li').length`);
 check(builder && options > 0, 'PC builder (Quick list) offers parts', `${options} options for the first slot`);
 await open('builder?step=cpu');
