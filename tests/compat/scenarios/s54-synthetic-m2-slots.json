@@ -1,0 +1,65 @@
+{
+  "id": "S54",
+  "title": "Two NVMe SSDs + board with 1 M.2 slot: error (synthetic field)",
+  "parts": [
+    {
+      "category": "mobo",
+      "key": "asrocka620mhdvm2",
+      "modelKey": "asrocka620mhdvm2",
+      "name": "ASRock A620M-HDV/M.2",
+      "quantity": 1,
+      "synthetic": true,
+      "source": {
+        "site": "eshop",
+        "id": "eshop:PER.607321",
+        "title": "ASROCK A620M-HDV/M.2+ RETAIL",
+        "price": 99.9
+      },
+      "fields": {
+        "socket": "AM5",
+        "chipset": "A620",
+        "formFactor": "Micro ATX",
+        "memory": "DDR5",
+        "ramSlots": 2,
+        "m2Slots": 1
+      },
+      "syntheticFields": [
+        "m2Slots"
+      ],
+      "note": "Synthetic M.2 count."
+    },
+    {
+      "category": "storage",
+      "key": "samsung990pro1tbssd",
+      "modelKey": "samsung990pro1tbssd",
+      "name": "Samsung 990 Pro 1TB",
+      "quantity": 2,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2158093832",
+        "title": "Samsung 990 Pro SSD 1TB M.2 NVMe PCI Express 4.0",
+        "price": 205.79
+      },
+      "fields": {
+        "media": "SSD",
+        "iface": "NVMe",
+        "pcie": 4,
+        "formFactor": "M.2 2280",
+        "capacity": 1000,
+        "tier": "Consumer"
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 17,
+      "level": "error"
+    }
+  ],
+  "why": "Two M.2 drives, one M.2 slot.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

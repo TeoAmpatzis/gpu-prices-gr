@@ -1,0 +1,122 @@
+{
+  "id": "S30",
+  "title": "One NVMe SSD + two 3.5\" HDDs on a B650 board in a Midi Tower: notes",
+  "parts": [
+    {
+      "category": "mobo",
+      "key": "gigabyteb650eagleax",
+      "modelKey": "gigabyteb650eagleax",
+      "name": "Gigabyte B650 Eagle AX",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159351395",
+        "title": "Gigabyte B650 Eagle AX",
+        "price": 114.66
+      },
+      "fields": {
+        "socket": "AM5",
+        "chipset": "B650",
+        "formFactor": "ATX",
+        "memory": "DDR5",
+        "ramSlots": 4
+      }
+    },
+    {
+      "category": "storage",
+      "key": "samsung990pro1tbssd",
+      "modelKey": "samsung990pro1tbssd",
+      "name": "Samsung 990 Pro 1TB",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2158093832",
+        "title": "Samsung 990 Pro SSD 1TB M.2 NVMe PCI Express 4.0",
+        "price": 205.79
+      },
+      "fields": {
+        "media": "SSD",
+        "iface": "NVMe",
+        "pcie": 4,
+        "formFactor": "M.2 2280",
+        "capacity": 1000,
+        "tier": "Consumer"
+      }
+    },
+    {
+      "category": "storage",
+      "key": "seagatebarracuda2tbhdd",
+      "modelKey": "seagatebarracuda2tbhdd",
+      "name": "Seagate Barracuda 2TB",
+      "quantity": 2,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2155449911",
+        "title": "Seagate Barracuda 2TB HDD Σκληρός Δίσκος 3.5\" Sata 3 7200rpm με 256MB Cache",
+        "price": 129.59
+      },
+      "fields": {
+        "media": "HDD",
+        "iface": "SATA",
+        "pcie": null,
+        "formFactor": "3.5\"",
+        "capacity": 2000,
+        "tier": "Consumer"
+      }
+    },
+    {
+      "category": "case",
+      "key": "kolinkobservatorymxmesh",
+      "modelKey": "kolinkobservatorymxmesh",
+      "name": "Kolink Observatory MX Mesh",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159268101",
+        "title": "Kolink Observatory MX Mesh ARGB Tempered Glass Black / White Gaming Midi Tower με Πλαϊνό Παράθυρο",
+        "price": 51.1
+      },
+      "fields": {
+        "size": "Midi Tower",
+        "maxBoard": "ATX",
+        "gpuMaxMm": 330,
+        "coolerMaxMm": 160,
+        "fanSlots": 5,
+        "radiatorMounts": "Μπροστά, Πίσω",
+        "fanMounts": null,
+        "fansIncluded": [
+          {
+            "pos": null,
+            "size": null,
+            "n": 5
+          }
+        ],
+        "hasFans": null,
+        "radiators": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 17,
+      "level": "note"
+    },
+    {
+      "rule": 18,
+      "level": "note"
+    },
+    {
+      "rule": 19,
+      "level": "note"
+    }
+  ],
+  "why": "M.2 slots, SATA ports and drive bays are not collected yet, so all three drive rules can only give notes.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

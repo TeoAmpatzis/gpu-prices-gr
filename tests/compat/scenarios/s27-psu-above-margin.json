@@ -1,0 +1,145 @@
+{
+  "id": "S27",
+  "title": "Power supply above the recommended wattage plus 10% (750 W of 650 W): pass",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 5 7600|true",
+      "modelKey": "Ryzen 5 7600",
+      "name": "Ryzen 5 7600",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:40307498",
+        "title": "AMD Ryzen 5 7600 3.8GHz",
+        "price": 177.9
+      },
+      "fields": {
+        "socket": "AM5",
+        "igpu": true,
+        "coolerIncluded": true,
+        "packaging": null,
+        "tdp": 65,
+        "cores": 6
+      }
+    },
+    {
+      "category": "mobo",
+      "key": "gigabyteb650eagleax",
+      "modelKey": "gigabyteb650eagleax",
+      "name": "Gigabyte B650 Eagle AX",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159351395",
+        "title": "Gigabyte B650 Eagle AX",
+        "price": 114.66
+      },
+      "fields": {
+        "socket": "AM5",
+        "chipset": "B650",
+        "formFactor": "ATX",
+        "memory": "DDR5",
+        "ramSlots": 4
+      }
+    },
+    {
+      "category": "ram",
+      "key": "DDR5 32GB (2×16GB) 6000MHz Desktop",
+      "modelKey": "DDR5 32GB (2×16GB) 6000MHz Desktop",
+      "name": "DDR5 32GB (2×16GB) 6000MHz",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2157866269",
+        "title": "Patriot Viper Venom RGB 32GB (2X16GB) DDR5 RAM 6000MHz C36 Black PVVR532G600C36K",
+        "price": 466.35
+      },
+      "fields": {
+        "type": "DDR5",
+        "capacity": 32,
+        "modules": 2,
+        "speed": 6000,
+        "cas": 36,
+        "formFactor": "Desktop"
+      }
+    },
+    {
+      "category": "gpu",
+      "key": "bestprice:2160617918",
+      "modelKey": "RTX 5070 12GB",
+      "name": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160617918",
+        "title": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+        "price": 847.96
+      },
+      "fields": {
+        "chip": "RTX 5070",
+        "partner": "Zotac",
+        "vram": 12,
+        "lengthMm": 241.5,
+        "minPsu": 650
+      }
+    },
+    {
+      "category": "storage",
+      "key": "samsung990pro1tbssd",
+      "modelKey": "samsung990pro1tbssd",
+      "name": "Samsung 990 Pro 1TB",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2158093832",
+        "title": "Samsung 990 Pro SSD 1TB M.2 NVMe PCI Express 4.0",
+        "price": 205.79
+      },
+      "fields": {
+        "media": "SSD",
+        "iface": "NVMe",
+        "pcie": 4,
+        "formFactor": "M.2 2280",
+        "capacity": 1000,
+        "tier": "Consumer"
+      }
+    },
+    {
+      "category": "psu",
+      "key": "750W Gold ATX",
+      "modelKey": "750W Gold ATX",
+      "name": "750W Gold",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2164295415",
+        "title": "Adata XPG Kyber II 750W",
+        "price": 50.52
+      },
+      "fields": {
+        "watts": 750,
+        "efficiency": "Gold",
+        "modular": null,
+        "formFactor": "ATX"
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 14,
+      "level": "pass"
+    }
+  ],
+  "why": "750 W > 650 W × 1.1 = 715 W.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

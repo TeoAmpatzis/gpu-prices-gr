@@ -1,0 +1,3632 @@
+[
+  {
+    "id": "S01",
+    "title": "Ryzen 5 7600 (box cooler) + B650 + DDR5 2×16GB + Midi Tower ATX: no warnings",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 5 7600",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "mobo",
+          "name": "Gigabyte B650 Eagle AX",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "ram",
+          "name": "DDR5 32GB (2×16GB) 6000MHz",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "case",
+          "name": "Kolink Observatory MX Mesh",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "The CPU comes with a cooler. Fine for normal use; a better one helps for gaming/overclocking."
+        },
+        {
+          "level": "info",
+          "text": "The case has 5 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 3,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 350,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 1,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 2,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "memory type matches",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 3,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 5,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 11,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "info: The CPU comes with a cooler. Fine for normal use; a better one helps for gaming/overclocking.",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 12,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "no graphics note",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 13,
+        "expected": "pass",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S02",
+    "title": "Core i5-14400F (LGA1700) + B760 DDR4 board + DDR5 kit: memory type error",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Core i5-14400F",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "mobo",
+          "name": "Asus Prime B760-Plus D4",
+          "label": "Incompatible",
+          "reasons": [
+            "The board takes DDR4; this memory is DDR5."
+          ]
+        },
+        {
+          "category": "ram",
+          "name": "DDR5 32GB (2×16GB) 6000MHz",
+          "label": "Incompatible",
+          "reasons": [
+            "The board takes DDR4; this memory is DDR5."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "The CPU has no integrated graphics: a graphics card is needed."
+        },
+        {
+          "level": "error",
+          "text": "The CPU has no cooler: pick one."
+        },
+        {
+          "level": "error",
+          "text": "Incompatible: the motherboard and the memory don't go together; change one of them."
+        }
+      ],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 1
+      },
+      "requiredWatts": 350,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 1,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 2,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "Incompatible: The board takes DDR4; this memory is DDR5.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S03",
+    "title": "Ryzen 7 9700X + B650: BIOS update warning",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 7 9700X",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "mobo",
+          "name": "Gigabyte B650 Eagle AX",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "The CPU has no cooler: pick one."
+        }
+      ],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 350,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 1,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 13,
+        "expected": "warning",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S04",
+    "title": "Ryzen 7 9700X + X870: no BIOS warning",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 7 9700X",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "mobo",
+          "name": "Asus Prime X870-P WiFi",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "The CPU has no cooler: pick one."
+        }
+      ],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 350,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 1,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 13,
+        "expected": "pass",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S05",
+    "title": "CPU without integrated graphics and no graphics card: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Core i5-14400F",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "mobo",
+          "name": "Asus Prime B760-Plus D4",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "ram",
+          "name": "DDR4 32GB (2×16GB) 3200MHz",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "cooler",
+          "name": "Endorfy Fera 5",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "The CPU has no integrated graphics: a graphics card is needed."
+        }
+      ],
+      "status": {
+        "fits": 3,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 350,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 1,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 2,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "memory type matches",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 10,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 12,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "error: The CPU has no integrated graphics: a graphics card is needed.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S06",
+    "title": "Core i5-14600KF (Tray) with no cooler: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Core i5-14600KF",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "mobo",
+          "name": "Asus Prime B760-Plus D4",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "gpu",
+          "name": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+          "label": "—",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "The CPU has no cooler: pick one."
+        },
+        {
+          "level": "info",
+          "text": "The graphics card is 241.5 mm long: cases that certainly can't fit it are hidden."
+        }
+      ],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 650,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 11,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "error: The CPU has no cooler: pick one.",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 12,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "no graphics note",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S07",
+    "title": "Graphics card 340 mm + case that takes 330 mm: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "gpu",
+          "name": "Gigabyte GeForce RTX 5080 16GB GDDR7 Gaming OC",
+          "label": "Incompatible",
+          "reasons": [
+            "340 mm card; the case takes up to 330 mm."
+          ]
+        },
+        {
+          "category": "case",
+          "name": "Kolink Observatory MX Mesh",
+          "label": "Incompatible",
+          "reasons": [
+            "340 mm card; the case takes up to 330 mm."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "Incompatible: the graphics card and the case don't go together; change one of them."
+        },
+        {
+          "level": "info",
+          "text": "The case has 5 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 1
+      },
+      "requiredWatts": 850,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 6,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "Incompatible: 340 mm card; the case takes up to 330 mm.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S08",
+    "title": "Air cooler 165 mm + case that takes 160 mm: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "cooler",
+          "name": "Noctua NH-D15",
+          "label": "Incompatible",
+          "reasons": [
+            "165 mm cooler; the case takes up to 160 mm."
+          ]
+        },
+        {
+          "category": "case",
+          "name": "Kolink Observatory MX Mesh",
+          "label": "Incompatible",
+          "reasons": [
+            "165 mm cooler; the case takes up to 160 mm."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "Incompatible: the cooler and the case don't go together; change one of them."
+        },
+        {
+          "level": "info",
+          "text": "The case has 5 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 1
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 8,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "Incompatible: 165 mm cooler; the case takes up to 160 mm.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S09",
+    "title": "AIO 360 mm + case whose maker lists radiators up to 280 mm: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "cooler",
+          "name": "Arctic Liquid Freezer III Pro 360",
+          "label": "Fit not verified",
+          "reasons": [
+            "The case maker lists 120/140/240/280 mm radiators; a 360 mm one isn't listed."
+          ]
+        },
+        {
+          "category": "case",
+          "name": "Fractal Design Focus G",
+          "label": "Fit not verified",
+          "reasons": [
+            "The case maker lists 120/140/240/280 mm radiators; a 360 mm one isn't listed."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "Fit not verified: The case maker lists 120/140/240/280 mm radiators; a 360 mm one isn't listed."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 1,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 9,
+        "expected": "error",
+        "v1": "note",
+        "v1Says": "Fit not verified: The case maker lists 120/140/240/280 mm radiators; a 360 mm one isn't listed.",
+        "verdict": "wrong",
+        "detail": "v1 says note, plan says error: more lenient than the plan"
+      }
+    ],
+    "verdict": "wrong"
+  },
+  {
+    "id": "S10",
+    "title": "ATX board + Mini-ITX case: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "Gigabyte B650 Eagle AX",
+          "label": "Incompatible",
+          "reasons": [
+            "ATX board; the case takes up to Mini ITX."
+          ]
+        },
+        {
+          "category": "case",
+          "name": "Thermaltake The Tower 300",
+          "label": "Incompatible",
+          "reasons": [
+            "ATX board; the case takes up to Mini ITX."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "Incompatible: the motherboard and the case don't go together; change one of them."
+        },
+        {
+          "level": "info",
+          "text": "The case has 7 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 1
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 5,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "Incompatible: ATX board; the case takes up to Mini ITX.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S11",
+    "title": "4 RAM sticks + board with 2 slots: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "ASRock A620M-HDV/M.2",
+          "label": "Incompatible",
+          "reasons": [
+            "4 sticks; the board has 2 slots."
+          ]
+        },
+        {
+          "category": "ram",
+          "name": "DDR5 64GB (4×16GB) 6000MHz",
+          "label": "Incompatible",
+          "reasons": [
+            "4 sticks; the board has 2 slots."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "Incompatible: the motherboard and the memory don't go together; change one of them."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 1
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 2,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "memory type matches",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 3,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "Incompatible: 4 sticks; the board has 2 slots.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S12",
+    "title": "RTX 5080 + 550 W power supply: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 7 9700X",
+          "label": "Incompatible",
+          "reasons": [
+            "550 W power supply; at least 850 W is needed."
+          ]
+        },
+        {
+          "category": "gpu",
+          "name": "Gigabyte GeForce RTX 5080 16GB GDDR7 Gaming OC",
+          "label": "Incompatible",
+          "reasons": [
+            "550 W power supply; at least 850 W is needed."
+          ]
+        },
+        {
+          "category": "psu",
+          "name": "550W Bronze",
+          "label": "Incompatible",
+          "reasons": [
+            "550 W power supply; at least 850 W is needed.",
+            "550 W power supply; at least 850 W is needed."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "The CPU has no cooler: pick one."
+        },
+        {
+          "level": "error",
+          "text": "Incompatible: the power supply and the graphics card don't go together; change one of them."
+        },
+        {
+          "level": "error",
+          "text": "Incompatible: the power supply and the CPU don't go together; change one of them."
+        },
+        {
+          "level": "info",
+          "text": "The graphics card is 340 mm long: cases that certainly can't fit it are hidden."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 2
+      },
+      "requiredWatts": 850,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 14,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "Incompatible: 550 W power supply; at least 850 W is needed. 550 W power supply; at least 850 W is needed. (v1 recommends ≥ 850 W)",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S13",
+    "title": "3.5\" drive + case without drive bay data: note",
+    "ui": {
+      "parts": [
+        {
+          "category": "storage",
+          "name": "Seagate Barracuda 2TB",
+          "label": "Fit not verified",
+          "reasons": [
+            "Check that the case has a 3.5\" drive bay (many new cases have none); drive bays are not listed here."
+          ]
+        },
+        {
+          "category": "case",
+          "name": "Kolink Observatory MX Mesh",
+          "label": "Fit not verified",
+          "reasons": [
+            "Check that the case has a 3.5\" drive bay (many new cases have none); drive bays are not listed here."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "Fit not verified: Check that the case has a 3.5\" drive bay (many new cases have none); drive bays are not listed here."
+        },
+        {
+          "level": "info",
+          "text": "The case has 5 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 1,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 19,
+        "expected": "note",
+        "v1": "note",
+        "v1Says": "Fit not verified: Check that the case has a 3.5\" drive bay (many new cases have none); drive bays are not listed here.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S14",
+    "title": "Graphics card with unknown length + small case: note",
+    "ui": {
+      "parts": [
+        {
+          "category": "gpu",
+          "name": "PNY GeForce RTX 5070 Ti 16GB GDDR7 OC",
+          "label": "Fit not verified",
+          "reasons": [
+            "The graphics card's length is not stated."
+          ]
+        },
+        {
+          "category": "case",
+          "name": "Thermaltake The Tower 300",
+          "label": "Fit not verified",
+          "reasons": [
+            "The graphics card's length is not stated."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "Fit not verified: The graphics card's length is not stated."
+        },
+        {
+          "level": "info",
+          "text": "The case has 7 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 1,
+        "no": 0
+      },
+      "requiredWatts": 750,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 6,
+        "expected": "note",
+        "v1": "note",
+        "v1Says": "Fit not verified: The graphics card's length is not stated.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S15",
+    "title": "Cooler whose sockets are not stated + AM5 CPU: note",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 7 9700X",
+          "label": "Fit not verified",
+          "reasons": [
+            "The cooler's sockets are not stated."
+          ]
+        },
+        {
+          "category": "cooler",
+          "name": "Inter-Tech N-11",
+          "label": "Fit not verified",
+          "reasons": [
+            "The cooler's sockets are not stated."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "Fit not verified: The cooler's sockets are not stated."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 1,
+        "no": 0
+      },
+      "requiredWatts": 350,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 10,
+        "expected": "note",
+        "v1": "note",
+        "v1Says": "Fit not verified: The cooler's sockets are not stated.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S16",
+    "title": "Board with RAM slots not stated + 4-stick kit: note",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "ASRock X870 Phantom Gaming Riptide WiFi",
+          "label": "Fit not verified",
+          "reasons": [
+            "The board's number of RAM slots is not stated."
+          ]
+        },
+        {
+          "category": "ram",
+          "name": "DDR5 64GB (4×16GB) 6000MHz",
+          "label": "Fit not verified",
+          "reasons": [
+            "The board's number of RAM slots is not stated."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "Fit not verified: The board's number of RAM slots is not stated."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 1,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 2,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "memory type matches",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 3,
+        "expected": "note",
+        "v1": "note",
+        "v1Says": "Fit not verified: The board's number of RAM slots is not stated.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S17",
+    "title": "Board with RAM slots not stated + 2-stick kit: pass",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "ASRock X870 Phantom Gaming Riptide WiFi",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "ram",
+          "name": "DDR5 32GB (2×16GB) 6000MHz",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 2,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "memory type matches",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 3,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S18",
+    "title": "Box CPU where a cooler in the box is not stated + no cooler: warning",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 7 9700X",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "mobo",
+          "name": "Asus Prime X870-P WiFi",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "It isn't stated whether the CPU includes a cooler: pick one to be safe."
+        }
+      ],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 350,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 11,
+        "expected": "warning",
+        "v1": "error",
+        "v1Says": "error: It isn't stated whether the CPU includes a cooler: pick one to be safe.",
+        "verdict": "wrong",
+        "detail": "v1 says error, plan says warning: stricter than the plan"
+      },
+      {
+        "rule": 12,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "no graphics note",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "wrong"
+  },
+  {
+    "id": "S19",
+    "title": "Midi Tower that states no board size + ATX board: note (estimate)",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "Gigabyte B650 Eagle AX",
+          "label": "Likely fits",
+          "reasons": [
+            "The case's largest board size is estimated from the case size."
+          ]
+        },
+        {
+          "category": "case",
+          "name": "Rampage Sealite",
+          "label": "Likely fits",
+          "reasons": [
+            "The case's largest board size is estimated from the case size."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "Likely fits: The case's largest board size is estimated from the case size."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 1,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 5,
+        "expected": "note",
+        "v1": "note",
+        "v1Says": "Likely fits: The case's largest board size is estimated from the case size.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S20",
+    "title": "Measured graphics card + case without a maximum card length: note",
+    "ui": {
+      "parts": [
+        {
+          "category": "gpu",
+          "name": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+          "label": "Fit not verified",
+          "reasons": [
+            "The case's maximum graphics card length is not stated."
+          ]
+        },
+        {
+          "category": "case",
+          "name": "Rampage Sealite",
+          "label": "Fit not verified",
+          "reasons": [
+            "The case's maximum graphics card length is not stated."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "Fit not verified: The case's maximum graphics card length is not stated."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 1,
+        "no": 0
+      },
+      "requiredWatts": 650,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 6,
+        "expected": "note",
+        "v1": "note",
+        "v1Says": "Fit not verified: The case's maximum graphics card length is not stated.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S21",
+    "title": "AIO 240 and a 3-pack of fans in a case that states no radiator or fan positions: notes",
+    "ui": {
+      "parts": [
+        {
+          "category": "cooler",
+          "name": "Arctic Liquid Freezer III Pro 240",
+          "label": "Fit not verified",
+          "reasons": [
+            "The case states no radiator positions."
+          ]
+        },
+        {
+          "category": "fan",
+          "name": "Arctic P12 Pro 120mm ×3",
+          "label": "Fit not verified",
+          "reasons": [
+            "The case's fan positions are not stated."
+          ]
+        },
+        {
+          "category": "case",
+          "name": "Rampage Sealite",
+          "label": "Fit not verified",
+          "reasons": [
+            "The case states no radiator positions.",
+            "The case's fan positions are not stated."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "Fit not verified: The case states no radiator positions."
+        },
+        {
+          "level": "info",
+          "text": "Fit not verified: The case's fan positions are not stated."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 2,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 9,
+        "expected": "note",
+        "v1": "note",
+        "v1Says": "Fit not verified: The case states no radiator positions.",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 21,
+        "expected": "note",
+        "v1": "note",
+        "v1Says": "Fit not verified: The case's fan positions are not stated.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S22",
+    "title": "Air cooler 165 mm + case without a maximum cooler height: note",
+    "ui": {
+      "parts": [
+        {
+          "category": "cooler",
+          "name": "Noctua NH-D15",
+          "label": "Fit not verified",
+          "reasons": [
+            "The cooler's height or the case's maximum cooler height is not stated."
+          ]
+        },
+        {
+          "category": "case",
+          "name": "Logic DART Pro",
+          "label": "Fit not verified",
+          "reasons": [
+            "The cooler's height or the case's maximum cooler height is not stated."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "Fit not verified: The cooler's height or the case's maximum cooler height is not stated."
+        },
+        {
+          "level": "info",
+          "text": "The case has 3 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 1,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 8,
+        "expected": "note",
+        "v1": "note",
+        "v1Says": "Fit not verified: The cooler's height or the case's maximum cooler height is not stated.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S23",
+    "title": "Graphics card 340 mm + case that takes exactly 340 mm: warning",
+    "ui": {
+      "parts": [
+        {
+          "category": "gpu",
+          "name": "Gigabyte GeForce RTX 5080 16GB GDDR7 Gaming OC",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "case",
+          "name": "Darkflash DK352 Plus",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "The case has 6 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 850,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 6,
+        "expected": "warning",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "gap",
+        "detail": "v1 has no margin warning (it passes)"
+      }
+    ],
+    "verdict": "not checked by v1"
+  },
+  {
+    "id": "S24",
+    "title": "Graphics card 241.5 mm + case that takes 330 mm: pass",
+    "ui": {
+      "parts": [
+        {
+          "category": "gpu",
+          "name": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "case",
+          "name": "Kolink Observatory MX Mesh",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "The case has 5 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 650,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 6,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S25",
+    "title": "Power supply exactly at the recommended wattage (650 W): warning",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 5 7600",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "mobo",
+          "name": "Gigabyte B650 Eagle AX",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "ram",
+          "name": "DDR5 32GB (2×16GB) 6000MHz",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "gpu",
+          "name": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "storage",
+          "name": "Samsung 990 Pro 1TB",
+          "label": "—",
+          "reasons": []
+        },
+        {
+          "category": "psu",
+          "name": "650W Gold",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "The CPU comes with a cooler. Fine for normal use; a better one helps for gaming/overclocking."
+        },
+        {
+          "level": "info",
+          "text": "The graphics card is 241.5 mm long: cases that certainly can't fit it are hidden."
+        }
+      ],
+      "status": {
+        "fits": 4,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 650,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 14,
+        "expected": "warning",
+        "v1": "pass",
+        "v1Says": "Fits (v1 recommends ≥ 650 W)",
+        "verdict": "gap",
+        "detail": "v1 has no margin warning (it passes)"
+      }
+    ],
+    "verdict": "not checked by v1"
+  },
+  {
+    "id": "S26",
+    "title": "Power supply just below the recommended wattage (600 W of 650 W): error",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 5 7600",
+          "label": "Incompatible",
+          "reasons": [
+            "600 W power supply; at least 650 W is needed."
+          ]
+        },
+        {
+          "category": "mobo",
+          "name": "Gigabyte B650 Eagle AX",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "ram",
+          "name": "DDR5 32GB (2×16GB) 6000MHz",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "gpu",
+          "name": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+          "label": "Incompatible",
+          "reasons": [
+            "600 W power supply; at least 650 W is needed."
+          ]
+        },
+        {
+          "category": "storage",
+          "name": "Samsung 990 Pro 1TB",
+          "label": "—",
+          "reasons": []
+        },
+        {
+          "category": "psu",
+          "name": "600W Bronze",
+          "label": "Incompatible",
+          "reasons": [
+            "600 W power supply; at least 650 W is needed.",
+            "600 W power supply; at least 650 W is needed."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "The CPU comes with a cooler. Fine for normal use; a better one helps for gaming/overclocking."
+        },
+        {
+          "level": "error",
+          "text": "Incompatible: the power supply and the graphics card don't go together; change one of them."
+        },
+        {
+          "level": "error",
+          "text": "Incompatible: the power supply and the CPU don't go together; change one of them."
+        },
+        {
+          "level": "info",
+          "text": "The graphics card is 241.5 mm long: cases that certainly can't fit it are hidden."
+        }
+      ],
+      "status": {
+        "fits": 2,
+        "likely": 0,
+        "unverified": 0,
+        "no": 2
+      },
+      "requiredWatts": 650,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 14,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "Incompatible: 600 W power supply; at least 650 W is needed. 600 W power supply; at least 650 W is needed. (v1 recommends ≥ 650 W)",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S27",
+    "title": "Power supply above the recommended wattage plus 10% (750 W of 650 W): pass",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 5 7600",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "mobo",
+          "name": "Gigabyte B650 Eagle AX",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "ram",
+          "name": "DDR5 32GB (2×16GB) 6000MHz",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "gpu",
+          "name": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "storage",
+          "name": "Samsung 990 Pro 1TB",
+          "label": "—",
+          "reasons": []
+        },
+        {
+          "category": "psu",
+          "name": "750W Gold",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "The CPU comes with a cooler. Fine for normal use; a better one helps for gaming/overclocking."
+        },
+        {
+          "level": "info",
+          "text": "The graphics card is 241.5 mm long: cases that certainly can't fit it are hidden."
+        }
+      ],
+      "status": {
+        "fits": 4,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 650,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 14,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits (v1 recommends ≥ 650 W)",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S28",
+    "title": "Two DDR5 2×16GB kits on a 4-slot board: pass",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "Gigabyte B650 Eagle AX",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "ram",
+          "name": "DDR5 32GB (2×16GB) 6000MHz",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": [
+        "2 × DDR5 32GB (2×16GB) 6000MHz counted once"
+      ]
+    },
+    "rules": [
+      {
+        "rule": 2,
+        "expected": "pass",
+        "v1": null,
+        "v1Says": "—",
+        "verdict": "gap",
+        "detail": "v1 holds one ram; the scenario has 2"
+      },
+      {
+        "rule": 3,
+        "expected": "pass",
+        "v1": null,
+        "v1Says": "—",
+        "verdict": "gap",
+        "detail": "v1 holds one ram; the scenario has 2"
+      }
+    ],
+    "verdict": "not checked by v1"
+  },
+  {
+    "id": "S29",
+    "title": "Two DDR5 2×16GB kits on a 2-slot board: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "ASRock A620M-HDV/M.2",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "ram",
+          "name": "DDR5 32GB (2×16GB) 6000MHz",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": [
+        "2 × DDR5 32GB (2×16GB) 6000MHz counted once"
+      ]
+    },
+    "rules": [
+      {
+        "rule": 3,
+        "expected": "error",
+        "v1": null,
+        "v1Says": "—",
+        "verdict": "gap",
+        "detail": "v1 holds one ram; the scenario has 2"
+      }
+    ],
+    "verdict": "not checked by v1"
+  },
+  {
+    "id": "S30",
+    "title": "One NVMe SSD + two 3.5\" HDDs on a B650 board in a Midi Tower: notes",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "Gigabyte B650 Eagle AX",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "storage",
+          "name": "Samsung 990 Pro 1TB",
+          "label": "—",
+          "reasons": []
+        },
+        {
+          "category": "case",
+          "name": "Kolink Observatory MX Mesh",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "The case has 5 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": [
+        "second storage (Seagate Barracuda 2TB) dropped",
+        "2 × Seagate Barracuda 2TB counted once"
+      ]
+    },
+    "rules": [
+      {
+        "rule": 17,
+        "expected": "note",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      },
+      {
+        "rule": 18,
+        "expected": "note",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      },
+      {
+        "rule": 19,
+        "expected": "note",
+        "v1": null,
+        "v1Says": "—",
+        "verdict": "gap",
+        "detail": "v1 holds one storage; the scenario has 3"
+      }
+    ],
+    "verdict": "not checked by v1"
+  },
+  {
+    "id": "S31",
+    "title": "Two 3-packs of 120 mm fans in a case with 9 × 120 mm positions: pass",
+    "ui": {
+      "parts": [
+        {
+          "category": "fan",
+          "name": "Arctic P12 Pro 120mm ×3",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "case",
+          "name": "Lian Li O11 Dynamic Mini V2 Flow",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": [
+        "2 × Arctic P12 Pro 120mm ×3 counted once"
+      ]
+    },
+    "rules": [
+      {
+        "rule": 21,
+        "expected": "pass",
+        "v1": null,
+        "v1Says": "—",
+        "verdict": "gap",
+        "detail": "v1 holds one fan; the scenario has 2"
+      },
+      {
+        "rule": 22,
+        "expected": "pass",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      }
+    ],
+    "verdict": "not checked by v1"
+  },
+  {
+    "id": "S32",
+    "title": "One 3-pack of 120 mm fans in a case with 9 × 120 mm positions: pass",
+    "ui": {
+      "parts": [
+        {
+          "category": "fan",
+          "name": "Arctic P12 Pro 120mm ×3",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "case",
+          "name": "Lian Li O11 Dynamic Mini V2 Flow",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 21,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 22,
+        "expected": "pass",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S33",
+    "title": "3 × 140 mm fans in a case whose maker lists only 2 × 140 mm positions: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "fan",
+          "name": "HAVN H14 140mm ×3",
+          "label": "Fit not verified",
+          "reasons": [
+            "The maker lists 2 positions for 140 mm fans."
+          ]
+        },
+        {
+          "category": "case",
+          "name": "Lian Li O11 Dynamic Mini V2 Flow",
+          "label": "Fit not verified",
+          "reasons": [
+            "The maker lists 2 positions for 140 mm fans."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "Fit not verified: The maker lists 2 positions for 140 mm fans."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 1,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 21,
+        "expected": "error",
+        "v1": "note",
+        "v1Says": "Fit not verified: The maker lists 2 positions for 140 mm fans.",
+        "verdict": "wrong",
+        "detail": "v1 says note, plan says error: more lenient than the plan"
+      }
+    ],
+    "verdict": "wrong"
+  },
+  {
+    "id": "S34",
+    "title": "5-pack of 120 mm fans in a case whose shop page states 3 positions: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "fan",
+          "name": "Arctic P12 Pro LN 120mm ×5",
+          "label": "Incompatible",
+          "reasons": [
+            "5 fans; the case has 3 fan positions."
+          ]
+        },
+        {
+          "category": "case",
+          "name": "Sharkoon V1000",
+          "label": "Incompatible",
+          "reasons": [
+            "5 fans; the case has 3 fan positions."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "Incompatible: the fans and the case don't go together; change one of them."
+        },
+        {
+          "level": "info",
+          "text": "The case has 3 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 1
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 21,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "Incompatible: 5 fans; the case has 3 fan positions.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S35",
+    "title": "3-pack of fans in a case whose data say 6 fans included but 1 position: note",
+    "ui": {
+      "parts": [
+        {
+          "category": "fan",
+          "name": "Arctic P12 Pro 120mm ×3",
+          "label": "Incompatible",
+          "reasons": [
+            "3 fans; the case has 1 fan positions."
+          ]
+        },
+        {
+          "category": "case",
+          "name": "Kolink Observatory HF Mesh",
+          "label": "Incompatible",
+          "reasons": [
+            "3 fans; the case has 1 fan positions."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "Incompatible: the fans and the case don't go together; change one of them."
+        },
+        {
+          "level": "info",
+          "text": "The case has 1 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 1
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 21,
+        "expected": "note",
+        "v1": "error",
+        "v1Says": "Incompatible: 3 fans; the case has 1 fan positions.",
+        "verdict": "wrong",
+        "detail": "v1 says error, plan says note: stricter than the plan"
+      }
+    ],
+    "verdict": "wrong"
+  },
+  {
+    "id": "S36",
+    "title": "Mini-ITX board + ATX case: pass",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "Asus ROG Strix B650E-I Gaming WiFi",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "case",
+          "name": "Kolink Observatory MX Mesh",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "The case has 5 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 5,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S37",
+    "title": "AM5 CPU (Ryzen 5 9600X) + AM4 board: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 5 9600X",
+          "label": "Incompatible",
+          "reasons": [
+            "Socket AM5 ≠ the board's AM4."
+          ]
+        },
+        {
+          "category": "mobo",
+          "name": "Asus Prime B550-Plus",
+          "label": "Incompatible",
+          "reasons": [
+            "Socket AM5 ≠ the board's AM4."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "The CPU has no cooler: pick one."
+        },
+        {
+          "level": "error",
+          "text": "Incompatible: the CPU and the motherboard don't go together; change one of them."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 1
+      },
+      "requiredWatts": 350,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 1,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "Incompatible: Socket AM5 ≠ the board's AM4.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S38",
+    "title": "DDR5 kit + AM4 DDR4 board: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "Asus Prime B550-Plus",
+          "label": "Incompatible",
+          "reasons": [
+            "The board takes DDR4; this memory is DDR5."
+          ]
+        },
+        {
+          "category": "ram",
+          "name": "DDR5 32GB (2×16GB) 6000MHz",
+          "label": "Incompatible",
+          "reasons": [
+            "The board takes DDR4; this memory is DDR5."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "Incompatible: the motherboard and the memory don't go together; change one of them."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 1
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 2,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "Incompatible: The board takes DDR4; this memory is DDR5.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S39",
+    "title": "Tray CPU (Ryzen 7 9700X Tray) with no cooler: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 7 9700X",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "mobo",
+          "name": "Asus Prime X870-P WiFi",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "The CPU has no cooler: pick one."
+        }
+      ],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 350,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 11,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "error: The CPU has no cooler: pick one.",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 12,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "no graphics note",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S40",
+    "title": "Ryzen 5 5600X with box cooler, no cooler chosen, no graphics card: cooler pass, graphics error",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 5 5600X",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "mobo",
+          "name": "Asus Prime B550-Plus",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "The CPU has no integrated graphics: a graphics card is needed."
+        },
+        {
+          "level": "info",
+          "text": "The CPU comes with a cooler. Fine for normal use; a better one helps for gaming/overclocking."
+        }
+      ],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 350,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 1,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 11,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "info: The CPU comes with a cooler. Fine for normal use; a better one helps for gaming/overclocking.",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 12,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "error: The CPU has no integrated graphics: a graphics card is needed.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S41",
+    "title": "AIO 240 mm in a case that takes 240/280 at the front: pass",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 7 9700X",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "cooler",
+          "name": "Arctic Liquid Freezer III Pro 240",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "case",
+          "name": "Fractal Design Focus G",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [],
+      "status": {
+        "fits": 2,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 350,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 9,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 10,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S42",
+    "title": "AIO 360 mm in a case that takes 360 mm on top: pass",
+    "ui": {
+      "parts": [
+        {
+          "category": "cooler",
+          "name": "Arctic Liquid Freezer III Pro 360",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "case",
+          "name": "Lian Li Lancool 207",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 9,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S43",
+    "title": "Intel-only cooler (LGA1700/1851) + AM5 CPU: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 7 9700X",
+          "label": "Incompatible",
+          "reasons": [
+            "The cooler doesn't support AM5."
+          ]
+        },
+        {
+          "category": "cooler",
+          "name": "Arctic Freezer 8i",
+          "label": "Incompatible",
+          "reasons": [
+            "The cooler doesn't support AM5."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "Incompatible: the CPU and the cooler don't go together; change one of them."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 1
+      },
+      "requiredWatts": 350,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 10,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "Incompatible: The cooler doesn't support AM5.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S44",
+    "title": "Air cooler 155 mm + case that takes 160 mm: warning",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 7 9700X",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "cooler",
+          "name": "Endorfy Fera 5",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "case",
+          "name": "Kolink Observatory MX Mesh",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "The case has 5 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 2,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 350,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 8,
+        "expected": "warning",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "gap",
+        "detail": "v1 has no margin warning (it passes)"
+      },
+      {
+        "rule": 10,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S45",
+    "title": "Air cooler 155 mm + case that takes 170 mm, with RAM: pass + clearance note",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 7 9700X",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "mobo",
+          "name": "Asus Prime X870-P WiFi",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "ram",
+          "name": "DDR5 32GB (2×16GB) 6000MHz",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "cooler",
+          "name": "Endorfy Fera 5",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "case",
+          "name": "Darkflash C365",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "The case has 5 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 5,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 350,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 8,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 10,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 26,
+        "expected": "note",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S46",
+    "title": "PCIe 5.0 SSD on a B650 board (M.2 generation not collected): note",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "Gigabyte B650 Eagle AX",
+          "label": "—",
+          "reasons": []
+        },
+        {
+          "category": "storage",
+          "name": "Samsung 9100 Pro 1TB",
+          "label": "—",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "The drive is PCIe 5.0: the board needs a PCIe 5.0 M.2 slot for its full speed (it works more slowly in other slots)."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 20,
+        "expected": "note",
+        "v1": "note",
+        "v1Says": "info: The drive is PCIe 5.0: the board needs a PCIe 5.0 M.2 slot for its full speed (it works more slowly in other slots).",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S47",
+    "title": "PCIe 4.0 SSD on a B650 board: pass",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "Gigabyte B650 Eagle AX",
+          "label": "—",
+          "reasons": []
+        },
+        {
+          "category": "storage",
+          "name": "Samsung 990 Pro 1TB",
+          "label": "—",
+          "reasons": []
+        }
+      ],
+      "notes": [],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 20,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "no PCIe 5.0 note",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S48",
+    "title": "Case that ships without fans + no fans in the build: warning",
+    "ui": {
+      "parts": [
+        {
+          "category": "case",
+          "name": "Lian Li O11 Dynamic Mini V2 Flow",
+          "label": "—",
+          "reasons": []
+        }
+      ],
+      "notes": [],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 22,
+        "expected": "warning",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      }
+    ],
+    "verdict": "not checked by v1"
+  },
+  {
+    "id": "S49",
+    "title": "SFF case (PSU size not stated) + ATX power supply: note",
+    "ui": {
+      "parts": [
+        {
+          "category": "case",
+          "name": "SilverStone Sugo 16 Cube",
+          "label": "Fit not verified",
+          "reasons": [
+            "Small (SFF) cases often need an SFX power supply; not stated."
+          ]
+        },
+        {
+          "category": "psu",
+          "name": "650W Gold",
+          "label": "Fit not verified",
+          "reasons": [
+            "Small (SFF) cases often need an SFX power supply; not stated."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "Fit not verified: Small (SFF) cases often need an SFX power supply; not stated."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 1,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 16,
+        "expected": "note",
+        "v1": "note",
+        "v1Says": "Fit not verified: Small (SFF) cases often need an SFX power supply; not stated.",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S50",
+    "title": "Case that takes only SFX + ATX power supply: error (synthetic case)",
+    "ui": {
+      "parts": [
+        {
+          "category": "case",
+          "name": "Synthetic SFX-only ITX case",
+          "label": "Fit not verified",
+          "reasons": [
+            "Small (SFF) cases often need an SFX power supply; not stated."
+          ]
+        },
+        {
+          "category": "psu",
+          "name": "650W Gold",
+          "label": "Fit not verified",
+          "reasons": [
+            "Small (SFF) cases often need an SFX power supply; not stated."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "Fit not verified: Small (SFF) cases often need an SFX power supply; not stated."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 1,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 16,
+        "expected": "error",
+        "v1": "note",
+        "v1Says": "Fit not verified: Small (SFF) cases often need an SFX power supply; not stated.",
+        "verdict": "gap",
+        "detail": "depends on psuFormFactors, a field v1 does not have"
+      }
+    ],
+    "verdict": "not checked by v1"
+  },
+  {
+    "id": "S51",
+    "title": "Two 2×32GB kits (128 GB) on a board with a 64 GB maximum: error (synthetic field)",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "Gigabyte B650 Eagle AX",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "ram",
+          "name": "DDR5 64GB (2×32GB) 6000MHz",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": [
+        "2 × DDR5 64GB (2×32GB) 6000MHz counted once"
+      ]
+    },
+    "rules": [
+      {
+        "rule": 3,
+        "expected": "pass",
+        "v1": null,
+        "v1Says": "—",
+        "verdict": "gap",
+        "detail": "v1 holds one ram; the scenario has 2"
+      },
+      {
+        "rule": 4,
+        "expected": "error",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      }
+    ],
+    "verdict": "not checked by v1"
+  },
+  {
+    "id": "S52",
+    "title": "3.5-slot card + case with 2 expansion slots: error (synthetic fields)",
+    "ui": {
+      "parts": [
+        {
+          "category": "gpu",
+          "name": "Gigabyte GeForce RTX 5080 16GB GDDR7 Gaming OC",
+          "label": "Incompatible",
+          "reasons": [
+            "340 mm card; the case takes up to 280 mm."
+          ]
+        },
+        {
+          "category": "case",
+          "name": "Thermaltake The Tower 300",
+          "label": "Incompatible",
+          "reasons": [
+            "340 mm card; the case takes up to 280 mm."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "Incompatible: the graphics card and the case don't go together; change one of them."
+        },
+        {
+          "level": "info",
+          "text": "The case has 7 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 1
+      },
+      "requiredWatts": 850,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 7,
+        "expected": "error",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      }
+    ],
+    "verdict": "not checked by v1"
+  },
+  {
+    "id": "S53",
+    "title": "12V-2x6 card + power supply without a native 12V-2x6 cable: note (synthetic fields)",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 7 9700X",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "gpu",
+          "name": "Gigabyte GeForce RTX 5080 16GB GDDR7 Gaming OC",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "psu",
+          "name": "1000W Gold",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "The CPU has no cooler: pick one."
+        },
+        {
+          "level": "info",
+          "text": "The graphics card is 340 mm long: cases that certainly can't fit it are hidden."
+        }
+      ],
+      "status": {
+        "fits": 2,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 850,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 14,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits (v1 recommends ≥ 850 W)",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 15,
+        "expected": "note",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S54",
+    "title": "Two NVMe SSDs + board with 1 M.2 slot: error (synthetic field)",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "ASRock A620M-HDV/M.2",
+          "label": "—",
+          "reasons": []
+        },
+        {
+          "category": "storage",
+          "name": "Samsung 990 Pro 1TB",
+          "label": "—",
+          "reasons": []
+        }
+      ],
+      "notes": [],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": [
+        "2 × Samsung 990 Pro 1TB counted once"
+      ]
+    },
+    "rules": [
+      {
+        "rule": 17,
+        "expected": "error",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      }
+    ],
+    "verdict": "not checked by v1"
+  },
+  {
+    "id": "S55",
+    "title": "Three SATA SSDs + board with 2 SATA ports: error (synthetic field)",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "ASRock A620M-HDV/M.2",
+          "label": "—",
+          "reasons": []
+        },
+        {
+          "category": "storage",
+          "name": "Crucial BX500 1TB",
+          "label": "—",
+          "reasons": []
+        }
+      ],
+      "notes": [],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": [
+        "3 × Crucial BX500 1TB counted once"
+      ]
+    },
+    "rules": [
+      {
+        "rule": 18,
+        "expected": "error",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      }
+    ],
+    "verdict": "not checked by v1"
+  },
+  {
+    "id": "S56",
+    "title": "Six case fans + board with 3 fan headers: note (synthetic field)",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "Gigabyte B650 Eagle AX",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "fan",
+          "name": "Arctic P12 Pro 120mm ×3",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "case",
+          "name": "Lian Li O11 Dynamic Mini V2 Flow",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [],
+      "status": {
+        "fits": 2,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": [
+        "2 × Arctic P12 Pro 120mm ×3 counted once"
+      ]
+    },
+    "rules": [
+      {
+        "rule": 21,
+        "expected": "pass",
+        "v1": null,
+        "v1Says": "—",
+        "verdict": "gap",
+        "detail": "v1 holds one fan; the scenario has 2"
+      },
+      {
+        "rule": 23,
+        "expected": "note",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      }
+    ],
+    "verdict": "not checked by v1"
+  },
+  {
+    "id": "S57",
+    "title": "Case with front USB-C + board without a USB-C header: note (synthetic fields)",
+    "ui": {
+      "parts": [
+        {
+          "category": "mobo",
+          "name": "Gigabyte B650 Eagle AX",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "case",
+          "name": "Kolink Observatory MX Mesh",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "The case has 5 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 1,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 5,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 24,
+        "expected": "note",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S58",
+    "title": "DDR5-6000 kit with a Ryzen 5 7600 (official DDR5-5200): note",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 5 7600",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "mobo",
+          "name": "Gigabyte B650 Eagle AX",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "ram",
+          "name": "DDR5 32GB (2×16GB) 6000MHz",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "The CPU comes with a cooler. Fine for normal use; a better one helps for gaming/overclocking."
+        }
+      ],
+      "status": {
+        "fits": 2,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 350,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 2,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "memory type matches",
+        "verdict": "correct",
+        "detail": ""
+      },
+      {
+        "rule": 25,
+        "expected": "note",
+        "v1": null,
+        "v1Says": "v1 has no such check",
+        "verdict": "gap",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S59",
+    "title": "Core i7-14700K + RTX 5070 Ti + 750 W: error by the plan formula, pass by the card maker",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Core i7-14700K",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "mobo",
+          "name": "Asus Prime B760-Plus D4",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "ram",
+          "name": "DDR4 32GB (2×16GB) 3200MHz",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "gpu",
+          "name": "MSI GeForce RTX 5070 Ti 16GB GDDR7 Gaming Trio OC Plus",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "storage",
+          "name": "Samsung 990 Pro 1TB",
+          "label": "—",
+          "reasons": []
+        },
+        {
+          "category": "psu",
+          "name": "750W Gold",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "The CPU has no cooler: pick one."
+        },
+        {
+          "level": "info",
+          "text": "The graphics card is 338 mm long: cases that certainly can't fit it are hidden."
+        }
+      ],
+      "status": {
+        "fits": 4,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 750,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 14,
+        "expected": "error",
+        "v1": "pass",
+        "v1Says": "Fits (v1 recommends ≥ 750 W)",
+        "verdict": "wrong",
+        "detail": "v1 says pass, plan says error: more lenient than the plan"
+      }
+    ],
+    "verdict": "wrong"
+  },
+  {
+    "id": "S60",
+    "title": "ATX power supply in a Midi Tower: pass",
+    "ui": {
+      "parts": [
+        {
+          "category": "psu",
+          "name": "650W Gold",
+          "label": "—",
+          "reasons": []
+        },
+        {
+          "category": "case",
+          "name": "Kolink Observatory MX Mesh",
+          "label": "—",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "The case has 5 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 16,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "no PSU–case check (case is not SFF)",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S61",
+    "title": "M.2 SSD + case without drive bay data: pass",
+    "ui": {
+      "parts": [
+        {
+          "category": "storage",
+          "name": "Samsung 990 Pro 1TB",
+          "label": "—",
+          "reasons": []
+        },
+        {
+          "category": "case",
+          "name": "Kolink Observatory MX Mesh",
+          "label": "—",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "info",
+          "text": "The case has 5 fan positions (some may already have fans)."
+        }
+      ],
+      "status": {
+        "fits": 0,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": null,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 19,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "no drive–case check (not a 3.5\" drive)",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S62",
+    "title": "Ryzen 9 9950X + RTX 5090 + 4 sticks + 2 SSDs + 6 fans + 1000 W: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 9 9950X",
+          "label": "Incompatible",
+          "reasons": [
+            "1000 W power supply; at least 1100 W is needed."
+          ]
+        },
+        {
+          "category": "mobo",
+          "name": "Asus Prime X870-P WiFi",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "ram",
+          "name": "DDR5 64GB (4×16GB) 6000MHz",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "gpu",
+          "name": "Gigabyte GeForce RTX 5090 32GB GDDR7 Gaming OC",
+          "label": "Incompatible",
+          "reasons": [
+            "1000 W power supply; at least 1100 W is needed."
+          ]
+        },
+        {
+          "category": "storage",
+          "name": "Samsung 990 Pro 1TB",
+          "label": "—",
+          "reasons": []
+        },
+        {
+          "category": "fan",
+          "name": "Arctic P12 Pro 120mm ×3",
+          "label": "—",
+          "reasons": []
+        },
+        {
+          "category": "psu",
+          "name": "1000W Gold",
+          "label": "Incompatible",
+          "reasons": [
+            "1000 W power supply; at least 1100 W is needed.",
+            "1000 W power supply; at least 1100 W is needed."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "The CPU has no cooler: pick one."
+        },
+        {
+          "level": "error",
+          "text": "Incompatible: the power supply and the graphics card don't go together; change one of them."
+        },
+        {
+          "level": "error",
+          "text": "Incompatible: the power supply and the CPU don't go together; change one of them."
+        },
+        {
+          "level": "info",
+          "text": "The graphics card is 342 mm long: cases that certainly can't fit it are hidden."
+        }
+      ],
+      "status": {
+        "fits": 2,
+        "likely": 0,
+        "unverified": 0,
+        "no": 2
+      },
+      "requiredWatts": 1100,
+      "unexpressed": [
+        "2 × Samsung 990 Pro 1TB counted once",
+        "2 × Arctic P12 Pro 120mm ×3 counted once"
+      ]
+    },
+    "rules": [
+      {
+        "rule": 14,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "Incompatible: 1000 W power supply; at least 1100 W is needed. 1000 W power supply; at least 1100 W is needed. (v1 recommends ≥ 1100 W)",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S63",
+    "title": "Core i9-14900K without a graphics card + 550 W: pass",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Core i9-14900K",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "mobo",
+          "name": "Asus Prime B760-Plus D4",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "ram",
+          "name": "DDR4 32GB (2×16GB) 3200MHz",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "storage",
+          "name": "Samsung 990 Pro 1TB",
+          "label": "—",
+          "reasons": []
+        },
+        {
+          "category": "psu",
+          "name": "550W Bronze",
+          "label": "Fits",
+          "reasons": []
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "The CPU has no cooler: pick one."
+        }
+      ],
+      "status": {
+        "fits": 3,
+        "likely": 0,
+        "unverified": 0,
+        "no": 0
+      },
+      "requiredWatts": 450,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 14,
+        "expected": "pass",
+        "v1": "pass",
+        "v1Says": "Fits (v1 recommends ≥ 450 W)",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  },
+  {
+    "id": "S64",
+    "title": "Ryzen 7 9800X3D + RX 9070 XT (card asks 850 W) + 750 W: error",
+    "ui": {
+      "parts": [
+        {
+          "category": "cpu",
+          "name": "Ryzen 7 9800X3D",
+          "label": "Incompatible",
+          "reasons": [
+            "750 W power supply; at least 850 W is needed."
+          ]
+        },
+        {
+          "category": "mobo",
+          "name": "Asus Prime X870-P WiFi",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "ram",
+          "name": "DDR5 32GB (2×16GB) 6000MHz",
+          "label": "Fits",
+          "reasons": []
+        },
+        {
+          "category": "gpu",
+          "name": "Gigabyte Radeon RX 9070 XT 16GB GDDR6 Gaming OC",
+          "label": "Incompatible",
+          "reasons": [
+            "750 W power supply; at least 850 W is needed."
+          ]
+        },
+        {
+          "category": "storage",
+          "name": "Samsung 990 Pro 1TB",
+          "label": "—",
+          "reasons": []
+        },
+        {
+          "category": "psu",
+          "name": "750W Gold",
+          "label": "Incompatible",
+          "reasons": [
+            "750 W power supply; at least 850 W is needed.",
+            "750 W power supply; at least 850 W is needed."
+          ]
+        }
+      ],
+      "notes": [
+        {
+          "level": "error",
+          "text": "The CPU has no cooler: pick one."
+        },
+        {
+          "level": "error",
+          "text": "Incompatible: the power supply and the graphics card don't go together; change one of them."
+        },
+        {
+          "level": "error",
+          "text": "Incompatible: the power supply and the CPU don't go together; change one of them."
+        },
+        {
+          "level": "info",
+          "text": "The graphics card is 288 mm long: cases that certainly can't fit it are hidden."
+        }
+      ],
+      "status": {
+        "fits": 2,
+        "likely": 0,
+        "unverified": 0,
+        "no": 2
+      },
+      "requiredWatts": 850,
+      "unexpressed": []
+    },
+    "rules": [
+      {
+        "rule": 14,
+        "expected": "error",
+        "v1": "error",
+        "v1Says": "Incompatible: 750 W power supply; at least 850 W is needed. 750 W power supply; at least 850 W is needed. (v1 recommends ≥ 850 W)",
+        "verdict": "correct",
+        "detail": ""
+      }
+    ],
+    "verdict": "correct"
+  }
+]

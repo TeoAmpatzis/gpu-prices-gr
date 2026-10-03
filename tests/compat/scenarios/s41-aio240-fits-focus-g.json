@@ -1,0 +1,154 @@
+{
+  "id": "S41",
+  "title": "AIO 240 mm in a case that takes 240/280 at the front: pass",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 7 9700X|false",
+      "modelKey": "Ryzen 7 9700X",
+      "name": "Ryzen 7 9700X",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "eshop",
+        "id": "eshop:PER.275274",
+        "title": "AMD RYZEN 7 9700X 5.5GHZ 8-CORE TRAY",
+        "price": 234.9
+      },
+      "fields": {
+        "socket": "AM5",
+        "igpu": true,
+        "coolerIncluded": false,
+        "packaging": "Tray",
+        "tdp": 65,
+        "cores": 8
+      }
+    },
+    {
+      "category": "cooler",
+      "key": "arcticliquidfreezeriiipro240",
+      "modelKey": "arcticliquidfreezeriiipro240",
+      "name": "Arctic Liquid Freezer III Pro 240",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160734230",
+        "title": "Arctic Liquid Freezer III Pro 240 Black 120mm για Socket AM4 / 1700 / AM5 / 1851",
+        "price": 60.16
+      },
+      "fields": {
+        "type": "AIO",
+        "radiator": 240,
+        "sockets": "AM4,AM5,LGA1700,LGA1851",
+        "heightMm": null
+      }
+    },
+    {
+      "category": "case",
+      "key": "fractaldesignfocusg",
+      "modelKey": "fractaldesignfocusg",
+      "name": "Fractal Design Focus G",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2156092020",
+        "title": "Fractal Design Focus G Window Black Midi Tower με Πλαϊνό Παράθυρο",
+        "price": 53.78
+      },
+      "fields": {
+        "size": "Midi Tower",
+        "maxBoard": "ATX",
+        "gpuMaxMm": 380,
+        "coolerMaxMm": 165,
+        "fanSlots": null,
+        "radiatorMounts": null,
+        "fanMounts": [
+          {
+            "n": 2,
+            "pos": "front",
+            "size": 120
+          },
+          {
+            "n": 2,
+            "pos": "front",
+            "size": 140
+          },
+          {
+            "n": 2,
+            "pos": "top",
+            "size": 120
+          },
+          {
+            "n": 2,
+            "pos": "top",
+            "size": 140
+          },
+          {
+            "n": 1,
+            "pos": "rear",
+            "size": 120
+          },
+          {
+            "n": 1,
+            "pos": "bottom",
+            "size": 120
+          },
+          {
+            "n": 1,
+            "pos": "bottom",
+            "size": 140
+          }
+        ],
+        "fansIncluded": [
+          {
+            "n": 2,
+            "pos": "front",
+            "size": 120
+          }
+        ],
+        "hasFans": null,
+        "radiators": [
+          {
+            "pos": "front",
+            "sizes": [
+              120,
+              140,
+              240,
+              280
+            ]
+          },
+          {
+            "pos": "top",
+            "sizes": [
+              120,
+              240
+            ]
+          },
+          {
+            "pos": "rear",
+            "sizes": [
+              120
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 9,
+      "level": "pass"
+    },
+    {
+      "rule": 10,
+      "level": "pass"
+    }
+  ],
+  "why": "Fractal lists 240 mm at the front and the top; the AIO lists AM5.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

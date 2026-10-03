@@ -1,0 +1,61 @@
+{
+  "scripts/checks/builder-coverage.mts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 7
+    }
+  },
+  "scripts/checks/data-check.test.mts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 1
+    },
+    "no-irregular-whitespace": {
+      "count": 1
+    }
+  },
+  "scripts/checks/data-equivalence.test.mts": {
+    "@typescript-eslint/no-explicit-any": {
+      "count": 15
+    }
+  },
+  "scripts/checks/layout-audit.mjs": {
+    "no-empty": {
+      "count": 1
+    }
+  },
+  "scripts/checks/site-check.mjs": {
+    "no-empty": {
+      "count": 1
+    }
+  },
+  "src/App.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "src/components/FilterBar.tsx": {
+    "react-hooks/refs": {
+      "count": 1
+    }
+  },
+  "src/components/builder/Guided.tsx": {
+    "react-hooks/refs": {
+      "count": 4
+    },
+    "react-hooks/set-state-in-effect": {
+      "count": 3
+    }
+  },
+  "src/lib/data.ts": {
+    "@typescript-eslint/no-unused-vars": {
+      "count": 1
+    }
+  },
+  "src/lib/useFilterState.ts": {
+    "@typescript-eslint/no-unused-vars": {
+      "count": 2
+    },
+    "react-hooks/refs": {
+      "count": 1
+    }
+  }
+}

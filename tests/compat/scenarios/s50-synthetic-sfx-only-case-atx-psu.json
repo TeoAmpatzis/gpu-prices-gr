@@ -1,0 +1,63 @@
+{
+  "id": "S50",
+  "title": "Case that takes only SFX + ATX power supply: error (synthetic case)",
+  "parts": [
+    {
+      "category": "case",
+      "key": "synthetic:sfx-only-case",
+      "modelKey": null,
+      "name": "Synthetic SFX-only ITX case",
+      "quantity": 1,
+      "synthetic": true,
+      "syntheticFields": [
+        "size",
+        "maxBoard",
+        "gpuMaxMm",
+        "coolerMaxMm",
+        "psuFormFactors"
+      ],
+      "source": null,
+      "fields": {
+        "size": "SFF / Cube",
+        "maxBoard": "Mini ITX",
+        "gpuMaxMm": 320,
+        "coolerMaxMm": 70,
+        "psuFormFactors": [
+          "SFX"
+        ]
+      },
+      "note": "No collected field says which PSU sizes a case takes (plan: new field)."
+    },
+    {
+      "category": "psu",
+      "key": "650W Gold ATX",
+      "modelKey": "650W Gold ATX",
+      "name": "650W Gold",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159355769",
+        "title": "Gigabyte P650G 650W",
+        "price": 46.51
+      },
+      "fields": {
+        "watts": 650,
+        "efficiency": "Gold",
+        "modular": null,
+        "formFactor": "ATX"
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 16,
+      "level": "error"
+    }
+  ],
+  "why": "An ATX unit does not fit a case that takes only SFX.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

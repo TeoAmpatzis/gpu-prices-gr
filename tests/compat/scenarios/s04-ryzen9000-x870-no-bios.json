@@ -1,0 +1,65 @@
+{
+  "id": "S04",
+  "title": "Ryzen 7 9700X + X870: no BIOS warning",
+  "planExample": "Ryzen 7 9700X + X870 → Καμία προειδοποίηση BIOS",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 7 9700X|false",
+      "modelKey": "Ryzen 7 9700X",
+      "name": "Ryzen 7 9700X",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "eshop",
+        "id": "eshop:PER.275274",
+        "title": "AMD RYZEN 7 9700X 5.5GHZ 8-CORE TRAY",
+        "price": 234.9
+      },
+      "fields": {
+        "socket": "AM5",
+        "igpu": true,
+        "coolerIncluded": false,
+        "packaging": "Tray",
+        "tdp": 65,
+        "cores": 8
+      }
+    },
+    {
+      "category": "mobo",
+      "key": "asusprimex870pwifi",
+      "modelKey": "asusprimex870pwifi",
+      "name": "Asus Prime X870-P WiFi",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160053961",
+        "title": "Asus Prime X870-P WiFi",
+        "price": 242.06
+      },
+      "fields": {
+        "socket": "AM5",
+        "chipset": "X870",
+        "formFactor": "ATX",
+        "memory": "DDR5",
+        "ramSlots": 4
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 1,
+      "level": "pass"
+    },
+    {
+      "rule": 13,
+      "level": "pass"
+    }
+  ],
+  "why": "800-series boards support Ryzen 9000 out of the box.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

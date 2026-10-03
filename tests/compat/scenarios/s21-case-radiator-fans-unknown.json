@@ -1,0 +1,88 @@
+{
+  "id": "S21",
+  "title": "AIO 240 and a 3-pack of fans in a case that states no radiator or fan positions: notes",
+  "parts": [
+    {
+      "category": "cooler",
+      "key": "arcticliquidfreezeriiipro240",
+      "modelKey": "arcticliquidfreezeriiipro240",
+      "name": "Arctic Liquid Freezer III Pro 240",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160734230",
+        "title": "Arctic Liquid Freezer III Pro 240 Black 120mm για Socket AM4 / 1700 / AM5 / 1851",
+        "price": 60.16
+      },
+      "fields": {
+        "type": "AIO",
+        "radiator": 240,
+        "sockets": "AM4,AM5,LGA1700,LGA1851",
+        "heightMm": null
+      }
+    },
+    {
+      "category": "fan",
+      "key": "arcticp12pro120mm3",
+      "modelKey": "arcticp12pro120mm3",
+      "name": "Arctic P12 Pro 120mm ×3",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2162523075",
+        "title": "Arctic P12 Pro Case Fan 120mm ARGB με Σύνδεση 3-Pin 4-Pin PWM 3τμχ Black",
+        "price": 22.93
+      },
+      "fields": {
+        "size": 120,
+        "pack": 3,
+        "connector": "4-pin PWM",
+        "fanType": "pressure",
+        "pwm": true
+      }
+    },
+    {
+      "category": "case",
+      "key": "rampagesealite",
+      "modelKey": "rampagesealite",
+      "name": "Rampage Sealite",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2164133299",
+        "title": "Rampage Sealite Black Gaming Midi Tower RGB με Πλαϊνό Παράθυρο",
+        "price": 99.78
+      },
+      "fields": {
+        "size": "Midi Tower",
+        "maxBoard": null,
+        "gpuMaxMm": null,
+        "coolerMaxMm": null,
+        "fanSlots": null,
+        "radiatorMounts": null,
+        "fanMounts": null,
+        "fansIncluded": null,
+        "hasFans": null,
+        "radiators": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 9,
+      "level": "note"
+    },
+    {
+      "rule": 21,
+      "level": "note"
+    }
+  ],
+  "why": "Radiator and fan positions are not stated, so neither can be checked.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

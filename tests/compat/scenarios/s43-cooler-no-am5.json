@@ -1,0 +1,59 @@
+{
+  "id": "S43",
+  "title": "Intel-only cooler (LGA1700/1851) + AM5 CPU: error",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 7 9700X|false",
+      "modelKey": "Ryzen 7 9700X",
+      "name": "Ryzen 7 9700X",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "eshop",
+        "id": "eshop:PER.275274",
+        "title": "AMD RYZEN 7 9700X 5.5GHZ 8-CORE TRAY",
+        "price": 234.9
+      },
+      "fields": {
+        "socket": "AM5",
+        "igpu": true,
+        "coolerIncluded": false,
+        "packaging": "Tray",
+        "tdp": 65,
+        "cores": 8
+      }
+    },
+    {
+      "category": "cooler",
+      "key": "arcticfreezer8i",
+      "modelKey": "arcticfreezer8i",
+      "name": "Arctic Freezer 8i",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160679990",
+        "title": "Arctic Freezer 8i",
+        "price": 11.48
+      },
+      "fields": {
+        "type": "Air",
+        "radiator": null,
+        "sockets": "LGA1700,LGA1851",
+        "heightMm": 136
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 10,
+      "level": "error"
+    }
+  ],
+  "why": "The cooler lists LGA1700 and LGA1851 only.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "id": "S14",
+  "title": "Graphics card with unknown length + small case: note",
+  "planExample": "Κάρτα με άγνωστο μήκος + μικρό κουτί → Σημείωση: δεν επιβεβαιώθηκε",
+  "parts": [
+    {
+      "category": "gpu",
+      "key": "bestprice:2163242245",
+      "modelKey": "RTX 5070 Ti 16GB",
+      "name": "PNY GeForce RTX 5070 Ti 16GB GDDR7 OC",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2163242245",
+        "title": "PNY GeForce RTX 5070 Ti 16GB GDDR7 OC",
+        "price": 1225.26
+      },
+      "fields": {
+        "chip": "RTX 5070 Ti",
+        "partner": "PNY",
+        "vram": 16,
+        "lengthMm": null,
+        "minPsu": null
+      }
+    },
+    {
+      "category": "case",
+      "key": "thermaltakethetower300",
+      "modelKey": "thermaltakethetower300",
+      "name": "Thermaltake The Tower 300",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:50793062",
+        "title": "Thermaltake The Tower 300 Gaming Micro Tower με Πλαϊνό Παράθυρο",
+        "price": 130.39
+      },
+      "fields": {
+        "size": "Mini Tower",
+        "maxBoard": "Mini ITX",
+        "gpuMaxMm": 280,
+        "coolerMaxMm": 210,
+        "fanSlots": 7,
+        "radiatorMounts": "Άνω, Πίσω, Πλάι",
+        "fanMounts": null,
+        "fansIncluded": null,
+        "hasFans": null,
+        "radiators": null
+      }
+    }
+  ],
+  "context": {
+    "chipLengths": {
+      "RTX 5070 Ti": {
+        "cards": 18,
+        "makers": 8,
+        "min": 261,
+        "max": 360
+      }
+    }
+  },
+  "expected": [
+    {
+      "rule": 6,
+      "level": "note"
+    }
+  ],
+  "why": "The card length is not stated and RTX 5070 Ti cards measure 261–360 mm against a 280 mm limit, so it can neither pass nor fail.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

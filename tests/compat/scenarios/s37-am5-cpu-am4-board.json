@@ -1,0 +1,60 @@
+{
+  "id": "S37",
+  "title": "AM5 CPU (Ryzen 5 9600X) + AM4 board: error",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 5 9600X|false",
+      "modelKey": "Ryzen 5 9600X",
+      "name": "Ryzen 5 9600X",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159968919",
+        "title": "AMD Ryzen 5 9600X Tray",
+        "price": 174.44
+      },
+      "fields": {
+        "socket": "AM5",
+        "igpu": true,
+        "coolerIncluded": false,
+        "packaging": "Tray",
+        "tdp": 65,
+        "cores": 6
+      }
+    },
+    {
+      "category": "mobo",
+      "key": "asusprimeb550plus",
+      "modelKey": "asusprimeb550plus",
+      "name": "Asus Prime B550-Plus",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2156165384",
+        "title": "Asus Prime B550-Plus",
+        "price": 92.87
+      },
+      "fields": {
+        "socket": "AM4",
+        "chipset": "B550",
+        "formFactor": "ATX",
+        "memory": "DDR4",
+        "ramSlots": 4
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 1,
+      "level": "error"
+    }
+  ],
+  "why": "AM5 ≠ AM4.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

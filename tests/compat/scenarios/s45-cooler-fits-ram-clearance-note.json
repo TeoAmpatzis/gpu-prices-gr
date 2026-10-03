@@ -1,0 +1,142 @@
+{
+  "id": "S45",
+  "title": "Air cooler 155 mm + case that takes 170 mm, with RAM: pass + clearance note",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 7 9700X|false",
+      "modelKey": "Ryzen 7 9700X",
+      "name": "Ryzen 7 9700X",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "eshop",
+        "id": "eshop:PER.275274",
+        "title": "AMD RYZEN 7 9700X 5.5GHZ 8-CORE TRAY",
+        "price": 234.9
+      },
+      "fields": {
+        "socket": "AM5",
+        "igpu": true,
+        "coolerIncluded": false,
+        "packaging": "Tray",
+        "tdp": 65,
+        "cores": 8
+      }
+    },
+    {
+      "category": "mobo",
+      "key": "asusprimex870pwifi",
+      "modelKey": "asusprimex870pwifi",
+      "name": "Asus Prime X870-P WiFi",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160053961",
+        "title": "Asus Prime X870-P WiFi",
+        "price": 242.06
+      },
+      "fields": {
+        "socket": "AM5",
+        "chipset": "X870",
+        "formFactor": "ATX",
+        "memory": "DDR5",
+        "ramSlots": 4
+      }
+    },
+    {
+      "category": "ram",
+      "key": "DDR5 32GB (2×16GB) 6000MHz Desktop",
+      "modelKey": "DDR5 32GB (2×16GB) 6000MHz Desktop",
+      "name": "DDR5 32GB (2×16GB) 6000MHz",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2157866269",
+        "title": "Patriot Viper Venom RGB 32GB (2X16GB) DDR5 RAM 6000MHz C36 Black PVVR532G600C36K",
+        "price": 466.35
+      },
+      "fields": {
+        "type": "DDR5",
+        "capacity": 32,
+        "modules": 2,
+        "speed": 6000,
+        "cas": 36,
+        "formFactor": "Desktop"
+      }
+    },
+    {
+      "category": "cooler",
+      "key": "endorfyfera5",
+      "modelKey": "endorfyfera5",
+      "name": "Endorfy Fera 5",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2158168838",
+        "title": "Endorfy Fera 5",
+        "price": 23.08
+      },
+      "fields": {
+        "type": "Air",
+        "radiator": null,
+        "sockets": "AM2,AM2+,AM3,AM3+,AM4,AM5,FM1,FM2,FM2+,LGA1150,LGA1151,LGA1155,LGA1156,LGA1200,LGA1366,LGA1700,LGA1851,LGA2011,LGA2011-3,LGA2066,LGA775",
+        "heightMm": 155
+      }
+    },
+    {
+      "category": "case",
+      "key": "darkflashc365",
+      "modelKey": "darkflashc365",
+      "name": "Darkflash C365",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:66323246",
+        "title": "Darkflash C365 Gaming Midi Tower με Πλαϊνό Παράθυρο",
+        "price": 35.98
+      },
+      "fields": {
+        "size": "Midi Tower",
+        "maxBoard": "E-ATX",
+        "gpuMaxMm": 330,
+        "coolerMaxMm": 170,
+        "fanSlots": 5,
+        "radiatorMounts": "Άνω",
+        "fanMounts": null,
+        "fansIncluded": [
+          {
+            "pos": null,
+            "size": null,
+            "n": 5
+          }
+        ],
+        "hasFans": null,
+        "radiators": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 8,
+      "level": "pass"
+    },
+    {
+      "rule": 10,
+      "level": "pass"
+    },
+    {
+      "rule": 26,
+      "level": "note"
+    }
+  ],
+  "why": "15 mm to spare; RAM-to-cooler clearance is never checked, so plan rule 26 always adds a note.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

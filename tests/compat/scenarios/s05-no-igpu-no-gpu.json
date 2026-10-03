@@ -1,0 +1,115 @@
+{
+  "id": "S05",
+  "title": "CPU without integrated graphics and no graphics card: error",
+  "planExample": "Επεξεργαστής χωρίς ενσωματωμένα γραφικά, χωρίς κάρτα γραφικών → Σφάλμα: δεν θα βγάζει εικόνα",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Core i5-14400F|false",
+      "modelKey": "Core i5-14400F",
+      "name": "Core i5-14400F",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159493895",
+        "title": "Intel Core i5-14400F C0 Tray",
+        "price": 133.34
+      },
+      "fields": {
+        "socket": "LGA1700",
+        "igpu": false,
+        "coolerIncluded": false,
+        "packaging": "Tray",
+        "tdp": 148,
+        "cores": 10
+      }
+    },
+    {
+      "category": "mobo",
+      "key": "asusprimeb760plusd4",
+      "modelKey": "asusprimeb760plusd4",
+      "name": "Asus Prime B760-Plus D4",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2158207810",
+        "title": "Asus Prime B760-Plus D4",
+        "price": 101.4
+      },
+      "fields": {
+        "socket": "LGA1700",
+        "chipset": "B760",
+        "formFactor": "ATX",
+        "memory": "DDR4",
+        "ramSlots": 4
+      }
+    },
+    {
+      "category": "ram",
+      "key": "DDR4 32GB (2×16GB) 3200MHz Desktop",
+      "modelKey": "DDR4 32GB (2×16GB) 3200MHz Desktop",
+      "name": "DDR4 32GB (2×16GB) 3200MHz",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "snif",
+        "id": "snif:26456337",
+        "title": "G.Skill Aegis F4-3200C16D-32GIS DDR4 3200MHz (2x16GB)",
+        "price": 140
+      },
+      "fields": {
+        "type": "DDR4",
+        "capacity": 32,
+        "modules": 2,
+        "speed": 3200,
+        "cas": 16,
+        "formFactor": "Desktop"
+      }
+    },
+    {
+      "category": "cooler",
+      "key": "endorfyfera5",
+      "modelKey": "endorfyfera5",
+      "name": "Endorfy Fera 5",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2158168838",
+        "title": "Endorfy Fera 5",
+        "price": 23.08
+      },
+      "fields": {
+        "type": "Air",
+        "radiator": null,
+        "sockets": "AM2,AM2+,AM3,AM3+,AM4,AM5,FM1,FM2,FM2+,LGA1150,LGA1151,LGA1155,LGA1156,LGA1200,LGA1366,LGA1700,LGA1851,LGA2011,LGA2011-3,LGA2066,LGA775",
+        "heightMm": 155
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 1,
+      "level": "pass"
+    },
+    {
+      "rule": 2,
+      "level": "pass"
+    },
+    {
+      "rule": 10,
+      "level": "pass"
+    },
+    {
+      "rule": 12,
+      "level": "error"
+    }
+  ],
+  "why": "An F-suffix Intel CPU has no integrated graphics, so without a card there is no picture; everything else fits.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

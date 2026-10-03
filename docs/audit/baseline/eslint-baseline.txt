@@ -1,0 +1,198 @@
+﻿
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\scripts\checks\builder-coverage.mts
+  24:16  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  25:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  29:49  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  65:61  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  89:62  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  90:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  91:20  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\scripts\checks\data-check.test.mts
+   8:83  error  Irregular whitespace not allowed          no-irregular-whitespace
+  39:86  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\scripts\checks\data-equivalence.test.mts
+  125:96  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  143:33  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  144:33  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  148:61  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  153:38  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  167:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  168:44  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  176:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  185:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  186:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  191:41  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  194:24  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  194:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  194:44  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  196:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\scripts\checks\layout-audit.mjs
+  26:11  error  Empty block statement  no-empty
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\scripts\checks\site-check.mjs
+  25:143  error  Empty block statement  no-empty
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\App.tsx
+  112:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\App.tsx:112:5
+  110 |   }, []);
+  111 |   useEffect(() => {
+> 112 |     setVisited((v) => (v.has(active) ? v : new Set(v).add(active)));
+      |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  113 |   }, [active]);
+  114 |
+  115 |   const lang = useLang();  react-hooks/set-state-in-effect
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\components\FilterBar.tsx
+  90:3  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\components\FilterBar.tsx:90:3
+  88 |   const [query, setQuery] = useState(f.query);
+  89 |   const latest = useRef({ f, onChange });
+> 90 |   latest.current = { f, onChange };
+     |   ^^^^^^^^^^^^^^ Cannot update ref during render
+  91 |   const sent = useRef(f.query);
+  92 |   useEffect(() => {
+  93 |     // A change that didn't come from typing here (reset, a removed chip, the URL) replaces the text  react-hooks/refs
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\components\PriceChart.tsx
+  63:7  warning  React Hook useLayoutEffect has a complex expression in the dependency array. Extract it to a separate variable so it can be statically checked  react-hooks/exhaustive-deps
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\components\builder\Guided.tsx
+  197:14  error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\components\builder\Guided.tsx:197:14
+  195 |
+  196 |           <div className="flex items-center gap-2 border-t border-line pt-4">
+> 197 |             {back && (
+      |              ^^^^ Cannot access ref value during render
+  198 |               <button type="button" onClick={back} className="tap inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-muted edge hover:bg-hover hover:text-fg dark:ring-0">
+  199 |                 <ChevronLeft className="h-4 w-4" /> {t(G.back)}
+  200 |               </button>                                                                                                                                                                                                                                                                                                                                                                                                                    react-hooks/refs
+  202:14  error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\components\builder\Guided.tsx:202:14
+  200 |               </button>
+  201 |             )}
+> 202 |             {next && (
+      |              ^^^^ Cannot access ref value during render
+  203 |               <button
+  204 |                 type="button"
+  205 |                 onClick={next}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     react-hooks/refs
+  217:15  error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\components\builder\Guided.tsx:217:15
+  215 |         state={state}
+  216 |         onSlot={(s) => go(s)}
+> 217 |         back={navButton('back', true)}
+      |               ^^^^^^^^^ This function accesses a ref value
+  218 |         next={navButton('next', true)}
+  219 |       />
+  220 |     </>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                react-hooks/refs
+  218:15  error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\components\builder\Guided.tsx:218:15
+  216 |         onSlot={(s) => go(s)}
+  217 |         back={navButton('back', true)}
+> 218 |         next={navButton('next', true)}
+      |               ^^^^^^^^^ This function accesses a ref value
+  219 |       />
+  220 |     </>
+  221 |   );                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 react-hooks/refs
+  279:19  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\components\builder\Guided.tsx:279:19
+  277 |   const { prefs, setPrefs } = state;
+  278 |   const [text, setText] = useState(prefs.budget ? String(prefs.budget) : '');
+> 279 |   useEffect(() => setText(prefs.budget ? String(prefs.budget) : ''), [prefs.budget]);
+      |                   ^^^^^^^ Avoid calling setState() directly within an effect
+  280 |   const setBudget = (v: string) => {
+  281 |     setText(v);
+  282 |     const n = Math.round(Number(v.replace(/[^\d]/g, '')));                                                                                                          react-hooks/set-state-in-effect
+  377:6   warning  React Hook useEffect has a missing dependency: 'wantSlot'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           react-hooks/exhaustive-deps
+  390:19  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\components\builder\Guided.tsx:390:19
+  388 |   // A saved build arrives with builder.json, after the first render: follow the plan when it changes.
+  389 |   const planKey = planSizes.join();
+> 390 |   useEffect(() => setSizes(planSizes), [planKey]);
+      |                   ^^^^^^^^ Avoid calling setState() directly within an effect
+  391 |   const [fanType, setFanType] = useState<'airflow' | 'pressure' | null>(null);
+  392 |
+  393 |   const rated: Rated[] = useMemo(() => (models ? (rateAll(slot, models[slot] as never, build, ctx) as Rated[]) : []), [models, slot, build, ctx]);  react-hooks/set-state-in-effect
+  390:40  warning  React Hook useEffect has a missing dependency: 'planSizes'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react-hooks/exhaustive-deps
+  410:6   warning  React Hook useMemo has an unnecessary dependency: 'extraVersion'. Either exclude it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react-hooks/exhaustive-deps
+  411:19  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\components\builder\Guided.tsx:411:19
+  409 |     // extraVersion: search titles arrive later (builder-extra.json).
+  410 |   }, [rated, order, query, onlyCompatible, verifiedOnly, withinBudget, left, cfg, extraVersion, slot, sizes, fanType]);
+> 411 |   useEffect(() => setLimit(PAGE), [query, sort, onlyCompatible, verifiedOnly, withinBudget, sizes, fanType]);
+      |                   ^^^^^^^^ Avoid calling setState() directly within an effect
+  412 |
+  413 |   const chosen = build[slot] as AnyModel | undefined;
+  414 |                                                                react-hooks/set-state-in-effect
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\components\builder\QuickList.tsx
+  44:6  warning  React Hook useEffect has a missing dependency: 'state'. Either include it or remove the dependency array            react-hooks/exhaustive-deps
+  60:6  warning  React Hook useMemo has an unnecessary dependency: 'extraVersion'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\lib\data.ts
+  84:34  error  '_' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\lib\useFilterState.ts
+  23:3   error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\Teo\Desktop\PROJECTS\Gpu price comparison\src\lib\useFilterState.ts:23:3
+  21 |   });
+  22 |   const ref = useRef(filters);
+> 23 |   ref.current = filters;
+     |   ^^^^^^^^^^^ Cannot update ref during render
+  24 |
+  25 |   useEffect(() => {
+  26 |     const onNavigate = () => {  react-hooks/refs
+  43:21  error  '_old' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @typescript-eslint/no-unused-vars
+  44:21  error  '_new' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @typescript-eslint/no-unused-vars
+
+✖ 45 problems (39 errors, 6 warnings)
+

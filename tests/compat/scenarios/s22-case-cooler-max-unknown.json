@@ -1,0 +1,63 @@
+{
+  "id": "S22",
+  "title": "Air cooler 165 mm + case without a maximum cooler height: note",
+  "parts": [
+    {
+      "category": "cooler",
+      "key": "noctuanhd15",
+      "modelKey": "noctuanhd15",
+      "name": "Noctua NH-D15",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2154012731",
+        "title": "Noctua NH-D15",
+        "price": 100.42
+      },
+      "fields": {
+        "type": "Air",
+        "radiator": null,
+        "sockets": "AM2,AM2+,AM3,AM3+,AM4,AM5,FM1,FM2,FM2+,LGA1150,LGA1151,LGA1155,LGA1156,LGA2011,LGA2011-3",
+        "heightMm": 165
+      }
+    },
+    {
+      "category": "case",
+      "key": "logicdartpro",
+      "modelKey": "logicdartpro",
+      "name": "Logic DART Pro",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160351751",
+        "title": "Logic DART Pro Black Gaming Midi Tower RGB με Πλαϊνό Παράθυρο",
+        "price": 55.22
+      },
+      "fields": {
+        "size": "Midi Tower",
+        "maxBoard": "ATX",
+        "gpuMaxMm": 340,
+        "coolerMaxMm": null,
+        "fanSlots": 3,
+        "radiatorMounts": "Άνω, Μπροστά",
+        "fanMounts": null,
+        "fansIncluded": null,
+        "hasFans": null,
+        "radiators": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 8,
+      "level": "note"
+    }
+  ],
+  "why": "The case limit is unknown.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

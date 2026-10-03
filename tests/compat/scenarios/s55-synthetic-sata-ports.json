@@ -1,0 +1,65 @@
+{
+  "id": "S55",
+  "title": "Three SATA SSDs + board with 2 SATA ports: error (synthetic field)",
+  "parts": [
+    {
+      "category": "mobo",
+      "key": "asrocka620mhdvm2",
+      "modelKey": "asrocka620mhdvm2",
+      "name": "ASRock A620M-HDV/M.2",
+      "quantity": 1,
+      "synthetic": true,
+      "source": {
+        "site": "eshop",
+        "id": "eshop:PER.607321",
+        "title": "ASROCK A620M-HDV/M.2+ RETAIL",
+        "price": 99.9
+      },
+      "fields": {
+        "socket": "AM5",
+        "chipset": "A620",
+        "formFactor": "Micro ATX",
+        "memory": "DDR5",
+        "ramSlots": 2,
+        "sataPorts": 2
+      },
+      "syntheticFields": [
+        "sataPorts"
+      ],
+      "note": "Synthetic SATA port count."
+    },
+    {
+      "category": "storage",
+      "key": "crucialbx5001tbssd",
+      "modelKey": "crucialbx5001tbssd",
+      "name": "Crucial BX500 1TB",
+      "quantity": 3,
+      "synthetic": false,
+      "source": {
+        "site": "snif",
+        "id": "snif:24381577",
+        "title": "Δίσκος SSD Crucial BX500 3D Nand 2.5\" 1TB Sata III CT1000BX500SSD1",
+        "price": 94.9
+      },
+      "fields": {
+        "media": "SSD",
+        "iface": "SATA",
+        "pcie": null,
+        "formFactor": "2.5\"",
+        "capacity": 1000,
+        "tier": "Consumer"
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 18,
+      "level": "error"
+    }
+  ],
+  "why": "Three SATA drives, two ports.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

@@ -12,3 +12,8 @@ tsconfig.tsbuildinfo
 
 .vercel
 .env*
+
+# v2 tooling / Phase 0 audit (local only)
+test-results/
+playwright-report/
+docs/audit/ux-full/

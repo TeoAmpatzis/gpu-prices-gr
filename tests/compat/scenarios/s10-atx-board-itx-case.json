@@ -1,0 +1,65 @@
+{
+  "id": "S10",
+  "title": "ATX board + Mini-ITX case: error",
+  "planExample": "ATX μητρική + Mini-ITX κουτί → Σφάλμα: μέγεθος μητρικής",
+  "parts": [
+    {
+      "category": "mobo",
+      "key": "gigabyteb650eagleax",
+      "modelKey": "gigabyteb650eagleax",
+      "name": "Gigabyte B650 Eagle AX",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159351395",
+        "title": "Gigabyte B650 Eagle AX",
+        "price": 114.66
+      },
+      "fields": {
+        "socket": "AM5",
+        "chipset": "B650",
+        "formFactor": "ATX",
+        "memory": "DDR5",
+        "ramSlots": 4
+      }
+    },
+    {
+      "category": "case",
+      "key": "thermaltakethetower300",
+      "modelKey": "thermaltakethetower300",
+      "name": "Thermaltake The Tower 300",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:50793062",
+        "title": "Thermaltake The Tower 300 Gaming Micro Tower με Πλαϊνό Παράθυρο",
+        "price": 130.39
+      },
+      "fields": {
+        "size": "Mini Tower",
+        "maxBoard": "Mini ITX",
+        "gpuMaxMm": 280,
+        "coolerMaxMm": 210,
+        "fanSlots": 7,
+        "radiatorMounts": "Άνω, Πίσω, Πλάι",
+        "fanMounts": null,
+        "fansIncluded": null,
+        "hasFans": null,
+        "radiators": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 5,
+      "level": "error"
+    }
+  ],
+  "why": "The case states Mini ITX as its largest board; an ATX board does not fit.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

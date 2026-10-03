@@ -1,0 +1,81 @@
+{
+  "id": "S12",
+  "title": "RTX 5080 + 550 W power supply: error",
+  "planExample": "RTX 5080 + τροφοδοτικό 550 W → Σφάλμα: ανεπαρκή watt",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 7 9700X|false",
+      "modelKey": "Ryzen 7 9700X",
+      "name": "Ryzen 7 9700X",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "eshop",
+        "id": "eshop:PER.275274",
+        "title": "AMD RYZEN 7 9700X 5.5GHZ 8-CORE TRAY",
+        "price": 234.9
+      },
+      "fields": {
+        "socket": "AM5",
+        "igpu": true,
+        "coolerIncluded": false,
+        "packaging": "Tray",
+        "tdp": 65,
+        "cores": 8
+      }
+    },
+    {
+      "category": "gpu",
+      "key": "bestprice:2160322211",
+      "modelKey": "RTX 5080 16GB",
+      "name": "Gigabyte GeForce RTX 5080 16GB GDDR7 Gaming OC",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160322211",
+        "title": "Gigabyte GeForce RTX 5080 16GB GDDR7 Gaming OC",
+        "price": 1621.7
+      },
+      "fields": {
+        "chip": "RTX 5080",
+        "partner": "Gigabyte",
+        "vram": 16,
+        "lengthMm": 340,
+        "minPsu": 850
+      }
+    },
+    {
+      "category": "psu",
+      "key": "550W Bronze ATX",
+      "modelKey": "550W Bronze ATX",
+      "name": "550W Bronze",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2155485909",
+        "title": "Tacens APB550 550W",
+        "price": 29.68
+      },
+      "fields": {
+        "watts": 550,
+        "efficiency": "Bronze",
+        "modular": null,
+        "formFactor": "ATX"
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 14,
+      "level": "error"
+    }
+  ],
+  "why": "The card maker asks for 850 W; plan formula (360 W TBP + 88 W PPT + 50 W board) × 1.3 = 649 → 650 W, max(850, 650) = 850 W; 550 W is far below.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}
