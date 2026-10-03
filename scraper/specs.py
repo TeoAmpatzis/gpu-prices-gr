@@ -11,6 +11,8 @@ Both sites' product pages have a spec table (`dl` of `dt`/`dd`) with nearly the 
           "Ύψος: 155 mm" / "37mm"
   Fan:    "Σύνδεση: 4-Pin PWM" / "3-Pin"; "Ροή Αέρα (Max): 77 cfm" / "Ροή Αέρα: 77cfm";
           Skroutz only "Πίεση Αέρα: 6,9 mmH₂O"
+  SSD:    "Read Speed: 6000 MB/s" / "Ταχύτητα Ανάγνωσης: 6.000MB/s"; Skroutz only "Τύπος Κρυφής Μνήμης:
+          DRAM-less", "Αντοχή Εγγραφών (TBW): 600 TBW", "Ψύκτρα: Ναι"
 
 Specs don't change, so each page is fetched once and cached in public/data/<cat>/specs.json
 ({listing id: {fields…, checked}}; the id names the site). `collect` runs once per scrape, after
@@ -159,16 +161,56 @@ def parse_fan(sp: dict[str, str]) -> dict:
     }
 
 
+def _mbs(text: str | None) -> int | None:
+    """"6000 MB/s" (Skroutz) / "6.000MB/s" (BestPrice, dot = thousands) -> 6000."""
+    m = re.search(r"(\d[\d.]*)\s*MB/?s", text or "", re.I)
+    return int(m.group(1).replace(".", "")) if m else None
+
+
+def _dram(text: str | None) -> bool | None:
+    """Skroutz "Τύπος Κρυφής Μνήμης": "DRAM-less" / "HMB" -> False, "DRAM" / "DDR4" -> True."""
+    t = (text or "").lower()
+    if not t or t == "-":
+        return None
+    if "less" in t or "hmb" in t:
+        return False
+    return True if ("dram" in t or "ddr" in t) else None
+
+
+def _tbw(text: str | None) -> int | None:
+    """"600 TBW" / "1.200 TB" / "1,2 PBW" -> TB written."""
+    m = re.search(r"(\d[\d.,]*)\s*(PB|TB)", text or "", re.I)
+    if not m:
+        return None
+    num = m.group(1)
+    value = float(num.replace(",", ".")) if m.group(2).upper() == "PB" else float(num.replace(".", "").replace(",", "."))
+    return round(value * 1000) if m.group(2).upper() == "PB" else round(value)
+
+
+def parse_storage(sp: dict[str, str]) -> dict:
+    # Skroutz: "Read Speed: 6000 MB/s", "Τύπος Κρυφής Μνήμης: DRAM-less", "Αντοχή Εγγραφών (TBW): 600 TBW",
+    # "Ψύκτρα: Ναι"; BestPrice: "Ταχύτητα Ανάγνωσης: 6.000MB/s" (no DRAM or TBW).
+    return {
+        "readMBs": _mbs(_first(sp, "Read Speed", "Ταχύτητα Ανάγνωσης")),
+        "writeMBs": _mbs(_first(sp, "Write Speed", "Ταχύτητα Εγγραφής")),
+        "dram": _dram(sp.get("Τύπος Κρυφής Μνήμης")),
+        "tbw": _tbw(sp.get("Αντοχή Εγγραφών (TBW)")),
+        "heatsink": _yes_no(sp.get("Ψύκτρα")),
+    }
+
+
 PARSERS: dict[str, Callable[[dict[str, str]], dict]] = {
     "gpu": parse_gpu, "cpu": parse_cpu, "case": parse_case, "cooler": parse_cooler, "fan": parse_fan,
+    "storage": parse_storage,
 }
 EMPTY = {cat: parse({}) for cat, parse in PARSERS.items()}
 # Sites per category, in order of preference (BestPrice states nothing about a CPU's cooler).
 SITES = {"gpu": ("skroutz", "bestprice"), "cpu": ("skroutz",), "case": ("skroutz", "bestprice"),
-         "cooler": ("skroutz", "bestprice"), "fan": ("skroutz", "bestprice")}
-# A product still needs a page while one of these is unknown (air coolers also need their height).
+         "cooler": ("skroutz", "bestprice"), "fan": ("skroutz", "bestprice"), "storage": ("skroutz", "bestprice")}
+# A product still needs a page while one of these is unknown (air coolers also need their height;
+# storage: SSDs only — an HDD's title already gives its speed and cache).
 NEEDED = {"gpu": ("lengthMm",), "cpu": ("coolerIncluded",), "case": ("gpuMaxMm", "coolerMaxMm"),
-          "cooler": ("sockets",), "fan": ("connector",)}
+          "cooler": ("sockets",), "fan": ("connector",), "storage": ("readMBs",)}
 # Measurements the builder checks, and which of two disagreeing values is the safe one to assume
 # (sites, or a site and the maker): the longer card / taller cooler / higher PSU minimum, the
 # smaller case clearance.
@@ -186,6 +228,8 @@ def product_key(cat: str, model_key) -> Callable[[dict], str]:
 
 
 def _needs(cat: str, ls: list[dict]) -> bool:
+    if cat == "storage" and (ls[0].get("media") == "HDD" or ls[0].get("tier") == "Server"):
+        return False  # HDD titles say enough; server drives aren't for the builder
     fields = NEEDED[cat] + (("heightMm",) if cat == "cooler" and ls[0].get("type") == "Air" else ())
     return any(all(l.get(f) is None for l in ls) for f in fields)
 

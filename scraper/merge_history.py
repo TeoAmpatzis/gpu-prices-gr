@@ -31,7 +31,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "public" / "data"
 KEEP = 365  # main.HISTORY_DAYS = site_history.KEEP_DAYS
-CATEGORIES = ["gpu", "cpu", "mobo", "ram", "psu", "case", "fan", "cooler"]
+CATEGORIES = ["gpu", "cpu", "mobo", "ram", "psu", "case", "fan", "cooler", "storage"]
 
 
 # ---------- history.json ----------
