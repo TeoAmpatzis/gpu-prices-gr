@@ -48,7 +48,9 @@ EXCLUDE = re.compile(
     r"Εξωτερικ|Eksoterik|External|Portable|\bUSB\b|Enclosure|Θήκ|Docking|Adapter|Αντάπτορ|Mounting|Caddy|"
     r"Bracket|Converter|Μετατροπ|\bCable|Καλώδι|Flash\s*Drive|Memory\s*Card|micro\s*SD|\bSD\s*Card|Refurb|"
     r"Renewed|Recertified|\bUsed\b|Μεταχειρισμ|,\s*FR\b|\sFR$|DiskStation|\bDS\d{3,4}\+?(?!\w)|Duplicator|"
-    r"Cloner|Tester|Backplane|Riser|\bHub\b|Heatsink\s+(?:for|για)|Ψύκτρα\s+(?:για|SSD|M\.2)",
+    r"Cloner|Tester|Backplane|Riser|\bHub\b|Heatsink\s+(?:for|για)|Ψύκτρα\s+(?:για|SSD|M\.2)|Raspberry|\bRPi\b|"
+    # Apple-connector upgrades (OWC Aura Pro for iMac / Mac Pro / MacBook) don't fit a PC.
+    r"\bi?Mac(?:Book)?\b|Mac\s*(?:Pro|mini)\b|Aura\s+Pro",
     re.I,
 )
 
@@ -72,7 +74,8 @@ SERVER_NAMES = re.compile(
     r"\bExos\b|Ultrastar|\bU\.[23]\b|\bSAS\b|Enterprise|Data\s*Cent(?:er|re)|\bNytro\b|"
     r"(?:WD|Western\s+Digital)\s+(?:\S+\s+)?Gold\b|\bMG\d{2}|\bAL1\d[A-Z]{2}|"
     r"\bDC\s?\d{3,4}[A-Z]{0,3}\b|\bDC\s?(?:HC|SN|SA|ME)\d|"
-    r"\bP?M(?:8[89]\d|9A3|9D3|1[67]\d\d)\b|\bSM8\d3\b|Micron\s+[57]\d00|Solidigm\s+D\d|\bD[357]-[PS]\d{4}",
+    r"\bP?M(?:8[89]\d|9[68]3|9A3|9D3|1[67]\d\d)\b|\bSM8\d3\b|Micron\s+[57]\d00|Solidigm\s+D\d|\bD[357]-[PS]\d{4}|"
+    r"Kioxia\s+(?:C[DM]\d|PM\d|XD\d)",
     re.I,
 )
 # (Not the shops' "για Καταγραφικό" / "gia-Katagrafiko": Skroutz puts it on desktop drives too, e.g. WD Blue.)
@@ -98,16 +101,21 @@ NOISE = {
     "ssd", "hdd", "sshd", "nvme", "m.2", "m2", "msata", "sata", "sata3", "sataiii", "sata-iii", "sata-3", "iii",
     "pci", "pcie", "pcle", "pci-e", "express", "gen", "gen3", "gen4", "gen5", "x2", "x4", "nand", "3d", "tlc",
     "qlc", "mlc", "slc", "v-nand", "internal", "interno", "drive", "solid", "state", "hard", "disk", "desktop",
-    "laptop", "notebook", "pc", "gaming", "compatible", "ps5", "playstation", "playstation5", "nas",
-    "surveillance", "bulk", "retail", "box", "series", "cache", "rpm", "for", "and", "&", "+", "-", "/", "with",
+    "laptop", "notebook", "pc", "gaming", "compatible", "ps5", "playstation", "playstation5", "nas", "bulk", "retail", "box", "series", "cache", "rpm", "for", "and", "&", "+", "-", "/", "with",
     "w/", "xpg", "7mm", "9.5mm", "6gb/s", "12gb/s", "6gbps", "card", "add-in", "aic", "heatsink", "sas", "u.2",
     "u.3", "hdd/ssd", "type", "class",
+    # Words only some sites put in a series name: Adata "Ultimate SU650" = "SU650", Corsair "Force MP600",
+    # Patriot "Viper P400", Kingston "SSDNow A400", Silicon Power "Ace A55", TeamGroup "T-Force Vulcan Z",
+    # Intenso "Top Performance" / "Top Perform" / "Top", Seagate "SkyHawk +Rescue", Synology "Gb/s 24/7".
+    "ultimate", "force", "rev", "rev.", "viper", "ssdnow", "ace", "t-force", "performance", "perform",
+    "+rescue", "mixed", "use", "gb/s", "24/7", "fastformat", "optimus", "cras",
 }
 # Left out only when other words name the drive: "Exos 7E10 Enterprise" = "Exos 7E10", but "Toshiba
-# Enterprise 8TB" keeps its one word.
-SOFT = {"enterprise", "professional"}
+# Enterprise 8TB" (and "Hikvision Surveillance 2TB") keeps its one word.
+SOFT = {"enterprise", "professional", "surveillance"}
 SPEC = re.compile(
-    r'[23][.,]5("|”|″)?|\d\.\d|\d{4,5}rpm|\d+mb|[\d.,]+(?:[-/][\d.,]+)?mb/?s|22(?:30|42|60|80|110)|x\d|gen\.?\d|'
+    r'[123][.,][58]("|”|″)?|\d\.\d|\d{4,5}rpm|\d+mb|[\d.,]+(?:[-/][\d.,]+)?mb/?s|22(?:30|42|60|80|110)|x\d|gen\.?\d|'
+    r"(?:gen)?\d[x×]\d|"
     r"\d+(?:\.\d+)?(?:tb|gb|t)"
 )
 PART_SHAPE = re.compile(r"^[A-Z]{1,3}\d{3,4}[A-Z]{0,3}$", re.I)  # series names like SN850X, DC600M, NM1090
@@ -161,6 +169,7 @@ def _drop(tok: str) -> bool:
     t = tok.strip("()[],;:").lower()
     return (
         not t
+        or bool(re.fullmatch(r"\d", t))  # "SATA 3", "Gen 4": never a series name on its own
         or bool(re.search(r"[α-ωά-ώ]", t))
         or t in NOISE
         or bool(SPEC.fullmatch(t))
@@ -184,14 +193,24 @@ def _series(rest: str, vendor: str) -> str:
         while toks and _CANON.get(toks[0].lower()) == vendor:
             toks = toks[1:]
         kept = [t for t in toks if not _drop(t)]
+        kept = [t for i, t in enumerate(kept) if t.lower() not in {x.lower() for x in kept[:i]}]  # "X150 X150"
         named = [t for t in kept if t.lower() not in SOFT]
         if named or kept:
             return " ".join(named or kept)
     parts = [t.strip("()[],;:") for t in re.split(r"[\s,]+", rest) if _is_part_number(t)]
-    return parts[0].upper() if parts else ""
+    if not parts:
+        return ""
+    # "SD250-128GN": the series before the capacity code, when it looks like one.
+    head = parts[0].split("-", 1)[0]
+    return head.upper() if PART_SHAPE.fullmatch(head) else parts[0].upper()
 
 
 def _form_factor(text: str, slug: str, media: str, iface: str | None) -> str | None:
+    if media == "HDD":
+        size = re.search(r"(?<![\d.])(1\.8|2\.5|3\.5)", text) or re.search(r"(?:typou|diskos) ([123]) ([58])\b", slug, re.I)
+        if not size:
+            return '3.5"'
+        return f'{size.group(1)}"' if size.lastindex == 1 else f'{size.group(1)}.{size.group(2)}"'
     if re.search(r"\bU\.[23]\b", text):
         return "U.2"
     # "PCle" (lower-case L) is how Skroutz writes it.
@@ -199,14 +218,14 @@ def _form_factor(text: str, slug: str, media: str, iface: str | None) -> str | N
         return "PCIe card"
     if re.search(r"mSATA", text, re.I):
         return "mSATA"
-    if re.search(r"\bM[.\s]?2\b", text, re.I) or re.search(r"\bM 2\b", slug):
-        length = M2_LENGTH.search(text)
+    length = M2_LENGTH.search(text)
+    if re.search(r"\bM[.\s]?2\b", text, re.I) or re.search(r"\bM 2\b", slug) or (iface == "NVMe" and length):
         return f"M.2 22{length.group(1)}" if length else "M.2 2280"
-    size = re.search(r"(?<![\d.])([23])[.,]5\s*(?:\"|inch|in\b|ίντσ)?(?!\s*(?:GB|Gb|TB|MB|W|mm)|\d)", text)
+    size = re.search(r"(?<![\d.])(1\.8|2\.5|3\.5)\s*(?:\"|inch|in\b|ίντσ)?(?!\s*(?:GB|Gb|TB|MB|W|mm)|\d)", text)
     if not size:
-        size = re.search(r"(?:typou|diskos) ([23]) 5\b", slug, re.I)
+        size = re.search(r"(?:typou|diskos) ([123]) ([58])\b", slug, re.I)
     if size:
-        return f'{size.group(1)}.5"'
+        return f'{size.group(1)}"' if size.lastindex == 1 else f'{size.group(1)}.{size.group(2)}"'
     if media == "HDD":
         return '3.5"'
     if iface == "NVMe":
@@ -216,9 +235,11 @@ def _form_factor(text: str, slug: str, media: str, iface: str | None) -> str | N
     return None
 
 
-def _tier(text: str, vendor: str, media: str) -> str:
+def _tier(text: str, vendor: str, media: str, iface: str | None, form: str | None) -> str:
     if SERVER_NAMES.search(text) or vendor in OEM_SERVER or (vendor == "HP" and HP_SERVER.search(text)):
         return "Server"
+    if iface == "NVMe" and form in ('2.5"', "U.2"):
+        return "Server"  # a 2.5" NVMe drive is a U.2/U.3 data-centre drive
     if NAS_NAMES.search(text) or (media == "HDD" and vendor in {"Hikvision", "Dahua"}):
         return "NAS"
     if SERVER_WORD.search(text):
@@ -232,13 +253,19 @@ def make_listing(
     *, source: str, native_id: str, title: str, url: str, price: float,
     shop_count: int | None, scraped_at: str, specs: str = "",
 ) -> StorageListing | None:
-    title = re.sub(r"\s+", " ", title).strip()
+    # e-shop writes "3,5''": decimal commas (between digits, no space) become points for parsing.
+    title = re.sub(r"(?<=\d),(?=\d)", ".", re.sub(r"\s+", " ", title).strip())
     slug = re.sub(r"[-_/]+", " ", url.rsplit("/", 1)[-1].removesuffix(".html"))
     text = f"{title} {slug}"
     if price <= 0 or EXCLUDE.search(title):
         return None
 
+    # The words themselves first: "Toshiba S300 AI 8TB HDD … 3.5" / M.2" is a hard drive.
     if re.search(r"\bSSHD\b", text, re.I):
+        media = "HDD"
+    elif re.search(r"\bSSD\b", title, re.I):
+        media = "SSD"
+    elif re.search(r"\bHDD\b", title, re.I):
         media = "HDD"
     elif SSD_WORDS.search(title):
         media = "SSD"
@@ -330,7 +357,7 @@ def make_listing(
         pcie=int(gen.group(1)) if gen else None,
         formFactor=form,
         capacity=capacity,
-        tier=_tier(text, vendor, media),
+        tier=_tier(text, vendor, media, iface, form),
         scrapedAt=scraped_at,
         dram=None if not dram else not re.search(r"less|HMB", dram.group(0), re.I),
         readMBs=num(speeds.group(1)) if speeds else None,
