@@ -182,8 +182,8 @@ export const PRIVACY: InfoPageContent = {
         { el: '`theme`: φωτεινό ή σκοτεινό θέμα.', en: '`theme`: light or dark theme.' },
         { el: '`lang`: ελληνικά ή αγγλικά.', en: '`lang`: Greek or English.' },
         {
-          el: '`pcBuild`: τα εξαρτήματα που έχετε διαλέξει στη Συναρμολόγηση PC.',
-          en: '`pcBuild`: the parts you picked in the PC Builder.',
+          el: '`pcBuild`: τα εξαρτήματα που έχετε διαλέξει στη Συναρμολόγηση PC, και η χρήση και ο προϋπολογισμός αν τα ορίσατε. Ο σύνδεσμος κοινοποίησης μιας σύνθεσης περιέχει μόνο αυτά, στο τμήμα μετά το `#`, που ο browser δεν στέλνει στον διακομιστή.',
+          en: "`pcBuild`: the parts you picked in the PC Builder, and the use and budget if you set them. A build's share link holds only these, in the part after the `#`, which browsers don't send to the server.",
         },
       ],
     },

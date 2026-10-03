@@ -115,6 +115,12 @@ class CaseListing:
     rgb: bool
     maxBoard: str | None  # largest motherboard it takes: E-ATX | ATX | Micro ATX | Mini ITX; None if not stated
     scrapedAt: str
+    # Fans in the box: [{pos, size, n}] (a title gives only the count: pos/size None; a maker's page
+    # positions and sizes; [] = the maker says none); hasFans = "comes with fans", count not stated
+    # (BestPrice/Skroutz "Προεγκατεστημένοι Ανεμιστήρες", Corsair's fan series). Product pages and
+    # makers add fanMounts / radiators (scraper/specs.py, scraper/makers).
+    fansIncluded: list | None = None
+    hasFans: bool | None = None
 
     def to_dict(self) -> dict:
         return listing_dict(self)

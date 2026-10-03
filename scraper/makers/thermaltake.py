@@ -20,9 +20,10 @@ from selectolax.parser import HTMLParser
 import specs
 from categories import CATEGORIES
 
-from .common import alnum, fans, fetch, model_key, number, radiators
+from .common import NO_FANS, alnum, fans, fetch, model_key, number, radiators
 
 NAME = "thermaltake"
+VERSION = 2  # 2: a cooling-system field saying "None"/"N/A" is stored as no fans ([])
 BRANDS = {"case": {"Thermaltake"}, "cooler": {"Thermaltake"}, "fan": {"Thermaltake"}}
 SITEMAP = "https://www.thermaltake.com/pub/pub/sitemaps/sitemap.xml"
 PRODUCT = re.compile(r"https://www\.thermaltake\.com/([a-z0-9-]+)\.html$", re.I)
@@ -61,7 +62,12 @@ def _rows(html: str) -> dict[str, str]:
 
 
 def _included(text: str) -> list[dict] | None:
-    """"Right(intake): 120 x 120 x 25 mm ARGB Lite fan (1000rpm, 22.3 dBA) x 3 Rear(exhaust): …"."""
+    """"Right(intake): 120 x 120 x 25 mm ARGB Lite fan (1000rpm, 22.3 dBA) x 3 Rear(exhaust): …";
+    [] when the page says none, None when it doesn't say."""
+    if not text.strip():
+        return None
+    if NO_FANS.match(text):
+        return []
     out = []
     for part in re.split(r"(?=\b(?:Front|Rear|Top|Right|Left|Side|Bottom)\b\s*(?:\([^)]*\))?\s*:)", text, flags=re.I):
         size = re.search(r"(\d{2,3})\s*x\s*\1\s*x\s*\d+\s*mm", part)

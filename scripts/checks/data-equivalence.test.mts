@@ -122,7 +122,7 @@ const spec = (slot: string, m: { cheapest: Record<string, unknown> } & Record<st
       slot === 'gpu' && [B.gpuLength(m), B.gpuPsu(m.cheapest), m.cheapest.vram],
       slot === 'case' && [
         B.caseBoard(m), B.caseBoardStated(m), B.caseGpuMax(m), B.caseCoolerMax(m), B.caseFanSlots(m), B.caseRadiators(m),
-        B.caseFanMounts(m), B.caseFansIncluded(m), B.caseRadiatorSizes(m),
+        B.caseFanMounts(m), B.caseFansIncluded(m), B.caseRadiatorSizes(m), m.listings.some((l: any) => l.hasFans),
       ],
       slot === 'cooler' && [B.coolerSockets(m), B.coolerHeight(m), m.cheapest.type, m.cheapest.radiator],
       slot === 'ram' && [m.cheapest.type, m.cheapest.modules, m.cheapest.formFactor, m.cheapest.cas, m.cheapest.brand],

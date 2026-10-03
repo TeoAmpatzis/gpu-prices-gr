@@ -84,6 +84,19 @@ def included_fans(text: str) -> list[dict] | None:
     return [f for f in found if f["size"] in FAN_SIZES] or None
 
 
+# A maker saying the case comes without fans ("None", "N/A", "No fans included", "-").
+NO_FANS = re.compile(r"^\s*(?:none|n\s*/\s*a|no(?:\s+fans?(?:\s+included)?)?|not\s+included|without\s+fans?|[-–—]|0)\s*\.?\s*$", re.I)
+
+
+def included(text: str | None) -> list[dict] | None:
+    """Fans in the box from a maker's field: [] when the maker says none, None when it doesn't say."""
+    if not text or not text.strip():
+        return None
+    if NO_FANS.match(text):
+        return []
+    return included_fans(text)
+
+
 def radiators(text: str) -> list[dict] | None:
     """Radiator sizes per position: [{pos, sizes}]. "Supports up to 360mm" also takes the smaller
     radiators of the same fan width (240, 120)."""

@@ -26,9 +26,10 @@ from selectolax.parser import HTMLParser
 import normalize_case
 import specs
 
-from .common import alnum, fans, fetch, included_fans, mm, number, radiators
+from .common import alnum, fans, fetch, included, mm, number, radiators
 
 NAME = "lianli"
+VERSION = 2  # 2: an included-fans field saying "None"/"N/A" is stored as no fans ([])
 BRANDS = {"case": {"Lian Li", "Lancool"}, "cooler": {"Lian Li"}, "fan": {"Lian Li"}}
 SITEMAP = "https://lian-li.com/product-sitemap.xml"
 PRODUCT = re.compile(r"https://lian-li\.com/product/([a-z0-9-]+)/?$", re.I)
@@ -126,7 +127,7 @@ def parse(url: str, html: str) -> list[dict]:
                 "gpuMaxMm": mm(gpu),
                 "coolerMaxMm": mm(_cell_with(rows, ("CPU",), ("HEIGHT", "CLEARANCE"))),
                 "fanMounts": fans(_cell(rows, 0, *FAN_ROWS) or ""),
-                "fansIncluded": included_fans(_cell(rows, 0, *INCLUDED_ROWS) or ""),
+                "fansIncluded": included(_cell(rows, 0, *INCLUDED_ROWS)),
                 "radiators": radiators(_cell(rows, 0, *RADIATOR_ROWS) or ""),
                 **({"maxBoard": normalize_case.max_board(boards)} if boards and normalize_case.max_board(boards) else {}),
             })

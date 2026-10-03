@@ -184,6 +184,7 @@ function builderRow<S extends Slot>(slot: S, m: Model<SlotListing[S]>): Record<s
         radiatorMounts: caseRadiators(any),
         fanMounts: caseFanMounts(any),
         fansIncluded: caseFansIncluded(any),
+        hasFans: (any as Model<CaseListing>).listings.some((l) => l.hasFans) || null,
         radiators: caseRadiatorSizes(any),
       });
       break;

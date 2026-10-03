@@ -22,9 +22,10 @@ from selectolax.parser import HTMLParser
 import normalize_case
 from categories import CATEGORIES
 
-from .common import alnum, fans, fetch, model_key, radiators
+from .common import NO_FANS, alnum, fans, fetch, included_fans, model_key, radiators
 
 NAME = "corsair"
+VERSION = 2  # 2: "Included Fans" read ("None" = no fans, a count, or a series name = fans, count not stated)
 BRANDS = {"case": {"Corsair"}, "fan": {"Corsair"}}
 SITEMAP = "https://www.corsair.com/us-sitemap-products-1.xml"
 PRODUCT = re.compile(r"https://www\.corsair\.com/us/en/p/(pc-cases|case-fans)/([a-z0-9-]+)/([a-z0-9-]+)$", re.I)
@@ -62,6 +63,17 @@ def _max(text: str | None, unit: str) -> float | None:
     return max(nums) if nums else None
 
 
+def _included(value: str | None) -> dict:
+    """"Included Fans": "None" -> no fans; "3x 120mm …" -> the fans; a series name ("RS Series") ->
+    fans, count not stated."""
+    if not value:
+        return {}
+    if NO_FANS.match(value):
+        return {"fansIncluded": []}
+    found = included_fans(value)
+    return {"fansIncluded": found} if found else {"hasFans": True}
+
+
 def parse(url: str, html: str) -> list[dict]:
     m = PRODUCT.match(url)
     cat = CATS[m.group(1).lower()]
@@ -86,6 +98,7 @@ def parse(url: str, html: str) -> list[dict]:
             "gpuMaxMm": _max(gpu, "mm") if gpu and gpu != "N/A" else None,
             "coolerMaxMm": _max(cooler, "mm") if cooler and cooler != "N/A" else None,
             "fanMounts": fans(fan_text),
+            **_included(codes.get("Included Fans")),
             "radiators": radiators(rad_text),
             **({"maxBoard": board} if board else {}),
         }]
