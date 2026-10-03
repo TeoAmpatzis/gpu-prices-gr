@@ -297,7 +297,7 @@ export const MIN_MODELS: Record<Category, number> = {
   case: 1365, // of 2730
   fan: 1003, // of 2006
   cooler: 1059, // of 2118
-  storage: 1172, // of 2344 (first storage scrape 2026-10-03, re-normalized)
+  storage: 1115, // of 2231 (first storage scrape 2026-10-03, re-normalized without OEM laptop M.2 drives)
 };
 
 /** Every problem found; an empty list means the data can be published. */
