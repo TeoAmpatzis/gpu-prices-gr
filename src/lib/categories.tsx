@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Box, CircuitBoard, Cpu, Fan, MemoryStick, Microchip, Plug, Snowflake, type LucideIcon } from 'lucide-react';
+import { Box, CircuitBoard, Cpu, Fan, HardDrive, MemoryStick, Microchip, Plug, Snowflake, type LucideIcon } from 'lucide-react';
 import type {
   BaseListing,
   BoardSize,
@@ -12,11 +12,12 @@ import type {
   MoboListing,
   PsuListing,
   RamListing,
+  StorageListing,
 } from '../types';
 import { formatPrice, mostCommon, type Model } from './data';
 import { slug } from './slug';
 import { T, tr, type Lang, type Text } from './i18n';
-import { fanValue, gpuValue, psuValue, ramValue } from './value';
+import { fanValue, gpuValue, psuValue, ramValue, storageValue } from './value';
 
 export interface Column<L extends BaseListing> {
   header: Text;
@@ -57,11 +58,18 @@ export interface CategoryConfig<L extends BaseListing> {
   groupDot: Record<string, string>; // Tailwind bg class per group
   /** Default true: the "Recommended" sort goes group by group before `tierScore`. */
   sortByGroup?: boolean;
-  /** Two-way split shown as a segmented control; omitted when a category has none (cases). */
-  segments?: { main: Text; pro: Text };
+  /**
+   * Split shown as a segmented control (main is the default view, then "All"); omitted when a
+   * category has none (cases). `middle`: options between main and pro (storage: NAS), with
+   * `segmentOf` saying which one a listing belongs to.
+   */
+  segments?: { main: Text; pro: Text; middle?: { value: string; label: Text }[] };
+  segmentOf?: (l: L) => string;
   /** Same key as `model_key` in scraper/categories.py. */
   modelKey: (l: L) => string;
   isPro: (l: L) => boolean;
+  /** Capacity in TB (storage): adds the "€/TB" sort. */
+  capacityTb?: (l: L) => number | null;
   /** Higher = listed first when sorting by model (categories without a `value` score). */
   tierScore: (m: Model<L>) => number;
   /** Value for money (higher = more for the money); drives the "Recommended" sort when set. */
@@ -84,6 +92,17 @@ const GROUP_NAMES: Record<string, Text> = {
 };
 /** Display name of a group key (pill, dot tooltip, table cell). */
 export const groupName = (g: string, lang: Lang) => tr(lang, GROUP_NAMES[g] ?? g);
+
+/** The segmented control's options in display order: main, the middle ones, pro, All. */
+export function segmentOptions<L extends BaseListing>(cfg: CategoryConfig<L>): { value: string; label: Text }[] {
+  if (!cfg.segments) return [];
+  return [
+    { value: 'main', label: cfg.segments.main },
+    ...(cfg.segments.middle ?? []),
+    { value: 'pro', label: cfg.segments.pro },
+    { value: 'all', label: T.all },
+  ];
+}
 
 const VENDOR: Text = { el: 'Κατασκευαστής', en: 'Manufacturer' };
 const TYPE: Text = { el: 'Τύπος', en: 'Type' };
@@ -634,7 +653,143 @@ export const COOLER: CategoryConfig<CoolerListing> = {
   after: [],
 };
 
+// ---------- Storage ----------
+// A model is one drive at one capacity ("Samsung 990 Pro 1TB"), like cases; the tier (consumer /
+// NAS / server) comes from the scraper (scraper/normalize_storage.py, owner's rules).
+
+/** "500GB", "1TB", "1.92TB". */
+export const capacityLabel = (gb: number) => (gb < 1000 ? `${gb}GB` : `${+(gb / 1000).toFixed(2)}TB`);
+
+/** Type pill: NVMe, SATA SSD, SAS SSD or HDD (an M.2 drive whose interface isn't stated counts as NVMe). */
+export function storageType(l: StorageListing): string {
+  if (l.media === 'HDD') return 'HDD';
+  if (l.iface === 'SAS') return 'SAS SSD';
+  if (l.iface === 'NVMe' || (l.iface == null && /^M\.2/.test(l.formFactor ?? ''))) return 'NVMe';
+  return 'SATA SSD';
+}
+
+/** "NVMe Gen4 · M.2 2280", "SATA · 2.5″", "HDD · 3.5″ · 7200 rpm". */
+export function storageTypeLine(l: StorageListing): string {
+  const kind = storageType(l);
+  const head = kind === 'NVMe' ? `NVMe${l.pcie ? ` Gen${l.pcie}` : ''}` : kind === 'SATA SSD' ? 'SATA' : kind === 'SAS SSD' ? 'SAS' : 'HDD';
+  return [head, l.formFactor, l.media === 'HDD' && l.rpm ? `${l.rpm} rpm` : null].filter(Boolean).join(' · ');
+}
+
+const STORAGE_TIER_SEGMENT: Record<StorageListing['tier'], string> = { Consumer: 'main', NAS: 'nas', Server: 'pro' };
+
+// Capacity choices (owner, 2026-10-03): sizes in between share a range ("2–3TB").
+const CAPACITY_BUCKETS: { value: string; label: string; min: number; max: number }[] = [
+  { value: '120gb', label: '120GB', min: 0, max: 200 },
+  { value: '250gb', label: '250GB', min: 200, max: 400 },
+  { value: '500gb', label: '500GB', min: 400, max: 800 },
+  { value: '1tb', label: '1TB', min: 800, max: 1500 },
+  { value: '2-3tb', label: '2–3TB', min: 1500, max: 3500 },
+  { value: '4-6tb', label: '4–6TB', min: 3500, max: 7000 },
+  { value: '8-14tb', label: '8–14TB', min: 7000, max: 15000 },
+  { value: '16tb', label: '16TB+', min: 15000, max: Infinity },
+];
+
+const CAPACITY: Text = { el: 'Χωρητικότητα', en: 'Capacity' };
+
+/** "7.450 MB/s · DRAM · 600 TBW" (SSD) / "256MB cache" (HDD); '' when nothing is stated. */
+function storageSpecs(m: Model<StorageListing>, lang: Lang): string {
+  const l = m.cheapest;
+  const parts =
+    l.media === 'HDD'
+      ? [l.cacheMB ? `${l.cacheMB}MB cache` : null]
+      : [
+          l.readMBs ? `${l.readMBs.toLocaleString(lang === 'el' ? 'el-GR' : 'en-US')} MB/s` : null,
+          l.dram === true ? 'DRAM' : l.dram === false ? tr(lang, { el: 'χωρίς DRAM', en: 'DRAM-less' }) : null,
+          l.tbw ? `${l.tbw} TBW` : null,
+        ];
+  return parts.filter(Boolean).join(' · ');
+}
+
+export const STORAGE: CategoryConfig<StorageListing> = {
+  id: 'storage',
+  // "Δίσκοι" (not "Αποθήκευση"): with nine tabs + the builder, the Greek tab bar must fit 1248px.
+  tab: { el: 'Δίσκοι', en: 'Storage' },
+  title: { el: 'Τιμές SSD & Σκληρών Δίσκων', en: 'SSD & Hard Drive Prices' },
+  subtitle: {
+    el: 'Οι χαμηλότερες τιμές για κάθε SSD και σκληρό δίσκο στην Ελλάδα, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
+    en: 'The lowest price for every SSD and hard drive in Greece, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
+  },
+  icon: HardDrive,
+  empty: noResults('δίσκοι', 'drives'),
+  searchPlaceholder: search('990 Pro, IronWolf'),
+  groups: ['NVMe', 'SATA SSD', 'SAS SSD', 'HDD'],
+  groupLabel: TYPE,
+  groupParam: 'type',
+  group: storageType,
+  groupDot: { NVMe: 'bg-violet-500', 'SATA SSD': 'bg-sky-500', 'SAS SSD': 'bg-amber-500', HDD: 'bg-zinc-400' },
+  // Most-offered drives first rather than type by type.
+  sortByGroup: false,
+  segments: { main: { el: 'Οικιακοί', en: 'Consumer' }, middle: [{ value: 'nas', label: 'NAS' }], pro: 'Server' },
+  segmentOf: (l) => STORAGE_TIER_SEGMENT[l.tier] ?? 'main',
+  // Same as model_key in scraper/categories.py: the type is in the key (WD Blue is an SSD and an HDD).
+  modelKey: (l) => productKey(`${l.chip} ${l.media}`),
+  isPro: (l) => l.tier === 'Server',
+  capacityTb: (l) => (l.capacity ? l.capacity / 1000 : null),
+  tierScore: (m) => m.listings.length,
+  value: storageValue,
+  searchText: (l) => `${l.chip} ${l.title} ${l.formFactor ?? ''} ${l.iface ?? ''}`,
+  extraFilters: [
+    {
+      key: 'capacity',
+      label: CAPACITY,
+      options: () => CAPACITY_BUCKETS.map((b) => ({ value: b.value, label: b.label })),
+      test: (l, v) => {
+        const b = CAPACITY_BUCKETS.find((x) => x.value === v);
+        return !!b && l.capacity >= b.min && l.capacity < b.max;
+      },
+    },
+    oneOf('pcie', { el: 'Γενιά PCIe (NVMe)', en: 'PCIe generation (NVMe)' }, (l) => l.pcie, {
+      fixed: [5, 4, 3],
+      fmt: (v) => `PCIe ${v}.0`,
+    }),
+    oneOf('formFactor', { el: 'Μορφή', en: 'Form factor' }, (l) => l.formFactor, { minCount: 3 }),
+    {
+      key: 'dram',
+      label: { el: 'Cache DRAM (SSD)', en: 'DRAM cache (SSD)' },
+      options: () => [
+        { value: 'yes', label: T.yes },
+        { value: 'no', label: T.no },
+      ],
+      // Only what is stated: an SSD whose DRAM isn't known matches neither.
+      test: (l, v) => (v === 'yes' ? l.dram === true : l.dram === false),
+    },
+    vendorFilter(),
+  ],
+  // The capacity is in every name ("… 2TB"), so it has no column. The table (from 1024px) shows the
+  // specs under the type; cards (below 1024px) list the columns in one line, specs included.
+  before: [
+    {
+      header: TYPE,
+      className: 'hidden sm:table-cell',
+      cell: (m, lang) => {
+        const specs = storageSpecs(m, lang);
+        return (
+          <>
+            <span>{storageTypeLine({ ...m.cheapest, rpm: m.cheapest.rpm ?? mostCommon(m.listings.map((l) => l.rpm)) })}</span>
+            {specs && <span className="hidden text-xs text-faint lg:block">{specs}</span>}
+          </>
+        );
+      },
+    },
+  ],
+  after: [
+    {
+      header: '€/TB',
+      className: 'hidden sm:table-cell',
+      numeric: true,
+      cell: (m, lang) => (m.cheapest.capacity ? `${formatPrice(m.cheapest.price / (m.cheapest.capacity / 1000), lang)}/TB` : '—'),
+    },
+    // Cards only (the table shows these under the type).
+    { header: { el: 'Χαρακτηριστικά', en: 'Specs' }, className: 'hidden', cell: (m, lang) => storageSpecs(m, lang) || '—' },
+  ],
+};
+
 export const CATEGORIES = {
-  gpu: GPU, cpu: CPU, mobo: MOBO, ram: RAM, psu: PSU, case: CASE, fan: FAN, cooler: COOLER,
+  gpu: GPU, cpu: CPU, mobo: MOBO, ram: RAM, storage: STORAGE, psu: PSU, case: CASE, fan: FAN, cooler: COOLER,
 } as const;
 export const CATEGORY_IDS = Object.keys(CATEGORIES) as Category[];

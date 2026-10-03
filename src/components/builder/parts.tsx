@@ -1,7 +1,7 @@
 // Small pieces shared by the builder's Guided and Quick list modes.
 
-import type { Model } from '../../lib/data';
-import { groupName } from '../../lib/categories';
+import { formatPrice, type Model } from '../../lib/data';
+import { groupName, storageTypeLine } from '../../lib/categories';
 import {
   FIT_LABEL,
   caseBoard,
@@ -41,6 +41,7 @@ export const S = {
   airflow: { el: 'για ροή αέρα', en: 'airflow type' },
   pressure: { el: 'για στατική πίεση', en: 'static pressure type' },
   incompatible: { el: 'Ασύμβατο', en: 'Incompatible' },
+  dramLess: { el: 'χωρίς DRAM', en: 'DRAM-less' },
 } satisfies Record<string, Text>;
 
 // Written out in full so Tailwind keeps the classes (index.css).
@@ -106,6 +107,18 @@ export function specLine(slot: Slot, m: AnyModel, lang: Lang): string {
         coolerSockets(c)
           .filter((x) => /^(AM[45]|LGA1[78]\d\d)$/.test(x))
           .join('/'),
+      ]
+        .filter(Boolean)
+        .join(' · ');
+    }
+    case 'storage': {
+      const d = (m as Model<SlotListing['storage']>).cheapest;
+      return [
+        storageTypeLine(d),
+        d.media === 'SSD' && d.readMBs != null && `${d.readMBs} MB/s`,
+        d.dram === true ? 'DRAM' : d.dram === false && t(S.dramLess),
+        d.tbw != null && `${d.tbw} TBW`,
+        d.capacity && `${formatPrice(d.price / (d.capacity / 1000), lang)}/TB`,
       ]
         .filter(Boolean)
         .join(' · ');

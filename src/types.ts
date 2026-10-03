@@ -1,6 +1,6 @@
 // Mirror of the JSON written by scraper/main.py (see scraper/models.py).
 
-export type Category = 'gpu' | 'cpu' | 'mobo' | 'ram' | 'psu' | 'case' | 'fan' | 'cooler';
+export type Category = 'gpu' | 'cpu' | 'mobo' | 'ram' | 'storage' | 'psu' | 'case' | 'fan' | 'cooler';
 export type Brand = 'NVIDIA' | 'AMD' | 'Intel';
 export type BoardSize = 'E-ATX' | 'ATX' | 'Micro ATX' | 'Mini ITX';
 export type SourceName = 'skroutz' | 'bestprice' | 'eshop' | 'shopflix' | 'snif';
@@ -129,6 +129,27 @@ export interface CoolerListing extends BaseListing {
   heightMm?: number | null; // air coolers
 }
 
+export type StorageTier = 'Consumer' | 'NAS' | 'Server';
+
+export interface StorageListing extends BaseListing {
+  brand: string; // vendor, e.g. "Samsung"
+  chip: string; // vendor + series + capacity (+ shape when not the usual one), e.g. "Samsung 990 Pro 1TB"
+  media: 'SSD' | 'HDD';
+  iface: 'NVMe' | 'SATA' | 'SAS' | null;
+  pcie: 3 | 4 | 5 | null; // NVMe PCIe generation
+  formFactor: string | null; // "M.2 2280", "M.2 2230", '2.5"', '3.5"', "mSATA", "U.2", "PCIe card"
+  capacity: number; // GB (1TB = 1000)
+  tier: StorageTier; // scraper/normalize_storage.py: NAS/surveillance and server/data-centre series
+  // Stated in a title or on a product page (scraper/specs.py); null = not stated.
+  dram?: boolean | null; // SSD DRAM cache
+  readMBs?: number | null; // sequential read, MB/s
+  writeMBs?: number | null;
+  tbw?: number | null; // endurance, TB written
+  heatsink?: boolean | null;
+  rpm?: number | null; // HDD
+  cacheMB?: number | null; // HDD
+}
+
 export interface SourceMeta {
   count: number;
   ok: boolean;
@@ -189,6 +210,13 @@ export interface BuilderFile {
   slots: Record<string, Columns>;
   /** % of graphics cards / cases / coolers whose measurements are known (all models, not just offered). */
   coverage: { gpu: number; case: number; cooler: number };
+}
+
+/** /data/builder-<slot>.json — a slot kept out of builder.json (builder.LAZY_SLOTS: storage), loaded
+ * when its step opens; its rows keep their URL and shop titles. */
+export interface BuilderSlotFile extends Columns {
+  v: 1;
+  builtAt: string;
 }
 
 /** /data/builder-extra.json — by builder row id: shop URL, and the model's shop titles (picker search). */

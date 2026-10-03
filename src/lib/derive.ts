@@ -14,6 +14,7 @@ import type {
   BaseListing,
   BuilderExtra,
   BuilderFile,
+  BuilderSlotFile,
   CaseListing,
   Category,
   Columns,
@@ -33,6 +34,7 @@ import { fromColumns } from './columns';
 import { groupModels, mostCommon, saleOf, type Model } from './data';
 import { POP_SCALE, popularityRaw } from './ranking';
 import {
+  LAZY_SLOTS,
   SLOTS,
   candidates,
   caseBoardStated,
@@ -207,19 +209,25 @@ export function builderFile(
   all: Partial<Record<Category, Latest>>,
   builtAt: string,
   image?: ImageLookup,
-): { file: BuilderFile; extra: BuilderExtra } {
+): { file: BuilderFile; extra: BuilderExtra; lazy: Record<string, BuilderSlotFile> } {
   const slots: BuilderFile['slots'] = {};
   const extra: BuilderExtra = { urls: {}, titles: {} };
+  const lazy: Record<string, BuilderSlotFile> = {};
   const models: Partial<Record<Slot, Model<BaseListing>[]>> = {};
   for (const slot of SLOTS) {
     const listings = (all[slot as Category]?.listings ?? []) as SlotListing[typeof slot][];
     const grouped = slotModels(slot, listings);
     models[slot] = grouped as Model<BaseListing>[];
     const rows = candidates(slot, grouped, {}).map((m) => builderRow(slot, m));
+    for (const r of rows) r.img = image?.(slot as Category, cfgOf(slot as Category).modelKey(r as unknown as BaseListing)) ?? null;
+    // A slot in its own file (/data/builder-<slot>.json, loaded when needed) keeps its links and titles.
+    if (LAZY_SLOTS.includes(slot)) {
+      lazy[slot] = { v: 1, builtAt, ...toColumns(rows, BUILDER_SKIP) };
+      continue;
+    }
     // Links and search titles are only needed after the builder has appeared: builder-extra.json.
     for (const r of rows) {
       const id = r.id as string;
-      r.img = image?.(slot as Category, cfgOf(slot as Category).modelKey(r as unknown as BaseListing)) ?? null;
       extra.urls[id] = r.url as string;
       r.url = null;
       if (slot !== 'gpu') {
@@ -234,7 +242,7 @@ export function builderFile(
     case: share((models.case ?? []) as Model<CaseListing>[], (m) => caseGpuMax(m) != null),
     cooler: share((models.cooler ?? []) as Model<CoolerListing>[], (m) => coolerSockets(m).length > 0),
   };
-  return { file: { v: 1, builtAt, slots, coverage }, extra };
+  return { file: { v: 1, builtAt, slots, coverage }, extra, lazy };
 }
 
 export function manifest(
@@ -242,6 +250,7 @@ export function manifest(
   builder: BuilderFile,
   builtAt: string,
   history: Partial<Record<Category, History>> = {},
+  lazy: Record<string, Columns> = {},
 ): Manifest {
   const cats: Manifest['cats'] = {};
   for (const cat of CATEGORY_IDS) {
@@ -255,7 +264,7 @@ export function manifest(
     };
   }
   const offered = Object.fromEntries(
-    Object.entries(builder.slots).map(([slot, c]) => [
+    Object.entries({ ...builder.slots, ...lazy }).map(([slot, c]) => [
       slot,
       slotModels(slot as (typeof SLOTS)[number], fromColumns(c)).length,
     ]),
@@ -288,6 +297,7 @@ export const MIN_MODELS: Record<Category, number> = {
   case: 1365, // of 2730
   fan: 1003, // of 2006
   cooler: 1059, // of 2118
+  storage: 1172, // of 2344 (first storage scrape 2026-10-03, re-normalized)
 };
 
 /** Every problem found; an empty list means the data can be published. */

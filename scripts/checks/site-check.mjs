@@ -9,7 +9,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const BASE = (process.argv[2] || 'https://gpu-prices-gr.vercel.app').replace(/\/$/, '');
-const CATS = ['gpu', 'cpu', 'mobo', 'ram', 'psu', 'case', 'fan', 'cooler'];
+const CATS = ['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler'];
 const chromePath = ['C:/Program Files/Google/Chrome/Application/chrome.exe', `${process.env.LOCALAPPDATA}/Google/Chrome/Application/chrome.exe`, '/usr/bin/google-chrome'].find((p) => p && existsSync(p));
 const chrome = spawn(chromePath, ['--headless=new', '--disable-gpu', '--remote-debugging-port=9345', `--user-data-dir=${mkdtempSync(join(tmpdir(), 'site-check-'))}`, 'about:blank'], { stdio: 'ignore' });
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -83,6 +83,13 @@ await open('builder?step=cpu');
 const guided = await waitFor(`document.querySelectorAll('main li.card').length > 0`);
 const cards = await evaluate(`document.querySelectorAll('main li.card').length`);
 check(guided && cards > 0, 'PC builder (Guided) shows part cards', `${cards} cards on the processor step`);
+// Storage rows live in their own file (builder.LAZY_SLOTS), fetched only when the step opens.
+const lazyEarly = await evaluate(`performance.getEntriesByType('resource').some(e => /builder-storage\\.json/.test(e.name))`);
+check(!lazyEarly, 'builder-storage.json not loaded with the builder', lazyEarly ? 'requested on a step without storage' : '');
+await open('builder?step=storage');
+const storage = await waitFor(`document.querySelectorAll('main li.card').length > 0`);
+const storageCards = await evaluate(`document.querySelectorAll('main li.card').length`);
+check(storage && storageCards > 0, 'PC builder (Guided) storage step shows drives', `${storageCards} cards`);
 
 // ---- text pages
 for (const page of ['about', 'contact', 'privacy']) {

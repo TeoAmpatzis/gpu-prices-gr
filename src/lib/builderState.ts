@@ -4,8 +4,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { BaseListing, BuilderFile } from '../types';
 import { fromColumns } from './columns';
-import { loadBuilder, loadBuilderExtra, type Model } from './data';
-import { SLOTS, fitContext, slotModels, type Build, type Slot, type SlotListing } from './builder';
+import { loadBuilder, loadBuilderExtra, loadBuilderSlot, type Model } from './data';
+import { LAZY_SLOTS, SLOTS, fitContext, slotModels, type Build, type Slot, type SlotListing } from './builder';
 import { parseHash } from './filterUrl';
 
 export type Models = { [S in Slot]: Model<SlotListing[S]>[] };
@@ -43,9 +43,15 @@ function readSaved(): Saved {
   }
 }
 
+/** Saved parts of lazy slots whose file hasn't arrived yet: kept when the build is saved meanwhile. */
+const pendingLazy: Partial<Record<Slot, string>> = {};
+
 function writeSaved(b: Build, p: Prefs) {
   try {
-    const parts = Object.fromEntries(SLOTS.filter((s) => b[s]).map((s) => [s, b[s]!.key]));
+    const parts = {
+      ...pendingLazy,
+      ...Object.fromEntries(SLOTS.filter((s) => b[s]).map((s) => [s, b[s]!.key])),
+    };
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...parts, ...(p.use && { use: p.use }), ...(p.budget && { budget: p.budget }) }));
   } catch {
     /* storage unavailable (private mode): the build just isn't remembered */
@@ -104,6 +110,9 @@ export function useBuilderState() {
   const [builtAt, setBuiltAt] = useState<string | null>(null);
   const extraRef = useRef<(() => void) | null>(null);
   const extraTimer = useRef<number | undefined>(undefined);
+  // Slots kept out of builder.json (LAZY_SLOTS): loaded on demand, then restored into the build.
+  const [lazyReady, setLazyReady] = useState<Partial<Record<Slot, boolean>>>({});
+  const slotRef = useRef<((slot: Slot) => void) | null>(null);
 
   useEffect(() => {
     // builder.json: one row per model the builder can offer, in Recommended order (src/lib/derive.ts).
@@ -123,6 +132,32 @@ export function useBuilderState() {
           if (found) (restored as Record<Slot, AnyModel>)[s] = found;
         }
         setBuild(restored);
+        // A lazy slot's own file: when its step or picker opens, or at once when the saved/shared
+        // build has a part there (no request otherwise, so the first load stays as it was).
+        const requestedSlots = new Set<Slot>();
+        slotRef.current = (slot) => {
+          if (!LAZY_SLOTS.includes(slot) || requestedSlots.has(slot)) return;
+          requestedSlots.add(slot);
+          loadBuilderSlot(`${slot}.json?v=${file.builtAt}`)
+            .then((f) => {
+              delete pendingLazy[slot];
+              const ms = slotModels(slot, fromColumns<SlotListing[typeof slot]>(f));
+              setModels((prev) => (prev ? ({ ...prev, [slot]: ms } as Models) : prev));
+              const found = (ms as AnyModel[]).find((x) => x.key === parts[slot]);
+              // Restored only if the user hasn't picked one meanwhile.
+              if (found) setBuild((b) => (b[slot] ? b : { ...b, [slot]: found }));
+              setLazyReady((r) => ({ ...r, [slot]: true }));
+            })
+            .catch(() => {
+              requestedSlots.delete(slot); // the next request retries
+              setLazyReady((r) => ({ ...r, [slot]: false }));
+            });
+        };
+        for (const s of LAZY_SLOTS) {
+          // Only the saved build is protected; a shared one isn't saved until changed (then it's the user's).
+          if (parts[s] && !sharedAtStart) pendingLazy[s] = parts[s];
+          if (parts[s]) slotRef.current(s);
+        }
         // Then the shop links and the search titles (builder-extra.json, ~430 KB gzipped), written
         // onto each model's one row; `extraVersion` makes searches and links pick them up. Only when
         // needed: at once for a restored build (its parts need their links), else on the first
@@ -146,7 +181,7 @@ export function useBuilderState() {
             })
             .catch(() => {}); // the builder still works; links and title search just stay missing
         };
-        if (Object.keys(restored).length) extraRef.current();
+        if (Object.keys(restored).length || LAZY_SLOTS.some((s) => parts[s])) extraRef.current();
         else extraTimer.current = window.setTimeout(() => extraRef.current?.(), EXTRA_DELAY);
       })
       .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)));
@@ -160,6 +195,8 @@ export function useBuilderState() {
     writeBuilderParams((p) => SHARE_KEYS.forEach((k) => p.delete(k)));
   };
   const update = (b: Build) => {
+    // A lazy slot the user empties or fills themselves is no longer pending.
+    for (const s of LAZY_SLOTS) if (s in b) delete pendingLazy[s];
     setBuild(b);
     writeSaved(b, prefs);
     own();
@@ -189,6 +226,10 @@ export function useBuilderState() {
     builtAt,
     /** Load builder-extra.json now (first interaction); a no-op before builder.json has arrived. */
     wantExtra: () => extraRef.current?.(),
+    /** Load a lazy slot's file (storage) now; a no-op for the others and once requested. */
+    wantSlot: (slot: Slot) => slotRef.current?.(slot),
+    /** False while a lazy slot's parts haven't arrived (or failed: undefined → still loading). */
+    slotReady: (slot: Slot) => !LAZY_SLOTS.includes(slot) || lazyReady[slot] === true,
   };
 }
 
