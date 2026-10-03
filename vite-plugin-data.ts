@@ -1,8 +1,8 @@
 // Build step: derives the site's small data files from the scraper's JSON in public/data
 // (src/lib/derive.ts) and refuses to publish data that looks broken.
 //
-// - `vite build`: writes data/<cat>/list.json, data/<cat>/detail.json, data/builder(-extra).json and
-//   data/manifest.json into dist after comparing the counts with the live site's manifest. If a
+// - `vite build`: writes data/<cat>/list.json, data/<cat>/detail.json, data/builder(-extra).json,
+//   data/builder-<slot>.json (builder.LAZY_SLOTS: storage) and data/manifest.json into dist after comparing the counts with the live site's manifest. If a
 //   category is empty or lost more than derive.MAX_DROP of its models/listings, the build fails and
 //   Vercel keeps serving the previous deployment. For a planned drop, tag the commit message with
 //   [allow-data-drop] (scrape.yml input allow_data_drop does it) or set DATA_CHECK=off: the problems
@@ -76,10 +76,11 @@ function derive(builtAt: string, image?: ImageLookup): { files: Record<string, s
     files[`data/${cat}/list.json`] = JSON.stringify(listFile(cat, input, builtAt, image));
     files[`data/${cat}/detail.json`] = JSON.stringify(detailFile(input.latest));
   }
-  const { file: builder, extra } = builderFile(latest, builtAt, image);
+  const { file: builder, extra, lazy } = builderFile(latest, builtAt, image);
   files['data/builder.json'] = JSON.stringify(builder);
   files['data/builder-extra.json'] = JSON.stringify(extra);
-  const m = manifest(latest, builder, builtAt, history);
+  for (const [slot, file] of Object.entries(lazy)) files[`data/builder-${slot}.json`] = JSON.stringify(file);
+  const m = manifest(latest, builder, builtAt, history, lazy);
   files['data/manifest.json'] = JSON.stringify(m);
   return { files, manifest: m };
 }

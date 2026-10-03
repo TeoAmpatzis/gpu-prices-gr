@@ -1,7 +1,7 @@
 // Value-for-money scores used by the "Recommended" sort (higher = more for the money).
 // Only categories with a meaningful "how much you get" measure have one.
 
-import type { FanListing, GpuListing, PsuListing, RamListing } from '../types';
+import type { FanListing, GpuListing, PsuListing, RamListing, StorageListing } from '../types';
 import type { Model } from './data';
 
 /**
@@ -43,3 +43,10 @@ export const psuValue = (m: Model<PsuListing>): number =>
 
 /** Fans per euro. */
 export const fanValue = (m: Model<FanListing>): number => m.cheapest.pack / m.cheapest.price;
+
+/**
+ * GB per euro, with hard drives scaled to SSD level (a TB of HDD costs about 2.5× less), so the
+ * "Recommended" order under "All" doesn't put every HDD ahead of every SSD.
+ */
+export const storageValue = (m: Model<StorageListing>): number =>
+  ((m.cheapest.media === 'HDD' ? 0.4 : 1) * m.cheapest.capacity) / m.cheapest.price;

@@ -43,8 +43,9 @@ export function facetCounts<L extends BaseListing>(
   ) as Record<SourceName, number>;
 
   const segmentModels = run({ segment: 'all' });
-  const pro = segmentModels.filter((m) => m.pro).length;
-  const segment = { main: segmentModels.length - pro, pro, all: segmentModels.length };
+  const segment: Record<Segment, number> = { main: 0, pro: 0, all: segmentModels.length };
+  for (const s of cfg.segments?.middle ?? []) segment[s.value] = 0;
+  for (const m of segmentModels) segment[m.segment] = (segment[m.segment] ?? 0) + 1;
 
   const sale = run({ saleOnly: false }).filter((m) => m.sale).length;
   const low = run({ lowOnly: false }).filter((m) => m.low).length;

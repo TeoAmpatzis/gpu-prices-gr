@@ -102,6 +102,7 @@ export const T = {
   sortPriceDesc: { el: 'Τιμή: υψηλή → χαμηλή', en: 'Price: high → low' },
   sortOffers: { el: 'Περισσότερα προϊόντα', en: 'Most listings' },
   sortDiscount: { el: 'Μεγαλύτερη έκπτωση', en: 'Biggest discount' },
+  sortPerTb: { el: '€/TB: χαμηλότερο πρώτα', en: '€/TB: lowest first' },
   sortLabel: { el: 'Ταξινόμηση', en: 'Sort' },
   sortHelpTitle: { el: 'Πώς ταξινομούνται;', en: 'How is this sorted?' },
   sortHelp: {

@@ -64,9 +64,10 @@ const INFO: Record<
 };
 const INFO_IDS = Object.keys(INFO) as InfoId[];
 
-/** Top-nav tab: outlined with an open bottom in light mode; dark keeps only the 2px underline. */
+/** Top-nav tab: outlined with an open bottom in light mode; dark keeps only the 2px underline. Sized so
+ * the nine category tabs + the builder fit the 1248px container in Greek (scrolls sideways below). */
 const TAB =
-  'inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-t-lg border border-b-2 px-2 pb-3 pt-1 text-sm transition dark:rounded-none dark:border-x-0 dark:border-t-0';
+  'inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-t-lg border border-b-2 px-[7px] pb-3 pt-1 text-sm transition dark:rounded-none dark:border-x-0 dark:border-t-0';
 const isInfo = (p: Page): p is InfoId => (INFO_IDS as string[]).includes(p);
 
 /** Tab link props that start loading the tab's data on hover, keyboard focus or touch (data.ts prefetch). */

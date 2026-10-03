@@ -1,6 +1,6 @@
 // The builder's Quick list mode: every part on one page, each with a picker of compatible choices.
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ExternalLink, Loader2, Search, X } from 'lucide-react';
 import type { BaseListing, Category } from '../../types';
 import { CATEGORIES } from '../../lib/categories';
@@ -35,8 +35,13 @@ const S = {
 export default function QuickList({ state }: { state: BuilderState }) {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
-  const { models, loading, build, update, ctx, extraVersion } = state;
+  const { models, build, update, ctx, extraVersion } = state;
   const [open, setOpen] = useState<Slot | null>(null);
+  // Storage's parts come in their own file (builder.LAZY_SLOTS), requested when its picker opens.
+  const loading = state.loading || (open != null && !state.slotReady(open));
+  useEffect(() => {
+    if (open && !state.loading) state.wantSlot(open);
+  }, [open, state.loading]);
   const [query, setQuery] = useState('');
   // Picker toggle: hide parts whose fit can't be checked. Not remembered (the privacy page lists the stored keys).
   const [verifiedOnly, setVerifiedOnly] = useState(false);

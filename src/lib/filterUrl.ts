@@ -25,8 +25,13 @@ const PARAM_ALIASES: Record<string, string> = {
 };
 export const paramOf = (key: string) => PARAM_ALIASES[key] ?? key;
 
-const SORTS: SortKey[] = ['model', 'price-asc', 'price-desc', 'offers', 'discount'];
-const SEGMENTS: Segment[] = ['main', 'pro', 'all'];
+const SORTS: SortKey[] = ['model', 'price-asc', 'price-desc', 'offers', 'discount', 'per-tb'];
+const segmentsOf = <L extends BaseListing>(cfg: CategoryConfig<L>): Segment[] => [
+  'main',
+  ...(cfg.segments?.middle ?? []).map((s) => s.value),
+  'pro',
+  'all',
+];
 
 /** The page and its query string from the current hash ("#ram?type=ddr5" → "ram", params). */
 export function parseHash(hash = location.hash): { page: string; params: URLSearchParams | null } {
@@ -69,8 +74,8 @@ export function decodeFilters<L extends BaseListing>(p: URLSearchParams, cfg: Ca
     const picked = SOURCE_NAMES.filter((s) => src.split(',').includes(s));
     if (picked.length) f.sources = picked;
   }
-  const seg = p.get('seg') as Segment | null;
-  if (seg && SEGMENTS.includes(seg)) f.segment = seg;
+  const seg = p.get('seg');
+  if (seg && segmentsOf(cfg).includes(seg)) f.segment = seg;
   for (const x of cfg.extraFilters) {
     const v = p.get(paramOf(x.key));
     if (v) f.extra[x.key] = v;
@@ -80,7 +85,7 @@ export function decodeFilters<L extends BaseListing>(p: URLSearchParams, cfg: Ca
   const max = Number(p.get('max'));
   if (p.get('max') && Number.isFinite(max) && max > 0) f.maxPrice = max;
   const sort = p.get('sort') as SortKey | null;
-  if (sort && SORTS.includes(sort)) f.sort = sort;
+  if (sort && SORTS.includes(sort) && (sort !== 'per-tb' || cfg.capacityTb)) f.sort = sort;
   const page = Number(p.get('page'));
   if (Number.isInteger(page) && page > 1) f.page = page;
   const per = Number(p.get('per'));
