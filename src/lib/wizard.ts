@@ -10,8 +10,7 @@ import type { Text } from './i18n';
 import { recommendedScores } from './ranking';
 
 export type StepId = 'use' | Slot | 'review';
-/** Storage comes between the cooler and the case once that category exists. */
-export const STEPS: StepId[] = ['use', 'cpu', 'mobo', 'ram', 'gpu', 'cooler', 'case', 'psu', 'fan', 'review'];
+export const STEPS: StepId[] = ['use', 'cpu', 'mobo', 'ram', 'gpu', 'cooler', 'storage', 'case', 'psu', 'fan', 'review'];
 
 export const STEP_NAME: Record<StepId, Text> = {
   use: { el: 'Χρήση και προϋπολογισμός', en: 'Use and budget' },
@@ -20,6 +19,7 @@ export const STEP_NAME: Record<StepId, Text> = {
   ram: { el: 'Μνήμη RAM', en: 'Memory (RAM)' },
   gpu: { el: 'Κάρτα γραφικών', en: 'Graphics card' },
   cooler: { el: 'Ψύκτρα επεξεργαστή', en: 'CPU cooler' },
+  storage: { el: 'Αποθήκευση', en: 'Storage' },
   case: { el: 'Κουτί', en: 'Case' },
   psu: { el: 'Τροφοδοτικό', en: 'Power supply' },
   fan: { el: 'Ανεμιστήρες κουτιού', en: 'Case fans' },
@@ -33,6 +33,7 @@ export const STEP_SHORT: Record<StepId, Text> = {
   ram: 'RAM',
   gpu: 'GPU',
   cooler: { el: 'Ψύκτρα', en: 'Cooler' },
+  storage: { el: 'Δίσκος', en: 'Storage' },
   case: { el: 'Κουτί', en: 'Case' },
   psu: { el: 'Τροφοδοτικό', en: 'PSU' },
   fan: { el: 'Ανεμιστήρες', en: 'Fans' },
@@ -40,7 +41,7 @@ export const STEP_SHORT: Record<StepId, Text> = {
 };
 /** The buying guide's text for each step (BuildGuide GUIDE_STEPS index). */
 export const GUIDE_INDEX: Partial<Record<StepId, number>> = {
-  use: 0, cpu: 1, mobo: 1, ram: 2, gpu: 3, cooler: 4, case: 5, fan: 6, psu: 7,
+  use: 0, cpu: 1, mobo: 1, ram: 2, gpu: 3, cooler: 4, storage: 5, case: 6, fan: 7, psu: 8,
 };
 
 /** Can the step be skipped, and why (or why not). */
@@ -85,10 +86,10 @@ export const isDone = (step: StepId, b: Build, p: Prefs): boolean =>
 
 /** Usual share of the whole budget per part, by use ([min, max] %). */
 const SHARES: Record<Use, Partial<Record<Slot, [number, number]>>> = {
-  gaming: { cpu: [15, 20], mobo: [10, 12], ram: [6, 8], gpu: [35, 45], cooler: [3, 5], case: [5, 7], psu: [7, 9], fan: [1, 3] },
-  everyday: { cpu: [25, 30], mobo: [15, 20], ram: [12, 15], gpu: [0, 10], cooler: [0, 5], case: [10, 15], psu: [10, 12], fan: [0, 3] },
-  creating: { cpu: [25, 30], mobo: [12, 15], ram: [12, 15], gpu: [25, 30], cooler: [4, 6], case: [6, 8], psu: [8, 10], fan: [1, 3] },
-  unsure: { cpu: [18, 22], mobo: [11, 13], ram: [8, 10], gpu: [25, 35], cooler: [3, 5], case: [6, 8], psu: [8, 10], fan: [1, 3] },
+  gaming: { cpu: [15, 20], mobo: [10, 12], ram: [6, 8], gpu: [35, 45], cooler: [3, 5], storage: [6, 8], case: [5, 7], psu: [7, 9], fan: [1, 3] },
+  everyday: { cpu: [25, 30], mobo: [15, 20], ram: [12, 15], gpu: [0, 10], cooler: [0, 5], storage: [8, 12], case: [10, 15], psu: [10, 12], fan: [0, 3] },
+  creating: { cpu: [25, 30], mobo: [12, 15], ram: [12, 15], gpu: [25, 30], cooler: [4, 6], storage: [8, 10], case: [6, 8], psu: [8, 10], fan: [1, 3] },
+  unsure: { cpu: [18, 22], mobo: [11, 13], ram: [8, 10], gpu: [25, 35], cooler: [3, 5], storage: [6, 9], case: [6, 8], psu: [8, 10], fan: [1, 3] },
 };
 export const shareOf = (use: Use | null, slot: Slot): [number, number] | null => SHARES[use ?? 'unsure'][slot] ?? null;
 

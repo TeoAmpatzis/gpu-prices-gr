@@ -2,8 +2,8 @@ import { BookOpen } from 'lucide-react';
 import { tr, useLang, type Text } from '../lib/i18n';
 
 /** Short step-by-step guide to choosing parts, shown above the builder (and per step in the guided
- * builder: GUIDE_STEPS[i] — 0 budget/use, 1 CPU + board, 2 RAM, 3 GPU, 4 cooler, 5 case, 6 fans,
- * 7 PSU, 8 storage). */
+ * builder: GUIDE_STEPS[i] — 0 budget/use, 1 CPU + board, 2 RAM, 3 GPU, 4 cooler, 5 storage, 6 case,
+ * 7 fans, 8 PSU; wizard.GUIDE_INDEX). */
 export const GUIDE_STEPS: { title: Text; body: Text }[] = [
   {
     title: { el: 'Προϋπολογισμός και χρήση', en: 'Budget and use' },
@@ -41,6 +41,13 @@ export const GUIDE_STEPS: { title: Text; body: Text }[] = [
     },
   },
   {
+    title: { el: 'Αποθήκευση', en: 'Storage' },
+    body: {
+      el: 'Ένας NVMe SSD για το σύστημα και τα προγράμματα: 1TB είναι καλή βάση, 2TB για πολλά παιχνίδια. Ένας Gen4 αρκεί για όλους· ένας Gen5 θέλει μητρική με υποδοχή M.2 PCIe 5.0 για όλη την ταχύτητά του. Ο σκληρός δίσκος (HDD) δίνει φθηνό χώρο για αρχεία, όχι για το σύστημα· ένας 3.5″ θέλει θέση 3.5″ στο κουτί — πολλά νέα κουτιά δεν έχουν.',
+      en: 'An NVMe SSD for the system and programs: 1TB is a good base, 2TB for lots of games. Gen4 is plenty for everyone; a Gen5 drive needs a board with a PCIe 5.0 M.2 slot for its full speed. A hard drive (HDD) is cheap space for files, not for the system; a 3.5" one needs a 3.5" bay in the case — many new cases have none.',
+    },
+  },
+  {
     title: { el: 'Κουτί', en: 'Case' },
     body: {
       el: 'Πρέπει να χωράει τη μητρική (ATX, Micro ATX, Mini ITX), την κάρτα γραφικών σε μήκος και την ψύκτρα σε ύψος. Μεγάλη κάρτα σημαίνει Midi ή Full Tower. Προτιμήστε μπροστινό πάνελ με πλέγμα (mesh) για καλή ροή αέρα.',
@@ -59,13 +66,6 @@ export const GUIDE_STEPS: { title: Text; body: Text }[] = [
     body: {
       el: 'Το διαλέγουμε τελευταίο, όταν ξέρουμε τι θα τροφοδοτήσει. Ο builder δείχνει την ελάχιστη ισχύ· πάρτε λίγο περισσότερη για περιθώριο. Προτιμήστε 80 PLUS Gold από γνωστό κατασκευαστή — ένα φθηνό τροφοδοτικό μπορεί να καταστρέψει τα υπόλοιπα.',
       en: 'Pick it last, once you know what it has to power. The builder shows the minimum wattage; add some headroom. Prefer 80 PLUS Gold from a known brand — a cheap PSU can damage everything else.',
-    },
-  },
-  {
-    title: { el: 'Αποθήκευση (δεν υπάρχει ακόμα εδώ)', en: 'Storage (not on the site yet)' },
-    body: {
-      el: 'Μην ξεχάσετε έναν δίσκο: ένας NVMe SSD 1TB είναι η καλή βάση για κάθε σύνθεση.',
-      en: "Don't forget a drive: a 1TB NVMe SSD is a good base for any build.",
     },
   },
 ];

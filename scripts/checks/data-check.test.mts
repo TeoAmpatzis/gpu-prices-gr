@@ -38,5 +38,12 @@ n = clone(); n.cats.gpu.historyPoints = Math.round(live.cats.gpu.historyPoints *
 expect('history -10% (365-day trim) passes', checkData(n, live), false);
 n = clone(); const oldLive = clone(); for (const c of Object.values(oldLive.cats) as any[]) delete c.historyPoints;
 expect('live manifest without historyPoints: no history comparison', checkData(n, oldLive), false);
+// A category the live site doesn't have yet (storage on its first deploy): its minimum count applies.
+const noStorage = clone(); delete noStorage.cats.storage;
+expect('new category (not live yet), real counts pass', checkData(clone(), noStorage), false);
+n = clone(); n.cats.storage.models = 5;
+expect('new category (not live yet) with 5 models fails', checkData(n, noStorage), true);
+n = clone(); n.builder.storage = 0;
+expect('builder offers no drives fails', checkData(n, live), true);
 console.log(bad ? `${bad} FAILED` : 'all checks behave as intended');
 process.exit(bad ? 1 : 0);

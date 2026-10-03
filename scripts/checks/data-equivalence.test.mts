@@ -109,7 +109,7 @@ for (const cat of CATEGORY_IDS) {
 }
 
 // ---------- Builder ----------
-const { file: bf, extra } = builderFile(allLatest, built);
+const { file: bf, extra, lazy } = builderFile(allLatest, built);
 const spec = (slot: string, m: { cheapest: Record<string, unknown> } & Record<string, unknown>) =>
   JSON.stringify({
     chip: m.chip,
@@ -125,6 +125,10 @@ const spec = (slot: string, m: { cheapest: Record<string, unknown> } & Record<st
         B.caseFanMounts(m), B.caseFansIncluded(m), B.caseRadiatorSizes(m), m.listings.some((l: any) => l.hasFans),
       ],
       slot === 'cooler' && [B.coolerSockets(m), B.coolerHeight(m), m.cheapest.type, m.cheapest.radiator],
+      slot === 'storage' && [
+        m.cheapest.media, m.cheapest.iface, m.cheapest.pcie, m.cheapest.formFactor, m.cheapest.capacity, m.cheapest.tier,
+        m.cheapest.dram, m.cheapest.readMBs, m.cheapest.tbw,
+      ],
       slot === 'ram' && [m.cheapest.type, m.cheapest.modules, m.cheapest.formFactor, m.cheapest.cas, m.cheapest.brand],
       slot === 'psu' && [m.cheapest.watts, m.cheapest.formFactor, m.cheapest.modular, m.cheapest.brand],
       slot === 'fan' && [
@@ -140,7 +144,8 @@ const oldModels: Record<string, any[]> = {};
 const newModels: Record<string, any[]> = {};
 for (const slot of B.SLOTS) {
   const full = B.candidates(slot, B.slotModels(slot, (allLatest[slot] as { listings: unknown[] }).listings), {});
-  const rows = fromColumns(bf.slots[slot]) as any[];
+  // Lazy slots (storage) come from their own file, links and titles included.
+  const rows = fromColumns(bf.slots[slot] ?? lazy[slot]) as any[];
   for (const r of rows) { r.url = extra.urls[r.id] ?? r.url; if (!r.title) r.title = extra.titles[r.id] ?? ''; } // as Builder.tsx does
   const slim = B.candidates(slot, B.slotModels(slot, rows), {});
   oldModels[slot] = full;

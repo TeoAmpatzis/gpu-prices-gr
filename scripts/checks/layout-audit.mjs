@@ -6,7 +6,7 @@ import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
 
 const BASE = process.argv[2];
 const OUT = process.argv[3];
-const PAGES = (process.argv[4] || 'gpu,cpu,mobo,ram,psu,case,fan,cooler,builder,builder?mode=quick,about,contact,privacy').split(',');
+const PAGES = (process.argv[4] || 'gpu,cpu,mobo,ram,storage,psu,case,fan,cooler,builder,builder?mode=quick,about,contact,privacy').split(',');
 const WIDTHS = (process.argv[5] || '1920,1366,768,360').split(',').map(Number);
 const LANGS = ['el', 'en'];
 const THEMES = ['light', 'dark'];

@@ -21,6 +21,7 @@ import type {
   MoboListing,
   PsuListing,
   RamListing,
+  StorageListing,
 } from '../types';
 import type { Model } from './data';
 
@@ -36,6 +37,7 @@ export const RANKING: Record<Category, RankConfig> = {
   cpu: { weights: { popularity: 0.4, modern: 0.35, price: 0.25, value: 0 }, priceBand: [0.2, 0.8], saleBoost: 1.1 },
   mobo: { weights: { popularity: 0.4, modern: 0.35, price: 0.25, value: 0 }, priceBand: [0.2, 0.8], saleBoost: 1.1 },
   ram: { weights: { popularity: 0.3, modern: 0.4, price: 0.15, value: 0.15 }, priceBand: [0.25, 0.8], saleBoost: 1.1 },
+  storage: { weights: { popularity: 0.35, modern: 0.3, price: 0.1, value: 0.25 }, priceBand: [0.2, 0.8], saleBoost: 1.1 },
   psu: {
     weights: { popularity: 0.35, modern: 0.35, price: 0.15, value: 0.15 },
     priceBand: [0.25, 0.8],
@@ -97,6 +99,17 @@ const MODERN: { [C in Category]: (m: Model<never>) => number } = {
     const l = (m as Model<PsuListing>).cheapest;
     const watts = l.watts >= 550 && l.watts <= 1000 ? 1 : l.watts >= 450 && l.watts <= 1300 ? 0.6 : 0.2;
     return 0.6 * (EFFICIENCY[l.efficiency ?? ''] ?? 0.15) + 0.4 * watts;
+  },
+  storage: (m) => {
+    const l = (m as Model<StorageListing>).cheapest;
+    const gb = l.capacity;
+    if (l.media === 'HDD') {
+      // Hard drives are bulk storage now: the usual 4–12TB sizes first.
+      return 0.3 + 0.2 * (gb >= 4000 && gb <= 12000 ? 1 : gb >= 2000 ? 0.6 : 0.2);
+    }
+    const kind = l.iface === 'NVMe' ? (l.pcie && l.pcie >= 4 ? 1 : l.pcie === 3 ? 0.6 : 0.75) : 0.45;
+    const size = gb >= 1000 && gb <= 2000 ? 1 : gb >= 4000 ? 0.8 : gb >= 480 ? 0.6 : 0.15;
+    return 0.6 * kind + 0.4 * size;
   },
   case: (m) => CASE_SIZE[(m as Model<CaseListing>).cheapest.size] ?? 0.3,
   fan: (m) => {

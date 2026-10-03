@@ -2,6 +2,7 @@ import type {
   BaseListing,
   BuilderExtra,
   BuilderFile,
+  BuilderSlotFile,
   Category,
   DailyLow,
   DetailFile,
@@ -83,18 +84,21 @@ export const loadDetails = memo(
 export const loadBuilder = memo((_: 'all') => getJson<BuilderFile>('/data/builder.json'));
 /** Shop links and picker-search titles of the builder's rows; fetched once the builder has appeared. */
 export const loadBuilderExtra = memo((builtAt: string) => getJson<BuilderExtra>(`/data/builder-extra.json?v=${builtAt}`));
+/** A builder slot kept out of builder.json (builder.LAZY_SLOTS), same build: key "<slot>?v=<builtAt>". */
+export const loadBuilderSlot = memo((key: string) => getJson<BuilderSlotFile>(`/data/builder-${key}`));
 
 /** Start loading a page's data before it is opened (tab hover/focus/touch), so the switch is instant. */
 export function prefetch(page: string) {
   if (page === 'builder') void loadBuilder('all').catch(() => {});
-  else if (/^(gpu|cpu|mobo|ram|psu|case|fan|cooler)$/.test(page)) void loadList(page as Category).catch(() => {});
+  else if (/^(gpu|cpu|mobo|ram|storage|psu|case|fan|cooler)$/.test(page)) void loadList(page as Category).catch(() => {});
 }
 
 export interface Model<L extends BaseListing> {
   key: string;
   chip: string;
   group: string; // brand (GPU/CPU) or memory type (RAM); drives the pill filter and dot colour
-  pro: boolean; // workstation GPU / server-HEDT CPU / laptop-server RAM
+  pro: boolean; // workstation GPU / server-HEDT CPU / laptop-server RAM / server drive
+  segment: Segment; // 'main' | 'pro', or a category's own middle option (storage: 'nas')
   listings: L[]; // sorted by price ascending
   cheapest: L;
   maxPrice: number;
@@ -185,11 +189,13 @@ export function groupModels<L extends BaseListing>(listings: L[], cfg: CategoryC
   return [...map.entries()].map(([key, ls]) => {
     ls.sort((a, b) => a.price - b.price);
     const first = ls[0];
+    const pro = cfg.isPro(first);
     return {
       key,
       chip: several.has(first.chip) ? `${first.chip} ${cfg.variant!(first)}` : first.chip,
       group: cfg.group(first),
-      pro: cfg.isPro(first),
+      pro,
+      segment: cfg.segmentOf?.(first) ?? (pro ? 'pro' : 'main'),
       listings: ls,
       cheapest: first,
       maxPrice: ls[ls.length - 1].price,
@@ -208,8 +214,16 @@ export function mostCommon<T>(values: (T | null | undefined)[]): T | null {
   return best;
 }
 
-export type SortKey = 'price-asc' | 'price-desc' | 'model' | 'offers' | 'discount';
-export type Segment = 'main' | 'pro' | 'all';
+/** 'per-tb': price per terabyte, for categories with `capacityTb` (storage). */
+export type SortKey = 'price-asc' | 'price-desc' | 'model' | 'offers' | 'discount' | 'per-tb';
+/** 'main' (the default view), 'pro', 'all', or a value from `CategoryConfig.segments.middle`. */
+export type Segment = string;
+
+/** Price per TB of a model's cheapest listing, when its category has a capacity. */
+export function perTb<L extends BaseListing>(m: Model<L>, cfg: CategoryConfig<L>): number | null {
+  const tb = cfg.capacityTb?.(m.cheapest);
+  return tb ? m.cheapest.price / tb : null;
+}
 
 export interface Filters {
   query: string;
@@ -287,7 +301,7 @@ export function applyFilters<L extends BaseListing>(
   }));
   const models = grouped.filter(
     (m) =>
-      (!cfg.segments || f.segment === 'all' || (f.segment === 'pro') === m.pro) &&
+      (!cfg.segments || f.segment === 'all' || f.segment === m.segment) &&
       (f.maxPrice == null || m.cheapest.price <= f.maxPrice) &&
       (!f.saleOnly || m.sale != null) &&
       (!f.lowOnly || m.low != null),
@@ -301,6 +315,8 @@ export function applyFilters<L extends BaseListing>(
     'price-desc': (a, b) => b.cheapest.price - a.cheapest.price,
     offers: (a, b) => b.listings.length - a.listings.length,
     discount: (a, b) => (b.sale?.pct ?? 0) - (a.sale?.pct ?? 0) || a.cheapest.price - b.cheapest.price,
+    // Models without a capacity last; equal €/TB: the cheaper drive first.
+    'per-tb': (a, b) => (perTb(a, cfg) ?? Infinity) - (perTb(b, cfg) ?? Infinity) || a.cheapest.price - b.cheapest.price,
     model: (a, b) =>
       Number(a.pro) - Number(b.pro) ||
       (score.get(b.key) ?? 0) - (score.get(a.key) ?? 0) ||

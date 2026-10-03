@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Check, RotateCcw, Search } from 'lucide-react';
 import type { BaseListing } from '../types';
-import { defaultFilters, type Filters, type Segment, type SortKey } from '../lib/data';
+import { defaultFilters, type Filters, type SortKey } from '../lib/data';
 import type { FacetCounts } from '../lib/facets';
-import { groupName, type CategoryConfig } from '../lib/categories';
+import { groupName, segmentOptions, type CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Text } from '../lib/i18n';
 import { SOURCES, SOURCE_NAMES } from '../lib/sources';
 import SortHelp from './SortHelp';
@@ -104,13 +104,8 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
     }, SEARCH_DELAY);
     return () => clearTimeout(id);
   }, [query]);
-  const segments: { value: Segment; label: Text }[] = cfg.segments
-    ? [
-        { value: 'main', label: cfg.segments.main },
-        { value: 'pro', label: cfg.segments.pro },
-        { value: 'all', label: T.all },
-      ]
-    : [];
+  const segments = segmentOptions(cfg);
+  const sorts = cfg.capacityTb ? [...SORTS, { value: 'per-tb' as const, label: T.sortPerTb }] : SORTS;
 
   return (
     <div className={bare ? 'flex flex-col gap-3' : 'card flex flex-col gap-3 p-4'}>
@@ -144,7 +139,7 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
           onChange={(e) => set('sort', e.target.value as SortKey)}
           aria-label={t(T.sortLabel)}
         >
-          {SORTS.map((s) => (
+          {sorts.map((s) => (
             <option key={s.value} value={s.value}>
               {t(s.label)}
             </option>

@@ -22,16 +22,24 @@ import type {
   MoboListing,
   PsuListing,
   RamListing,
+  StorageListing,
 } from '../types';
-import { BOARD_BY_CASE_SIZE, CATEGORIES, type CategoryConfig } from './categories';
+import { BOARD_BY_CASE_SIZE, CATEGORIES, storageType, type CategoryConfig } from './categories';
 import { groupModels, mostCommon, type Model } from './data';
 import { tr, type Text } from './i18n';
 
 /** In the order the guide walks through them. */
-export type Slot = 'cpu' | 'mobo' | 'ram' | 'gpu' | 'cooler' | 'case' | 'fan' | 'psu';
-export const SLOTS: Slot[] = ['cpu', 'mobo', 'ram', 'gpu', 'cooler', 'case', 'fan', 'psu'];
+export type Slot = 'cpu' | 'mobo' | 'ram' | 'gpu' | 'cooler' | 'storage' | 'case' | 'fan' | 'psu';
+export const SLOTS: Slot[] = ['cpu', 'mobo', 'ram', 'gpu', 'cooler', 'storage', 'case', 'fan', 'psu'];
 /** Parts a build can be finished without (the GPU needs an iGPU, the cooler a boxed one; see notes). */
 export const OPTIONAL: Slot[] = ['gpu', 'cooler', 'fan'];
+/**
+ * Slots whose rows are not in builder.json but in their own file (/data/builder-<slot>.json), loaded
+ * only when the step opens or a saved build has one: nothing else in the build depends on them, and
+ * builder.json's size costs the builder's phone Lighthouse score (measured 2026-10-03: storage rows
+ * inside builder.json took it from 91 to 89).
+ */
+export const LAZY_SLOTS: Slot[] = ['storage'];
 
 export interface SlotListing {
   cpu: CpuListing;
@@ -39,6 +47,7 @@ export interface SlotListing {
   ram: RamListing;
   gpu: GpuListing;
   cooler: CoolerListing;
+  storage: StorageListing;
   case: CaseListing;
   fan: FanListing;
   psu: PsuListing;
@@ -283,6 +292,10 @@ const W = {
     el: 'Μικρά κουτιά (SFF) συχνά θέλουν τροφοδοτικό SFX· δεν αναφέρεται.',
     en: 'Small (SFF) cases often need an SFX power supply; not stated.',
   },
+  bay35: {
+    el: 'Ελέγξτε ότι το κουτί έχει θέση για δίσκο 3.5″ (πολλά νέα κουτιά δεν έχουν)· οι θέσεις δίσκων δεν αναφέρονται εδώ.',
+    en: 'Check that the case has a 3.5" drive bay (many new cases have none); drive bays are not listed here.',
+  },
 } satisfies Record<string, Text>;
 
 const gpuEstimate = (chip: string, max: number, ctx: FitContext): Text | null => {
@@ -422,6 +435,8 @@ function checks(b: Build, ctx: FitContext): Check[] {
     else if (pack > slots) add(['fan', 'case'], 'no', tooManyFans(pack, slots));
     else add(['fan', 'case'], size === 120 ? 'likely' : 'unverified', W.fanSizesUnknown);
   }
+  // Drive bays aren't in the data (owner: a separate task); M.2 and 2.5" drives go anywhere.
+  if (b.storage && b.case && b.storage.cheapest.formFactor === '3.5"') add(['storage', 'case'], 'unverified', W.bay35);
   if (b.psu) {
     const watts = requiredWatts(b);
     if (watts != null) {
@@ -462,6 +477,11 @@ const usable: { [S in Slot]: (m: Model<SlotListing[S]>) => boolean } = {
   // Power decides the PSU; a missing length is "Fit not verified" once a case is chosen.
   gpu: (m) => !m.pro && gpuPsu(m.cheapest) != null,
   cooler: () => true,
+  // Desktop drives only: no server ones, and the shapes every desktop takes (M.2 2280, 2.5", 3.5").
+  storage: (m) =>
+    m.cheapest.tier !== 'Server' &&
+    ['NVMe', 'SATA SSD', 'HDD'].includes(storageType(m.cheapest)) &&
+    ['M.2 2280', '2.5"', '3.5"'].includes(m.cheapest.formFactor ?? ''),
   case: () => true,
   fan: (m) => FAN_SIZES.includes(m.cheapest.size),
   // SFX/TFX/Flex units need a case that takes them, which no site states.
@@ -575,6 +595,15 @@ export function buildNotes(b: Build, ctx: FitContext = NO_CONTEXT): Note[] {
       },
     });
   }
+  if (b.storage?.cheapest.pcie === 5) {
+    notes.push({
+      level: 'info',
+      text: {
+        el: 'Ο δίσκος είναι PCIe 5.0: για όλη την ταχύτητά του η μητρική χρειάζεται υποδοχή M.2 PCIe 5.0 (σε άλλη υποδοχή δουλεύει πιο αργά).',
+        en: 'The drive is PCIe 5.0: the board needs a PCIe 5.0 M.2 slot for its full speed (it works more slowly in other slots).',
+      },
+    });
+  }
   if (b.case && !caseFanMounts(b.case)) {
     const slots = caseFanSlots(b.case);
     if (slots != null) {
@@ -603,6 +632,7 @@ const SLOT_NAME: Record<Slot, { el: string; en: string }> = {
   ram: { el: 'μνήμη', en: 'memory' },
   gpu: { el: 'κάρτα γραφικών', en: 'graphics card' },
   cooler: { el: 'ψύκτρα', en: 'cooler' },
+  storage: { el: 'δίσκος', en: 'drive' },
   case: { el: 'κουτί', en: 'case' },
   fan: { el: 'ανεμιστήρες', en: 'fans' },
   psu: { el: 'τροφοδοτικό', en: 'power supply' },
@@ -618,6 +648,7 @@ const MISSING: Record<Slot, Text> = {
   ram: { el: 'Διαλέξτε μνήμη RAM.', en: 'Pick memory (RAM).' },
   gpu: { el: 'Διαλέξτε κάρτα γραφικών.', en: 'Pick a graphics card.' },
   cooler: { el: 'Διαλέξτε ψύκτρα.', en: 'Pick a cooler.' },
+  storage: { el: 'Διαλέξτε δίσκο (SSD).', en: 'Pick a drive (SSD).' },
   case: { el: 'Διαλέξτε κουτί.', en: 'Pick a case.' },
   fan: { el: 'Διαλέξτε ανεμιστήρες.', en: 'Pick fans.' },
   psu: { el: 'Διαλέξτε τροφοδοτικό.', en: 'Pick a power supply.' },

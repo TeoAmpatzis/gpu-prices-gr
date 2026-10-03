@@ -369,7 +369,12 @@ type Rated = { m: Model<BaseListing>; rating: Rating };
 
 function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang: Lang }) {
   const t = (x: Text) => tr(lang, x);
-  const { models, loading, build, update, ctx, prefs, extraVersion } = state;
+  const { models, build, update, ctx, prefs, extraVersion, wantSlot } = state;
+  // Storage has its own file (builder.LAZY_SLOTS), fetched when its step opens.
+  const loading = state.loading || !state.slotReady(slot);
+  useEffect(() => {
+    if (!state.loading) wantSlot(slot);
+  }, [slot, state.loading]);
   const cfg = CATEGORIES[slot as Category];
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState<SortBy>('recommended');

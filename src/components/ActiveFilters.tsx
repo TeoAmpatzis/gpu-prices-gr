@@ -1,7 +1,7 @@
 import { X } from 'lucide-react';
 import type { BaseListing } from '../types';
 import { defaultFilters, formatPrice, type Filters } from '../lib/data';
-import { groupName, type CategoryConfig } from '../lib/categories';
+import { groupName, segmentOptions, type CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Text } from '../lib/i18n';
 import { SOURCES } from '../lib/sources';
 
@@ -26,12 +26,9 @@ export default function ActiveFilters<L extends BaseListing>({ cfg, filters: f, 
       label: `${t(cfg.groupLabel)}: ${f.groups.map((g) => groupName(g, lang)).join(', ') || '—'}`,
       clear: { groups: d.groups },
     });
-  if (f.segment !== d.segment && cfg.segments)
-    chips.push({
-      id: 'segment',
-      label: `${t(T.segment)}: ${t(f.segment === 'pro' ? cfg.segments.pro : T.all)}`,
-      clear: { segment: d.segment },
-    });
+  const segment = segmentOptions(cfg).find((s) => s.value === f.segment);
+  if (f.segment !== d.segment && segment)
+    chips.push({ id: 'segment', label: `${t(T.segment)}: ${t(segment.label)}`, clear: { segment: d.segment } });
   if (f.saleOnly) chips.push({ id: 'sale', label: t(T.saleOnly), clear: { saleOnly: false } });
   if (f.lowOnly) chips.push({ id: 'low', label: t(T.lowOnly), clear: { lowOnly: false } });
   if (f.sources.length !== d.sources.length)
