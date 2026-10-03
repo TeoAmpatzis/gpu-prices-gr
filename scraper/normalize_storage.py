@@ -42,6 +42,11 @@ VENDOR = re.compile(
 )
 # Server makers whose drives here are server parts (their part numbers, hot-plug trays).
 OEM_SERVER = {"HPE", "Dell", "Lenovo", "Fujitsu", "Supermicro", "IBM", "Cisco"}
+# Their M.2 drives are laptop/desktop replacement parts sold by part number (ThinkPad, Dell "Class 40",
+# Fujitsu "Highend"): no use to anyone here, so dropped (owner, 2026-10-03) — except server boot drives:
+# Dell BOSS (400-xxxx parts), Lenovo ThinkSystem, Fujitsu PRIMERGY (PY-xxxx parts).
+OEM_LAPTOP_M2 = {"Dell", "Lenovo", "Fujitsu"}
+SERVER_BOOT = re.compile(r"\bBOSS\b|\b400-[A-Z0-9]{4}\b|ThinkSystem|PowerEdge|PRIMERGY|\bPY-[A-Z0-9]", re.I)
 
 # Not internal drives: external/portable drives, enclosures, adapters, kits, used drives.
 EXCLUDE = re.compile(
@@ -308,6 +313,8 @@ def make_listing(
         iface = None
     gen = (PCIE_GEN.search(title) or PCIE_GEN.search(slug)) if iface == "NVMe" else None
     form = _form_factor(title, slug, media, iface)
+    if vendor in OEM_LAPTOP_M2 and (form or "").startswith("M.2") and not SERVER_BOOT.search(text):
+        return None
 
     # The model name shows the variant when a drive comes in more than one shape: 2.5" HDDs (3.5" is
     # the default), M.2 / mSATA SATA SSDs (2.5" is), NVMe drives shorter or longer than M.2 2280.
