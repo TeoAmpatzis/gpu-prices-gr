@@ -1,0 +1,109 @@
+{
+  "id": "S31",
+  "title": "Two 3-packs of 120 mm fans in a case with 9 × 120 mm positions: pass",
+  "parts": [
+    {
+      "category": "fan",
+      "key": "arcticp12pro120mm3",
+      "modelKey": "arcticp12pro120mm3",
+      "name": "Arctic P12 Pro 120mm ×3",
+      "quantity": 2,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2162523075",
+        "title": "Arctic P12 Pro Case Fan 120mm ARGB με Σύνδεση 3-Pin 4-Pin PWM 3τμχ Black",
+        "price": 22.93
+      },
+      "fields": {
+        "size": 120,
+        "pack": 3,
+        "connector": "4-pin PWM",
+        "fanType": "pressure",
+        "pwm": true
+      }
+    },
+    {
+      "category": "case",
+      "key": "lianlio11dynamicminiv2flow",
+      "modelKey": "lianlio11dynamicminiv2flow",
+      "name": "Lian Li O11 Dynamic Mini V2 Flow",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2162529132",
+        "title": "Lian Li O11 Dynamic Mini V2 Flow Black Midi Tower με Πλαϊνό Παράθυρο",
+        "price": 90.3
+      },
+      "fields": {
+        "size": "Midi Tower",
+        "maxBoard": "ATX",
+        "gpuMaxMm": 400,
+        "coolerMaxMm": 160,
+        "fanSlots": 7,
+        "radiatorMounts": null,
+        "fanMounts": [
+          {
+            "n": 3,
+            "pos": "top",
+            "size": 120
+          },
+          {
+            "n": 2,
+            "pos": "top",
+            "size": 140
+          },
+          {
+            "n": 2,
+            "pos": "side",
+            "size": 120
+          },
+          {
+            "n": 3,
+            "pos": "bottom",
+            "size": 120
+          },
+          {
+            "n": 1,
+            "pos": "rear",
+            "size": 120
+          }
+        ],
+        "fansIncluded": [],
+        "hasFans": null,
+        "radiators": [
+          {
+            "pos": "top",
+            "sizes": [
+              240,
+              280,
+              360
+            ]
+          },
+          {
+            "pos": "side",
+            "sizes": [
+              240
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 21,
+      "level": "pass"
+    },
+    {
+      "rule": 22,
+      "level": "pass"
+    }
+  ],
+  "why": "Lian Li lists 120 mm positions top 3, side 2, bottom 3, rear 1 (9) and no fans included; 6 fans fit.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

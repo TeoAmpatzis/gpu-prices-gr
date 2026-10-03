@@ -1,0 +1,96 @@
+{
+  "id": "S53",
+  "title": "12V-2x6 card + power supply without a native 12V-2x6 cable: note (synthetic fields)",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 7 9700X|false",
+      "modelKey": "Ryzen 7 9700X",
+      "name": "Ryzen 7 9700X",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "eshop",
+        "id": "eshop:PER.275274",
+        "title": "AMD RYZEN 7 9700X 5.5GHZ 8-CORE TRAY",
+        "price": 234.9
+      },
+      "fields": {
+        "socket": "AM5",
+        "igpu": true,
+        "coolerIncluded": false,
+        "packaging": "Tray",
+        "tdp": 65,
+        "cores": 8
+      }
+    },
+    {
+      "category": "gpu",
+      "key": "bestprice:2160322211",
+      "modelKey": "RTX 5080 16GB",
+      "name": "Gigabyte GeForce RTX 5080 16GB GDDR7 Gaming OC",
+      "quantity": 1,
+      "synthetic": true,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160322211",
+        "title": "Gigabyte GeForce RTX 5080 16GB GDDR7 Gaming OC",
+        "price": 1621.7
+      },
+      "fields": {
+        "chip": "RTX 5080",
+        "partner": "Gigabyte",
+        "vram": 16,
+        "lengthMm": 340,
+        "minPsu": 850,
+        "powerConnector": "12V-2x6"
+      },
+      "syntheticFields": [
+        "powerConnector"
+      ],
+      "note": "Synthetic connector field."
+    },
+    {
+      "category": "psu",
+      "key": "1000W Gold ATX",
+      "modelKey": "1000W Gold ATX",
+      "name": "1000W Gold",
+      "quantity": 1,
+      "synthetic": true,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2162784991",
+        "title": "Chieftec Vega M 1000W",
+        "price": 84.59
+      },
+      "fields": {
+        "watts": 1000,
+        "efficiency": "Gold",
+        "modular": null,
+        "formFactor": "ATX",
+        "native12v2x6": false,
+        "atx3": false
+      },
+      "syntheticFields": [
+        "native12v2x6",
+        "atx3"
+      ],
+      "note": "Synthetic PSU fields."
+    }
+  ],
+  "expected": [
+    {
+      "rule": 14,
+      "level": "pass"
+    },
+    {
+      "rule": 15,
+      "level": "note"
+    }
+  ],
+  "why": "1000 W covers the card; the cable needs the adapter that comes with the card.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

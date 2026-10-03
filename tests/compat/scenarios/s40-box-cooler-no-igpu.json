@@ -1,0 +1,68 @@
+{
+  "id": "S40",
+  "title": "Ryzen 5 5600X with box cooler, no cooler chosen, no graphics card: cooler pass, graphics error",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 5 5600X|true",
+      "modelKey": "Ryzen 5 5600X",
+      "name": "Ryzen 5 5600X",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:25549852",
+        "title": "AMD Ryzen 5 5600X 3.7GHz",
+        "price": 171.42
+      },
+      "fields": {
+        "socket": "AM4",
+        "igpu": false,
+        "coolerIncluded": true,
+        "packaging": null,
+        "tdp": 65,
+        "cores": 6
+      }
+    },
+    {
+      "category": "mobo",
+      "key": "asusprimeb550plus",
+      "modelKey": "asusprimeb550plus",
+      "name": "Asus Prime B550-Plus",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2156165384",
+        "title": "Asus Prime B550-Plus",
+        "price": 92.87
+      },
+      "fields": {
+        "socket": "AM4",
+        "chipset": "B550",
+        "formFactor": "ATX",
+        "memory": "DDR4",
+        "ramSlots": 4
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 1,
+      "level": "pass"
+    },
+    {
+      "rule": 11,
+      "level": "pass"
+    },
+    {
+      "rule": 12,
+      "level": "error"
+    }
+  ],
+  "why": "The box cooler is enough for rule 11, but a 5600X has no integrated graphics.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

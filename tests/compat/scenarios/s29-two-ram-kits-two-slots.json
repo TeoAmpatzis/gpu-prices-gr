@@ -1,0 +1,60 @@
+{
+  "id": "S29",
+  "title": "Two DDR5 2×16GB kits on a 2-slot board: error",
+  "parts": [
+    {
+      "category": "mobo",
+      "key": "asrocka620mhdvm2",
+      "modelKey": "asrocka620mhdvm2",
+      "name": "ASRock A620M-HDV/M.2",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "eshop",
+        "id": "eshop:PER.607321",
+        "title": "ASROCK A620M-HDV/M.2+ RETAIL",
+        "price": 99.9
+      },
+      "fields": {
+        "socket": "AM5",
+        "chipset": "A620",
+        "formFactor": "Micro ATX",
+        "memory": "DDR5",
+        "ramSlots": 2
+      }
+    },
+    {
+      "category": "ram",
+      "key": "DDR5 32GB (2×16GB) 6000MHz Desktop",
+      "modelKey": "DDR5 32GB (2×16GB) 6000MHz Desktop",
+      "name": "DDR5 32GB (2×16GB) 6000MHz",
+      "quantity": 2,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2157866269",
+        "title": "Patriot Viper Venom RGB 32GB (2X16GB) DDR5 RAM 6000MHz C36 Black PVVR532G600C36K",
+        "price": 466.35
+      },
+      "fields": {
+        "type": "DDR5",
+        "capacity": 32,
+        "modules": 2,
+        "speed": 6000,
+        "cas": 36,
+        "formFactor": "Desktop"
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 3,
+      "level": "error"
+    }
+  ],
+  "why": "4 sticks, 2 slots.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

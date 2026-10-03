@@ -1,0 +1,87 @@
+{
+  "id": "S02",
+  "title": "Core i5-14400F (LGA1700) + B760 DDR4 board + DDR5 kit: memory type error",
+  "planExample": "Core i5 σε LGA1700 + μητρική LGA1700 DDR4 + DDR5 κιτ → Σφάλμα: τύπος μνήμης",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Core i5-14400F|false",
+      "modelKey": "Core i5-14400F",
+      "name": "Core i5-14400F",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159493895",
+        "title": "Intel Core i5-14400F C0 Tray",
+        "price": 133.34
+      },
+      "fields": {
+        "socket": "LGA1700",
+        "igpu": false,
+        "coolerIncluded": false,
+        "packaging": "Tray",
+        "tdp": 148,
+        "cores": 10
+      }
+    },
+    {
+      "category": "mobo",
+      "key": "asusprimeb760plusd4",
+      "modelKey": "asusprimeb760plusd4",
+      "name": "Asus Prime B760-Plus D4",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2158207810",
+        "title": "Asus Prime B760-Plus D4",
+        "price": 101.4
+      },
+      "fields": {
+        "socket": "LGA1700",
+        "chipset": "B760",
+        "formFactor": "ATX",
+        "memory": "DDR4",
+        "ramSlots": 4
+      }
+    },
+    {
+      "category": "ram",
+      "key": "DDR5 32GB (2×16GB) 6000MHz Desktop",
+      "modelKey": "DDR5 32GB (2×16GB) 6000MHz Desktop",
+      "name": "DDR5 32GB (2×16GB) 6000MHz",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2157866269",
+        "title": "Patriot Viper Venom RGB 32GB (2X16GB) DDR5 RAM 6000MHz C36 Black PVVR532G600C36K",
+        "price": 466.35
+      },
+      "fields": {
+        "type": "DDR5",
+        "capacity": 32,
+        "modules": 2,
+        "speed": 6000,
+        "cas": 36,
+        "formFactor": "Desktop"
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 1,
+      "level": "pass"
+    },
+    {
+      "rule": 2,
+      "level": "error"
+    }
+  ],
+  "why": "The socket matches, but a DDR4 board cannot take a DDR5 kit.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

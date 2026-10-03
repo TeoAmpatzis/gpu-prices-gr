@@ -1,0 +1,636 @@
+{
+  "el-1366": {
+    "g1": {
+      "picks": [
+        {
+          "step": "Επεξεργαστής",
+          "name": "Core Ultra 5 225",
+          "priceText": "161,99 €",
+          "label": "BestPrice"
+        },
+        {
+          "step": "Μητρική",
+          "name": "Asus PRIME Z890-P WiFi",
+          "priceText": "209,90 €",
+          "label": "Χωράει"
+        },
+        {
+          "step": "Μνήμη RAM",
+          "name": "DDR5 32GB (1×32GB) 5600MHz",
+          "priceText": "280,47 €",
+          "label": "Χωράει"
+        },
+        {
+          "step": "Κάρτα γραφικών",
+          "name": "Gigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC",
+          "priceText": "469,90 €",
+          "label": "BestPrice"
+        },
+        {
+          "step": "Ψύκτρα επεξεργαστή",
+          "name": "Arctic Liquid Freezer III Pro 280",
+          "priceText": "65,82 €",
+          "label": "Χωράει"
+        },
+        {
+          "step": "Αποθήκευση",
+          "name": "Samsung 990 Pro Heatsink 2TB",
+          "priceText": "239,99 €",
+          "label": "Snif"
+        },
+        {
+          "step": "Κουτί",
+          "name": "Be Quiet Pure Base 600",
+          "priceText": "64,05 €",
+          "label": "Χωρίς επιβεβαίωση"
+        },
+        {
+          "step": "Τροφοδοτικό",
+          "name": "850W Gold",
+          "priceText": "55,99 €",
+          "label": "Χωράει"
+        },
+        {
+          "step": "Ανεμιστήρες κουτιού",
+          "name": "Thermaltake CT120 120mm ×2",
+          "priceText": "18,05 €",
+          "label": "Πιθανότατα χωράει"
+        }
+      ],
+      "review": {
+        "items": [
+          {
+            "label": "Επεξεργαστής",
+            "name": "Core Ultra 5 225",
+            "price": "161,99 €",
+            "href": "https://www.bestprice.gr/item/2160277450/intel-core-ultra-5-225-box-epexergastis-10-pyrinon-gia-socket-1851.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μητρική",
+            "name": "Asus PRIME Z890-P WiFi",
+            "price": "209,90 €",
+            "href": "https://www.e-shop.gr/mitriki-asus-prime-z890-pwifi-d5-lga1851-retail-p-PER.608655",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μνήμη RAM",
+            "name": "DDR5 32GB (1×32GB) 5600MHz",
+            "price": "280,47 €",
+            "href": "https://www.bestprice.gr/item/2160475229/lexar-32gb-ddr5-ram-5600mhz-c46-ld5s32g56c46st-bgs.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Κάρτα γραφικών",
+            "name": "Gigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC",
+            "price": "469,90 €",
+            "href": "https://www.bestprice.gr/item/2162473844/gigabyte-geforce-rtx-5060-8gb-gddr7-windforce-max-oc-karta-grafikon.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Ψύκτρα επεξεργαστή",
+            "name": "Arctic Liquid Freezer III Pro 280",
+            "price": "65,82 €",
+            "href": "https://www.bestprice.gr/item/2160893573/arctic-liquid-freezer-iii-pro-280-ydropsyxi-cpu-140mm-gia-socket-1700-1851-am4-am5.html",
+            "fit": "Χωρίς επιβεβαίωση"
+          },
+          {
+            "label": "Αποθήκευση",
+            "name": "Samsung 990 Pro Heatsink 2TB",
+            "price": "239,99 €",
+            "href": "https://www.snif.gr/showproduct/34671499/diskos-ssd-samsung-990-pro-with-heatsink-nvme-m-2",
+            "fit": "Snif"
+          },
+          {
+            "label": "Κουτί",
+            "name": "Be Quiet Pure Base 600",
+            "price": "64,05 €",
+            "href": "https://www.bestprice.gr/item/2154998381/be-quiet-pure-base-600-silver-midi-tower-kouti-ypologisti.html",
+            "fit": "Χωρίς επιβεβαίωση"
+          },
+          {
+            "label": "Ανεμιστήρες κουτιού",
+            "name": "Thermaltake CT120 120mm ×2",
+            "price": "18,05 €",
+            "href": "https://www.bestprice.gr/item/2158740964/thermaltake-ct120-case-fan-120mm-me-syndesi-4-pin-pwm-2tmch-white.html",
+            "fit": "Πιθανότατα χωράει"
+          },
+          {
+            "label": "Τροφοδοτικό",
+            "name": "850W Gold",
+            "price": "55,99 €",
+            "href": "https://www.bestprice.gr/item/2164321942/adata-xpg-kyber-ii-850w-trofodotiko-ypologisti-atch-3-1-80-plus-gold.html",
+            "fit": "Χωράει"
+          }
+        ],
+        "total": "1.566,16 €",
+        "link": "http://localhost:4180/#builder?cpu=Core+Ultra+5+225%7C%3F&mobo=asusprimez890pwifi&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop&gpu=bestprice%3A2162473844&cooler=arcticliquidfreezeriiipro280&storage=samsung990proheatsink2tbssd&case=bequietpurebase600&fan=thermaltakect120120mm2&psu=850W+Gold+ATX&use=gaming&budget=1000"
+      },
+      "summary": {
+        "lang": "el",
+        "text": "Η σύνθεσή σας\nΚαθαρισμός\nΣύνολο · 9 εξαρτήματα\n1.566,16 €\nΧαμηλότερη τιμή ανά προϊόν, χωρίς μεταφορικά· κάθε εξάρτημα μπορεί να είναι από διαφορετικό κατάστημα.\nΠροϋπολογισμός 1.000,00 €\nυπέρβαση 566,16 €\nΠροτεινόμενο τροφοδοτικό: ≥ 550 W · CPU TDP 65 W\n7 χωράνε · 1 πιθανότατα · 1 χωρίς επιβεβαίωση\nCPU\nCore Ultra 5 225\n161,99 €\nΜητρική\nAsus PRIME Z890-P WiFi\n209,90 €\nRAM\nDDR5 32GB (1×32GB) 5600MHz\n280,47 €\nGPU\nGigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC\n469,90 €\nΨύκτρα\nArctic Liquid Freezer III Pro 280\n65,82 €\nΔίσκος\nSamsung 990 Pro Heatsink 2TB\n239,99 €\nΚουτί\nBe Quiet Pure Base 600\n64,05 €\nΑνεμιστήρες\nThermaltake CT120 120mm ×2\n18,05 €\nΤροφοδοτικό\n850W Gold\n55,99 €\nΧωρίς επιβεβαίωση: Θέσεις ψυγείου: Μπροστά, Πλάι· δεν αναφέρεται αν χωράει ψυγείο 280 mm.\nΠιθανότατα χωράει: Αναφέρεται μόνο ο αριθμός θέσεων ανεμιστήρων, όχι τα μεγέθη τους.\nΤο κουτί έχει 2 θέσεις ανεμιστήρων (κάποιες μπορεί να έχουν ήδη ανεμιστήρα).",
+        "barWidth": "100%",
+        "rows": [
+          "CPU Core Ultra 5 225 161,99 €",
+          "Μητρική Asus PRIME Z890-P WiFi 209,90 €",
+          "RAM DDR5 32GB (1×32GB) 5600MHz 280,47 €",
+          "GPU Gigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC 469,90 €",
+          "Ψύκτρα Arctic Liquid Freezer III Pro 280 65,82 €",
+          "Δίσκος Samsung 990 Pro Heatsink 2TB 239,99 €",
+          "Κουτί Be Quiet Pure Base 600 64,05 €",
+          "Ανεμιστήρες Thermaltake CT120 120mm ×2 18,05 €",
+          "Τροφοδοτικό 850W Gold 55,99 €"
+        ]
+      },
+      "sumOfShownPrices": 1566.16,
+      "reviewTotal": 1566.16,
+      "saved": "{\"cpu\":\"Core Ultra 5 225|?\",\"mobo\":\"asusprimez890pwifi\",\"ram\":\"DDR5 32GB (1×32GB) 5600MHz Desktop\",\"gpu\":\"bestprice:2162473844\",\"cooler\":\"arcticliquidfreezeriiipro280\",\"storage\":\"samsung990proheatsink2tbssd\",\"case\":\"bequietpurebase600\",\"fan\":\"thermaltakect120120mm2\",\"psu\":\"850W Gold ATX\",\"use\":\"gaming\",\"budget\":1000}",
+      "errors": [],
+      "shots": [
+        "001-g1-el-1366-use.jpg",
+        "002-g1-el-1366-step2.jpg",
+        "003-g1-el-1366-step8.jpg",
+        "004-g1-el-1366-review.jpg"
+      ]
+    },
+    "g2": {
+      "failed": "TimeoutError: locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('section[aria-labelledby=\"step-title\"]').locator('ul.grid > li.card').filter({ hasText: /με ψύκτρα|cooler included/ }).filter({ hasText: /Ryzen 5 7600$|Ryzen 5 7600\\s/ }).first().locator('.line-clamp-2')\u001b[22m\n"
+    }
+  },
+  "en-1366": {
+    "g1": {
+      "picks": [
+        {
+          "step": "Processor",
+          "name": "Core Ultra 5 225",
+          "priceText": "€161.99",
+          "label": "BestPrice"
+        },
+        {
+          "step": "Motherboard",
+          "name": "Asus PRIME Z890-P WiFi",
+          "priceText": "€209.90",
+          "label": "Fits"
+        },
+        {
+          "step": "Memory (RAM)",
+          "name": "DDR5 32GB (1×32GB) 5600MHz",
+          "priceText": "€280.47",
+          "label": "Fits"
+        },
+        {
+          "step": "Graphics card",
+          "name": "Gigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC",
+          "priceText": "€469.90",
+          "label": "BestPrice"
+        },
+        {
+          "step": "CPU cooler",
+          "name": "Arctic Liquid Freezer III Pro 280",
+          "priceText": "€65.82",
+          "label": "Fits"
+        },
+        {
+          "step": "Storage",
+          "name": "Samsung 990 Pro Heatsink 2TB",
+          "priceText": "€239.99",
+          "label": "Snif"
+        },
+        {
+          "step": "Case",
+          "name": "Be Quiet Pure Base 600",
+          "priceText": "€64.05",
+          "label": "Fit not verified"
+        },
+        {
+          "step": "Power supply",
+          "name": "850W Gold",
+          "priceText": "€55.99",
+          "label": "Fits"
+        },
+        {
+          "step": "Case fans",
+          "name": "Thermaltake CT120 120mm ×2",
+          "priceText": "€18.05",
+          "label": "Likely fits"
+        }
+      ],
+      "review": {
+        "items": [
+          {
+            "label": "Processor",
+            "name": "Core Ultra 5 225",
+            "price": "€161.99",
+            "href": "https://www.bestprice.gr/item/2160277450/intel-core-ultra-5-225-box-epexergastis-10-pyrinon-gia-socket-1851.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Motherboard",
+            "name": "Asus PRIME Z890-P WiFi",
+            "price": "€209.90",
+            "href": "https://www.e-shop.gr/mitriki-asus-prime-z890-pwifi-d5-lga1851-retail-p-PER.608655",
+            "fit": "Fits"
+          },
+          {
+            "label": "Memory (RAM)",
+            "name": "DDR5 32GB (1×32GB) 5600MHz",
+            "price": "€280.47",
+            "href": "https://www.bestprice.gr/item/2160475229/lexar-32gb-ddr5-ram-5600mhz-c46-ld5s32g56c46st-bgs.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Graphics card",
+            "name": "Gigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC",
+            "price": "€469.90",
+            "href": "https://www.bestprice.gr/item/2162473844/gigabyte-geforce-rtx-5060-8gb-gddr7-windforce-max-oc-karta-grafikon.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "CPU cooler",
+            "name": "Arctic Liquid Freezer III Pro 280",
+            "price": "€65.82",
+            "href": "https://www.bestprice.gr/item/2160893573/arctic-liquid-freezer-iii-pro-280-ydropsyxi-cpu-140mm-gia-socket-1700-1851-am4-am5.html",
+            "fit": "Fit not verified"
+          },
+          {
+            "label": "Storage",
+            "name": "Samsung 990 Pro Heatsink 2TB",
+            "price": "€239.99",
+            "href": "https://www.snif.gr/showproduct/34671499/diskos-ssd-samsung-990-pro-with-heatsink-nvme-m-2",
+            "fit": "Snif"
+          },
+          {
+            "label": "Case",
+            "name": "Be Quiet Pure Base 600",
+            "price": "€64.05",
+            "href": "https://www.bestprice.gr/item/2154998381/be-quiet-pure-base-600-silver-midi-tower-kouti-ypologisti.html",
+            "fit": "Fit not verified"
+          },
+          {
+            "label": "Case fans",
+            "name": "Thermaltake CT120 120mm ×2",
+            "price": "€18.05",
+            "href": "https://www.bestprice.gr/item/2158740964/thermaltake-ct120-case-fan-120mm-me-syndesi-4-pin-pwm-2tmch-white.html",
+            "fit": "Likely fits"
+          },
+          {
+            "label": "Power supply",
+            "name": "850W Gold",
+            "price": "€55.99",
+            "href": "https://www.bestprice.gr/item/2164321942/adata-xpg-kyber-ii-850w-trofodotiko-ypologisti-atch-3-1-80-plus-gold.html",
+            "fit": "Fits"
+          }
+        ],
+        "total": "€1,566.16",
+        "link": "http://localhost:4180/#builder?cpu=Core+Ultra+5+225%7C%3F&mobo=asusprimez890pwifi&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop&gpu=bestprice%3A2162473844&cooler=arcticliquidfreezeriiipro280&storage=samsung990proheatsink2tbssd&case=bequietpurebase600&fan=thermaltakect120120mm2&psu=850W+Gold+ATX&use=gaming&budget=1000"
+      },
+      "summary": {
+        "lang": "en",
+        "text": "Your build\nClear build\nTotal · 9 parts\n€1,566.16\nLowest price per product, before shipping; each part may come from a different shop.\nBudget €1,000.00\nover €566.16\nRecommended PSU: ≥ 550 W · CPU TDP 65 W\n7 fit · 1 likely · 1 not verified\nCPU\nCore Ultra 5 225\n€161.99\nBoard\nAsus PRIME Z890-P WiFi\n€209.90\nRAM\nDDR5 32GB (1×32GB) 5600MHz\n€280.47\nGPU\nGigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC\n€469.90\nCooler\nArctic Liquid Freezer III Pro 280\n€65.82\nStorage\nSamsung 990 Pro Heatsink 2TB\n€239.99\nCase\nBe Quiet Pure Base 600\n€64.05\nFans\nThermaltake CT120 120mm ×2\n€18.05\nPSU\n850W Gold\n€55.99\nFit not verified: Radiator positions: Μπροστά, Πλάι; whether a 280 mm radiator fits is not stated.\nLikely fits: Only the number of fan positions is stated, not their sizes.\nThe case has 2 fan positions (some may already have fans).",
+        "barWidth": "100%",
+        "rows": [
+          "CPU Core Ultra 5 225 €161.99",
+          "Board Asus PRIME Z890-P WiFi €209.90",
+          "RAM DDR5 32GB (1×32GB) 5600MHz €280.47",
+          "GPU Gigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC €469.90",
+          "Cooler Arctic Liquid Freezer III Pro 280 €65.82",
+          "Storage Samsung 990 Pro Heatsink 2TB €239.99",
+          "Case Be Quiet Pure Base 600 €64.05",
+          "Fans Thermaltake CT120 120mm ×2 €18.05",
+          "PSU 850W Gold €55.99"
+        ]
+      },
+      "sumOfShownPrices": 1566.16,
+      "reviewTotal": 1566.16,
+      "saved": "{\"cpu\":\"Core Ultra 5 225|?\",\"mobo\":\"asusprimez890pwifi\",\"ram\":\"DDR5 32GB (1×32GB) 5600MHz Desktop\",\"gpu\":\"bestprice:2162473844\",\"cooler\":\"arcticliquidfreezeriiipro280\",\"storage\":\"samsung990proheatsink2tbssd\",\"case\":\"bequietpurebase600\",\"fan\":\"thermaltakect120120mm2\",\"psu\":\"850W Gold ATX\",\"use\":\"gaming\",\"budget\":1000}",
+      "errors": [],
+      "shots": [
+        "005-g1-en-1366-use.jpg",
+        "006-g1-en-1366-step2.jpg",
+        "007-g1-en-1366-step8.jpg",
+        "008-g1-en-1366-review.jpg"
+      ]
+    },
+    "g2": {
+      "failed": "TimeoutError: locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('section[aria-labelledby=\"step-title\"]').locator('ul.grid > li.card').filter({ hasText: /με ψύκτρα|cooler included/ }).filter({ hasText: /Ryzen 5 7600$|Ryzen 5 7600\\s/ }).first().locator('.line-clamp-2')\u001b[22m\n"
+    }
+  },
+  "el-360": {
+    "g1": {
+      "picks": [
+        {
+          "step": "Επεξεργαστής",
+          "name": "Core Ultra 5 225",
+          "priceText": "161,99 €",
+          "label": "BestPrice"
+        },
+        {
+          "step": "Μητρική",
+          "name": "Asus PRIME Z890-P WiFi",
+          "priceText": "209,90 €",
+          "label": "Χωράει"
+        },
+        {
+          "step": "Μνήμη RAM",
+          "name": "DDR5 32GB (1×32GB) 5600MHz",
+          "priceText": "280,47 €",
+          "label": "Χωράει"
+        },
+        {
+          "step": "Κάρτα γραφικών",
+          "name": "Gigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC",
+          "priceText": "469,90 €",
+          "label": "BestPrice"
+        },
+        {
+          "step": "Ψύκτρα επεξεργαστή",
+          "name": "Arctic Liquid Freezer III Pro 280",
+          "priceText": "65,82 €",
+          "label": "Χωράει"
+        },
+        {
+          "step": "Αποθήκευση",
+          "name": "Samsung 990 Pro Heatsink 2TB",
+          "priceText": "239,99 €",
+          "label": "Snif"
+        },
+        {
+          "step": "Κουτί",
+          "name": "Be Quiet Pure Base 600",
+          "priceText": "64,05 €",
+          "label": "Χωρίς επιβεβαίωση"
+        },
+        {
+          "step": "Τροφοδοτικό",
+          "name": "850W Gold",
+          "priceText": "55,99 €",
+          "label": "Χωράει"
+        },
+        {
+          "step": "Ανεμιστήρες κουτιού",
+          "name": "Thermaltake CT120 120mm ×2",
+          "priceText": "18,05 €",
+          "label": "Πιθανότατα χωράει"
+        }
+      ],
+      "review": {
+        "items": [
+          {
+            "label": "Επεξεργαστής",
+            "name": "Core Ultra 5 225",
+            "price": "161,99 €",
+            "href": "https://www.bestprice.gr/item/2160277450/intel-core-ultra-5-225-box-epexergastis-10-pyrinon-gia-socket-1851.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μητρική",
+            "name": "Asus PRIME Z890-P WiFi",
+            "price": "209,90 €",
+            "href": "https://www.e-shop.gr/mitriki-asus-prime-z890-pwifi-d5-lga1851-retail-p-PER.608655",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μνήμη RAM",
+            "name": "DDR5 32GB (1×32GB) 5600MHz",
+            "price": "280,47 €",
+            "href": "https://www.bestprice.gr/item/2160475229/lexar-32gb-ddr5-ram-5600mhz-c46-ld5s32g56c46st-bgs.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Κάρτα γραφικών",
+            "name": "Gigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC",
+            "price": "469,90 €",
+            "href": "https://www.bestprice.gr/item/2162473844/gigabyte-geforce-rtx-5060-8gb-gddr7-windforce-max-oc-karta-grafikon.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Ψύκτρα επεξεργαστή",
+            "name": "Arctic Liquid Freezer III Pro 280",
+            "price": "65,82 €",
+            "href": "https://www.bestprice.gr/item/2160893573/arctic-liquid-freezer-iii-pro-280-ydropsyxi-cpu-140mm-gia-socket-1700-1851-am4-am5.html",
+            "fit": "Χωρίς επιβεβαίωση"
+          },
+          {
+            "label": "Αποθήκευση",
+            "name": "Samsung 990 Pro Heatsink 2TB",
+            "price": "239,99 €",
+            "href": "https://www.snif.gr/showproduct/34671499/diskos-ssd-samsung-990-pro-with-heatsink-nvme-m-2",
+            "fit": "Snif"
+          },
+          {
+            "label": "Κουτί",
+            "name": "Be Quiet Pure Base 600",
+            "price": "64,05 €",
+            "href": "https://www.bestprice.gr/item/2154998381/be-quiet-pure-base-600-silver-midi-tower-kouti-ypologisti.html",
+            "fit": "Χωρίς επιβεβαίωση"
+          },
+          {
+            "label": "Ανεμιστήρες κουτιού",
+            "name": "Thermaltake CT120 120mm ×2",
+            "price": "18,05 €",
+            "href": "https://www.bestprice.gr/item/2158740964/thermaltake-ct120-case-fan-120mm-me-syndesi-4-pin-pwm-2tmch-white.html",
+            "fit": "Πιθανότατα χωράει"
+          },
+          {
+            "label": "Τροφοδοτικό",
+            "name": "850W Gold",
+            "price": "55,99 €",
+            "href": "https://www.bestprice.gr/item/2164321942/adata-xpg-kyber-ii-850w-trofodotiko-ypologisti-atch-3-1-80-plus-gold.html",
+            "fit": "Χωράει"
+          }
+        ],
+        "total": "1.566,16 €",
+        "link": "http://localhost:4180/#builder?cpu=Core+Ultra+5+225%7C%3F&mobo=asusprimez890pwifi&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop&gpu=bestprice%3A2162473844&cooler=arcticliquidfreezeriiipro280&storage=samsung990proheatsink2tbssd&case=bequietpurebase600&fan=thermaltakect120120mm2&psu=850W+Gold+ATX&use=gaming&budget=1000"
+      },
+      "summary": {
+        "lang": "el",
+        "text": "Σύνολο · 9 εξαρτήματα\n1.566,16 €\nΛεπτομέρειες",
+        "barWidth": "100%",
+        "rows": [
+          "CPUCore Ultra 5 225161,99 €",
+          "ΜητρικήAsus PRIME Z890-P WiFi209,90 €",
+          "RAMDDR5 32GB (1×32GB) 5600MHz280,47 €",
+          "GPUGigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC469,90 €",
+          "ΨύκτραArctic Liquid Freezer III Pro 28065,82 €",
+          "ΔίσκοςSamsung 990 Pro Heatsink 2TB239,99 €",
+          "ΚουτίBe Quiet Pure Base 60064,05 €",
+          "ΑνεμιστήρεςThermaltake CT120 120mm ×218,05 €",
+          "Τροφοδοτικό850W Gold55,99 €"
+        ]
+      },
+      "sumOfShownPrices": 1566.16,
+      "reviewTotal": 1566.16,
+      "saved": "{\"cpu\":\"Core Ultra 5 225|?\",\"mobo\":\"asusprimez890pwifi\",\"ram\":\"DDR5 32GB (1×32GB) 5600MHz Desktop\",\"gpu\":\"bestprice:2162473844\",\"cooler\":\"arcticliquidfreezeriiipro280\",\"storage\":\"samsung990proheatsink2tbssd\",\"case\":\"bequietpurebase600\",\"fan\":\"thermaltakect120120mm2\",\"psu\":\"850W Gold ATX\",\"use\":\"gaming\",\"budget\":1000}",
+      "errors": [],
+      "shots": [
+        "009-g1-el-360-use.jpg",
+        "010-g1-el-360-step2.jpg",
+        "011-g1-el-360-step8.jpg",
+        "012-g1-el-360-review.jpg",
+        "013-g1-el-360-summary-open.jpg"
+      ]
+    },
+    "g2": {
+      "failed": "TimeoutError: locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('section[aria-labelledby=\"step-title\"]').locator('ul.grid > li.card').filter({ hasText: /με ψύκτρα|cooler included/ }).filter({ hasText: /Ryzen 5 7600$|Ryzen 5 7600\\s/ }).first().locator('.line-clamp-2')\u001b[22m\n"
+    }
+  },
+  "en-360": {
+    "g1": {
+      "picks": [
+        {
+          "step": "Processor",
+          "name": "Core Ultra 5 225",
+          "priceText": "€161.99",
+          "label": "BestPrice"
+        },
+        {
+          "step": "Motherboard",
+          "name": "Asus PRIME Z890-P WiFi",
+          "priceText": "€209.90",
+          "label": "Fits"
+        },
+        {
+          "step": "Memory (RAM)",
+          "name": "DDR5 32GB (1×32GB) 5600MHz",
+          "priceText": "€280.47",
+          "label": "Fits"
+        },
+        {
+          "step": "Graphics card",
+          "name": "Gigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC",
+          "priceText": "€469.90",
+          "label": "BestPrice"
+        },
+        {
+          "step": "CPU cooler",
+          "name": "Arctic Liquid Freezer III Pro 280",
+          "priceText": "€65.82",
+          "label": "Fits"
+        },
+        {
+          "step": "Storage",
+          "name": "Samsung 990 Pro Heatsink 2TB",
+          "priceText": "€239.99",
+          "label": "Snif"
+        },
+        {
+          "step": "Case",
+          "name": "Be Quiet Pure Base 600",
+          "priceText": "€64.05",
+          "label": "Fit not verified"
+        },
+        {
+          "step": "Power supply",
+          "name": "850W Gold",
+          "priceText": "€55.99",
+          "label": "Fits"
+        },
+        {
+          "step": "Case fans",
+          "name": "Thermaltake CT120 120mm ×2",
+          "priceText": "€18.05",
+          "label": "Likely fits"
+        }
+      ],
+      "review": {
+        "items": [
+          {
+            "label": "Processor",
+            "name": "Core Ultra 5 225",
+            "price": "€161.99",
+            "href": "https://www.bestprice.gr/item/2160277450/intel-core-ultra-5-225-box-epexergastis-10-pyrinon-gia-socket-1851.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Motherboard",
+            "name": "Asus PRIME Z890-P WiFi",
+            "price": "€209.90",
+            "href": "https://www.e-shop.gr/mitriki-asus-prime-z890-pwifi-d5-lga1851-retail-p-PER.608655",
+            "fit": "Fits"
+          },
+          {
+            "label": "Memory (RAM)",
+            "name": "DDR5 32GB (1×32GB) 5600MHz",
+            "price": "€280.47",
+            "href": "https://www.bestprice.gr/item/2160475229/lexar-32gb-ddr5-ram-5600mhz-c46-ld5s32g56c46st-bgs.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Graphics card",
+            "name": "Gigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC",
+            "price": "€469.90",
+            "href": "https://www.bestprice.gr/item/2162473844/gigabyte-geforce-rtx-5060-8gb-gddr7-windforce-max-oc-karta-grafikon.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "CPU cooler",
+            "name": "Arctic Liquid Freezer III Pro 280",
+            "price": "€65.82",
+            "href": "https://www.bestprice.gr/item/2160893573/arctic-liquid-freezer-iii-pro-280-ydropsyxi-cpu-140mm-gia-socket-1700-1851-am4-am5.html",
+            "fit": "Fit not verified"
+          },
+          {
+            "label": "Storage",
+            "name": "Samsung 990 Pro Heatsink 2TB",
+            "price": "€239.99",
+            "href": "https://www.snif.gr/showproduct/34671499/diskos-ssd-samsung-990-pro-with-heatsink-nvme-m-2",
+            "fit": "Snif"
+          },
+          {
+            "label": "Case",
+            "name": "Be Quiet Pure Base 600",
+            "price": "€64.05",
+            "href": "https://www.bestprice.gr/item/2154998381/be-quiet-pure-base-600-silver-midi-tower-kouti-ypologisti.html",
+            "fit": "Fit not verified"
+          },
+          {
+            "label": "Case fans",
+            "name": "Thermaltake CT120 120mm ×2",
+            "price": "€18.05",
+            "href": "https://www.bestprice.gr/item/2158740964/thermaltake-ct120-case-fan-120mm-me-syndesi-4-pin-pwm-2tmch-white.html",
+            "fit": "Likely fits"
+          },
+          {
+            "label": "Power supply",
+            "name": "850W Gold",
+            "price": "€55.99",
+            "href": "https://www.bestprice.gr/item/2164321942/adata-xpg-kyber-ii-850w-trofodotiko-ypologisti-atch-3-1-80-plus-gold.html",
+            "fit": "Fits"
+          }
+        ],
+        "total": "€1,566.16",
+        "link": "http://localhost:4180/#builder?cpu=Core+Ultra+5+225%7C%3F&mobo=asusprimez890pwifi&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop&gpu=bestprice%3A2162473844&cooler=arcticliquidfreezeriiipro280&storage=samsung990proheatsink2tbssd&case=bequietpurebase600&fan=thermaltakect120120mm2&psu=850W+Gold+ATX&use=gaming&budget=1000"
+      },
+      "summary": {
+        "lang": "en",
+        "text": "Total · 9 parts\n€1,566.16\nDetails",
+        "barWidth": "100%",
+        "rows": [
+          "CPUCore Ultra 5 225€161.99",
+          "BoardAsus PRIME Z890-P WiFi€209.90",
+          "RAMDDR5 32GB (1×32GB) 5600MHz€280.47",
+          "GPUGigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC€469.90",
+          "CoolerArctic Liquid Freezer III Pro 280€65.82",
+          "StorageSamsung 990 Pro Heatsink 2TB€239.99",
+          "CaseBe Quiet Pure Base 600€64.05",
+          "FansThermaltake CT120 120mm ×2€18.05",
+          "PSU850W Gold€55.99"
+        ]
+      },
+      "sumOfShownPrices": 1566.16,
+      "reviewTotal": 1566.16,
+      "saved": "{\"cpu\":\"Core Ultra 5 225|?\",\"mobo\":\"asusprimez890pwifi\",\"ram\":\"DDR5 32GB (1×32GB) 5600MHz Desktop\",\"gpu\":\"bestprice:2162473844\",\"cooler\":\"arcticliquidfreezeriiipro280\",\"storage\":\"samsung990proheatsink2tbssd\",\"case\":\"bequietpurebase600\",\"fan\":\"thermaltakect120120mm2\",\"psu\":\"850W Gold ATX\",\"use\":\"gaming\",\"budget\":1000}",
+      "errors": [],
+      "shots": [
+        "014-g1-en-360-use.jpg",
+        "015-g1-en-360-step2.jpg",
+        "016-g1-en-360-step8.jpg",
+        "017-g1-en-360-review.jpg",
+        "018-g1-en-360-summary-open.jpg"
+      ]
+    },
+    "g2": {
+      "failed": "TimeoutError: locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('section[aria-labelledby=\"step-title\"]').locator('ul.grid > li.card').filter({ hasText: /με ψύκτρα|cooler included/ }).filter({ hasText: /Ryzen 5 7600$|Ryzen 5 7600\\s/ }).first().locator('.line-clamp-2')\u001b[22m\n"
+    }
+  }
+}

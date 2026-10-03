@@ -1,0 +1,95 @@
+{
+  "id": "S44",
+  "title": "Air cooler 155 mm + case that takes 160 mm: warning",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 7 9700X|false",
+      "modelKey": "Ryzen 7 9700X",
+      "name": "Ryzen 7 9700X",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "eshop",
+        "id": "eshop:PER.275274",
+        "title": "AMD RYZEN 7 9700X 5.5GHZ 8-CORE TRAY",
+        "price": 234.9
+      },
+      "fields": {
+        "socket": "AM5",
+        "igpu": true,
+        "coolerIncluded": false,
+        "packaging": "Tray",
+        "tdp": 65,
+        "cores": 8
+      }
+    },
+    {
+      "category": "cooler",
+      "key": "endorfyfera5",
+      "modelKey": "endorfyfera5",
+      "name": "Endorfy Fera 5",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2158168838",
+        "title": "Endorfy Fera 5",
+        "price": 23.08
+      },
+      "fields": {
+        "type": "Air",
+        "radiator": null,
+        "sockets": "AM2,AM2+,AM3,AM3+,AM4,AM5,FM1,FM2,FM2+,LGA1150,LGA1151,LGA1155,LGA1156,LGA1200,LGA1366,LGA1700,LGA1851,LGA2011,LGA2011-3,LGA2066,LGA775",
+        "heightMm": 155
+      }
+    },
+    {
+      "category": "case",
+      "key": "kolinkobservatorymxmesh",
+      "modelKey": "kolinkobservatorymxmesh",
+      "name": "Kolink Observatory MX Mesh",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159268101",
+        "title": "Kolink Observatory MX Mesh ARGB Tempered Glass Black / White Gaming Midi Tower με Πλαϊνό Παράθυρο",
+        "price": 51.1
+      },
+      "fields": {
+        "size": "Midi Tower",
+        "maxBoard": "ATX",
+        "gpuMaxMm": 330,
+        "coolerMaxMm": 160,
+        "fanSlots": 5,
+        "radiatorMounts": "Μπροστά, Πίσω",
+        "fanMounts": null,
+        "fansIncluded": [
+          {
+            "pos": null,
+            "size": null,
+            "n": 5
+          }
+        ],
+        "hasFans": null,
+        "radiators": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 8,
+      "level": "warning"
+    },
+    {
+      "rule": 10,
+      "level": "pass"
+    }
+  ],
+  "why": "Fits with 5 mm to spare; plan rule 8 warns within 5 mm.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

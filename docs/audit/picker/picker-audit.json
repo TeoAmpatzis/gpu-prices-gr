@@ -1,0 +1,237 @@
+[
+  {
+    "id": "P1",
+    "step": "mobo",
+    "params": {
+      "cpu": "Ryzen 7 9700X|false"
+    },
+    "what": "AM5 CPU chosen → boards with another socket must be hidden (rule 1)",
+    "countLine": "449 shown · 574 incompatible hidden",
+    "shownCount": 449,
+    "hiddenCount": 574,
+    "cardsWithFilterOn": 449,
+    "cardsWithFilterOff": 1023,
+    "greyedWithFilterOff": 574,
+    "oracle": {
+      "fail": 574,
+      "pass": 449,
+      "total": 1023
+    },
+    "a_hiddenEqualsGreyed": true,
+    "a_hiddenEqualsOracle": true,
+    "b_hiddenButPasses": [],
+    "b_hiddenButPassesCount": 0,
+    "c_failingButChoosable": [],
+    "c_failingButChoosableCount": 0,
+    "c_failingNotGreyedCount": 0,
+    "errors": []
+  },
+  {
+    "id": "P2",
+    "step": "ram",
+    "params": {
+      "mobo": "asrocka620mhdvm2"
+    },
+    "what": "DDR5 board with 2 slots chosen → DDR4 kits and kits of more than 2 sticks must be hidden (rules 2, 3)",
+    "countLine": "111 shown · 128 incompatible hidden",
+    "shownCount": 111,
+    "hiddenCount": 128,
+    "cardsWithFilterOn": 111,
+    "cardsWithFilterOff": 239,
+    "greyedWithFilterOff": 128,
+    "oracle": {
+      "fail": 128,
+      "pass": 111,
+      "total": 239
+    },
+    "a_hiddenEqualsGreyed": true,
+    "a_hiddenEqualsOracle": true,
+    "b_hiddenButPasses": [],
+    "b_hiddenButPassesCount": 0,
+    "c_failingButChoosable": [],
+    "c_failingButChoosableCount": 0,
+    "c_failingNotGreyedCount": 0,
+    "errors": []
+  },
+  {
+    "id": "P3",
+    "step": "gpu",
+    "params": {
+      "case": "kolinkobservatorymxmesh"
+    },
+    "what": "Case taking cards up to 330 mm → measured cards over 330 mm must be hidden; unmeasured ones shown (rule 6)",
+    "countLine": "1371 shown · 196 incompatible hidden",
+    "shownCount": 1371,
+    "hiddenCount": 196,
+    "cardsWithFilterOn": 1371,
+    "cardsWithFilterOff": 1567,
+    "greyedWithFilterOff": 196,
+    "oracle": {
+      "fail": 196,
+      "pass": 1371,
+      "total": 1567
+    },
+    "a_hiddenEqualsGreyed": true,
+    "a_hiddenEqualsOracle": true,
+    "b_hiddenButPasses": [],
+    "b_hiddenButPassesCount": 0,
+    "c_failingButChoosable": [],
+    "c_failingButChoosableCount": 0,
+    "c_failingNotGreyedCount": 0,
+    "errors": []
+  },
+  {
+    "id": "P4",
+    "step": "cooler",
+    "params": {
+      "cpu": "Ryzen 7 9700X|false",
+      "case": "kolinkobservatorymxmesh"
+    },
+    "what": "AM5 CPU + case taking coolers up to 160 mm → coolers that list sockets without AM5, and air coolers over 160 mm, must be hidden (rules 8, 10)",
+    "countLine": "1985 shown · 128 incompatible hidden",
+    "shownCount": 1985,
+    "hiddenCount": 128,
+    "cardsWithFilterOn": 1985,
+    "cardsWithFilterOff": 2113,
+    "greyedWithFilterOff": 128,
+    "oracle": {
+      "fail": 128,
+      "pass": 1985,
+      "total": 2113
+    },
+    "a_hiddenEqualsGreyed": true,
+    "a_hiddenEqualsOracle": true,
+    "b_hiddenButPasses": [],
+    "b_hiddenButPassesCount": 0,
+    "c_failingButChoosable": [],
+    "c_failingButChoosableCount": 0,
+    "c_failingNotGreyedCount": 0,
+    "errors": []
+  },
+  {
+    "id": "P5",
+    "step": "psu",
+    "params": {
+      "cpu": "Ryzen 7 9700X|false",
+      "gpu": "bestprice:2160322211"
+    },
+    "what": "RTX 5080 (card maker: 850 W) chosen → power supplies under 850 W must be hidden (rule 14)",
+    "countLine": "56 shown · 83 incompatible hidden",
+    "shownCount": 56,
+    "hiddenCount": 83,
+    "cardsWithFilterOn": 56,
+    "cardsWithFilterOff": 139,
+    "greyedWithFilterOff": 83,
+    "oracle": {
+      "fail": 83,
+      "pass": 56,
+      "total": 139
+    },
+    "a_hiddenEqualsGreyed": true,
+    "a_hiddenEqualsOracle": true,
+    "b_hiddenButPasses": [],
+    "b_hiddenButPassesCount": 0,
+    "c_failingButChoosable": [],
+    "c_failingButChoosableCount": 0,
+    "c_failingNotGreyedCount": 0,
+    "errors": []
+  },
+  {
+    "id": "P6",
+    "step": "fan",
+    "params": {
+      "case": "kolinkobservatoryhfmesh"
+    },
+    "what": "Case whose data say fanSlots = 1 (but 6 fans included per its own titles) → by the data, packs of more than 1 fan fail; in reality the case has at least 6 positions",
+    "countLine": "1157 shown · 563 incompatible hidden",
+    "shownCount": 1157,
+    "hiddenCount": 563,
+    "cardsWithFilterOn": 1157,
+    "cardsWithFilterOff": 1720,
+    "greyedWithFilterOff": 563,
+    "oracle": {
+      "fail": 563,
+      "pass": 1157,
+      "total": 1720
+    },
+    "a_hiddenEqualsGreyed": true,
+    "a_hiddenEqualsOracle": true,
+    "b_hiddenButPasses": [],
+    "b_hiddenButPassesCount": 0,
+    "c_failingButChoosable": [],
+    "c_failingButChoosableCount": 0,
+    "c_failingNotGreyedCount": 0,
+    "errors": []
+  },
+  {
+    "id": "P7",
+    "step": "cpu",
+    "params": {
+      "gpu": "bestprice:2160322211",
+      "psu": "550W Bronze ATX"
+    },
+    "what": "RTX 5080 + 550 W PSU chosen → no CPU fails a rule by itself (the PSU is the problem): nothing should be hidden",
+    "countLine": "0 shown · 359 incompatible hidden",
+    "shownCount": 0,
+    "hiddenCount": 359,
+    "cardsWithFilterOn": 0,
+    "cardsWithFilterOff": 359,
+    "greyedWithFilterOff": 359,
+    "oracle": {
+      "fail": 0,
+      "pass": 359,
+      "total": 359
+    },
+    "a_hiddenEqualsGreyed": true,
+    "a_hiddenEqualsOracle": false,
+    "b_hiddenButPasses": [
+      "Core Ultra 5 225",
+      "Core Ultra 7 265",
+      "Ryzen 5 7600X",
+      "Ryzen 7 9700X",
+      "Core Ultra 5 225F",
+      "Core Ultra 7 265F",
+      "Ryzen 5 8500G",
+      "Ryzen 5 8600G",
+      "Ryzen 5 9600X",
+      "Ryzen 7 7700X",
+      "Ryzen 7 7800X3D",
+      "Ryzen 7 7800X3D",
+      "Ryzen 7 8700G",
+      "Ryzen 7 9800X3D",
+      "Ryzen 5 7500F"
+    ],
+    "b_hiddenButPassesCount": 359,
+    "c_failingButChoosable": [],
+    "c_failingButChoosableCount": 0,
+    "c_failingNotGreyedCount": 0,
+    "errors": []
+  },
+  {
+    "id": "P8",
+    "step": "cpu",
+    "params": {
+      "mobo": "asusprimeb760plusd4"
+    },
+    "what": "LGA1700 board chosen → CPUs with another socket must be hidden (rule 1)",
+    "countLine": "117 shown · 242 incompatible hidden",
+    "shownCount": 117,
+    "hiddenCount": 242,
+    "cardsWithFilterOn": 117,
+    "cardsWithFilterOff": 359,
+    "greyedWithFilterOff": 242,
+    "oracle": {
+      "fail": 242,
+      "pass": 117,
+      "total": 359
+    },
+    "a_hiddenEqualsGreyed": true,
+    "a_hiddenEqualsOracle": true,
+    "b_hiddenButPasses": [],
+    "b_hiddenButPassesCount": 0,
+    "c_failingButChoosable": [],
+    "c_failingButChoosableCount": 0,
+    "c_failingNotGreyedCount": 0,
+    "errors": []
+  }
+]

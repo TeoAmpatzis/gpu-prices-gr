@@ -1,0 +1,105 @@
+{
+  "id": "S33",
+  "title": "3 × 140 mm fans in a case whose maker lists only 2 × 140 mm positions: error",
+  "parts": [
+    {
+      "category": "fan",
+      "key": "havnh14140mm3",
+      "modelKey": "havnh14140mm3",
+      "name": "HAVN H14 140mm ×3",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:65071521",
+        "title": "HAVN H14 Case Fan 140mm",
+        "price": 31.35
+      },
+      "fields": {
+        "size": 140,
+        "pack": 3,
+        "connector": "4-pin PWM",
+        "fanType": null,
+        "pwm": true
+      }
+    },
+    {
+      "category": "case",
+      "key": "lianlio11dynamicminiv2flow",
+      "modelKey": "lianlio11dynamicminiv2flow",
+      "name": "Lian Li O11 Dynamic Mini V2 Flow",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2162529132",
+        "title": "Lian Li O11 Dynamic Mini V2 Flow Black Midi Tower με Πλαϊνό Παράθυρο",
+        "price": 90.3
+      },
+      "fields": {
+        "size": "Midi Tower",
+        "maxBoard": "ATX",
+        "gpuMaxMm": 400,
+        "coolerMaxMm": 160,
+        "fanSlots": 7,
+        "radiatorMounts": null,
+        "fanMounts": [
+          {
+            "n": 3,
+            "pos": "top",
+            "size": 120
+          },
+          {
+            "n": 2,
+            "pos": "top",
+            "size": 140
+          },
+          {
+            "n": 2,
+            "pos": "side",
+            "size": 120
+          },
+          {
+            "n": 3,
+            "pos": "bottom",
+            "size": 120
+          },
+          {
+            "n": 1,
+            "pos": "rear",
+            "size": 120
+          }
+        ],
+        "fansIncluded": [],
+        "hasFans": null,
+        "radiators": [
+          {
+            "pos": "top",
+            "sizes": [
+              240,
+              280,
+              360
+            ]
+          },
+          {
+            "pos": "side",
+            "sizes": [
+              240
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 21,
+      "level": "error"
+    }
+  ],
+  "why": "Lian Li lists 140 mm only on top (2); the third 140 mm fan has no position.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

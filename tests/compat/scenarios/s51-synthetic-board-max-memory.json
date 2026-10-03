@@ -1,0 +1,69 @@
+{
+  "id": "S51",
+  "title": "Two 2×32GB kits (128 GB) on a board with a 64 GB maximum: error (synthetic field)",
+  "parts": [
+    {
+      "category": "mobo",
+      "key": "gigabyteb650eagleax",
+      "modelKey": "gigabyteb650eagleax",
+      "name": "Gigabyte B650 Eagle AX",
+      "quantity": 1,
+      "synthetic": true,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159351395",
+        "title": "Gigabyte B650 Eagle AX",
+        "price": 114.66
+      },
+      "fields": {
+        "socket": "AM5",
+        "chipset": "B650",
+        "formFactor": "ATX",
+        "memory": "DDR5",
+        "ramSlots": 4,
+        "maxMemoryGB": 64
+      },
+      "syntheticFields": [
+        "maxMemoryGB"
+      ],
+      "note": "Real board, synthetic maximum (the real B650 Eagle AX takes more)."
+    },
+    {
+      "category": "ram",
+      "key": "DDR5 64GB (2×32GB) 6000MHz Desktop",
+      "modelKey": "DDR5 64GB (2×32GB) 6000MHz Desktop",
+      "name": "DDR5 64GB (2×32GB) 6000MHz",
+      "quantity": 2,
+      "synthetic": false,
+      "source": {
+        "site": "eshop",
+        "id": "eshop:PER.578880",
+        "title": "KINGSTON KF560C36BBEAK2-64 FURY BEAST RGB 64GB (2X32GB) DDR5 6000MHZ CL36 AMD EXPO DUAL KIT",
+        "price": 1069.05
+      },
+      "fields": {
+        "type": "DDR5",
+        "capacity": 64,
+        "modules": 2,
+        "speed": 6000,
+        "cas": 36,
+        "formFactor": "Desktop"
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 3,
+      "level": "pass"
+    },
+    {
+      "rule": 4,
+      "level": "error"
+    }
+  ],
+  "why": "128 GB exceeds the board’s 64 GB maximum; 4 sticks fit its 4 slots.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

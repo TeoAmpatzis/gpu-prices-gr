@@ -1,0 +1,42 @@
+﻿
+> gpu-prices-gr@0.1.0 build
+> tsc -b && vite build
+
+vite v5.4.21 building for production...
+transforming...
+✓ 1623 modules transformed.
+rendering chunks...
+[plugin builddraft-data] product photos: 9484 in the images index
+[plugin builddraft-data] data check passed against the live manifest
+[plugin builddraft-data] data files: gpu/list.json 295 KB, cpu/list.json 303 KB, mobo/list.json 684 KB, ram/list.json 1295 KB, storage/list.json 1373 KB, psu/list.json 627 KB, case/list.json 1845 KB, fan/list.json 1036 KB, cooler/list.json 1148 KB, builder.json 1576 KB, builder-extra.json 2950 KB, builder-storage.json 569 KB, manifest.json 1 KB
+computing gzip size...
+dist/data/manifest.json                 1.07 kB │ gzip:   0.36 kB
+dist/index.html                         3.25 kB │ gzip:   1.37 kB
+dist/data/cpu/detail.json             194.85 kB │ gzip:  25.87 kB
+dist/data/gpu/detail.json             224.79 kB │ gzip:  33.13 kB
+dist/data/gpu/list.json               302.37 kB │ gzip:  46.91 kB
+dist/data/cpu/list.json               306.48 kB │ gzip:  53.45 kB
+dist/data/mobo/detail.json            382.92 kB │ gzip:  52.59 kB
+dist/data/psu/detail.json             536.73 kB │ gzip:  82.50 kB
+dist/data/fan/detail.json             545.58 kB │ gzip:  77.05 kB
+dist/data/cooler/detail.json          562.29 kB │ gzip:  76.72 kB
+dist/data/builder-storage.json        568.43 kB │ gzip:  87.80 kB
+dist/data/psu/list.json               637.62 kB │ gzip: 107.57 kB
+dist/data/storage/detail.json         659.37 kB │ gzip:  95.20 kB
+dist/data/mobo/list.json              698.97 kB │ gzip: 114.25 kB
+dist/data/ram/detail.json             857.08 kB │ gzip: 132.85 kB
+dist/data/case/detail.json            957.53 kB │ gzip: 121.54 kB
+dist/data/fan/list.json             1,030.51 kB │ gzip: 155.75 kB
+dist/data/cooler/list.json          1,144.06 kB │ gzip: 174.57 kB
+dist/data/ram/list.json             1,301.59 kB │ gzip: 181.01 kB
+dist/data/storage/list.json         1,381.79 kB │ gzip: 182.71 kB
+dist/data/builder.json              1,601.71 kB │ gzip: 273.39 kB
+dist/data/case/list.json            1,771.57 kB │ gzip: 251.15 kB
+dist/data/builder-extra.json        2,866.42 kB │ gzip: 442.73 kB
+dist/assets/index-BMSLjQlN.css         40.92 kB │ gzip:   8.62 kB
+dist/assets/PriceChart-BqLB-4yJ.js      4.36 kB │ gzip:   2.14 kB
+dist/assets/InfoPage-YfWYvcNm.js       12.13 kB │ gzip:   5.97 kB
+dist/assets/Builder-inOAFH4-.js        72.98 kB │ gzip:  25.74 kB
+dist/assets/index-DXdWlXHC.js         232.98 kB │ gzip:  74.96 kB
+✓ built in 3.09s
+

@@ -1,0 +1,64 @@
+{
+  "id": "S19",
+  "title": "Midi Tower that states no board size + ATX board: note (estimate)",
+  "parts": [
+    {
+      "category": "mobo",
+      "key": "gigabyteb650eagleax",
+      "modelKey": "gigabyteb650eagleax",
+      "name": "Gigabyte B650 Eagle AX",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159351395",
+        "title": "Gigabyte B650 Eagle AX",
+        "price": 114.66
+      },
+      "fields": {
+        "socket": "AM5",
+        "chipset": "B650",
+        "formFactor": "ATX",
+        "memory": "DDR5",
+        "ramSlots": 4
+      }
+    },
+    {
+      "category": "case",
+      "key": "rampagesealite",
+      "modelKey": "rampagesealite",
+      "name": "Rampage Sealite",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2164133299",
+        "title": "Rampage Sealite Black Gaming Midi Tower RGB με Πλαϊνό Παράθυρο",
+        "price": 99.78
+      },
+      "fields": {
+        "size": "Midi Tower",
+        "maxBoard": null,
+        "gpuMaxMm": null,
+        "coolerMaxMm": null,
+        "fanSlots": null,
+        "radiatorMounts": null,
+        "fanMounts": null,
+        "fansIncluded": null,
+        "hasFans": null,
+        "radiators": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 5,
+      "level": "note"
+    }
+  ],
+  "why": "The largest board is only estimated from the case size, so the result is a note (plan rule 5).",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}
