@@ -1,0 +1,69 @@
+{
+  "id": "S60",
+  "title": "ATX power supply in a Midi Tower: pass",
+  "parts": [
+    {
+      "category": "psu",
+      "key": "650W Gold ATX",
+      "modelKey": "650W Gold ATX",
+      "name": "650W Gold",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159355769",
+        "title": "Gigabyte P650G 650W",
+        "price": 46.51
+      },
+      "fields": {
+        "watts": 650,
+        "efficiency": "Gold",
+        "modular": null,
+        "formFactor": "ATX"
+      }
+    },
+    {
+      "category": "case",
+      "key": "kolinkobservatorymxmesh",
+      "modelKey": "kolinkobservatorymxmesh",
+      "name": "Kolink Observatory MX Mesh",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159268101",
+        "title": "Kolink Observatory MX Mesh ARGB Tempered Glass Black / White Gaming Midi Tower με Πλαϊνό Παράθυρο",
+        "price": 51.1
+      },
+      "fields": {
+        "size": "Midi Tower",
+        "maxBoard": "ATX",
+        "gpuMaxMm": 330,
+        "coolerMaxMm": 160,
+        "fanSlots": 5,
+        "radiatorMounts": "Μπροστά, Πίσω",
+        "fanMounts": null,
+        "fansIncluded": [
+          {
+            "pos": null,
+            "size": null,
+            "n": 5
+          }
+        ],
+        "hasFans": null,
+        "radiators": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 16,
+      "level": "pass"
+    }
+  ],
+  "why": "Midi Tower cases take ATX power supplies (documented assumption until the case PSU-size field exists).",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

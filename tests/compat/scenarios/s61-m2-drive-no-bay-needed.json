@@ -1,0 +1,71 @@
+{
+  "id": "S61",
+  "title": "M.2 SSD + case without drive bay data: pass",
+  "parts": [
+    {
+      "category": "storage",
+      "key": "samsung990pro1tbssd",
+      "modelKey": "samsung990pro1tbssd",
+      "name": "Samsung 990 Pro 1TB",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2158093832",
+        "title": "Samsung 990 Pro SSD 1TB M.2 NVMe PCI Express 4.0",
+        "price": 205.79
+      },
+      "fields": {
+        "media": "SSD",
+        "iface": "NVMe",
+        "pcie": 4,
+        "formFactor": "M.2 2280",
+        "capacity": 1000,
+        "tier": "Consumer"
+      }
+    },
+    {
+      "category": "case",
+      "key": "kolinkobservatorymxmesh",
+      "modelKey": "kolinkobservatorymxmesh",
+      "name": "Kolink Observatory MX Mesh",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159268101",
+        "title": "Kolink Observatory MX Mesh ARGB Tempered Glass Black / White Gaming Midi Tower με Πλαϊνό Παράθυρο",
+        "price": 51.1
+      },
+      "fields": {
+        "size": "Midi Tower",
+        "maxBoard": "ATX",
+        "gpuMaxMm": 330,
+        "coolerMaxMm": 160,
+        "fanSlots": 5,
+        "radiatorMounts": "Μπροστά, Πίσω",
+        "fanMounts": null,
+        "fansIncluded": [
+          {
+            "pos": null,
+            "size": null,
+            "n": 5
+          }
+        ],
+        "hasFans": null,
+        "radiators": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 19,
+      "level": "pass"
+    }
+  ],
+  "why": "Rule 19 is about 3.5\" drives; an M.2 drive sits on the board and needs no bay.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

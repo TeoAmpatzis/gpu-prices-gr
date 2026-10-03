@@ -1,0 +1,60 @@
+{
+  "id": "S38",
+  "title": "DDR5 kit + AM4 DDR4 board: error",
+  "parts": [
+    {
+      "category": "mobo",
+      "key": "asusprimeb550plus",
+      "modelKey": "asusprimeb550plus",
+      "name": "Asus Prime B550-Plus",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2156165384",
+        "title": "Asus Prime B550-Plus",
+        "price": 92.87
+      },
+      "fields": {
+        "socket": "AM4",
+        "chipset": "B550",
+        "formFactor": "ATX",
+        "memory": "DDR4",
+        "ramSlots": 4
+      }
+    },
+    {
+      "category": "ram",
+      "key": "DDR5 32GB (2×16GB) 6000MHz Desktop",
+      "modelKey": "DDR5 32GB (2×16GB) 6000MHz Desktop",
+      "name": "DDR5 32GB (2×16GB) 6000MHz",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2157866269",
+        "title": "Patriot Viper Venom RGB 32GB (2X16GB) DDR5 RAM 6000MHz C36 Black PVVR532G600C36K",
+        "price": 466.35
+      },
+      "fields": {
+        "type": "DDR5",
+        "capacity": 32,
+        "modules": 2,
+        "speed": 6000,
+        "cas": 36,
+        "formFactor": "Desktop"
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 2,
+      "level": "error"
+    }
+  ],
+  "why": "DDR5 ≠ DDR4.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

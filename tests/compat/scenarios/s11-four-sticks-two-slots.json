@@ -1,0 +1,65 @@
+{
+  "id": "S11",
+  "title": "4 RAM sticks + board with 2 slots: error",
+  "planExample": "4 στικ RAM + μητρική με 2 θέσεις → Σφάλμα: θέσεις μνήμης",
+  "parts": [
+    {
+      "category": "mobo",
+      "key": "asrocka620mhdvm2",
+      "modelKey": "asrocka620mhdvm2",
+      "name": "ASRock A620M-HDV/M.2",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "eshop",
+        "id": "eshop:PER.607321",
+        "title": "ASROCK A620M-HDV/M.2+ RETAIL",
+        "price": 99.9
+      },
+      "fields": {
+        "socket": "AM5",
+        "chipset": "A620",
+        "formFactor": "Micro ATX",
+        "memory": "DDR5",
+        "ramSlots": 2
+      }
+    },
+    {
+      "category": "ram",
+      "key": "DDR5 64GB (4×16GB) 6000MHz Desktop",
+      "modelKey": "DDR5 64GB (4×16GB) 6000MHz Desktop",
+      "name": "DDR5 64GB (4×16GB) 6000MHz",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2158608818",
+        "title": "Kingston Fury Beast RGB 64GB (4X16GB) DDR5 6000MHz C40 Black",
+        "price": 1388.78
+      },
+      "fields": {
+        "type": "DDR5",
+        "capacity": 64,
+        "modules": 4,
+        "speed": 6000,
+        "cas": 40,
+        "formFactor": "Desktop"
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 2,
+      "level": "pass"
+    },
+    {
+      "rule": 3,
+      "level": "error"
+    }
+  ],
+  "why": "DDR5 matches, but a 4-stick kit needs 4 slots and the board states 2.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

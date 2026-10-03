@@ -1,0 +1,63 @@
+{
+  "id": "S49",
+  "title": "SFF case (PSU size not stated) + ATX power supply: note",
+  "parts": [
+    {
+      "category": "case",
+      "key": "silverstonesugo16cube",
+      "modelKey": "silverstonesugo16cube",
+      "name": "SilverStone Sugo 16 Cube",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:33857545",
+        "title": "Silverstone Sugo 16 Cube",
+        "price": 85.34
+      },
+      "fields": {
+        "size": "SFF / Cube",
+        "maxBoard": "Mini ITX",
+        "gpuMaxMm": null,
+        "coolerMaxMm": null,
+        "fanSlots": null,
+        "radiatorMounts": null,
+        "fanMounts": null,
+        "fansIncluded": null,
+        "hasFans": null,
+        "radiators": null
+      }
+    },
+    {
+      "category": "psu",
+      "key": "650W Gold ATX",
+      "modelKey": "650W Gold ATX",
+      "name": "650W Gold",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159355769",
+        "title": "Gigabyte P650G 650W",
+        "price": 46.51
+      },
+      "fields": {
+        "watts": 650,
+        "efficiency": "Gold",
+        "modular": null,
+        "formFactor": "ATX"
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 16,
+      "level": "note"
+    }
+  ],
+  "why": "The PSU sizes the case takes are not collected, so it cannot pass or fail.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

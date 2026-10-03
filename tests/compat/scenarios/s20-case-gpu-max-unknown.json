@@ -1,0 +1,64 @@
+{
+  "id": "S20",
+  "title": "Measured graphics card + case without a maximum card length: note",
+  "parts": [
+    {
+      "category": "gpu",
+      "key": "bestprice:2160617918",
+      "modelKey": "RTX 5070 12GB",
+      "name": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160617918",
+        "title": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+        "price": 847.96
+      },
+      "fields": {
+        "chip": "RTX 5070",
+        "partner": "Zotac",
+        "vram": 12,
+        "lengthMm": 241.5,
+        "minPsu": 650
+      }
+    },
+    {
+      "category": "case",
+      "key": "rampagesealite",
+      "modelKey": "rampagesealite",
+      "name": "Rampage Sealite",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2164133299",
+        "title": "Rampage Sealite Black Gaming Midi Tower RGB με Πλαϊνό Παράθυρο",
+        "price": 99.78
+      },
+      "fields": {
+        "size": "Midi Tower",
+        "maxBoard": null,
+        "gpuMaxMm": null,
+        "coolerMaxMm": null,
+        "fanSlots": null,
+        "radiatorMounts": null,
+        "fanMounts": null,
+        "fansIncluded": null,
+        "hasFans": null,
+        "radiators": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 6,
+      "level": "note"
+    }
+  ],
+  "why": "The case limit is unknown, so even a short card cannot be confirmed.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

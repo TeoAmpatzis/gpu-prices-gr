@@ -1,0 +1,109 @@
+{
+  "id": "S42",
+  "title": "AIO 360 mm in a case that takes 360 mm on top: pass",
+  "parts": [
+    {
+      "category": "cooler",
+      "key": "arcticliquidfreezeriiipro360",
+      "modelKey": "arcticliquidfreezeriiipro360",
+      "name": "Arctic Liquid Freezer III Pro 360",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160575906",
+        "title": "Arctic Liquid Freezer III Pro 360 Black 120mm για Socket 1700 / 1851 / AM4 / AM5",
+        "price": 71.09
+      },
+      "fields": {
+        "type": "AIO",
+        "radiator": 360,
+        "sockets": "AM4,AM5,LGA1700,LGA1851",
+        "heightMm": null
+      }
+    },
+    {
+      "category": "case",
+      "key": "lianlilancool207",
+      "modelKey": "lianlilancool207",
+      "name": "Lian Li Lancool 207",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160069370",
+        "title": "Lian Li Lancool 207 White Gaming Micro Tower RGB με Πλαϊνό Παράθυρο",
+        "price": 75.4
+      },
+      "fields": {
+        "size": "Mini Tower",
+        "maxBoard": "ATX",
+        "gpuMaxMm": 375,
+        "coolerMaxMm": 180,
+        "fanSlots": 3,
+        "radiatorMounts": "Κάτω, Μπροστά, Πίσω, Πλάι",
+        "fanMounts": [
+          {
+            "n": 2,
+            "pos": "front",
+            "size": 140
+          },
+          {
+            "n": 3,
+            "pos": "top",
+            "size": 120
+          },
+          {
+            "n": 2,
+            "pos": "top",
+            "size": 140
+          },
+          {
+            "n": 2,
+            "pos": "bottom",
+            "size": 120
+          },
+          {
+            "n": 1,
+            "pos": "rear",
+            "size": 120
+          }
+        ],
+        "fansIncluded": [
+          {
+            "n": 2,
+            "pos": "front",
+            "size": 140
+          },
+          {
+            "n": 2,
+            "pos": "bottom",
+            "size": 120
+          }
+        ],
+        "hasFans": null,
+        "radiators": [
+          {
+            "pos": "top",
+            "sizes": [
+              240,
+              280,
+              360
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 9,
+      "level": "pass"
+    }
+  ],
+  "why": "Lian Li lists top 240/280/360.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

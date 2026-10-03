@@ -1,0 +1,91 @@
+{
+  "id": "S58",
+  "title": "DDR5-6000 kit with a Ryzen 5 7600 (official DDR5-5200): note",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 5 7600|true",
+      "modelKey": "Ryzen 5 7600",
+      "name": "Ryzen 5 7600",
+      "quantity": 1,
+      "synthetic": true,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:40307498",
+        "title": "AMD Ryzen 5 7600 3.8GHz",
+        "price": 177.9
+      },
+      "fields": {
+        "socket": "AM5",
+        "igpu": true,
+        "coolerIncluded": true,
+        "packaging": null,
+        "tdp": 65,
+        "cores": 6,
+        "officialMemMhz": 5200
+      },
+      "syntheticFields": [
+        "officialMemMhz"
+      ],
+      "note": "Reference value: AMD lists DDR5-5200 for Ryzen 7000 (recalled, not fetched)."
+    },
+    {
+      "category": "mobo",
+      "key": "gigabyteb650eagleax",
+      "modelKey": "gigabyteb650eagleax",
+      "name": "Gigabyte B650 Eagle AX",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159351395",
+        "title": "Gigabyte B650 Eagle AX",
+        "price": 114.66
+      },
+      "fields": {
+        "socket": "AM5",
+        "chipset": "B650",
+        "formFactor": "ATX",
+        "memory": "DDR5",
+        "ramSlots": 4
+      }
+    },
+    {
+      "category": "ram",
+      "key": "DDR5 32GB (2×16GB) 6000MHz Desktop",
+      "modelKey": "DDR5 32GB (2×16GB) 6000MHz Desktop",
+      "name": "DDR5 32GB (2×16GB) 6000MHz",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2157866269",
+        "title": "Patriot Viper Venom RGB 32GB (2X16GB) DDR5 RAM 6000MHz C36 Black PVVR532G600C36K",
+        "price": 466.35
+      },
+      "fields": {
+        "type": "DDR5",
+        "capacity": 32,
+        "modules": 2,
+        "speed": 6000,
+        "cas": 36,
+        "formFactor": "Desktop"
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 2,
+      "level": "pass"
+    },
+    {
+      "rule": 25,
+      "level": "note"
+    }
+  ],
+  "why": "6000 MHz runs only with EXPO/XMP enabled.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

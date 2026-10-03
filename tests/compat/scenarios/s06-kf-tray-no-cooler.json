@@ -1,0 +1,86 @@
+{
+  "id": "S06",
+  "title": "Core i5-14600KF (Tray) with no cooler: error",
+  "planExample": "Επεξεργαστής \"F\" ή \"Tray\" χωρίς ψύκτρα → Σφάλμα: λείπει ψύκτρα",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Core i5-14600KF|false",
+      "modelKey": "Core i5-14600KF",
+      "name": "Core i5-14600KF",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159149837",
+        "title": "Intel Core i5-14600KF Tray",
+        "price": 208.86
+      },
+      "fields": {
+        "socket": "LGA1700",
+        "igpu": false,
+        "coolerIncluded": false,
+        "packaging": "Tray",
+        "tdp": 125,
+        "cores": 14
+      }
+    },
+    {
+      "category": "mobo",
+      "key": "asusprimeb760plusd4",
+      "modelKey": "asusprimeb760plusd4",
+      "name": "Asus Prime B760-Plus D4",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2158207810",
+        "title": "Asus Prime B760-Plus D4",
+        "price": 101.4
+      },
+      "fields": {
+        "socket": "LGA1700",
+        "chipset": "B760",
+        "formFactor": "ATX",
+        "memory": "DDR4",
+        "ramSlots": 4
+      }
+    },
+    {
+      "category": "gpu",
+      "key": "bestprice:2160617918",
+      "modelKey": "RTX 5070 12GB",
+      "name": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160617918",
+        "title": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+        "price": 847.96
+      },
+      "fields": {
+        "chip": "RTX 5070",
+        "partner": "Zotac",
+        "vram": 12,
+        "lengthMm": 241.5,
+        "minPsu": 650
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 11,
+      "level": "error"
+    },
+    {
+      "rule": 12,
+      "level": "pass"
+    }
+  ],
+  "why": "A K/KF CPU (and any Tray CPU) comes without a cooler and none is in the build; the graphics card covers the missing iGPU.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "id": "S15",
+  "title": "Cooler whose sockets are not stated + AM5 CPU: note",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 7 9700X|false",
+      "modelKey": "Ryzen 7 9700X",
+      "name": "Ryzen 7 9700X",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "eshop",
+        "id": "eshop:PER.275274",
+        "title": "AMD RYZEN 7 9700X 5.5GHZ 8-CORE TRAY",
+        "price": 234.9
+      },
+      "fields": {
+        "socket": "AM5",
+        "igpu": true,
+        "coolerIncluded": false,
+        "packaging": "Tray",
+        "tdp": 65,
+        "cores": 8
+      }
+    },
+    {
+      "category": "cooler",
+      "key": "intertechn11",
+      "modelKey": "intertechn11",
+      "name": "Inter-Tech N-11",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2157363150",
+        "title": "Inter-Tech N-11",
+        "price": 105.28
+      },
+      "fields": {
+        "type": "Air",
+        "radiator": null,
+        "sockets": null,
+        "heightMm": 82
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 10,
+      "level": "note"
+    }
+  ],
+  "why": "Socket support is unknown, so the rule cannot pass or fail.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

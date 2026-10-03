@@ -1,0 +1,70 @@
+{
+  "id": "S35",
+  "title": "3-pack of fans in a case whose data say 6 fans included but 1 position: note",
+  "parts": [
+    {
+      "category": "fan",
+      "key": "arcticp12pro120mm3",
+      "modelKey": "arcticp12pro120mm3",
+      "name": "Arctic P12 Pro 120mm ×3",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2162523075",
+        "title": "Arctic P12 Pro Case Fan 120mm ARGB με Σύνδεση 3-Pin 4-Pin PWM 3τμχ Black",
+        "price": 22.93
+      },
+      "fields": {
+        "size": 120,
+        "pack": 3,
+        "connector": "4-pin PWM",
+        "fanType": "pressure",
+        "pwm": true
+      }
+    },
+    {
+      "category": "case",
+      "key": "kolinkobservatoryhfmesh",
+      "modelKey": "kolinkobservatoryhfmesh",
+      "name": "Kolink Observatory HF Mesh",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:55377549",
+        "title": "Kolink Observatory HF Mesh Midi Tower",
+        "price": 48.67
+      },
+      "fields": {
+        "size": "Midi Tower",
+        "maxBoard": "ATX",
+        "gpuMaxMm": 330,
+        "coolerMaxMm": 180,
+        "fanSlots": 1,
+        "radiatorMounts": "Κάτω, Πίσω",
+        "fanMounts": null,
+        "fansIncluded": [
+          {
+            "pos": null,
+            "size": null,
+            "n": 6
+          }
+        ],
+        "hasFans": null,
+        "radiators": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 21,
+      "level": "note"
+    }
+  ],
+  "why": "The case’s own titles say it ships with 6 fans (3×140 + 3×120) while fanSlots = 1: contradictory data must give “not verified”, never “incompatible”.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

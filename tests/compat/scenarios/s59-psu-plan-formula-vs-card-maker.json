@@ -1,0 +1,145 @@
+{
+  "id": "S59",
+  "title": "Core i7-14700K + RTX 5070 Ti + 750 W: error by the plan formula, pass by the card maker",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Core i7-14700K|false",
+      "modelKey": "Core i7-14700K",
+      "name": "Core i7-14700K",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159149834",
+        "title": "Intel Core i7-14700K Tray",
+        "price": 372.63
+      },
+      "fields": {
+        "socket": "LGA1700",
+        "igpu": true,
+        "coolerIncluded": false,
+        "packaging": "Tray",
+        "tdp": 125,
+        "cores": 20
+      }
+    },
+    {
+      "category": "mobo",
+      "key": "asusprimeb760plusd4",
+      "modelKey": "asusprimeb760plusd4",
+      "name": "Asus Prime B760-Plus D4",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2158207810",
+        "title": "Asus Prime B760-Plus D4",
+        "price": 101.4
+      },
+      "fields": {
+        "socket": "LGA1700",
+        "chipset": "B760",
+        "formFactor": "ATX",
+        "memory": "DDR4",
+        "ramSlots": 4
+      }
+    },
+    {
+      "category": "ram",
+      "key": "DDR4 32GB (2×16GB) 3200MHz Desktop",
+      "modelKey": "DDR4 32GB (2×16GB) 3200MHz Desktop",
+      "name": "DDR4 32GB (2×16GB) 3200MHz",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "snif",
+        "id": "snif:26456337",
+        "title": "G.Skill Aegis F4-3200C16D-32GIS DDR4 3200MHz (2x16GB)",
+        "price": 140
+      },
+      "fields": {
+        "type": "DDR4",
+        "capacity": 32,
+        "modules": 2,
+        "speed": 3200,
+        "cas": 16,
+        "formFactor": "Desktop"
+      }
+    },
+    {
+      "category": "gpu",
+      "key": "bestprice:2160396062",
+      "modelKey": "RTX 5070 Ti 16GB",
+      "name": "MSI GeForce RTX 5070 Ti 16GB GDDR7 Gaming Trio OC Plus",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160396062",
+        "title": "MSI GeForce RTX 5070 Ti 16GB GDDR7 Gaming Trio OC Plus",
+        "price": 1281.39
+      },
+      "fields": {
+        "chip": "RTX 5070 Ti",
+        "partner": "MSI",
+        "vram": 16,
+        "lengthMm": 338,
+        "minPsu": 750
+      }
+    },
+    {
+      "category": "storage",
+      "key": "samsung990pro1tbssd",
+      "modelKey": "samsung990pro1tbssd",
+      "name": "Samsung 990 Pro 1TB",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2158093832",
+        "title": "Samsung 990 Pro SSD 1TB M.2 NVMe PCI Express 4.0",
+        "price": 205.79
+      },
+      "fields": {
+        "media": "SSD",
+        "iface": "NVMe",
+        "pcie": 4,
+        "formFactor": "M.2 2280",
+        "capacity": 1000,
+        "tier": "Consumer"
+      }
+    },
+    {
+      "category": "psu",
+      "key": "750W Gold ATX",
+      "modelKey": "750W Gold ATX",
+      "name": "750W Gold",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2164295415",
+        "title": "Adata XPG Kyber II 750W",
+        "price": 50.52
+      },
+      "fields": {
+        "watts": 750,
+        "efficiency": "Gold",
+        "modular": null,
+        "formFactor": "ATX"
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 14,
+      "level": "error"
+    }
+  ],
+  "why": "Plan formula: (300 W TBP + 253 W PL2 + 50 + 2×5 + 8) × 1.3 = 807 → 850 W > 750 W, although the card maker asks for 750 W.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

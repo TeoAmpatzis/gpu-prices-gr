@@ -1,0 +1,74 @@
+{
+  "id": "S52",
+  "title": "3.5-slot card + case with 2 expansion slots: error (synthetic fields)",
+  "parts": [
+    {
+      "category": "gpu",
+      "key": "bestprice:2160322211",
+      "modelKey": "RTX 5080 16GB",
+      "name": "Gigabyte GeForce RTX 5080 16GB GDDR7 Gaming OC",
+      "quantity": 1,
+      "synthetic": true,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160322211",
+        "title": "Gigabyte GeForce RTX 5080 16GB GDDR7 Gaming OC",
+        "price": 1621.7
+      },
+      "fields": {
+        "chip": "RTX 5080",
+        "partner": "Gigabyte",
+        "vram": 16,
+        "lengthMm": 340,
+        "minPsu": 850,
+        "slots": 3.5
+      },
+      "syntheticFields": [
+        "slots"
+      ],
+      "note": "Synthetic thickness."
+    },
+    {
+      "category": "case",
+      "key": "thermaltakethetower300",
+      "modelKey": "thermaltakethetower300",
+      "name": "Thermaltake The Tower 300",
+      "quantity": 1,
+      "synthetic": true,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:50793062",
+        "title": "Thermaltake The Tower 300 Gaming Micro Tower με Πλαϊνό Παράθυρο",
+        "price": 130.39
+      },
+      "fields": {
+        "size": "Mini Tower",
+        "maxBoard": "Mini ITX",
+        "gpuMaxMm": 280,
+        "coolerMaxMm": 210,
+        "fanSlots": 7,
+        "radiatorMounts": "Άνω, Πίσω, Πλάι",
+        "fanMounts": null,
+        "fansIncluded": null,
+        "hasFans": null,
+        "radiators": null,
+        "expansionSlots": 2
+      },
+      "syntheticFields": [
+        "expansionSlots"
+      ],
+      "note": "Synthetic expansion-slot count."
+    }
+  ],
+  "expected": [
+    {
+      "rule": 7,
+      "level": "error"
+    }
+  ],
+  "why": "The card is thicker than the case’s expansion slots.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "id": "S23",
+  "title": "Graphics card 340 mm + case that takes exactly 340 mm: warning",
+  "parts": [
+    {
+      "category": "gpu",
+      "key": "bestprice:2160322211",
+      "modelKey": "RTX 5080 16GB",
+      "name": "Gigabyte GeForce RTX 5080 16GB GDDR7 Gaming OC",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160322211",
+        "title": "Gigabyte GeForce RTX 5080 16GB GDDR7 Gaming OC",
+        "price": 1621.7
+      },
+      "fields": {
+        "chip": "RTX 5080",
+        "partner": "Gigabyte",
+        "vram": 16,
+        "lengthMm": 340,
+        "minPsu": 850
+      }
+    },
+    {
+      "category": "case",
+      "key": "darkflashdk352plus",
+      "modelKey": "darkflashdk352plus",
+      "name": "Darkflash DK352 Plus",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:45158002",
+        "title": "Darkflash DK352 Plus Gaming Midi Tower με Πλαϊνό Παράθυρο",
+        "price": 43.32
+      },
+      "fields": {
+        "size": "Midi Tower",
+        "maxBoard": "ATX",
+        "gpuMaxMm": 340,
+        "coolerMaxMm": 160,
+        "fanSlots": 6,
+        "radiatorMounts": "Άνω, Μπροστά",
+        "fanMounts": null,
+        "fansIncluded": [
+          {
+            "pos": null,
+            "size": null,
+            "n": 4
+          }
+        ],
+        "hasFans": null,
+        "radiators": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 6,
+      "level": "warning"
+    }
+  ],
+  "why": "It fits with 0 mm to spare; plan rule 6 warns within a 10 mm margin.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}

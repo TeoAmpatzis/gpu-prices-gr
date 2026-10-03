@@ -1,0 +1,84 @@
+{
+  "id": "S57",
+  "title": "Case with front USB-C + board without a USB-C header: note (synthetic fields)",
+  "parts": [
+    {
+      "category": "mobo",
+      "key": "gigabyteb650eagleax",
+      "modelKey": "gigabyteb650eagleax",
+      "name": "Gigabyte B650 Eagle AX",
+      "quantity": 1,
+      "synthetic": true,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159351395",
+        "title": "Gigabyte B650 Eagle AX",
+        "price": 114.66
+      },
+      "fields": {
+        "socket": "AM5",
+        "chipset": "B650",
+        "formFactor": "ATX",
+        "memory": "DDR5",
+        "ramSlots": 4,
+        "usbCHeader": false
+      },
+      "syntheticFields": [
+        "usbCHeader"
+      ],
+      "note": "Synthetic."
+    },
+    {
+      "category": "case",
+      "key": "kolinkobservatorymxmesh",
+      "modelKey": "kolinkobservatorymxmesh",
+      "name": "Kolink Observatory MX Mesh",
+      "quantity": 1,
+      "synthetic": true,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159268101",
+        "title": "Kolink Observatory MX Mesh ARGB Tempered Glass Black / White Gaming Midi Tower με Πλαϊνό Παράθυρο",
+        "price": 51.1
+      },
+      "fields": {
+        "size": "Midi Tower",
+        "maxBoard": "ATX",
+        "gpuMaxMm": 330,
+        "coolerMaxMm": 160,
+        "fanSlots": 5,
+        "radiatorMounts": "Μπροστά, Πίσω",
+        "fanMounts": null,
+        "fansIncluded": [
+          {
+            "pos": null,
+            "size": null,
+            "n": 5
+          }
+        ],
+        "hasFans": null,
+        "radiators": null,
+        "usbCFront": true
+      },
+      "syntheticFields": [
+        "usbCFront"
+      ],
+      "note": "Synthetic."
+    }
+  ],
+  "expected": [
+    {
+      "rule": 5,
+      "level": "pass"
+    },
+    {
+      "rule": 24,
+      "level": "note"
+    }
+  ],
+  "why": "The front USB-C port will not work without a header.",
+  "capturedFrom": {
+    "builtAt": "2026-10-03T18:51:07.582Z",
+    "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
+  }
+}
