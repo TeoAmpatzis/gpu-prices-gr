@@ -11,6 +11,7 @@ import normalize_cpu
 import normalize_mobo
 import normalize_psu
 import normalize_ram
+import normalize_storage
 
 
 @dataclass(frozen=True)
@@ -157,5 +158,35 @@ CATEGORIES = {
         model_key=lambda l: names.model_key(l["chip"]),
         shared=("sockets", "heightMm"),
         eshop_categories=(("ypologistes-epeksergastes-cpu-psyktres-coolers-list", "ΣΥΣΤΗΜΑ ΨΥΞΗΣ ΕΠΕΞΕΡΓΑΣΤΗ"), ("ypologistes-ydropsyksi-water-cooling-list", "ΥΔΡΟΨΥΞΗ")),
+    ),
+    "storage": Category(
+        name="storage",
+        shopflix_categories=("SSD Σκληροί Δίσκοι*:::*/c/5228/ssd-skliroi-diskoi", "HDD Σκληροί Δίσκοι*:::*/c/5269/hdd-skliroi-diskoi"),
+        snif_categories=("1921161", "1921162"),
+        # Skroutz shows one "family" card for all capacities of most SSDs; its capacity filter pages
+        # show each capacity as its own card (~1270 SSDs vs 759 cards on the plain list). The plain
+        # SSD list is kept for capacities between the filters (800GB, 1.6TB…). Internal HDDs: c/1715.
+        skroutz_paths=(
+            "/c/88/ssd-sklhroi-diskoi.html",
+            *(f"/c/88/ssd-sklhroi-diskoi/f/{f}.html" for f in (
+                "2027327/120gb-eos-128gb", "2027328/240gb-eos-256gb", "2253749/480GB", "909632/500gb-eos-512gb",
+                "2253750/960GB", "909634/1TB", "2253751/1-92TB", "909635/2TB", "955256/3tb-kai-ano",
+            )),
+            *(f"/c/1715/hdd_sklhroi_diskoi/f/{f}.html" for f in (
+                "490666/500GB", "854273/600-900GB", "490667/1TB", "490668/2TB", "517568/3TB", "647344/4TB",
+                "854358/5TB", "647345/6TB", "847223/8TB", "854361/10TB", "854362/12tb-kai-ano",
+            )),
+        ),
+        # SSDs (~1000 products) sliced by price (cents); HDDs (~420) fit in one list.
+        bestprice_paths=(
+            *(f"/cat/7131/ssd-skliroi-diskoi.html?{q}"
+              for q in ("max=9999", "min=10000&max=19999", "min=20000&max=49999", "min=50000")),
+            "/cat/7130/hdd-skliroi-diskoi.html",
+        ),
+        make_listing=normalize_storage.make_listing,
+        # The same name can be an SSD and an HDD ("Western Digital Blue 2TB"), so the type is in the key.
+        model_key=lambda l: names.model_key(f"{l['chip']} {l['media']}"),
+        eshop_categories=(("ypologistes-skliroi-diskoi-ssd-list", "ΣΚΛΗΡΟΣ ΔΙΣΚΟΣ"),),
+        shared=("iface", "pcie", "formFactor", "dram", "readMBs", "writeMBs", "tbw", "heatsink", "rpm", "cacheMB", "tier"),
     ),
 }

@@ -175,6 +175,39 @@ class CoolerListing:
 
 
 @dataclass
+class StorageListing:
+    """One SSD / HDD offer. Mirrored in src/types.ts (StorageListing)."""
+
+    id: str
+    source: str
+    title: str
+    url: str
+    price: float
+    shopCount: int | None
+    brand: str  # vendor, e.g. "Samsung"
+    chip: str  # vendor + series + capacity (+ shape when not the usual one), e.g. "Samsung 990 Pro 1TB"
+    media: str  # SSD | HDD
+    iface: str | None  # NVMe | SATA | SAS; None if not stated
+    pcie: int | None  # PCIe generation of an NVMe drive: 3 | 4 | 5
+    formFactor: str | None  # M.2 2280 / 2242 / 2230 / 22110 | 2.5" | 3.5" | mSATA | U.2 | PCIe card
+    capacity: int  # GB (decimal: 1TB = 1000)
+    tier: str  # Consumer | NAS | Server (normalize_storage: owner's rules)
+    scrapedAt: str
+    # From titles when stated, else product pages (specs.py): SSD DRAM cache (None = not stated),
+    # sequential read/write MB/s, endurance (TB written), heatsink; HDD spindle speed and cache.
+    dram: bool | None = None
+    readMBs: int | None = None
+    writeMBs: int | None = None
+    tbw: int | None = None
+    heatsink: bool | None = None
+    rpm: int | None = None
+    cacheMB: int | None = None
+
+    def to_dict(self) -> dict:
+        return listing_dict(self)
+
+
+@dataclass
 class MoboListing:
     """One motherboard offer. Mirrored in src/types.ts (MoboListing)."""
 

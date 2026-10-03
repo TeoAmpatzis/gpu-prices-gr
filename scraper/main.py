@@ -72,6 +72,11 @@ def share_fields(listings: list[dict], fields: tuple[str, ...], model_key) -> No
                 for l in ls:
                     l[f] = safe
                 continue
+            if f in PRIORITY:  # the most specific value wins for every listing (a drive's tier)
+                top = min(values, key=PRIORITY[f].index)
+                for l in ls:
+                    l[f] = top
+                continue
             if f in TRI_STATE:  # an explicit "no" is information too: only fill gaps
                 common = Counter(values).most_common(1)[0][0]
                 for l in ls:
@@ -90,7 +95,9 @@ def share_fields(listings: list[dict], fields: tuple[str, ...], model_key) -> No
 
 
 # Bool fields where None means "not stated": shared by majority, not by "any true".
-TRI_STATE = {"coolerIncluded"}
+TRI_STATE = {"coolerIncluded", "dram", "heatsink"}
+# Fields whose values rank: any listing saying "Server" makes the model Server (normalize_storage).
+PRIORITY = {"tier": ["Server", "NAS", "Consumer"]}
 SAFER = specs.SAFER  # measurements: the safer of two disagreeing values
 disagreements: Counter = Counter()  # per run, logged by finish()
 
