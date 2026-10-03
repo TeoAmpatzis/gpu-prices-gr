@@ -47,6 +47,24 @@ EXCLUDE = re.compile(
     re.I,
 )
 WINDOW = re.compile(r"Παράθυρο|Parathyro|Window|Tempered\s*Glass|\bTG\b|Glass", re.I)
+# Fans in the box when a title says so: "with 7 Fans", "WITH 3X ARGB FANS", "3XARGB FANS", "4 FANS",
+# "με 3 ανεμιστήρες", "3x 120mm ARGB fans". A count with another word before "fans" is something else
+# ("4 Θέσεις Ανεμιστήρων" = 4 fan positions), so only lighting/PWM words may come between.
+TITLE_FANS = re.compile(
+    r"(?<![\w.])(\d{1,2})\s*x?\s*(?:(\d{3})\s*mm\s*)?(?:(?:A-?RGB|RGB|PWM|LED|Lite)\s*)*(?:fans?|ανεμιστ[ήη]ρ(?:ες|α|ας))\b",
+    re.I,
+)
+
+
+def title_fans(title: str) -> list[dict] | None:
+    """[{pos: None, size: mm or None, n}] from the title, None when it names no count."""
+    m = TITLE_FANS.search(title)
+    if not m or not 1 <= int(m.group(1)) <= 12:
+        return None
+    # "supports up to 6 fans", "έως 6 ανεμιστήρες": positions, not fans in the box.
+    if re.search(r"support|up\s+to|έως|μέχρι|max", title[max(0, m.start() - 25): m.start()], re.I):
+        return None
+    return [{"pos": None, "size": int(m.group(2)) if m.group(2) else None, "n": int(m.group(1))}]
 RGB = re.compile(r"\bA?RGB\b|Fotismo|Φωτισμό", re.I)
 # Board sizes, largest first. Skroutz lists them ("Μέγεθος Μητρικής: Extended ATX / ATX / Mini ITX"),
 # e-shop sometimes names one ("PC CASE MICRO-ATX"). Bigger names are blanked out once matched, so
@@ -102,5 +120,6 @@ def make_listing(
         rgb=bool(RGB.search(text)),
         maxBoard=max_board(f"{title} {specs}"),
         scrapedAt=scraped_at,
+        fansIncluded=title_fans(title),
     )
 

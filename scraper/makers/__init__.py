@@ -43,6 +43,9 @@ BUDGET = 150  # product pages per maker per run
 PAUSE = (2.0, 4.0)
 MAX_FAILURES = 3
 RETRY_DAYS = 30
+# The maker's lists replace a shop's: a title gives at most a fan count ("WITH 3 ARGB FANS"), the maker
+# gives positions and sizes.
+MAKER_FIRST = {"fansIncluded", "fanMounts", "radiators"}
 
 
 def _path(maker) -> Path:
@@ -91,11 +94,15 @@ def collect(listings: dict[str, list[dict]], budget: int = BUDGET) -> None:
         needy = _needy(maker, listings)
         retry_before = (date.today() - timedelta(days=RETRY_DAYS)).isoformat()
         todo = []
+        version = getattr(maker, "VERSION", 1)
         for p in products:
             entry = cache.get(p["url"])
-            if entry and not (entry.get("failed") and entry["failed"] < retry_before):
+            # A page read by an older parser (the maker's VERSION went up) is read again, after the new ones.
+            stale = bool(entry) and not entry.get("failed") and entry.get("v", 1) < version
+            if entry and not stale and not (entry.get("failed") and entry["failed"] < retry_before):
                 continue
-            if (n := maker.rank(p, needy)) > 0:
+            n = maker.rank(p, needy)
+            if n > 0 or stale:
                 todo.append((n, p))
         todo.sort(key=lambda x: -x[0])
         print(f"  makers {maker.NAME}: {len(products)} products, {len(todo)} worth fetching; budget {budget}")
@@ -115,7 +122,7 @@ def collect(listings: dict[str, list[dict]], budget: int = BUDGET) -> None:
                 continue
             failures = 0
             # A page without the specs we need (an accessory, a different product) isn't asked again soon.
-            cache[p["url"]] = {"items": items, "checked": now_iso()} if items else {"failed": date.today().isoformat()}
+            cache[p["url"]] = {"items": items, "checked": now_iso(), "v": version} if items else {"failed": date.today().isoformat()}
             done += 1
             if done % 25 == 0:
                 save()
@@ -166,7 +173,7 @@ def apply(cat: str, listings: list[dict]) -> None:
                     continue
                 safer = specs.SAFER.get(f)
                 value = safer(values) if safer else values[0]
-                if l.get(f) is None:
+                if l.get(f) is None or f in MAKER_FIRST:
                     l[f] = value
                 elif safer:
                     l[f] = safer([l[f], value])

@@ -18,9 +18,10 @@ from selectolax.parser import HTMLParser
 
 import normalize_case
 
-from .common import alnum, fetch, mm, model_key
+from .common import NO_FANS, alnum, fetch, mm, model_key
 
 NAME = "fractal"
+VERSION = 2  # 2: "Fans included: None" is stored as no fans ([])
 BRANDS = {"case": {"Fractal Design"}}
 SITEMAP = "https://www.fractal-design.com/sitemap.xml"
 PRODUCT = re.compile(r"https://www\.fractal-design\.com/products/cases/[a-z0-9-]+/([a-z0-9-]+)/[a-z0-9-]+/$")
@@ -84,9 +85,11 @@ def parse(url: str, html: str) -> list[dict]:
         sizes = sorted({int(x) for x in re.findall(r"\b\d{3}\b", spec.get(f"{pos} radiator compatibility", ""))})
         if sizes:
             radiators.append({"pos": pos, "sizes": sizes})
-    # "3x Aspect 14 PWM (front)", "4x Aspect 12X Reverse" (no position)
+    # "3x Aspect 14 PWM (front)", "4x Aspect 12X Reverse" (no position); "None" = no fans ([])
+    said = spec.get("fans included", "")
     included = [{"pos": pos.lower() or None, "size": int(size) * 10, "n": int(n)} for n, size, pos in re.findall(
-        r"(\d+)\s*x\s+[A-Za-z ]*?\b(12|14|18|20)X?\b[^(,]*(?:\((front|rear|top|bottom|side)\))?", spec.get("fans included", ""), re.I)]
+        r"(\d+)\s*x\s+[A-Za-z ]*?\b(12|14|18|20)X?\b[^(,]*(?:\((front|rear|top|bottom|side)\))?", said, re.I)]
+    fans_in = included or ([] if said and NO_FANS.match(said) else None)
     boards = spec.get("motherboard compatibility", "")
     board = normalize_case.max_board(boards) if boards else None
     key = model_key("case", f"Fractal Design {_model(model)} Case")
@@ -99,7 +102,7 @@ def parse(url: str, html: str) -> list[dict]:
         "gpuMaxMm": mm(spec.get("gpu max length")),
         "coolerMaxMm": mm(spec.get("cpu cooler max height")),
         "fanMounts": [{"pos": p, "size": s, "n": n} for (p, s), n in mounts.items()] or None,
-        "fansIncluded": included or None,
+        "fansIncluded": fans_in,
         "radiators": radiators or None,
         **({"maxBoard": board} if board else {}),
     }]

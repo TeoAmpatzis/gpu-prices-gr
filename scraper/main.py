@@ -57,6 +57,14 @@ def share_fields(listings: list[dict], fields: tuple[str, ...], model_key) -> No
             values = [l.get(f) for l in ls if l.get(f) is not None]
             if not values:
                 continue
+            if any(isinstance(v, list) for v in values):
+                # Lists (a case's included fans) can't be counted: the most detailed one goes to the
+                # listings without one (positions, then sizes, then the count).
+                best = max(values, key=lambda v: (sum(1 for x in v if x.get("pos")), sum(1 for x in v if x.get("size")), sum(x.get("n") or 0 for x in v)))
+                for l in ls:
+                    if l.get(f) is None:
+                        l[f] = best
+                continue
             if f in SAFER:  # measurements: when sites disagree, every listing gets the safer value
                 safe = SAFER[f](values)
                 if max(values) - min(values) > 5:

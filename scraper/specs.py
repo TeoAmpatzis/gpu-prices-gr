@@ -140,6 +140,8 @@ def parse_case(sp: dict[str, str]) -> dict:
         "coolerMaxMm": _mm(_first(sp, "Μέγιστο Ύψος Ψύκτρας Επεξεργαστή", "Μέγιστο Ύψος Ψύκτρας")),
         "fanSlots": sum(positions) if positions else None,
         "radiatorMounts": _list(_first(sp, "Θέση Ψυγείου", "Θέση Ψυγείου Υδρόψυξης")),
+        # "Πρόσθετα: Πλαϊνό Παράθυρο • RGB Lighting • Προεγκατεστημένοι Ανεμιστήρες": fans, count not stated.
+        "hasFans": True if "Προεγκατεστημένοι Ανεμιστήρες" in (sp.get("Πρόσθετα") or "") else None,
         # The product page's board list beats the one guessed from the title.
         **({"maxBoard": board} if board else {}),
     }
