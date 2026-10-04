@@ -1,0 +1,117 @@
+{
+ "about": "Hand-judged verdicts for docs/audit/data/spotcheck-sample.json (seed 20261003). Fields judged per category: the key fields listed in the sample (identity: chip/model name, socket, memory type, form factor/size, capacity, kit, watts…). error = a field (or the model name, when it splits the listing from its product) contradicts the listing's title, URL or spec-cache entry; missing = the title/URL states a value but the field is null (not counted as an error); unclear = cannot be judged from the title/URL/spec cache. Notes marked 'general knowledge' use facts not in the title.",
+ "judgedBy": "audit B3, 2026-10-03, from the committed files only (no network)",
+ "verdicts": {
+  "gpu": [
+   {"n": 1, "verdict": "ok"}, {"n": 2, "verdict": "ok"}, {"n": 3, "verdict": "ok"},
+   {"n": 4, "verdict": "ok", "note": "minPsu 300: NVIDIA lists 300 W for the RTX 3050 6GB (general knowledge); the builder's chip table says 550 (8GB model)"},
+   {"n": 5, "verdict": "ok"}, {"n": 6, "verdict": "ok"}, {"n": 7, "verdict": "ok"}, {"n": 8, "verdict": "ok"}, {"n": 9, "verdict": "ok"},
+   {"n": 10, "verdict": "ok", "note": "length not known (missing, title does not state it)"},
+   {"n": 11, "verdict": "ok", "note": "chip decoded from the Gigabyte part number GV-N5080…"},
+   {"n": 12, "verdict": "ok"}, {"n": 13, "verdict": "ok"}, {"n": 14, "verdict": "ok"}, {"n": 15, "verdict": "ok"},
+   {"n": 16, "verdict": "ok", "note": "chip label 'RTX 4000 (Pro)' covers both the Turing Quadro RTX 4000 and the RTX 4000 SFF Ada (20GB); separated only by VRAM"},
+   {"n": 17, "verdict": "ok"}, {"n": 18, "verdict": "ok"}, {"n": 19, "verdict": "ok"}, {"n": 20, "verdict": "ok"}
+  ],
+  "cpu": [
+   {"n": 1, "verdict": "ok"}, {"n": 2, "verdict": "ok"},
+   {"n": 3, "verdict": "ok", "note": "title says 'Six Core'; cores = 8 is right (shared from other listings)"},
+   {"n": 4, "verdict": "ok"},
+   {"n": 5, "verdict": "error", "note": "coolerIncluded=false but the BestPrice URL says '…-tray-…-me-psyktra' (with cooler)"},
+   {"n": 6, "verdict": "ok"}, {"n": 7, "verdict": "ok"},
+   {"n": 8, "verdict": "missing", "note": "title 'σε Κουτί με Ψύκτρα' (box with cooler): packaging and coolerIncluded null"},
+   {"n": 9, "verdict": "ok", "note": "coolerIncluded null (K box has none: unknown, not wrong)"},
+   {"n": 10, "verdict": "ok"},
+   {"n": 11, "verdict": "error", "note": "coolerIncluded=false but the title says 'σε Tray με Ψύκτρα' (tray with cooler)"},
+   {"n": 12, "verdict": "ok"},
+   {"n": 13, "verdict": "error", "note": "coolerIncluded=false but the BestPrice URL says '…-tray-…-me-psyktra'"},
+   {"n": 14, "verdict": "ok"}, {"n": 15, "verdict": "ok"}, {"n": 16, "verdict": "ok"}, {"n": 17, "verdict": "ok"},
+   {"n": 18, "verdict": "ok", "note": "tdp 219 is the turbo power (PL2), not the 65 W base TDP"},
+   {"n": 19, "verdict": "missing", "note": "title 'σε Κουτί με Ψύκτρα': packaging and coolerIncluded null"},
+   {"n": 20, "verdict": "ok"}
+  ],
+  "mobo": [
+   {"n": 1, "verdict": "ok"}, {"n": 2, "verdict": "ok"}, {"n": 3, "verdict": "ok"}, {"n": 4, "verdict": "ok"},
+   {"n": 5, "verdict": "ok", "note": "DDR5 not stated in the title (cannot be confirmed from title/URL)"},
+   {"n": 6, "verdict": "ok"},
+   {"n": 7, "verdict": "ok", "note": "wifi=false only means the title does not say WiFi (X870 boards have WiFi 7: general knowledge)"},
+   {"n": 8, "verdict": "ok"}, {"n": 9, "verdict": "ok"}, {"n": 10, "verdict": "ok"}, {"n": 11, "verdict": "ok"}, {"n": 12, "verdict": "ok"},
+   {"n": 13, "verdict": "ok"}, {"n": 14, "verdict": "ok"}, {"n": 15, "verdict": "ok"}, {"n": 16, "verdict": "ok"}, {"n": 17, "verdict": "ok"},
+   {"n": 18, "verdict": "ok"}, {"n": 19, "verdict": "ok"}, {"n": 20, "verdict": "ok"}
+  ],
+  "ram": [
+   {"n": 1, "verdict": "ok"}, {"n": 2, "verdict": "ok"},
+   {"n": 3, "verdict": "error", "note": "title 'DDR5 32GB 2x16' but model DDR5 32GB (1×32GB): the kit '2x16' without 'GB' is not read"},
+   {"n": 4, "verdict": "ok"}, {"n": 5, "verdict": "ok"}, {"n": 6, "verdict": "ok"}, {"n": 7, "verdict": "ok"}, {"n": 8, "verdict": "ok"},
+   {"n": 9, "verdict": "missing", "note": "title 'με Ταχύτητα 3600': speed null"},
+   {"n": 10, "verdict": "missing", "note": "title 'με Ταχύτητα 1600': speed null"},
+   {"n": 11, "verdict": "error", "note": "formFactor Desktop, but the part number MTA36ASF8G72PZ is an ECC registered DIMM (server) — judged from the part number (general knowledge), not the title text"},
+   {"n": 12, "verdict": "ok"},
+   {"n": 13, "verdict": "missing", "note": "title 'Ταχύτητα 6800': speed null"},
+   {"n": 14, "verdict": "ok"}, {"n": 15, "verdict": "ok"},
+   {"n": 16, "verdict": "missing", "note": "title 'με Ταχύτητα 5600': speed null"},
+   {"n": 17, "verdict": "ok"}, {"n": 18, "verdict": "ok"}, {"n": 19, "verdict": "ok"}, {"n": 20, "verdict": "ok"}
+  ],
+  "storage": [
+   {"n": 1, "verdict": "ok"},
+   {"n": 2, "verdict": "error", "note": "pcie 3 (the Shopflix title says PCI Express 3.0) with readMBs 7000, impossible on PCIe 3.0; other sites list the MP600 Elite as PCIe 4.0"},
+   {"n": 3, "verdict": "ok"},
+   {"n": 4, "verdict": "ok", "note": "interface and form factor unknown (title does not state them)"},
+   {"n": 5, "verdict": "ok"}, {"n": 6, "verdict": "ok"}, {"n": 7, "verdict": "ok"}, {"n": 8, "verdict": "ok"}, {"n": 9, "verdict": "ok"},
+   {"n": 10, "verdict": "ok"}, {"n": 11, "verdict": "ok"}, {"n": 12, "verdict": "ok"}, {"n": 13, "verdict": "ok"}, {"n": 14, "verdict": "ok"},
+   {"n": 15, "verdict": "ok"}, {"n": 16, "verdict": "ok"}, {"n": 17, "verdict": "ok"},
+   {"n": 18, "verdict": "error", "note": "Lenovo FRU01FR511 (ThinkPad laptop M.2 part) has tier Server; the 2026-10-03 OEM-laptop-M.2 rule drops it from the next scrape on"},
+   {"n": 19, "verdict": "ok"},
+   {"n": 20, "verdict": "ok", "note": "interface unknown (title does not state it)"}
+  ],
+  "psu": [
+   {"n": 1, "verdict": "unclear", "note": "Lenovo ThinkCentre OEM unit: formFactor ATX is the default, the title does not state it"},
+   {"n": 2, "verdict": "ok"}, {"n": 3, "verdict": "ok"}, {"n": 4, "verdict": "ok"}, {"n": 5, "verdict": "ok"}, {"n": 6, "verdict": "ok"},
+   {"n": 7, "verdict": "ok"}, {"n": 8, "verdict": "ok"}, {"n": 9, "verdict": "ok"}, {"n": 10, "verdict": "ok"},
+   {"n": 11, "verdict": "unclear", "note": "e-shop 'VOLTRON GOLD 80+ RATING' → Gold; Snif lists the same VG500 as 80+ Bronze"},
+   {"n": 12, "verdict": "ok"}, {"n": 13, "verdict": "ok"},
+   {"n": 14, "verdict": "error", "note": "Skroutz title 'MSI MAG A650BNL' (650 W unit) but watts 550 from the link (A550BNL): family card, title names another variant"},
+   {"n": 15, "verdict": "ok"}, {"n": 16, "verdict": "ok"}, {"n": 17, "verdict": "ok"}, {"n": 18, "verdict": "ok"}, {"n": 19, "verdict": "ok"}, {"n": 20, "verdict": "ok"}
+  ],
+  "case": [
+   {"n": 1, "verdict": "ok"}, {"n": 2, "verdict": "ok"}, {"n": 3, "verdict": "ok"}, {"n": 4, "verdict": "ok"}, {"n": 5, "verdict": "ok"},
+   {"n": 6, "verdict": "ok"}, {"n": 7, "verdict": "ok"},
+   {"n": 8, "verdict": "error", "note": "name 'Be Quiet PSU DARK BASE PRO 901' keeps e-shop's 'PSU' word: a separate model from 'Be Quiet Dark Base Pro 901' (6 listings)"},
+   {"n": 9, "verdict": "error", "note": "name keeps 'ATX ΠΕΡΙΠΤΩΣΗ ΥΠΟΛΟΓΙΣΤΗ ΧΩΡΙΣ ΑΝΕΜΙΣΤΗΡΕΣ': key darkflashds900wsatx, separate from darkflashds900ws (10 listings); 'without fans' not read into fansIncluded"},
+   {"n": 10, "verdict": "ok"}, {"n": 11, "verdict": "ok"},
+   {"n": 12, "verdict": "unclear", "note": "maxBoard Mini ITX for a Mini Tower; not stated in the title"},
+   {"n": 13, "verdict": "unclear", "note": "maxBoard Micro ATX for a Midi Tower; not stated in the title"},
+   {"n": 14, "verdict": "ok"}, {"n": 15, "verdict": "ok"},
+   {"n": 16, "verdict": "ok", "note": "size unknown (title does not state it)"},
+   {"n": 17, "verdict": "ok", "note": "size unknown (title does not state it)"},
+   {"n": 18, "verdict": "ok"}, {"n": 19, "verdict": "ok"}, {"n": 20, "verdict": "ok"}
+  ],
+  "fan": [
+   {"n": 1, "verdict": "error", "note": "rgb=false but the title says D-RGB"},
+   {"n": 2, "verdict": "ok"}, {"n": 3, "verdict": "ok"}, {"n": 4, "verdict": "ok"},
+   {"n": 5, "verdict": "unclear", "note": "'MFSI4KIT' may be a 4-fan kit; pack 1"},
+   {"n": 6, "verdict": "ok"}, {"n": 7, "verdict": "ok"},
+   {"n": 8, "verdict": "error", "note": "connector '4-pin PWM' but the title says '4-Pin Molex' (a power plug, not PWM)"},
+   {"n": 9, "verdict": "ok"}, {"n": 10, "verdict": "ok"}, {"n": 11, "verdict": "ok"}, {"n": 12, "verdict": "ok"}, {"n": 13, "verdict": "ok"},
+   {"n": 14, "verdict": "ok"}, {"n": 15, "verdict": "ok"}, {"n": 16, "verdict": "ok"}, {"n": 17, "verdict": "ok"}, {"n": 18, "verdict": "ok"},
+   {"n": 19, "verdict": "ok"}, {"n": 20, "verdict": "ok"}
+  ],
+  "cooler": [
+   {"n": 1, "verdict": "error", "note": "name keeps 'COOLING': key asusrogstrixlciii360cooling, one of 6 models for the ROG Strix LC III 360"},
+   {"n": 2, "verdict": "missing", "note": "title 'Socket AM5', sockets null"},
+   {"n": 3, "verdict": "ok"},
+   {"n": 4, "verdict": "error", "note": "sockets lack AM4/AM5/LGA2066 although the BestPrice title lists them"},
+   {"n": 5, "verdict": "ok"}, {"n": 6, "verdict": "ok"},
+   {"n": 7, "verdict": "error", "note": "name keeps 'Διπλού Ανεμιστήρα 120mm': key …240sync120mm, separate from 'Thermaltake ToughLiquid 240 Sync' (2 listings); sockets null although the title lists them"},
+   {"n": 8, "verdict": "ok"},
+   {"n": 9, "verdict": "missing", "note": "title lists sockets, sockets null"},
+   {"n": 10, "verdict": "ok"}, {"n": 11, "verdict": "ok"},
+   {"n": 12, "verdict": "missing", "note": "title 'Socket 4677', sockets null"},
+   {"n": 13, "verdict": "ok"},
+   {"n": 14, "verdict": "error", "note": "name keeps the part number ACFRE00161A: separate from 'Arctic Freezer 8A' (3 listings)"},
+   {"n": 15, "verdict": "ok"}, {"n": 16, "verdict": "ok"}, {"n": 17, "verdict": "ok"},
+   {"n": 18, "verdict": "unclear", "note": "'FORCE CPU COOLER G6 245W': nothing to check"},
+   {"n": 19, "verdict": "error", "note": "heightMm 25.6 for a tower cooler (Assassin Spirit 120 Vision is ~154 mm: general knowledge); 25 mm is a fan thickness"},
+   {"n": 20, "verdict": "ok"}
+  ]
+ }
+}

@@ -1,0 +1,2064 @@
+{
+ "generated": "node scripts/audit/data-quality/implausible.mjs",
+ "results": [
+  {
+   "cat": "gpu",
+   "check": "lengthMm < 120 or > 400",
+   "field": "lengthMm",
+   "ruleOfThumb": false,
+   "listings": 1,
+   "models": 1,
+   "inBuilderRows": 1,
+   "note": "",
+   "rootCause": "",
+   "severity": "",
+   "examples": [
+    {
+     "source": "skroutz",
+     "title": "PNY GeForce GT 730 2GB",
+     "value": 115,
+     "specCache": 115,
+     "id": "skroutz:33200613"
+    }
+   ]
+  },
+  {
+   "cat": "case",
+   "check": "gpuMaxMm < 150 or > 500",
+   "field": "gpuMaxMm",
+   "ruleOfThumb": false,
+   "listings": 32,
+   "models": 7,
+   "inBuilderRows": 6,
+   "note": "",
+   "rootCause": "",
+   "severity": "",
+   "examples": [
+    {
+     "source": "bestprice",
+     "title": "Akyga AK-302-01 AK-302-01BL Mini Tower",
+     "value": 145,
+     "id": "bestprice:2164158019"
+    },
+    {
+     "source": "bestprice",
+     "title": "Fractal Design Define 7 XL Full Tower",
+     "value": 530,
+     "id": "bestprice:2156017767"
+    },
+    {
+     "source": "shopflix",
+     "title": "Fractal Design Define 7 XL Midi Tower Μαύρο",
+     "value": 530,
+     "id": "shopflix:SF-200103309"
+    },
+    {
+     "source": "skroutz",
+     "title": "Fractal Design Define 7 XL Midi Tower",
+     "value": 530,
+     "id": "skroutz:22639998"
+    },
+    {
+     "source": "eshop",
+     "title": "FRACTAL DESIGN MESHIFY 3 XL AMBIENCE PRO RGB LIGHT TINT GAMING MIDI TOWER",
+     "value": 512,
+     "id": "eshop:PER.274344"
+    },
+    {
+     "source": "eshop",
+     "title": "FRACTAL DESIGN MESHIFY 3 XL AMBIENCE PRO RGB LIGHT TINT GAMING MIDI TOWER",
+     "value": 512,
+     "id": "eshop:PER.274342"
+    },
+    {
+     "source": "bestprice",
+     "title": "Fractal Design Meshify 3 XL Solid Black Full Tower",
+     "value": 512,
+     "id": "bestprice:2160716310"
+    },
+    {
+     "source": "bestprice",
+     "title": "Fractal Design Meshify 3 XL TG Light Tint Black Gaming Full Tower με Πλαϊνό Παράθυρο",
+     "value": 512,
+     "id": "bestprice:2160716311"
+    },
+    {
+     "source": "bestprice",
+     "title": "Fractal Design Meshify 3 XL Light Tint Black Gaming Full Tower RGB με Πλαϊνό Παράθυρο",
+     "value": 512,
+     "id": "bestprice:2160716312"
+    },
+    {
+     "source": "skroutz",
+     "title": "Fractal Design Meshify 3 XL Solid Midi Tower",
+     "value": 512,
+     "id": "skroutz:60466254"
+    },
+    {
+     "source": "skroutz",
+     "title": "Fractal Design Meshify 3 XL TG Light Tint Gaming Midi Tower με Πλαϊνό Παράθυρο",
+     "value": 512,
+     "id": "skroutz:60459633"
+    },
+    {
+     "source": "skroutz",
+     "title": "Fractal Design Meshify 3 XL RGB Clear Tint Gaming Midi Tower με Πλαϊνό Παράθυρο",
+     "value": 512,
+     "id": "skroutz:60483730"
+    },
+    {
+     "source": "skroutz",
+     "title": "Fractal Design Meshify 3 XL RGB TG Clear Tint Gaming Midi Tower με Πλαϊνό Παράθυρο",
+     "value": 512,
+     "id": "skroutz:62614735"
+    },
+    {
+     "source": "shopflix",
+     "title": "Fractal Design Meshify 3 XL RGB Clear Tint Gaming Midi Tower με Πλαϊνό Παράθυρο Λευκό",
+     "value": 512,
+     "id": "shopflix:SF-200470648"
+    },
+    {
+     "source": "skroutz",
+     "title": "Fractal Design Meshify 3 XL RGB Light Tint Gaming Midi Tower με Πλαϊνό Παράθυρο",
+     "value": 512,
+     "id": "skroutz:60466296"
+    },
+    {
+     "source": "bestprice",
+     "title": "Fractal Design Meshify 3 XL Clear Tint White Gaming Full Tower RGB με Πλαϊνό Παράθυρο",
+     "value": 512,
+     "id": "bestprice:2160716307"
+    },
+    {
+     "source": "shopflix",
+     "title": "Fractal Design Meshify 3 XL TG Light Tint Gaming Midi Tower με Πλαϊνό Παράθυρο Μαύρο",
+     "value": 512,
+     "id": "shopflix:SF-200450136"
+    },
+    {
+     "source": "shopflix",
+     "title": "Fractal Design Meshify 3 XL Solid Gaming Midi Tower Μαύρο",
+     "value": 512,
+     "id": "shopflix:SF-200450143"
+    },
+    {
+     "source": "skroutz",
+     "title": "Fractal Design Meshify 3 XL Ambience Pro RGB Clear Tint Gaming Midi Tower με Πλαϊνό Παράθυρο",
+     "value": 512,
+     "id": "skroutz:60466273"
+    },
+    {
+     "source": "bestprice",
+     "title": "Fractal Design Meshify 3 XL Ambience Pro Light Tint Black Gaming Full Tower RGB με Πλαϊνό Παράθυρο",
+     "value": 512,
+     "id": "bestprice:2160716309"
+    }
+   ]
+  },
+  {
+   "cat": "case",
+   "check": "coolerMaxMm > 250 (and < 30, extra)",
+   "field": "coolerMaxMm",
+   "ruleOfThumb": false,
+   "listings": 0,
+   "models": 0,
+   "inBuilderRows": 0,
+   "note": "",
+   "rootCause": "",
+   "severity": "",
+   "examples": []
+  },
+  {
+   "cat": "cooler",
+   "check": "air cooler heightMm > 200 (and < 30, extra)",
+   "field": "heightMm",
+   "ruleOfThumb": false,
+   "listings": 72,
+   "models": 26,
+   "inBuilderRows": 22,
+   "note": "",
+   "rootCause": "",
+   "severity": "",
+   "examples": [
+    {
+     "source": "skroutz",
+     "title": "Akasa AK-CC7122BP01 Socket 775/1200/115x",
+     "value": 26,
+     "id": "skroutz:3239692"
+    },
+    {
+     "source": "shopflix",
+     "title": "Akasa AK-CC7122BP01 Low Profile για Socket 775 / 1200 / 115x Ασημί",
+     "value": 26,
+     "id": "shopflix:SF-11324105"
+    },
+    {
+     "source": "shopflix",
+     "title": "Akasa AK-CC7122BP01 Low Profile για Socket 775 / 1200 / 115x Ασημί",
+     "value": 26,
+     "id": "shopflix:SF-107003366"
+    },
+    {
+     "source": "skroutz",
+     "title": "Akasa AK-CC7129BP01 Socket 775/1200/115x",
+     "value": 21,
+     "id": "skroutz:5014611"
+    },
+    {
+     "source": "shopflix",
+     "title": "Akasa AK-CC7129BP01 Low Profile για Socket 775 / 1200 / 115x Ασημί",
+     "value": 21,
+     "id": "shopflix:SF-11324159"
+    },
+    {
+     "source": "shopflix",
+     "title": "Akasa AK-CC7129BP01 Low Profile για Socket 775 / 1200 / 115x Ασημί",
+     "value": 21,
+     "id": "shopflix:SF-107003373"
+    },
+    {
+     "source": "bestprice",
+     "title": "Alpenfoehn Brocken 4 ARGB Black",
+     "value": 27,
+     "id": "bestprice:2162729861"
+    },
+    {
+     "source": "bestprice",
+     "title": "Alpenfoehn Brocken 4 ARGB White",
+     "value": 27,
+     "id": "bestprice:2162729860"
+    },
+    {
+     "source": "skroutz",
+     "title": "Alpenfoehn Brocken 4 Socket AM4/AM5/1200/115x/1700",
+     "value": 27,
+     "id": "skroutz:55631621"
+    },
+    {
+     "source": "shopflix",
+     "title": "Alpenfoehn Brocken 4 για Socket AM4 / AM5 / 1200 / 115x / 1700",
+     "value": 27,
+     "id": "shopflix:SF-106153700"
+    },
+    {
+     "source": "shopflix",
+     "title": "Alpenfoehn Brocken 4 για Socket AM4 / AM5 / 1200 / 115x / 1700 με ARGB Φωτισμό Λευκή",
+     "value": 27,
+     "id": "shopflix:SF-105395481"
+    },
+    {
+     "source": "shopflix",
+     "title": "Alpenfoehn Brocken 4 MAX Ψύκτρα Επεξεργαστή με ARGB Φωτισμό για Socket AM4 / AM5 / 1200 / 115x / 1700",
+     "value": 27,
+     "id": "shopflix:SF-107095224"
+    },
+    {
+     "source": "shopflix",
+     "title": "Alpenfoehn Brocken 4 MAX για Socket AM4 / AM5 / 1200 / 115x / 1700 με ARGB Φωτισμό Λευκή",
+     "value": 27,
+     "id": "shopflix:SF-105395534"
+    },
+    {
+     "source": "bestprice",
+     "title": "Alpenfoehn Brocken 4 Max ARGB White",
+     "value": 27,
+     "id": "bestprice:2162729859"
+    },
+    {
+     "source": "bestprice",
+     "title": "Alpenfoehn Brocken 4 Max ARGB Black",
+     "value": 27,
+     "id": "bestprice:2162729858"
+    },
+    {
+     "source": "skroutz",
+     "title": "Alpenfoehn Brocken 4 Max Socket AM4/AM5/1200/115x/1700",
+     "value": 27,
+     "id": "skroutz:55631678"
+    },
+    {
+     "source": "shopflix",
+     "title": "Alpenfoehn Brocken 4 Max Διπλού Ανεμιστήρα για Socket AM4 / AM5 / 1200 / 115x / 1700",
+     "value": 27,
+     "id": "shopflix:SF-103272327"
+    },
+    {
+     "source": "bestprice",
+     "title": "Armaggeddon Blizzard 1 White",
+     "value": 25,
+     "id": "bestprice:2160419276"
+    },
+    {
+     "source": "bestprice",
+     "title": "Armaggeddon Blizzard 1 Black",
+     "value": 25,
+     "id": "bestprice:2160419275"
+    },
+    {
+     "source": "skroutz",
+     "title": "Armaggeddon Blizzard 1 Socket AM4/AM5/1200/115x/1700",
+     "value": 25,
+     "id": "skroutz:59011585"
+    }
+   ]
+  },
+  {
+   "cat": "cooler",
+   "check": "spec cache (raw product page) air cooler height < 30 or > 200",
+   "field": "heightMm (specs.json)",
+   "ruleOfThumb": false,
+   "listings": 23,
+   "models": 23,
+   "inBuilderRows": 11,
+   "note": "Raw values before sharing; when sites disagree, scraper/main.py SAFER keeps the larger height, so a too-small raw value is usually hidden.",
+   "rootCause": "",
+   "severity": "",
+   "examples": [
+    {
+     "source": "skroutz",
+     "title": "Akasa AK-CC7122BP01 Socket 775/1200/115x",
+     "value": 26,
+     "latestHeightMm": 26,
+     "id": "skroutz:3239692"
+    },
+    {
+     "source": "skroutz",
+     "title": "Akasa AK-CC7129BP01 Socket 775/1200/115x",
+     "value": 21,
+     "latestHeightMm": 21,
+     "id": "skroutz:5014611"
+    },
+    {
+     "source": "skroutz",
+     "title": "Alpenfoehn Brocken 4 Socket AM4/AM5/1200/115x/1700",
+     "value": 27,
+     "latestHeightMm": 27,
+     "id": "skroutz:55631621"
+    },
+    {
+     "source": "skroutz",
+     "title": "Alpenfoehn Brocken 4 Max Socket AM4/AM5/1200/115x/1700",
+     "value": 27,
+     "latestHeightMm": 27,
+     "id": "skroutz:55631678"
+    },
+    {
+     "source": "skroutz",
+     "title": "Armaggeddon Blizzard 1 Socket AM4/AM5/1200/115x/1700",
+     "value": 25,
+     "latestHeightMm": 25,
+     "id": "skroutz:59011585"
+    },
+    {
+     "source": "skroutz",
+     "title": "Armaggeddon Blizzard 2 Socket AM4/AM5/1200/115x/1700",
+     "value": 25,
+     "latestHeightMm": 25,
+     "id": "skroutz:59011588"
+    },
+    {
+     "source": "skroutz",
+     "title": "Armaggeddon Blizzard 3 Socket AM4/AM5/1200/115x",
+     "value": 25,
+     "latestHeightMm": 25,
+     "id": "skroutz:59010372"
+    },
+    {
+     "source": "skroutz",
+     "title": "Deepcool AK400 G2 Socket AM5/1700/1851",
+     "value": 25,
+     "latestHeightMm": 25,
+     "id": "skroutz:64893011"
+    },
+    {
+     "source": "skroutz",
+     "title": "Deepcool AK500 G2 Socket 1851/1700/AM5",
+     "value": 25,
+     "latestHeightMm": 159,
+     "id": "skroutz:64893008"
+    },
+    {
+     "source": "bestprice",
+     "title": "Dynatron K199",
+     "value": 28.5,
+     "latestHeightMm": 28.5,
+     "id": "bestprice:2154769969"
+    },
+    {
+     "source": "skroutz",
+     "title": "Inter-Tech A-18 Socket AM4",
+     "value": 27.5,
+     "latestHeightMm": 27.5,
+     "id": "skroutz:27980068"
+    },
+    {
+     "source": "skroutz",
+     "title": "Inter-Tech A-41 Socket SP3/TR4/sTRX4",
+     "value": 28.4,
+     "latestHeightMm": 28.4,
+     "id": "skroutz:38356024"
+    },
+    {
+     "source": "skroutz",
+     "title": "Inter-Tech A-45 Socket AM4/AM5",
+     "value": 13,
+     "latestHeightMm": 13,
+     "id": "skroutz:54765776"
+    },
+    {
+     "source": "skroutz",
+     "title": "Inter-Tech K-199 Socket 115x",
+     "value": 28.5,
+     "latestHeightMm": 28.5,
+     "id": "skroutz:18073962"
+    },
+    {
+     "source": "skroutz",
+     "title": "Inter-Tech Q-3 Socket 1700",
+     "value": 28,
+     "latestHeightMm": 28,
+     "id": "skroutz:34982500"
+    },
+    {
+     "source": "skroutz",
+     "title": "Inter-Tech Q-5 Socket 1700",
+     "value": 28,
+     "latestHeightMm": 28,
+     "id": "skroutz:34982619"
+    },
+    {
+     "source": "bestprice",
+     "title": "LC-Power LC-CC-120-RGB",
+     "value": 25,
+     "latestHeightMm": 25,
+     "id": "bestprice:2155447983"
+    },
+    {
+     "source": "bestprice",
+     "title": "Silverstone AR09-115XP",
+     "value": 25,
+     "latestHeightMm": 25,
+     "id": "bestprice:2155108754"
+    },
+    {
+     "source": "bestprice",
+     "title": "Silverstone AR09-115XS",
+     "value": 25,
+     "latestHeightMm": 25,
+     "id": "bestprice:2155371662"
+    },
+    {
+     "source": "bestprice",
+     "title": "Soeyi CLA902",
+     "value": 25,
+     "latestHeightMm": 25,
+     "id": "bestprice:2156401281"
+    }
+   ]
+  },
+  {
+   "cat": "psu",
+   "check": "watts < 300 or > 2000",
+   "field": "watts",
+   "ruleOfThumb": false,
+   "listings": 74,
+   "models": 22,
+   "inBuilderRows": 20,
+   "note": "The scraper accepts 150–3000 W (normalize_psu.py MIN_WATTS/MAX_WATTS). Small TFX/Flex/SFX units below 300 W are real products.",
+   "rootCause": "",
+   "severity": "",
+   "examples": [
+    {
+     "source": "skroutz",
+     "title": "FSP/Fortron FFSP180-50FEB 180W Full Wired",
+     "value": 180,
+     "id": "skroutz:49461817"
+    },
+    {
+     "source": "shopflix",
+     "title": "FSP/Fortron FFSP180-50FEB 180W",
+     "value": 180,
+     "id": "shopflix:SF-103151814"
+    },
+    {
+     "source": "skroutz",
+     "title": "Lenovo 180W Full Wired 80 Plus Bronze (00PC774)",
+     "value": 180,
+     "id": "skroutz:67604426"
+    },
+    {
+     "source": "skroutz",
+     "title": "Akyga 200W Full Wired (AK-I1-200)",
+     "value": 200,
+     "id": "skroutz:50451064"
+    },
+    {
+     "source": "eshop",
+     "title": "SILVERSTONE HELA HA2050R-PM 2050W BLACK",
+     "value": 2050,
+     "id": "eshop:PER.619557"
+    },
+    {
+     "source": "bestprice",
+     "title": "Silverstone Hela 2050R 2050W",
+     "value": 2050,
+     "id": "bestprice:2159568121"
+    },
+    {
+     "source": "shopflix",
+     "title": "Silverstone HELA 2050R Platinum 2050W Μαύρο Full Modular",
+     "value": 2050,
+     "id": "shopflix:SF-106611896"
+    },
+    {
+     "source": "bestprice",
+     "title": "Seasonic Prime PX 2200W",
+     "value": 2200,
+     "id": "bestprice:2159968871"
+    },
+    {
+     "source": "skroutz",
+     "title": "Seasonic PRIME PX ATX3.1 2024 2200W Full Modular 80 Plus Platinum",
+     "value": 2200,
+     "id": "skroutz:57074406"
+    },
+    {
+     "source": "shopflix",
+     "title": "Seasonic Prime PX ATX3.1 2024",
+     "value": 2200,
+     "id": "shopflix:SF-105588799"
+    },
+    {
+     "source": "skroutz",
+     "title": "Asus PRO-WS-2200P 2200W Full Modular 80 Plus Platinum",
+     "value": 2200,
+     "id": "skroutz:65925155"
+    },
+    {
+     "source": "shopflix",
+     "title": "Asus PRO-WS-2200P 2200W Μαύρο",
+     "value": 2200,
+     "id": "shopflix:SF-202603820"
+    },
+    {
+     "source": "bestprice",
+     "title": "Asus Pro WS 2200W",
+     "value": 2200,
+     "id": "bestprice:2163450782"
+    },
+    {
+     "source": "snif",
+     "title": "504965-001 Power Supply For HP Desktop Power Supply unit PSU 504965-001 PC8044 220W HP-D2201C0",
+     "value": 220,
+     "id": "snif:26503195"
+    },
+    {
+     "source": "skroutz",
+     "title": "Spacer 450 230W Full Wired",
+     "value": 230,
+     "id": "skroutz:54563142"
+    },
+    {
+     "source": "snif",
+     "title": "DELL D235PS-00 235 Watt Power Supply For Optiplex 380 Sff",
+     "value": 235,
+     "id": "snif:26982883"
+    },
+    {
+     "source": "snif",
+     "title": "Dell Optiplex 780 960 SFF 235W Power Supply L235P-01 FR610 PS-5231-5DF-LF 0FR610",
+     "value": 235,
+     "id": "snif:20933201"
+    },
+    {
+     "source": "snif",
+     "title": "LENOVO 54Y8897 ACBEL PCB020 240W POWER SUPPLY FOR THINKCENTRE M92P PC",
+     "value": 240,
+     "id": "snif:29039833"
+    },
+    {
+     "source": "snif",
+     "title": "PS-6241-02&#8203;HD 240W For HP RP5000 Power Supply",
+     "value": 240,
+     "id": "snif:36803143"
+    },
+    {
+     "source": "snif",
+     "title": "HP D10-240P1A - 240W Power Supply For HP Elite 8000, 8100, 8200 SFF, Pro 6000 SFF",
+     "value": 240,
+     "id": "snif:27853616"
+    }
+   ]
+  },
+  {
+   "cat": "ram",
+   "check": "capacity ≠ modules × per-module size (chip vs fields, or title kit/total vs fields)",
+   "field": "capacity / modules",
+   "ruleOfThumb": false,
+   "listings": 10,
+   "models": 9,
+   "inBuilderRows": 3,
+   "note": "",
+   "rootCause": "verified: scraper/normalize_ram.py sets capacity = modules × size from the first \"N×SIZE GB\" in title + URL, so the fields always agree with each other; disagreements come from titles whose total and kit differ, or kits written without \"GB\" (\"Kit (2x16)\").",
+   "severity": "",
+   "examples": [
+    {
+     "source": "bestprice",
+     "title": "G.Skill Ripjaws V 256GB (8X16GB) DDR4 RAM 3600MHz Black",
+     "value": "8×16GB = 128GB",
+     "why": "title says 256GB total and 8×16GB",
+     "id": "bestprice:2156304998"
+    },
+    {
+     "source": "shopflix",
+     "title": "Kingston Fury Impact DDR4 16GB 3200MHz 2x16",
+     "value": "1×16GB = 16GB",
+     "why": "title kit 2×16GB",
+     "id": "shopflix:SF-12718141"
+    },
+    {
+     "source": "shopflix",
+     "title": "Patriot Viper Steel RGB DDR4 16GB 3200MHz 2x16",
+     "value": "1×16GB = 16GB",
+     "why": "title kit 2×16GB",
+     "id": "shopflix:SF-12718163"
+    },
+    {
+     "source": "shopflix",
+     "title": "TeamGroup T-Force Vulcan Z DDR4 16GB 3600MHz 2x16",
+     "value": "1×16GB = 16GB",
+     "why": "title kit 2×16GB",
+     "id": "shopflix:SF-12718136"
+    },
+    {
+     "source": "shopflix",
+     "title": "Desktop GSkill Trident Z RGB 64GB DDR4 3200MHz",
+     "value": "32GB",
+     "why": "title says 64GB",
+     "id": "shopflix:SF-00066996"
+    },
+    {
+     "source": "shopflix",
+     "title": "TeamGroup T-Create Expert 32GB DDR4 3600MHz (2x32GB)",
+     "value": "2×32GB = 64GB",
+     "why": "title says 32GB total and 2×32GB",
+     "id": "shopflix:SF-104777520"
+    },
+    {
+     "source": "bestprice",
+     "title": "G.Skill Ripjaws S5 1GB (2X64GB) DDR5 RAM 6000MHz C34 Black",
+     "value": "2×64GB = 128GB",
+     "why": "title says 1GB total and 2×64GB",
+     "id": "bestprice:2162527147"
+    },
+    {
+     "source": "shopflix",
+     "title": "G.Skill Ripjaws S5 DDR5 16GB 5600MHz 2x16",
+     "value": "1×16GB = 16GB",
+     "why": "title kit 2×16GB",
+     "id": "shopflix:SF-12718170"
+    },
+    {
+     "source": "bestprice",
+     "title": "Kingston 16GB (1X64GB) DDR5 RAM 5600MHz C46 KVR56U46BD8-64",
+     "value": "1×64GB = 64GB",
+     "why": "title says 16GB total and 1×64GB",
+     "id": "bestprice:2164193017"
+    },
+    {
+     "source": "bestprice",
+     "title": "G.Skill Trident Z5 RGB 128GB (2X4GB) DDR5 RAM 6400MHz C36 Black F5-6400J3644F64GX2-TZ5RK",
+     "value": "2×4GB = 8GB",
+     "why": "title says 128GB total and 2×4GB",
+     "id": "bestprice:2162566684"
+    }
+   ]
+  },
+  {
+   "cat": "ram",
+   "check": "speed < 1333 or > 10000 MHz (coordinator rule)",
+   "field": "speed",
+   "ruleOfThumb": false,
+   "listings": 81,
+   "models": 28,
+   "inBuilderRows": 1,
+   "note": "Most hits are real DDR2/DDR3 speeds (400–1066 MHz); see the type-aware check.",
+   "rootCause": "",
+   "severity": "",
+   "examples": [
+    {
+     "source": "snif",
+     "title": "16GB (8GBx2) Dell Micron PC2-5300F 667mhz FBD ECC DDR2 Server Ram SNP9F035CK2/16G",
+     "value": 667,
+     "type": "DDR2",
+     "id": "snif:18428121"
+    },
+    {
+     "source": "bestprice",
+     "title": "Dell Micron 16GB (2X8GB) DDR2 RAM 667MHz",
+     "value": 667,
+     "type": "DDR2",
+     "id": "bestprice:2155466271"
+    },
+    {
+     "source": "skroutz",
+     "title": "1GB DDR2 1-RAM0003",
+     "value": 400,
+     "type": "DDR2",
+     "id": "skroutz:59377567"
+    },
+    {
+     "source": "shopflix",
+     "title": "SODIMM DDR2 1GB 533 MHz",
+     "value": 533,
+     "type": "DDR2",
+     "id": "shopflix:SF-09992853"
+    },
+    {
+     "source": "skroutz",
+     "title": "1GB DDR2 RAM03",
+     "value": 667,
+     "type": "DDR2",
+     "id": "skroutz:58788883"
+    },
+    {
+     "source": "shopflix",
+     "title": "- Ram Memory 1GB DDR2 667 MHz Laptop SODIMM (Κωδ. 1-RAM0004)",
+     "value": 667,
+     "type": "DDR2",
+     "id": "shopflix:SF-09992905"
+    },
+    {
+     "source": "skroutz",
+     "title": "Kingston 1GB DDR2 KFJ-FPC218/1G",
+     "value": 667,
+     "type": "DDR2",
+     "id": "skroutz:53019260"
+    },
+    {
+     "source": "skroutz",
+     "title": "1GB DDR2 SZ100437",
+     "value": 667,
+     "type": "DDR2",
+     "id": "skroutz:63421417"
+    },
+    {
+     "source": "bestprice",
+     "title": "Hynix 1GB (1X1GB) DDR2 RAM 667MHz SoDimm HYMP512S64CP8-Y5AB-C",
+     "value": 667,
+     "type": "DDR2",
+     "id": "bestprice:2156699237"
+    },
+    {
+     "source": "skroutz",
+     "title": "HP Enterprise 1GB DDR2",
+     "value": 667,
+     "type": "DDR2",
+     "id": "skroutz:53076802"
+    },
+    {
+     "source": "bestprice",
+     "title": "GoodRam 1GB (1X1GB) DDR2 RAM 800MHz SoDimm",
+     "value": 800,
+     "type": "DDR2",
+     "id": "bestprice:2154423331"
+    },
+    {
+     "source": "snif",
+     "title": "GoodRam 1GB (1X1GB) DDR2 800MHz SoDimm",
+     "value": 800,
+     "type": "DDR2",
+     "id": "snif:33474352"
+    },
+    {
+     "source": "skroutz",
+     "title": "Kingston ValueRAM 1GB DDR2",
+     "value": 800,
+     "type": "DDR2",
+     "id": "skroutz:52211584"
+    },
+    {
+     "source": "bestprice",
+     "title": "Kingston 1GB (1X1GB) DDR2 RAM 800MHz SoDimm KVR800D2S6/1G",
+     "value": 800,
+     "type": "DDR2",
+     "id": "bestprice:2153564924"
+    },
+    {
+     "source": "shopflix",
+     "title": "- Ram Memory 1GB DDR2 800 MHz Laptop SODIMM (Κωδ. 1-RAM0006)",
+     "value": 800,
+     "type": "DDR2",
+     "id": "shopflix:SF-09992922"
+    },
+    {
+     "source": "bestprice",
+     "title": "Samsung 1GB (1X1GB) DDR2 RAM 800MHz",
+     "value": 800,
+     "type": "DDR2",
+     "id": "bestprice:2151183959"
+    },
+    {
+     "source": "bestprice",
+     "title": "Hynix 1GB (1X1GB) DDR2 RAM 800MHz SoDimm",
+     "value": 800,
+     "type": "DDR2",
+     "id": "bestprice:2155488375"
+    },
+    {
+     "source": "bestprice",
+     "title": "Samsung 1GB (1X1GB) DDR2 RAM 800MHz SoDimm",
+     "value": 800,
+     "type": "DDR2",
+     "id": "bestprice:2155488373"
+    },
+    {
+     "source": "skroutz",
+     "title": "MicroMemory DDR2 2GB DDR2",
+     "value": 400,
+     "type": "DDR2",
+     "id": "skroutz:53092260"
+    },
+    {
+     "source": "shopflix",
+     "title": "- Ram Memory 2GB DDR2 533 MHz Laptop SODIMM (Κωδ. 1-RAM0007)",
+     "value": 533,
+     "type": "DDR2",
+     "id": "shopflix:SF-09992907"
+    }
+   ]
+  },
+  {
+   "cat": "ram",
+   "check": "speed outside the range of its DDR type (DDR2 400–1066, DDR3 800–3100, DDR4 1600–5333, DDR5 4000–10000)",
+   "field": "speed",
+   "ruleOfThumb": false,
+   "listings": 14,
+   "models": 10,
+   "inBuilderRows": 4,
+   "note": "",
+   "rootCause": "verified: normalize_ram.py SPEED accepts any 3–5 digit number before MHz/MT/s (or Skroutz \"Tachytita-N\") with no range check. 60000 MHz: the e-shop title itself says \"60000MHZ\". DDR5 2400/2800: Skroutz URL \"Tachytita-2800\" (half the data rate, the I/O clock) for DDR5-5600 laptop kits. DDR4 6000/5600: the title says DDR4 for a DDR5 kit (part F5-/AX5U/LD5S).",
+   "severity": "",
+   "examples": [
+    {
+     "source": "skroutz",
+     "title": "Dell 4GB DDR2 1WT39",
+     "value": 1600,
+     "type": "DDR2",
+     "titleSays": null,
+     "url": "https://www.skroutz.gr/s/53886650/Dell-DDR2-me-Module-1x4GB-kai-Tachytita-1600-gia-Server-1WT39.html",
+     "id": "skroutz:53886650"
+    },
+    {
+     "source": "bestprice",
+     "title": "Corsair 2GB (1X2GB) DDR3 RAM 667MHz SoDimm",
+     "value": 667,
+     "type": "DDR3",
+     "titleSays": "667MHz",
+     "url": "https://www.bestprice.gr/item/2152702796/corsair-2gb-ddr3-ram-667mhz-sodimm.html",
+     "id": "bestprice:2152702796"
+    },
+    {
+     "source": "skroutz",
+     "title": "Adata XPG Lancer Blade 16GB DDR4",
+     "value": 6000,
+     "type": "DDR4",
+     "titleSays": null,
+     "url": "https://www.skroutz.gr/s/61788396/adata-xpg-lancer-blade-ddr4-me-module-1x16gb-kai-tachytita-6000-gia-desktop-ax5u6000c3616g-slabbk.html",
+     "id": "skroutz:61788396"
+    },
+    {
+     "source": "bestprice",
+     "title": "G.Skill Trident Z5 RGB 64GB (2X32GB) DDR4 RAM 6000MHz C36 White F5-6000J3636F32GX2-TZ5RW",
+     "value": 6000,
+     "type": "DDR4",
+     "titleSays": "6000MHz",
+     "url": "https://www.bestprice.gr/item/2159382238/g-skill-trident-z5-rgb-64gb-ddr4-ram-6000mhz-c36-white-f5-6000j3636f32gx2-tz5rw.html",
+     "id": "bestprice:2159382238"
+    },
+    {
+     "source": "bestprice",
+     "title": "G.Skill Trident Z5 RGB 64GB (2X32GB) DDR4 RAM 6000MHz C30 White F5-6000J3040G32GX2-TZ5RW",
+     "value": 6000,
+     "type": "DDR4",
+     "titleSays": "6000MHz",
+     "url": "https://www.bestprice.gr/item/2159382237/g-skill-trident-z5-rgb-64gb-ddr4-ram-6000mhz-c30-white-f5-6000j3040g32gx2-tz5rw.html",
+     "id": "bestprice:2159382237"
+    },
+    {
+     "source": "skroutz",
+     "title": "Lexar 8GB DDR4 LD5S08G56C46ST-BGS",
+     "value": 5600,
+     "type": "DDR4",
+     "titleSays": null,
+     "url": "https://www.skroutz.gr/s/62826559/lexar-ddr4-me-module-1x8gb-kai-tachytita-5600-gia-laptop-ld5s08g56c46st-bgs.html",
+     "id": "skroutz:62826559"
+    },
+    {
+     "source": "skroutz",
+     "title": "Corsair Vengeance 24GB DDR5",
+     "value": 2800,
+     "type": "DDR5",
+     "titleSays": null,
+     "url": "https://www.skroutz.gr/s/63368834/corsair-vengeance-ddr5-me-module-1x24gb-kai-tachytita-2800-gia-laptop-cmsx24gx5m1a5600c48.html",
+     "id": "skroutz:63368834"
+    },
+    {
+     "source": "skroutz",
+     "title": "Adata 32GB DDR5 AD5S480032G-S",
+     "value": 2400,
+     "type": "DDR5",
+     "titleSays": null,
+     "url": "https://www.skroutz.gr/s/40527055/Adata-DDR5-me-Module-1x32GB-kai-Tachytita-2400-gia-Laptop-AD5S480032G-S.html",
+     "id": "skroutz:40527055"
+    },
+    {
+     "source": "bestprice",
+     "title": "HP 32GB (1X32GB) DDR5 RAM 2400MHz C40 P64339-B21",
+     "value": 2400,
+     "type": "DDR5",
+     "titleSays": "2400MHz",
+     "url": "https://www.bestprice.gr/item/2160758270/hp-32gb-ddr5-ram-2400mhz-c40-p64339-b21.html",
+     "id": "bestprice:2160758270"
+    },
+    {
+     "source": "skroutz",
+     "title": "HP Dual Rank 32GB DDR5",
+     "value": 2400,
+     "type": "DDR5",
+     "titleSays": null,
+     "url": "https://www.skroutz.gr/s/57724317/HP-Dual-Rank-DDR5-me-Module-1x32GB-kai-Tachytita-2400-gia-Server-P64339-B21.html",
+     "id": "skroutz:57724317"
+    },
+    {
+     "source": "skroutz",
+     "title": "Corsair Vengeance 32GB DDR5",
+     "value": 2800,
+     "type": "DDR5",
+     "titleSays": null,
+     "url": "https://www.skroutz.gr/s/58722757/Corsair-Vengeance-DDR5-me-Module-1x32GB-kai-Tachytita-2800-gia-Laptop-CMSX32GX5M1A5600C48.html",
+     "id": "skroutz:58722757"
+    },
+    {
+     "source": "shopflix",
+     "title": "Corsair Vengeance DDR5 32GB (1x32GB) 2800MHz SODIMM Laptop Memory Module",
+     "value": 2800,
+     "type": "DDR5",
+     "titleSays": "2800MHz",
+     "url": "https://shopflix.gr/p/SF-107113129/corsair-vengeance-ddr5-32gb-1x32gb-2800mhz-sodimm-laptop-memory-module",
+     "id": "shopflix:SF-107113129"
+    },
+    {
+     "source": "skroutz",
+     "title": "Crucial 64GB DDR5 MTC40F2046S1RC56BD1",
+     "value": 2800,
+     "type": "DDR5",
+     "titleSays": null,
+     "url": "https://www.skroutz.gr/s/56046125/Crucial-DDR5-me-Module-1x64GB-kai-Tachytita-2800-gia-Server-MTC40F2046S1RC56BD1.html",
+     "id": "skroutz:56046125"
+    },
+    {
+     "source": "eshop",
+     "title": "G.SKILL F5-6000J3238G32GX2-TZ5S TRIDENT Z5 64GB (2X32GB) DDR5 60000MHZ CL32 DUAL KIT",
+     "value": 60000,
+     "type": "DDR5",
+     "titleSays": "60000MHZ",
+     "url": "https://www.e-shop.gr/ram-gskill-f5-6000j3238g32gx2-tz5s-trident-z5-64gb-2x32gb-ddr5-60000mhz-cl32-dual-kit-p-PER.559544",
+     "id": "eshop:PER.559544"
+    }
+   ]
+  },
+  {
+   "cat": "gpu",
+   "check": "listing price < 25% of its model’s median listing price (models with ≥ 3 listings)",
+   "field": "price",
+   "ruleOfThumb": false,
+   "listings": 0,
+   "models": 0,
+   "inBuilderRows": 0,
+   "note": "70 models checked; 0 of the hits are the model’s own (cheapest) price shown on the category page.",
+   "rootCause": "",
+   "severity": "",
+   "examples": []
+  },
+  {
+   "cat": "cpu",
+   "check": "listing price < 25% of its model’s median listing price (models with ≥ 3 listings)",
+   "field": "price",
+   "ruleOfThumb": false,
+   "listings": 0,
+   "models": 0,
+   "inBuilderRows": 0,
+   "note": "251 models checked; 0 of the hits are the model’s own (cheapest) price shown on the category page.",
+   "rootCause": "",
+   "severity": "",
+   "examples": []
+  },
+  {
+   "cat": "mobo",
+   "check": "listing price < 25% of its model’s median listing price (models with ≥ 3 listings)",
+   "field": "price",
+   "ruleOfThumb": false,
+   "listings": 0,
+   "models": 0,
+   "inBuilderRows": 0,
+   "note": "541 models checked; 0 of the hits are the model’s own (cheapest) price shown on the category page.",
+   "rootCause": "",
+   "severity": "",
+   "examples": []
+  },
+  {
+   "cat": "ram",
+   "check": "listing price < 25% of its model’s median listing price (models with ≥ 3 listings)",
+   "field": "price",
+   "ruleOfThumb": false,
+   "listings": 14,
+   "models": 11,
+   "inBuilderRows": 2,
+   "note": "287 models checked; 11 of the hits are the model’s own (cheapest) price shown on the category page.",
+   "rootCause": "",
+   "severity": "",
+   "examples": [
+    {
+     "source": "skroutz",
+     "title": "1GB DDR2 RAM03",
+     "value": 1.89,
+     "modelMedian": 19.535,
+     "ratio": 0.097,
+     "isModelPrice": true,
+     "modelListings": 4,
+     "id": "skroutz:58788883"
+    },
+    {
+     "source": "skroutz",
+     "title": "OWC 32GB DDR3 OWC1333D3MPE32G",
+     "value": 80,
+     "modelMedian": 569.69,
+     "ratio": 0.14,
+     "isModelPrice": true,
+     "modelListings": 3,
+     "id": "skroutz:9641690"
+    },
+    {
+     "source": "skroutz",
+     "title": "Samsung 8GB DDR3L M392B1G73BH0-YK0",
+     "value": 25.34,
+     "modelMedian": 165.7,
+     "ratio": 0.153,
+     "isModelPrice": true,
+     "modelListings": 13,
+     "id": "skroutz:65761676"
+    },
+    {
+     "source": "skroutz",
+     "title": "Hynix PC3L-12800R 8GB DDR3",
+     "value": 25.34,
+     "modelMedian": 165.7,
+     "ratio": 0.153,
+     "isModelPrice": false,
+     "modelListings": 13,
+     "id": "skroutz:66465759"
+    },
+    {
+     "source": "shopflix",
+     "title": "GoodRAM 4GB DDR4 με Ταχύτητα 2666 για Laptop",
+     "value": 18.83,
+     "modelMedian": 100.4,
+     "ratio": 0.188,
+     "isModelPrice": true,
+     "modelListings": 12,
+     "id": "shopflix:SF-07504104"
+    },
+    {
+     "source": "shopflix",
+     "title": "Kingston Fury Impact DDR5 64GB 4800MHz 2x32",
+     "value": 813.89,
+     "modelMedian": 4116.64,
+     "ratio": 0.198,
+     "isModelPrice": true,
+     "modelListings": 9,
+     "id": "shopflix:SF-12718144"
+    },
+    {
+     "source": "skroutz",
+     "title": "Hynix 8GB DDR3 HMT31GR7BFR4A-H9",
+     "value": 25.34,
+     "modelMedian": 125.9,
+     "ratio": 0.201,
+     "isModelPrice": true,
+     "modelListings": 3,
+     "id": "skroutz:6325827"
+    },
+    {
+     "source": "skroutz",
+     "title": "Dell Poweredge 16GB DDR5",
+     "value": 249,
+     "modelMedian": 1214.02,
+     "ratio": 0.205,
+     "isModelPrice": true,
+     "modelListings": 6,
+     "id": "skroutz:53086909"
+    },
+    {
+     "source": "shopflix",
+     "title": "Dell 4GB DDR3 UDIMM 1600MHz ECC A7303660 (1x4)",
+     "value": 31,
+     "modelMedian": 149.4,
+     "ratio": 0.207,
+     "isModelPrice": true,
+     "modelListings": 14,
+     "id": "shopflix:SF-01382977"
+    },
+    {
+     "source": "skroutz",
+     "title": "Hynix 4GB DDR3",
+     "value": 32.35,
+     "modelMedian": 149.4,
+     "ratio": 0.217,
+     "isModelPrice": false,
+     "modelListings": 14,
+     "id": "skroutz:69333660"
+    },
+    {
+     "source": "skroutz",
+     "title": "HP 8GB DDR4 W127009501",
+     "value": 62.96,
+     "modelMedian": 283.9,
+     "ratio": 0.222,
+     "isModelPrice": true,
+     "modelListings": 6,
+     "id": "skroutz:67046980"
+    },
+    {
+     "source": "skroutz",
+     "title": "Integral 16GB DDR5 IN5T16GNHRBX",
+     "value": 282.42,
+     "modelMedian": 1214.02,
+     "ratio": 0.233,
+     "isModelPrice": false,
+     "modelListings": 6,
+     "id": "skroutz:68218381"
+    },
+    {
+     "source": "shopflix",
+     "title": "Integral DDR5 με Module 1x16GB & Ταχύτητα 4800 για Server",
+     "value": 239.63,
+     "modelMedian": 1014.87,
+     "ratio": 0.236,
+     "isModelPrice": true,
+     "modelListings": 11,
+     "id": "shopflix:SF-202392721"
+    },
+    {
+     "source": "snif",
+     "title": "Corsair Vengeance LPX CMK16GX4M1A2400C14 DDR4 2400MHz (1x16GB)",
+     "value": 45.99,
+     "modelMedian": 188.02,
+     "ratio": 0.245,
+     "isModelPrice": true,
+     "modelListings": 42,
+     "id": "snif:12530272"
+    }
+   ]
+  },
+  {
+   "cat": "storage",
+   "check": "listing price < 25% of its model’s median listing price (models with ≥ 3 listings)",
+   "field": "price",
+   "ruleOfThumb": false,
+   "listings": 2,
+   "models": 2,
+   "inBuilderRows": 0,
+   "note": "709 models checked; 2 of the hits are the model’s own (cheapest) price shown on the category page.",
+   "rootCause": "",
+   "severity": "",
+   "examples": [
+    {
+     "source": "skroutz",
+     "title": "Micron 5400 Pro 480GB 2.5'' MTFDDAK480TGA-1BC1ZABYYT",
+     "value": 109.24,
+     "modelMedian": 1420.47,
+     "ratio": 0.077,
+     "isModelPrice": true,
+     "modelListings": 4,
+     "id": "skroutz:50865213"
+    },
+    {
+     "source": "skroutz",
+     "title": "HP Enterprise 900GB 2.5\" 10000rpm 619291-B21",
+     "value": 77.36,
+     "modelMedian": 399.18,
+     "ratio": 0.194,
+     "isModelPrice": true,
+     "modelListings": 3,
+     "id": "skroutz:3200212"
+    }
+   ]
+  },
+  {
+   "cat": "psu",
+   "check": "listing price < 25% of its model’s median listing price (models with ≥ 3 listings)",
+   "field": "price",
+   "ruleOfThumb": false,
+   "listings": 0,
+   "models": 0,
+   "inBuilderRows": 0,
+   "note": "122 models checked; 0 of the hits are the model’s own (cheapest) price shown on the category page.",
+   "rootCause": "",
+   "severity": "",
+   "examples": []
+  },
+  {
+   "cat": "case",
+   "check": "listing price < 25% of its model’s median listing price (models with ≥ 3 listings)",
+   "field": "price",
+   "ruleOfThumb": false,
+   "listings": 2,
+   "models": 2,
+   "inBuilderRows": 2,
+   "note": "982 models checked; 2 of the hits are the model’s own (cheapest) price shown on the category page.",
+   "rootCause": "",
+   "severity": "",
+   "examples": [
+    {
+     "source": "bestprice",
+     "title": "Nanoxia Deep Silence 9 White Gaming Midi Tower RGB με Πλαϊνό Παράθυρο",
+     "value": 54.27,
+     "modelMedian": 248.95,
+     "ratio": 0.218,
+     "isModelPrice": true,
+     "modelListings": 3,
+     "id": "bestprice:2164141925"
+    },
+    {
+     "source": "bestprice",
+     "title": "Armaggeddon Nimitz TR5000 Black Gaming Midi Tower με Πλαϊνό Παράθυρο",
+     "value": 18.7,
+     "modelMedian": 79.9,
+     "ratio": 0.234,
+     "isModelPrice": true,
+     "modelListings": 3,
+     "id": "bestprice:2156101817"
+    }
+   ]
+  },
+  {
+   "cat": "fan",
+   "check": "listing price < 25% of its model’s median listing price (models with ≥ 3 listings)",
+   "field": "price",
+   "ruleOfThumb": false,
+   "listings": 0,
+   "models": 0,
+   "inBuilderRows": 0,
+   "note": "448 models checked; 0 of the hits are the model’s own (cheapest) price shown on the category page.",
+   "rootCause": "",
+   "severity": "",
+   "examples": []
+  },
+  {
+   "cat": "cooler",
+   "check": "listing price < 25% of its model’s median listing price (models with ≥ 3 listings)",
+   "field": "price",
+   "ruleOfThumb": false,
+   "listings": 0,
+   "models": 0,
+   "inBuilderRows": 0,
+   "note": "487 models checked; 0 of the hits are the model’s own (cheapest) price shown on the category page.",
+   "rootCause": "",
+   "severity": "",
+   "examples": []
+  },
+  {
+   "cat": "gpu",
+   "check": "minPsu more than 100 W below or 300 W above the chip table (builder GPU_PSU)",
+   "field": "minPsu",
+   "ruleOfThumb": false,
+   "listings": 33,
+   "models": 8,
+   "inBuilderRows": 33,
+   "note": "The builder uses the card’s minPsu first (src/lib/builder.ts gpuPsu), so a too-low value lowers the PSU the builder asks for.",
+   "rootCause": "",
+   "severity": "",
+   "examples": [
+    {
+     "source": "skroutz",
+     "title": "Sparkle ARC B570 10GB GUARDIAN LUNA OC",
+     "value": 170,
+     "table": 500,
+     "chip": "Arc B570",
+     "specCache": 170,
+     "id": "skroutz:59312128"
+    },
+    {
+     "source": "bestprice",
+     "title": "Sparkle Arc B570 10GB GDDR6 Luna Guardian OC",
+     "value": 170,
+     "table": 500,
+     "chip": "Arc B570",
+     "specCache": null,
+     "id": "bestprice:2160489604"
+    },
+    {
+     "source": "bestprice",
+     "title": "Gainward GeForce RTX 3050 6GB GDDR6 StormX",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": null,
+     "id": "bestprice:2163046363"
+    },
+    {
+     "source": "bestprice",
+     "title": "MSI GeForce RTX 3050 6GB GDDR6 Ventus 2X E OC",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": null,
+     "id": "bestprice:2160137615"
+    },
+    {
+     "source": "bestprice",
+     "title": "Gigabyte GeForce RTX 3050 6GB GDDR6 Windforce OC v2",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": null,
+     "id": "bestprice:2160269331"
+    },
+    {
+     "source": "skroutz",
+     "title": "Gainward GeForce RTX 3050 6GB StormX",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": 300,
+     "id": "skroutz:63801128"
+    },
+    {
+     "source": "eshop",
+     "title": "MSI GEFORCE RTX 3050 VENTUS 2X E 6GB OC",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": null,
+     "id": "eshop:PER.245320"
+    },
+    {
+     "source": "skroutz",
+     "title": "MSI GeForce RTX 3050 6GB Ventus 2X E 6G OC",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": 300,
+     "id": "skroutz:57291246"
+    },
+    {
+     "source": "eshop",
+     "title": "GIGABYTE GEFORCE RTX 3050 WINDFORCE OC V2 6G NVIDIA 6 GB GDDR6",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": null,
+     "id": "eshop:PER.245312"
+    },
+    {
+     "source": "shopflix",
+     "title": "Gigabyte GeForce RTX 3050 6GB GDDR6 Windforce OC v2",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": null,
+     "id": "shopflix:SF-105124446"
+    },
+    {
+     "source": "skroutz",
+     "title": "Gigabyte GeForce RTX 3050",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": null,
+     "id": "skroutz:58056480"
+    },
+    {
+     "source": "shopflix",
+     "title": "MSI GeForce RTX 3050 6GB GDDR6 LP E 6G OC",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": null,
+     "id": "shopflix:SF-201074222"
+    },
+    {
+     "source": "skroutz",
+     "title": "MSI GeForce RTX 3050 6GB LP E 6G OC",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": null,
+     "id": "skroutz:64195211"
+    },
+    {
+     "source": "skroutz",
+     "title": "Palit GeForce RTX 3050 6GB StormX (Refresh)",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": 300,
+     "id": "skroutz:65076780"
+    },
+    {
+     "source": "shopflix",
+     "title": "MSI GeForce RTX 3050 6GB GDDR6 Ventus 2X OC",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": null,
+     "id": "shopflix:SF-15323294"
+    },
+    {
+     "source": "bestprice",
+     "title": "MSI GeForce RTX 3050 6GB GDDR6 Ventus 2X OC",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": null,
+     "id": "bestprice:2159383204"
+    },
+    {
+     "source": "skroutz",
+     "title": "MSI GeForce RTX 3050 6GB Ventus 2X 6G OC",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": null,
+     "id": "skroutz:50317204"
+    },
+    {
+     "source": "bestprice",
+     "title": "MSI GeForce RTX 3050 6GB GDDR6 Gaming X",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": null,
+     "id": "bestprice:2160204581"
+    },
+    {
+     "source": "snif",
+     "title": "GIGABYTE VGA GV-N3050WF2OCV2-6GD, 6GB , GDDR6",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": null,
+     "id": "snif:42895202"
+    },
+    {
+     "source": "shopflix",
+     "title": "MSI GeForce RTX 3050 6GB GDDR6 Ventus 2X E 6G OC",
+     "value": 300,
+     "table": 550,
+     "chip": "RTX 3050",
+     "specCache": null,
+     "id": "shopflix:SF-201569276"
+    }
+   ]
+  },
+  {
+   "cat": "case",
+   "check": "maxBoard implausible for the size (SFF/Cube ≥ ATX, Mini Tower E-ATX, Full Tower ≤ mATX, Midi Tower Mini ITX)",
+   "field": "maxBoard",
+   "ruleOfThumb": true,
+   "listings": 50,
+   "models": 31,
+   "inBuilderRows": 20,
+   "note": "Rule of thumb: some cubes do take ATX boards and some \"Midi\" cases are ITX-only; candidates, not verified against the maker.",
+   "rootCause": "verified: normalize_case.py max_board takes the largest board named anywhere in title + spec line, so \"supports Mini-ITX/mATX/ATX\" or a size word for another product can raise it.",
+   "severity": "",
+   "examples": [
+    {
+     "source": "bestprice",
+     "title": "Armaggeddon Tessaraxx Core 1 Gaming Full Tower RGB με Πλαϊνό Παράθυρο",
+     "value": "Micro ATX",
+     "size": "Full Tower",
+     "id": "bestprice:2156360716"
+    },
+    {
+     "source": "bestprice",
+     "title": "Chieftec CI-02B-OP Cube",
+     "value": "ATX",
+     "size": "SFF / Cube",
+     "id": "bestprice:2156537245"
+    },
+    {
+     "source": "skroutz",
+     "title": "Chieftec CI-02B-OP Cube",
+     "value": "ATX",
+     "size": "SFF / Cube",
+     "id": "skroutz:27474816"
+    },
+    {
+     "source": "shopflix",
+     "title": "Chieftec CI-02B-OP Cube Μαύρο",
+     "value": "ATX",
+     "size": "SFF / Cube",
+     "id": "shopflix:SF-10719799"
+    },
+    {
+     "source": "skroutz",
+     "title": "Chieftec Visio Air Cube με Πλαϊνό Παράθυρο",
+     "value": "ATX",
+     "size": "SFF / Cube",
+     "id": "skroutz:68659684"
+    },
+    {
+     "source": "skroutz",
+     "title": "Chieftec Visio Air GM-30B-M-OP Cube με Πλαϊνό Παράθυρο",
+     "value": "ATX",
+     "size": "SFF / Cube",
+     "id": "skroutz:58055764"
+    },
+    {
+     "source": "shopflix",
+     "title": "Chieftec Visio Air GM-30B-M-OP Cube με Πλαϊνό Παράθυρο Μαύρο",
+     "value": "ATX",
+     "size": "SFF / Cube",
+     "id": "shopflix:SF-105515348"
+    },
+    {
+     "source": "bestprice",
+     "title": "Chieftec Visio Air Mesh Black Cube με Πλαϊνό Παράθυρο",
+     "value": "ATX",
+     "size": "SFF / Cube",
+     "id": "bestprice:2160301531"
+    },
+    {
+     "source": "bestprice",
+     "title": "Chieftec Visio Black Gaming Cube RGB με Πλαϊνό Παράθυρο",
+     "value": "ATX",
+     "size": "SFF / Cube",
+     "id": "bestprice:2160300887"
+    },
+    {
+     "source": "bestprice",
+     "title": "Chieftec Visio White Gaming Cube RGB με Πλαϊνό Παράθυρο",
+     "value": "ATX",
+     "size": "SFF / Cube",
+     "id": "bestprice:2162781874"
+    },
+    {
+     "source": "skroutz",
+     "title": "Chieftec Visio GM-30B-TG-OP Cube με Πλαϊνό Παράθυρο",
+     "value": "ATX",
+     "size": "SFF / Cube",
+     "id": "skroutz:58055953"
+    },
+    {
+     "source": "shopflix",
+     "title": "Chieftec Visio GM-30B-TG-OP Gaming Cube με Πλαϊνό Παράθυρο Μαύρο",
+     "value": "ATX",
+     "size": "SFF / Cube",
+     "id": "shopflix:SF-105590708"
+    },
+    {
+     "source": "skroutz",
+     "title": "Chieftec Visio GM-30W-TG-OP Cube με Πλαϊνό Παράθυρο",
+     "value": "ATX",
+     "size": "SFF / Cube",
+     "id": "skroutz:64143044"
+    },
+    {
+     "source": "shopflix",
+     "title": "Chieftec Visio GM-30W-TG-OP Gaming Cube με Πλαϊνό Παράθυρο Λευκό",
+     "value": "ATX",
+     "size": "SFF / Cube",
+     "id": "shopflix:SF-200960903"
+    },
+    {
+     "source": "skroutz",
+     "title": "Darkflash C275P Midi Tower",
+     "value": "Mini ITX",
+     "size": "Midi Tower",
+     "id": "skroutz:63724175"
+    },
+    {
+     "source": "shopflix",
+     "title": "Darkflash C275P Midi Tower Μαύρο",
+     "value": "Mini ITX",
+     "size": "Midi Tower",
+     "id": "shopflix:SF-202597852"
+    },
+    {
+     "source": "shopflix",
+     "title": "Darkflash C280 Gaming Mini Tower με Πλαϊνό Παράθυρο Λευκό",
+     "value": "E-ATX",
+     "size": "Mini Tower",
+     "id": "shopflix:SF-202496380"
+    },
+    {
+     "source": "shopflix",
+     "title": "Darkflash C280 Gaming Mini Tower με Πλαϊνό Παράθυρο & ARGB Φωτισμό Μαύρο +7 Fans",
+     "value": "E-ATX",
+     "size": "Mini Tower",
+     "id": "shopflix:SF-202496614"
+    },
+    {
+     "source": "skroutz",
+     "title": "Darkflash C280 Gaming Mini Tower με Πλαϊνό Παράθυρο",
+     "value": "E-ATX",
+     "size": "Mini Tower",
+     "id": "skroutz:66164829"
+    },
+    {
+     "source": "shopflix",
+     "title": "Darkflash C280 Gaming Mini Tower με Πλαϊνό Παράθυρο & ARGB Φωτισμό Μαύρο + 7 Fans",
+     "value": "E-ATX",
+     "size": "Mini Tower",
+     "id": "shopflix:SF-202530070"
+    }
+   ]
+  },
+  {
+   "cat": "mobo",
+   "check": "ramSlots outside {2, 4, 8}, or Mini ITX with > 2",
+   "field": "ramSlots",
+   "ruleOfThumb": false,
+   "listings": 26,
+   "models": 14,
+   "inBuilderRows": 0,
+   "note": "12/16/24 slots are real on server/workstation boards (not offered by the builder).",
+   "rootCause": "",
+   "severity": "",
+   "examples": [
+    {
+     "source": "bestprice",
+     "title": "Asrock AM5D4ID-2T/BCM",
+     "value": 4,
+     "formFactor": "Mini ITX",
+     "socket": "AM5",
+     "id": "bestprice:2160793342"
+    },
+    {
+     "source": "bestprice",
+     "title": "Asrock GENOA2D24G-2L+",
+     "value": 12,
+     "formFactor": "ATX",
+     "socket": "SP5",
+     "id": "bestprice:2160761240"
+    },
+    {
+     "source": "bestprice",
+     "title": "Asrock ROMED4ID-2T",
+     "value": 4,
+     "formFactor": "Mini ITX",
+     "socket": "SP3",
+     "id": "bestprice:2156581212"
+    },
+    {
+     "source": "skroutz",
+     "title": "ASRock SP2C741D16-2T",
+     "value": 16,
+     "formFactor": "E-ATX",
+     "socket": "LGA4677",
+     "id": "skroutz:66265359"
+    },
+    {
+     "source": "bestprice",
+     "title": "Asrock SP2C741D16-2T",
+     "value": 16,
+     "formFactor": "E-ATX",
+     "socket": "LGA4677",
+     "id": "bestprice:2163843871"
+    },
+    {
+     "source": "bestprice",
+     "title": "Asrock TURIN2D16-2T",
+     "value": 16,
+     "formFactor": "E-ATX",
+     "socket": "SP5",
+     "id": "bestprice:2160793344"
+    },
+    {
+     "source": "bestprice",
+     "title": "Asrock TURIN2D24G-2L+/500W",
+     "value": 24,
+     "formFactor": "ATX",
+     "socket": "SP5",
+     "id": "bestprice:2163269865"
+    },
+    {
+     "source": "bestprice",
+     "title": "Asus K14PA-U12",
+     "value": 12,
+     "formFactor": "E-ATX",
+     "socket": "SP5",
+     "id": "bestprice:2159534275"
+    },
+    {
+     "source": "skroutz",
+     "title": "Asus K14PA-U12",
+     "value": 12,
+     "formFactor": "E-ATX",
+     "socket": "SP5",
+     "id": "skroutz:52893920"
+    },
+    {
+     "source": "shopflix",
+     "title": "Asus K14PA-U12 Motherboard SSI CEB with AMD SP5 Socket",
+     "value": 12,
+     "formFactor": "E-ATX",
+     "socket": "SP5",
+     "id": "shopflix:SF-107094016"
+    },
+    {
+     "source": "bestprice",
+     "title": "Asus Z13PE-D16",
+     "value": 16,
+     "formFactor": "E-ATX",
+     "socket": "LGA4677",
+     "id": "bestprice:2159534276"
+    },
+    {
+     "source": "bestprice",
+     "title": "Gigabyte MA34-CP0",
+     "value": 12,
+     "formFactor": "E-ATX",
+     "socket": "LGA7529",
+     "id": "bestprice:2163960263"
+    },
+    {
+     "source": "skroutz",
+     "title": "Gigabyte MA34-CP0",
+     "value": 12,
+     "formFactor": "E-ATX",
+     "socket": "LGA4677",
+     "id": "skroutz:66917011"
+    },
+    {
+     "source": "shopflix",
+     "title": "Gigabyte MA34-CP0 Motherboard Extended ATX με Intel LGA4677 Socket",
+     "value": 12,
+     "formFactor": "E-ATX",
+     "socket": "LGA4677",
+     "id": "shopflix:SF-202561927"
+    },
+    {
+     "source": "skroutz",
+     "title": "Gigabyte MS73-HB1",
+     "value": 16,
+     "formFactor": "E-ATX",
+     "socket": "LGA4677",
+     "id": "skroutz:69095288"
+    },
+    {
+     "source": "bestprice",
+     "title": "Gigabyte MS73-HB1",
+     "value": 16,
+     "formFactor": "E-ATX",
+     "socket": "LGA4677",
+     "id": "bestprice:2164292983"
+    },
+    {
+     "source": "skroutz",
+     "title": "Gigabyte MZ32-AR0 SoC",
+     "value": 16,
+     "formFactor": "E-ATX",
+     "socket": "SP3",
+     "id": "skroutz:38531856"
+    },
+    {
+     "source": "bestprice",
+     "title": "Gigabyte MZ32-AR0",
+     "value": 16,
+     "formFactor": "E-ATX",
+     "socket": "SP3",
+     "id": "bestprice:2157981731"
+    },
+    {
+     "source": "bestprice",
+     "title": "Gigabyte MZ33-AR0",
+     "value": 24,
+     "formFactor": "E-ATX",
+     "socket": "SP5",
+     "id": "bestprice:2162566547"
+    },
+    {
+     "source": "skroutz",
+     "title": "Gigabyte MZ33-AR0 SoC",
+     "value": 24,
+     "formFactor": "E-ATX",
+     "socket": "SP5",
+     "id": "skroutz:58328735"
+    }
+   ]
+  },
+  {
+   "cat": "cpu",
+   "check": "igpu contradicts the model-number rule (Intel F/KF none; Ryzen 1000–5000 non-G none; 7000/9000 non-F yes; 8000F/7500F/7400F none; G yes)",
+   "field": "igpu",
+   "ruleOfThumb": true,
+   "listings": 0,
+   "models": 0,
+   "inBuilderRows": 0,
+   "note": "igpu is itself computed from the model number (normalize_cpu.py has_igpu), so this mainly re-checks that rule.",
+   "rootCause": "",
+   "severity": "",
+   "examples": []
+  },
+  {
+   "cat": "cpu",
+   "check": "Tray with coolerIncluded = true",
+   "field": "coolerIncluded",
+   "ruleOfThumb": true,
+   "listings": 6,
+   "models": 6,
+   "inBuilderRows": 6,
+   "note": "Greek shops sell \"Tray με ψύκτρα\" / \"Tray with Fan\" packs, so some of these are real; the brief’s rule \"Tray must be false\" does not hold for them.",
+   "rootCause": "",
+   "severity": "",
+   "examples": [
+    {
+     "source": "skroutz",
+     "title": "AMD Ryzen 5 5500F 3GHz Tray",
+     "value": true,
+     "url": "https://www.skroutz.gr/s/69684968/amd-ryzen-5-5500f-3ghz-epexergastis-6-pyrinon-gia-socket-am4-se-tray-me-psyktra.html",
+     "id": "skroutz:69684968"
+    },
+    {
+     "source": "skroutz",
+     "title": "AMD Ryzen 5 7400 4.3GHz",
+     "value": true,
+     "url": "https://www.skroutz.gr/s/65625732/amd-ryzen-5-7400-4-3ghz-epexergastis-6-pyrinon-gia-socket-am5-se-tray-me-psyktra.html",
+     "id": "skroutz:65625732"
+    },
+    {
+     "source": "skroutz",
+     "title": "AMD Ryzen 5 8400F 4.2GHz Tray",
+     "value": true,
+     "url": "https://www.skroutz.gr/s/62543834/amd-ryzen-5-8400f-4-2ghz-epexergastis-6-pyrinon-gia-socket-am5-se-tray-me-psyktra.html",
+     "id": "skroutz:62543834"
+    },
+    {
+     "source": "skroutz",
+     "title": "AMD Ryzen 5 9600 3.8GHz Tray",
+     "value": true,
+     "url": "https://www.skroutz.gr/s/59759262/amd-ryzen-5-9600-3-8ghz-epexergastis-6-pyrinon-gia-socket-am5-se-tray-me-psyktra.html",
+     "id": "skroutz:59759262"
+    },
+    {
+     "source": "skroutz",
+     "title": "AMD Ryzen 7 7700 SR1 3.8GHz Tray",
+     "value": true,
+     "url": "https://www.skroutz.gr/s/65949440/amd-ryzen-7-7700-sr1-3-8ghz-epexergastis-8-pyrinon-gia-socket-am5-se-tray-me-psyktra.html",
+     "id": "skroutz:65949440"
+    },
+    {
+     "source": "skroutz",
+     "title": "AMD Ryzen 7 7700X3D 4GHz",
+     "value": true,
+     "url": "https://www.skroutz.gr/s/68823531/amd-ryzen-7-7700x3d-4ghz-epexergastis-8-pyrinon-gia-socket-am5-se-tray-me-psyktra.html",
+     "id": "skroutz:68823531"
+    }
+   ]
+  },
+  {
+   "cat": "cpu",
+   "check": "coolerIncluded = true for a chip whose retail box has no cooler (Intel K/KF, Ryzen 7000/9000 X/X3D)",
+   "field": "coolerIncluded",
+   "ruleOfThumb": true,
+   "listings": 0,
+   "models": 0,
+   "inBuilderRows": 0,
+   "note": "",
+   "rootCause": "",
+   "severity": "",
+   "examples": []
+  },
+  {
+   "cat": "cpu",
+   "check": "coolerIncluded = false but the title/URL says \"with cooler\" (με ψύκτρα / me-psyktra / with Fan)",
+   "field": "coolerIncluded",
+   "ruleOfThumb": true,
+   "listings": 41,
+   "models": 32,
+   "inBuilderRows": 12,
+   "note": "",
+   "rootCause": "verified: scraper/specs.py apply sets coolerIncluded=false for any Tray listing without a stated value; BestPrice/Shopflix \"Tray με ψύκτρα\" listings have no product-page value.",
+   "severity": "",
+   "examples": [
+    {
+     "source": "skroutz",
+     "title": "AMD Athlon 200GE 3.2GHz Tray",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://www.skroutz.gr/s/64210871/amd-athlon-200ge-3-2ghz-epexergastis-2-pyrinon-gia-socket-am4-se-tray-me-psyktra.html",
+     "id": "skroutz:64210871"
+    },
+    {
+     "source": "shopflix",
+     "title": "AMD Athlon 200GE 3.2GHz",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://shopflix.gr/p/SF-201023823/amd-athlon-200ge-3-2ghz-epexergastes-2-purenon-gia-socket-am4-se-tray-me-psuktra",
+     "id": "shopflix:SF-201023823"
+    },
+    {
+     "source": "shopflix",
+     "title": "AMD Athlon 3000G 3.50GHz 2 Πυρήνων για Socket AM4 σε Tray με Ψύκτρα",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://shopflix.gr/p/SF-105879190/epexergasths-amd-athlon-3000g-3-50ghz-2-purhnon-gia-socket-am4-se-tray-me-psuktra",
+     "id": "shopflix:SF-105879190"
+    },
+    {
+     "source": "skroutz",
+     "title": "Intel Celeron Dual Core G3930 2.9GHz Tray",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://www.skroutz.gr/s/25546686/Intel-Celeron-Dual-Core-G3930-2-9GHz-Epexergastis-2-Pyrinon-gia-Socket-1151-se-Tray-me-PSyktra.html",
+     "id": "skroutz:25546686"
+    },
+    {
+     "source": "skroutz",
+     "title": "Intel Celeron Dual Core G5905 3.5GHz",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://www.skroutz.gr/s/68464521/intel-celeron-dual-core-g5905-3-5ghz-epexergastis-2-pyrinon-gia-socket-1200-se-tray-me-psyktra.html",
+     "id": "skroutz:68464521"
+    },
+    {
+     "source": "bestprice",
+     "title": "Intel Core i3-14100 Tray",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://www.bestprice.gr/item/2159328492/intel-core-i3-14100-tray-epexergastis-4-pyrinon-gia-socket-1700-me-psyktra.html",
+     "id": "bestprice:2159328492"
+    },
+    {
+     "source": "bestprice",
+     "title": "Intel Core i3-14100F Tray",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://www.bestprice.gr/item/2159328490/intel-core-i3-14100f-tray-epexergastis-4-pyrinon-gia-socket-1700-me-psyktra.html",
+     "id": "bestprice:2159328490"
+    },
+    {
+     "source": "bestprice",
+     "title": "Intel Core i7-14700F Tray",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://www.bestprice.gr/item/2159328491/intel-core-i7-14700f-tray-epexergastis-20-pyrinon-gia-socket-1700-me-psyktra.html",
+     "id": "bestprice:2159328491"
+    },
+    {
+     "source": "shopflix",
+     "title": "Intel Pentium Dual Core G7400 3.7GHz 2 Πυρήνων για Socket 1700 σε Tray με Ψύκτρα",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://shopflix.gr/p/SF-101782282/epexergasths-intel-pentium-dual-core-g7400-3-7ghz-2-purhnon-gia-socket-1700-se-tray-me-psuktra",
+     "id": "shopflix:SF-101782282"
+    },
+    {
+     "source": "shopflix",
+     "title": "AMD Ryzen 5 5500 3.6GHz 6 Πυρήνων για Socket AM4 σε Tray με Ψύκτρα",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://shopflix.gr/p/SF-106036248/epexergastes-amd-ryzen-5-5500-3-6ghz-6-purenon-gia-socket-am4-se-tray-me-psuktra",
+     "id": "shopflix:SF-106036248"
+    },
+    {
+     "source": "bestprice",
+     "title": "AMD Ryzen 5 5500F Tray",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://www.bestprice.gr/item/2164526117/amd-ryzen-5-5500f-tray-epexergastis-6-pyrinon-gia-socket-am4-me-psyktra.html",
+     "id": "bestprice:2164526117"
+    },
+    {
+     "source": "shopflix",
+     "title": "AMD Ryzen 5 5600XT 3.7GHz 6 Πυρήνων για Socket AM4 σε Tray με Ψύκτρα",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://shopflix.gr/p/SF-106100150/epexergasths-amd-ryzen-5-5600xt-3-7ghz-6-purhnon-gia-socket-am4-se-tray-me-psuktra",
+     "id": "shopflix:SF-106100150"
+    },
+    {
+     "source": "bestprice",
+     "title": "AMD Ryzen 5 7400 Tray",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://www.bestprice.gr/item/2163692308/amd-ryzen-5-7400-tray-epexergastis-6-pyrinon-gia-socket-am5-me-psyktra.html",
+     "id": "bestprice:2163692308"
+    },
+    {
+     "source": "shopflix",
+     "title": "AMD Ryzen 5 7400 4.3GHz",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://shopflix.gr/p/SF-202448053/amd-ryzen-5-7400-4-3ghz-epexergastes-6-purenon-gia-socket-am5-se-tray-me-psuktra",
+     "id": "shopflix:SF-202448053"
+    },
+    {
+     "source": "bestprice",
+     "title": "AMD Ryzen 5 7500F Tray with Fan",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://www.bestprice.gr/item/2159837283/amd-ryzen-5-7500f-tray-with-fan-epexergastis-6-pyrinon-gia-socket-am5-me-psyktra.html",
+     "id": "bestprice:2159837283"
+    },
+    {
+     "source": "skroutz",
+     "title": "AMD Ryzen 5 7600 3.8GHz Tray",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://www.skroutz.gr/s/54360505/AMD-Ryzen-5-7600-3-8GHz-Epexergastis-6-Pyrinon-gia-Socket-AM5-se-Tray-me-PSyktra.html",
+     "id": "skroutz:54360505"
+    },
+    {
+     "source": "bestprice",
+     "title": "AMD Ryzen 5 7600 Tray With Fan",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://www.bestprice.gr/item/2158245471/amd-ryzen-5-7600-tray-with-fan-epexergastis-6-pyrinon-gia-socket-am5-me-psyktra.html",
+     "id": "bestprice:2158245471"
+    },
+    {
+     "source": "bestprice",
+     "title": "AMD Ryzen 5 8400F Tray with Fan",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://www.bestprice.gr/item/2160654022/amd-ryzen-5-8400f-tray-with-fan-epexergastis-6-pyrinon-gia-socket-am5-me-psyktra.html",
+     "id": "bestprice:2160654022"
+    },
+    {
+     "source": "shopflix",
+     "title": "AMD Ryzen 5 8500G 3.5GHz",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://shopflix.gr/p/SF-102689095/amd-ryzen-5-8500g-3-5ghz-epexergastes-6-purenon-gia-socket-am5-se-tray-me-psuktra",
+     "id": "shopflix:SF-102689095"
+    },
+    {
+     "source": "bestprice",
+     "title": "AMD Ryzen 5 8500G Tray",
+     "value": false,
+     "packaging": "Tray",
+     "url": "https://www.bestprice.gr/item/2163743014/amd-ryzen-5-8500g-tray-epexergastis-6-pyrinon-gia-socket-am5-me-psyktra.html",
+     "id": "bestprice:2163743014"
+    }
+   ]
+  },
+  {
+   "cat": "cpu",
+   "check": "coolerIncluded = true but the Skroutz/BestPrice URL names the package without \"με ψύκτρα\"",
+   "field": "coolerIncluded",
+   "ruleOfThumb": true,
+   "listings": 0,
+   "models": 0,
+   "inBuilderRows": 0,
+   "note": "",
+   "rootCause": "",
+   "severity": "",
+   "examples": []
+  }
+ ]
+}

@@ -1,0 +1,376 @@
+{
+ "generated": "node scripts/audit/data-quality/identity.mjs",
+ "seed": 20261003,
+ "regex": [
+  {
+   "cat": "cpu",
+   "field": "socket",
+   "listings": 1487,
+   "titleStates": 337,
+   "contradictions": 0,
+   "contradictionsBySource": {},
+   "missingWhileTitleStates": 3,
+   "examples": [],
+   "missingExamples": [
+    {
+     "source": "snif",
+     "title": "Intel Pentium G3240 CPU Dual Core 3.1GHz 3MB Cache LGA1150 HD Graphics(Ανακατασκευασμένο)",
+     "titleSays": "LGA1150"
+    },
+    {
+     "source": "snif",
+     "title": "Intel Pentium G3250 CPU Dual Core 3.2GHz 3MB Cache LGA1150 HD Graphics(Ανακατασκευασμένο)",
+     "titleSays": "LGA1150"
+    },
+    {
+     "source": "snif",
+     "title": "Intel Pentium G3420 CPU Dual Core 3.2GHz 3MB Cache LGA1150 HD Graphics(Ανακατασκευασμένο)",
+     "titleSays": "LGA1150"
+    }
+   ]
+  },
+  {
+   "cat": "mobo",
+   "field": "socket",
+   "listings": 3008,
+   "titleStates": 696,
+   "contradictions": 0,
+   "contradictionsBySource": {},
+   "missingWhileTitleStates": 7,
+   "examples": [],
+   "missingExamples": [
+    {
+     "source": "snif",
+     "title": "Asus K14pa-U12/Asmb11 Socket SP5, DDR5",
+     "titleSays": "SP5"
+    },
+    {
+     "source": "snif",
+     "title": "GIGABYTE GA-78LMT-S2P AM3+",
+     "titleSays": "AM3"
+    },
+    {
+     "source": "snif",
+     "title": "GIGABYTE GA-880GM-D2H AM3 V4 REF",
+     "titleSays": "AM3"
+    },
+    {
+     "source": "shopflix",
+     "title": "Gigabyte Gaming WF6 AMD X870 DDR5 AMD Ryzen AM5 ATX",
+     "titleSays": "AM5"
+    },
+    {
+     "source": "snif",
+     "title": "Intel DH67BL (Socket 1155) REF",
+     "titleSays": "LGA1155"
+    }
+   ]
+  },
+  {
+   "cat": "mobo",
+   "field": "memory type",
+   "listings": 3008,
+   "titleStates": 473,
+   "contradictions": 0,
+   "contradictionsBySource": {},
+   "missingWhileTitleStates": 7,
+   "examples": [],
+   "missingExamples": [
+    {
+     "source": "snif",
+     "title": "ASUS P5K DDR2 LGA775(MTX)",
+     "titleSays": "DDR2"
+    },
+    {
+     "source": "eshop",
+     "title": "BIOSTAR A68N-2100K +ONBOARD CPU AMD E1-6010 DDR3 MINI ITX",
+     "titleSays": "DDR3"
+    },
+    {
+     "source": "snif",
+     "title": "Intel DG31PR DDR2 LGA 775 (MTX)",
+     "titleSays": "DDR2"
+    },
+    {
+     "source": "snif",
+     "title": "Intel DG43GT DDR2 LGA 775 (MTX)",
+     "titleSays": "DDR2"
+    },
+    {
+     "source": "snif",
+     "title": "Intel Desktop Board DG41WV 775 DDR3 (MTX)",
+     "titleSays": "DDR3"
+    }
+   ]
+  },
+  {
+   "cat": "ram",
+   "field": "memory type",
+   "listings": 6578,
+   "titleStates": 6575,
+   "contradictions": 0,
+   "contradictionsBySource": {},
+   "missingWhileTitleStates": 0,
+   "examples": [],
+   "missingExamples": []
+  },
+  {
+   "cat": "mobo",
+   "field": "form factor",
+   "listings": 3008,
+   "titleStates": 959,
+   "contradictions": 11,
+   "contradictionsBySource": {
+    "eshop": 3,
+    "shopflix": 7,
+    "snif": 1
+   },
+   "missingWhileTitleStates": 0,
+   "examples": [
+    {
+     "source": "eshop",
+     "title": "ASROCK A520M ITX AC RETAIL",
+     "field": "Micro ATX",
+     "titleSays": "Mini ITX",
+     "id": "eshop:PER.529122"
+    },
+    {
+     "source": "shopflix",
+     "title": "ASRock A520M-ITX / ac Mini ITX με AMD AM4 Socket",
+     "field": "Micro ATX",
+     "titleSays": "Mini ITX",
+     "id": "shopflix:SF-11892236"
+    },
+    {
+     "source": "snif",
+     "title": "Asrock A520M-ITX/ac AMD A520 Mini ITX με Socket AMD AM4",
+     "field": "Micro ATX",
+     "titleSays": "Mini ITX",
+     "id": "snif:40180768"
+    },
+    {
+     "source": "shopflix",
+     "title": "ASRock B550M-ITX / ac Mini ITX με AMD AM4 Socket",
+     "field": "Micro ATX",
+     "titleSays": "Mini ITX",
+     "id": "shopflix:SF-10796611"
+    },
+    {
+     "source": "eshop",
+     "title": "ASROCK B550M-ITX/AC RETAIL",
+     "field": "Micro ATX",
+     "titleSays": "Mini ITX",
+     "id": "eshop:PER.529178"
+    },
+    {
+     "source": "shopflix",
+     "title": "ASRock TRX50 WS Extended ATX με AMD sTR5 Socket",
+     "field": "ATX",
+     "titleSays": "E-ATX",
+     "id": "shopflix:SF-100379952"
+    },
+    {
+     "source": "shopflix",
+     "title": "ASRock W790 WS Extended ATX R2.0 με Intel LGA4677 Socket",
+     "field": "ATX",
+     "titleSays": "E-ATX",
+     "id": "shopflix:SF-104288279"
+    },
+    {
+     "source": "shopflix",
+     "title": "ASRock X870E Taichi Lite Wi-Fi Extended ATX με AMD AM5 Socket",
+     "field": "ATX",
+     "titleSays": "E-ATX",
+     "id": "shopflix:SF-104606887"
+    },
+    {
+     "source": "shopflix",
+     "title": "Asus Rog Maximus Z890 Extreme WiFi Extended ATX με Intel 1851 Socket",
+     "field": "ATX",
+     "titleSays": "E-ATX",
+     "id": "shopflix:SF-104762383"
+    },
+    {
+     "source": "eshop",
+     "title": "GIGABYTE H610M K V2 D5 ATX",
+     "field": "Micro ATX",
+     "titleSays": "ATX",
+     "id": "eshop:PER.261192"
+    },
+    {
+     "source": "shopflix",
+     "title": "Gigabyte TRX50 Aero D Wi-Fi Extended ATX με AMD sTR5 Socket",
+     "field": "ATX",
+     "titleSays": "E-ATX",
+     "id": "shopflix:SF-100379957"
+    }
+   ],
+   "missingExamples": []
+  },
+  {
+   "cat": "psu",
+   "field": "form factor",
+   "listings": 3972,
+   "titleStates": 330,
+   "contradictions": 0,
+   "contradictionsBySource": {},
+   "missingWhileTitleStates": 0,
+   "examples": [],
+   "missingExamples": []
+  },
+  {
+   "cat": "case",
+   "field": "size",
+   "listings": 6893,
+   "titleStates": 6237,
+   "contradictions": 0,
+   "contradictionsBySource": {},
+   "missingWhileTitleStates": 1,
+   "examples": [],
+   "missingExamples": [
+    {
+     "source": "shopflix",
+     "title": "Gigabyte C500 Panoramic Stealth Gaming Midi Towerμε Πλαϊνό Παράθυρο & RGB Φωτισμό Black",
+     "titleSays": "Midi Tower"
+    }
+   ]
+  }
+ ],
+ "spotcheck": {
+  "gpu": {
+   "judged": 20,
+   "errors": 0,
+   "missing": 0,
+   "unclear": 0,
+   "rate": 0,
+   "wilson95": [
+    0,
+    0.16113012549493322
+   ],
+   "missingWilson95": [
+    0,
+    0.16113012549493322
+   ]
+  },
+  "cpu": {
+   "judged": 20,
+   "errors": 3,
+   "missing": 2,
+   "unclear": 0,
+   "rate": 0.15,
+   "wilson95": [
+    0.05236779195949584,
+    0.36042329588695743
+   ],
+   "missingWilson95": [
+    0.027865893984153206,
+    0.30103820641179335
+   ]
+  },
+  "mobo": {
+   "judged": 20,
+   "errors": 0,
+   "missing": 0,
+   "unclear": 0,
+   "rate": 0,
+   "wilson95": [
+    0,
+    0.16113012549493322
+   ],
+   "missingWilson95": [
+    0,
+    0.16113012549493322
+   ]
+  },
+  "ram": {
+   "judged": 20,
+   "errors": 2,
+   "missing": 4,
+   "unclear": 0,
+   "rate": 0.1,
+   "wilson95": [
+    0.027865893984153206,
+    0.30103820641179335
+   ],
+   "missingWilson95": [
+    0.0806563532712,
+    0.41602172202575993
+   ]
+  },
+  "storage": {
+   "judged": 20,
+   "errors": 2,
+   "missing": 0,
+   "unclear": 0,
+   "rate": 0.1,
+   "wilson95": [
+    0.027865893984153206,
+    0.30103820641179335
+   ],
+   "missingWilson95": [
+    0,
+    0.16113012549493322
+   ]
+  },
+  "psu": {
+   "judged": 20,
+   "errors": 1,
+   "missing": 0,
+   "unclear": 2,
+   "rate": 0.05,
+   "wilson95": [
+    0.008881219432873136,
+    0.23613589351256675
+   ],
+   "missingWilson95": [
+    0,
+    0.16113012549493322
+   ]
+  },
+  "case": {
+   "judged": 20,
+   "errors": 2,
+   "missing": 0,
+   "unclear": 2,
+   "rate": 0.1,
+   "wilson95": [
+    0.027865893984153206,
+    0.30103820641179335
+   ],
+   "missingWilson95": [
+    0,
+    0.16113012549493322
+   ]
+  },
+  "fan": {
+   "judged": 20,
+   "errors": 2,
+   "missing": 0,
+   "unclear": 1,
+   "rate": 0.1,
+   "wilson95": [
+    0.027865893984153206,
+    0.30103820641179335
+   ],
+   "missingWilson95": [
+    0,
+    0.16113012549493322
+   ]
+  },
+  "cooler": {
+   "judged": 20,
+   "errors": 5,
+   "missing": 3,
+   "unclear": 1,
+   "rate": 0.25,
+   "wilson95": [
+    0.11186005278940309,
+    0.4687050099580636
+   ],
+   "missingWilson95": [
+    0.05236779195949584,
+    0.36042329588695743
+   ]
+  }
+ }
+}
