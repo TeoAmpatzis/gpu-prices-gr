@@ -6,7 +6,6 @@ import type { BaseListing, BuilderFile } from '../types';
 import { fromColumns } from './columns';
 import { loadBuilder, loadBuilderExtra, loadBuilderSlot, type Model } from './data';
 import { LAZY_SLOTS, SLOTS, fitContext, slotModels, type Build, type Slot, type SlotListing } from './builder';
-import { parseHash } from './filterUrl';
 
 export type Models = { [S in Slot]: Model<SlotListing[S]>[] };
 export type AnyModel = Model<BaseListing>;
@@ -58,21 +57,21 @@ function writeSaved(b: Build, p: Prefs) {
   }
 }
 
-// ---------- The builder's URL parameters (#builder?mode=quick&step=case&cpu=…) ----------
+// ---------- The builder's URL parameters (/builder?mode=quick&step=case&cpu=…) ----------
 
-/** The builder's hash parameters, or empty ones on another page. */
+/** The builder's parameters, or empty ones on another page. */
 export function builderParams(): URLSearchParams {
-  const { page, params } = parseHash();
-  return page === 'builder' && params ? params : new URLSearchParams();
+  return location.pathname === '/builder' ? new URLSearchParams(location.search) : new URLSearchParams();
 }
 
-/** Replace (not push) the builder's hash parameters; routing stays "#builder". */
+/** Replace (not push) the builder's parameters; the page stays "/builder". */
 export function writeBuilderParams(change: (p: URLSearchParams) => void) {
+  if (location.pathname !== '/builder') return;
   const p = builderParams();
   change(p);
   const qs = p.toString();
-  const next = `#builder${qs ? `?${qs}` : ''}`;
-  if (location.hash !== next) history.replaceState(history.state, '', next);
+  const next = `/builder${qs ? `?${qs}` : ''}`;
+  if (location.pathname + location.search !== next) history.replaceState(history.state, '', next);
 }
 
 const SHARE_KEYS = [...SLOTS, 'use', 'budget'];
@@ -83,7 +82,7 @@ export function shareLink(b: Build, p: Prefs): string {
   for (const s of SLOTS) if (b[s]) q.set(s, b[s]!.key);
   if (p.use) q.set('use', p.use);
   if (p.budget) q.set('budget', String(p.budget));
-  return `${location.origin}${location.pathname}#builder?${q}`;
+  return `${location.origin}/builder?${q}`;
 }
 
 function readShared(): Saved | null {

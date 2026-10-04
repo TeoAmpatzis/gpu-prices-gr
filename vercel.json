@@ -7,6 +7,14 @@
   },
   "rewrites": [
     {
+      "source": "/:page(gpu|cpu|mobo|ram|storage|psu|case|fan|cooler|builder|parts|about|contact|privacy)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/:cat(gpu|cpu|mobo|ram|storage|psu|case|fan|cooler)/:slug",
+      "destination": "/index.html"
+    },
+    {
       "source": "/img/:path*",
       "destination": "https://teoampatzis.github.io/builddraft-images/img/:path*"
     }
@@ -14,17 +22,33 @@
   "headers": [
     {
       "source": "/fonts/(.*).woff2",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     },
     {
       "source": "/data/(.*).json",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=300, stale-while-revalidate=3600" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, stale-while-revalidate=3600"
+        }
+      ]
     },
     {
       "source": "/img/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400" },
-        { "key": "CDN-Cache-Control", "value": "max-age=86400" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "max-age=86400"
+        }
       ]
     }
   ]
