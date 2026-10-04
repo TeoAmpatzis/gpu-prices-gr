@@ -1,0 +1,278 @@
+/*
+ * BuildDraft.gr v2 design tokens (Phase 1).
+ *
+ * Three layers:
+ *   1. scales   — brand 50–950, neutral 0–950 (+ three in-between steps picked for contrast),
+ *                 and the four meaning colours (green, orange, red, light blue);
+ *   2. roles    — what the UI uses: surfaces, text, lines, brand, success/warning/danger/info;
+ *                 the names reuse v1's tokens (page, panel, fg, muted, accent…), so v1 pages pick up
+ *                 the new identity through the same variables;
+ *   3. motion, type and radius tokens.
+ *
+ * Stop 2: everything is scoped to the preview's `.ds` root, which carries data-palette="blue|indigo".
+ * Stop 3: the chosen palette moves to :root / .dark and the other one is deleted.
+ * Values are "r g b" triplets so Tailwind's opacity modifiers work (bg-panel/80).
+ * Contrast of every text/background pair: tests/ui/tokens.test.ts and the preview's contrast table.
+ */
+
+/* In Tailwind's components layer, so utility classes on an element always win. */
+@layer components {
+
+  /* ---------- 1. Scales ---------- */
+
+  /* Blue: blue brand on slate neutrals; notes in cyan, away from the brand hue. */
+  .ds[data-palette='blue'] {
+    --brand-50: 239 246 255; /* #EFF6FF */
+    --brand-100: 219 234 254; /* #DBEAFE */
+    --brand-200: 191 219 254; /* #BFDBFE */
+    --brand-300: 147 197 253; /* #93C5FD */
+    --brand-400: 96 165 250; /* #60A5FA */
+    --brand-500: 59 130 246; /* #3B82F6 */
+    --brand-600: 37 99 235; /* #2563EB */
+    --brand-700: 29 78 216; /* #1D4ED8 */
+    --brand-800: 30 64 175; /* #1E40AF */
+    --brand-900: 30 58 138; /* #1E3A8A */
+    --brand-950: 23 37 84; /* #172554 */
+
+    --n-0: 255 255 255; /* #FFFFFF */
+    --n-50: 248 250 252; /* #F8FAFC */
+    --n-100: 241 245 249; /* #F1F5F9 */
+    --n-200: 226 232 240; /* #E2E8F0 */
+    --n-300: 203 213 225; /* #CBD5E1 */
+    --n-400: 148 163 184; /* #94A3B8 */
+    --n-500: 100 116 139; /* #64748B */
+    --n-600: 71 85 105; /* #475569 */
+    --n-700: 51 65 85; /* #334155 */
+    --n-800: 30 41 59; /* #1E293B */
+    --n-900: 15 23 42; /* #0F172A */
+    --n-950: 2 6 23; /* #020617 */
+    /* In-between steps: light faint text ≥ 4.5:1 on n-100, light control border ≥ 3:1 on n-100,
+       dark faint text ≥ 4.5:1 on n-800 */
+    --n-faint-l: 91 107 129; /* #5B6B81 */
+    --n-control-l: 124 140 162; /* #7C8CA2 */
+    --n-faint-d: 134 149 171; /* #8695AB */
+
+    --info-50: 236 254 255; /* cyan #ECFEFF */
+    --info-100: 207 250 254;
+    --info-200: 165 243 252;
+    --info-300: 103 232 249; /* #67E8F9 */
+    --info-400: 34 211 238; /* #22D3EE */
+    --info-600: 8 145 178; /* #0891B2 */
+    --info-700: 14 116 144; /* #0E7490 */
+    --info-800: 21 94 117; /* #155E75 */
+    --info-900: 22 78 99;
+    --info-950: 8 51 68; /* #083344 */
+  }
+
+  /* Indigo: indigo brand on cool grey neutrals; notes in sky blue. */
+  .ds[data-palette='indigo'] {
+    --brand-50: 238 242 255; /* #EEF2FF */
+    --brand-100: 224 231 255; /* #E0E7FF */
+    --brand-200: 199 210 254; /* #C7D2FE */
+    --brand-300: 165 180 252; /* #A5B4FC */
+    --brand-400: 129 140 248; /* #818CF8 */
+    --brand-500: 99 102 241; /* #6366F1 */
+    --brand-600: 79 70 229; /* #4F46E5 */
+    --brand-700: 67 56 202; /* #4338CA */
+    --brand-800: 55 48 163; /* #3730A3 */
+    --brand-900: 49 46 129; /* #312E81 */
+    --brand-950: 30 27 75; /* #1E1B4B */
+
+    --n-0: 255 255 255;
+    --n-50: 249 250 251; /* #F9FAFB */
+    --n-100: 243 244 246; /* #F3F4F6 */
+    --n-200: 229 231 235; /* #E5E7EB */
+    --n-300: 209 213 219; /* #D1D5DB */
+    --n-400: 156 163 175; /* #9CA3AF */
+    --n-500: 107 114 128; /* #6B7280 */
+    --n-600: 75 85 99; /* #4B5563 */
+    --n-700: 55 65 81; /* #374151 */
+    --n-800: 31 41 55; /* #1F2937 */
+    --n-900: 17 24 39; /* #111827 */
+    --n-950: 3 7 18; /* #030712 */
+    --n-faint-l: 97 105 119; /* #616977 */
+    --n-control-l: 132 139 152; /* #848B98 */
+    --n-faint-d: 141 148 161; /* #8D94A1 */
+
+    --info-50: 240 249 255; /* sky #F0F9FF */
+    --info-100: 224 242 254;
+    --info-200: 186 230 253;
+    --info-300: 125 211 252; /* #7DD3FC */
+    --info-400: 56 189 248; /* #38BDF8 */
+    --info-600: 2 132 199; /* #0284C7 */
+    --info-700: 3 105 161; /* #0369A1 */
+    --info-800: 7 89 133; /* #075985 */
+    --info-900: 12 74 110;
+    --info-950: 8 47 73; /* #082F49 */
+  }
+
+  /* Meaning colours shared by both palettes (green = compatible / price down, orange = needs action,
+     red = error / price up). */
+  .ds {
+    --green-50: 240 253 244;
+    --green-100: 220 252 231;
+    --green-200: 187 247 208;
+    --green-300: 134 239 172;
+    --green-400: 74 222 128;
+    --green-600: 22 163 74;
+    --green-700: 21 128 61;
+    --green-800: 22 101 52;
+    --green-900: 20 83 45;
+    --green-950: 5 46 22;
+    --orange-50: 255 247 237;
+    --orange-100: 255 237 213;
+    --orange-200: 254 215 170;
+    --orange-300: 253 186 116;
+    --orange-400: 251 146 60;
+    --orange-600: 234 88 12;
+    --orange-700: 194 65 12;
+    --orange-800: 154 52 18;
+    --orange-900: 124 45 18;
+    --orange-950: 67 20 7;
+    --red-50: 254 242 242;
+    --red-100: 254 226 226;
+    --red-200: 254 202 202;
+    --red-300: 252 165 165;
+    --red-400: 248 113 113;
+    --red-600: 220 38 38;
+    --red-700: 185 28 28;
+    --red-800: 153 27 27;
+    --red-900: 127 29 29;
+    --red-950: 69 10 10;
+  }
+
+  /* ---------- 2. Roles: light ---------- */
+  /* .ds-light / .ds-dark force a theme on a sample inside the other one (logo on dark, etc.). Design-system
+     components use these tokens, never Tailwind dark: variants, so forced scopes render correctly. */
+  .ds,
+  .dark .ds.ds-light {
+    color-scheme: light;
+    /* Surfaces */
+    --page: var(--n-50);
+    --panel: var(--n-0); /* cards, tables */
+    --surface: var(--n-0); /* = panel (v1 name) */
+    --overlay: var(--n-0); /* menus, dialogs, sheets, toasts */
+    --sunken: var(--n-100); /* wells, table headers, inputs */
+    --hover: var(--n-100);
+    /* Lines */
+    --line: var(--n-200); /* dividers */
+    --edge: var(--n-300); /* container and button outlines (decorative) */
+    --edge-hover: var(--n-400);
+    --line-strong: var(--n-control-l); /* form controls: ≥ 3:1 */
+    /* Text */
+    --fg: var(--n-900);
+    --fg-soft: var(--n-800);
+    --muted: var(--n-600);
+    --faint: var(--n-faint-l);
+    /* Brand */
+    --accent: var(--brand-700); /* links, active items, brand text */
+    --brand-solid: var(--brand-600); /* primary button */
+    --brand-solid-hover: var(--brand-700);
+    --brand-solid-active: var(--brand-800);
+    --on-brand: var(--n-0); /* text on brand-solid */
+    --brand-subtle: var(--brand-50); /* selected chip, current menu item */
+    --brand-subtle-line: var(--brand-200);
+    --focus: var(--brand-600);
+    /* Meaning: text on page/panel (-fg), soft background (-bg), its border (-line), icons (-solid),
+       badge text on its -bg (-strong) */
+    --success-fg: var(--green-700);
+    --success-strong: var(--green-800);
+    --success-bg: var(--green-50);
+    --success-line: var(--green-200);
+    --success-solid: var(--green-600);
+    --warning-fg: var(--orange-700);
+    --warning-strong: var(--orange-800);
+    --warning-bg: var(--orange-50);
+    --warning-line: var(--orange-200);
+    --warning-solid: var(--orange-600);
+    --danger-fg: var(--red-700);
+    --danger-strong: var(--red-800);
+    --danger-bg: var(--red-50);
+    --danger-line: var(--red-200);
+    --danger-solid: var(--red-600);
+    --danger-solid-hover: var(--red-700); /* danger button hover */
+    --info-fg: var(--info-700);
+    --info-strong: var(--info-800);
+    --info-bg: var(--info-50);
+    --info-line: var(--info-200);
+    --info-solid: var(--info-600);
+    /* Elevation (dark relies on borders and lighter surfaces) */
+    --shadow-1: 0 1px 2px rgb(15 23 42 / 0.05), 0 1px 3px rgb(15 23 42 / 0.06);
+    --shadow-2: 0 4px 6px -2px rgb(15 23 42 / 0.06), 0 12px 24px -4px rgb(15 23 42 / 0.12);
+  }
+
+  /* ---------- 2. Roles: dark ---------- */
+  .dark .ds,
+  .ds.ds-dark {
+    color-scheme: dark;
+    --page: var(--n-950);
+    --panel: var(--n-900);
+    --surface: var(--n-900);
+    --overlay: var(--n-800);
+    --sunken: var(--n-950);
+    --hover: var(--n-800);
+    --line: var(--n-800);
+    --edge: var(--n-800);
+    --edge-hover: var(--n-700);
+    --line-strong: var(--n-500);
+    --fg: var(--n-50);
+    --fg-soft: var(--n-200);
+    --muted: var(--n-400);
+    --faint: var(--n-faint-d);
+    --accent: var(--brand-400);
+    --brand-solid: var(--brand-400);
+    --brand-solid-hover: var(--brand-300);
+    --brand-solid-active: var(--brand-200);
+    --on-brand: var(--n-950);
+    --brand-subtle: var(--brand-950);
+    --brand-subtle-line: var(--brand-800);
+    --focus: var(--brand-400);
+    --success-fg: var(--green-400);
+    --success-strong: var(--green-300);
+    --success-bg: var(--green-950);
+    --success-line: var(--green-900);
+    --success-solid: var(--green-400);
+    --warning-fg: var(--orange-400);
+    --warning-strong: var(--orange-300);
+    --warning-bg: var(--orange-950);
+    --warning-line: var(--orange-900);
+    --warning-solid: var(--orange-400);
+    --danger-fg: var(--red-400);
+    --danger-strong: var(--red-300);
+    --danger-bg: var(--red-950);
+    --danger-line: var(--red-900);
+    --danger-solid: var(--red-400);
+    --danger-solid-hover: var(--red-300);
+    --info-fg: var(--info-400);
+    --info-strong: var(--info-300);
+    --info-bg: var(--info-950);
+    --info-line: var(--info-900);
+    --info-solid: var(--info-400);
+    --shadow-1: none;
+    --shadow-2: 0 12px 32px -4px rgb(0 0 0 / 0.5);
+  }
+
+  /* ---------- 3. Motion, type, radius ---------- */
+  .ds {
+    --motion-fast: 120ms; /* press feedback, chip toggle, tooltip */
+    --motion-base: 180ms; /* menus, popovers, search panel, toast */
+    --motion-slow: 260ms; /* bottom sheet, dialog, tiles page */
+    --exit: 0.75; /* exits run at 0.75 × the entry duration */
+    --ease-out: cubic-bezier(0.2, 0, 0, 1); /* things appearing */
+    --ease-in: cubic-bezier(0.4, 0, 1, 1); /* things leaving */
+    --radius-sm: 6px; /* badges, inputs inside groups */
+    --radius-md: 8px; /* buttons, fields, chips */
+    --radius-lg: 12px; /* cards, menus, dialogs */
+    --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+    font-weight: 400;
+    background: rgb(var(--page));
+    color: rgb(var(--fg));
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ds {
+      --motion-fast: 0ms;
+      --motion-base: 0ms;
+      --motion-slow: 0ms;
+    }
+  }
+}
