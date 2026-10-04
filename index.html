@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="el">
+<html lang="el" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,7 +8,7 @@
     <link rel="preload" href="/fonts/inter-greek.woff2" as="font" type="font/woff2" crossorigin />
     <title>BuildDraft.gr — Οι χαμηλότερες τιμές hardware στην Ελλάδα</title>
     <meta name="description" content="Σύγκριση τιμών για κάρτες γραφικών, επεξεργαστές, μητρικές, μνήμες RAM, SSD και σκληρούς δίσκους, τροφοδοτικά, κουτιά και ψύξη από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr, με ιστορικό τιμών και συναρμολόγηση PC." />
-    <meta name="theme-color" content="#047857" />
+    <meta name="theme-color" content="#030712" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -29,16 +29,11 @@
     <meta name="twitter:description" content="Σύγκριση τιμών hardware από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr, με ιστορικό τιμών, προσφορές και συναρμολόγηση PC." />
     <meta name="twitter:image" content="https://gpu-prices-gr.vercel.app/og.png" />
     <script>
-      // Set language and theme before first paint (see src/lib/i18n.ts, src/lib/theme.ts).
+      // Set the language before first paint (see src/lib/i18n.ts). The site is dark only (class="dark").
       try {
         var l = localStorage.getItem('lang');
         document.documentElement.lang =
           l === 'en' || l === 'el' ? l : /^el\b/i.test(navigator.language || '') ? 'el' : 'en';
-      } catch (e) {}
-      try {
-        var t = localStorage.getItem('theme');
-        if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches))
-          document.documentElement.classList.add('dark');
       } catch (e) {}
     </script>
   </head>

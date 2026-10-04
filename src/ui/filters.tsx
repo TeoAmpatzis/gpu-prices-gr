@@ -53,7 +53,7 @@ export function CheckList({
           className="ui-field mb-2"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder={`${tr(lang, UI.searchIn)}: ${title}`}
+          placeholder={tr(lang, UI.searchShort)}
           aria-label={`${tr(lang, UI.searchIn)}: ${title}`}
           aria-controls={listId}
         />

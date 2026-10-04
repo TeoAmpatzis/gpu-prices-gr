@@ -5,7 +5,7 @@ import { LinkButton } from '../ui/Button';
 import { StatusLine, type SourceTimes } from '../ui/nav';
 import { SearchBox, type SearchSetup } from '../ui/SearchBox';
 import { UI, plural } from '../ui/strings';
-import { LangSwitch, ThemeSwitch } from './controls';
+import { LangSwitch } from './controls';
 import type { Current } from './MegaMenu';
 import { CATS, GROUPS, href } from './nav';
 
@@ -39,17 +39,14 @@ export function Tiles({ current, counts, cats }: { current?: Current; counts?: P
   );
 }
 
-/** /parts — the "Εξαρτήματα" menu as a page (phones); also holds language and theme there. */
+/** /parts — the "Εξαρτήματα" menu as a page (phones); also holds the language switch there. */
 export function PartsPage({ current, counts, search }: { current?: Current; counts?: Partial<Record<Category, number>>; search: SearchSetup }) {
   const lang = useLang();
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight">{tr(lang, UI.parts)}</h1>
-        <div className="flex items-center gap-2">
-          <LangSwitch wide />
-          <ThemeSwitch />
-        </div>
+        <LangSwitch wide />
       </div>
       <SearchBox setup={search} variant="large" />
       {GROUPS.map((g) => (
@@ -82,7 +79,7 @@ export function NotFoundPage({ counts, search }: { counts?: Partial<Record<Categ
   );
 }
 
-/** Footer: text pages, the site-wide status line, language and theme (phones), "© 2026 BuildDraft.gr". */
+/** Footer: text pages, the site-wide status line, the language switch (phones), "© 2026 BuildDraft.gr". */
 export function Footer({ sources, staleIn }: { sources: SourceTimes; staleIn?: { source: SourceName; category: Text; updatedAt: string }[] }) {
   const lang = useLang();
   return (
@@ -96,9 +93,8 @@ export function Footer({ sources, staleIn }: { sources: SourceTimes; staleIn?: {
               </a>
             ))}
           </nav>
-          <div className="flex items-center gap-2 sm:hidden">
+          <div className="sm:hidden">
             <LangSwitch wide />
-            <ThemeSwitch wide />
           </div>
         </div>
         <StatusLine sources={sources} staleIn={staleIn} />

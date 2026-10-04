@@ -73,7 +73,7 @@ export function PriceCell({ info, align = 'start', compact = false }: { info: Pr
         (Math.abs(info.week) < 1 ? (
           <span className={`${row} text-sm text-faint`}>{tr(lang, UI.steady7days)}</span>
         ) : (
-          <span className={`${row} ui-num text-sm font-medium ${info.week < 0 ? 'text-success-fg' : 'text-danger-fg'}`}>
+          <span className={`${row} ui-num flex-wrap text-sm font-medium ${info.week < 0 ? 'text-success-fg' : 'text-danger-fg'}`}>
             {info.week < 0 ? (
               <TrendingDown className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
             ) : (
@@ -81,8 +81,8 @@ export function PriceCell({ info, align = 'start', compact = false }: { info: Pr
             )}
             {info.week < 0 ? '−' : '+'}
             {p(Math.abs(info.week))}
-            {pct != null && ` (${info.week < 0 ? '−' : '+'}${num(lang, Math.abs(pct), Math.abs(pct) < 10 ? 1 : 0)}%)`}{' '}
-            {tr(lang, UI.in7days)}
+            {pct != null && <span className="whitespace-nowrap">{` (${info.week < 0 ? '−' : '+'}${num(lang, Math.abs(pct), Math.abs(pct) < 10 ? 1 : 0)}%)`}</span>}{' '}
+            <span className="whitespace-nowrap">{tr(lang, UI.in7days)}</span>
           </span>
         ))}
 
@@ -93,7 +93,7 @@ export function PriceCell({ info, align = 'start', compact = false }: { info: Pr
           ) : (
             <Clock className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
           )}
-          {tr(lang, UI.checked)} {timeAgo(info.checkedAt, lang)}
+          {tr(lang, UI.checked)} <span className="whitespace-nowrap">{timeAgo(info.checkedAt, lang)}</span>
           {stale && `, ${tr(lang, UI.stale)}`}
         </span>
       )}

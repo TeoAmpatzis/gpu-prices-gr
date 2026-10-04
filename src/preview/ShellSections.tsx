@@ -9,7 +9,6 @@ import { Footer, NotFoundPage, PartsPage } from '../shell/pages';
 import { AppliedChip } from '../ui/Chip';
 import { CheckList, type Option } from '../ui/filters';
 import { PartRow, ProductCard } from '../ui/lists';
-import type { LogoKind } from '../ui/logos';
 import { Breadcrumbs, StatusLine } from '../ui/nav';
 import { BottomSheet } from '../ui/overlays';
 import { Pagination } from '../ui/Pagination';
@@ -18,7 +17,7 @@ import { Button } from '../ui/Button';
 import { UI } from '../ui/strings';
 import { buildParts, listItem } from './ComponentSections';
 import type { PreviewData } from './data';
-import { Section, Spec, type Palette } from './kit';
+import { Section, Spec } from './kit';
 import { P } from './strings';
 
 export function searchSetup(d: PreviewData, notify: (t: string) => void, lang: 'el' | 'en'): SearchSetup {
@@ -72,10 +71,9 @@ export function NavSection({ d, setup }: { d: PreviewData; setup: SearchSetup })
 }
 
 /** A 360 px phone showing one view of the catalogue in an iframe (real media queries). */
-function Phone({ view, label, logo, palette }: { view: string; label: Text; logo: LogoKind; palette: Palette }) {
+function Phone({ view, label }: { view: string; label: Text }) {
   const lang = useLang();
-  const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-  const src = `/_preview?frame=${view}&logo=${logo}&palette=${palette}&theme=${theme}&lang=${lang}`;
+  const src = `/_preview?frame=${view}&lang=${lang}`;
   return (
     <figure className="flex flex-col items-center gap-2">
       <div className="overflow-hidden rounded-[1.75rem] border-[6px] border-fg/80 bg-page shadow-[var(--shadow-2)]">
@@ -86,12 +84,12 @@ function Phone({ view, label, logo, palette }: { view: string; label: Text; logo
   );
 }
 
-export function ShellSection({ d, setup, logo, palette }: { d: PreviewData; setup: SearchSetup; logo: LogoKind; palette: Palette }) {
+export function ShellSection({ d, setup }: { d: PreviewData; setup: SearchSetup }) {
   const lang = useLang();
   return (
     <Section id="shell" title={P.sShell} intro={P.shellIntro}>
       <div className="overflow-hidden rounded-xl border border-edge">
-        <Header logo={logo} current="gpu" search={setup} counts={d.counts} />
+        <Header current="gpu" search={setup} counts={d.counts} />
         <div className="bg-page px-4 py-3">
           <Breadcrumbs items={crumbsFor(lang, 'gpu')} />
         </div>
@@ -106,11 +104,11 @@ export function ShellSection({ d, setup, logo, palette }: { d: PreviewData; setu
       </div>
       <Spec label={P.phone}>
         <div className="-mx-4 flex gap-6 overflow-x-auto px-4 pb-2 lg:mx-0 lg:flex-wrap lg:overflow-visible lg:px-0">
-          <Phone view="shell" label={P.fShell} logo={logo} palette={palette} />
-          <Phone view="parts" label={P.fParts} logo={logo} palette={palette} />
-          <Phone view="search" label={P.fSearch} logo={logo} palette={palette} />
-          <Phone view="sheet" label={P.fSheet} logo={logo} palette={palette} />
-          <Phone view="builder" label={P.fBuilder} logo={logo} palette={palette} />
+          <Phone view="shell" label={P.fShell} />
+          <Phone view="parts" label={P.fParts} />
+          <Phone view="search" label={P.fSearch} />
+          <Phone view="sheet" label={P.fSheet} />
+          <Phone view="builder" label={P.fBuilder} />
         </div>
       </Spec>
     </Section>
@@ -118,7 +116,7 @@ export function ShellSection({ d, setup, logo, palette }: { d: PreviewData; setu
 }
 
 /** What a phone frame shows (`/_preview?frame=<view>`). */
-export function FrameView({ view, d, setup, logo }: { view: string; d: PreviewData; setup: SearchSetup; logo: LogoKind }) {
+export function FrameView({ view, d, setup }: { view: string; d: PreviewData; setup: SearchSetup }) {
   const lang = useLang();
   const [page, setPage] = useState(1);
   const [per, setPer] = useState(20);
@@ -142,19 +140,19 @@ export function FrameView({ view, d, setup, logo }: { view: string; d: PreviewDa
   if (view === 'parts') {
     return (
       <>
-        <Header logo={logo} current={null} search={setup} counts={d.counts} />
+        <Header current={null} search={setup} counts={d.counts} />
         <main id="main" className="px-4 py-4">
           <PartsPage current="gpu" counts={d.counts} search={setup} />
         </main>
       </>
     );
   }
-  if (view === 'search') return <Header logo={logo} current="gpu" search={setup} counts={d.counts} phoneSearchOpen phoneSearchQuery="rtx 50" />;
+  if (view === 'search') return <Header current="gpu" search={setup} counts={d.counts} phoneSearchOpen phoneSearchQuery="rtx 50" />;
   if (view === 'builder') {
     const parts = buildParts(d, lang);
     return (
       <>
-        <Header logo={logo} current="builder" search={setup} counts={d.counts} />
+        <Header current="builder" search={setup} counts={d.counts} />
         <main id="main" className="flex flex-col gap-3 px-4 py-4">
           <Breadcrumbs items={[{ label: tr(lang, UI.home), href: href.home }, { label: 'PC Builder' }]} />
           <ul className="ui-card">
@@ -169,7 +167,7 @@ export function FrameView({ view, d, setup, logo }: { view: string; d: PreviewDa
   }
   return (
     <>
-      <Header logo={logo} current="gpu" search={setup} counts={d.counts} />
+      <Header current="gpu" search={setup} counts={d.counts} />
       {list}
       <Footer sources={d.siteTimes} staleIn={d.staleIn} />
       {view === 'sheet' && (

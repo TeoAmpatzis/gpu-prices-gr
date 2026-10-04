@@ -1,10 +1,8 @@
-import { Moon, Sun } from 'lucide-react';
 import { setLang, tr, useLang } from '../lib/i18n';
-import { setTheme, useTheme } from '../lib/theme';
 import { Button } from '../ui/Button';
 import { UI } from '../ui/strings';
 
-/** Run a theme/language change with every transition off for one frame (plan A4, rule 3). */
+/** Run a language change with every transition off for one frame (plan A4, rule 3). */
 export function withoutTransitions(change: () => void) {
   const html = document.documentElement;
   html.setAttribute('data-switching', '');
@@ -26,23 +24,6 @@ export function LangSwitch({ wide = false }: { wide?: boolean }) {
       className={wide ? '' : 'w-10 px-0'}
     >
       {wide ? (next === 'en' ? 'English' : 'Ελληνικά') : next === 'en' ? 'EN' : 'ΕΛ'}
-    </Button>
-  );
-}
-
-/** Moon in light mode, sun in dark mode. */
-export function ThemeSwitch({ wide = false }: { wide?: boolean }) {
-  const lang = useLang();
-  const theme = useTheme();
-  const toDark = theme === 'light';
-  return (
-    <Button
-      variant={wide ? 'secondary' : 'ghost'}
-      icon={toDark ? Moon : Sun}
-      iconOnly={!wide}
-      onClick={() => withoutTransitions(() => setTheme(toDark ? 'dark' : 'light'))}
-    >
-      {tr(lang, toDark ? UI.toDark : UI.toLight)}
     </Button>
   );
 }
