@@ -1,0 +1,42 @@
+{
+  "note": "PROVISIONAL gaming tiers (1-10) for the Phase 0 audit only, for the CPUs and graphics cards that v1's recommendations produced. Assigned from general knowledge of public gaming benchmarks (relative order of these chips at 1080p), NOT fetched and NOT the Phase 2 tier files the plan describes. A difference of one tier is within their uncertainty; the audit therefore also reports violations by 2+ tiers separately.",
+  "date": "2026-10-04",
+  "cpu": {
+    "Athlon 3000G": 1,
+    "Ryzen 5 8400F": 5,
+    "Ryzen 5 8500G": 5,
+    "Core Ultra 5 225": 6,
+    "Ryzen 5 7500F": 6,
+    "Ryzen 5 7600X": 7,
+    "Ryzen 5 9600X": 7,
+    "Ryzen 7 7700X": 7,
+    "Core Ultra 7 265": 7,
+    "Core Ultra 9 285T": 7,
+    "Ryzen 7 9700X": 8,
+    "Ryzen 9 7950X": 8,
+    "Ryzen 9 9950X": 8,
+    "Core Ultra 9 285K": 8,
+    "Ryzen 7 7800X3D": 9,
+    "Ryzen 9 7950X3D": 9,
+    "Ryzen 7 9800X3D": 10,
+    "Ryzen 9 9950X3D": 10,
+    "Ryzen 9 9950X3D2": 10
+  },
+  "gpu": {
+    "GT 210": 1,
+    "GT 610": 1,
+    "Arc A310": 1,
+    "Arc A380": 2,
+    "RX 580": 2,
+    "GTX 1660 Ti": 3,
+    "RTX 5050": 4,
+    "Arc A750": 4,
+    "Arc B570": 4,
+    "Arc B580": 5,
+    "RTX 5060": 5,
+    "RTX 5060 Ti": 6,
+    "RX 9070": 7,
+    "RX 9070 XT": 8,
+    "RTX 5070 Ti": 8
+  }
+}

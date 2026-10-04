@@ -1,0 +1,400 @@
+{
+  "gpu/mobile": {
+    "median": {
+      "performance": 98,
+      "accessibility": 100,
+      "fcpMs": 1337.78,
+      "lcpMs": 1897.164,
+      "tbtMs": 53,
+      "cls": 0,
+      "siMs": 3825.475117991745,
+      "totalKB": 489.4482421875,
+      "jsKB": 76.2216796875,
+      "dataKB": 51.265625,
+      "fontKB": 66.005859375,
+      "imageKB": 283.4853515625
+    },
+    "runs": [
+      {
+        "performance": 99,
+        "accessibility": 100,
+        "fcpMs": 1427.629,
+        "lcpMs": 1727.629,
+        "tbtMs": 53,
+        "cls": 0,
+        "siMs": 1819.4044259992747,
+        "totalKB": 489.4482421875,
+        "jsKB": 76.2216796875,
+        "dataKB": 51.2705078125,
+        "fontKB": 66.005859375,
+        "imageKB": 283.4853515625
+      },
+      {
+        "performance": 97,
+        "accessibility": 100,
+        "fcpMs": 1337.78,
+        "lcpMs": 1937.78,
+        "tbtMs": 53,
+        "cls": 0,
+        "siMs": 3825.475117991745,
+        "totalKB": 489.4482421875,
+        "jsKB": 76.2255859375,
+        "dataKB": 51.265625,
+        "fontKB": 66.005859375,
+        "imageKB": 283.484375
+      },
+      {
+        "performance": 98,
+        "accessibility": 100,
+        "fcpMs": 1326.164,
+        "lcpMs": 1897.164,
+        "tbtMs": 55,
+        "cls": 0,
+        "siMs": 3909.3325217864895,
+        "totalKB": 489.4404296875,
+        "jsKB": 76.2001953125,
+        "dataKB": 51.265625,
+        "fontKB": 66.0068359375,
+        "imageKB": 283.5009765625
+      }
+    ],
+    "scripts": [
+      "index-DXdWlXHC.js 76.2"
+    ],
+    "data": [
+      "gpu/list.json 51.3"
+    ]
+  },
+  "gpu/desktop": {
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "fcpMs": 360.303,
+      "lcpMs": 512.303,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 491.9735287330137,
+      "totalKB": 316.5556640625,
+      "jsKB": 76.177734375,
+      "dataKB": 51.265625,
+      "fontKB": 66.0068359375,
+      "imageKB": 110.5947265625
+    },
+    "runs": [
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 485.837,
+        "lcpMs": 605.837,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 536.1552543337949,
+        "totalKB": 316.5087890625,
+        "jsKB": 76.177734375,
+        "dataKB": 51.265625,
+        "fontKB": 66.0068359375,
+        "imageKB": 110.56640625
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 360.303,
+        "lcpMs": 512.303,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 491.9735287330137,
+        "totalKB": 316.712890625,
+        "jsKB": 76.177734375,
+        "dataKB": 51.265625,
+        "fontKB": 66.005859375,
+        "imageKB": 110.7734375
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 356.2085,
+        "lcpMs": 476.2085,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 471.96492183384123,
+        "totalKB": 316.5556640625,
+        "jsKB": 76.177734375,
+        "dataKB": 51.2646484375,
+        "fontKB": 66.0068359375,
+        "imageKB": 110.5947265625
+      }
+    ],
+    "scripts": [
+      "index-DXdWlXHC.js 76.2"
+    ],
+    "data": [
+      "gpu/list.json 51.3"
+    ]
+  },
+  "case/mobile": {
+    "median": {
+      "performance": 76,
+      "accessibility": 100,
+      "fcpMs": 1308.812,
+      "lcpMs": 2929.812,
+      "tbtMs": 672,
+      "cls": 0,
+      "siMs": 3842.914039992751,
+      "totalKB": 592.439453125,
+      "jsKB": 76.2001953125,
+      "dataKB": 261.5205078125,
+      "fontKB": 66.0068359375,
+      "imageKB": 176.2451171875
+    },
+    "runs": [
+      {
+        "performance": 75,
+        "accessibility": 100,
+        "fcpMs": 1411.872,
+        "lcpMs": 3061.8720000000003,
+        "tbtMs": 685.0000000000002,
+        "cls": 0,
+        "siMs": 3842.914039992751,
+        "totalKB": 592.3525390625,
+        "jsKB": 76.2001953125,
+        "dataKB": 261.51953125,
+        "fontKB": 66.0068359375,
+        "imageKB": 176.1357421875
+      },
+      {
+        "performance": 78,
+        "accessibility": 100,
+        "fcpMs": 1272.885,
+        "lcpMs": 2922.885,
+        "tbtMs": 623.0000000000002,
+        "cls": 0,
+        "siMs": 3786.4960819934013,
+        "totalKB": 592.439453125,
+        "jsKB": 76.177734375,
+        "dataKB": 261.5205078125,
+        "fontKB": 66.0068359375,
+        "imageKB": 176.2451171875
+      },
+      {
+        "performance": 76,
+        "accessibility": 100,
+        "fcpMs": 1308.812,
+        "lcpMs": 2929.812,
+        "tbtMs": 672,
+        "cls": 0,
+        "siMs": 3856.242864288843,
+        "totalKB": 592.6953125,
+        "jsKB": 76.2021484375,
+        "dataKB": 261.5419921875,
+        "fontKB": 66.0048828125,
+        "imageKB": 176.48828125
+      }
+    ],
+    "scripts": [
+      "index-DXdWlXHC.js 76.2"
+    ],
+    "data": [
+      "case/list.json 261.5"
+    ]
+  },
+  "case/desktop": {
+    "median": {
+      "performance": 98,
+      "accessibility": 100,
+      "fcpMs": 359.544,
+      "lcpMs": 671.544,
+      "tbtMs": 127.99999999999994,
+      "cls": 0,
+      "siMs": 522.6825939809189,
+      "totalKB": 490.27734375,
+      "jsKB": 76.2001953125,
+      "dataKB": 261.521484375,
+      "fontKB": 66.0068359375,
+      "imageKB": 74.0654296875
+    },
+    "runs": [
+      {
+        "performance": 97,
+        "accessibility": 100,
+        "fcpMs": 487.03,
+        "lcpMs": 799.03,
+        "tbtMs": 142,
+        "cls": 0,
+        "siMs": 588.789674008987,
+        "totalKB": 490.3037109375,
+        "jsKB": 76.177734375,
+        "dataKB": 261.521484375,
+        "fontKB": 66.0068359375,
+        "imageKB": 74.1044921875
+      },
+      {
+        "performance": 98,
+        "accessibility": 100,
+        "fcpMs": 355.194,
+        "lcpMs": 635.194,
+        "tbtMs": 127.99999999999994,
+        "cls": 0,
+        "siMs": 505.4104344984248,
+        "totalKB": 490.27734375,
+        "jsKB": 76.2041015625,
+        "dataKB": 261.5419921875,
+        "fontKB": 66.0068359375,
+        "imageKB": 74.0654296875
+      },
+      {
+        "performance": 98,
+        "accessibility": 100,
+        "fcpMs": 359.544,
+        "lcpMs": 671.544,
+        "tbtMs": 123,
+        "cls": 0,
+        "siMs": 522.6825939809189,
+        "totalKB": 490.2431640625,
+        "jsKB": 76.2001953125,
+        "dataKB": 261.521484375,
+        "fontKB": 66.0068359375,
+        "imageKB": 74.0439453125
+      }
+    ],
+    "scripts": [
+      "index-DXdWlXHC.js 76.2"
+    ],
+    "data": [
+      "case/list.json 261.5"
+    ]
+  },
+  "builder-guided/mobile": {
+    "median": {
+      "performance": 91,
+      "accessibility": 100,
+      "fcpMs": 1319.4245,
+      "lcpMs": 3194.4245,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 3970.4009259982736,
+      "totalKB": 472.2275390625,
+      "jsKB": 103.3544921875,
+      "dataKB": 290.3701171875,
+      "fontKB": 66.0068359375,
+      "imageKB": 0
+    },
+    "runs": [
+      {
+        "performance": 91,
+        "accessibility": 100,
+        "fcpMs": 1332.661,
+        "lcpMs": 3194.661,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 4024.736276633029,
+        "totalKB": 472.2275390625,
+        "jsKB": 103.3583984375,
+        "dataKB": 290.37109375,
+        "fontKB": 66.0068359375,
+        "imageKB": 0
+      },
+      {
+        "performance": 91,
+        "accessibility": 100,
+        "fcpMs": 1319.4245,
+        "lcpMs": 3194.4245,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 3950.642402001324,
+        "totalKB": 472.24609375,
+        "jsKB": 103.353515625,
+        "dataKB": 290.3701171875,
+        "fontKB": 66.0283203125,
+        "imageKB": 0
+      },
+      {
+        "performance": 91,
+        "accessibility": 100,
+        "fcpMs": 1317.757,
+        "lcpMs": 3192.757,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 3970.4009259982736,
+        "totalKB": 472.2216796875,
+        "jsKB": 103.3544921875,
+        "dataKB": 290.369140625,
+        "fontKB": 66.0068359375,
+        "imageKB": 0
+      }
+    ],
+    "scripts": [
+      "index-DXdWlXHC.js 76.2",
+      "Builder-inOAFH4-.js 27.2"
+    ],
+    "data": [
+      "builder.json 290.4"
+    ]
+  },
+  "builder-guided/desktop": {
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "fcpMs": 345.0325,
+      "lcpMs": 405.0325,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 494.04487550237025,
+      "totalKB": 472.2470703125,
+      "jsKB": 103.376953125,
+      "dataKB": 290.37109375,
+      "fontKB": 66.0068359375,
+      "imageKB": 0
+    },
+    "runs": [
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 342.75149999999996,
+        "lcpMs": 402.75149999999996,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 484.24765158386765,
+        "totalKB": 472.2470703125,
+        "jsKB": 103.376953125,
+        "dataKB": 290.3701171875,
+        "fontKB": 66.0068359375,
+        "imageKB": 0
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 346.3635,
+        "lcpMs": 642.8634999999999,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 496.1640970626896,
+        "totalKB": 472.2470703125,
+        "jsKB": 103.3544921875,
+        "dataKB": 290.37109375,
+        "fontKB": 66.0068359375,
+        "imageKB": 0
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 345.0325,
+        "lcpMs": 405.0325,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 494.04487550237025,
+        "totalKB": 472.2265625,
+        "jsKB": 103.376953125,
+        "dataKB": 290.37109375,
+        "fontKB": 66.0068359375,
+        "imageKB": 0
+      }
+    ],
+    "scripts": [
+      "index-DXdWlXHC.js 76.2",
+      "Builder-inOAFH4-.js 27.2"
+    ],
+    "data": [
+      "builder.json 290.4"
+    ]
+  }
+}

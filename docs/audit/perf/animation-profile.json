@@ -1,0 +1,1028 @@
+{
+ "P1-case-open-filter-sheet": {
+  "form": "phone",
+  "median": {
+   "frames": 90,
+   "longestFrameMs": 50,
+   "framesOver33": 1,
+   "framesOver50": 0,
+   "droppedFrameTimeMs": 33,
+   "inputToPaintMs": 80,
+   "inputDelayMs": 24
+  },
+  "loafExample": [
+   {
+    "dur": 61,
+    "block": 11,
+    "renderMs": 0,
+    "scripts": [
+     {
+      "invoker": "DIV#root.onclick",
+      "type": "event-listener",
+      "fn": "Bf",
+      "url": "http://localhost:4181/assets/index-DXdWlXHC.js",
+      "pos": 36718,
+      "dur": 48,
+      "forced": 21
+     }
+    ]
+   }
+  ],
+  "profile": {
+   "jsSelfTopMs": [
+    "337 ms (program)",
+    "25 ms focus",
+    "4 ms node_modules/react-dom/cjs/react-dom.production.min.js:224 Ej",
+    "3 ms appendChild",
+    "2 ms node_modules/react-dom/cjs/react-dom.production.min.js:141 n",
+    "2 ms node_modules/react-dom/cjs/react-dom.production.min.js:219 qc",
+    "2 ms node_modules/react-dom/cjs/react-dom.production.min.js:139 r",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:289 cd",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/components/ModelRow.tsx:248 ModelCard",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/components/FilterBar.tsx:82 FilterBar",
+    "1 ms node_modules/react/cjs/react-jsx-runtime.production.min.js:11 q",
+    "1 ms setAttribute"
+   ],
+   "jsBySourceMs": {
+    "(program)": 337,
+    "other": 38,
+    "react-dom": 17,
+    "node_modules/react/cjs/react-jsx-runtime.production.min.js": 1,
+    "node_modules/lucide-react/dist/esm/shared/src/utils.js": 1,
+    "node_modules/lucide-react/dist/esm/Icon.js": 1,
+    "(anonymous)": 0
+   },
+   "traceMs": {
+    "tasks": 416,
+    "style": 12,
+    "layout": 18,
+    "paint": 61,
+    "script": 136
+   }
+  }
+ },
+ "P2-case-sheet-tap-chip": {
+  "form": "phone",
+  "median": {
+   "frames": 75,
+   "longestFrameMs": 233,
+   "framesOver33": 2,
+   "framesOver50": 2,
+   "droppedFrameTimeMs": 283,
+   "inputToPaintMs": 112,
+   "inputDelayMs": 20
+  },
+  "loafExample": [
+   {
+    "dur": 248,
+    "block": 190,
+    "renderMs": 4,
+    "scripts": [
+     {
+      "invoker": "MessagePort.onmessage",
+      "type": "event-listener",
+      "fn": "jn",
+      "url": "http://localhost:4181/assets/index-DXdWlXHC.js",
+      "pos": 10584,
+      "dur": 236,
+      "forced": 0
+     }
+    ]
+   },
+   {
+    "dur": 90,
+    "block": 39,
+    "renderMs": 0,
+    "scripts": [
+     {
+      "invoker": "DIV#root.onclick",
+      "type": "event-listener",
+      "fn": "Bf",
+      "url": "http://localhost:4181/assets/index-DXdWlXHC.js",
+      "pos": 36718,
+      "dur": 54,
+      "forced": 0
+     }
+    ]
+   }
+  ],
+  "profile": {
+   "jsSelfTopMs": [
+    "408 ms (program)",
+    "85 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:142 allTimeLow",
+    "81 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:171 groupModels",
+    "21 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:290 l",
+    "16 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:279 applyFilters",
+    "15 ms (garbage collector)",
+    "13 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:297",
+    "8 ms Desktop/PROJECTS/Gpu price comparison/src/lib/categories.tsx:160 test",
+    "6 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:120 saleOf",
+    "4 ms appendChild",
+    "3 ms removeChild",
+    "3 ms node_modules/react-dom/cjs/react-dom.production.min.js:252 dk"
+   ],
+   "jsBySourceMs": {
+    "(program)": 408,
+    "other": 264,
+    "react-dom": 33,
+    "(garbage collector)": 15,
+    "node_modules/react/cjs/react-jsx-runtime.production.min.js": 3,
+    "node_modules/lucide-react/dist/esm/Icon.js": 1,
+    "node_modules/scheduler/cjs/scheduler.production.min.js": 1,
+    "node_modules/react/cjs/react.production.min.js": 0
+   },
+   "traceMs": {
+    "tasks": 745,
+    "style": 16,
+    "layout": 28,
+    "paint": 47,
+    "script": 397
+   }
+  }
+ },
+ "P3-case-close-filter-sheet": {
+  "form": "phone",
+  "median": {
+   "frames": 91,
+   "longestFrameMs": 17,
+   "framesOver33": 0,
+   "framesOver50": 0,
+   "droppedFrameTimeMs": 0,
+   "inputToPaintMs": 32,
+   "inputDelayMs": 16
+  },
+  "loafExample": [],
+  "profile": {
+   "jsSelfTopMs": [
+    "270 ms (program)",
+    "2 ms removeChild",
+    "2 ms node_modules/react-dom/cjs/react-dom.production.min.js:219 qc",
+    "2 ms focus",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:279 Ik",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:224 Ej",
+    "1 ms PerformanceObserver.observe.type",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:283 Hk",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:299 Pg",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/components/SortHelp.tsx:6 SortHelp",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:96 Oe",
+    "1 ms node_modules/lucide-react/dist/esm/Icon.js:36"
+   ],
+   "jsBySourceMs": {
+    "(program)": 270,
+    "react-dom": 8,
+    "other": 8,
+    "node_modules/lucide-react/dist/esm/Icon.js": 1,
+    "node_modules/react/cjs/react.production.min.js": 1,
+    "(garbage collector)": 1,
+    "node_modules/react/cjs/react-jsx-runtime.production.min.js": 1,
+    "(anonymous)": 1
+   },
+   "traceMs": {
+    "tasks": 308,
+    "style": 3,
+    "layout": 1,
+    "paint": 29,
+    "script": 46
+   }
+  }
+ },
+ "P4-case-expand-card": {
+  "form": "phone",
+  "median": {
+   "frames": 89,
+   "longestFrameMs": 33,
+   "framesOver33": 1,
+   "framesOver50": 0,
+   "droppedFrameTimeMs": 33,
+   "inputToPaintMs": 80,
+   "inputDelayMs": 25
+  },
+  "loafExample": [
+   {
+    "dur": 53,
+    "block": 2,
+    "renderMs": 0,
+    "scripts": [
+     {
+      "invoker": "DIV#root.onclick",
+      "type": "event-listener",
+      "fn": "Bf",
+      "url": "http://localhost:4181/assets/index-DXdWlXHC.js",
+      "pos": 36718,
+      "dur": 21,
+      "forced": 0
+     }
+    ]
+   },
+   {
+    "dur": 53,
+    "block": 2,
+    "renderMs": 2,
+    "scripts": []
+   }
+  ],
+  "profile": {
+   "jsSelfTopMs": [
+    "543 ms (program)",
+    "10 ms (garbage collector)",
+    "3 ms node_modules/react-dom/cjs/react-dom.production.min.js:160 Nh",
+    "3 ms setAttribute",
+    "3 ms node_modules/react-dom/cjs/react-dom.production.min.js:143 J",
+    "2 ms node_modules/react-dom/cjs/react-dom.production.min.js:224 Ej",
+    "2 ms Desktop/PROJECTS/Gpu price comparison/src/components/PriceChart.tsx:50 PriceChart",
+    "2 ms node_modules/lucide-react/dist/esm/Icon.js:13",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:289 cd",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:141 n",
+    "1 ms getBoundingClientRect",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/components/ModelRow.tsx:13"
+   ],
+   "jsBySourceMs": {
+    "(program)": 543,
+    "react-dom": 22,
+    "other": 15,
+    "(garbage collector)": 10,
+    "node_modules/lucide-react/dist/esm/Icon.js": 2,
+    "node_modules/react/cjs/react.production.min.js": 1,
+    "(anonymous)": 1,
+    "node_modules/react/cjs/react-jsx-runtime.production.min.js": 1
+   },
+   "traceMs": {
+    "tasks": 617,
+    "style": 47,
+    "layout": 21,
+    "paint": 168,
+    "script": 91
+   }
+  }
+ },
+ "P5-gpu-expand-card": {
+  "form": "phone",
+  "median": {
+   "frames": 78,
+   "longestFrameMs": 100,
+   "framesOver33": 3,
+   "framesOver50": 3,
+   "droppedFrameTimeMs": 217,
+   "inputToPaintMs": 144,
+   "inputDelayMs": 24
+  },
+  "loafExample": [
+   {
+    "dur": 101,
+    "block": 50,
+    "renderMs": 0,
+    "scripts": [
+     {
+      "invoker": "DIV#root.onclick",
+      "type": "event-listener",
+      "fn": "Bf",
+      "url": "http://localhost:4181/assets/index-DXdWlXHC.js",
+      "pos": 36718,
+      "dur": 33,
+      "forced": 0
+     }
+    ]
+   },
+   {
+    "dur": 59,
+    "block": 1,
+    "renderMs": 40,
+    "scripts": [
+     {
+      "invoker": "MessagePort.onmessage",
+      "type": "event-listener",
+      "fn": "jn",
+      "url": "http://localhost:4181/assets/index-DXdWlXHC.js",
+      "pos": 10584,
+      "dur": 11,
+      "forced": 0
+     }
+    ]
+   }
+  ],
+  "profile": {
+   "jsSelfTopMs": [
+    "665 ms (program)",
+    "8 ms node_modules/react-dom/cjs/react-dom.production.min.js:224 Ej",
+    "6 ms setAttribute",
+    "5 ms (garbage collector)",
+    "4 ms appendChild",
+    "4 ms node_modules/react-dom/cjs/react-dom.production.min.js:279 Ik",
+    "4 ms node_modules/react-dom/cjs/react-dom.production.min.js:289 cd",
+    "3 ms node_modules/react-dom/cjs/react-dom.production.min.js:160 Nh",
+    "3 ms getBoundingClientRect",
+    "2 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:334 We",
+    "2 ms node_modules/react-dom/cjs/react-dom.production.min.js:219 qc",
+    "2 ms Desktop/PROJECTS/Gpu price comparison/src/components/PriceChart.tsx:50 PriceChart"
+   ],
+   "jsBySourceMs": {
+    "(program)": 665,
+    "react-dom": 46,
+    "other": 32,
+    "(garbage collector)": 5,
+    "node_modules/lucide-react/dist/esm/Icon.js": 2,
+    "node_modules/lucide-react/dist/esm/shared/src/utils.js": 1,
+    "(anonymous)": 1,
+    "node_modules/react/cjs/react-jsx-runtime.production.min.js": 0
+   },
+   "traceMs": {
+    "tasks": 777,
+    "style": 127,
+    "layout": 51,
+    "paint": 199,
+    "script": 223
+   }
+  }
+ },
+ "P6-gpu-scroll-fling": {
+  "form": "phone",
+  "median": {
+   "frames": 92,
+   "longestFrameMs": 17,
+   "framesOver33": 0,
+   "framesOver50": 0,
+   "droppedFrameTimeMs": 0,
+   "inputToPaintMs": 16,
+   "inputDelayMs": 11
+  },
+  "loafExample": [],
+  "profile": {
+   "jsSelfTopMs": [
+    "194 ms (program)",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:53 Kb",
+    "1 ms (anonymous)",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:79 b",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:51 xb",
+    "0 ms PerformanceObserver.observe.type",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:109",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:90 me"
+   ],
+   "jsBySourceMs": {
+    "(program)": 194,
+    "react-dom": 2,
+    "(anonymous)": 1,
+    "other": 0
+   },
+   "traceMs": {
+    "tasks": 222,
+    "style": 0,
+    "layout": 0,
+    "paint": 4,
+    "script": 46
+   }
+  }
+ },
+ "P7-tab-gpu-to-case": {
+  "form": "phone",
+  "median": {
+   "frames": 15,
+   "longestFrameMs": 1183,
+   "framesOver33": 3,
+   "framesOver50": 2,
+   "droppedFrameTimeMs": 1250,
+   "inputToPaintMs": 32,
+   "inputDelayMs": 14
+  },
+  "loafExample": [
+   {
+    "dur": 1193,
+    "block": 1143,
+    "renderMs": 40,
+    "scripts": [
+     {
+      "invoker": "MessagePort.onmessage",
+      "type": "event-listener",
+      "fn": "jn",
+      "url": "http://localhost:4181/assets/index-DXdWlXHC.js",
+      "pos": 10584,
+      "dur": 1151,
+      "forced": 0
+     }
+    ]
+   },
+   {
+    "dur": 75,
+    "block": 7,
+    "renderMs": 5,
+    "scripts": [
+     {
+      "invoker": "MessagePort.onmessage",
+      "type": "event-listener",
+      "fn": "jn",
+      "url": "http://localhost:4181/assets/index-DXdWlXHC.js",
+      "pos": 10584,
+      "dur": 17,
+      "forced": 0
+     }
+    ]
+   }
+  ],
+  "profile": {
+   "jsSelfTopMs": [
+    "552 ms Desktop/PROJECTS/Gpu price comparison/src/lib/categories.tsx:160 test",
+    "362 ms (program)",
+    "160 ms Desktop/PROJECTS/Gpu price comparison/src/lib/facets.ts:35 l",
+    "135 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:142 allTimeLow",
+    "47 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:171 groupModels",
+    "39 ms Desktop/PROJECTS/Gpu price comparison/src/lib/ranking.ts:133 v",
+    "38 ms Desktop/PROJECTS/Gpu price comparison/src/lib/categories.tsx:505 chip",
+    "37 ms Desktop/PROJECTS/Gpu price comparison/src/lib/facets.ts:35",
+    "30 ms (garbage collector)",
+    "28 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:290 l",
+    "25 ms Desktop/PROJECTS/Gpu price comparison/src/lib/facets.ts:34 c",
+    "23 ms Desktop/PROJECTS/Gpu price comparison/src/lib/columns.ts:8 r"
+   ],
+   "jsBySourceMs": {
+    "other": 1339,
+    "(program)": 362,
+    "react-dom": 47,
+    "(garbage collector)": 30,
+    "node_modules/lucide-react/dist/esm/shared/src/utils.js": 3,
+    "node_modules/lucide-react/dist/esm/Icon.js": 3,
+    "node_modules/react/cjs/react-jsx-runtime.production.min.js": 1,
+    "node_modules/scheduler/cjs/scheduler.production.min.js": 1
+   },
+   "traceMs": {
+    "tasks": 1801,
+    "style": 25,
+    "layout": 29,
+    "paint": 44,
+    "script": 1405
+   }
+  }
+ },
+ "P8-case-theme-toggle": {
+  "form": "phone",
+  "median": {
+   "frames": 84,
+   "longestFrameMs": 67,
+   "framesOver33": 2,
+   "framesOver50": 1,
+   "droppedFrameTimeMs": 117,
+   "inputToPaintMs": 104,
+   "inputDelayMs": 17
+  },
+  "loafExample": [
+   {
+    "dur": 78,
+    "block": 27,
+    "renderMs": 0,
+    "scripts": []
+   }
+  ],
+  "profile": {
+   "jsSelfTopMs": [
+    "613 ms (program)",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:159 Eh",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:166 Zh",
+    "1 ms (anonymous)",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/lib/theme.ts:18 $0",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:79 b",
+    "0 ms PerformanceObserver.observe.type",
+    "0 ms setAttribute",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:215 Zi",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:143 J",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:53 Kb",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:109"
+   ],
+   "jsBySourceMs": {
+    "(program)": 613,
+    "react-dom": 2,
+    "other": 1,
+    "(anonymous)": 1
+   },
+   "traceMs": {
+    "tasks": 633,
+    "style": 145,
+    "layout": 31,
+    "paint": 162,
+    "script": 56
+   }
+  }
+ },
+ "P9-builder-next-step": {
+  "form": "phone",
+  "median": {
+   "frames": 86,
+   "longestFrameMs": 67,
+   "framesOver33": 2,
+   "framesOver50": 1,
+   "droppedFrameTimeMs": 83,
+   "inputToPaintMs": 72,
+   "inputDelayMs": 14
+  },
+  "loafExample": [
+   {
+    "dur": 72,
+    "block": 18,
+    "renderMs": 3,
+    "scripts": []
+   },
+   {
+    "dur": 54,
+    "block": 2,
+    "renderMs": 0,
+    "scripts": [
+     {
+      "invoker": "DIV#root.onclick",
+      "type": "event-listener",
+      "fn": "Bf",
+      "url": "http://localhost:4181/assets/index-DXdWlXHC.js",
+      "pos": 36718,
+      "dur": 29,
+      "forced": 0
+     }
+    ]
+   }
+  ],
+  "profile": {
+   "jsSelfTopMs": [
+    "501 ms (program)",
+    "14 ms Desktop/PROJECTS/Gpu price comparison/src/lib/builderState.ts:172 extra",
+    "4 ms (garbage collector)",
+    "3 ms Desktop/PROJECTS/Gpu price comparison/src/lib/ranking.ts:133 v",
+    "3 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:208 mostCommon",
+    "3 ms Desktop/PROJECTS/Gpu price comparison/src/components/builder/Guided.tsx:408",
+    "2 ms node_modules/react-dom/cjs/react-dom.production.min.js:219 qc",
+    "2 ms setAttribute",
+    "2 ms node_modules/react-dom/cjs/react-dom.production.min.js:224 Ej",
+    "2 ms Desktop/PROJECTS/Gpu price comparison/src/components/builder/Guided.tsx:397",
+    "1 ms (anonymous)",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/lib/builder.ts:470 m"
+   ],
+   "jsBySourceMs": {
+    "(program)": 501,
+    "other": 44,
+    "react-dom": 15,
+    "(garbage collector)": 4,
+    "(anonymous)": 1,
+    "node_modules/lucide-react/dist/esm/shared/src/utils.js": 1
+   },
+   "traceMs": {
+    "tasks": 587,
+    "style": 9,
+    "layout": 24,
+    "paint": 84,
+    "script": 132
+   }
+  }
+ },
+ "P10-builder-open-summary-bar": {
+  "form": "phone",
+  "median": {
+   "frames": 89,
+   "longestFrameMs": 50,
+   "framesOver33": 1,
+   "framesOver50": 0,
+   "droppedFrameTimeMs": 33,
+   "inputToPaintMs": 32,
+   "inputDelayMs": 13
+  },
+  "loafExample": [
+   {
+    "dur": 65,
+    "block": 14,
+    "renderMs": 1,
+    "scripts": []
+   }
+  ],
+  "profile": {
+   "jsSelfTopMs": [
+    "345 ms (program)",
+    "9 ms Desktop/PROJECTS/Gpu price comparison/src/lib/builderState.ts:172 extra",
+    "4 ms (garbage collector)",
+    "2 ms node_modules/react-dom/cjs/react-dom.production.min.js:224 Ej",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:143 J",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:125 Zf",
+    "1 ms PerformanceObserver.observe.type",
+    "1 ms node_modules/lucide-react/dist/esm/Icon.js:13",
+    "1 ms fetch",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/components/builder/Guided.tsx:408",
+    "1 ms node_modules/lucide-react/dist/esm/Icon.js:36",
+    "1 ms node_modules/lucide-react/dist/esm/shared/src/utils.js:9"
+   ],
+   "jsBySourceMs": {
+    "(program)": 345,
+    "other": 12,
+    "react-dom": 7,
+    "(garbage collector)": 4,
+    "node_modules/lucide-react/dist/esm/Icon.js": 1,
+    "node_modules/lucide-react/dist/esm/shared/src/utils.js": 1,
+    "(anonymous)": 1
+   },
+   "traceMs": {
+    "tasks": 394,
+    "style": 4,
+    "layout": 5,
+    "paint": 15,
+    "script": 38
+   }
+  }
+ },
+ "P11-builder-show-more": {
+  "form": "phone",
+  "median": {
+   "frames": 90,
+   "longestFrameMs": 33,
+   "framesOver33": 0,
+   "framesOver50": 0,
+   "droppedFrameTimeMs": 17,
+   "inputToPaintMs": 56,
+   "inputDelayMs": 18
+  },
+  "loafExample": [
+   {
+    "dur": 59,
+    "block": 9,
+    "renderMs": 0,
+    "scripts": []
+   }
+  ],
+  "profile": {
+   "jsSelfTopMs": [
+    "398 ms (program)",
+    "11 ms Desktop/PROJECTS/Gpu price comparison/src/lib/builderState.ts:172 extra",
+    "6 ms (garbage collector)",
+    "4 ms node_modules/react-dom/cjs/react-dom.production.min.js:224 Ej",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/components/builder/Guided.tsx:514 PartCard",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/components/builder/Guided.tsx:370 PartStep",
+    "1 ms node_modules/react/cjs/react-jsx-runtime.production.min.js:11 q",
+    "1 ms PerformanceObserver.observe.type",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:79 b",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:53 Kb",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:260 kk",
+    "1 ms node_modules/lucide-react/dist/esm/Icon.js:13"
+   ],
+   "jsBySourceMs": {
+    "(program)": 398,
+    "other": 18,
+    "react-dom": 13,
+    "(garbage collector)": 6,
+    "node_modules/react/cjs/react-jsx-runtime.production.min.js": 1,
+    "node_modules/lucide-react/dist/esm/Icon.js": 1,
+    "node_modules/react/cjs/react.production.min.js": 1,
+    "(anonymous)": 1
+   },
+   "traceMs": {
+    "tasks": 460,
+    "style": 3,
+    "layout": 19,
+    "paint": 89,
+    "script": 63
+   }
+  }
+ },
+ "D1-gpu-expand-row": {
+  "form": "desktop",
+  "median": {
+   "frames": 91,
+   "longestFrameMs": 17,
+   "framesOver33": 0,
+   "framesOver50": 0,
+   "droppedFrameTimeMs": 0,
+   "inputToPaintMs": 40,
+   "inputDelayMs": 1
+  },
+  "loafExample": [],
+  "profile": {
+   "jsSelfTopMs": [
+    "167 ms (program)",
+    "2 ms (garbage collector)",
+    "1 ms setAttribute",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:143 J",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:224 Ej",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:279 Ik",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:219 qc",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:139 r",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:267 Gk",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/components/PriceChart.tsx:16 d",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:334 We",
+    "1 ms createElementNS"
+   ],
+   "jsBySourceMs": {
+    "(program)": 167,
+    "react-dom": 8,
+    "other": 4,
+    "(garbage collector)": 2,
+    "node_modules/react/cjs/react.production.min.js": 1,
+    "node_modules/lucide-react/dist/esm/Icon.js": 1,
+    "node_modules/lucide-react/dist/esm/shared/src/utils.js": 1
+   },
+   "traceMs": {
+    "tasks": 187,
+    "style": 39,
+    "layout": 11,
+    "paint": 72,
+    "script": 44
+   }
+  }
+ },
+ "D2-ram-expand-row": {
+  "form": "desktop",
+  "median": {
+   "frames": 92,
+   "longestFrameMs": 17,
+   "framesOver33": 0,
+   "framesOver50": 0,
+   "droppedFrameTimeMs": 0,
+   "inputToPaintMs": 32,
+   "inputDelayMs": 1
+  },
+  "loafExample": [],
+  "profile": {
+   "jsSelfTopMs": [
+    "170 ms (program)",
+    "2 ms (garbage collector)",
+    "1 ms setAttribute",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:143 J",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/components/PriceChart.tsx:16 d",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:240 Oj",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:279 Ik",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:244 Sj",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:166 Zh",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:289 cd",
+    "1 ms node_modules/lucide-react/dist/esm/Icon.js:13",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:156 xh"
+   ],
+   "jsBySourceMs": {
+    "(program)": 170,
+    "react-dom": 8,
+    "other": 3,
+    "(garbage collector)": 2,
+    "node_modules/lucide-react/dist/esm/Icon.js": 1,
+    "node_modules/lucide-react/dist/esm/shared/src/utils.js": 1,
+    "node_modules/react/cjs/react-jsx-runtime.production.min.js": 1
+   },
+   "traceMs": {
+    "tasks": 190,
+    "style": 39,
+    "layout": 11,
+    "paint": 74,
+    "script": 41
+   }
+  }
+ },
+ "D3-case-click-filter-chip": {
+  "form": "desktop",
+  "median": {
+   "frames": 90,
+   "longestFrameMs": 33,
+   "framesOver33": 0,
+   "framesOver50": 0,
+   "droppedFrameTimeMs": 17,
+   "inputToPaintMs": 24,
+   "inputDelayMs": 1
+  },
+  "loafExample": [
+   {
+    "dur": 55,
+    "block": 5,
+    "renderMs": 0,
+    "scripts": [
+     {
+      "invoker": "MessagePort.onmessage",
+      "type": "event-listener",
+      "fn": "jn",
+      "url": "http://localhost:4181/assets/index-DXdWlXHC.js",
+      "pos": 10584,
+      "dur": 54,
+      "forced": 0
+     }
+    ]
+   }
+  ],
+  "profile": {
+   "jsSelfTopMs": [
+    "134 ms (program)",
+    "20 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:142 allTimeLow",
+    "20 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:171 groupModels",
+    "5 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:290 l",
+    "4 ms (garbage collector)",
+    "3 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:279 applyFilters",
+    "2 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:297",
+    "2 ms Desktop/PROJECTS/Gpu price comparison/src/lib/categories.tsx:160 test",
+    "2 ms node_modules/react-dom/cjs/react-dom.production.min.js:224 Ej",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:252 dk",
+    "1 ms node_modules/react/cjs/react.production.min.js:14 M",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/lib/facets.ts:35"
+   ],
+   "jsBySourceMs": {
+    "(program)": 134,
+    "other": 59,
+    "react-dom": 9,
+    "(garbage collector)": 4,
+    "node_modules/react/cjs/react.production.min.js": 1,
+    "node_modules/lucide-react/dist/esm/Icon.js": 0,
+    "(anonymous)": 0
+   },
+   "traceMs": {
+    "tasks": 208,
+    "style": 4,
+    "layout": 10,
+    "paint": 59,
+    "script": 95
+   }
+  }
+ },
+ "D4-case-change-sort": {
+  "form": "desktop",
+  "median": {
+   "frames": 83,
+   "longestFrameMs": 150,
+   "framesOver33": 1,
+   "framesOver50": 1,
+   "droppedFrameTimeMs": 133,
+   "inputToPaintMs": 0,
+   "inputDelayMs": 0
+  },
+  "loafExample": [
+   {
+    "dur": 148,
+    "block": 98,
+    "renderMs": 0,
+    "scripts": [
+     {
+      "invoker": "MessagePort.onmessage",
+      "type": "event-listener",
+      "fn": "jn",
+      "url": "http://localhost:4181/assets/index-DXdWlXHC.js",
+      "pos": 10584,
+      "dur": 147,
+      "forced": 0
+     }
+    ]
+   }
+  ],
+  "profile": {
+   "jsSelfTopMs": [
+    "143 ms (program)",
+    "88 ms Desktop/PROJECTS/Gpu price comparison/src/lib/categories.tsx:160 test",
+    "19 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:171 groupModels",
+    "19 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:142 allTimeLow",
+    "9 ms Desktop/PROJECTS/Gpu price comparison/src/lib/facets.ts:57 l",
+    "8 ms (garbage collector)",
+    "5 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:290 l",
+    "4 ms Desktop/PROJECTS/Gpu price comparison/src/lib/facets.ts:35",
+    "3 ms Desktop/PROJECTS/Gpu price comparison/src/lib/categories.tsx:545 test",
+    "3 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:297",
+    "3 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:279 applyFilters",
+    "2 ms Desktop/PROJECTS/Gpu price comparison/src/lib/facets.ts:35 l"
+   ],
+   "jsBySourceMs": {
+    "other": 167,
+    "(program)": 143,
+    "react-dom": 8,
+    "(garbage collector)": 8,
+    "node_modules/scheduler/cjs/scheduler.production.min.js": 1,
+    "(anonymous)": 1
+   },
+   "traceMs": {
+    "tasks": 327,
+    "style": 2,
+    "layout": 16,
+    "paint": 72,
+    "script": 192
+   }
+  }
+ },
+ "D5-case-theme-toggle": {
+  "form": "desktop",
+  "median": {
+   "frames": 91,
+   "longestFrameMs": 17,
+   "framesOver33": 0,
+   "framesOver50": 0,
+   "droppedFrameTimeMs": 0,
+   "inputToPaintMs": 32,
+   "inputDelayMs": 0
+  },
+  "loafExample": [],
+  "profile": {
+   "jsSelfTopMs": [
+    "168 ms (program)",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:252 dk",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:143 J",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:74 fd",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:289 cd",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:55 Vb",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:196 gj",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:53 Kb",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:109 hd"
+   ],
+   "jsBySourceMs": {
+    "(program)": 168,
+    "react-dom": 1
+   },
+   "traceMs": {
+    "tasks": 173,
+    "style": 54,
+    "layout": 12,
+    "paint": 44,
+    "script": 22
+   }
+  }
+ },
+ "D6-tab-gpu-to-case": {
+  "form": "desktop",
+  "median": {
+   "frames": 83,
+   "longestFrameMs": 150,
+   "framesOver33": 1,
+   "framesOver50": 1,
+   "droppedFrameTimeMs": 150,
+   "inputToPaintMs": 16,
+   "inputDelayMs": 0
+  },
+  "loafExample": [
+   {
+    "dur": 166,
+    "block": 116,
+    "renderMs": 0,
+    "scripts": [
+     {
+      "invoker": "MessagePort.onmessage",
+      "type": "event-listener",
+      "fn": "jn",
+      "url": "http://localhost:4181/assets/index-DXdWlXHC.js",
+      "pos": 10584,
+      "dur": 158,
+      "forced": 0
+     }
+    ]
+   }
+  ],
+  "profile": {
+   "jsSelfTopMs": [
+    "142 ms (program)",
+    "73 ms Desktop/PROJECTS/Gpu price comparison/src/lib/categories.tsx:160 test",
+    "36 ms (garbage collector)",
+    "20 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:142 allTimeLow",
+    "18 ms Desktop/PROJECTS/Gpu price comparison/src/lib/facets.ts:35 l",
+    "10 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:171 groupModels",
+    "7 ms Desktop/PROJECTS/Gpu price comparison/src/lib/facets.ts:34 c",
+    "5 ms Desktop/PROJECTS/Gpu price comparison/src/lib/ranking.ts:133 v",
+    "4 ms Desktop/PROJECTS/Gpu price comparison/src/lib/categories.tsx:505 chip",
+    "4 ms Desktop/PROJECTS/Gpu price comparison/src/lib/slug.ts:2 s",
+    "3 ms Desktop/PROJECTS/Gpu price comparison/src/lib/columns.ts:8 r",
+    "3 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:189"
+   ],
+   "jsBySourceMs": {
+    "other": 183,
+    "(program)": 142,
+    "(garbage collector)": 36,
+    "react-dom": 8,
+    "node_modules/react/cjs/react-jsx-runtime.production.min.js": 1
+   },
+   "traceMs": {
+    "tasks": 367,
+    "style": 5,
+    "layout": 14,
+    "paint": 76,
+    "script": 200
+   }
+  }
+ },
+ "D7-builder-next-step": {
+  "form": "desktop",
+  "median": {
+   "frames": 91,
+   "longestFrameMs": 17,
+   "framesOver33": 0,
+   "framesOver50": 0,
+   "droppedFrameTimeMs": 0,
+   "inputToPaintMs": 24,
+   "inputDelayMs": 1
+  },
+  "loafExample": [],
+  "profile": {
+   "jsSelfTopMs": [
+    "108 ms (program)",
+    "3 ms Desktop/PROJECTS/Gpu price comparison/src/lib/builderState.ts:172 extra",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/lib/data.ts:208 mostCommon",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/components/builder/Guided.tsx:397",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:279 Ik",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:219 qc",
+    "1 ms node_modules/react-dom/cjs/react-dom.production.min.js:258 hk",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/lib/ranking.ts:131",
+    "1 ms (garbage collector)",
+    "1 ms Desktop/PROJECTS/Gpu price comparison/src/lib/ranking.ts:172 recommendedScores",
+    "0 ms Desktop/PROJECTS/Gpu price comparison/src/lib/builder.ts:470 m",
+    "0 ms node_modules/react-dom/cjs/react-dom.production.min.js:244 Sj"
+   ],
+   "jsBySourceMs": {
+    "(program)": 108,
+    "other": 9,
+    "react-dom": 3,
+    "(garbage collector)": 1,
+    "node_modules/react/cjs/react-jsx-runtime.production.min.js": 0
+   },
+   "traceMs": {
+    "tasks": 127,
+    "style": 2,
+    "layout": 5,
+    "paint": 29,
+    "script": 23
+   }
+  }
+ }
+}

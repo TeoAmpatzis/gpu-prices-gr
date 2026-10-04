@@ -1,0 +1,870 @@
+{
+  "el": {
+    "socket": {
+      "main": {
+        "sectionsFound": 1,
+        "pills": [
+          "AM5 448 ✓",
+          "AM4 156 ✓",
+          "LGA1851 215 ✓",
+          "LGA1700 231 ✓",
+          "Άλλο 4 ✓",
+          "Desktop 1054 ✓",
+          "Server / Workstation 161",
+          "Όλα 1215",
+          "Μόνο προσφορές 6",
+          "Ιστορικά χαμηλά 7",
+          "Skroutz 727 ✓",
+          "BestPrice 772 ✓",
+          "e-shop.gr 352 ✓",
+          "Shopflix 633 ✓",
+          "Snif 142 ✓"
+        ],
+        "selects": [
+          {
+            "label": "Πλατφόρμα",
+            "options": [
+              "Όλα",
+              "AMD (605)",
+              "Intel (450)"
+            ]
+          },
+          {
+            "label": "Socket",
+            "options": [
+              "Όλα",
+              "AM5 (450)",
+              "LGA1700 (231)",
+              "LGA1851 (215)",
+              "AM4 (156)",
+              "LGA4677 (0) [disabled]",
+              "sTR5 (0) [disabled]",
+              "SP5 (0) [disabled]",
+              "LGA1200 (3)",
+              "LGA4710 (0) [disabled]",
+              "LGA1151 (1)",
+              "LGA3647 (0) [disabled]",
+              "SP3 (0) [disabled]",
+              "LGA2066 (0) [disabled]",
+              "SP6 (0) [disabled]",
+              "LGA1150 (0) [disabled]",
+              "LGA775 (0) [disabled]",
+              "LGA1155 (0) [disabled]",
+              "LGA4189 (0) [disabled]",
+              "LGA1296 (0) [disabled]",
+              "sWRX8 (0) [disabled]",
+              "TR4 (0) [disabled]",
+              "LGA7529 (0) [disabled]",
+              "LGA1170 (0) [disabled]"
+            ]
+          },
+          {
+            "label": "Chipset",
+            "options": [
+              "Όλα",
+              "B850 (143)",
+              "B760 (101)",
+              "Z890 (102)",
+              "B860 (87)",
+              "H610 (75)",
+              "B550 (85)",
+              "B650 (73)",
+              "X870E (87)",
+              "X870 (55)",
+              "A620 (45)",
+              "A520 (42)",
+              "B840 (25)",
+              "Z790 (31)",
+              "H810 (23)",
+              "B650E (16)",
+              "B450 (18)",
+              "B660 (11)",
+              "W680 (0) [disabled]",
+              "TRX50 (0) [disabled]",
+              "C262 (0) [disabled]",
+              "W790 (0) [disabled]",
+              "W880 (0) [disabled]",
+              "Q870 (3)",
+              "Z690 (7)",
+              "X570 (8)",
+              "WRX90 (0) [disabled]",
+              "X299 (0) [disabled]",
+              "W890 (0) [disabled]",
+              "X550 (0) [disabled]",
+              "C256 (0) [disabled]",
+              "C622 (0) [disabled]",
+              "Q670 (1)",
+              "X670E (3)",
+              "C266 (0) [disabled]",
+              "H770 (2)",
+              "X670 (2)",
+              "Q670E (1)",
+              "H670 (2)",
+              "Q270 (1)",
+              "A320 (2)",
+              "Z590 (2)",
+              "W480 (0) [disabled]",
+              "X300 (0) [disabled]",
+              "C621 (0) [disabled]",
+              "WRX80 (0) [disabled]",
+              "X399 (0) [disabled]",
+              "H510 (1)",
+              "C252 (0) [disabled]",
+              "H110 (0) [disabled]"
+            ]
+          }
+        ],
+        "count": "1054 μοντέλα",
+        "hash": "#mobo"
+      },
+      "pro": {
+        "sectionsFound": 1,
+        "pills": [
+          "AM5 8 ✓",
+          "AM4 1 ✓",
+          "LGA1851 6 ✓",
+          "LGA1700 28 ✓",
+          "Άλλο 118 ✓",
+          "Desktop 1054",
+          "Server / Workstation 161 ✓",
+          "Όλα 1215",
+          "Μόνο προσφορές 1",
+          "Ιστορικά χαμηλά 0 (disabled)",
+          "Skroutz 81 ✓",
+          "BestPrice 67 ✓",
+          "e-shop.gr 21 ✓",
+          "Shopflix 61 ✓",
+          "Snif 24 ✓"
+        ],
+        "selects": [
+          {
+            "label": "Πλατφόρμα",
+            "options": [
+              "Όλα",
+              "AMD (45)",
+              "Intel (84)"
+            ]
+          },
+          {
+            "label": "Socket",
+            "options": [
+              "Όλα",
+              "AM5 (8)",
+              "LGA1700 (28)",
+              "LGA1851 (7)",
+              "AM4 (1)",
+              "LGA4677 (18)",
+              "sTR5 (16)",
+              "SP5 (11)",
+              "LGA1200 (8)",
+              "LGA4710 (3)",
+              "LGA1151 (2)",
+              "LGA3647 (4)",
+              "SP3 (3)",
+              "LGA2066 (4)",
+              "SP6 (4)",
+              "LGA1150 (3)",
+              "LGA775 (3)",
+              "LGA1155 (1)",
+              "LGA4189 (2)",
+              "LGA1296 (1)",
+              "sWRX8 (1)",
+              "TR4 (1)",
+              "LGA7529 (1)",
+              "LGA1170 (1)"
+            ]
+          },
+          {
+            "label": "Chipset",
+            "options": [
+              "Όλα",
+              "B850 (0) [disabled]",
+              "B760 (1)",
+              "Z890 (0) [disabled]",
+              "B860 (0) [disabled]",
+              "H610 (0) [disabled]",
+              "B550 (0) [disabled]",
+              "B650 (0) [disabled]",
+              "X870E (0) [disabled]",
+              "X870 (0) [disabled]",
+              "A620 (0) [disabled]",
+              "A520 (0) [disabled]",
+              "B840 (0) [disabled]",
+              "Z790 (0) [disabled]",
+              "H810 (0) [disabled]",
+              "B650E (0) [disabled]",
+              "B450 (0) [disabled]",
+              "B660 (0) [disabled]",
+              "W680 (7)",
+              "TRX50 (12)",
+              "C262 (7)",
+              "W790 (5)",
+              "W880 (4)",
+              "Q870 (0) [disabled]",
+              "Z690 (0) [disabled]",
+              "X570 (0) [disabled]",
+              "WRX90 (4)",
+              "X299 (4)",
+              "W890 (2)",
+              "X550 (3)",
+              "C256 (1)",
+              "C622 (2)",
+              "Q670 (0) [disabled]",
+              "X670E (0) [disabled]",
+              "C266 (2)",
+              "H770 (0) [disabled]",
+              "X670 (0) [disabled]",
+              "Q670E (0) [disabled]",
+              "H670 (0) [disabled]",
+              "Q270 (0) [disabled]",
+              "A320 (0) [disabled]",
+              "Z590 (0) [disabled]",
+              "W480 (2)",
+              "X300 (1)",
+              "C621 (1)",
+              "WRX80 (1)",
+              "X399 (1)",
+              "H510 (0) [disabled]",
+              "C252 (1)",
+              "H110 (1)"
+            ]
+          }
+        ],
+        "count": "161 μοντέλα",
+        "hash": "#mobo?seg=pro"
+      },
+      "all": {
+        "sectionsFound": 1,
+        "pills": [
+          "AM5 456 ✓",
+          "AM4 157 ✓",
+          "LGA1851 221 ✓",
+          "LGA1700 259 ✓",
+          "Άλλο 122 ✓",
+          "Desktop 1054",
+          "Server / Workstation 161",
+          "Όλα 1215 ✓",
+          "Μόνο προσφορές 7",
+          "Ιστορικά χαμηλά 7",
+          "Skroutz 808 ✓",
+          "BestPrice 839 ✓",
+          "e-shop.gr 373 ✓",
+          "Shopflix 694 ✓",
+          "Snif 166 ✓"
+        ],
+        "selects": [
+          {
+            "label": "Πλατφόρμα",
+            "options": [
+              "Όλα",
+              "AMD (650)",
+              "Intel (534)"
+            ]
+          },
+          {
+            "label": "Socket",
+            "options": [
+              "Όλα",
+              "AM5 (458)",
+              "LGA1700 (259)",
+              "LGA1851 (222)",
+              "AM4 (157)",
+              "LGA4677 (18)",
+              "sTR5 (16)",
+              "SP5 (11)",
+              "LGA1200 (11)",
+              "LGA4710 (3)",
+              "LGA1151 (3)",
+              "LGA3647 (4)",
+              "SP3 (3)",
+              "LGA2066 (4)",
+              "SP6 (4)",
+              "LGA1150 (3)",
+              "LGA775 (3)",
+              "LGA1155 (1)",
+              "LGA4189 (2)",
+              "LGA1296 (1)",
+              "sWRX8 (1)",
+              "TR4 (1)",
+              "LGA7529 (1)",
+              "LGA1170 (1)"
+            ]
+          },
+          {
+            "label": "Chipset",
+            "options": [
+              "Όλα",
+              "B850 (143)",
+              "B760 (102)",
+              "Z890 (102)",
+              "B860 (87)",
+              "H610 (75)",
+              "B550 (85)",
+              "B650 (73)",
+              "X870E (87)",
+              "X870 (55)",
+              "A620 (45)",
+              "A520 (42)",
+              "B840 (25)",
+              "Z790 (31)",
+              "H810 (23)",
+              "B650E (16)",
+              "B450 (18)",
+              "B660 (11)",
+              "W680 (7)",
+              "TRX50 (12)",
+              "C262 (7)",
+              "W790 (5)",
+              "W880 (4)",
+              "Q870 (3)",
+              "Z690 (7)",
+              "X570 (8)",
+              "WRX90 (4)",
+              "X299 (4)",
+              "W890 (2)",
+              "X550 (3)",
+              "C256 (1)",
+              "C622 (2)",
+              "Q670 (1)",
+              "X670E (3)",
+              "C266 (2)",
+              "H770 (2)",
+              "X670 (2)",
+              "Q670E (1)",
+              "H670 (2)",
+              "Q270 (1)",
+              "A320 (2)",
+              "Z590 (2)",
+              "W480 (2)",
+              "X300 (1)",
+              "C621 (1)",
+              "WRX80 (1)",
+              "X399 (1)",
+              "H510 (1)",
+              "C252 (1)",
+              "H110 (1)"
+            ]
+          }
+        ],
+        "count": "1215 μοντέλα",
+        "hash": "#mobo?seg=all"
+      },
+      "interplay": {
+        "am4Value": "am4",
+        "afterDropdown": {
+          "count": "156 μοντέλα",
+          "hash": "#mobo?socket=am4",
+          "pills": [
+            "AM5 0 ✓",
+            "AM4 156 ✓",
+            "LGA1851 0 ✓",
+            "LGA1700 0 ✓",
+            "Άλλο 0 ✓",
+            "Desktop 156 ✓"
+          ]
+        },
+        "afterPill": {
+          "count": "0 μοντέλα",
+          "hash": "#mobo?sock=am5,lga1851,lga1700,other&socket=am4",
+          "pills": [
+            "AM5 0 ✓",
+            "AM4 156",
+            "LGA1851 0 ✓",
+            "LGA1700 0 ✓",
+            "Άλλο 0 ✓",
+            "Desktop 0 ✓"
+          ]
+        }
+      }
+    },
+    "back1366": {
+      "lenStart": 2,
+      "backButtonsInStep": 1,
+      "pos": {
+        "backTop": 1755,
+        "viewport": 900,
+        "scrollY": 224,
+        "phoneBarButtons": [
+          "Πώς ταξινομούνται; \"\" 0×0",
+          "Πίσω \"\" 0×0",
+          "Επόμενο \"\" 0×0"
+        ]
+      },
+      "before": {
+        "hash": "#builder?step=mobo",
+        "title": "Μητρική",
+        "historyLength": 3
+      },
+      "after": {
+        "hash": "#gpu",
+        "title": "Μητρική",
+        "h1": null
+      }
+    },
+    "back360": {
+      "lenStart": 2,
+      "backButtonsInStep": 1,
+      "pos": {
+        "backTop": 4459,
+        "viewport": 780,
+        "scrollY": 889,
+        "phoneBarButtons": [
+          "Πώς ταξινομούνται; \"\" 0×0",
+          "Πίσω \"\" 44×44",
+          "Επόμενο \"\" 44×44"
+        ]
+      },
+      "before": {
+        "hash": "#builder?step=mobo",
+        "title": "Μητρική",
+        "historyLength": 3
+      },
+      "after": {
+        "hash": "#gpu",
+        "title": "Μητρική",
+        "h1": null
+      }
+    },
+    "dual": {
+      "defaultFirst": "Core Ultra 5 225 LGA1851 · 10 πυρήνες · iGPU · TDP 65 W · ψύκτρα: δεν αναφέρεται 161,99 € BestPrice Επιλογή",
+      "valueFirst": "Athlon 3000G AM4 · 2 πυρήνες · iGPU · TDP 35 W · χωρίς ψύκτρα 35,90 € BestPrice Επιλογή",
+      "gpuSort": "recommended",
+      "gpuFirst": "Gigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC 8GB · 199 mm · τροφ. ≥ 550W 469,90 € BestPrice Επιλογή",
+      "summary": "Η σύνθεσή σας Καθαρισμός Σύνολο · 2 εξαρτήματα 505,80 € Χαμηλότερη τιμή ανά προϊόν, χωρίς μεταφορικά· κάθε εξάρτημα μπορεί να είναι από διαφορετικό κατάστημα. Προτεινόμενο τροφοδοτικό: ≥ 550 W · CPU TDP 35 W CPU Athlon 3000G 35,90 € Μητρική — RAM — GPU Gigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC 469,90 € Ψύκτρα — Δίσκος — Κουτί — Ανεμιστήρες — Τροφοδοτικό — Διαλέξτε μητρική. Διαλέξτε μνήμη RAM. Διαλέξτε δίσκο (SSD). Διαλέξτε κουτί. Διαλέξτε τροφοδοτικό. Ο επεξεργαστής δεν έχει ψύκτρα: διαλέξτε μία. Η κάρτα γραφικών έχει μήκος 199 mm: κουτιά που σίγουρα δεν τη χωράνε δεν εμφανίζονται."
+    }
+  },
+  "en": {
+    "socket": {
+      "main": {
+        "sectionsFound": 1,
+        "pills": [
+          "AM5 448 ✓",
+          "AM4 156 ✓",
+          "LGA1851 215 ✓",
+          "LGA1700 231 ✓",
+          "Other 4 ✓",
+          "Desktop 1054 ✓",
+          "Server / Workstation 161",
+          "All 1215",
+          "On sale only 6",
+          "All-time lows 7",
+          "Skroutz 727 ✓",
+          "BestPrice 772 ✓",
+          "e-shop.gr 352 ✓",
+          "Shopflix 633 ✓",
+          "Snif 142 ✓"
+        ],
+        "selects": [
+          {
+            "label": "Platform",
+            "options": [
+              "Any",
+              "AMD (605)",
+              "Intel (450)"
+            ]
+          },
+          {
+            "label": "Socket",
+            "options": [
+              "Any",
+              "AM5 (450)",
+              "LGA1700 (231)",
+              "LGA1851 (215)",
+              "AM4 (156)",
+              "LGA4677 (0) [disabled]",
+              "sTR5 (0) [disabled]",
+              "SP5 (0) [disabled]",
+              "LGA1200 (3)",
+              "LGA4710 (0) [disabled]",
+              "LGA1151 (1)",
+              "LGA3647 (0) [disabled]",
+              "SP3 (0) [disabled]",
+              "LGA2066 (0) [disabled]",
+              "SP6 (0) [disabled]",
+              "LGA1150 (0) [disabled]",
+              "LGA775 (0) [disabled]",
+              "LGA1155 (0) [disabled]",
+              "LGA4189 (0) [disabled]",
+              "LGA1296 (0) [disabled]",
+              "sWRX8 (0) [disabled]",
+              "TR4 (0) [disabled]",
+              "LGA7529 (0) [disabled]",
+              "LGA1170 (0) [disabled]"
+            ]
+          },
+          {
+            "label": "Chipset",
+            "options": [
+              "Any",
+              "B850 (143)",
+              "B760 (101)",
+              "Z890 (102)",
+              "B860 (87)",
+              "H610 (75)",
+              "B550 (85)",
+              "B650 (73)",
+              "X870E (87)",
+              "X870 (55)",
+              "A620 (45)",
+              "A520 (42)",
+              "B840 (25)",
+              "Z790 (31)",
+              "H810 (23)",
+              "B650E (16)",
+              "B450 (18)",
+              "B660 (11)",
+              "W680 (0) [disabled]",
+              "TRX50 (0) [disabled]",
+              "C262 (0) [disabled]",
+              "W790 (0) [disabled]",
+              "W880 (0) [disabled]",
+              "Q870 (3)",
+              "Z690 (7)",
+              "X570 (8)",
+              "WRX90 (0) [disabled]",
+              "X299 (0) [disabled]",
+              "W890 (0) [disabled]",
+              "X550 (0) [disabled]",
+              "C256 (0) [disabled]",
+              "C622 (0) [disabled]",
+              "Q670 (1)",
+              "X670E (3)",
+              "C266 (0) [disabled]",
+              "H770 (2)",
+              "X670 (2)",
+              "Q670E (1)",
+              "H670 (2)",
+              "Q270 (1)",
+              "A320 (2)",
+              "Z590 (2)",
+              "W480 (0) [disabled]",
+              "X300 (0) [disabled]",
+              "C621 (0) [disabled]",
+              "WRX80 (0) [disabled]",
+              "X399 (0) [disabled]",
+              "H510 (1)",
+              "C252 (0) [disabled]",
+              "H110 (0) [disabled]"
+            ]
+          }
+        ],
+        "count": "1054 models",
+        "hash": "#mobo"
+      },
+      "pro": {
+        "sectionsFound": 1,
+        "pills": [
+          "AM5 8 ✓",
+          "AM4 1 ✓",
+          "LGA1851 6 ✓",
+          "LGA1700 28 ✓",
+          "Other 118 ✓",
+          "Desktop 1054",
+          "Server / Workstation 161 ✓",
+          "All 1215",
+          "On sale only 1",
+          "All-time lows 0 (disabled)",
+          "Skroutz 81 ✓",
+          "BestPrice 67 ✓",
+          "e-shop.gr 21 ✓",
+          "Shopflix 61 ✓",
+          "Snif 24 ✓"
+        ],
+        "selects": [
+          {
+            "label": "Platform",
+            "options": [
+              "Any",
+              "AMD (45)",
+              "Intel (84)"
+            ]
+          },
+          {
+            "label": "Socket",
+            "options": [
+              "Any",
+              "AM5 (8)",
+              "LGA1700 (28)",
+              "LGA1851 (7)",
+              "AM4 (1)",
+              "LGA4677 (18)",
+              "sTR5 (16)",
+              "SP5 (11)",
+              "LGA1200 (8)",
+              "LGA4710 (3)",
+              "LGA1151 (2)",
+              "LGA3647 (4)",
+              "SP3 (3)",
+              "LGA2066 (4)",
+              "SP6 (4)",
+              "LGA1150 (3)",
+              "LGA775 (3)",
+              "LGA1155 (1)",
+              "LGA4189 (2)",
+              "LGA1296 (1)",
+              "sWRX8 (1)",
+              "TR4 (1)",
+              "LGA7529 (1)",
+              "LGA1170 (1)"
+            ]
+          },
+          {
+            "label": "Chipset",
+            "options": [
+              "Any",
+              "B850 (0) [disabled]",
+              "B760 (1)",
+              "Z890 (0) [disabled]",
+              "B860 (0) [disabled]",
+              "H610 (0) [disabled]",
+              "B550 (0) [disabled]",
+              "B650 (0) [disabled]",
+              "X870E (0) [disabled]",
+              "X870 (0) [disabled]",
+              "A620 (0) [disabled]",
+              "A520 (0) [disabled]",
+              "B840 (0) [disabled]",
+              "Z790 (0) [disabled]",
+              "H810 (0) [disabled]",
+              "B650E (0) [disabled]",
+              "B450 (0) [disabled]",
+              "B660 (0) [disabled]",
+              "W680 (7)",
+              "TRX50 (12)",
+              "C262 (7)",
+              "W790 (5)",
+              "W880 (4)",
+              "Q870 (0) [disabled]",
+              "Z690 (0) [disabled]",
+              "X570 (0) [disabled]",
+              "WRX90 (4)",
+              "X299 (4)",
+              "W890 (2)",
+              "X550 (3)",
+              "C256 (1)",
+              "C622 (2)",
+              "Q670 (0) [disabled]",
+              "X670E (0) [disabled]",
+              "C266 (2)",
+              "H770 (0) [disabled]",
+              "X670 (0) [disabled]",
+              "Q670E (0) [disabled]",
+              "H670 (0) [disabled]",
+              "Q270 (0) [disabled]",
+              "A320 (0) [disabled]",
+              "Z590 (0) [disabled]",
+              "W480 (2)",
+              "X300 (1)",
+              "C621 (1)",
+              "WRX80 (1)",
+              "X399 (1)",
+              "H510 (0) [disabled]",
+              "C252 (1)",
+              "H110 (1)"
+            ]
+          }
+        ],
+        "count": "161 models",
+        "hash": "#mobo?seg=pro"
+      },
+      "all": {
+        "sectionsFound": 1,
+        "pills": [
+          "AM5 456 ✓",
+          "AM4 157 ✓",
+          "LGA1851 221 ✓",
+          "LGA1700 259 ✓",
+          "Other 122 ✓",
+          "Desktop 1054",
+          "Server / Workstation 161",
+          "All 1215 ✓",
+          "On sale only 7",
+          "All-time lows 7",
+          "Skroutz 808 ✓",
+          "BestPrice 839 ✓",
+          "e-shop.gr 373 ✓",
+          "Shopflix 694 ✓",
+          "Snif 166 ✓"
+        ],
+        "selects": [
+          {
+            "label": "Platform",
+            "options": [
+              "Any",
+              "AMD (650)",
+              "Intel (534)"
+            ]
+          },
+          {
+            "label": "Socket",
+            "options": [
+              "Any",
+              "AM5 (458)",
+              "LGA1700 (259)",
+              "LGA1851 (222)",
+              "AM4 (157)",
+              "LGA4677 (18)",
+              "sTR5 (16)",
+              "SP5 (11)",
+              "LGA1200 (11)",
+              "LGA4710 (3)",
+              "LGA1151 (3)",
+              "LGA3647 (4)",
+              "SP3 (3)",
+              "LGA2066 (4)",
+              "SP6 (4)",
+              "LGA1150 (3)",
+              "LGA775 (3)",
+              "LGA1155 (1)",
+              "LGA4189 (2)",
+              "LGA1296 (1)",
+              "sWRX8 (1)",
+              "TR4 (1)",
+              "LGA7529 (1)",
+              "LGA1170 (1)"
+            ]
+          },
+          {
+            "label": "Chipset",
+            "options": [
+              "Any",
+              "B850 (143)",
+              "B760 (102)",
+              "Z890 (102)",
+              "B860 (87)",
+              "H610 (75)",
+              "B550 (85)",
+              "B650 (73)",
+              "X870E (87)",
+              "X870 (55)",
+              "A620 (45)",
+              "A520 (42)",
+              "B840 (25)",
+              "Z790 (31)",
+              "H810 (23)",
+              "B650E (16)",
+              "B450 (18)",
+              "B660 (11)",
+              "W680 (7)",
+              "TRX50 (12)",
+              "C262 (7)",
+              "W790 (5)",
+              "W880 (4)",
+              "Q870 (3)",
+              "Z690 (7)",
+              "X570 (8)",
+              "WRX90 (4)",
+              "X299 (4)",
+              "W890 (2)",
+              "X550 (3)",
+              "C256 (1)",
+              "C622 (2)",
+              "Q670 (1)",
+              "X670E (3)",
+              "C266 (2)",
+              "H770 (2)",
+              "X670 (2)",
+              "Q670E (1)",
+              "H670 (2)",
+              "Q270 (1)",
+              "A320 (2)",
+              "Z590 (2)",
+              "W480 (2)",
+              "X300 (1)",
+              "C621 (1)",
+              "WRX80 (1)",
+              "X399 (1)",
+              "H510 (1)",
+              "C252 (1)",
+              "H110 (1)"
+            ]
+          }
+        ],
+        "count": "1215 models",
+        "hash": "#mobo?seg=all"
+      },
+      "interplay": {
+        "am4Value": "am4",
+        "afterDropdown": {
+          "count": "156 models",
+          "hash": "#mobo?socket=am4",
+          "pills": [
+            "AM5 0 ✓",
+            "AM4 156 ✓",
+            "LGA1851 0 ✓",
+            "LGA1700 0 ✓",
+            "Other 0 ✓",
+            "Desktop 156 ✓"
+          ]
+        },
+        "afterPill": {
+          "count": "0 models",
+          "hash": "#mobo?sock=am5,lga1851,lga1700,other&socket=am4",
+          "pills": [
+            "AM5 0 ✓",
+            "AM4 156",
+            "LGA1851 0 ✓",
+            "LGA1700 0 ✓",
+            "Other 0 ✓",
+            "Desktop 0 ✓"
+          ]
+        }
+      }
+    },
+    "back1366": {
+      "lenStart": 2,
+      "backButtonsInStep": 1,
+      "pos": {
+        "backTop": 1687,
+        "viewport": 900,
+        "scrollY": 224,
+        "phoneBarButtons": [
+          "How is this sorted? \"\" 0×0",
+          "Back \"\" 0×0",
+          "Next \"\" 0×0"
+        ]
+      },
+      "before": {
+        "hash": "#builder?step=mobo",
+        "title": "Motherboard",
+        "historyLength": 3
+      },
+      "after": {
+        "hash": "#gpu",
+        "title": "Motherboard",
+        "h1": null
+      }
+    },
+    "back360": {
+      "lenStart": 2,
+      "backButtonsInStep": 1,
+      "pos": {
+        "backTop": 4179,
+        "viewport": 780,
+        "scrollY": 805,
+        "phoneBarButtons": [
+          "How is this sorted? \"\" 0×0",
+          "Back \"\" 44×44",
+          "Next \"\" 44×44"
+        ]
+      },
+      "before": {
+        "hash": "#builder?step=mobo",
+        "title": "Motherboard",
+        "historyLength": 3
+      },
+      "after": {
+        "hash": "#gpu",
+        "title": "Motherboard",
+        "h1": null
+      }
+    },
+    "dual": {
+      "defaultFirst": "Core Ultra 5 225 LGA1851 · 10 cores · iGPU · TDP 65 W · cooler: not stated €161.99 BestPrice Choose",
+      "valueFirst": "Athlon 3000G AM4 · 2 cores · iGPU · TDP 35 W · no cooler €35.90 BestPrice Choose",
+      "gpuSort": "recommended",
+      "gpuFirst": "Gigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC 8GB · 199 mm · PSU ≥ 550W €469.90 BestPrice Choose",
+      "summary": "Your build Clear build Total · 2 parts €505.80 Lowest price per product, before shipping; each part may come from a different shop. Recommended PSU: ≥ 550 W · CPU TDP 35 W CPU Athlon 3000G €35.90 Board — RAM — GPU Gigabyte GeForce RTX 5060 8GB GDDR7 Windforce Max OC €469.90 Cooler — Storage — Case — Fans — PSU — Pick a motherboard. Pick memory (RAM). Pick a drive (SSD). Pick a case. Pick a power supply. The CPU has no cooler: pick one. The graphics card is 199 mm long: cases that certainly can't fit it are hidden."
+    }
+  }
+}

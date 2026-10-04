@@ -31,8 +31,9 @@ for (const cat of CATS) {
     const got = [];
     cdp.on('Network.loadingFinished', (e) => counting && got.push({ url: urls.get(e.requestId) ?? '?', bytes: e.encodedDataLength }));
     await page.goto(`${BASE}/#${cat}`);
-    // Phones render cards; each card's name is a button with aria-expanded.
-    const opener = page.locator('main button[aria-expanded="false"]').first();
+    // Phones render cards; each card's name is a button with aria-expanded (the Filters and the
+    // sources-status buttons above the list are popups: aria-haspopup).
+    const opener = page.locator('main button[aria-expanded="false"]:not([aria-haspopup]):visible').first();
     await opener.waitFor({ timeout: 60_000 });
     await page.waitForTimeout(3000); // let photos and idle work settle
     await page.evaluate(() => {

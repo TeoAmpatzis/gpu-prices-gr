@@ -1,0 +1,113 @@
+{
+  "gpu": {
+    "medianMs": 1249,
+    "medianBlockingMs": 65,
+    "medianKB": 149.14453125,
+    "runs": [
+      {
+        "ms": 1249,
+        "blockingMs": 65,
+        "kB": 149.14453125,
+        "files": [
+          "detail.json 32.7",
+          "history.json 114.0",
+          "PriceChart-BqLB-4yJ.js 2.4"
+        ]
+      },
+      {
+        "ms": 1249,
+        "blockingMs": 70,
+        "kB": 149.14453125,
+        "files": [
+          "detail.json 32.7",
+          "history.json 114.0",
+          "PriceChart-BqLB-4yJ.js 2.4"
+        ]
+      },
+      {
+        "ms": 1209,
+        "blockingMs": 65,
+        "kB": 149.14453125,
+        "files": [
+          "detail.json 32.7",
+          "history.json 114.0",
+          "PriceChart-BqLB-4yJ.js 2.4"
+        ]
+      }
+    ]
+  },
+  "ram": {
+    "medianMs": 1641,
+    "medianBlockingMs": 52,
+    "medianKB": 233.9677734375,
+    "runs": [
+      {
+        "ms": 1645,
+        "blockingMs": 56,
+        "kB": 233.9677734375,
+        "files": [
+          "history.json 100.9",
+          "detail.json 130.7",
+          "PriceChart-BqLB-4yJ.js 2.4"
+        ]
+      },
+      {
+        "ms": 1641,
+        "blockingMs": 52,
+        "kB": 233.9677734375,
+        "files": [
+          "history.json 100.9",
+          "detail.json 130.7",
+          "PriceChart-BqLB-4yJ.js 2.4"
+        ]
+      },
+      {
+        "ms": 1623,
+        "blockingMs": 51,
+        "kB": 233.9677734375,
+        "files": [
+          "history.json 100.9",
+          "detail.json 130.7",
+          "PriceChart-BqLB-4yJ.js 2.4"
+        ]
+      }
+    ]
+  },
+  "case": {
+    "medianMs": 2459,
+    "medianBlockingMs": 24,
+    "medianKB": 404.3388671875,
+    "runs": [
+      {
+        "ms": 2449,
+        "blockingMs": 28,
+        "kB": 404.3388671875,
+        "files": [
+          "detail.json 118.6",
+          "history.json 283.3",
+          "PriceChart-BqLB-4yJ.js 2.4"
+        ]
+      },
+      {
+        "ms": 2459,
+        "blockingMs": 21,
+        "kB": 404.3388671875,
+        "files": [
+          "detail.json 118.6",
+          "history.json 283.3",
+          "PriceChart-BqLB-4yJ.js 2.4"
+        ]
+      },
+      {
+        "ms": 2481,
+        "blockingMs": 24,
+        "kB": 404.3388671875,
+        "files": [
+          "detail.json 118.6",
+          "history.json 283.3",
+          "PriceChart-BqLB-4yJ.js 2.4"
+        ]
+      }
+    ]
+  }
+}
