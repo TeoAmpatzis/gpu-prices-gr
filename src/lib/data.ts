@@ -57,10 +57,21 @@ function memo<K, V>(load: (k: K) => Promise<V>): (k: K) => Promise<V> {
   };
 }
 
+/**
+ * The cached best total (scraper/shipping.py) is the cheapest offer with stated shipping on the product
+ * page, which can be another offer than the one whose price the listing shows. Keep it only when that
+ * offer's own price is within 2% of the listing's price; otherwise the total is unknown.
+ */
+const SAME_OFFER = 0.02;
+export function ownTotal<L extends BaseListing>(l: L): L {
+  if (l.total == null || Math.abs(l.total - (l.shipping ?? 0) - l.price) <= SAME_OFFER * l.price) return l;
+  return { ...l, shipping: null, total: null, merchant: null };
+}
+
 const loadList = memo(
   (cat: Category): Promise<CategoryData> =>
     getJson<ListFile>(`/data/${cat}/list.json`).then((f) => ({
-      latest: { updatedAt: f.updatedAt, sources: f.sources, listings: fromColumns<BaseListing>(f) },
+      latest: { updatedAt: f.updatedAt, sources: f.sources, listings: fromColumns<BaseListing>(f).map(ownTotal) },
       history: expandHistory(f.hist),
       imported: f.imported,
       builtAt: f.builtAt,
