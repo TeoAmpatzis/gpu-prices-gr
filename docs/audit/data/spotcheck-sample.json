@@ -1,0 +1,3081 @@
+{
+ "seed": 20261003,
+ "note": "Listings sampled uniformly per category (sorted by id, then mulberry32 + partial Fisher–Yates).",
+ "samples": {
+  "gpu": [
+   {
+    "n": 1,
+    "id": "skroutz:60798685",
+    "source": "skroutz",
+    "title": "MSI GeForce RTX 5060 8GB Ventus 2X OC White",
+    "url": "https://www.skroutz.gr/s/60798685/msi-geforce-rtx-5060-8gb-gddr7-ventus-2x-oc-white-karta-grafikon-v537-003r.html",
+    "fields": {
+     "chip": "RTX 5060",
+     "vram": 8,
+     "partner": "MSI",
+     "memType": "GDDR7",
+     "lengthMm": 197,
+     "minPsu": 550
+    },
+    "specCache": {
+     "lengthMm": 197,
+     "minPsu": 550
+    }
+   },
+   {
+    "n": 2,
+    "id": "skroutz:11715603",
+    "source": "skroutz",
+    "title": "MSI Radeon RX 580 8GB Armor OC",
+    "url": "https://www.skroutz.gr/s/11715603/MSI-Radeon-RX-580-8GB-GDDR5-Armor-OC-Karta-Grafikon-V341-064R.html",
+    "fields": {
+     "chip": "RX 580",
+     "vram": 8,
+     "partner": "MSI",
+     "memType": "GDDR5",
+     "lengthMm": 269,
+     "minPsu": 500
+    },
+    "specCache": {
+     "lengthMm": 269,
+     "minPsu": 500
+    }
+   },
+   {
+    "n": 3,
+    "id": "shopflix:SF-202900287",
+    "source": "shopflix",
+    "title": "Zotac GeForce RTX 5060 8GB GDDR7 Twin Edge Plus",
+    "url": "https://shopflix.gr/p/SF-202900287/zotac-geforce-rtx-5060-8gb-gddr7-twin-edge-plus-karta-graphikon",
+    "fields": {
+     "chip": "RTX 5060",
+     "vram": 8,
+     "partner": "Zotac",
+     "memType": "GDDR7",
+     "lengthMm": 220.5,
+     "minPsu": 550
+    },
+    "specCache": null
+   },
+   {
+    "n": 4,
+    "id": "shopflix:SF-15323294",
+    "source": "shopflix",
+    "title": "MSI GeForce RTX 3050 6GB GDDR6 Ventus 2X OC",
+    "url": "https://shopflix.gr/p/SF-15323294/karta-graphikon-msi-geforce-rtx-3050-6gb-gddr6-ventus-2x-oc",
+    "fields": {
+     "chip": "RTX 3050",
+     "vram": 6,
+     "partner": "MSI",
+     "memType": "GDDR6",
+     "lengthMm": 189,
+     "minPsu": 300
+    },
+    "specCache": null
+   },
+   {
+    "n": 5,
+    "id": "skroutz:58880088",
+    "source": "skroutz",
+    "title": "Gigabyte GeForce RTX 5070 Ti 16GB Eagle OC Ice SFF",
+    "url": "https://www.skroutz.gr/s/58880088/Gigabyte-GeForce-RTX-5070-Ti-16GB-GDDR7-Eagle-OC-Ice-SFF-Karta-Grafikon-GV-N507TEAGLEOC-ICE-16GD.html",
+    "fields": {
+     "chip": "RTX 5070 Ti",
+     "vram": 16,
+     "partner": "Gigabyte",
+     "memType": "GDDR7",
+     "lengthMm": 304,
+     "minPsu": 750
+    },
+    "specCache": {
+     "lengthMm": 304,
+     "minPsu": 750
+    }
+   },
+   {
+    "n": 6,
+    "id": "bestprice:2160512091",
+    "source": "bestprice",
+    "title": "Palit GeForce RTX 5070 12GB GDDR7 Infinity 3 Black",
+    "url": "https://www.bestprice.gr/item/2160512091/palit-geforce-rtx-5070-12gb-gddr7-infinity-3-black-karta-grafikon.html",
+    "fields": {
+     "chip": "RTX 5070",
+     "vram": 12,
+     "partner": "Palit",
+     "memType": "GDDR7",
+     "lengthMm": 291.9,
+     "minPsu": null
+    },
+    "specCache": {
+     "lengthMm": 291.9,
+     "minPsu": null
+    }
+   },
+   {
+    "n": 7,
+    "id": "shopflix:SF-202566238",
+    "source": "shopflix",
+    "title": "Zotac GeForce RTX 3060 12GB GDDR6 Twin Edge OC",
+    "url": "https://shopflix.gr/p/SF-202566238/zotac-geforce-rtx-3060-12gb-gddr6-twin-edge-oc-karta-graphikon",
+    "fields": {
+     "chip": "RTX 3060",
+     "vram": 12,
+     "partner": "Zotac",
+     "memType": "GDDR6",
+     "lengthMm": 224.1,
+     "minPsu": 600
+    },
+    "specCache": null
+   },
+   {
+    "n": 8,
+    "id": "skroutz:46260438",
+    "source": "skroutz",
+    "title": "MSI GeForce RTX 4060 Ti 16GB Ventus 2X Black OC",
+    "url": "https://www.skroutz.gr/s/46260438/MSI-GeForce-RTX-4060-Ti-16GB-GDDR6-Ventus-2X-Black-OC-Karta-Grafikon-V517-005R.html",
+    "fields": {
+     "chip": "RTX 4060 Ti",
+     "vram": 16,
+     "partner": "MSI",
+     "memType": "GDDR6",
+     "lengthMm": 199,
+     "minPsu": 550
+    },
+    "specCache": null
+   },
+   {
+    "n": 9,
+    "id": "bestprice:2160717378",
+    "source": "bestprice",
+    "title": "XFX Radeon RX 9070 16GB GDDR6 Swift OC White 90mm Fan",
+    "url": "https://www.bestprice.gr/item/2160717378/xfx-radeon-rx-9070-16gb-gddr6-swift-oc-white-90mm-fan-karta-grafikon.html",
+    "fields": {
+     "chip": "RX 9070",
+     "vram": 16,
+     "partner": "XFX",
+     "memType": "GDDR6",
+     "lengthMm": 290,
+     "minPsu": null
+    },
+    "specCache": {
+     "lengthMm": 290,
+     "minPsu": null
+    }
+   },
+   {
+    "n": 10,
+    "id": "eshop:PER.263716",
+    "source": "eshop",
+    "title": "SAPPHIRE AMD RADEON RX9060 XT GAMING OC NITRO+ 16GB GDDR6 RETAIL",
+    "url": "https://www.e-shop.gr/vga-sapphire-amd-radeon-rx9060-xt-gaming-oc-nitro-16gb-gddr6-retail-p-PER.263716",
+    "fields": {
+     "chip": "RX 9060 XT",
+     "vram": 16,
+     "partner": "Sapphire",
+     "memType": "GDDR6",
+     "lengthMm": null,
+     "minPsu": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 11,
+    "id": "snif:42657202",
+    "source": "snif",
+    "title": "GIGABYTE VGA GV-N5080AORUS M-16GD, 16GB , GDDR7",
+    "url": "https://www.snif.gr/showproduct/42657202/gigabyte-vga-gv-n5080aorus-m-16gd--16gb---gddr7",
+    "fields": {
+     "chip": "RTX 5080",
+     "vram": 16,
+     "partner": "Gigabyte",
+     "memType": "GDDR7",
+     "lengthMm": 360,
+     "minPsu": 850
+    },
+    "specCache": null
+   },
+   {
+    "n": 12,
+    "id": "snif:41284958",
+    "source": "snif",
+    "title": "Gigabyte GeForce RTX 5070 Eagle OC ICE SFF 12GB GDDR7 GV-N5070EAGLEOC-ICE-12GD",
+    "url": "https://www.snif.gr/showproduct/41284958/gigabyte-geforce-rtx-5070-eagle-oc-ice-sff-12gb-gd",
+    "fields": {
+     "chip": "RTX 5070",
+     "vram": 12,
+     "partner": "Gigabyte",
+     "memType": "GDDR7",
+     "lengthMm": 290,
+     "minPsu": 750
+    },
+    "specCache": null
+   },
+   {
+    "n": 13,
+    "id": "shopflix:SF-200043732",
+    "source": "shopflix",
+    "title": "Gigabyte GeForce RTX 5060 Ti 16GB GDDR7 EAGLE MAX OC",
+    "url": "https://shopflix.gr/p/SF-200043732/gigabyte-geforce-rtx-5060-ti-16gb-gddr7-eagle-max-oc-karta-graphikon",
+    "fields": {
+     "chip": "RTX 5060 Ti",
+     "vram": 16,
+     "partner": "Gigabyte",
+     "memType": "GDDR7",
+     "lengthMm": 281,
+     "minPsu": 650
+    },
+    "specCache": null
+   },
+   {
+    "n": 14,
+    "id": "shopflix:SF-106627808",
+    "source": "shopflix",
+    "title": "XFX Radeon RX 9070 16GB GDDR6 OC White Triple Fan Gaming Edition",
+    "url": "https://shopflix.gr/p/SF-106627808/karta-graphikon-xfx-radeon-rx-9070-16gb-gddr6-oc-white-triple-fan-gaming-edition",
+    "fields": {
+     "chip": "RX 9070",
+     "vram": 16,
+     "partner": "XFX",
+     "memType": "GDDR6",
+     "lengthMm": 325,
+     "minPsu": 800
+    },
+    "specCache": null
+   },
+   {
+    "n": 15,
+    "id": "bestprice:2164532315",
+    "source": "bestprice",
+    "title": "PowerColor Radeon RX 9070 XT 16GB GDDR6 Hellhound Resonance Edition",
+    "url": "https://www.bestprice.gr/item/2164532315/powercolor-radeon-rx-9070-xt-16gb-gddr6-hellhound-resonance-edition-karta-grafikon.html",
+    "fields": {
+     "chip": "RX 9070 XT",
+     "vram": 16,
+     "partner": "PowerColor",
+     "memType": "GDDR6",
+     "lengthMm": 340,
+     "minPsu": null
+    },
+    "specCache": {
+     "lengthMm": 340,
+     "minPsu": null
+    }
+   },
+   {
+    "n": 16,
+    "id": "bestprice:2158893013",
+    "source": "bestprice",
+    "title": "PNY Quadro RTX 4000 SFF 20GB GDDR6",
+    "url": "https://www.bestprice.gr/item/2158893013/pny-quadro-rtx-4000-sff-20gb-gddr6-karta-grafikon.html",
+    "fields": {
+     "chip": "RTX 4000 (Pro)",
+     "vram": 20,
+     "partner": "PNY",
+     "memType": "GDDR6",
+     "lengthMm": null,
+     "minPsu": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 17,
+    "id": "shopflix:SF-106988664",
+    "source": "shopflix",
+    "title": "Gigabyte GeForce RTX 5060 8GB GDDR7 Eagle MAX OC",
+    "url": "https://shopflix.gr/p/SF-106988664/karta-graphikon-gigabyte-geforce-rtx-5060-8gb-gddr7-eagle-max-oc",
+    "fields": {
+     "chip": "RTX 5060",
+     "vram": 8,
+     "partner": "Gigabyte",
+     "memType": "GDDR7",
+     "lengthMm": 281,
+     "minPsu": 550
+    },
+    "specCache": null
+   },
+   {
+    "n": 18,
+    "id": "shopflix:SF-106289168",
+    "source": "shopflix",
+    "title": "Gigabyte GeForce RTX 5060 Ti 8GB GDDR7 Eagle OC",
+    "url": "https://shopflix.gr/p/SF-106289168/karta-graphikon-gigabyte-geforce-rtx-5060-ti-8gb-gddr7-eagle-oc",
+    "fields": {
+     "chip": "RTX 5060 Ti",
+     "vram": 8,
+     "partner": "Gigabyte",
+     "memType": "GDDR7",
+     "lengthMm": 215,
+     "minPsu": 650
+    },
+    "specCache": null
+   },
+   {
+    "n": 19,
+    "id": "shopflix:SF-105775397",
+    "source": "shopflix",
+    "title": "ASRock Radeon RX 9070 XT 16GB GDDR6 Steel Legend",
+    "url": "https://shopflix.gr/p/SF-105775397/karta-graphikon-asrock-radeon-rx-9070-xt-16gb-gddr6-steel-legend",
+    "fields": {
+     "chip": "RX 9070 XT",
+     "vram": 16,
+     "partner": "ASRock",
+     "memType": "GDDR6",
+     "lengthMm": 298,
+     "minPsu": 800
+    },
+    "specCache": null
+   },
+   {
+    "n": 20,
+    "id": "bestprice:2160466077",
+    "source": "bestprice",
+    "title": "Sparkle Arc A310 4GB GDDR6 Omni View",
+    "url": "https://www.bestprice.gr/item/2160466077/sparkle-arc-a310-4gb-gddr6-omni-view-karta-grafikon.html",
+    "fields": {
+     "chip": "Arc A310",
+     "vram": 4,
+     "partner": "Sparkle",
+     "memType": "GDDR6",
+     "lengthMm": 152.6,
+     "minPsu": 350
+    },
+    "specCache": null
+   }
+  ],
+  "cpu": [
+   {
+    "n": 1,
+    "id": "skroutz:42123519",
+    "source": "skroutz",
+    "title": "AMD Epyc 7643 2.6GHz Tray",
+    "url": "https://www.skroutz.gr/s/42123519/AMD-Epyc-7643-2-6GHz-Epexergastis-48-Pyrinon-gia-Socket-SP3-Tray.html",
+    "fields": {
+     "chip": "EPYC 7643",
+     "socket": "SP3",
+     "cores": 48,
+     "packaging": "Tray",
+     "igpu": false,
+     "coolerIncluded": false,
+     "tdp": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 2,
+    "id": "skroutz:57424268",
+    "source": "skroutz",
+    "title": "Intel Xeon Silver 4514Y 2GHz Tray",
+    "url": "https://www.skroutz.gr/s/57424268/Intel-Xeon-Silver-4514Y-2GHz-Epexergastis-16-Pyrinon-gia-Socket-4677-Tray.html",
+    "fields": {
+     "chip": "Xeon Silver 4514Y",
+     "socket": "LGA4677",
+     "cores": 16,
+     "packaging": "Tray",
+     "igpu": false,
+     "coolerIncluded": false,
+     "tdp": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 3,
+    "id": "snif:32562750",
+    "source": "snif",
+    "title": "AMD Ryzen 7 7700X 4.5 GHz Six Core 32 MB L3",
+    "url": "https://www.snif.gr/showproduct/32562750/amd-ryzen-7-7700x-am5-4-5-ghz-40mb-epexergastis",
+    "fields": {
+     "chip": "Ryzen 7 7700X",
+     "socket": "AM5",
+     "cores": 8,
+     "packaging": null,
+     "igpu": true,
+     "coolerIncluded": null,
+     "tdp": 105
+    },
+    "specCache": null
+   },
+   {
+    "n": 4,
+    "id": "bestprice:2159903531",
+    "source": "bestprice",
+    "title": "Intel Core i5 14500T Tray",
+    "url": "https://www.bestprice.gr/item/2159903531/intel-core-i5-14500t-tray-epexergastis-14-pyrinon-gia-socket-1700.html",
+    "fields": {
+     "chip": "Core i5-14500T",
+     "socket": "LGA1700",
+     "cores": 14,
+     "packaging": "Tray",
+     "igpu": true,
+     "coolerIncluded": false,
+     "tdp": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 5,
+    "id": "bestprice:2163692308",
+    "source": "bestprice",
+    "title": "AMD Ryzen 5 7400 Tray",
+    "url": "https://www.bestprice.gr/item/2163692308/amd-ryzen-5-7400-tray-epexergastis-6-pyrinon-gia-socket-am5-me-psyktra.html",
+    "fields": {
+     "chip": "Ryzen 5 7400",
+     "socket": "AM5",
+     "cores": 6,
+     "packaging": "Tray",
+     "igpu": true,
+     "coolerIncluded": false,
+     "tdp": 65
+    },
+    "specCache": null
+   },
+   {
+    "n": 6,
+    "id": "bestprice:2163047037",
+    "source": "bestprice",
+    "title": "Intel Xeon w5-2465X Tray",
+    "url": "https://www.bestprice.gr/item/2163047037/intel-xeon-w5-2465x-tray-epexergastis-16-pyrinon-gia-socket-4677.html",
+    "fields": {
+     "chip": "Xeon w5-2465X",
+     "socket": "LGA4677",
+     "cores": 16,
+     "packaging": "Tray",
+     "igpu": false,
+     "coolerIncluded": false,
+     "tdp": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 7,
+    "id": "skroutz:40221784",
+    "source": "skroutz",
+    "title": "Intel Core i7-13700 2.1GHz Tray",
+    "url": "https://www.skroutz.gr/s/40221784/Intel-Core-i7-13700-2-1GHz-Epexergastis-16-Pyrinon-gia-Socket-1700-Tray.html",
+    "fields": {
+     "chip": "Core i7-13700",
+     "socket": "LGA1700",
+     "cores": 16,
+     "packaging": "Tray",
+     "igpu": true,
+     "coolerIncluded": false,
+     "tdp": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 8,
+    "id": "shopflix:SF-02921739",
+    "source": "shopflix",
+    "title": "Intel Core i5-12400F 2.5GHz 6 Πυρήνων για Socket 1700 σε Κουτί με Ψύκτρα",
+    "url": "https://shopflix.gr/p/SF-02921739/epexergastes-intel-core-i5-12400f-2-5ghz-6-purenon-gia-socket-1700-se-kouti-me-psuktra",
+    "fields": {
+     "chip": "Core i5-12400F",
+     "socket": "LGA1700",
+     "cores": 6,
+     "packaging": null,
+     "igpu": false,
+     "coolerIncluded": null,
+     "tdp": 65
+    },
+    "specCache": null
+   },
+   {
+    "n": 9,
+    "id": "eshop:PER.607483",
+    "source": "eshop",
+    "title": "INTEL CORE I7-14700K 3.4GHZ LGA1700 - BOX",
+    "url": "https://www.e-shop.gr/cpu-intel-core-i7-14700k-34ghz-lga1700-box-p-PER.607483",
+    "fields": {
+     "chip": "Core i7-14700K",
+     "socket": "LGA1700",
+     "cores": 20,
+     "packaging": "Box",
+     "igpu": true,
+     "coolerIncluded": null,
+     "tdp": 125
+    },
+    "specCache": null
+   },
+   {
+    "n": 10,
+    "id": "bestprice:2159791486",
+    "source": "bestprice",
+    "title": "AMD Epyc 4464P Tray",
+    "url": "https://www.bestprice.gr/item/2159791486/amd-epyc-4464p-tray-epexergastis-12-pyrinon-gia-socket-am5.html",
+    "fields": {
+     "chip": "EPYC 4464P",
+     "socket": "AM5",
+     "cores": 12,
+     "packaging": "Tray",
+     "igpu": false,
+     "coolerIncluded": false,
+     "tdp": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 11,
+    "id": "shopflix:SF-106036248",
+    "source": "shopflix",
+    "title": "AMD Ryzen 5 5500 3.6GHz 6 Πυρήνων για Socket AM4 σε Tray με Ψύκτρα",
+    "url": "https://shopflix.gr/p/SF-106036248/epexergastes-amd-ryzen-5-5500-3-6ghz-6-purenon-gia-socket-am4-se-tray-me-psuktra",
+    "fields": {
+     "chip": "Ryzen 5 5500",
+     "socket": "AM4",
+     "cores": 6,
+     "packaging": "Tray",
+     "igpu": false,
+     "coolerIncluded": false,
+     "tdp": 65
+    },
+    "specCache": null
+   },
+   {
+    "n": 12,
+    "id": "bestprice:2157204277",
+    "source": "bestprice",
+    "title": "Intel Core i5-12600K Tray",
+    "url": "https://www.bestprice.gr/item/2157204277/intel-core-i5-12600k-tray-epexergastis-10-pyrinon-gia-socket-1700.html",
+    "fields": {
+     "chip": "Core i5-12600K",
+     "socket": "LGA1700",
+     "cores": 10,
+     "packaging": "Tray",
+     "igpu": true,
+     "coolerIncluded": false,
+     "tdp": 125
+    },
+    "specCache": null
+   },
+   {
+    "n": 13,
+    "id": "bestprice:2159393578",
+    "source": "bestprice",
+    "title": "AMD Ryzen 9 Pro 7945 Tray",
+    "url": "https://www.bestprice.gr/item/2159393578/amd-ryzen-9-pro-7945-tray-epexergastis-12-pyrinon-gia-socket-am5-me-psyktra.html",
+    "fields": {
+     "chip": "Ryzen 9 PRO 7945",
+     "socket": "AM5",
+     "cores": 12,
+     "packaging": "Tray",
+     "igpu": true,
+     "coolerIncluded": false,
+     "tdp": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 14,
+    "id": "shopflix:SF-14928030",
+    "source": "shopflix",
+    "title": "Intel Core i5-12400 2.5GHz 6 Πυρήνων για Socket 1700 Tray",
+    "url": "https://shopflix.gr/p/SF-14928030/epeksergastis-intel-core-i512400-25ghz-6-pyrinon-gia-socket-1700-tray-14902552",
+    "fields": {
+     "chip": "Core i5-12400",
+     "socket": "LGA1700",
+     "cores": 6,
+     "packaging": "Tray",
+     "igpu": true,
+     "coolerIncluded": false,
+     "tdp": 65
+    },
+    "specCache": null
+   },
+   {
+    "n": 15,
+    "id": "shopflix:SF-201569533",
+    "source": "shopflix",
+    "title": "AMD Ryzen 7 Pro 8700G 4.2GHz",
+    "url": "https://shopflix.gr/p/SF-201569533/amd-ryzen-7-pro-8700g-4-2ghz-epexergastes-8-purenon-gia-socket-am5-tray",
+    "fields": {
+     "chip": "Ryzen 7 PRO 8700G",
+     "socket": "AM5",
+     "cores": 8,
+     "packaging": "Tray",
+     "igpu": true,
+     "coolerIncluded": false,
+     "tdp": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 16,
+    "id": "shopflix:SF-12583342",
+    "source": "shopflix",
+    "title": "AMD Ryzen 9 7900X3D 4.4GHz 12 Πυρήνων για Socket AM5 Tray",
+    "url": "https://shopflix.gr/p/SF-12583342/epexergastes-amd-ryzen-9-7900x3d-4-4ghz-12-purenon-gia-socket-am5-tray",
+    "fields": {
+     "chip": "Ryzen 9 7900X3D",
+     "socket": "AM5",
+     "cores": 12,
+     "packaging": "Tray",
+     "igpu": true,
+     "coolerIncluded": false,
+     "tdp": 120
+    },
+    "specCache": null
+   },
+   {
+    "n": 17,
+    "id": "shopflix:SF-104954516",
+    "source": "shopflix",
+    "title": "Intel Xeon E-2356G 3.2GHz 6 Πυρήνων για Socket 1200 Tray",
+    "url": "https://shopflix.gr/p/SF-104954516/epexergastes-intel-xeon-e-2356g-3-2ghz-6-purenon-gia-socket-1200-tray",
+    "fields": {
+     "chip": "Xeon E-2356G",
+     "socket": "LGA1200",
+     "cores": 6,
+     "packaging": "Tray",
+     "igpu": true,
+     "coolerIncluded": false,
+     "tdp": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 18,
+    "id": "snif:42771439",
+    "source": "snif",
+    "title": "Intel Core i9-14900 1.5 GHz",
+    "url": "https://www.snif.gr/showproduct/42771439/epexergastis-intel-core-i9-14900-1-5-ghz",
+    "fields": {
+     "chip": "Core i9-14900",
+     "socket": "LGA1700",
+     "cores": 24,
+     "packaging": null,
+     "igpu": true,
+     "coolerIncluded": null,
+     "tdp": 219
+    },
+    "specCache": null
+   },
+   {
+    "n": 19,
+    "id": "shopflix:SF-17987537",
+    "source": "shopflix",
+    "title": "Intel Core i9-14900 2GHz 24 Πυρήνων για Socket 1700 σε Κουτί με Ψύκτρα",
+    "url": "https://shopflix.gr/p/SF-17987537/epeksergastis-intel-core-i914900-2ghz-24-pyrinon-gia-socket-1700-se-koyti-me-psyktra-17962059",
+    "fields": {
+     "chip": "Core i9-14900",
+     "socket": "LGA1700",
+     "cores": 24,
+     "packaging": null,
+     "igpu": true,
+     "coolerIncluded": null,
+     "tdp": 219
+    },
+    "specCache": null
+   },
+   {
+    "n": 20,
+    "id": "bestprice:2160882396",
+    "source": "bestprice",
+    "title": "AMD Ryzen Threadripper Pro 9995WX Box",
+    "url": "https://www.bestprice.gr/item/2160882396/amd-ryzen-threadripper-pro-9995wx-box-epexergastis-96-pyrinon-gia-socket-str5.html",
+    "fields": {
+     "chip": "Threadripper PRO 9995WX",
+     "socket": "sTR5",
+     "cores": 96,
+     "packaging": "Box",
+     "igpu": false,
+     "coolerIncluded": null,
+     "tdp": 350
+    },
+    "specCache": null
+   }
+  ],
+  "mobo": [
+   {
+    "n": 1,
+    "id": "shopflix:SF-10796601",
+    "source": "shopflix",
+    "title": "Asus ROG Strix B650E-I Gaming Wi-Fi Mini ITX με AMD AM5 Socket",
+    "url": "https://shopflix.gr/p/SF-10796601/metrike-karta-asus-rog-strix-b650e-i-gaming-wi-fi-mini-itx-me-amd-am5-socket",
+    "fields": {
+     "chip": "Asus ROG Strix B650E-I Gaming WiFi",
+     "chipset": "B650E",
+     "socket": "AM5",
+     "formFactor": "Mini ITX",
+     "memory": "DDR5",
+     "wifi": true,
+     "ramSlots": 2
+    },
+    "specCache": null
+   },
+   {
+    "n": 2,
+    "id": "bestprice:2164161956",
+    "source": "bestprice",
+    "title": "Biostar B650MS2-E",
+    "url": "https://www.bestprice.gr/item/2164161956/biostar-b650ms2-e-motherboard-micro-atx-me-amd-am5-socket.html",
+    "fields": {
+     "chip": "Biostar B650MS2-E",
+     "chipset": "B650",
+     "socket": "AM5",
+     "formFactor": "Micro ATX",
+     "memory": "DDR5",
+     "wifi": false,
+     "ramSlots": 2
+    },
+    "specCache": null
+   },
+   {
+    "n": 3,
+    "id": "bestprice:2160272756",
+    "source": "bestprice",
+    "title": "Gigabyte B850 AORUS Elite WiFi7 Ice",
+    "url": "https://www.bestprice.gr/item/2160272756/gigabyte-b850-aorus-elite-wifi7-ice-motherboard-atx-me-amd-am5-socket.html",
+    "fields": {
+     "chip": "Gigabyte B850 AORUS Elite WiFi 7 Ice",
+     "chipset": "B850",
+     "socket": "AM5",
+     "formFactor": "ATX",
+     "memory": "DDR5",
+     "wifi": true,
+     "ramSlots": 4
+    },
+    "specCache": null
+   },
+   {
+    "n": 4,
+    "id": "snif:42169160",
+    "source": "snif",
+    "title": "Maxsun Challenger B760M-N D5 Socket 1700, DDR5",
+    "url": "https://www.snif.gr/showproduct/42169160/mitriki-maxsun-challenger-b760m-n-d5-socket-1700",
+    "fields": {
+     "chip": "Maxsun Challenger B760M-N",
+     "chipset": "B760",
+     "socket": "LGA1700",
+     "formFactor": "Micro ATX",
+     "memory": "DDR5",
+     "wifi": false,
+     "ramSlots": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 5,
+    "id": "skroutz:50786561",
+    "source": "skroutz",
+    "title": "Gigabyte H610M S2H V2 rev. 1.0",
+    "url": "https://www.skroutz.gr/s/50786561/Gigabyte-H610M-S2H-V2-rev-1-0-Motherboard-Micro-ATX-me-Intel-1700-Socket.html",
+    "fields": {
+     "chip": "Gigabyte H610M S2H V2",
+     "chipset": "H610",
+     "socket": "LGA1700",
+     "formFactor": "Micro ATX",
+     "memory": "DDR5",
+     "wifi": false,
+     "ramSlots": 2
+    },
+    "specCache": null
+   },
+   {
+    "n": 6,
+    "id": "eshop:PER.275252",
+    "source": "eshop",
+    "title": "ASUS TUF GAMING B650E-PLUS WIFI RETAIL",
+    "url": "https://www.e-shop.gr/mitriki-asus-tuf-gaming-b650e-plus-wifi-retail-p-PER.275252",
+    "fields": {
+     "chip": "Asus TUF GAMING B650E-PLUS WiFi",
+     "chipset": "B650E",
+     "socket": "AM5",
+     "formFactor": "ATX",
+     "memory": "DDR5",
+     "wifi": true,
+     "ramSlots": 4
+    },
+    "specCache": null
+   },
+   {
+    "n": 7,
+    "id": "bestprice:2162830750",
+    "source": "bestprice",
+    "title": "Gigabyte X870 Aorus Stealth Ice",
+    "url": "https://www.bestprice.gr/item/2162830750/gigabyte-x870-aorus-stealth-ice-motherboard-atx-me-amd-am5-socket.html",
+    "fields": {
+     "chip": "Gigabyte X870 Aorus Stealth Ice",
+     "chipset": "X870",
+     "socket": "AM5",
+     "formFactor": "ATX",
+     "memory": "DDR5",
+     "wifi": false,
+     "ramSlots": 4
+    },
+    "specCache": null
+   },
+   {
+    "n": 8,
+    "id": "bestprice:2162807248",
+    "source": "bestprice",
+    "title": "Gigabyte B850M Force",
+    "url": "https://www.bestprice.gr/item/2162807248/gigabyte-b850m-force-motherboard-micro-atx-me-amd-am5-socket.html",
+    "fields": {
+     "chip": "Gigabyte B850M Force",
+     "chipset": "B850",
+     "socket": "AM5",
+     "formFactor": "Micro ATX",
+     "memory": "DDR5",
+     "wifi": false,
+     "ramSlots": 2
+    },
+    "specCache": null
+   },
+   {
+    "n": 9,
+    "id": "bestprice:2156203920",
+    "source": "bestprice",
+    "title": "MSI B550-A Pro",
+    "url": "https://www.bestprice.gr/item/2156203920/msi-b550-a-pro-motherboard-atx-me-amd-am4-socket.html",
+    "fields": {
+     "chip": "MSI B550-A Pro",
+     "chipset": "B550",
+     "socket": "AM4",
+     "formFactor": "ATX",
+     "memory": "DDR4",
+     "wifi": false,
+     "ramSlots": 4
+    },
+    "specCache": null
+   },
+   {
+    "n": 10,
+    "id": "skroutz:62493349",
+    "source": "skroutz",
+    "title": "Gigabyte B760 Gaming X WIFI6E GEN5",
+    "url": "https://www.skroutz.gr/s/62493349/gigabyte-b760-gaming-x-wifi6e-gen5-motherboard-atx-me-intel-1700-socket.html",
+    "fields": {
+     "chip": "Gigabyte B760 Gaming X WiFi 6E GEN5",
+     "chipset": "B760",
+     "socket": "LGA1700",
+     "formFactor": "ATX",
+     "memory": "DDR5",
+     "wifi": true,
+     "ramSlots": 4
+    },
+    "specCache": null
+   },
+   {
+    "n": 11,
+    "id": "eshop:PER.608779",
+    "source": "eshop",
+    "title": "ASUS PRIME B860M-A WIFI LGA1851 D5 RETAIL",
+    "url": "https://www.e-shop.gr/mitriki-asus-prime-b860m-a-wifi-lga1851-d5-retail-p-PER.608779",
+    "fields": {
+     "chip": "Asus PRIME B860M-A WiFi",
+     "chipset": "B860",
+     "socket": "LGA1851",
+     "formFactor": "Micro ATX",
+     "memory": "DDR5",
+     "wifi": true,
+     "ramSlots": 4
+    },
+    "specCache": null
+   },
+   {
+    "n": 12,
+    "id": "bestprice:2160918598",
+    "source": "bestprice",
+    "title": "MSI MPG B860I Edge TI WiFi",
+    "url": "https://www.bestprice.gr/item/2160918598/msi-mpg-b860i-edge-ti-wifi-motherboard-mini-itx-me-intel-1851-socket.html",
+    "fields": {
+     "chip": "MSI MPG B860I Edge TI WiFi",
+     "chipset": "B860",
+     "socket": "LGA1851",
+     "formFactor": "Mini ITX",
+     "memory": "DDR5",
+     "wifi": true,
+     "ramSlots": 2
+    },
+    "specCache": null
+   },
+   {
+    "n": 13,
+    "id": "shopflix:SF-202517598",
+    "source": "shopflix",
+    "title": "Asus Prime B760M-A WIFI II Motherboard Micro ATX με Intel 1700 Socket 90MB1NF0-M0EAY0",
+    "url": "https://shopflix.gr/p/SF-202517598/asus-prime-b760m-a-wifi-ii-motherboard-micro-atx-me-intel-1700-socket-90mb1nf0-m0eay0",
+    "fields": {
+     "chip": "Asus Prime B760M-A WiFi II",
+     "chipset": "B760",
+     "socket": "LGA1700",
+     "formFactor": "Micro ATX",
+     "memory": "DDR5",
+     "wifi": true,
+     "ramSlots": 4
+    },
+    "specCache": null
+   },
+   {
+    "n": 14,
+    "id": "bestprice:2160073790",
+    "source": "bestprice",
+    "title": "MSI Pro Z890-P WiFi",
+    "url": "https://www.bestprice.gr/item/2160073790/msi-pro-z890-p-wifi-motherboard-atx-me-intel-1851-socket.html",
+    "fields": {
+     "chip": "MSI Pro Z890-P WiFi",
+     "chipset": "Z890",
+     "socket": "LGA1851",
+     "formFactor": "ATX",
+     "memory": "DDR5",
+     "wifi": true,
+     "ramSlots": 4
+    },
+    "specCache": null
+   },
+   {
+    "n": 15,
+    "id": "bestprice:2162830676",
+    "source": "bestprice",
+    "title": "Gigabyte MC13-LE1",
+    "url": "https://www.bestprice.gr/item/2162830676/gigabyte-mc13-le1-motherboard-micro-atx-me-amd-am5-socket.html",
+    "fields": {
+     "chip": "Gigabyte MC13-LE1",
+     "chipset": null,
+     "socket": "AM5",
+     "formFactor": "Micro ATX",
+     "memory": "DDR5",
+     "wifi": false,
+     "ramSlots": 4
+    },
+    "specCache": null
+   },
+   {
+    "n": 16,
+    "id": "bestprice:2164544130",
+    "source": "bestprice",
+    "title": "Asrock A620AM-P WIFI",
+    "url": "https://www.bestprice.gr/item/2164544130/asrock-a620am-p-wifi-motherboard-micro-atx-me-amd-am5-socket.html",
+    "fields": {
+     "chip": "ASRock A620AM-P WiFi",
+     "chipset": "A620",
+     "socket": "AM5",
+     "formFactor": "Micro ATX",
+     "memory": "DDR5",
+     "wifi": true,
+     "ramSlots": 2
+    },
+    "specCache": null
+   },
+   {
+    "n": 17,
+    "id": "bestprice:2160735291",
+    "source": "bestprice",
+    "title": "Asus TUF Gaming X870E-Plus WiFi7",
+    "url": "https://www.bestprice.gr/item/2160735291/asus-tuf-gaming-x870e-plus-wifi7-motherboard-atx-me-amd-am5-socket.html",
+    "fields": {
+     "chip": "Asus TUF Gaming X870E-Plus WiFi 7",
+     "chipset": "X870E",
+     "socket": "AM5",
+     "formFactor": "ATX",
+     "memory": "DDR5",
+     "wifi": true,
+     "ramSlots": 4
+    },
+    "specCache": null
+   },
+   {
+    "n": 18,
+    "id": "bestprice:2162566551",
+    "source": "bestprice",
+    "title": "Gigabyte B760M DS3H WiFi6E GEN5",
+    "url": "https://www.bestprice.gr/item/2162566551/gigabyte-b760m-ds3h-wifi6e-gen5-motherboard-micro-atx-me-intel-1700-socket.html",
+    "fields": {
+     "chip": "Gigabyte B760M DS3H WiFi 6E GEN5",
+     "chipset": "B760",
+     "socket": "LGA1700",
+     "formFactor": "Micro ATX",
+     "memory": "DDR5",
+     "wifi": true,
+     "ramSlots": 4
+    },
+    "specCache": null
+   },
+   {
+    "n": 19,
+    "id": "bestprice:2164147947",
+    "source": "bestprice",
+    "title": "Asrock X870E Challenger WiFi",
+    "url": "https://www.bestprice.gr/item/2164147947/asrock-x870e-challenger-wifi-motherboard-atx-me-amd-am5-socket.html",
+    "fields": {
+     "chip": "ASRock X870E Challenger WiFi",
+     "chipset": "X870E",
+     "socket": "AM5",
+     "formFactor": "ATX",
+     "memory": "DDR5",
+     "wifi": true,
+     "ramSlots": 4
+    },
+    "specCache": null
+   },
+   {
+    "n": 20,
+    "id": "eshop:PER.261123",
+    "source": "eshop",
+    "title": "ASROCK B860M PRO RS WIFI MICRO-ATX",
+    "url": "https://www.e-shop.gr/mitriki-asrock-b860m-pro-rs-wifi-micro-atx-p-PER.261123",
+    "fields": {
+     "chip": "ASRock B860M PRO RS WiFi",
+     "chipset": "B860",
+     "socket": "LGA1851",
+     "formFactor": "Micro ATX",
+     "memory": "DDR5",
+     "wifi": true,
+     "ramSlots": 4
+    },
+    "specCache": null
+   }
+  ],
+  "ram": [
+   {
+    "n": 1,
+    "id": "skroutz:55643405",
+    "source": "skroutz",
+    "title": "2 Power 8GB DDR4 MEM9603A",
+    "url": "https://www.skroutz.gr/s/55643405/2-Power-DDR4-me-Module-1x8GB-kai-Tachytita-3200-gia-Desktop-MEM9603A.html",
+    "fields": {
+     "chip": "DDR4 8GB (1×8GB) 3200MHz",
+     "type": "DDR4",
+     "capacity": 8,
+     "modules": 1,
+     "speed": 3200,
+     "cas": null,
+     "formFactor": "Desktop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 2,
+    "id": "bestprice:2157182862",
+    "source": "bestprice",
+    "title": "Kingston 16GB (1X16GB) DDR4 3200MHz SoDimm KTH-PN432E/16G",
+    "url": "https://www.bestprice.gr/item/2157182862/kingston-16gb-ddr4-3200mhz-sodimm-kth-pn432e-16g.html",
+    "fields": {
+     "chip": "DDR4 16GB (1×16GB) 3200MHz",
+     "type": "DDR4",
+     "capacity": 16,
+     "modules": 1,
+     "speed": 3200,
+     "cas": null,
+     "formFactor": "Laptop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 3,
+    "id": "shopflix:SF-12718172",
+    "source": "shopflix",
+    "title": "G.Skill Trident Z5 DDR5 32GB 2x16",
+    "url": "https://shopflix.gr/p/SF-12718172/mneme-ram-g-skill-trident-z5-ddr5-32gb-2x16",
+    "fields": {
+     "chip": "DDR5 32GB (1×32GB)",
+     "type": "DDR5",
+     "capacity": 32,
+     "modules": 1,
+     "speed": null,
+     "cas": null,
+     "formFactor": "Desktop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 4,
+    "id": "bestprice:2157223782",
+    "source": "bestprice",
+    "title": "Corsair Vengeance 32GB (2X16GB) DDR5 RAM 4800MHz C40 Black",
+    "url": "https://www.bestprice.gr/item/2157223782/corsair-vengeance-32gb-ddr5-ram-4800mhz-c40-black.html",
+    "fields": {
+     "chip": "DDR5 32GB (2×16GB) 4800MHz",
+     "type": "DDR5",
+     "capacity": 32,
+     "modules": 2,
+     "speed": 4800,
+     "cas": 40,
+     "formFactor": "Desktop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 5,
+    "id": "skroutz:448833",
+    "source": "skroutz",
+    "title": "8GB DDR3 1-RAM0017",
+    "url": "https://www.skroutz.gr/s/448833/DDR3-me-Module-1x8GB-kai-Tachytita-1333-gia-Laptop-1-RAM0017.html",
+    "fields": {
+     "chip": "DDR3 8GB (1×8GB) 1333MHz",
+     "type": "DDR3",
+     "capacity": 8,
+     "modules": 1,
+     "speed": 1333,
+     "cas": null,
+     "formFactor": "Laptop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 6,
+    "id": "snif:30922507",
+    "source": "snif",
+    "title": "G.Skill Aegis F4-2666C19D-32GIS DDR4 2666MHz (2x16GB)",
+    "url": "https://www.snif.gr/showproduct/30922507/g-skill-aegis-32gb-ddr4-2666mhz-f4-2666c19d-32gis",
+    "fields": {
+     "chip": "DDR4 32GB (2×16GB) 2666MHz",
+     "type": "DDR4",
+     "capacity": 32,
+     "modules": 2,
+     "speed": 2666,
+     "cas": 19,
+     "formFactor": "Desktop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 7,
+    "id": "snif:36061023",
+    "source": "snif",
+    "title": "SILICON POWER μνήμη DDR4 UDIMM XPOWER Zenith 2x 16GB, RGB, 3200MHz, CL16",
+    "url": "https://www.snif.gr/showproduct/36061023/silicon-power-mnimi-ddr4-udimm-xpower-zenith-2x-16",
+    "fields": {
+     "chip": "DDR4 32GB (2×16GB) 3200MHz",
+     "type": "DDR4",
+     "capacity": 32,
+     "modules": 2,
+     "speed": 3200,
+     "cas": 16,
+     "formFactor": "Desktop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 8,
+    "id": "bestprice:2159926012",
+    "source": "bestprice",
+    "title": "Kingston Fury Beast 32GB (2X16GB) DDR5 RAM 6000MHz C36",
+    "url": "https://www.bestprice.gr/item/2159926012/kingston-fury-beast-32gb-ddr5-ram-6000mhz-c36.html",
+    "fields": {
+     "chip": "DDR5 32GB (2×16GB) 6000MHz",
+     "type": "DDR5",
+     "capacity": 32,
+     "modules": 2,
+     "speed": 6000,
+     "cas": 36,
+     "formFactor": "Desktop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 9,
+    "id": "shopflix:SF-15202409",
+    "source": "shopflix",
+    "title": "Kingston Fury Beast 16GB DDR4 με Ταχύτητα 3600 για Desktop",
+    "url": "https://shopflix.gr/p/SF-15202409/mnimi-ram-kingston-fury-beast-16gb-ddr4-me-taxytita-3600-gia-desktop-15176931",
+    "fields": {
+     "chip": "DDR4 16GB (1×16GB)",
+     "type": "DDR4",
+     "capacity": 16,
+     "modules": 1,
+     "speed": null,
+     "cas": null,
+     "formFactor": "Desktop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 10,
+    "id": "shopflix:SF-105905524",
+    "source": "shopflix",
+    "title": "CoreParts 4GB DDR3 με Ταχύτητα 1600 για Desktop",
+    "url": "https://shopflix.gr/p/SF-105905524/mnhmi-ram-coreparts-4gb-ddr3-me-taxutita-1600-gia-desktop",
+    "fields": {
+     "chip": "DDR3 4GB (1×4GB)",
+     "type": "DDR3",
+     "capacity": 4,
+     "modules": 1,
+     "speed": null,
+     "cas": null,
+     "formFactor": "Desktop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 11,
+    "id": "bestprice:2158001887",
+    "source": "bestprice",
+    "title": "Micron 64GB (1X64GB) DDR4 RAM 3200MHz MTA36ASF8G72PZ-3G2R",
+    "url": "https://www.bestprice.gr/item/2158001887/micron-64gb-ddr4-ram-3200mhz-mta36asf8g72pz-3g2r.html",
+    "fields": {
+     "chip": "DDR4 64GB (1×64GB) 3200MHz",
+     "type": "DDR4",
+     "capacity": 64,
+     "modules": 1,
+     "speed": 3200,
+     "cas": null,
+     "formFactor": "Desktop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 12,
+    "id": "bestprice:2164079874",
+    "source": "bestprice",
+    "title": "Adata XPG Lancer Blade 16GB (2X8GB) DDR5 RAM 5600MHz C46 Black",
+    "url": "https://www.bestprice.gr/item/2164079874/adata-xpg-lancer-blade-16gb-ddr5-ram-5600mhz-c46-black.html",
+    "fields": {
+     "chip": "DDR5 16GB (2×8GB) 5600MHz",
+     "type": "DDR5",
+     "capacity": 16,
+     "modules": 2,
+     "speed": 5600,
+     "cas": 46,
+     "formFactor": "Desktop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 13,
+    "id": "shopflix:SF-202441217",
+    "source": "shopflix",
+    "title": "G.Skill Ripjaws M5 RGB DDR5 32GB RAM με 2x16GB Modules & Ταχύτητα 6800 για Desktop",
+    "url": "https://shopflix.gr/p/SF-202441217/g-skill-ripjaws-m5-rgb-ddr5-32gb-ram-me-2x16gb-modules-and-takhuteta-6800-gia-desktop",
+    "fields": {
+     "chip": "DDR5 32GB (2×16GB)",
+     "type": "DDR5",
+     "capacity": 32,
+     "modules": 2,
+     "speed": null,
+     "cas": null,
+     "formFactor": "Desktop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 14,
+    "id": "skroutz:61306800",
+    "source": "skroutz",
+    "title": "Kingston Fury Renegade 24GB DDR5",
+    "url": "https://www.skroutz.gr/s/61306800/kingston-fury-renegade-ddr5-me-module-1x24gb-kai-tachytita-8000-gia-desktop-kf580c38rs-24.html",
+    "fields": {
+     "chip": "DDR5 24GB (1×24GB) 8000MHz",
+     "type": "DDR5",
+     "capacity": 24,
+     "modules": 1,
+     "speed": 8000,
+     "cas": 38,
+     "formFactor": "Desktop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 15,
+    "id": "eshop:PER.340961",
+    "source": "eshop",
+    "title": "SILICON POWER 4GB DDR4 2666MHZ CL19 SP004GBLFU266X02",
+    "url": "https://www.e-shop.gr/ram-silicon-power-4gb-ddr4-2666mhz-cl19-sp004gblfu266x02-p-PER.340961",
+    "fields": {
+     "chip": "DDR4 4GB (1×4GB) 2666MHz",
+     "type": "DDR4",
+     "capacity": 4,
+     "modules": 1,
+     "speed": 2666,
+     "cas": 19,
+     "formFactor": "Desktop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 16,
+    "id": "shopflix:SF-106571861",
+    "source": "shopflix",
+    "title": "Kingston 64GB DDR5 με Ταχύτητα 5600 για Server",
+    "url": "https://shopflix.gr/p/SF-106571861/mneme-ram-kingston-64gb-ddr5-me-takhuteta-5600-gia-server",
+    "fields": {
+     "chip": "DDR5 64GB (1×64GB)",
+     "type": "DDR5",
+     "capacity": 64,
+     "modules": 1,
+     "speed": null,
+     "cas": null,
+     "formFactor": "Server"
+    },
+    "specCache": null
+   },
+   {
+    "n": 17,
+    "id": "skroutz:8115144",
+    "source": "skroutz",
+    "title": "TeamGroup Elite DDR3L",
+    "url": "https://www.skroutz.gr/s/8115144/TeamGroup-Elite-DDR3L-me-Module-1x8GB-kai-Tachytita-1600-gia-Laptop-TED3L8G1600C11-S01.html",
+    "fields": {
+     "chip": "DDR3 8GB (1×8GB) 1600MHz",
+     "type": "DDR3",
+     "capacity": 8,
+     "modules": 1,
+     "speed": 1600,
+     "cas": 11,
+     "formFactor": "Laptop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 18,
+    "id": "snif:28120256",
+    "source": "snif",
+    "title": "Ram Kingston Fury Beast 16GB (2x8GB) DDR4-3200MHz CL16 KF432C16BBK2/16 Black",
+    "url": "https://www.snif.gr/showproduct/28120256/ram-kingston-fury-beast-16gb-2x8gb-ddr4-3200mhz",
+    "fields": {
+     "chip": "DDR4 16GB (2×8GB) 3200MHz",
+     "type": "DDR4",
+     "capacity": 16,
+     "modules": 2,
+     "speed": 3200,
+     "cas": 16,
+     "formFactor": "Desktop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 19,
+    "id": "bestprice:2158984130",
+    "source": "bestprice",
+    "title": "Adata XPG Lancer Blade 32GB (2X16GB) DDR5 RAM 6000MHz C30 White",
+    "url": "https://www.bestprice.gr/item/2158984130/adata-xpg-lancer-blade-32gb-ddr5-ram-6000mhz-c30-white.html",
+    "fields": {
+     "chip": "DDR5 32GB (2×16GB) 6000MHz",
+     "type": "DDR5",
+     "capacity": 32,
+     "modules": 2,
+     "speed": 6000,
+     "cas": 30,
+     "formFactor": "Desktop"
+    },
+    "specCache": null
+   },
+   {
+    "n": 20,
+    "id": "bestprice:2163630542",
+    "source": "bestprice",
+    "title": "GoodRam IRDM 16GB (1X16GB) DDR5 RAM 7600MHz C36 Black",
+    "url": "https://www.bestprice.gr/item/2163630542/goodram-irdm-16gb-ddr5-ram-7600mhz-c36-black.html",
+    "fields": {
+     "chip": "DDR5 16GB (1×16GB) 7600MHz",
+     "type": "DDR5",
+     "capacity": 16,
+     "modules": 1,
+     "speed": 7600,
+     "cas": 36,
+     "formFactor": "Desktop"
+    },
+    "specCache": null
+   }
+  ],
+  "storage": [
+   {
+    "n": 1,
+    "id": "skroutz:69472605",
+    "source": "skroutz",
+    "title": "Fujitsu 8TB 3.5\" 7200rpm PY-BH8T7E6",
+    "url": "https://www.skroutz.gr/s/69472605/fujitsu-8tb-hdd-skliros-diskos-3-5-sata-iii-7200rpm-gia-server-py-bh8t7e6.html",
+    "fields": {
+     "chip": "Fujitsu PY-BH8T7E6 8TB",
+     "media": "HDD",
+     "iface": "SATA",
+     "pcie": null,
+     "formFactor": "3.5\"",
+     "capacity": 8000,
+     "tier": "Server",
+     "dram": null,
+     "readMBs": null,
+     "rpm": 7200
+    },
+    "specCache": null
+   },
+   {
+    "n": 2,
+    "id": "shopflix:SF-102769119",
+    "source": "shopflix",
+    "title": "Corsair MP600 Elite SSD Σκληρός Δίσκος 1TB M.2 NVMe PCI Express 3.0",
+    "url": "https://shopflix.gr/p/SF-102769119/corsair-mp600-elite-ssd-skleros-diskos-1tb-m-2-nvme-pci-express-3-0",
+    "fields": {
+     "chip": "Corsair MP600 Elite 1TB",
+     "media": "SSD",
+     "iface": "NVMe",
+     "pcie": 3,
+     "formFactor": "M.2 2280",
+     "capacity": 1000,
+     "tier": "Consumer",
+     "dram": false,
+     "readMBs": 7000,
+     "rpm": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 3,
+    "id": "bestprice:2155982303",
+    "source": "bestprice",
+    "title": "SanDisk Plus SSD 2TB 2.5\" Sata 3",
+    "url": "https://www.bestprice.gr/item/2155982303/sandisk-plus-ssd-2tb-2-5-sata-3.html",
+    "fields": {
+     "chip": "SanDisk Plus 2TB",
+     "media": "SSD",
+     "iface": "SATA",
+     "pcie": null,
+     "formFactor": "2.5\"",
+     "capacity": 2000,
+     "tier": "Consumer",
+     "dram": null,
+     "readMBs": null,
+     "rpm": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 4,
+    "id": "shopflix:SF-201721706",
+    "source": "shopflix",
+    "title": "Origin Storage Tlc830 SSD Σκληρός Δίσκος 1TB",
+    "url": "https://shopflix.gr/p/SF-201721706/origin-storage-tlc830-ssd-skleros-diskos-1tb",
+    "fields": {
+     "chip": "Origin Storage Tlc830 1TB",
+     "media": "SSD",
+     "iface": null,
+     "pcie": null,
+     "formFactor": null,
+     "capacity": 1000,
+     "tier": "Consumer",
+     "dram": null,
+     "readMBs": null,
+     "rpm": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 5,
+    "id": "bestprice:2164452637",
+    "source": "bestprice",
+    "title": "Samsung PM9D3a SSD 15.4TB U.2 NVMe PCI Express 5.0",
+    "url": "https://www.bestprice.gr/item/2164452637/samsung-pm9d3a-ssd-15-4tb-u-2-nvme-pci-express-5-0.html",
+    "fields": {
+     "chip": "Samsung PM9D3a 15.4TB",
+     "media": "SSD",
+     "iface": "NVMe",
+     "pcie": 5,
+     "formFactor": "U.2",
+     "capacity": 15400,
+     "tier": "Server",
+     "dram": null,
+     "readMBs": null,
+     "rpm": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 6,
+    "id": "eshop:PER.323660",
+    "source": "eshop",
+    "title": "SSD WESTERN DIGITAL WDS500G3B0B BLUE SA510 500GB M.2 2280 SATA 3",
+    "url": "https://www.e-shop.gr/ssd-western-digital-wds500g3b0b-blue-sa510-500gb-m2-2280-sata-3-p-PER.323660",
+    "fields": {
+     "chip": "Western Digital BLUE SA510 500GB M.2",
+     "media": "SSD",
+     "iface": "SATA",
+     "pcie": null,
+     "formFactor": "M.2 2280",
+     "capacity": 500,
+     "tier": "Consumer",
+     "dram": null,
+     "readMBs": null,
+     "rpm": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 7,
+    "id": "bestprice:2159832816",
+    "source": "bestprice",
+    "title": "Synology SAT5220 SSD 960GB 2.5\" Sata 3",
+    "url": "https://www.bestprice.gr/item/2159832816/synology-sat5220-ssd-960gb-2-5-sata-3.html",
+    "fields": {
+     "chip": "Synology SAT5220 960GB",
+     "media": "SSD",
+     "iface": "SATA",
+     "pcie": null,
+     "formFactor": "2.5\"",
+     "capacity": 960,
+     "tier": "NAS",
+     "dram": null,
+     "readMBs": null,
+     "rpm": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 8,
+    "id": "skroutz:52114437",
+    "source": "skroutz",
+    "title": "Fujitsu 512GB 2.5'' S26462-F4625-L514",
+    "url": "https://www.skroutz.gr/s/52114437/Fujitsu-SSD-512GB-typou-2-5-me-syndesi-SATA-III-S26462-F4625-L514.html",
+    "fields": {
+     "chip": "Fujitsu S26462-F4625-L514 512GB",
+     "media": "SSD",
+     "iface": "SATA",
+     "pcie": null,
+     "formFactor": "2.5\"",
+     "capacity": 512,
+     "tier": "Server",
+     "dram": null,
+     "readMBs": null,
+     "rpm": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 9,
+    "id": "bestprice:2155861178",
+    "source": "bestprice",
+    "title": "TeamGroup GX2 SSD 512GB 2.5\" Sata 3",
+    "url": "https://www.bestprice.gr/item/2155861178/teamgroup-gx2-ssd-512gb-2-5-sata-3.html",
+    "fields": {
+     "chip": "TeamGroup GX2 512GB",
+     "media": "SSD",
+     "iface": "SATA",
+     "pcie": null,
+     "formFactor": "2.5\"",
+     "capacity": 512,
+     "tier": "Consumer",
+     "dram": null,
+     "readMBs": null,
+     "rpm": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 10,
+    "id": "shopflix:SF-202592120",
+    "source": "shopflix",
+    "title": "Hiksemi Wave SSD Σκληρός Δίσκος 1TB M.2 NVMe PCI Express 3.0",
+    "url": "https://shopflix.gr/p/SF-202592120/hiksemi-wave-ssd-skleros-diskos-1tb-m-2-nvme-pci-express-3-0",
+    "fields": {
+     "chip": "Hiksemi Wave 1TB",
+     "media": "SSD",
+     "iface": "NVMe",
+     "pcie": 3,
+     "formFactor": "M.2 2280",
+     "capacity": 1000,
+     "tier": "Consumer",
+     "dram": null,
+     "readMBs": null,
+     "rpm": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 11,
+    "id": "bestprice:2158367949",
+    "source": "bestprice",
+    "title": "Seagate SkyHawk 6TB HDD Σκληρός Δίσκος 3.5\" Sata 3 5400rpm με 256MB Cache",
+    "url": "https://www.bestprice.gr/item/2158367949/seagate-skyhawk-6tb-hdd-skliros-diskos-3-5-sata-3-5400rpm-me-256mb-cache.html",
+    "fields": {
+     "chip": "Seagate SkyHawk 6TB",
+     "media": "HDD",
+     "iface": "SATA",
+     "pcie": null,
+     "formFactor": "3.5\"",
+     "capacity": 6000,
+     "tier": "NAS",
+     "dram": null,
+     "readMBs": null,
+     "rpm": 5400
+    },
+    "specCache": null
+   },
+   {
+    "n": 12,
+    "id": "bestprice:2162578113",
+    "source": "bestprice",
+    "title": "Dell 345-BGSY SSD 960GB 2.5\" SATA 3",
+    "url": "https://www.bestprice.gr/item/2162578113/dell-345-bgsy-ssd-960gb-2-5-sata-3.html",
+    "fields": {
+     "chip": "Dell 345-BGSY 960GB",
+     "media": "SSD",
+     "iface": "SATA",
+     "pcie": null,
+     "formFactor": "2.5\"",
+     "capacity": 960,
+     "tier": "Server",
+     "dram": null,
+     "readMBs": null,
+     "rpm": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 13,
+    "id": "bestprice:2163497269",
+    "source": "bestprice",
+    "title": "OWC Aura SSD 4TB M.2 NVMe PCI Express 3.0",
+    "url": "https://www.bestprice.gr/item/2163497269/owc-aura-ssd-4tb-m-2-nvme-pci-express-3-0.html",
+    "fields": {
+     "chip": "Owc Aura 4TB",
+     "media": "SSD",
+     "iface": "NVMe",
+     "pcie": 3,
+     "formFactor": "M.2 2280",
+     "capacity": 4000,
+     "tier": "Consumer",
+     "dram": null,
+     "readMBs": null,
+     "rpm": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 14,
+    "id": "snif:26921480",
+    "source": "snif",
+    "title": "Δίσκος SSD Kioxia Exceria 480GB 2.5\" Sata III LTC10Z480GG8",
+    "url": "https://www.snif.gr/showproduct/26921480/diskos-ssd-kioxia-exceria-480gb-2-5--sata-iii-ltc1",
+    "fields": {
+     "chip": "Kioxia Exceria 480GB",
+     "media": "SSD",
+     "iface": "SATA",
+     "pcie": null,
+     "formFactor": "2.5\"",
+     "capacity": 480,
+     "tier": "Consumer",
+     "dram": null,
+     "readMBs": null,
+     "rpm": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 15,
+    "id": "shopflix:SF-106848527",
+    "source": "shopflix",
+    "title": "HDD Σκληρός Δίσκος Seagate BarraCuda 20TB 3.5\" SATA III 7200rpm με 512MB Cache για Desktop",
+    "url": "https://shopflix.gr/p/SF-106848527/hdd-skleros-diskos-seagate-barracuda-20tb-3-5-sata-iii-7200rpm-me-512mb-cache-gia-desktop",
+    "fields": {
+     "chip": "Seagate BarraCuda 20TB",
+     "media": "HDD",
+     "iface": "SATA",
+     "pcie": null,
+     "formFactor": "3.5\"",
+     "capacity": 20000,
+     "tier": "Consumer",
+     "dram": null,
+     "readMBs": null,
+     "rpm": 7200
+    },
+    "specCache": null
+   },
+   {
+    "n": 16,
+    "id": "shopflix:SF-104827533",
+    "source": "shopflix",
+    "title": "Western Digital Black SN850X με Heatsink SSD Σκληρός Δίσκος 2TB M.2 NVMe PCI Express 4.0",
+    "url": "https://shopflix.gr/p/SF-104827533/western-digital-black-sn850x-me-heatsink-ssd-skleros-diskos-2tb-m-2-nvme-pci-express-4-0",
+    "fields": {
+     "chip": "Western Digital Black SN850X Heatsink 2TB",
+     "media": "SSD",
+     "iface": "NVMe",
+     "pcie": 4,
+     "formFactor": "M.2 2280",
+     "capacity": 2000,
+     "tier": "Consumer",
+     "dram": null,
+     "readMBs": null,
+     "rpm": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 17,
+    "id": "bestprice:2163437866",
+    "source": "bestprice",
+    "title": "Western Digital Blue 4TB HDD Σκληρός Δίσκος 3.5\" SATA 3 5400rpm με 128MB Cache WD40EZZX",
+    "url": "https://www.bestprice.gr/item/2163437866/western-digital-blue-4tb-hdd-skliros-diskos-3-5-sata-3-5400rpm-me-128mb-cache-wd40ezzx.html",
+    "fields": {
+     "chip": "Western Digital Blue 4TB",
+     "media": "HDD",
+     "iface": "SATA",
+     "pcie": null,
+     "formFactor": "3.5\"",
+     "capacity": 4000,
+     "tier": "Consumer",
+     "dram": null,
+     "readMBs": null,
+     "rpm": 5400
+    },
+    "specCache": null
+   },
+   {
+    "n": 18,
+    "id": "skroutz:67047938",
+    "source": "skroutz",
+    "title": "Lenovo 512GB M.2 FRU01FR511",
+    "url": "https://www.skroutz.gr/s/67047938/lenovo-ssd-512gb-typou-m-2-me-syndesi-pci-express-3-0-fru01fr511.html",
+    "fields": {
+     "chip": "Lenovo FRU01FR511 512GB",
+     "media": "SSD",
+     "iface": "NVMe",
+     "pcie": 3,
+     "formFactor": "M.2 2280",
+     "capacity": 512,
+     "tier": "Server",
+     "dram": null,
+     "readMBs": null,
+     "rpm": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 19,
+    "id": "eshop:PER.306572",
+    "source": "eshop",
+    "title": "SSD SAMSUNG PM9A3 960GB PCIE GEN4 X4 NVME 2.5 INCH U.2 DATA CENTER MZQL2960HCJR",
+    "url": "https://www.e-shop.gr/ssd-samsung-pm9a3-960gb-pcie-gen4-x4-nvme-25-inch-u2-data-center-mzql2960hcjr-p-PER.306572",
+    "fields": {
+     "chip": "Samsung PM9A3 960GB",
+     "media": "SSD",
+     "iface": "NVMe",
+     "pcie": 4,
+     "formFactor": "U.2",
+     "capacity": 960,
+     "tier": "Server",
+     "dram": null,
+     "readMBs": null,
+     "rpm": null
+    },
+    "specCache": null
+   },
+   {
+    "n": 20,
+    "id": "skroutz:67049523",
+    "source": "skroutz",
+    "title": "CoreParts 512GB M.2 W125837128",
+    "url": "https://www.skroutz.gr/s/67049523/coreparts-ssd-512gb-typou-m-2-w125837128.html",
+    "fields": {
+     "chip": "CoreParts W125837128 512GB",
+     "media": "SSD",
+     "iface": null,
+     "pcie": null,
+     "formFactor": "M.2 2280",
+     "capacity": 512,
+     "tier": "Consumer",
+     "dram": null,
+     "readMBs": null,
+     "rpm": null
+    },
+    "specCache": null
+   }
+  ],
+  "psu": [
+   {
+    "n": 1,
+    "id": "snif:20484004",
+    "source": "snif",
+    "title": "Lenovo Thinkcentre M57 M58 280W Power Supply PC7071",
+    "url": "https://www.snif.gr/showproduct/20484004/lenovo-thinkcentre-m57-m58-280w-power-supply-pc707",
+    "fields": {
+     "chip": "280W",
+     "watts": 280,
+     "efficiency": null,
+     "modular": null,
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 2,
+    "id": "shopflix:SF-106261843",
+    "source": "shopflix",
+    "title": "Cougar CGR GEXP-850 850W Μαύρο Full Modular 80 Plus Gold",
+    "url": "https://shopflix.gr/p/SF-106261843/trophodotiko-upologiste-cougar-cgr-gexp-850-850w-mauro-full-modular-80-plus-gold",
+    "fields": {
+     "chip": "850W Gold",
+     "watts": 850,
+     "efficiency": "Gold",
+     "modular": "Full",
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 3,
+    "id": "bestprice:2155518627",
+    "source": "bestprice",
+    "title": "Silverstone ST50F-ES230 500W White",
+    "url": "https://www.bestprice.gr/item/2155518627/silverstone-st50f-es230-500w-white-trofodotiko-ypologisti-atx-80-plus.html",
+    "fields": {
+     "chip": "500W Standard",
+     "watts": 500,
+     "efficiency": "Standard",
+     "modular": null,
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 4,
+    "id": "bestprice:2160872799",
+    "source": "bestprice",
+    "title": "Deepcool PF600X 600W",
+    "url": "https://www.bestprice.gr/item/2160872799/deepcool-pf600x-600w-trofodotiko-ypologisti-atx-80-plus-bronze.html",
+    "fields": {
+     "chip": "600W Bronze",
+     "watts": 600,
+     "efficiency": "Bronze",
+     "modular": null,
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 5,
+    "id": "skroutz:46331643",
+    "source": "skroutz",
+    "title": "Xilence Performance C+ XN420 650W Full Wired 80 Plus Standard",
+    "url": "https://www.skroutz.gr/s/46331643/Xilence-Performance-C-XN420-650W-Mayro-Trofodotiko-Ypologisti-Full-Wired-80-Plus-Standard.html",
+    "fields": {
+     "chip": "650W Standard",
+     "watts": 650,
+     "efficiency": "Standard",
+     "modular": "Non",
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 6,
+    "id": "bestprice:2158828537",
+    "source": "bestprice",
+    "title": "Chieftec Polaris Pro 1300W",
+    "url": "https://www.bestprice.gr/item/2158828537/chieftec-polaris-pro-1300w-trofodotiko-ypologisti-atx-3-0-80-plus-platinum.html",
+    "fields": {
+     "chip": "1300W Platinum",
+     "watts": 1300,
+     "efficiency": "Platinum",
+     "modular": null,
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 7,
+    "id": "eshop:PER.261182",
+    "source": "eshop",
+    "title": "MSI MAG A850GL 850W II 80+ GOLD",
+    "url": "https://www.e-shop.gr/psu-msi-mag-a850gl-850w-ii-80-gold-p-PER.261182",
+    "fields": {
+     "chip": "850W Gold",
+     "watts": 850,
+     "efficiency": "Gold",
+     "modular": null,
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 8,
+    "id": "eshop:PER.651243",
+    "source": "eshop",
+    "title": "THERMALTAKE SMART BM2 650W SEMI MODULAR 80 PLUS BRONZE",
+    "url": "https://www.e-shop.gr/psu-thermaltake-smart-bm2-650w-semi-modular-80-plus-bronze-p-PER.651243",
+    "fields": {
+     "chip": "650W Bronze",
+     "watts": 650,
+     "efficiency": "Bronze",
+     "modular": "Semi",
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 9,
+    "id": "skroutz:67048542",
+    "source": "skroutz",
+    "title": "APNX DELUXE G1 850 850W",
+    "url": "https://www.skroutz.gr/s/67048542/apnx-deluxe-g1-850-850w-mayro-trofodotiko-ypologisti.html",
+    "fields": {
+     "chip": "850W",
+     "watts": 850,
+     "efficiency": null,
+     "modular": null,
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 10,
+    "id": "snif:39978756",
+    "source": "snif",
+    "title": "Armaggeddon Voltron VG500 Full Wired 500W 80+ Bronze - Μαύρο",
+    "url": "https://www.snif.gr/showproduct/39978756/trofodotiko-ypologisti-armaggeddon-voltron-vg500-f",
+    "fields": {
+     "chip": "500W Bronze",
+     "watts": 500,
+     "efficiency": "Bronze",
+     "modular": "Non",
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 11,
+    "id": "eshop:PER.259737",
+    "source": "eshop",
+    "title": "ARMAGGEDDON PSU VOLTRON GOLD 80+ RATING 500W VG500",
+    "url": "https://www.e-shop.gr/armaggeddon-psu-voltron-gold-80-rating-500w-vg500-p-PER.259737",
+    "fields": {
+     "chip": "500W Gold",
+     "watts": 500,
+     "efficiency": "Gold",
+     "modular": null,
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 12,
+    "id": "eshop:PER.608549",
+    "source": "eshop",
+    "title": "THERMALTAKE SMART BM3 BRONZE 850W - TT PREMIUM EDITION",
+    "url": "https://www.e-shop.gr/psu-thermaltake-smart-bm3-bronze-850w-tt-premium-edition-p-PER.608549",
+    "fields": {
+     "chip": "850W Bronze",
+     "watts": 850,
+     "efficiency": "Bronze",
+     "modular": null,
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 13,
+    "id": "shopflix:SF-202563191",
+    "source": "shopflix",
+    "title": "Deepcool PF750X 750W Μαύρο",
+    "url": "https://shopflix.gr/p/SF-202563191/deepcool-pf750x-750w-mauro-trophodotiko-upologiste-full-wired-80-plus-bronze",
+    "fields": {
+     "chip": "750W Bronze",
+     "watts": 750,
+     "efficiency": "Bronze",
+     "modular": "Non",
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 14,
+    "id": "skroutz:57670109",
+    "source": "skroutz",
+    "title": "MSI MAG A650BNL Full Wired 80 Plus Bronze",
+    "url": "https://www.skroutz.gr/s/57670109/MSI-MAG-A550BNL-550W-Mayro-Trofodotiko-Ypologisti-Full-Wired-80-Plus-Bronze.html",
+    "fields": {
+     "chip": "550W Bronze",
+     "watts": 550,
+     "efficiency": "Bronze",
+     "modular": "Non",
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 15,
+    "id": "bestprice:2159633012",
+    "source": "bestprice",
+    "title": "Deepcool PN750M 750W",
+    "url": "https://www.bestprice.gr/item/2159633012/deepcool-pn750m-750w-trofodotiko-ypologisti-atx-3-0-80-plus-gold.html",
+    "fields": {
+     "chip": "750W Gold",
+     "watts": 750,
+     "efficiency": "Gold",
+     "modular": null,
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 16,
+    "id": "eshop:PER.547603",
+    "source": "eshop",
+    "title": "CORSAIR RM1000X 1000W FULLY MODULAR CYBENETICS GOLD CERTIFIED CP-9020271-EU",
+    "url": "https://www.e-shop.gr/psu-corsair-rm1000x-1000w-fully-modular-cybenetics-gold-certified-cp-9020271-eu-p-PER.547603",
+    "fields": {
+     "chip": "1000W Gold",
+     "watts": 1000,
+     "efficiency": "Gold",
+     "modular": null,
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 17,
+    "id": "eshop:PER.645582",
+    "source": "eshop",
+    "title": "GIGABYTE GP-P650SS 650W 80 PLUS SILVER NO MODULAR ATX 3.1 COMPATIBLE",
+    "url": "https://www.e-shop.gr/psu-gigabyte-gp-p650ss-650w-80-plus-silver-no-modular-atx-31-compatible-p-PER.645582",
+    "fields": {
+     "chip": "650W Silver",
+     "watts": 650,
+     "efficiency": "Silver",
+     "modular": null,
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 18,
+    "id": "shopflix:SF-200507933",
+    "source": "shopflix",
+    "title": "Enermax Revolution D.F. 2 rev. 2.0 1200W Μαύρο",
+    "url": "https://shopflix.gr/p/SF-200507933/enermax-revolution-d-f-2-rev-2-0-1200w-mauro-trophodotiko-upologiste-full-modular-80-plus-gold",
+    "fields": {
+     "chip": "1200W Gold",
+     "watts": 1200,
+     "efficiency": "Gold",
+     "modular": "Full",
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 19,
+    "id": "shopflix:SF-107000866",
+    "source": "shopflix",
+    "title": "FSP/Fortron Vita BD 750W Μαύρο Full Wired 80 Plus Bronze",
+    "url": "https://shopflix.gr/p/SF-107000866/trophodotiko-upologiste-fsp-fortron-vita-bd-750w-mauro-full-wired-80-plus-bronze",
+    "fields": {
+     "chip": "750W Bronze",
+     "watts": 750,
+     "efficiency": "Bronze",
+     "modular": "Non",
+     "formFactor": "ATX"
+    },
+    "specCache": null
+   },
+   {
+    "n": 20,
+    "id": "skroutz:50450860",
+    "source": "skroutz",
+    "title": "Akyga 250W Full Wired (AK-T1-250)",
+    "url": "https://www.skroutz.gr/s/50450860/Akyga-250W-Gri-Trofodotiko-Ypologisti-Full-Wired-AK-T1-250.html",
+    "fields": {
+     "chip": "250W",
+     "watts": 250,
+     "efficiency": null,
+     "modular": "Non",
+     "formFactor": "TFX"
+    },
+    "specCache": null
+   }
+  ],
+  "case": [
+   {
+    "n": 1,
+    "id": "bestprice:2163565756",
+    "source": "bestprice",
+    "title": "Thermaltake View 170 TG Pink Gaming Micro Tower RGB με Πλαϊνό Παράθυρο",
+    "url": "https://www.bestprice.gr/item/2163565756/thermaltake-view-170-tg-pink-gaming-micro-tower-kouti-ypologisti-rgb-me-plaino-parathyro.html",
+    "fields": {
+     "chip": "Thermaltake View 170",
+     "size": "Mini Tower",
+     "maxBoard": "Micro ATX",
+     "gpuMaxMm": 340,
+     "coolerMaxMm": 160,
+     "fanSlots": 5,
+     "window": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 2,
+    "id": "shopflix:SF-103310642",
+    "source": "shopflix",
+    "title": "Montech Sky Two Gaming Midi Tower με RGB Φωτισμό Μαύρο",
+    "url": "https://shopflix.gr/p/SF-103310642/montech-sky-two-gaming-midi-tower-kouti-ypologisth-me-rgb-fotismo-mauro",
+    "fields": {
+     "chip": "Montech Sky Two",
+     "size": "Midi Tower",
+     "maxBoard": "ATX",
+     "gpuMaxMm": 400,
+     "coolerMaxMm": 168,
+     "fanSlots": 6,
+     "window": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 3,
+    "id": "bestprice:2156248518",
+    "source": "bestprice",
+    "title": "Chieftec CM-25B-OP Midi Tower",
+    "url": "https://www.bestprice.gr/item/2156248518/chieftec-cm-25b-op-midi-tower-kouti-ypologisti.html",
+    "fields": {
+     "chip": "Chieftec CM-25B-OP",
+     "size": "Midi Tower",
+     "maxBoard": "ATX",
+     "gpuMaxMm": null,
+     "coolerMaxMm": null,
+     "fanSlots": null,
+     "window": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 4,
+    "id": "bestprice:2163683890",
+    "source": "bestprice",
+    "title": "Deepcool CG530U 4F Black Midi Tower RGB με Πλαϊνό Παράθυρο",
+    "url": "https://www.bestprice.gr/item/2163683890/deepcool-cg530u-4f-black-midi-tower-kouti-ypologisti-rgb-me-plaino-parathyro.html",
+    "fields": {
+     "chip": "Deepcool CG530U 4F",
+     "size": "Midi Tower",
+     "maxBoard": "ATX",
+     "gpuMaxMm": null,
+     "coolerMaxMm": null,
+     "fanSlots": null,
+     "window": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 5,
+    "id": "shopflix:SF-201055511",
+    "source": "shopflix",
+    "title": "Darkflash DS900G Gaming Midi Tower με Πλαϊνό Παράθυρο Λευκό",
+    "url": "https://shopflix.gr/p/SF-201055511/darkflash-ds900g-gaming-midi-tower-kouti-upologiste-me-plaino-parathuro-leuko",
+    "fields": {
+     "chip": "Darkflash DS900G",
+     "size": "Midi Tower",
+     "maxBoard": "ATX",
+     "gpuMaxMm": 425,
+     "coolerMaxMm": 170,
+     "fanSlots": 9,
+     "window": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 6,
+    "id": "bestprice:2158427397",
+    "source": "bestprice",
+    "title": "Hyte Y40 White Gaming Midi Tower με Πλαϊνό Παράθυρο",
+    "url": "https://www.bestprice.gr/item/2158427397/hyte-y40-white-gaming-midi-tower-kouti-ypologisti-me-plaino-parathyro.html",
+    "fields": {
+     "chip": "HYTE Y40",
+     "size": "Midi Tower",
+     "maxBoard": "ATX",
+     "gpuMaxMm": 422,
+     "coolerMaxMm": 183,
+     "fanSlots": 7,
+     "window": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 7,
+    "id": "skroutz:51830674",
+    "source": "skroutz",
+    "title": "Geometric Future M2 The ARK Mini Tower",
+    "url": "https://www.skroutz.gr/s/51830674/Geometric-Future-M2-The-ARK-Mini-Tower-Kouti-Ypologisti-Mayro.html",
+    "fields": {
+     "chip": "Geometric Future M2 The ARK",
+     "size": "Mini Tower",
+     "maxBoard": "Micro ATX",
+     "gpuMaxMm": null,
+     "coolerMaxMm": null,
+     "fanSlots": null,
+     "window": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 8,
+    "id": "eshop:PER.222786",
+    "source": "eshop",
+    "title": "BE QUIET PSU DARK BASE PRO 901 BLACK",
+    "url": "https://www.e-shop.gr/case-be-quiet-psu-dark-base-pro-901-black-p-PER.222786",
+    "fields": {
+     "chip": "Be Quiet PSU DARK BASE PRO 901",
+     "size": "Άλλο",
+     "maxBoard": null,
+     "gpuMaxMm": null,
+     "coolerMaxMm": null,
+     "fanSlots": null,
+     "window": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 9,
+    "id": "eshop:PER.288285",
+    "source": "eshop",
+    "title": "DARKFLASH DS900WS ATX ΠΕΡΙΠΤΩΣΗ ΥΠΟΛΟΓΙΣΤΗ ΧΩΡΙΣ ΑΝΕΜΙΣΤΗΡΕΣ (ΜΑΥΡΟ)",
+    "url": "https://www.e-shop.gr/darkflash-ds900ws-atx-periptosi-ypologisti-xoris-anemistires-mayro-p-PER.288285",
+    "fields": {
+     "chip": "Darkflash DS900WS ATX ΠΕΡΙΠΤΩΣΗ ΥΠΟΛΟΓΙΣΤΗ ΧΩΡΙΣ ΑΝΕΜΙΣΤΗΡΕΣ",
+     "size": "Άλλο",
+     "maxBoard": "ATX",
+     "gpuMaxMm": null,
+     "coolerMaxMm": null,
+     "fanSlots": null,
+     "window": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 10,
+    "id": "bestprice:2155485735",
+    "source": "bestprice",
+    "title": "Inter-Tech C-3 Saphir Gaming Midi Tower RGB με Πλαϊνό Παράθυρο",
+    "url": "https://www.bestprice.gr/item/2155485735/inter-tech-c-3-saphir-gaming-midi-tower-kouti-ypologisti-rgb-me-plaino-parathyro.html",
+    "fields": {
+     "chip": "Inter-Tech C-3 Saphir",
+     "size": "Midi Tower",
+     "maxBoard": "ATX",
+     "gpuMaxMm": null,
+     "coolerMaxMm": null,
+     "fanSlots": null,
+     "window": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 11,
+    "id": "shopflix:SF-103722625",
+    "source": "shopflix",
+    "title": "Lian Li A3 Mini Tower Λευκό",
+    "url": "https://shopflix.gr/p/SF-103722625/kouti-upologiste-lian-li-a3-mini-tower-leuko",
+    "fields": {
+     "chip": "Lian Li A3",
+     "size": "Mini Tower",
+     "maxBoard": "Micro ATX",
+     "gpuMaxMm": 415,
+     "coolerMaxMm": null,
+     "fanSlots": 10,
+     "window": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 12,
+    "id": "shopflix:SF-100117758",
+    "source": "shopflix",
+    "title": "Powertech PT-1098 Mini Tower με Ενσωματωμένο Τροφοδοτικό / Προεγκατεστημένους Ανεμιστήρες Μαύρο",
+    "url": "https://shopflix.gr/p/SF-100117758/kouti-ypologisth-powertech-pt-1098-mini-tower-me-ensomatomeno-trofodotiko-proegkatestimenous-anemisthres-mauro",
+    "fields": {
+     "chip": "Powertech PT-1098",
+     "size": "Mini Tower",
+     "maxBoard": "Mini ITX",
+     "gpuMaxMm": null,
+     "coolerMaxMm": null,
+     "fanSlots": null,
+     "window": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 13,
+    "id": "skroutz:55744798",
+    "source": "skroutz",
+    "title": "Sharkoon VK2 RGB Gaming Midi Tower με Πλαϊνό Παράθυρο",
+    "url": "https://www.skroutz.gr/s/55744798/Sharkoon-VK2-RGB-Gaming-Midi-Tower-Kouti-Ypologisti-me-Plaino-Parathyro-Mayro.html",
+    "fields": {
+     "chip": "Sharkoon VK2",
+     "size": "Midi Tower",
+     "maxBoard": "Micro ATX",
+     "gpuMaxMm": 350,
+     "coolerMaxMm": 160,
+     "fanSlots": 7,
+     "window": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 14,
+    "id": "bestprice:2163721160",
+    "source": "bestprice",
+    "title": "Fractal Design Pop 2 Air Midi Tower",
+    "url": "https://www.bestprice.gr/item/2163721160/fractal-design-pop-2-air-midi-tower-kouti-ypologisti.html",
+    "fields": {
+     "chip": "Fractal Design Pop 2 Air",
+     "size": "Midi Tower",
+     "maxBoard": "ATX",
+     "gpuMaxMm": 416,
+     "coolerMaxMm": 170,
+     "fanSlots": 7,
+     "window": true
+    },
+    "specCache": {
+     "gpuMaxMm": 416,
+     "coolerMaxMm": null,
+     "fanSlots": 7,
+     "radiatorMounts": "Πίσω, Άνω",
+     "maxBoard": "ATX"
+    }
+   },
+   {
+    "n": 15,
+    "id": "bestprice:2160447734",
+    "source": "bestprice",
+    "title": "Antec C3 Black Midi Tower RGB με Πλαϊνό Παράθυρο",
+    "url": "https://www.bestprice.gr/item/2160447734/antec-c3-black-midi-tower-kouti-ypologisti-rgb-me-plaino-parathyro.html",
+    "fields": {
+     "chip": "Antec C3",
+     "size": "Midi Tower",
+     "maxBoard": "ATX",
+     "gpuMaxMm": 415,
+     "coolerMaxMm": 160,
+     "fanSlots": 8,
+     "window": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 16,
+    "id": "snif:36655845",
+    "source": "snif",
+    "title": "Cougar Purity Mini - Μαύρο",
+    "url": "https://www.snif.gr/showproduct/36655845/kouti-desktop-cougar-purity-mini---mauro",
+    "fields": {
+     "chip": "Cougar Purity Mini",
+     "size": "Άλλο",
+     "maxBoard": null,
+     "gpuMaxMm": null,
+     "coolerMaxMm": null,
+     "fanSlots": null,
+     "window": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 17,
+    "id": "snif:35937522",
+    "source": "snif",
+    "title": "Armaggeddon Tessaraxx Core 13 Air - Λευκό",
+    "url": "https://www.snif.gr/showproduct/35937522/kouti-desktop-armaggeddon-tessaraxx-core-13-air-",
+    "fields": {
+     "chip": "Armaggeddon Tessaraxx Core 13 Air",
+     "size": "Άλλο",
+     "maxBoard": "E-ATX",
+     "gpuMaxMm": 330,
+     "coolerMaxMm": 162,
+     "fanSlots": 7,
+     "window": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 18,
+    "id": "bestprice:2164038751",
+    "source": "bestprice",
+    "title": "Zalman Chronix V2 White Gaming Midi Tower RGB με Πλαϊνό Παράθυρο",
+    "url": "https://www.bestprice.gr/item/2164038751/zalman-chronix-v2-white-gaming-midi-tower-kouti-ypologisti-rgb-me-plaino-parathyro.html",
+    "fields": {
+     "chip": "Zalman Chronix V2",
+     "size": "Midi Tower",
+     "maxBoard": "ATX",
+     "gpuMaxMm": null,
+     "coolerMaxMm": null,
+     "fanSlots": null,
+     "window": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 19,
+    "id": "shopflix:SF-202557092",
+    "source": "shopflix",
+    "title": "Xigmatek NYX II Gaming Mini Tower με Πλαϊνό Παράθυρο Μαύρο",
+    "url": "https://shopflix.gr/p/SF-202557092/xigmatek-nyx-ii-gaming-mini-tower-kouti-upologiste-me-plaino-parathuro-mauro",
+    "fields": {
+     "chip": "Xigmatek NYX II",
+     "size": "Mini Tower",
+     "maxBoard": "Micro ATX",
+     "gpuMaxMm": null,
+     "coolerMaxMm": null,
+     "fanSlots": null,
+     "window": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 20,
+    "id": "skroutz:25315674",
+    "source": "skroutz",
+    "title": "Thermaltake Core P8 TG Gaming Full Tower με Πλαϊνό Παράθυρο",
+    "url": "https://www.skroutz.gr/s/25315674/Thermaltake-Core-P8-TG-Gaming-Full-Tower-Kouti-Ypologisti-me-Plaino-Parathyro-Mayro.html",
+    "fields": {
+     "chip": "Thermaltake Core P8",
+     "size": "Full Tower",
+     "maxBoard": "E-ATX",
+     "gpuMaxMm": null,
+     "coolerMaxMm": null,
+     "fanSlots": null,
+     "window": true
+    },
+    "specCache": null
+   }
+  ],
+  "fan": [
+   {
+    "n": 1,
+    "id": "shopflix:SF-12356700",
+    "source": "shopflix",
+    "title": "Ekwb FPT 140 D-RGB με Σύνδεση 4-Pin PWM Λευκό",
+    "url": "https://shopflix.gr/p/SF-12356700/case-fan-ekwb-fpt-140-drgb-me-syndesi-4pin-pwm-leyko-12331222",
+    "fields": {
+     "chip": "EKWB FPT 140 D-RGB 140mm",
+     "size": 140,
+     "pack": 1,
+     "connector": "4-pin PWM",
+     "pwm": true,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 2,
+    "id": "shopflix:SF-202249790",
+    "source": "shopflix",
+    "title": "Preyon Eagle Eye Case Fan 120mm με ARGB Φωτισμό 3τμχ",
+    "url": "https://shopflix.gr/p/SF-202249790/preyon-eagle-eye-case-fan-120mm-me-argb-photismo-3tmkh",
+    "fields": {
+     "chip": "Preyon Eagle Eye 120mm ×3",
+     "size": 120,
+     "pack": 3,
+     "connector": null,
+     "pwm": false,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 3,
+    "id": "eshop:PER.586587",
+    "source": "eshop",
+    "title": "NOCTUA NF-A9X14 PWM CHROMAX.BLACK.SWAP 92MM",
+    "url": "https://www.e-shop.gr/noctuanf-a9x14-pwm-chromaxblackswap-92mm-p-PER.586587",
+    "fields": {
+     "chip": "Noctua NF-A9X14 PWM CHROMAX. .SWAP 92mm",
+     "size": 92,
+     "pack": 1,
+     "connector": null,
+     "pwm": true,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 4,
+    "id": "bestprice:2156632256",
+    "source": "bestprice",
+    "title": "StarTech FAN7X15TX3 Case Fan 70mm με Σύνδεση 3-Pin",
+    "url": "https://www.bestprice.gr/item/2156632256/startech-fan7x15tx3-case-fan-70mm-me-syndesi-3-pin.html",
+    "fields": {
+     "chip": "StarTech FAN7X15TX3 70mm",
+     "size": 70,
+     "pack": 1,
+     "connector": "3-pin",
+     "pwm": false,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 5,
+    "id": "skroutz:61663879",
+    "source": "skroutz",
+    "title": "Mars Gaming MFSI4KIT Case Fan 120mm",
+    "url": "https://www.skroutz.gr/s/61663879/mars-gaming-mfsi4kit-case-fan-120mm-me-rgb-fotismo.html",
+    "fields": {
+     "chip": "Mars Gaming MFSI4KIT 120mm",
+     "size": 120,
+     "pack": 1,
+     "connector": null,
+     "pwm": false,
+     "rgb": true
+    },
+    "specCache": {
+     "connector": null,
+     "airflowCfm": null,
+     "pressureMm": 2.03
+    }
+   },
+   {
+    "n": 6,
+    "id": "skroutz:61601450",
+    "source": "skroutz",
+    "title": "Thermaltake CT140 EX Case Fan 3τμχ Πράσινο",
+    "url": "https://www.skroutz.gr/s/61601450/thermaltake-ct140-ex-case-fan-me-argb-fotismo-3tmch-prasino.html",
+    "fields": {
+     "chip": "Thermaltake CT140 EX 140mm ×3",
+     "size": 140,
+     "pack": 3,
+     "connector": "4-pin PWM",
+     "pwm": true,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 7,
+    "id": "bestprice:2162774875",
+    "source": "bestprice",
+    "title": "Noctua NF-A12x25 G2 LS-PWM LS-PWM Case Fan 120mm με Σύνδεση 4-Pin PWM",
+    "url": "https://www.bestprice.gr/item/2162774875/noctua-nf-a12x25-g2-ls-pwm-ls-pwm-case-fan-120mm-me-syndesi-4-pin-pwm.html",
+    "fields": {
+     "chip": "Noctua NF-A12x25 G2 LS-PWM LS-PWM 120mm",
+     "size": 120,
+     "pack": 1,
+     "connector": "4-pin PWM",
+     "pwm": true,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 8,
+    "id": "shopflix:SF-10801236",
+    "source": "shopflix",
+    "title": "White Shark ARGB Pulsar 120mm με Σύνδεση 4-Pin Molex",
+    "url": "https://shopflix.gr/p/SF-10801236/case-fan-white-shark-argb-pulsar-120mm-me-syndesi-4pin-molex-10775758",
+    "fields": {
+     "chip": "White Shark Pulsar 120mm",
+     "size": 120,
+     "pack": 1,
+     "connector": "4-pin PWM",
+     "pwm": true,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 9,
+    "id": "bestprice:2163393177",
+    "source": "bestprice",
+    "title": "Deepcool FL14R Case Fan 140mm ARGB με Σύνδεση 3-Pin 4-Pin PWM Black",
+    "url": "https://www.bestprice.gr/item/2163393177/deepcool-fl14r-case-fan-140mm-argb-me-syndesi-3-pin-4-pin-pwm-black.html",
+    "fields": {
+     "chip": "Deepcool FL14R 140mm",
+     "size": 140,
+     "pack": 1,
+     "connector": "4-pin PWM",
+     "pwm": true,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 10,
+    "id": "bestprice:2154953606",
+    "source": "bestprice",
+    "title": "Be Quiet Pure Wings 2 Case Fan 120mm με Σύνδεση 4-Pin PWM",
+    "url": "https://www.bestprice.gr/item/2154953606/be-quiet-pure-wings-2-case-fan-120mm-me-syndesi-4-pin-pwm.html",
+    "fields": {
+     "chip": "Be Quiet Pure Wings 2 120mm",
+     "size": 120,
+     "pack": 1,
+     "connector": "4-pin PWM",
+     "pwm": true,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 11,
+    "id": "shopflix:SF-10836206",
+    "source": "shopflix",
+    "title": "Noctua NF-A8 ULN 80mm με Σύνδεση 3-Pin Καφέ",
+    "url": "https://shopflix.gr/p/SF-10836206/case-fan-noctua-nfa8-uln-80mm-me-syndesi-3pin-kafe-10810728",
+    "fields": {
+     "chip": "Noctua NF-A8 ULN 80mm",
+     "size": 80,
+     "pack": 1,
+     "connector": "3-pin",
+     "pwm": false,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 12,
+    "id": "bestprice:2157752531",
+    "source": "bestprice",
+    "title": "NZXT F140P Case Fan 140mm με Σύνδεση 4-Pin PWM Black",
+    "url": "https://www.bestprice.gr/item/2157752531/nzxt-f140p-case-fan-140mm-me-syndesi-4-pin-pwm-black.html",
+    "fields": {
+     "chip": "NZXT F140P 140mm",
+     "size": 140,
+     "pack": 1,
+     "connector": "4-pin PWM",
+     "pwm": true,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 13,
+    "id": "skroutz:21146449",
+    "source": "skroutz",
+    "title": "Thermaltake Luna 14 LED Case Fan 140mm Κόκκινο",
+    "url": "https://www.skroutz.gr/s/21146449/Thermaltake-Luna-14-LED-Case-Fan-140mm-1000rpm-60-55cfm-me-Kokkino-Fotismo-kai-Syndesi-3-Pin-4-Pin-Molex-Kokkino.html",
+    "fields": {
+     "chip": "Thermaltake Luna 14 140mm",
+     "size": 140,
+     "pack": 1,
+     "connector": null,
+     "pwm": false,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 14,
+    "id": "bestprice:2157255736",
+    "source": "bestprice",
+    "title": "Arctic F12 Case Fan 120mm με Σύνδεση 4-Pin PWM 5τμχ",
+    "url": "https://www.bestprice.gr/item/2157255736/arctic-f12-case-fan-120mm-me-syndesi-4-pin-pwm-5tmch.html",
+    "fields": {
+     "chip": "Arctic F12 120mm ×5",
+     "size": 120,
+     "pack": 5,
+     "connector": "4-pin PWM",
+     "pwm": true,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 15,
+    "id": "shopflix:SF-200512615",
+    "source": "shopflix",
+    "title": "Be Quiet Pure Wings 3 Reverse Case Fan 120mm 3τμχ",
+    "url": "https://shopflix.gr/p/SF-200512615/be-quiet-pure-wings-3-reverse-case-fan-120mm-3tmkh",
+    "fields": {
+     "chip": "Be Quiet Pure Wings 3 Reverse 120mm ×3",
+     "size": 120,
+     "pack": 3,
+     "connector": "4-pin PWM",
+     "pwm": true,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 16,
+    "id": "shopflix:SF-106202294",
+    "source": "shopflix",
+    "title": "Cougar Apolar 120 με ARGB Φωτισμό & Σύνδεση 3-Pin / 4-Pin PWM Λευκό",
+    "url": "https://shopflix.gr/p/SF-106202294/case-fan-cougar-apolar-120-me-argb-photismo-and-sundese-3-pin-4-pin-pwm-leuko",
+    "fields": {
+     "chip": "Cougar Apolar 120 120mm",
+     "size": 120,
+     "pack": 1,
+     "connector": "4-pin PWM",
+     "pwm": true,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 17,
+    "id": "bestprice:2155555183",
+    "source": "bestprice",
+    "title": "Noctua NF-F120 Case Fan 120mm με Σύνδεση 4-Pin PWM",
+    "url": "https://www.bestprice.gr/item/2155555183/noctua-nf-f120-case-fan-120mm-me-syndesi-4-pin-pwm.html",
+    "fields": {
+     "chip": "Noctua NF-F120 120mm",
+     "size": 120,
+     "pack": 1,
+     "connector": "4-pin PWM",
+     "pwm": true,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 18,
+    "id": "bestprice:2164283138",
+    "source": "bestprice",
+    "title": "Cougar Apolar 120 Reverse Case Fan 120mm ARGB με Σύνδεση 3-Pin 4-Pin PWM White",
+    "url": "https://www.bestprice.gr/item/2164283138/cougar-apolar-120-reverse-case-fan-120mm-argb-me-syndesi-3-pin-4-pin-pwm-white.html",
+    "fields": {
+     "chip": "Cougar Apolar 120 Reverse 120mm",
+     "size": 120,
+     "pack": 1,
+     "connector": "4-pin PWM",
+     "pwm": true,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 19,
+    "id": "bestprice:2160800151",
+    "source": "bestprice",
+    "title": "Montech AX120 Case Fan 120mm ARGB με Σύνδεση 3-Pin 4-Pin PWM 3τμχ Black",
+    "url": "https://www.bestprice.gr/item/2160800151/montech-ax120-case-fan-120mm-argb-me-syndesi-3-pin-4-pin-pwm-3tmch-black.html",
+    "fields": {
+     "chip": "Montech AX120 120mm ×3",
+     "size": 120,
+     "pack": 3,
+     "connector": "4-pin PWM",
+     "pwm": true,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 20,
+    "id": "eshop:PER.644501",
+    "source": "eshop",
+    "title": "ARCTIC P12 PRESSURE-OPTIMISED 120MM CASE FAN VALUE PACK 5PCS",
+    "url": "https://www.e-shop.gr/fan-arctic-p12-pressure-optimised-120mm-case-fan-value-pack-5pcs-p-PER.644501",
+    "fields": {
+     "chip": "Arctic P12 PRESSURE-OPTIMISED 120mm ×5",
+     "size": 120,
+     "pack": 5,
+     "connector": null,
+     "pwm": false,
+     "rgb": false
+    },
+    "specCache": null
+   }
+  ],
+  "cooler": [
+   {
+    "n": 1,
+    "id": "eshop:PER.608432",
+    "source": "eshop",
+    "title": "ASUS ROG STRIX LC III 360 COOLING",
+    "url": "https://www.e-shop.gr/asus-rog-strix-lc-iii-360-cooling-p-PER.608432",
+    "fields": {
+     "chip": "Asus ROG STRIX LC III 360 COOLING",
+     "type": "AIO",
+     "radiator": 360,
+     "sockets": null,
+     "heightMm": null,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 2,
+    "id": "skroutz:59448207",
+    "source": "skroutz",
+    "title": "Supermicro SNK-P0094AP4 Socket AM5",
+    "url": "https://www.skroutz.gr/s/59448207/Supermicro-SNK-P0094AP4-PSyktra-Epexergasti-gia-Socket-AM5.html",
+    "fields": {
+     "chip": "Supermicro SNK-P0094AP4",
+     "type": "Air",
+     "radiator": null,
+     "sockets": null,
+     "heightMm": null,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 3,
+    "id": "shopflix:SF-200951989",
+    "source": "shopflix",
+    "title": "ASRock Challenger 360 Digital Υδρόψυξη Επεξεργαστή Τριπλού Ανεμιστήρα 120mm για Socket AM4/AM5/1700 με ARGB Φωτισμό Λευκό",
+    "url": "https://shopflix.gr/p/SF-200951989/asrock-challenger-360-digital-udropsuxe-epexergaste-triplou-anemistera-120mm-gia-socket-am4-am5-1700-me-argb-photismo-leuko",
+    "fields": {
+     "chip": "ASRock Challenger 360 Digital",
+     "type": "AIO",
+     "radiator": 360,
+     "sockets": "AM4,AM5,LGA1700,LGA1851",
+     "heightMm": null,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 4,
+    "id": "bestprice:2164345005",
+    "source": "bestprice",
+    "title": "GAMDIAS Chione P3-240U 120mm ARGB για Socket AM2 / AM2+ / AM3 / AM3+ / FM1 / FM2 / 2011 / 2066 / 2011-3 / AM4 / FM2+ / TR4 / 1200 / 1700 / AM5 / 1851 / 115x",
+    "url": "https://www.bestprice.gr/item/2164345005/gamdias-chione-p3-240u-ydropsyxi-cpu-120mm-argb-gia-socket-am2-am2-plus-am3-am3-plus-fm1-fm2-2011-2066-2011-3-am4-fm2-plus-tr4-1200-1700-am5-1851-115x.html",
+    "fields": {
+     "chip": "Gamdias Chione P3-240U",
+     "type": "AIO",
+     "radiator": 240,
+     "sockets": "AM2,AM2+,AM3,AM3+,FM1,FM2,FM2+,LGA1150,LGA1151,LGA1155,LGA1156,LGA1200,LGA1700,LGA1851,LGA2011,LGA2011-3,TR4",
+     "heightMm": null,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 5,
+    "id": "bestprice:2156654915",
+    "source": "bestprice",
+    "title": "Arctic Freezer 34 eSports Black/White",
+    "url": "https://www.bestprice.gr/item/2156654915/arctic-freezer-34-esports-black-white.html",
+    "fields": {
+     "chip": "Arctic Freezer 34 eSports",
+     "type": "Air",
+     "radiator": null,
+     "sockets": "AM4,AM5,LGA1150,LGA1151,LGA1155,LGA1200,LGA2011,LGA2011-3,LGA2066",
+     "heightMm": 157,
+     "rgb": false
+    },
+    "specCache": {
+     "sockets": "AM4,AM5,LGA1150,LGA1151,LGA1155,LGA1200,LGA2011,LGA2011-3,LGA2066",
+     "heightMm": 157
+    }
+   },
+   {
+    "n": 6,
+    "id": "skroutz:64977815",
+    "source": "skroutz",
+    "title": "Deepcool Assassin 4S Green Nvidia Limited Edition Socket AM4/AM5/1200/115x/1700",
+    "url": "https://www.skroutz.gr/s/64977815/deepcool-assassin-4s-green-nvidia-limited-edition-psyktra-epexergasti-gia-socket-am4-am5-1200-115x-1700-prasini.html",
+    "fields": {
+     "chip": "Deepcool Assassin 4S Nvidia Limited",
+     "type": "Air",
+     "radiator": null,
+     "sockets": "AM4,AM5,LGA1150,LGA1151,LGA1155,LGA1156,LGA1200,LGA1700,LGA1851,LGA2011-3,LGA2066",
+     "heightMm": 164,
+     "rgb": false
+    },
+    "specCache": {
+     "sockets": "AM4,AM5,LGA1150,LGA1151,LGA1155,LGA1156,LGA1200,LGA1700,LGA1851,LGA2011-3,LGA2066",
+     "heightMm": 164
+    }
+   },
+   {
+    "n": 7,
+    "id": "shopflix:SF-11196463",
+    "source": "shopflix",
+    "title": "Thermaltake Toughliquid 240 ARGB Sync Διπλού Ανεμιστήρα 120mm για Socket AM4/1200/115x",
+    "url": "https://shopflix.gr/p/SF-11196463/ydropsyksi-epeksergasti-thermaltake-toughliquid-240-argb-sync-diploy-anemistira-120mm-gia-socket-am4-1200-115x-11170985",
+    "fields": {
+     "chip": "Thermaltake Toughliquid 240 Sync Διπλού Ανεμιστήρα 120mm",
+     "type": "AIO",
+     "radiator": 240,
+     "sockets": null,
+     "heightMm": null,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 8,
+    "id": "skroutz:37614543",
+    "source": "skroutz",
+    "title": "Deepcool LE500 Marrs",
+    "url": "https://www.skroutz.gr/s/37614543/Deepcool-LE500-Marrs-Ydropsyxi-AIO-CPU-me-2-Anemistires-120mm-kai-Prasino-Fotismo.html",
+    "fields": {
+     "chip": "Deepcool LE500 Marrs 240",
+     "type": "AIO",
+     "radiator": 240,
+     "sockets": null,
+     "heightMm": null,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 9,
+    "id": "skroutz:47894751",
+    "source": "skroutz",
+    "title": "APNX AP1-V Socket AM4/AM5/1200/115x/1700",
+    "url": "https://www.skroutz.gr/s/47894751/APNX-AP1-V-PSyktra-Epexergasti-gia-Socket-AM4-AM5-1200-115x-1700-me-ARGB-Fotismo.html",
+    "fields": {
+     "chip": "Apnx AP1-V",
+     "type": "Air",
+     "radiator": null,
+     "sockets": null,
+     "heightMm": null,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 10,
+    "id": "shopflix:SF-104427115",
+    "source": "shopflix",
+    "title": "Arctic Liquid Freezer III Pro 280 A-RGB Υδρόψυξη AIO CPU με 2 Ανεμιστήρες 140mm",
+    "url": "https://shopflix.gr/p/SF-104427115/arctic-liquid-freezer-iii-pro-280-a-rgb-udropsuxe-aio-cpu-me-2-anemisteres-140mm",
+    "fields": {
+     "chip": "Arctic Liquid Freezer III Pro 280",
+     "type": "AIO",
+     "radiator": 280,
+     "sockets": "AM4,AM5,LGA1700,LGA1851",
+     "heightMm": null,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 11,
+    "id": "bestprice:2158302181",
+    "source": "bestprice",
+    "title": "Noctua NH-L9a-AM5 Chromax Black",
+    "url": "https://www.bestprice.gr/item/2158302181/noctua-nh-l9a-am5-chromax-black.html",
+    "fields": {
+     "chip": "Noctua NH-L9a-AM5",
+     "type": "Air",
+     "radiator": null,
+     "sockets": "AM5",
+     "heightMm": 37,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 12,
+    "id": "skroutz:40873922",
+    "source": "skroutz",
+    "title": "Silverstone SST-XE02-4677 Socket 4677",
+    "url": "https://www.skroutz.gr/s/40873922/Silverstone-SST-XE02-4677-Pathitiki-PSyktra-Epexergasti-gia-Socket-4677.html",
+    "fields": {
+     "chip": "SilverStone SST-XE02-4677",
+     "type": "Air",
+     "radiator": null,
+     "sockets": null,
+     "heightMm": null,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 13,
+    "id": "bestprice:2157116288",
+    "source": "bestprice",
+    "title": "Noctua NH-U12A Chromax Black",
+    "url": "https://www.bestprice.gr/item/2157116288/noctua-nh-u12a-chromax-black.html",
+    "fields": {
+     "chip": "Noctua NH-U12A",
+     "type": "Air",
+     "radiator": null,
+     "sockets": "AM2,AM2+,AM3,AM3+,AM4,AM5,FM1,FM2,FM2+,LGA1150,LGA1151,LGA1155,LGA1156,LGA1700,LGA1851,LGA2011,LGA2066",
+     "heightMm": 158,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 14,
+    "id": "snif:41620151",
+    "source": "snif",
+    "title": "Arctic Freezer 8A Black ACFRE00161A",
+    "url": "https://www.snif.gr/showproduct/41620151/arctic-freezer-8a-black-acfre00161a",
+    "fields": {
+     "chip": "Arctic Freezer 8A ACFRE00161A",
+     "type": "Air",
+     "radiator": null,
+     "sockets": null,
+     "heightMm": null,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 15,
+    "id": "eshop:PER.275762",
+    "source": "eshop",
+    "title": "DEEPCOOL AK400 DIGITAL SE CPU COOLER 12CM FAN BLACK",
+    "url": "https://www.e-shop.gr/deepcool-ak400-digital-se-cpu-cooler-12cm-fan-black-p-PER.275762",
+    "fields": {
+     "chip": "Deepcool AK400 DIGITAL SE",
+     "type": "Air",
+     "radiator": null,
+     "sockets": "AM4,AM5,LGA1150,LGA1151,LGA1155,LGA1156,LGA1200,LGA1700,LGA1851",
+     "heightMm": 157,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 16,
+    "id": "skroutz:39237838",
+    "source": "skroutz",
+    "title": "NZXT T120 RGB Socket AM4/AM5/1200/115x/1700",
+    "url": "https://www.skroutz.gr/s/39237838/NZXT-T120-RGB-PSyktra-Epexergasti-gia-Socket-AM4-AM5-1200-115x-1700-White.html",
+    "fields": {
+     "chip": "NZXT T120",
+     "type": "Air",
+     "radiator": null,
+     "sockets": "AM4,AM5,LGA1150,LGA1151,LGA1155,LGA1156,LGA1200,LGA1700,LGA1851",
+     "heightMm": 159,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 17,
+    "id": "skroutz:40455378",
+    "source": "skroutz",
+    "title": "Deepcool LS720 SE",
+    "url": "https://www.skroutz.gr/s/40455378/Deepcool-LS720-SE-Ydropsyxi-AIO-CPU-me-3-Anemistires-120mm-kai-RGB-Fotismo.html",
+    "fields": {
+     "chip": "Deepcool LS720 SE 360",
+     "type": "AIO",
+     "radiator": 360,
+     "sockets": null,
+     "heightMm": null,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 18,
+    "id": "eshop:PER.608864",
+    "source": "eshop",
+    "title": "FORCE CPU COOLER G6 245W",
+    "url": "https://www.e-shop.gr/force-cpu-cooler-g6-245w-p-PER.608864",
+    "fields": {
+     "chip": "FORCE G6 245W",
+     "type": "Air",
+     "radiator": null,
+     "sockets": null,
+     "heightMm": null,
+     "rgb": false
+    },
+    "specCache": null
+   },
+   {
+    "n": 19,
+    "id": "shopflix:SF-105894552",
+    "source": "shopflix",
+    "title": "Thermalright Assassin Spirit 120 Vision για Socket 115x / 1200 / 1700 / 1851 με ARGB Φωτισμό Λευκό",
+    "url": "https://shopflix.gr/p/SF-105894552/psuktra-epexergasth-thermalright-assassin-spirit-120-vision-gia-socket-115x-1200-1700-1851-me-argb-fotismo-leuko",
+    "fields": {
+     "chip": "Thermalright Assassin Spirit 120 Vision",
+     "type": "Air",
+     "radiator": null,
+     "sockets": "AM4,AM5,LGA1150,LGA1151,LGA1155,LGA1156,LGA1200,LGA1700,LGA1851",
+     "heightMm": 25.6,
+     "rgb": true
+    },
+    "specCache": null
+   },
+   {
+    "n": 20,
+    "id": "skroutz:60471060",
+    "source": "skroutz",
+    "title": "Arctic Freezer 8i CO Socket 1700/1851",
+    "url": "https://www.skroutz.gr/s/60471060/arctic-freezer-8i-co-psyktra-epexergasti-gia-socket-1700-1851.html",
+    "fields": {
+     "chip": "Arctic Freezer 8i CO",
+     "type": "Air",
+     "radiator": null,
+     "sockets": "LGA1700,LGA1851",
+     "heightMm": 110,
+     "rgb": false
+    },
+    "specCache": {
+     "sockets": "LGA1700,LGA1851",
+     "heightMm": 110
+    }
+   }
+  ]
+ }
+}

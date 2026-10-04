@@ -1,0 +1,912 @@
+{
+ "generated": "node scripts/audit/data-quality/builder-impact.mjs",
+ "rowsPerSlot": {
+  "cpu": 359,
+  "mobo": 1023,
+  "ram": 239,
+  "gpu": 1567,
+  "cooler": 2113,
+  "case": 2609,
+  "fan": 1720,
+  "psu": 139,
+  "storage": 1322
+ },
+ "checks": [
+  {
+   "slot": "cooler",
+   "check": "air cooler rows with heightMm < 40 (a tower cooler measured as 21–28 mm passes every case height check)",
+   "rows": 28,
+   "note": "Low-profile coolers are 37–70 mm; the hits under 30 mm are fan thicknesses.",
+   "examples": [
+    {
+     "id": "skroutz:3239692",
+     "chip": "Akasa AK-CC7122BP01",
+     "title": "Akasa AK-CC7122BP01 Socket 775/1200/115x",
+     "value": 26
+    },
+    {
+     "id": "skroutz:5014611",
+     "chip": "Akasa AK-CC7129BP01",
+     "title": "Akasa AK-CC7129BP01 Socket 775/1200/115x",
+     "value": 21
+    },
+    {
+     "id": "bestprice:2162729861",
+     "chip": "Alpenfoehn Brocken 4",
+     "title": "Alpenfoehn Brocken 4 ARGB Black",
+     "value": 27
+    },
+    {
+     "id": "bestprice:2162729859",
+     "chip": "Alpenfoehn Brocken 4 Max",
+     "title": "Alpenfoehn Brocken 4 Max ARGB White",
+     "value": 27
+    },
+    {
+     "id": "bestprice:2160419276",
+     "chip": "Armaggeddon Blizzard 1",
+     "title": "Armaggeddon Blizzard 1 White",
+     "value": 25
+    },
+    {
+     "id": "bestprice:2160404904",
+     "chip": "Armaggeddon Blizzard 2",
+     "title": "Armaggeddon Blizzard 2 ARGB White",
+     "value": 25
+    },
+    {
+     "id": "skroutz:59010372",
+     "chip": "Armaggeddon Blizzard 3",
+     "title": "Armaggeddon Blizzard 3 Socket AM4/AM5/1200/115x",
+     "value": 25
+    },
+    {
+     "id": "bestprice:2163968150",
+     "chip": "Deepcool AK400 G2",
+     "title": "Deepcool AK400 G2 Black",
+     "value": 25
+    },
+    {
+     "id": "bestprice:2154769969",
+     "chip": "Dynatron K199",
+     "title": "Dynatron K199",
+     "value": 28.5
+    },
+    {
+     "id": "bestprice:2156789651",
+     "chip": "Inter-Tech A-18",
+     "title": "Inter-Tech A-18",
+     "value": 27.5
+    },
+    {
+     "id": "shopflix:SF-11324087",
+     "chip": "Inter-Tech A-41",
+     "title": "Inter-Tech A-41 για Socket SP3 / TR4 / sTRX4",
+     "value": 28.4
+    },
+    {
+     "id": "bestprice:2164214442",
+     "chip": "Inter-Tech A-45",
+     "title": "Inter-Tech A-45",
+     "value": 13
+    },
+    {
+     "id": "bestprice:2155411618",
+     "chip": "Inter-Tech K-199",
+     "title": "Inter-Tech K-199",
+     "value": 28.5
+    },
+    {
+     "id": "skroutz:34982500",
+     "chip": "Inter-Tech Q-3",
+     "title": "Inter-Tech Q-3 Socket 1700",
+     "value": 28
+    },
+    {
+     "id": "skroutz:34982619",
+     "chip": "Inter-Tech Q-5",
+     "title": "Inter-Tech Q-5 Socket 1700",
+     "value": 28
+    }
+   ]
+  },
+  {
+   "slot": "cooler",
+   "check": "models mixing Air and AIO listings: the type the builder uses (cheapest listing)",
+   "rows": 11,
+   "note": "",
+   "examples": [
+    {
+     "id": "skroutz:59012974",
+     "chip": "Antec VORTEX LUM 240",
+     "title": "Antec VORTEX LUM 240",
+     "value": "cheapest AIO; listings AIO/AIO/Air"
+    },
+    {
+     "id": "shopflix:SF-106459769",
+     "chip": "Arctic Freezer III Pro 240 Διπλού Ανεμιστήρα",
+     "title": "Arctic Freezer III Pro 240 Διπλού Ανεμιστήρα για Socket 1700 / 1851 / AM4 / AM5",
+     "value": "cheapest Air; listings Air/AIO"
+    },
+    {
+     "id": "bestprice:2163085985",
+     "chip": "Deepcool LM360",
+     "title": "Deepcool LM360 White 120mm ARGB για Socket 1200 / 1700 / 1851 / AM4 / AM5 / 115x",
+     "value": "cheapest AIO; listings AIO/AIO/AIO/Air/Air/AIO"
+    },
+    {
+     "id": "snif:20149660",
+     "chip": "Deepcool MAELSTROM 240T",
+     "title": "DEEPCOOL MAELSTROM 240T",
+     "value": "cheapest Air; listings Air/AIO"
+    },
+    {
+     "id": "shopflix:SF-100056425",
+     "chip": "Mars Gaming ML-ONE120",
+     "title": "Mars Gaming ML-ONE120 Μαύρο",
+     "value": "cheapest Air; listings Air/AIO"
+    },
+    {
+     "id": "bestprice:2158585610",
+     "chip": "NZXT Kraken Elite 240",
+     "title": "NZXT Kraken Elite 240 White 120mm RGB για Socket 115x / AM4 / TR4 / 1200 / sTRX4 / 1700 / AM5",
+     "value": "cheapest AIO; listings AIO/AIO/Air/Air/AIO"
+    },
+    {
+     "id": "bestprice:2160171527",
+     "chip": "NZXT Kraken Elite 240 V2",
+     "title": "NZXT Kraken Elite 240 V2 Black RGB για Socket 115x / 1200 / 1700 / 1851 / AM4 / AM5",
+     "value": "cheapest AIO; listings AIO/AIO/Air/AIO/AIO"
+    },
+    {
+     "id": "bestprice:2160306482",
+     "chip": "NZXT Kraken Elite 280 V2",
+     "title": "NZXT Kraken Elite 280 V2 White 140mm RGB για Socket 115x / AM4 / 1200 / 1700 / AM5 / 1851",
+     "value": "cheapest AIO; listings AIO/AIO/AIO/Air"
+    },
+    {
+     "id": "bestprice:2164257403",
+     "chip": "Rampage Infinite V120",
+     "title": "Rampage Infinite V120 White 120mm για Socket 1700 / AM5",
+     "value": "cheapest AIO; listings AIO/AIO/Air/Air"
+    },
+    {
+     "id": "skroutz:21524339",
+     "chip": "Thermalright Turbo Right 240 C",
+     "title": "Thermalright Turbo Right 240 C",
+     "value": "cheapest AIO; listings AIO/Air/AIO"
+    },
+    {
+     "id": "skroutz:59759024",
+     "chip": "Valkyrie V360 Lite",
+     "title": "Valkyrie V360 Lite",
+     "value": "cheapest AIO; listings AIO/AIO/Air/Air"
+    }
+   ]
+  },
+  {
+   "slot": "gpu",
+   "check": "GPU rows whose minPsu is > 100 W under the chip table (RTX 3050 6GB excluded: its 300 W is NVIDIA’s figure)",
+   "rows": 12,
+   "note": "",
+   "examples": [
+    {
+     "id": "skroutz:59312128",
+     "chip": "Arc B570",
+     "title": "Sparkle ARC B570 10GB GUARDIAN LUNA OC",
+     "value": "170 W (table 500 W)"
+    },
+    {
+     "id": "bestprice:2160489604",
+     "chip": "Arc B570",
+     "title": "Sparkle Arc B570 10GB GDDR6 Luna Guardian OC",
+     "value": "170 W (table 500 W)"
+    },
+    {
+     "id": "skroutz:63278778",
+     "chip": "RTX 5050",
+     "title": "PNY GeForce RTX 5050 8GB Dual",
+     "value": "130 W (table 550 W)"
+    },
+    {
+     "id": "shopflix:SF-200096938",
+     "chip": "RTX 5050",
+     "title": "PNY GeForce RTX 5050 8GB GDDR6 Dual",
+     "value": "130 W (table 550 W)"
+    },
+    {
+     "id": "skroutz:66091976",
+     "chip": "RTX 5060",
+     "title": "MSI GeForce RTX 5060 8GB Shadow 2x OC Max",
+     "value": "145 W (table 550 W)"
+    },
+    {
+     "id": "skroutz:60935602",
+     "chip": "RTX 5060 Ti",
+     "title": "PNY GeForce RTX 5060 Ti 16GB ARGB OC",
+     "value": "180 W (table 600 W)"
+    },
+    {
+     "id": "skroutz:60811441",
+     "chip": "RTX 5070 Ti",
+     "title": "PNY GeForce RTX 5070 Ti 16GB",
+     "value": "300 W (table 750 W)"
+    },
+    {
+     "id": "skroutz:33201308",
+     "chip": "RX 550",
+     "title": "PowerColor Radeon RX 550 4GB Red Dragon",
+     "value": "250 W (table 400 W)"
+    },
+    {
+     "id": "skroutz:60261433",
+     "chip": "RX 9070",
+     "title": "Acer Radeon RX 9070 16GB Predator BiFrost",
+     "value": "245 W (table 650 W)"
+    },
+    {
+     "id": "shopflix:SF-106359451",
+     "chip": "RX 9070",
+     "title": "Acer Radeon RX 9070 16GB GDDR6 Predator BiFrost",
+     "value": "245 W (table 650 W)"
+    },
+    {
+     "id": "skroutz:64194646",
+     "chip": "RX 9070",
+     "title": "Acer Radeon RX 9070 16GB Predator Bifrost OC White Edition",
+     "value": "245 W (table 650 W)"
+    },
+    {
+     "id": "bestprice:2163311809",
+     "chip": "RX 9070",
+     "title": "Acer Radeon RX 9070 16GB GDDR6 Predator BiFrost OC White",
+     "value": "245 W (table 650 W)"
+    }
+   ]
+  },
+  {
+   "slot": "mobo",
+   "check": "board rows whose titles say Extended ATX / E-ATX but formFactor is smaller",
+   "rows": 2,
+   "note": "",
+   "examples": [
+    {
+     "id": "shopflix:SF-104606887",
+     "chip": "ASRock X870E Taichi Lite WiFi Extended",
+     "title": "ASRock X870E Taichi Lite Wi-Fi Extended ATX με AMD AM5 Socket",
+     "value": "ATX"
+    },
+    {
+     "id": "shopflix:SF-104762383",
+     "chip": "Asus Rog Maximus Z890 Extreme WiFi Extended",
+     "title": "Asus Rog Maximus Z890 Extreme WiFi Extended ATX με Intel 1851 Socket",
+     "value": "ATX"
+    }
+   ]
+  },
+  {
+   "slot": "mobo",
+   "check": "board rows whose titles say ITX but formFactor is not Mini ITX",
+   "rows": 3,
+   "note": "",
+   "examples": [
+    {
+     "id": "eshop:PER.529122",
+     "chip": "ASRock A520M",
+     "title": "ASROCK A520M ITX AC RETAIL",
+     "value": "Micro ATX"
+    },
+    {
+     "id": "bestprice:2156248654",
+     "chip": "ASRock A520M-ITX/AC",
+     "title": "Asrock A520M-ITX/AC",
+     "value": "Micro ATX"
+    },
+    {
+     "id": "bestprice:2156193900",
+     "chip": "ASRock B550M-ITX/ac",
+     "title": "Asrock B550M-ITX/ac",
+     "value": "Micro ATX"
+    }
+   ]
+  },
+  {
+   "slot": "mobo",
+   "check": "offered board models that mix DDR4 and DDR5 listings (the row shows one memory type, the cheapest listing may be the other board)",
+   "rows": 5,
+   "note": "",
+   "examples": [
+    {
+     "id": "skroutz:45773549",
+     "chip": "ASRock H610M-H2/M.2",
+     "title": "ASRock H610M-H2/M.2 D5",
+     "value": "row memory DDR5; cheapest listing DDR5"
+    },
+    {
+     "id": "bestprice:2159016261",
+     "chip": "ASRock H610M-HDV/M.2",
+     "title": "Asrock H610M-HDV/M.2+ D5",
+     "value": "row memory DDR5; cheapest listing DDR5"
+    },
+    {
+     "id": "bestprice:2160272434",
+     "chip": "Asus Prime B840M-A-CSM",
+     "title": "Asus Prime B840M-A-CSM",
+     "value": "row memory DDR5; cheapest listing DDR4"
+    },
+    {
+     "id": "bestprice:2160295023",
+     "chip": "Asus Prime B860-Plus WiFi",
+     "title": "Asus Prime B860-Plus WiFi",
+     "value": "row memory DDR5; cheapest listing DDR5"
+    },
+    {
+     "id": "bestprice:2158784348",
+     "chip": "MSI Pro B760M-P",
+     "title": "MSI Pro B760M-P",
+     "value": "row memory DDR5; cheapest listing DDR5"
+    }
+   ]
+  },
+  {
+   "slot": "ram",
+   "check": "RAM rows whose title part number says another DDR generation (G.Skill F4-/F5-, ADATA AX4/AX5, Lexar LD4/LD5)",
+   "rows": 1,
+   "note": "",
+   "examples": [
+    {
+     "id": "bestprice:2159382238",
+     "chip": "DDR4 64GB (2×32GB) 6000MHz",
+     "title": "G.Skill Trident Z5 RGB 64GB (2X32GB) DDR4 RAM 6000MHz C36 White F5-6000J3636F32GX2-TZ5RW",
+     "value": "DDR4"
+    }
+   ]
+  },
+  {
+   "slot": "ram",
+   "check": "Desktop-classified RAM listings whose part number is a registered/ECC server DIMM (Micron MTA…72P, Kingston KSM…R, Samsung M393, Hynix HMA…R) — heuristic; counts listings: 2 are a builder row’s own (cheapest) listing, 30 sit in spec models the builder offers",
+   "rows": 31,
+   "note": "Part-number prefixes from general knowledge of the makers’ numbering, not verified per product.",
+   "examples": [
+    {
+     "id": "skroutz:46646362",
+     "chip": "DDR3 16GB (1×16GB) 1600MHz",
+     "title": "CoreParts 16GB DDR3 M393B2G70BH0-CK0-MM",
+     "value": "category page only"
+    },
+    {
+     "id": "bestprice:2159223206",
+     "chip": "DDR4 16GB (1×16GB) 3200MHz",
+     "title": "Micron 16GB (1X16GB) DDR4 RAM 3200MHz MTA18ASF2G72PDZ-3G2R1TI",
+     "value": "in an offered model"
+    },
+    {
+     "id": "snif:42516218",
+     "chip": "DDR4 16GB (1×16GB) 3200MHz",
+     "title": "Micron MTA18ASF2G72PDZ-3G2R1TI DDR4 3200 MHz (1x16GB)",
+     "value": "in an offered model"
+    },
+    {
+     "id": "shopflix:SF-102888321",
+     "chip": "DDR4 16GB (1×16GB) 3200MHz",
+     "title": "Micron MTA18ASF2G72PDZ-3G2R1TI DDR4 16GB 3200Mhz",
+     "value": "in an offered model"
+    },
+    {
+     "id": "bestprice:2164455745",
+     "chip": "DDR4 16GB (1×16GB) 3200MHz",
+     "title": "Kingston 16GB (1X16GB) DDR4 RAM 3200MHz C22 KSM32RS8/16HD",
+     "value": "in an offered model"
+    },
+    {
+     "id": "bestprice:2156351890",
+     "chip": "DDR4 16GB (1×16GB) 3200MHz",
+     "title": "Samsung 16GB (1X16GB) DDR4 RAM 3200MHz M393A2K43DB3-CWE",
+     "value": "in an offered model"
+    },
+    {
+     "id": "skroutz:37693374",
+     "chip": "DDR4 16GB (1×16GB) 3200MHz",
+     "title": "Micron 16GB DDR4 MTA18ASF2G72PDZ-3G2R",
+     "value": "in an offered model"
+    },
+    {
+     "id": "bestprice:2158205462",
+     "chip": "DDR4 32GB (1×32GB) 3200MHz",
+     "title": "Kingston 32GB (1X32GB) DDR4 RAM 3200MHz C22 Green KSM32RS4/32MF",
+     "value": "in an offered model"
+    },
+    {
+     "id": "bestprice:2157866267",
+     "chip": "DDR4 32GB (1×32GB) 3200MHz",
+     "title": "Kingston Premier 32GB (1X32GB) DDR4 RAM 3200MHz KSM32RS4/32HCR",
+     "value": "in an offered model"
+    },
+    {
+     "id": "bestprice:2158285613",
+     "chip": "DDR4 32GB (1×32GB) 3200MHz",
+     "title": "Micron 32GB (1X32GB) DDR4 RAM 3200MHz MTA18ASF4G72PZ-3G2R",
+     "value": "in an offered model"
+    },
+    {
+     "id": "bestprice:2158319119",
+     "chip": "DDR4 64GB (1×64GB) 3200MHz",
+     "title": "Kingston 64GB (1X64GB) DDR4 RAM 3200MHz KSM32RD4/64HCR",
+     "value": "builder row"
+    },
+    {
+     "id": "bestprice:2163253709",
+     "chip": "DDR4 64GB (1×64GB) 3200MHz",
+     "title": "Kingston 64GB (1X64GB) DDR4 RAM 3200MHz C22 KSM32RD4/64HD",
+     "value": "in an offered model"
+    },
+    {
+     "id": "snif:40180543",
+     "chip": "DDR4 64GB (1×64GB) 3200MHz",
+     "title": "Kingston KSM32RD4/64HCR DDR4 3200MHz (1x64GB)",
+     "value": "in an offered model"
+    },
+    {
+     "id": "bestprice:2156479486",
+     "chip": "DDR4 64GB (1×64GB) 3200MHz",
+     "title": "Samsung 64GB (1X64GB) DDR4 RAM 3200MHz M393A8G40AB2-CWE",
+     "value": "in an offered model"
+    },
+    {
+     "id": "bestprice:2157898058",
+     "chip": "DDR4 64GB (1×64GB) 3200MHz",
+     "title": "Kingston Premier 64GB (1X64GB) DDR4 RAM 3200MHz KSM32RD4/64MFR",
+     "value": "in an offered model"
+    }
+   ]
+  },
+  {
+   "slot": "ram",
+   "check": "RAM rows where one of the model’s titles states another kit layout with the same total (e.g. \"2x16\" filed as 1×32GB)",
+   "rows": 31,
+   "note": "",
+   "examples": [
+    {
+     "id": "shopflix:SF-00067038",
+     "chip": "DDR4 128GB (1×128GB) 3200MHz",
+     "title": "Desktop GSkill Ripjaws V 128GB DDR4 3200MHz (4x32)",
+     "value": "1 × 128GB"
+    },
+    {
+     "id": "snif:12530272",
+     "chip": "DDR4 16GB (1×16GB) 2400MHz",
+     "title": "Corsair Vengeance LPX CMK16GX4M1A2400C14 DDR4 2400MHz (1x16GB)",
+     "value": "1 × 16GB"
+    },
+    {
+     "id": "eshop:PER.340951",
+     "chip": "DDR4 16GB (1×16GB) 2666MHz",
+     "title": "SILICON POWER 16GB DDR4 2666MHZ CL19 SP016GBLFU266X02",
+     "value": "1 × 16GB"
+    },
+    {
+     "id": "bestprice:2155468344",
+     "chip": "DDR4 16GB (1×16GB) 3000MHz",
+     "title": "G.Skill Aegis 16GB (1X16GB) DDR4 RAM 3000MHz C16 Black",
+     "value": "1 × 16GB"
+    },
+    {
+     "id": "eshop:PER.645823",
+     "chip": "DDR4 16GB (1×16GB) 3200MHz",
+     "title": "GOODRAM IRDM X 16GB DDR4 3200MHZ CL16 BLACK IR-X3200D464L16SA/8G",
+     "value": "1 × 16GB"
+    },
+    {
+     "id": "bestprice:2156686636",
+     "chip": "DDR4 16GB (1×16GB) 3600MHz",
+     "title": "GoodRam IRDM Pro 16GB (1X16GB) DDR4 RAM 3600MHz",
+     "value": "1 × 16GB"
+    },
+    {
+     "id": "shopflix:SF-12718925",
+     "chip": "DDR4 256GB (1×256GB) 3600MHz",
+     "title": "G.Skill Ripjaws V DDR4 256GB 3600MHz 8x32",
+     "value": "1 × 256GB"
+    },
+    {
+     "id": "eshop:PER.577932",
+     "chip": "DDR4 32GB (1×32GB) 2666MHz",
+     "title": "PATRIOT PSD432G26662 SIGNATURE LINE 32GB DDR4 2666MHZ",
+     "value": "1 × 32GB"
+    },
+    {
+     "id": "snif:40150302",
+     "chip": "DDR4 32GB (1×32GB) 3000MHz",
+     "title": "G.Skill TridentZ Neo RGB F4-3000C16Q-32GTZN DDR4 3000MHz (1x32GB)",
+     "value": "1 × 32GB"
+    },
+    {
+     "id": "bestprice:2163645209",
+     "chip": "DDR4 32GB (1×32GB) 3200MHz",
+     "title": "PNY 32GB (1X32GB) DDR4 RAM 3200MHz C22 Black MN32GSD43200-SB",
+     "value": "1 × 32GB"
+    },
+    {
+     "id": "bestprice:2156895223",
+     "chip": "DDR4 32GB (1×32GB) 3600MHz",
+     "title": "Kingston Fury Beast 32GB (1X32GB) DDR4 RAM 3600MHz",
+     "value": "1 × 32GB"
+    },
+    {
+     "id": "shopflix:SF-12718164",
+     "chip": "DDR4 64GB (1×64GB) 2666MHz",
+     "title": "G.Skill Value DDR4 64GB 2666MHz 2x32",
+     "value": "1 × 64GB"
+    },
+    {
+     "id": "bestprice:2158319119",
+     "chip": "DDR4 64GB (1×64GB) 3200MHz",
+     "title": "Kingston 64GB (1X64GB) DDR4 RAM 3200MHz KSM32RD4/64HCR",
+     "value": "1 × 64GB"
+    },
+    {
+     "id": "snif:8830886",
+     "chip": "DDR4 8GB (1×8GB) 2133MHz",
+     "title": "Corsair Value Select CMV8GX4M1A2133C15 DDR4 8GB 2133MHz για Desktop",
+     "value": "1 × 8GB"
+    },
+    {
+     "id": "snif:8897753",
+     "chip": "DDR4 8GB (1×8GB) 2400MHz",
+     "title": "Corsair Vengeance LPX CMK8GX4M1A2400C14 DDR4 2400MHz (1x8GB)",
+     "value": "1 × 8GB"
+    }
+   ]
+  },
+  {
+   "slot": "storage",
+   "check": "offered drive models mixing interfaces or form factors",
+   "rows": 8,
+   "note": "",
+   "examples": [
+    {
+     "id": "bestprice:2163456513",
+     "chip": "Kioxia Exceria G3 2TB",
+     "title": "Kioxia Exceria G3 SSD 2TB M.2 NVMe PCI Express 5.0",
+     "value": "NVMe · M.2 2280/PCIe card"
+    },
+    {
+     "id": "bestprice:2156001159",
+     "chip": "Philips Ultra Speed 480GB",
+     "title": "Philips Ultra Speed SSD 480GB 2.5\" Sata 3",
+     "value": "SATA · 2.5\"/M.2 2280"
+    },
+    {
+     "id": "bestprice:2156001157",
+     "chip": "Philips Ultra Speed 960GB",
+     "title": "Philips Ultra Speed SSD 960GB 2.5\" Sata 3",
+     "value": "SATA · 2.5\"/M.2 2280"
+    },
+    {
+     "id": "bestprice:2156133443",
+     "chip": "Transcend 420S 480GB M.2",
+     "title": "Transcend 420S SSD 480GB M.2 Sata 3",
+     "value": "SATA · M.2 2280/M.2 2242"
+    },
+    {
+     "id": "bestprice:2157717382",
+     "chip": "Western Digital Blue SA510 1TB",
+     "title": "Western Digital Blue SA510 SSD 1TB 2.5\" Sata 3",
+     "value": "SATA · 2.5\"/M.2 2280"
+    },
+    {
+     "id": "bestprice:2157721256",
+     "chip": "Western Digital Blue SA510 500GB",
+     "title": "Western Digital Blue SA510 SSD 500GB 2.5\" Sata 3",
+     "value": "SATA · 2.5\"/M.2 2280"
+    },
+    {
+     "id": "snif:32878477",
+     "chip": "Western Digital Green 240GB",
+     "title": "Δίσκος SSD Western Digital Green 240GB M.2 2280 WDS240G3G0B",
+     "value": "SATA · M.2 2280/2.5\""
+    },
+    {
+     "id": "skroutz:36861145",
+     "chip": "Western Digital SA510 500GB",
+     "title": "Western Digital SA510 500GB 2.5'' WDS500G3B0A",
+     "value": "SATA · 2.5\"/M.2 2280"
+    }
+   ]
+  },
+  {
+   "slot": "case",
+   "check": "cases whose listings disagree on the largest board and the builder uses the smaller (most common) value",
+   "rows": 19,
+   "note": "",
+   "examples": [
+    {
+     "id": "skroutz:20930667",
+     "chip": "Adata XPG Battlecruiser",
+     "title": "Adata XPG Battlecruiser Gaming Midi Tower με Πλαϊνό Παράθυρο",
+     "value": "uses ATX; listings ATX/E-ATX"
+    },
+    {
+     "id": "skroutz:26887201",
+     "chip": "Aerocool Trinity Mini v3",
+     "title": "Aerocool Trinity Mini v3 Gaming Mini Tower με Πλαϊνό Παράθυρο",
+     "value": "uses Micro ATX; listings Micro ATX/ATX"
+    },
+    {
+     "id": "bestprice:2160928664",
+     "chip": "Asus Prime AP202",
+     "title": "Asus Prime AP202 Black Gaming Mini Tower RGB με Πλαϊνό Παράθυρο",
+     "value": "uses Micro ATX; listings Micro ATX/ATX"
+    },
+    {
+     "id": "bestprice:2156283859",
+     "chip": "Chieftec Hunter",
+     "title": "Chieftec Hunter Gaming Midi Tower RGB με Πλαϊνό Παράθυρο",
+     "value": "uses ATX; listings ATX/E-ATX"
+    },
+    {
+     "id": "bestprice:2157308375",
+     "chip": "Chieftec Scorpion III",
+     "title": "Chieftec Scorpion III White Gaming Midi Tower με Πλαϊνό Παράθυρο",
+     "value": "uses ATX; listings E-ATX/ATX"
+    },
+    {
+     "id": "bestprice:2163613418",
+     "chip": "Cooler Master MasterFrame 500 Mesh",
+     "title": "Cooler Master MasterFrame 500 Mesh Silver Midi Tower με Πλαϊνό Παράθυρο",
+     "value": "uses ATX; listings ATX/E-ATX"
+    },
+    {
+     "id": "shopflix:SF-105401107",
+     "chip": "Cooler Master MasterBox 600 Lite",
+     "title": "CoolerMaster MasterBox 600 Lite Midi Tower με Πλαϊνό Παράθυρο Λευκό",
+     "value": "uses ATX; listings ATX/E-ATX"
+    },
+    {
+     "id": "skroutz:69390511",
+     "chip": "Cooler Master MasterFrame 400 Mesh",
+     "title": "CoolerMaster MasterFrame 400 Mesh Gaming Midi Tower με Πλαϊνό Παράθυρο",
+     "value": "uses Micro ATX; listings Micro ATX/ATX"
+    },
+    {
+     "id": "shopflix:SF-101332906",
+     "chip": "Corsair 5000D Airflow",
+     "title": "Corsair 5000D RGB Airflow Gaming Midi Tower με Πλαϊνό Παράθυρο Λευκό",
+     "value": "uses ATX; listings E-ATX/ATX"
+    },
+    {
+     "id": "skroutz:30843814",
+     "chip": "Corsair 7000D Airflow",
+     "title": "Corsair 7000D Airflow Gaming Full Tower με Πλαϊνό Παράθυρο",
+     "value": "uses ATX; listings ATX/E-ATX"
+    },
+    {
+     "id": "eshop:PER.645576",
+     "chip": "Corsair FRAME 4000D RS MODULAR",
+     "title": "CORSAIR FRAME 4000D RS ARGB MODULAR MIDI-TOWER TEMPERED GLASS BLACK MINI-ITX/MICRO-ATX/ATX/EAT",
+     "value": "uses ATX; listings ATX/E-ATX"
+    },
+    {
+     "id": "eshop:PER.284267",
+     "chip": "Darkflash C275P",
+     "title": "DARKFLASH C275P COMPUTER CASE WITHOUT FANS (WHITE)",
+     "value": "uses Mini ITX; listings Mini ITX/Micro ATX"
+    },
+    {
+     "id": "skroutz:54680860",
+     "chip": "Gamemax Infinity",
+     "title": "GameMax Infinity Gaming Mini Tower με Πλαϊνό Παράθυρο",
+     "value": "uses Micro ATX; listings Micro ATX/ATX"
+    },
+    {
+     "id": "bestprice:2163086456",
+     "chip": "Lian Li Vector V100",
+     "title": "Lian Li Vector V100 Black Gaming Midi Tower RGB με Πλαϊνό Παράθυρο",
+     "value": "uses ATX; listings ATX/E-ATX"
+    },
+    {
+     "id": "shopflix:SF-100130086",
+     "chip": "Logic Portos",
+     "title": "Logic Portos ARGB Mini Tower με RGB Lighting / Πλαϊνό Παράθυρο / Προεγκατεστημένοι Ανεμιστήρες Μαύρο",
+     "value": "uses Micro ATX; listings Micro ATX/ATX"
+    }
+   ]
+  },
+  {
+   "slot": "cpu",
+   "check": "CPU rows with cooler-in-box unknown (a separate row next to the known one)",
+   "rows": 154,
+   "note": "",
+   "examples": [
+    {
+     "id": "bestprice:2155879831",
+     "chip": "Athlon 3000G",
+     "title": "AMD Athlon 3000G Box",
+     "value": "Box"
+    },
+    {
+     "id": "bestprice:2156302022",
+     "chip": "Celeron G5905",
+     "title": "Intel Celeron G5905 Box",
+     "value": "Box"
+    },
+    {
+     "id": "bestprice:2156193405",
+     "chip": "Celeron G5920",
+     "title": "Intel Celeron G5920 Box",
+     "value": "Box"
+    },
+    {
+     "id": "bestprice:2160277450",
+     "chip": "Core Ultra 5 225",
+     "title": "Intel Core Ultra 5 225 Box",
+     "value": "Box"
+    },
+    {
+     "id": "eshop:PER.260191",
+     "chip": "Core Ultra 5 225F",
+     "title": "INTEL CORE ULTRA 5 225F 4.9GHZ LGA1851 10 CORE BOX",
+     "value": "Box"
+    },
+    {
+     "id": "bestprice:2160277451",
+     "chip": "Core Ultra 5 235",
+     "title": "Intel Core Ultra 5 235 Box",
+     "value": "Box"
+    },
+    {
+     "id": "bestprice:2160067066",
+     "chip": "Core Ultra 5 245K",
+     "title": "Intel Core Ultra 5 245K Box",
+     "value": "Box"
+    },
+    {
+     "id": "eshop:PER.608640",
+     "chip": "Core Ultra 5 245KF",
+     "title": "INTEL CORE ULTRA 5 245KF 5.2GHZ LGA1851 14 CORE BOX",
+     "value": "Box"
+    },
+    {
+     "id": "bestprice:2163894577",
+     "chip": "Core Ultra 5 250K Plus",
+     "title": "Intel Core Ultra 5 250K Plus Box",
+     "value": "Box"
+    },
+    {
+     "id": "bestprice:2163894575",
+     "chip": "Core Ultra 5 250KF Plus",
+     "title": "Intel Core Ultra 5 250KF Plus Box",
+     "value": "Box"
+    },
+    {
+     "id": "bestprice:2160277452",
+     "chip": "Core Ultra 7 265",
+     "title": "Intel Core Ultra 7 265 Box",
+     "value": "Box"
+    },
+    {
+     "id": "bestprice:2160303390",
+     "chip": "Core Ultra 7 265F",
+     "title": "Intel Core Ultra 7 265F Box",
+     "value": "Box"
+    },
+    {
+     "id": "shopflix:SF-104240607",
+     "chip": "Core Ultra 7 265K",
+     "title": "Intel Ultra 7 265K 3.3GHz 20 Πυρήνων για Socket 1851 σε Κουτί",
+     "value": null
+    },
+    {
+     "id": "shopflix:SF-104251757",
+     "chip": "Core Ultra 7 265KF",
+     "title": "Intel Ultra 7 265KF 3.3GHz 20 Πυρήνων για Socket 1851 σε Κουτί",
+     "value": null
+    },
+    {
+     "id": "shopflix:SF-200140744",
+     "chip": "Core Ultra 7 265T",
+     "title": "Intel Ultra 7 265T 1.5GHz",
+     "value": null
+    }
+   ]
+  },
+  {
+   "slot": "cpu",
+   "check": "CPU rows saying \"no cooler in the box\" while the URL/title says \"with cooler\"",
+   "rows": 21,
+   "note": "",
+   "examples": [
+    {
+     "id": "skroutz:64210871",
+     "chip": "Athlon 200GE",
+     "title": "AMD Athlon 200GE 3.2GHz Tray",
+     "value": "Tray"
+    },
+    {
+     "id": "bestprice:2156612803",
+     "chip": "Athlon 3000G",
+     "title": "AMD Athlon 3000G Tray",
+     "value": "Tray"
+    },
+    {
+     "id": "skroutz:25546686",
+     "chip": "Celeron G3930",
+     "title": "Intel Celeron Dual Core G3930 2.9GHz Tray",
+     "value": "Tray"
+    },
+    {
+     "id": "skroutz:68464521",
+     "chip": "Celeron G5905",
+     "title": "Intel Celeron Dual Core G5905 3.5GHz",
+     "value": "Tray"
+    },
+    {
+     "id": "bestprice:2159328492",
+     "chip": "Core i3-14100",
+     "title": "Intel Core i3-14100 Tray",
+     "value": "Tray"
+    },
+    {
+     "id": "bestprice:2159328490",
+     "chip": "Core i3-14100F",
+     "title": "Intel Core i3-14100F Tray",
+     "value": "Tray"
+    },
+    {
+     "id": "bestprice:2159328491",
+     "chip": "Core i7-14700F",
+     "title": "Intel Core i7-14700F Tray",
+     "value": "Tray"
+    },
+    {
+     "id": "bestprice:2157401401",
+     "chip": "Pentium G7400",
+     "title": "Intel Pentium Gold G7400 Tray",
+     "value": "Tray"
+    },
+    {
+     "id": "bestprice:2158827018",
+     "chip": "Ryzen 5 5500",
+     "title": "AMD Ryzen 5 5500 Tray",
+     "value": "Tray"
+    },
+    {
+     "id": "bestprice:2160554284",
+     "chip": "Ryzen 5 5600XT",
+     "title": "AMD Ryzen 5 5600XT Tray",
+     "value": "Tray"
+    },
+    {
+     "id": "bestprice:2163692308",
+     "chip": "Ryzen 5 7400",
+     "title": "AMD Ryzen 5 7400 Tray",
+     "value": "Tray"
+    },
+    {
+     "id": "bestprice:2159010562",
+     "chip": "Ryzen 5 7500F",
+     "title": "AMD Ryzen 5 7500F Tray",
+     "value": "Tray"
+    },
+    {
+     "id": "bestprice:2159328207",
+     "chip": "Ryzen 5 7600",
+     "title": "AMD Ryzen 5 7600 Tray",
+     "value": "Tray"
+    },
+    {
+     "id": "bestprice:2159808471",
+     "chip": "Ryzen 5 8400F",
+     "title": "AMD Ryzen 5 8400F Tray",
+     "value": "Tray"
+    },
+    {
+     "id": "bestprice:2157068063",
+     "chip": "Ryzen 5 PRO 5650G",
+     "title": "AMD Ryzen 5 Pro 5650G Tray With Fan",
+     "value": "Tray"
+    }
+   ]
+  }
+ ]
+}

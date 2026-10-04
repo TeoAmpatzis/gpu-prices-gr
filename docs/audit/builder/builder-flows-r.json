@@ -1,0 +1,146 @@
+{
+  "el-1366": {
+    "r": {
+      "early": {
+        "rows": [
+          "CPU —",
+          "Μητρική —",
+          "RAM —",
+          "GPU —",
+          "Ψύκτρα —",
+          "Δίσκος —",
+          "Κουτί —",
+          "Ανεμιστήρες —",
+          "Τροφοδοτικό —"
+        ],
+        "text": "Η σύνθεσή σας\nΣύνολο · 0 εξαρτήματα\n0,00 €\nΧαμηλότερη τιμή ανά προϊόν, χωρίς μεταφορικά· κάθε εξάρτημα μπορεί να είναι από διαφορετικό κατάστημα.\nCPU\n—\nΜητρική\n—\nRAM\n—\nGPU\n—\nΨύκτρα\n—\nΔίσκος\n—\nΚουτί\n—\nΑνεμιστήρες\n—\nΤροφοδοτικό\n—\nΔιαλέξτε επεξεργαστή.\nΔιαλέξτε μητρική.\nΔιαλέξτε μνήμη RAM.\nΔιαλέξτε δίσκο (SSD).\nΔιαλέξτε κουτί.\nΔιαλέξτε τροφοδοτικό."
+      },
+      "savedEarly": "{\"cpu\":\"Ryzen 7 9700X|false\",\"mobo\":\"gigabyteb650eagleax\",\"ram\":\"DDR5 32GB (2×16GB) 6000MHz Desktop\"}",
+      "lateRows": [
+        "CPU Ryzen 7 9700X 234,90 €",
+        "Μητρική Gigabyte B650 Eagle AX 114,66 €",
+        "RAM DDR5 32GB (2×16GB) 6000MHz 466,35 €",
+        "GPU —",
+        "Ψύκτρα —",
+        "Δίσκος —",
+        "Κουτί —",
+        "Ανεμιστήρες —",
+        "Τροφοδοτικό —"
+      ],
+      "savedLate": "{\"cpu\":\"Ryzen 7 9700X|false\",\"mobo\":\"gigabyteb650eagleax\",\"ram\":\"DDR5 32GB (2×16GB) 6000MHz Desktop\"}",
+      "errors": [],
+      "shots": [
+        "001-r-el-1366-reload-loading.jpg",
+        "002-r-el-1366-reload-ready.jpg"
+      ]
+    }
+  },
+  "en-1366": {
+    "r": {
+      "early": {
+        "rows": [
+          "CPU —",
+          "Board —",
+          "RAM —",
+          "GPU —",
+          "Cooler —",
+          "Storage —",
+          "Case —",
+          "Fans —",
+          "PSU —"
+        ],
+        "text": "Your build\nTotal · 0 parts\n€0.00\nLowest price per product, before shipping; each part may come from a different shop.\nCPU\n—\nBoard\n—\nRAM\n—\nGPU\n—\nCooler\n—\nStorage\n—\nCase\n—\nFans\n—\nPSU\n—\nPick a processor.\nPick a motherboard.\nPick memory (RAM).\nPick a drive (SSD).\nPick a case.\nPick a power supply."
+      },
+      "savedEarly": "{\"cpu\":\"Ryzen 7 9700X|false\",\"mobo\":\"gigabyteb650eagleax\",\"ram\":\"DDR5 32GB (2×16GB) 6000MHz Desktop\"}",
+      "lateRows": [
+        "CPU Ryzen 7 9700X €234.90",
+        "Board Gigabyte B650 Eagle AX €114.66",
+        "RAM DDR5 32GB (2×16GB) 6000MHz €466.35",
+        "GPU —",
+        "Cooler —",
+        "Storage —",
+        "Case —",
+        "Fans —",
+        "PSU —"
+      ],
+      "savedLate": "{\"cpu\":\"Ryzen 7 9700X|false\",\"mobo\":\"gigabyteb650eagleax\",\"ram\":\"DDR5 32GB (2×16GB) 6000MHz Desktop\"}",
+      "errors": [],
+      "shots": [
+        "003-r-en-1366-reload-loading.jpg",
+        "004-r-en-1366-reload-ready.jpg"
+      ]
+    }
+  },
+  "el-360": {
+    "r": {
+      "early": {
+        "rows": [
+          "CPU—",
+          "Μητρική—",
+          "RAM—",
+          "GPU—",
+          "Ψύκτρα—",
+          "Δίσκος—",
+          "Κουτί—",
+          "Ανεμιστήρες—",
+          "Τροφοδοτικό—"
+        ],
+        "text": "Σύνολο · 0 εξαρτήματα\n0,00 €\n6\nΛεπτομέρειες"
+      },
+      "savedEarly": "{\"cpu\":\"Ryzen 7 9700X|false\",\"mobo\":\"gigabyteb650eagleax\",\"ram\":\"DDR5 32GB (2×16GB) 6000MHz Desktop\"}",
+      "lateRows": [
+        "CPURyzen 7 9700X234,90 €",
+        "ΜητρικήGigabyte B650 Eagle AX114,66 €",
+        "RAMDDR5 32GB (2×16GB) 6000MHz466,35 €",
+        "GPU—",
+        "Ψύκτρα—",
+        "Δίσκος—",
+        "Κουτί—",
+        "Ανεμιστήρες—",
+        "Τροφοδοτικό—"
+      ],
+      "savedLate": "{\"cpu\":\"Ryzen 7 9700X|false\",\"mobo\":\"gigabyteb650eagleax\",\"ram\":\"DDR5 32GB (2×16GB) 6000MHz Desktop\"}",
+      "errors": [],
+      "shots": [
+        "005-r-el-360-reload-loading.jpg",
+        "006-r-el-360-reload-ready.jpg"
+      ]
+    }
+  },
+  "en-360": {
+    "r": {
+      "early": {
+        "rows": [
+          "CPU—",
+          "Board—",
+          "RAM—",
+          "GPU—",
+          "Cooler—",
+          "Storage—",
+          "Case—",
+          "Fans—",
+          "PSU—"
+        ],
+        "text": "Total · 0 parts\n€0.00\n6\nDetails"
+      },
+      "savedEarly": "{\"cpu\":\"Ryzen 7 9700X|false\",\"mobo\":\"gigabyteb650eagleax\",\"ram\":\"DDR5 32GB (2×16GB) 6000MHz Desktop\"}",
+      "lateRows": [
+        "CPURyzen 7 9700X€234.90",
+        "BoardGigabyte B650 Eagle AX€114.66",
+        "RAMDDR5 32GB (2×16GB) 6000MHz€466.35",
+        "GPU—",
+        "Cooler—",
+        "Storage—",
+        "Case—",
+        "Fans—",
+        "PSU—"
+      ],
+      "savedLate": "{\"cpu\":\"Ryzen 7 9700X|false\",\"mobo\":\"gigabyteb650eagleax\",\"ram\":\"DDR5 32GB (2×16GB) 6000MHz Desktop\"}",
+      "errors": [],
+      "shots": [
+        "007-r-en-360-reload-loading.jpg",
+        "008-r-en-360-reload-ready.jpg"
+      ]
+    }
+  }
+}

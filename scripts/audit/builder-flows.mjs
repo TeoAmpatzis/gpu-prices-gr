@@ -3,6 +3,7 @@
 // errors — and screenshots; the judgement is written in docs/audit-v1.md.
 //
 //   node scripts/audit/builder-flows.mjs <baseUrl> <outDir> [flows]   (flows: comma list, default all)
+/* global document, window, location */
 
 import { chromium } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -156,10 +157,14 @@ async function guidedSkip(cfg) {
   for (let i = 0; i < 10; i++) {
     const btn = nextBtn(page);
     const title = (await page.locator('#step-title').textContent())?.trim();
+    // Review has no Next/Skip button: stop before reading it.
+    if (/Review|Σύνοψη/.test(title)) {
+      seen.push({ step: title });
+      break;
+    }
     const label = (await btn.textContent())?.trim();
     const why = (await step(page).locator('p.font-medium').first().textContent().catch(() => null))?.trim() ?? null;
     seen.push({ step: title, button: label, why });
-    if (/Review|Σύνοψη/.test(title)) break;
     const isSkip = RX.skip.test(label ?? '');
     if (!isSkip && !/Processor|Επεξεργαστής/.test(title)) await chooseFirst(page);
     await btn.click();
@@ -327,6 +332,29 @@ async function savedAndShared(cfg) {
   };
 }
 
+// ---------- R: reload a saved build while builder.json is slow (5 s) ----------
+async function reloadSlow(cfg) {
+  const ctx = await newContext(cfg);
+  const page = await ctx.newPage();
+  const errors = errorsOf(page);
+  await page.goto(`${BASE}/?flow=r#builder`);
+  const build = { cpu: 'Ryzen 7 9700X|false', mobo: 'gigabyteb650eagleax', ram: 'DDR5 32GB (2×16GB) 6000MHz Desktop' };
+  await page.evaluate((b) => localStorage.setItem('pcBuild', JSON.stringify(b)), build);
+  await page.route('**/data/builder.json*', async (r) => { await new Promise((res) => setTimeout(res, 5000)); await r.continue(); });
+  await page.reload();
+  await page.waitForTimeout(1500);
+  const early = await summaryFacts(page, cfg.lang);
+  const savedEarly = await saved(page);
+  const shots = [await snap(page, `r-${cfg.lang}-${cfg.width}-reload-loading`)];
+  // The phone bar is collapsed (part names hidden), so wait for the part count instead.
+  await page.waitForFunction(() => /3 (parts|εξαρτήματα)/.test(document.querySelector('aside')?.innerText ?? ''), null, { timeout: 30_000 });
+  const late = await summaryFacts(page, cfg.lang);
+  shots.push(await snap(page, `r-${cfg.lang}-${cfg.width}-reload-ready`));
+  const out = { early: { rows: early.rows, text: early.text.slice(0, 400) }, savedEarly, lateRows: late.rows, savedLate: await saved(page), errors, shots };
+  await ctx.close();
+  return out;
+}
+
 // ---------- C: Copy list ----------
 async function copyList(cfg, { slowExtra = false } = {}) {
   const ctx = await newContext(cfg);
@@ -485,7 +513,7 @@ async function phoneBar(cfg) {
   return { barBox, backFwd, lastControl, openHeight: open?.height, before, after, errors, shots };
 }
 
-const FLOWS = { g1: guidedFull, g2: guidedSkip, g3: guidedChangeCpu, q1: quickList, s: savedAndShared, c: copyList, w: wattage, st: storageAndFans, n: network, m: phoneBar };
+const FLOWS = { g1: guidedFull, g2: guidedSkip, g3: guidedChangeCpu, q1: quickList, s: savedAndShared, r: reloadSlow, c: copyList, w: wattage, st: storageAndFans, n: network, m: phoneBar };
 for (const cfg of CONFIGS) {
   const key = `${cfg.lang}-${cfg.width}`;
   results[key] = {};

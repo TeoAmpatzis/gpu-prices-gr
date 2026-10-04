@@ -6,6 +6,7 @@
 //
 //   node scripts/audit/picker-audit.mjs <baseUrl> <dataDir> <outDir>
 //   (baseUrl: a running preview of the build whose data is in dataDir, e.g. dist/data)
+/* global document */
 
 import { chromium } from '@playwright/test';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
