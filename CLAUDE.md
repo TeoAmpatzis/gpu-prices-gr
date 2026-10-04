@@ -10,6 +10,7 @@ Read this first; it is kept current so you don't need to re-explore the repo.
 - **Μην αλλάξεις το routing** (`#ram`, `#gpu` κ.λπ.) αν δεν το ζητήσει ο ιδιοκτήτης.
 - Πριν γράψεις κώδικα, διάβασε τα σχετικά αρχεία και δώσε **σύντομο πλάνο**. **Περίμενε έγκριση** όταν το task αλλάζει τη δομή των δεδομένων (JSON schema, `models.py`, `types.ts`) ή τον scraper.
 - Στο τέλος κάθε task: τρέξε **build και lint**, και γράψε τι άλλαξε και πώς να ελεγχθεί.
+- Κάθε εξάρτηση Python στο `scraper/requirements.txt` έχει **άνω όριο έκδοσης** (π.χ. `selectolax>=0.3,<1.0`), ώστε μια νέα major έκδοση να μη σπάσει ποτέ το scrape χωρίς επίβλεψη (περιστατικό 2026-10-03: το selectolax 1.0 έβγαλε το `selectolax.parser` και 3 scrapes απέτυχαν).
 
 ## Current state (2026-10-03) — start here
 - **Storage category (SSD + HDD) live** (2026-10-03, owner-approved; scraper 236a7f1 + 88283e3 + e62f287, site 734ced8): first scrape 37084809355 = 5066 listings, run 67 min of 90 (+~9). Live site check 30/30. Lighthouse live before → after the merge: GPU mobile 97 → 97 (LCP 2.0 s), GPU desktop 100 → 100, builder mobile 91/91/91 → 91/91/91 (LCP 3.2 s), builder desktop 100 → 100; new storage tab mobile 88 (facet counts, see "Storage category"; fix is a later task). Next scrapes apply the OEM laptop M.2 exclusion (~113 models fewer: still above the 30% drop limit).
