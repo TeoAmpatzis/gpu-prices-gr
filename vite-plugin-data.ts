@@ -15,7 +15,7 @@ import { join } from 'node:path';
 import type { Plugin } from 'vite';
 import type { Category, History, Imported, Latest, Manifest } from './src/types';
 import { CATEGORY_IDS } from './src/lib/categories';
-import { builderFile, checkData, detailFile, listFile, manifest, type CategoryInput, type ImageLookup } from './src/lib/derive';
+import { builderFile, checkData, detailFile, listFile, manifest, searchFile, type CategoryInput, type ImageLookup } from './src/lib/derive';
 
 const DATA_DIR = join(process.cwd(), 'public', 'data');
 const LIVE_SITE = 'https://gpu-prices-gr.vercel.app';
@@ -80,6 +80,7 @@ function derive(builtAt: string, image?: ImageLookup): { files: Record<string, s
   files['data/builder.json'] = JSON.stringify(builder);
   files['data/builder-extra.json'] = JSON.stringify(extra);
   for (const [slot, file] of Object.entries(lazy)) files[`data/builder-${slot}.json`] = JSON.stringify(file);
+  files['data/search.json'] = JSON.stringify(searchFile(latest, builtAt));
   const m = manifest(latest, builder, builtAt, history, lazy);
   files['data/manifest.json'] = JSON.stringify(m);
   return { files, manifest: m };

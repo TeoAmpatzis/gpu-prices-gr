@@ -1,4 +1,5 @@
-// Filters ⇄ URL, inside the hash route: "#ram?type=ddr5&cap=32&kit=2&cl=30&sort=price-asc&page=2&per=100".
+// Filters ⇄ URL: "/ram?type=ddr5&cap=32&kit=2&cl=30&sort=price-asc&page=2&per=100" (the same parameters as v1's
+// "#ram?…" links, which src/lib/routes.ts redirects here).
 // Generic for every category: the pill group, sources, segment, sale/low chips, max price, sort and
 // every `extraFilters` entry are encoded from the category config, so new filters get URLs for free.
 
@@ -33,11 +34,10 @@ const segmentsOf = <L extends BaseListing>(cfg: CategoryConfig<L>): Segment[] =>
   'all',
 ];
 
-/** The page and its query string from the current hash ("#ram?type=ddr5" → "ram", params). */
-export function parseHash(hash = location.hash): { page: string; params: URLSearchParams | null } {
-  const raw = hash.replace(/^#/, '');
-  const i = raw.indexOf('?');
-  return i < 0 ? { page: raw, params: null } : { page: raw.slice(0, i), params: new URLSearchParams(raw.slice(i + 1)) };
+/** The page (first path segment) and its query string: "/ram?type=ddr5" → "ram", params (null without one). */
+export function parseUrl(): { page: string; params: URLSearchParams | null } {
+  const page = location.pathname.split('/').filter(Boolean)[0] ?? '';
+  return { page, params: location.search.length > 1 ? new URLSearchParams(location.search) : null };
 }
 
 const groupSlug = (g: string) => slug(groupName(g, 'en'));
@@ -93,12 +93,13 @@ export function decodeFilters<L extends BaseListing>(p: URLSearchParams, cfg: Ca
   return f;
 }
 
-/** Replace (not push) the URL with the page + its filters, so filter changes don't fill the history. */
+/**
+ * Replace (not push) the URL with the page + its filters, so filter changes don't fill the history. Only
+ * while that category's own page is open; the path doesn't change, so the router isn't told.
+ */
 export function writeFiltersToUrl<L extends BaseListing>(cfg: CategoryConfig<L>, f: Filters, page: Category) {
+  if (location.pathname !== `/${page}`) return;
   const qs = encodeFilters(f, cfg);
-  const current = parseHash();
-  // On the bare home page ("/") with default filters there is nothing to write.
-  if (!qs && !current.params && (current.page === page || (current.page === '' && page === 'gpu'))) return;
-  const next = `#${page}${qs ? `?${qs}` : ''}`;
-  if (location.hash !== next) history.replaceState(history.state, '', next);
+  const next = `/${page}${qs ? `?${qs}` : ''}`;
+  if (location.pathname + location.search !== next) history.replaceState(history.state, '', next);
 }

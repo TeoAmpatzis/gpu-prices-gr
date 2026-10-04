@@ -1,7 +1,7 @@
 import { ChevronRight, TriangleAlert } from 'lucide-react';
 import { Fragment } from 'react';
 import { tr, useLang, type Text } from '../lib/i18n';
-import { shortAgo } from '../lib/data';
+import { shortAgo } from '../lib/format';
 import { SOURCES } from '../lib/sources';
 import type { SourceName } from '../types';
 import { isStale } from './PriceCell';
