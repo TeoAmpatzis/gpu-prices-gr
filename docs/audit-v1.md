@@ -553,3 +553,25 @@ What each way does, in one line:
 - `value`, `valueCpu`: Athlon 3000G (2 cores) in all 288 builds.
 
 **Limits.** Provisional tiers; 1080p assumed for "gaming"; prices from the 2026-10-03 snapshot; the replay follows each way strictly (a person mixes them). Re-run: `npx tsx scripts/audit/recommender.mts <dist>/data docs/audit/recommender/builds.json` then `node scripts/audit/recommender-check.mjs docs/audit/recommender`.
+
+## 11. After the review (2026-10-04)
+
+Your decisions: the S1 fixes below on main (v1), monitoring and dependency caps on main, and the plan's new section "Αποφάσεις μετά τη Φάση 0" (Claude Doc rev 28, exported into `docs/redesign-v2.md`). Not now, by your decision: D-06 (v2 P2), O-04/O-06 (v2 P2 + P4), C-01 and UX-02 (the v1 builder and menu are replaced in v2).
+
+| ID | Fix on main | Commit | Before → after (evidence) |
+| --- | --- | --- | --- |
+| D-01 | An air cooler under 30 mm is unknown ("Fit not verified") — site | `1cadff6` | Builder rows under 30 mm: 22 → 0 (295 keep a height). Deepcool AK400 G2 in a 135 mm case: "Fits" / "Everything fits" → **"Fit not verified"** (live: `s1/D-01-review-1366-en-light-after-live.jpg` vs `s1/D-01-review-1366-en-light.jpg`) |
+| D-02 | Recommended PSU = max(card's figure, chip table) — site | `415d321` | 134 of 1,568 GPU rows raised (PNY RTX 5070 Ti 300 → 750 W, RTX 5050 130 → 550, RX 9070 245 → 650…; RTX 3050 6GB 300 → 550, stricter). RTX 5070 Ti + 350 W: "Fits", "≥ 300 W" → **"Incompatible: at least 750 W"** (live: `s1/D-02-*-after-live.jpg`) |
+| P-01 | "Με μεταφορικά" only when its offer is within 2% of the listing's price — site | `431dc10` | 1,904 of the 10,284 listings with a total (18.5%) showed another offer's total → hidden. Lexar 32GB: "280,47 € … 590,01 € με μεταφορικά" → **280,47 € with no total** (`s1/P-01-before/after-1366-el-light.jpg`); 37 of the first 50 GPU rows still show a total |
+| D-03 | RAM kits written without "GB" ("(2x8)") — scraper | `30fb31f` | 104 of 6,593 RAM listings re-filed (all Shopflix; only kit and stick count change); 9 tests with real titles (`scripts/checks/test_normalize_ram.py`) |
+| D-04 | DDR type from part numbers (F4-/F5-, AX4/AX5, LD4/LD5); registered DIMMs (MTA…72P, KSM…R, M393, HMA…R) → Server — scraper | `527c700` | 37 listings: 33 Desktop → Server, 4 DDR4 → DDR5 (two G.Skill F5-6000, an XPG Lancer Blade found by its URL part number, a Lexar LD5S); 8 more tests |
+| D-05 | "Extended ATX" → E-ATX — scraper | `e398b52` | 13 of 3,001 board listings: 5 → E-ATX, 12 "…Extended" duplicate models rejoin their board; 6 tests (`test_normalize_mobo.py`). **"Keep D5 in names" not shipped**: measured to split 181 models into duplicates; the 2 real cases go to v2 Phase 2 (your decision) |
+| — | Board memory type unknown when its listings disagree (DDR4/DDR5) → left out of the builder — site (your addition) | `fdea444` | 5 board models leave the builder (1,020 → 1,015): ASRock H610M-H2/M.2, H610M-HDV/M.2, Asus Prime B840M-A-CSM, Asus Prime B860-Plus WiFi, MSI Pro B760M-P. No other row in any slot changes; the other 76 data files are identical |
+| OPS | `site-check.mjs` fails when the newest data is over 12 h old | `3c5c00e` | Live: PASS (5.2 h). A build with the 2026-10-03 data: FAIL (24.5 h, exit 1) |
+| OPS | `curl_cffi>=0.7,<0.17`, `Pillow>=10,<13`; the version-cap rule in main's CLAUDE.md | `efbe4b0` | Resolve to the versions the scrape uses (0.16.3, 12.3.0) |
+
+Checks on main before the push: `npm run build` (data check passed), Python tests 17 + 6 pass, every scraper file compiles, `data-check.test.mts` and `data-equivalence.test.mts` ("ALL EQUAL"). Vercel deployed `fdea444`. Offline before/after for normalizers: `venv/Scripts/python scripts/checks/renormalize_diff.py <cat> <module> [REF]`.
+
+**Scrape after the fixes:** <!-- SCRAPE2 -->
+
+The interim v1 rules above (D-01, D-02, P-01, the memory rule) are listed in `docs/v2-backlog.md` → "Phase 2: data validation layer — notes", with what Phase 2 replaces them with.
