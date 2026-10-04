@@ -15,8 +15,10 @@ export function SpecLine({ specs, className = '' }: { specs: Spec[]; className?:
               ·
             </span>
           )}
-          {s.value ?? (
-            <span className="text-faint">
+          {s.value != null ? (
+            <span className="whitespace-nowrap">{s.value}</span>
+          ) : (
+            <span className="whitespace-nowrap text-faint">
               {s.label} <span aria-hidden="true">—</span>
               <span className="sr-only">{tr(lang, UI.unknown)}</span>
             </span>

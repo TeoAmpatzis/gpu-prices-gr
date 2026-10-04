@@ -1,40 +1,5 @@
-/*
- * Component catalogue (/_preview, development builds only).
- *
- * Stop 2: the v2 tokens and components load only here, so production CSS stays exactly v1's. They are in
- * Tailwind's components layer, and this file emits the components and utilities layers again after
- * them, so a utility class on an element always beats a component style (as in index.css). Stop 3 moves
- * the two imports into index.css and deletes the two @tailwind lines here.
- *
- * The monospace font as published (@fontsource/jetbrains-mono 5.3.0, weight 400, SIL OFL —
- * fonts/OFL-JetBrainsMono.txt); Stop 3 ships a subset from public/fonts.
- */
-@import '../ui/tokens.css';
-@import '../ui/ui.css';
-@import './switching.css';
-
-@tailwind components;
-@tailwind utilities;
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400;
-  src: url('./fonts/jetbrains-mono-latin-400.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
-    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'JetBrains Mono';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400;
-  src: url('./fonts/jetbrains-mono-greek-400.woff2') format('woff2');
-  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
-}
-
-/* The catalogue's own frame: section anchors clear the sticky control bar. */
+/* Component catalogue (/_preview, development builds only): only its own layout. Tokens, components and
+   fonts come from the site's index.css. */
 .pv-section {
   scroll-margin-top: 7rem;
 }

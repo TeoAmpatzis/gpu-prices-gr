@@ -3,7 +3,7 @@ import { useState, type ReactNode } from 'react';
 import { tr, useLang, type Text } from '../lib/i18n';
 import type { BaseListing, Category, GpuListing, StorageListing } from '../types';
 import { CATS, href } from '../shell/nav';
-import { CompatBadge, CompatNote } from '../ui/Badge';
+import { CompatBadge, CompatNote, type CompatLevel } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { AppliedChip, FilterChip } from '../ui/Chip';
 import { CheckList, CoverageLine, RangeFilter, Toggle, type Option } from '../ui/filters';
@@ -16,7 +16,7 @@ import { SpecLine } from '../ui/SpecLine';
 import { specsOf } from '../ui/specs';
 import { EmptyState, ErrorState, SkeletonCards, SkeletonRows } from '../ui/states';
 import { UI, plural } from '../ui/strings';
-import { imageOf, priceExamples, priceInfo, sourcesOf, type AnyModel, type PreviewData } from './data';
+import { compatExamples, imageOf, priceExamples, priceInfo, sourcesOf, type AnyModel, type PreviewData } from './data';
 import { Section, Spec } from './kit';
 import { P } from './strings';
 
@@ -156,29 +156,55 @@ export function ChipsSection({ d }: { d: PreviewData }) {
   );
 }
 
-export function CompatSection() {
+/** One compatibility example: the badge and reason, and the two real products it comes from. */
+function Pair({ level, word, reason, a, b }: { level: CompatLevel; word?: Text; reason: Text; a: [Category, AnyModel]; b: [Category, AnyModel] }) {
   const lang = useLang();
   return (
+    <div className="ui-card flex flex-col gap-3 p-4">
+      <CompatNote level={level} word={word} reason={reason} />
+      <ul className="flex flex-col gap-2 border-t border-line pt-3">
+        {[a, b].map(([cat, m]) => (
+          <li key={m.key} className="min-w-0">
+            <span className="text-xs text-faint">{tr(lang, CATS[cat].one!)} · </span>
+            <span className="text-sm font-medium">{m.chip}</span>
+            <SpecLine specs={specsOf(cat, m.listings, lang)} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export function CompatSection({ d }: { d: PreviewData }) {
+  const lang = useLang();
+  const x = compatExamples(d);
+  return (
     <Section id="compat" title={P.sCompat} intro={P.compatIntro}>
-      <div className="ui-card flex flex-col gap-5 p-4">
-        <div className="flex flex-wrap gap-2">
-          <CompatBadge level="error" />
-          <CompatBadge level="warning" />
-          <CompatBadge level="note" word={UI.compatLikely} />
-          <CompatBadge level="note" />
-          <CompatBadge level="pass" />
-          <CompatBadge level="pass" word={UI.compatFits} />
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <CompatNote level="error" reason={P.rError} />
-          <CompatNote level="warning" reason={P.rWarning} />
-          <CompatNote level="note" word={UI.compatLikely} reason={P.rLikely} />
-          <CompatNote level="note" reason={P.rUnverified} />
-          <CompatNote level="pass" reason={P.rPass} />
-          <CompatNote level="pass" word={UI.compatFits} reason={P.rFits} />
-        </div>
-        <p className="text-xs text-faint">{tr(lang, { el: 'Χωρίς χρώμα: εικονίδιο + λέξη (✕ ⚠ ⓘ ✓).', en: 'Without colour: icon + word (✕ ⚠ ⓘ ✓).' })}</p>
+      <div className="ui-card flex flex-wrap gap-2 p-4">
+        <CompatBadge level="error" />
+        <CompatBadge level="warning" />
+        <CompatBadge level="note" word={UI.compatLikely} />
+        <CompatBadge level="note" />
+        <CompatBadge level="pass" />
+        <CompatBadge level="pass" word={UI.compatFits} />
       </div>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {x.tight && x.atxBoard && (
+          <Pair level="error" reason={P.rBoardTooBig('ATX', 'Micro ATX')} a={['mobo', x.atxBoard]} b={['case', x.tight.caseM]} />
+        )}
+        {x.tight && <Pair level="warning" reason={P.rCardTight(x.tight.L, x.tight.M)} a={['gpu', x.tight.gpu]} b={['case', x.tight.caseM]} />}
+        {x.guessCase && x.atxBoard && (
+          <Pair level="note" word={UI.compatLikely} reason={P.rBoardGuess('ATX', 'Midi Tower')} a={['mobo', x.atxBoard]} b={['case', x.guessCase]} />
+        )}
+        {x.unknownCooler && x.tight && x.coolerMaxOfCase != null && (
+          <Pair level="note" reason={P.rHeightUnknown(x.coolerMaxOfCase)} a={['cooler', x.unknownCooler]} b={['case', x.tight.caseM]} />
+        )}
+        {x.atxBoard && <Pair level="pass" reason={P.rSocket('AM5')} a={['cpu', x.am5Cpu]} b={['mobo', x.atxBoard]} />}
+        {x.fitsCooler && x.tight && x.coolerMaxOfCase != null && (
+          <Pair level="pass" word={UI.compatFits} reason={P.rHeightFits(x.heightOf(x.fitsCooler)!, x.coolerMaxOfCase)} a={['cooler', x.fitsCooler]} b={['case', x.tight.caseM]} />
+        )}
+      </div>
+      <p className="text-xs text-faint">{tr(lang, { el: 'Χωρίς χρώμα: εικονίδιο + λέξη (✕ ⚠ ⓘ ✓).', en: 'Without colour: icon + word (✕ ⚠ ⓘ ✓).' })}</p>
     </Section>
   );
 }
@@ -315,18 +341,28 @@ export function listItem(d: PreviewData, c: Category, m: AnyModel, lang: 'el' | 
 
 const find = (ms: AnyModel[], f: (m: AnyModel) => boolean) => ms.find(f) ?? ms[0];
 
+/**
+ * The part list of one consistent build from today's data: each badge follows from the products shown
+ * (the same pairs as the compatibility section).
+ */
 export function buildParts(d: PreviewData, lang: 'el' | 'en') {
   const part = (c: Category, m: AnyModel, extra: Partial<Part> = {}): Part => ({ ...listItem(d, c, m, lang, 'md'), ...extra });
-  const L = <T,>(m: AnyModel) => m.cheapest as unknown as T;
+  const x = compatExamples(d);
+  const board = x.atxBoard ?? d.models.mobo[0];
+  const caseM = x.tight?.caseM ?? d.models.case[0];
   return {
-    cpu: part('cpu', find(d.models.cpu, (m) => m.chip === 'Ryzen 7 9800X3D'), { compat: { level: 'pass', reason: P.rPass } }),
-    mobo: part('mobo', find(d.models.mobo, (m) => /B850/.test(m.chip) && L<{ formFactor: string }>(m).formFactor === 'ATX'), { compat: { level: 'pass', reason: P.rPass } }),
-    ram: part('ram', find(d.models.ram, (m) => m.key.startsWith('DDR5 32GB (2×16GB) 6000MHz')), { compat: { level: 'pass' } }),
-    gpu: part('gpu', find(d.models.gpu, (m) => m.key === 'RTX 5070 12GB'), { compat: { level: 'warning', reason: P.rWarning } }),
-    cooler: part('cooler', find(d.models.cooler, (m) => L<{ type: string; heightMm?: number }>(m).type === 'Air' && m.listings.length > 3), { compat: { level: 'note', reason: P.rUnverified } }),
-    storage: part('storage', find(d.models.storage, (m) => /990 Pro 2TB/i.test(m.chip)), { compat: { level: 'pass' } }),
-    case: part('case', d.models.case[0], { compat: { level: 'error', reason: P.rError } }),
-    fan: part('fan', find(d.models.fan, (m) => L<{ pack: number; size: number }>(m).pack === 1 && L<{ size: number }>(m).size === 120), { compat: { level: 'note', word: UI.compatLikely, reason: P.rFan }, qty: 3 }),
+    cpu: part('cpu', x.am5Cpu, { compat: { level: 'pass', reason: P.rSocket('AM5') } }),
+    mobo: part('mobo', board, { compat: { level: 'pass', reason: P.rSocket('AM5') } }),
+    ram: part('ram', x.ddr5, { compat: { level: 'pass', reason: P.rMemory('DDR5') } }),
+    gpu: part('gpu', x.tight?.gpu ?? d.models.gpu[0], x.tight ? { compat: { level: 'warning', reason: P.rCardTight(x.tight.L, x.tight.M) } } : {}),
+    cooler: part(
+      'cooler',
+      x.unknownCooler ?? d.models.cooler[0],
+      x.coolerMaxOfCase != null ? { compat: { level: 'note', reason: P.rHeightUnknown(x.coolerMaxOfCase) } } : {},
+    ),
+    storage: part('storage', find(d.models.storage, (m) => /990 Pro 2TB/i.test(m.chip))),
+    case: part('case', caseM, { compat: { level: 'error', reason: P.rBoardTooBig('ATX', 'Micro ATX') } }),
+    fan: part('fan', find(d.models.fan, (m) => (m.cheapest as unknown as { pack: number; size: number }).pack === 1 && (m.cheapest as unknown as { size: number }).size === 120), { qty: 3 }),
     removed: part('storage', d.models.storage[5], { removed: true }),
   };
 }

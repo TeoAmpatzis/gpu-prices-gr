@@ -2,6 +2,9 @@
 // words). Category names live in src/shell/nav.ts.
 import type { Lang } from '../lib/i18n';
 
+/** No-break space: a number never wraps away from its unit or word. */
+export const NBSP = String.fromCharCode(0xa0);
+
 export const UI = {
   // Compatibility (glossary): colour + icon + word
   compatError: { el: 'Ασύμβατο', en: 'Incompatible' },
@@ -15,11 +18,11 @@ export const UI = {
   via: { el: 'μέσω', en: 'via' },
   shippingPlus: { el: 'μεταφορικά', en: 'shipping' },
   freeShipping: { el: 'Δωρεάν μεταφορικά', en: 'Free shipping' },
-  noShipping: { el: 'Χωρίς μεταφορικά', en: 'Excl. shipping' },
+  noShipping: { el: 'Μεταφορικά: άγνωστα', en: 'Shipping: unknown' },
   total: { el: 'σύνολο', en: 'total' },
   checked: { el: 'Ελέγχθηκε', en: 'Checked' },
   stale: { el: 'μπορεί να έχει αλλάξει', en: 'may have changed' },
-  in7days: { el: 'σε 7 ημέρες', en: 'in 7 days' },
+  in7days: { el: `σε${NBSP}7${NBSP}ημέρες`, en: `in${NBSP}7${NBSP}days` },
   steady7days: { el: 'Ίδια τιμή εδώ και 7 ημέρες', en: 'Same price for 7 days' },
   unusualLow: { el: 'Ασυνήθιστα χαμηλή, έλεγξε το κατάστημα', en: 'Unusually low, check the shop' },
   inStock: { el: 'Άμεσα διαθέσιμο', en: 'In stock' },
@@ -31,6 +34,7 @@ export const UI = {
   showMore: { el: 'Περισσότερα', en: 'Show more' },
   showLess: { el: 'Λιγότερα', en: 'Show less' },
   searchIn: { el: 'Αναζήτηση σε', en: 'Search in' },
+  searchShort: { el: 'Αναζήτηση…', en: 'Search…' },
   noOptions: { el: 'Καμία επιλογή', en: 'No options' },
   min: { el: 'Από', en: 'Min' },
   max: { el: 'Έως', en: 'Max' },
@@ -74,14 +78,14 @@ export const UI = {
   details: { el: 'Τεχνικές λεπτομέρειες', en: 'Technical details' },
   loadErrorTitle: { el: 'Δεν φόρτωσαν οι τιμές', en: "The prices didn't load" },
   loadErrorText: {
-    el: 'Ελέγξτε τη σύνδεσή σας και δοκιμάστε ξανά. Αν συνεχίζει, ενημερώστε μας.',
+    el: 'Έλεγξε τη σύνδεσή σου και δοκίμασε ξανά. Αν συνεχίζει, ενημέρωσέ μας.',
     en: 'Check your connection and try again. If it keeps happening, let us know.',
   },
   emptyTitle: { el: 'Κανένα αποτέλεσμα', en: 'No results' },
   emptyText: { el: 'Κανένα προϊόν δεν ταιριάζει με όλα τα φίλτρα.', en: 'No product matches all the filters.' },
   notFoundTitle: { el: 'Η σελίδα δεν βρέθηκε', en: 'Page not found' },
   notFoundText: {
-    el: 'Ο σύνδεσμος μπορεί να είναι παλιός ή λάθος. Ψάξτε ένα προϊόν ή διαλέξτε κατηγορία.',
+    el: 'Ο σύνδεσμος μπορεί να είναι παλιός ή λάθος. Ψάξε ένα προϊόν ή διάλεξε κατηγορία.',
     en: 'The link may be old or wrong. Search for a product or pick a category.',
   },
   home: { el: 'Αρχική', en: 'Home' },
@@ -110,14 +114,9 @@ export const UI = {
   parts: { el: 'Εξαρτήματα', en: 'Parts' },
   builder: 'PC Builder',
   language: { el: 'Γλώσσα', en: 'Language' },
-  theme: { el: 'Θέμα', en: 'Theme' },
-  light: { el: 'Φωτεινό', en: 'Light' },
-  dark: { el: 'Σκούρο', en: 'Dark' },
   mainMenu: { el: 'Κύριο μενού', en: 'Main menu' },
   back: { el: 'Πίσω', en: 'Back' },
   toEnglish: { el: 'Switch to English', en: 'Αλλαγή σε Ελληνικά' },
-  toDark: { el: 'Σκούρο θέμα', en: 'Dark theme' },
-  toLight: { el: 'Φωτεινό θέμα', en: 'Light theme' },
   modelForms: { el: ['μοντέλο', 'μοντέλα'], en: ['model', 'models'] } as { el: [string, string]; en: [string, string] },
   homeLink: { el: 'BuildDraft.gr, αρχική σελίδα', en: 'BuildDraft.gr, home page' },
   about: { el: 'Σχετικά', en: 'About' },
@@ -137,5 +136,5 @@ export const num = (lang: Lang, n: number, digits = 0) =>
 export function plural(lang: Lang, n: number, forms: { el: [string, string]; en: [string, string] }): string {
   const rule = new Intl.PluralRules(lang === 'el' ? 'el' : 'en').select(n);
   const [one, other] = forms[lang];
-  return `${num(lang, n)} ${rule === 'one' ? one : other}`;
+  return `${num(lang, n)}${NBSP}${rule === 'one' ? one : other}`;
 }

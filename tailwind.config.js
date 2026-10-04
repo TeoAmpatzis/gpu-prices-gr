@@ -1,13 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 const token = (name) => `rgb(var(--${name}) / <alpha-value>)`;
 
-// Phase 1, Stop 2: the design system (src/ui, src/shell) and its preview (src/preview) are used only by the
-// development-only /_preview page, so production builds don't scan them and ship exactly v1's CSS. Stop 3
-// removes this exclusion when the shell goes live.
-const devOnly = process.env.NODE_ENV === 'production' ? ['!./src/ui/**', '!./src/shell/**', '!./src/preview/**'] : [];
-
 export default {
-  content: ['./index.html', './src/**/*.{ts,tsx}', ...devOnly],
+  content: ['./index.html', './src/**/*.{ts,tsx}'],
   darkMode: 'class',
   theme: {
     extend: {

@@ -3,23 +3,22 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { tr, useLang } from '../lib/i18n';
 import type { Category } from '../types';
 import { Button, LinkButton } from '../ui/Button';
-import { Lockup, type LogoKind } from '../ui/logos';
+import { Wordmark } from '../ui/logos';
 import { SearchBox, type SearchSetup } from '../ui/SearchBox';
 import { UI } from '../ui/strings';
-import { LangSwitch, ThemeSwitch } from './controls';
+import { LangSwitch } from './controls';
 import { MegaMenu, type Current } from './MegaMenu';
 import { href } from './nav';
 
 /**
  * The site header (plan A5).
- *   ≥ 1024 px: logo · Εξαρτήματα ▾ · search · PC Builder · ΕΛ/EN · theme
+ *   ≥ 1024 px: logo · Εξαρτήματα ▾ · search · PC Builder · ΕΛ/EN
  *   640–1023: the same in one row without the search, which gets a second row
- *   < 640:    logo · search · PC Builder · Εξαρτήματα (to /parts, which also holds language and theme)
+ *   < 640:    logo · search · PC Builder · Εξαρτήματα (to /parts, which also holds the language switch)
  * A skip link is the first Tab stop (UX-05). The menu opens on click, Enter, Space or ↓ (never on hover),
  * and closes on Esc (focus back to its button), an outside click or a pick.
  */
 export function Header({
-  logo,
   current,
   search,
   counts,
@@ -27,7 +26,6 @@ export function Header({
   phoneSearchOpen = false,
   phoneSearchQuery = '',
 }: {
-  logo: LogoKind;
   current: Current;
   search: SearchSetup;
   counts?: Partial<Record<Category, number>>;
@@ -77,7 +75,7 @@ export function Header({
       </a>
       <div ref={boxRef} className="relative mx-auto flex h-16 max-w-7xl items-center gap-2 px-4">
         <a href={href.home} aria-label={tr(lang, UI.homeLink)} className="tap mr-1 flex shrink-0 items-center rounded-md text-fg">
-          <Lockup kind={logo} height={28} className={logo === 'c' ? 'text-[1.375rem]' : 'text-lg'} />
+          <Wordmark className="text-[1.375rem]" />
         </a>
 
         <button
@@ -101,9 +99,8 @@ export function Header({
           <LinkButton variant="primary" icon={Wrench} href={href.builder} aria-current={current === 'builder' ? 'page' : undefined} className="hidden sm:inline-flex">
             PC Builder
           </LinkButton>
-          <span className="hidden items-center gap-0.5 sm:flex">
+          <span className="hidden items-center sm:flex">
             <LangSwitch />
-            <ThemeSwitch />
           </span>
           <span className="flex items-center sm:hidden">
             <Button variant="ghost" icon={Search} iconOnly onClick={() => setPhoneSearch(true)}>
