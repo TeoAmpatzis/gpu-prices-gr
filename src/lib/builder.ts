@@ -158,8 +158,11 @@ const GPU_PSU: Record<string, number> = {
   'Arc A380': 300,
   'Arc A310': 300,
 };
-/** The card's own stated minimum (product page), else the chip maker's recommendation. */
-export const gpuPsu = (g: GpuListing): number | null => g.minPsu ?? GPU_PSU[g.chip] ?? null;
+/**
+ * The larger of the card's own stated minimum (product page) and the chip maker's recommendation:
+ * some shop pages give the card's board power in the "minimum PSU" field (130–300 W).
+ */
+export const gpuPsu = (g: GpuListing): number | null => Math.max(g.minPsu ?? 0, GPU_PSU[g.chip] ?? 0) || null;
 
 /** Top-tier desktop CPUs draw well over their rated TDP under load; give them extra headroom. */
 const HIGH_END_CPU = /^(Ryzen 9|Core i9|Core Ultra 9)\b/;
