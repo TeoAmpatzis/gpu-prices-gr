@@ -1,6 +1,6 @@
 # Phase 1 plan: foundations (identity, design system, site shell, real URLs)
 
-**Status: Stop 1, waiting for the owner's approval.** Branch `v2` at `1ff6442`, data = main `3dd74e4` (2026-10-04 14:38 UTC). Every number below was measured on 2026-10-04 with that data unless it says *estimate*; estimates are measured at Stop 3 and reported.
+**Status: approved by the owner on 2026-10-04, with the decisions in A6 (Stop 2 in progress).** Branch `v2` at `1ff6442`, data = main `3dd74e4` (2026-10-04 14:38 UTC). Every number below was measured on 2026-10-04 with that data unless it says *estimate*; estimates are measured at Stop 3 and reported.
 
 **In one paragraph.** Keep React + Tailwind and add no UI library. Tokens become a three-layer system (scales → roles → v1 aliases), so v1 pages restyle without layout edits. A ~1 KB own router reads a route table that is also used by the old-link redirect, `vercel.json` and the tests. Old `#…` links are rewritten to real URLs by a tiny inline script before the app starts, keeping every parameter. Search loads its own build-time index (~84 KB gzip) only when the search box is used. A model URL is the readable form of today's model key (unique in every category). A "specific product" level exists only for graphics cards, and only after Phase 2 brings card keys into the data. List-page code moves into its own chunk, so the shell fits the 110 KB budget on the builder too.
 
@@ -71,7 +71,8 @@ Keys are **not** stable while the normalizers improve. Model keys present in his
    - **Merge:** several old slugs → one new model.
    - **Split:** the old slug → the model with most of its listings, and the page says "now split into: X, Y".
    - **Gone from every shop:** → the category searched for the old name, with a "no longer sold" notice.
-3. If the live file can't be fetched, the build fails (override `ALIAS_CHECK=off`), so a build never silently drops the redirects carried so far.
+3. If the live file can't be fetched, the build fails, so a build never silently drops the redirects carried so far. **`ALIAS_CHECK=off` follows the history guard's rule: stop and ask the owner before using it** (owner, 2026-10-04).
+3a. **First v2 deploy (one-time rule, owner 2026-10-04):** the live site is then v1, which has no `slugs.json`. The build starts with an empty alias list through an explicit rule, not through the override: when the live manifest exists but carries no `slugs` version marker (v1), the build logs "first v2 build: alias list starts empty" and continues. Every later build requires the live `slugs.json`. Phase 3 tests both cases with fixtures.
 4. History stays under its old key (unchanged); the model page can join the histories of its redirected keys (Phase 3).
 
 **When:** built in Phase 3 with the model pages. v1 has no product URLs, so the first v2 deploy starts with nothing to redirect. Phase 1 only reserves the patterns. Until Phase 3, a model URL (and a search suggestion) opens the category searched for that model (`/gpu?q=RTX 5070`). v1's search matches names as text, so near names such as "RTX 5070 Ti" can appear too. **Temporary.**
@@ -222,15 +223,15 @@ O-02's causes (Phase 0 profiles):
 │ Σχετικά · Επικοινωνία · Απόρρητο                                            │
 │ Πηγές: Skroutz 3 ώρ. · BestPrice 2 ώρ. · Snif 2 ώρ. · Shopflix 2 ώρ. ·      │
 │        e-shop.gr 2 ώρ.   ⚠ Skroutz/Δίσκοι: 35 ώρ.                           │
-│ BuildDraft.gr · © 2026 Θεόδωρος Αμπατζής · δεν συνδέεται με τα καταστήματα  │
+│ © 2026 BuildDraft.gr · δεν συνδέεται με τα καταστήματα                       │
 └──────────────────────────────────────────────────────────────────────────────┘
 
 Εξαρτήματα ▾ open (click / Enter / ↓; Esc closes):
 ┌───────────────────────────────────────────────────────────────────┐
 │ ΒΑΣΙΚΑ              ΚΟΥΤΙ, ΡΕΥΜΑ ΚΑΙ ΨΥΞΗ     ΕΡΓΑΛΕΙΑ           │
 │ ▢ Επεξεργαστές      ▢ Κουτιά                  🛠 PC Builder      │
-│ ▢ Μητρικές          ▢ Τροφοδοτικά             ⇄ Σύγκριση (σύντομα)│
-│ ▢ Μνήμη RAM         ▢ Ψύκτρες CPU             % Προσφορές (σύντομα)│
+│ ▢ Μητρικές          ▢ Τροφοδοτικά                                │
+│ ▢ Μνήμη RAM         ▢ Ψύκτρες CPU                                │
 │ ■ Κάρτες γραφικών ← current                                      │
 │ ▢ Δίσκοι            ▢ Ανεμιστήρες                                 │
 └───────────────────────────────────────────────────────────────────┘
@@ -269,7 +270,18 @@ O-02's causes (Phase 0 profiles):
 
 ## A6. Risks and open questions
 
-**Questions for you** (my recommendation first):
+**Owner's decisions (2026-10-04)** — they replace the questions below:
+- **Menu:** Σύγκριση and Προσφορές are **not shown** yet (no "Σύντομα" items); Εργαλεία holds only PC Builder. Προσφορές = v2.0, Phase 5 with the home page; Σύγκριση = v2.1, and the product page's "Σύγκριση" button waits for it (backlog #11, #12).
+- **Phone header:** logo + search + PC Builder + menu; language and theme on `/parts` and in the footer.
+- **Monospace:** codes only.
+- **"PC Builder"** in both languages (glossary).
+- **Builder CLS — explicit exception at the Phase 1 gate:** builder CLS ≤ 0.0099, unchanged from the baseline; fixed in Phase 4.
+- **The six v1 swaps** (A3 "Live in P1") are done in Phase 1.
+- **Footer:** "© 2026 BuildDraft.gr" without the owner's name (owner: "keep the BuildDraft.gr"; reading confirmed at Stop 2). LICENSE, README and `package.json` keep the owner's name; CLAUDE.md's footer rule is updated at Stop 3.
+- **Category ids:** v1's (`gpu`, `cpu`, `mobo`, …).
+- **Phase 3 rules recorded in A2.3:** the first-deploy alias rule (3a) and `ALIAS_CHECK=off` only after asking the owner.
+
+**Questions for you** (my recommendation first; answered above):
 1. **Σύγκριση and Προσφορές** are in the menu (C3), but no phase builds those pages yet. → In Phase 1 they show as "Σύντομα"/"Coming soon" items that are not links. Which phase builds them is your call.
 2. **Phone header** (360 px): logo + search + PC Builder + menu fit, but language and theme don't. → Move language and theme to the top of the `/parts` page (and the footer). The alternative keeps them in the header and shows only the logo mark (no name) at 360.
 3. **Monospace use.** The plan says "codes and technical values". → Codes only (part numbers, model codes). Spec values and prices stay in Inter with tabular numbers: narrower at 360 px, and no extra font on every list page.
@@ -311,6 +323,7 @@ Each commit passes `npm run check`, with no new lint suppressions.
 
 **Checks (section D):**
 - `npm run check`.
+- **Gate exception (owner):** builder CLS ≤ 0.0099 (unchanged from baseline, fixed in Phase 4); every other page CLS 0.
 - **e2e:**
   - the 15 smoke tests, moved to the new URLs
   - every row of A2.5 with its parameters
