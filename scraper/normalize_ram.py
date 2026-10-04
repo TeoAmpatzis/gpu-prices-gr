@@ -14,6 +14,8 @@ from models import RamListing
 
 TYPE = re.compile(r"\bDDR([2-5])L?\b", re.I)
 KIT = re.compile(r"\b(\d{1,2})\s*[x×]\s*(\d{1,3})\s*GB\b", re.I)
+# Shopflix writes the kit without "GB": "Kingston Fury Beast DDR5 16GB 5200Mhz (2x8)", "… 16GB 1333MHz 2x8".
+KIT_BARE = re.compile(r"(?<![\d.])([1-8])\s*[x×]\s*(\d{1,3})(?![\d.]|\s*(?:GB|MB|TB|mm|cm))", re.I)
 CAPACITY = re.compile(r"\b(\d{1,3})\s*GB\b", re.I)
 MODULE_SIZES = {1, 2, 4, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256}
 MULTI = re.compile(r"\b[2-9][\s-]*Modules\b", re.I)
@@ -49,6 +51,15 @@ def vendor_of(title: str) -> str:
     return first if re.match(r"[A-Za-z]", first) and not first.upper().startswith("DDR") else "Other"
 
 
+def bare_kit(title: str, total: int) -> tuple[int, int] | None:
+    """A kit written without "GB" ("(2x16)"), trusted only when it makes the total the title states."""
+    for m in KIT_BARE.finditer(title):
+        modules, size = int(m.group(1)), int(m.group(2))
+        if modules * size == total:
+            return modules, size
+    return None
+
+
 def make_listing(
     *, source: str, native_id: str, title: str, url: str, price: float,
     shop_count: int | None, scraped_at: str, specs: str = "",
@@ -60,9 +71,12 @@ def make_listing(
     type_m = TYPE.search(title) or TYPE.search(url.replace("-", " "))
     if not type_m:
         return None
+    cap_m = CAPACITY.search(title)
     if kit_m := KIT.search(specs):
         modules, size = int(kit_m.group(1)), int(kit_m.group(2))
-    elif (cap_m := CAPACITY.search(title)) and not MULTI.search(specs):
+    elif cap_m and (kit := bare_kit(title, int(cap_m.group(1)))):
+        modules, size = kit
+    elif cap_m and not MULTI.search(specs):
         modules, size = 1, int(cap_m.group(1))  # "Kingston 32GB DDR5 ..." = one stick
     else:
         return None
