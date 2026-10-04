@@ -24,6 +24,11 @@ SPEED = re.compile(r"\b(\d{3,5})\s*(?:MHz|MT/s)\b|Tachytita-(\d{3,5})\b", re.I)
 CAS = re.compile(r"(?:\bCL?\s?|\d{3}C)(\d{1,2})(?![\d.])", re.I)
 SLUG_FORM = re.compile(r"-gia-(Desktop|Laptop|Server)\b", re.I)
 SERVER = re.compile(r"\b(ECC|Registered|RDIMM|LRDIMM|Reg)\b", re.I)
+# Part numbers that state the generation, trusted over a title or slug that says another one (shops
+# write "DDR4" for "F5-6000J3636F32GX2"): G.Skill F4-/F5-, ADATA XPG AX4/AX5, Lexar LD4/LD5.
+PART_DDR = re.compile(r"\b(?:F([45])-\d{4}|AX([45])[US]\d|LD([45])[A-Z]{1,2}\d)", re.I)
+# Registered (server) DIMMs by part number: Micron MTA…72P, Kingston KSM…R, Samsung M393, SK Hynix HMA…R.
+RDIMM = re.compile(r"\b(?:MTA\d+ASF\d+G72P|KSM\d+R|M393[A-Z0-9]|HMA\d+[A-Z]?R\d)", re.I)
 LAPTOP = re.compile(r"\bSO-?DIMM\b", re.I)
 # RAM coolers/fans; "Heatsink" alone is not excluded (e.g. "Afox Black Heatsink 32GB DDR4").
 EXCLUDE = re.compile(r"ψύκτρα|cooler|\bfan\b|ανεμιστήρ", re.I)
@@ -85,7 +90,9 @@ def make_listing(
     speed_m = SPEED.search(specs)
     speed = int(speed_m.group(1) or speed_m.group(2)) if speed_m else None
 
-    if form_m := SLUG_FORM.search(url):
+    if RDIMM.search(f"{title} {url}"):
+        form = "Server"
+    elif form_m := SLUG_FORM.search(url):
         form = form_m.group(1).capitalize()
     elif SERVER.search(title):
         form = "Server"
@@ -94,7 +101,8 @@ def make_listing(
     else:
         form = "Desktop"
 
-    mem = f"DDR{type_m.group(1)}"
+    part_m = PART_DDR.search(title) or PART_DDR.search(url)
+    mem = f"DDR{next(g for g in part_m.groups() if g) if part_m else type_m.group(1)}"
     capacity = modules * size
     chip = f"{mem} {capacity}GB ({modules}×{size}GB)" + (f" {speed}MHz" if speed else "")
     return RamListing(
