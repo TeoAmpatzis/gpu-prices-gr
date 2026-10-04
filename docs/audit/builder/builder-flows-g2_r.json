@@ -1,0 +1,518 @@
+{
+  "el-1366": {
+    "g2": {
+      "cpu": "Ryzen 5 7600",
+      "seen": [
+        {
+          "step": "Επεξεργαστής",
+          "button": "Επόμενο",
+          "why": null
+        },
+        {
+          "step": "Μητρική",
+          "button": "Επόμενο",
+          "why": null
+        },
+        {
+          "step": "Μνήμη RAM",
+          "button": "Επόμενο",
+          "why": null
+        },
+        {
+          "step": "Κάρτα γραφικών",
+          "button": "Παράλειψη",
+          "why": "Ο επεξεργαστής έχει ενσωματωμένα γραφικά: η κάρτα είναι προαιρετική."
+        },
+        {
+          "step": "Ψύκτρα επεξεργαστή",
+          "button": "Παράλειψη",
+          "why": "Ο επεξεργαστής έχει ψύκτρα στο κουτί: μια καλύτερη είναι προαιρετική."
+        },
+        {
+          "step": "Αποθήκευση",
+          "button": "Επόμενο",
+          "why": null
+        },
+        {
+          "step": "Κουτί",
+          "button": "Επόμενο",
+          "why": null
+        },
+        {
+          "step": "Τροφοδοτικό",
+          "button": "Επόμενο",
+          "why": null
+        },
+        {
+          "step": "Ανεμιστήρες κουτιού",
+          "button": "Παράλειψη",
+          "why": null
+        },
+        {
+          "step": "Σύνοψη"
+        }
+      ],
+      "review": {
+        "items": [
+          {
+            "label": "Επεξεργαστής",
+            "name": "Ryzen 5 7600",
+            "price": "177,90 €",
+            "href": "https://www.skroutz.gr/s/40307498/AMD-Ryzen-5-7600-3-8GHz-Epexergastis-6-Pyrinon-gia-Socket-AM5-se-Kouti-me-PSyktra.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μητρική",
+            "name": "Gigabyte B850M Gaming X WiFi 6E",
+            "price": "172,10 €",
+            "href": "https://www.bestprice.gr/item/2160275797/gigabyte-b850m-gaming-x-wifi6e-motherboard-micro-atx-me-amd-am5-socket.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μνήμη RAM",
+            "name": "DDR5 32GB (1×32GB) 5600MHz",
+            "price": "280,47 €",
+            "href": "https://www.bestprice.gr/item/2160475229/lexar-32gb-ddr5-ram-5600mhz-c46-ld5s32g56c46st-bgs.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Κάρτα γραφικών",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Ψύκτρα επεξεργαστή",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Αποθήκευση",
+            "name": "Samsung 990 Pro Heatsink 2TB",
+            "price": "239,99 €",
+            "href": "https://www.snif.gr/showproduct/34671499/diskos-ssd-samsung-990-pro-with-heatsink-nvme-m-2",
+            "fit": "Snif"
+          },
+          {
+            "label": "Κουτί",
+            "name": "Be Quiet Pure Base 600",
+            "price": "64,05 €",
+            "href": "https://www.bestprice.gr/item/2154998381/be-quiet-pure-base-600-silver-midi-tower-kouti-ypologisti.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Ανεμιστήρες κουτιού",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Τροφοδοτικό",
+            "name": "850W Gold",
+            "price": "55,99 €",
+            "href": "https://www.bestprice.gr/item/2164321942/adata-xpg-kyber-ii-850w-trofodotiko-ypologisti-atch-3-1-80-plus-gold.html",
+            "fit": "Χωράει"
+          }
+        ],
+        "total": "990,50 €",
+        "link": "http://localhost:4180/#builder?cpu=Ryzen+5+7600%7Ctrue&mobo=gigabyteb850mgamingxwifi6e&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop&storage=samsung990proheatsink2tbssd&case=bequietpurebase600&psu=850W+Gold+ATX"
+      },
+      "notes": "Η σύνθεσή σας\nΚαθαρισμός\nΣύνολο · 6 εξαρτήματα\n990,50 €\nΧαμηλότερη τιμή ανά προϊόν, χωρίς μεταφορικά· κάθε εξάρτημα μπορεί να είναι από διαφορετικό κατάστημα.\nΠροτεινόμενο τροφοδοτικό: ≥ 350 W · CPU TDP 65 W\nΌλα ταιριάζουν\nCPU\nRyzen 5 7600\n177,90 €\nΜητρική\nGigabyte B850M Gaming X WiFi 6E\n172,10 €\nRAM\nDDR5 32GB (1×32GB) 5600MHz\n280,47 €\nGPU\n—\nΨύκτρα\n—\nΔίσκος\nSamsung 990 Pro Heatsink 2TB\n239,99 €\nΚουτί\nBe Quiet Pure Base 600\n64,05 €\nΑνεμιστήρες\n—\nΤροφοδοτικό\n850W Gold\n55,99 €\nΟ επεξεργαστής έχει ψύκτρα στο κουτί. Αρκεί για κανονική χρήση· για gaming/overclock μια καλύτερη βοηθά.\nΤο κουτί έχει 2 θέσεις ανεμιστήρων (κάποιες μπορεί να έχουν ήδη ανεμιστήρα).",
+      "errors": [],
+      "shots": [
+        "001-g2-el-1366-review-skipped.jpg"
+      ]
+    }
+  },
+  "en-1366": {
+    "g2": {
+      "cpu": "Ryzen 5 7600",
+      "seen": [
+        {
+          "step": "Processor",
+          "button": "Next",
+          "why": null
+        },
+        {
+          "step": "Motherboard",
+          "button": "Next",
+          "why": null
+        },
+        {
+          "step": "Memory (RAM)",
+          "button": "Next",
+          "why": null
+        },
+        {
+          "step": "Graphics card",
+          "button": "Skip",
+          "why": "The CPU has integrated graphics: a card is optional."
+        },
+        {
+          "step": "CPU cooler",
+          "button": "Skip",
+          "why": "The CPU comes with a cooler: a better one is optional."
+        },
+        {
+          "step": "Storage",
+          "button": "Next",
+          "why": null
+        },
+        {
+          "step": "Case",
+          "button": "Next",
+          "why": null
+        },
+        {
+          "step": "Power supply",
+          "button": "Next",
+          "why": null
+        },
+        {
+          "step": "Case fans",
+          "button": "Skip",
+          "why": null
+        },
+        {
+          "step": "Review"
+        }
+      ],
+      "review": {
+        "items": [
+          {
+            "label": "Processor",
+            "name": "Ryzen 5 7600",
+            "price": "€177.90",
+            "href": "https://www.skroutz.gr/s/40307498/AMD-Ryzen-5-7600-3-8GHz-Epexergastis-6-Pyrinon-gia-Socket-AM5-se-Kouti-me-PSyktra.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Motherboard",
+            "name": "Gigabyte B850M Gaming X WiFi 6E",
+            "price": "€172.10",
+            "href": "https://www.bestprice.gr/item/2160275797/gigabyte-b850m-gaming-x-wifi6e-motherboard-micro-atx-me-amd-am5-socket.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Memory (RAM)",
+            "name": "DDR5 32GB (1×32GB) 5600MHz",
+            "price": "€280.47",
+            "href": "https://www.bestprice.gr/item/2160475229/lexar-32gb-ddr5-ram-5600mhz-c46-ld5s32g56c46st-bgs.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Graphics card",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "CPU cooler",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Storage",
+            "name": "Samsung 990 Pro Heatsink 2TB",
+            "price": "€239.99",
+            "href": "https://www.snif.gr/showproduct/34671499/diskos-ssd-samsung-990-pro-with-heatsink-nvme-m-2",
+            "fit": "Snif"
+          },
+          {
+            "label": "Case",
+            "name": "Be Quiet Pure Base 600",
+            "price": "€64.05",
+            "href": "https://www.bestprice.gr/item/2154998381/be-quiet-pure-base-600-silver-midi-tower-kouti-ypologisti.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Case fans",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Power supply",
+            "name": "850W Gold",
+            "price": "€55.99",
+            "href": "https://www.bestprice.gr/item/2164321942/adata-xpg-kyber-ii-850w-trofodotiko-ypologisti-atch-3-1-80-plus-gold.html",
+            "fit": "Fits"
+          }
+        ],
+        "total": "€990.50",
+        "link": "http://localhost:4180/#builder?cpu=Ryzen+5+7600%7Ctrue&mobo=gigabyteb850mgamingxwifi6e&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop&storage=samsung990proheatsink2tbssd&case=bequietpurebase600&psu=850W+Gold+ATX"
+      },
+      "notes": "Your build\nClear build\nTotal · 6 parts\n€990.50\nLowest price per product, before shipping; each part may come from a different shop.\nRecommended PSU: ≥ 350 W · CPU TDP 65 W\nEverything fits\nCPU\nRyzen 5 7600\n€177.90\nBoard\nGigabyte B850M Gaming X WiFi 6E\n€172.10\nRAM\nDDR5 32GB (1×32GB) 5600MHz\n€280.47\nGPU\n—\nCooler\n—\nStorage\nSamsung 990 Pro Heatsink 2TB\n€239.99\nCase\nBe Quiet Pure Base 600\n€64.05\nFans\n—\nPSU\n850W Gold\n€55.99\nThe CPU comes with a cooler. Fine for normal use; a better one helps for gaming/overclocking.\nThe case has 2 fan positions (some may already have fans).",
+      "errors": [],
+      "shots": [
+        "004-g2-en-1366-review-skipped.jpg"
+      ]
+    }
+  },
+  "el-360": {
+    "g2": {
+      "cpu": "Ryzen 5 7600",
+      "seen": [
+        {
+          "step": "Επεξεργαστής",
+          "button": "Επόμενο",
+          "why": null
+        },
+        {
+          "step": "Μητρική",
+          "button": "Επόμενο",
+          "why": null
+        },
+        {
+          "step": "Μνήμη RAM",
+          "button": "Επόμενο",
+          "why": null
+        },
+        {
+          "step": "Κάρτα γραφικών",
+          "button": "Παράλειψη",
+          "why": "Ο επεξεργαστής έχει ενσωματωμένα γραφικά: η κάρτα είναι προαιρετική."
+        },
+        {
+          "step": "Ψύκτρα επεξεργαστή",
+          "button": "Παράλειψη",
+          "why": "Ο επεξεργαστής έχει ψύκτρα στο κουτί: μια καλύτερη είναι προαιρετική."
+        },
+        {
+          "step": "Αποθήκευση",
+          "button": "Επόμενο",
+          "why": null
+        },
+        {
+          "step": "Κουτί",
+          "button": "Επόμενο",
+          "why": null
+        },
+        {
+          "step": "Τροφοδοτικό",
+          "button": "Επόμενο",
+          "why": null
+        },
+        {
+          "step": "Ανεμιστήρες κουτιού",
+          "button": "Παράλειψη",
+          "why": null
+        },
+        {
+          "step": "Σύνοψη"
+        }
+      ],
+      "review": {
+        "items": [
+          {
+            "label": "Επεξεργαστής",
+            "name": "Ryzen 5 7600",
+            "price": "177,90 €",
+            "href": "https://www.skroutz.gr/s/40307498/AMD-Ryzen-5-7600-3-8GHz-Epexergastis-6-Pyrinon-gia-Socket-AM5-se-Kouti-me-PSyktra.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μητρική",
+            "name": "Gigabyte B850M Gaming X WiFi 6E",
+            "price": "172,10 €",
+            "href": "https://www.bestprice.gr/item/2160275797/gigabyte-b850m-gaming-x-wifi6e-motherboard-micro-atx-me-amd-am5-socket.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μνήμη RAM",
+            "name": "DDR5 32GB (1×32GB) 5600MHz",
+            "price": "280,47 €",
+            "href": "https://www.bestprice.gr/item/2160475229/lexar-32gb-ddr5-ram-5600mhz-c46-ld5s32g56c46st-bgs.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Κάρτα γραφικών",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Ψύκτρα επεξεργαστή",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Αποθήκευση",
+            "name": "Samsung 990 Pro Heatsink 2TB",
+            "price": "239,99 €",
+            "href": "https://www.snif.gr/showproduct/34671499/diskos-ssd-samsung-990-pro-with-heatsink-nvme-m-2",
+            "fit": "Snif"
+          },
+          {
+            "label": "Κουτί",
+            "name": "Be Quiet Pure Base 600",
+            "price": "64,05 €",
+            "href": "https://www.bestprice.gr/item/2154998381/be-quiet-pure-base-600-silver-midi-tower-kouti-ypologisti.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Ανεμιστήρες κουτιού",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Τροφοδοτικό",
+            "name": "850W Gold",
+            "price": "55,99 €",
+            "href": "https://www.bestprice.gr/item/2164321942/adata-xpg-kyber-ii-850w-trofodotiko-ypologisti-atch-3-1-80-plus-gold.html",
+            "fit": "Χωράει"
+          }
+        ],
+        "total": "990,50 €",
+        "link": "http://localhost:4180/#builder?cpu=Ryzen+5+7600%7Ctrue&mobo=gigabyteb850mgamingxwifi6e&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop&storage=samsung990proheatsink2tbssd&case=bequietpurebase600&psu=850W+Gold+ATX"
+      },
+      "notes": "Σύνολο · 6 εξαρτήματα\n990,50 €\nΛεπτομέρειες",
+      "errors": [],
+      "shots": [
+        "007-g2-el-360-review-skipped.jpg"
+      ]
+    }
+  },
+  "en-360": {
+    "g2": {
+      "cpu": "Ryzen 5 7600",
+      "seen": [
+        {
+          "step": "Processor",
+          "button": "Next",
+          "why": null
+        },
+        {
+          "step": "Motherboard",
+          "button": "Next",
+          "why": null
+        },
+        {
+          "step": "Memory (RAM)",
+          "button": "Next",
+          "why": null
+        },
+        {
+          "step": "Graphics card",
+          "button": "Skip",
+          "why": "The CPU has integrated graphics: a card is optional."
+        },
+        {
+          "step": "CPU cooler",
+          "button": "Skip",
+          "why": "The CPU comes with a cooler: a better one is optional."
+        },
+        {
+          "step": "Storage",
+          "button": "Next",
+          "why": null
+        },
+        {
+          "step": "Case",
+          "button": "Next",
+          "why": null
+        },
+        {
+          "step": "Power supply",
+          "button": "Next",
+          "why": null
+        },
+        {
+          "step": "Case fans",
+          "button": "Skip",
+          "why": null
+        },
+        {
+          "step": "Review"
+        }
+      ],
+      "review": {
+        "items": [
+          {
+            "label": "Processor",
+            "name": "Ryzen 5 7600",
+            "price": "€177.90",
+            "href": "https://www.skroutz.gr/s/40307498/AMD-Ryzen-5-7600-3-8GHz-Epexergastis-6-Pyrinon-gia-Socket-AM5-se-Kouti-me-PSyktra.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Motherboard",
+            "name": "Gigabyte B850M Gaming X WiFi 6E",
+            "price": "€172.10",
+            "href": "https://www.bestprice.gr/item/2160275797/gigabyte-b850m-gaming-x-wifi6e-motherboard-micro-atx-me-amd-am5-socket.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Memory (RAM)",
+            "name": "DDR5 32GB (1×32GB) 5600MHz",
+            "price": "€280.47",
+            "href": "https://www.bestprice.gr/item/2160475229/lexar-32gb-ddr5-ram-5600mhz-c46-ld5s32g56c46st-bgs.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Graphics card",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "CPU cooler",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Storage",
+            "name": "Samsung 990 Pro Heatsink 2TB",
+            "price": "€239.99",
+            "href": "https://www.snif.gr/showproduct/34671499/diskos-ssd-samsung-990-pro-with-heatsink-nvme-m-2",
+            "fit": "Snif"
+          },
+          {
+            "label": "Case",
+            "name": "Be Quiet Pure Base 600",
+            "price": "€64.05",
+            "href": "https://www.bestprice.gr/item/2154998381/be-quiet-pure-base-600-silver-midi-tower-kouti-ypologisti.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Case fans",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Power supply",
+            "name": "850W Gold",
+            "price": "€55.99",
+            "href": "https://www.bestprice.gr/item/2164321942/adata-xpg-kyber-ii-850w-trofodotiko-ypologisti-atch-3-1-80-plus-gold.html",
+            "fit": "Fits"
+          }
+        ],
+        "total": "€990.50",
+        "link": "http://localhost:4180/#builder?cpu=Ryzen+5+7600%7Ctrue&mobo=gigabyteb850mgamingxwifi6e&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop&storage=samsung990proheatsink2tbssd&case=bequietpurebase600&psu=850W+Gold+ATX"
+      },
+      "notes": "Total · 6 parts\n€990.50\nDetails",
+      "errors": [],
+      "shots": [
+        "009-g2-en-360-review-skipped.jpg"
+      ]
+    }
+  }
+}

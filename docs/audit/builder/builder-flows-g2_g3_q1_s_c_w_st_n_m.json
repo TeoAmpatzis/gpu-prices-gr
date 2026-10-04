@@ -1,0 +1,2014 @@
+{
+  "el-1366": {
+    "g2": {
+      "failed": "TimeoutError: locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('section[aria-labelledby=\"step-title\"]').getByRole('button', { name: /^(Next|Skip|Επόμενο|Παράλειψη)$/ }).last()\u001b[22m\n"
+    },
+    "g3": {
+      "cpu1": {
+        "name": "Ryzen 7 9700X",
+        "priceText": "234,90 €",
+        "label": "e-shop.gr"
+      },
+      "board": {
+        "name": "Gigabyte B850M Gaming X WiFi 6E",
+        "priceText": "172,10 €",
+        "label": "Χωράει"
+      },
+      "ram": {
+        "name": "DDR5 32GB (1×32GB) 5600MHz",
+        "priceText": "280,47 €",
+        "label": "Χωράει"
+      },
+      "countOn": "0 εμφανίζονται · 4 ασύμβατα κρυμμένα",
+      "intelState": {
+        "disabled": "true",
+        "chooseDisabled": true,
+        "reason": "Socket LGA1700 ≠ μητρικής AM5."
+      },
+      "cpu2": null,
+      "summaryAfter": "Η σύνθεσή σας\nΚαθαρισμός\nΣύνολο · 2 εξαρτήματα\n452,57 €\nΧαμηλότερη τιμή ανά προϊόν, χωρίς μεταφορικά· κάθε εξάρτημα μπορεί να είναι από διαφορετικό κατάστημα.\nΌλα ταιριάζουν\nCPU\n—\nΜητρική\nGigabyte B850M Gaming X WiFi 6E\n172,10 €\nRAM\nDDR5 32GB (1×32GB) 5600MHz\n280,47 €\nGPU\n—\nΨύκτρα\n—\nΔίσκος\n—\nΚουτί\n—\nΑνεμιστήρες\n—\nΤροφοδοτικό\n—\nΔιαλέξτε επεξεργαστή.\nΔιαλέξτε δίσκο (SSD).\nΔιαλέξτε κουτί.\nΔιαλέξτε τροφοδοτικό.",
+      "chosenBoardVisibleWithOnlyCompatible": 1,
+      "boardCount": "780 εμφανίζονται · 243 ασύμβατα κρυμμένα",
+      "clashBoardCount": "449 εμφανίζονται · 574 ασύμβατα κρυμμένα",
+      "clashChosenVisible": 0,
+      "clashChosenVisibleOff": 0,
+      "clashSummary": "Η σύνθεσή σας\nΚαθαρισμός\nΒλέπετε μια σύνθεση από σύνδεσμο. Η δική σας αποθηκευμένη σύνθεση μένει ως έχει μέχρι να αλλάξετε κάτι εδώ.\nΣύνολο · 2 εξαρτήματα\n336,30 €\nΧαμηλότερη τιμή ανά προϊόν, χωρίς μεταφορικά· κάθε εξάρτημα μπορεί να είναι από διαφορετικό κατάστημα.\nΠροτεινόμενο τροφοδοτικό: ≥ 350 W · CPU TDP 65 W\n1 ασύμβατα\nCPU\nRyzen 7 9700X\n234,90 €\nΜητρική\nAsus Prime B760-Plus D4\n101,40 €\nRAM\n—\nGPU\n—\nΨύκτρα\n—\nΔίσκος\n—\nΚουτί\n—\nΑνεμιστήρες\n—\nΤροφοδοτικό\n—\nΔιαλέξτε μνήμη RAM.\nΔιαλέξτε δίσκο (SSD).\nΔιαλέξτε κουτί.\nΔιαλέξτε τροφοδοτικό.\nΟ επεξεργαστής δεν έχει ψύκτρα: διαλέξτε μία.\nΑσυμβατότητα: επεξεργαστής και μητρική δεν ταιριάζουν· αλλάξτε ένα από τα δύο.",
+      "saved": "{\"mobo\":\"gigabyteb850mgamingxwifi6e\",\"ram\":\"DDR5 32GB (1×32GB) 5600MHz Desktop\"}",
+      "errors": [],
+      "shots": [
+        "001-g3-el-1366-intel-hidden.jpg",
+        "002-g3-el-1366-intel-greyed.jpg",
+        "003-g3-el-1366-after-intel.jpg",
+        "004-g3-el-1366-board-step.jpg",
+        "005-g3-el-1366-clashing-board-step.jpg"
+      ]
+    },
+    "q1": {
+      "cpu": "Celeron G3930",
+      "board": "ASRock Q270 PRO BTC",
+      "ram1": "DDR4 8GB (1×8GB) 1600MHz",
+      "ram2": "DDR4 8GB (1×8GB) 2400MHz",
+      "afterReplace": "DDR4 8GB (1×8GB) 2400MHz",
+      "afterRemove": "Μνήμες RAM — Επιλογή",
+      "emptyText": "0 επιλογές Κανένα συμβατό προϊόν με την τρέχουσα επιλογή. Αφαιρέστε κάποιο εξάρτημα για περισσότερες επιλογές.",
+      "guidedStep": "Χρήση και προϋπολογισμός",
+      "progressDone": 2,
+      "summaryGuided": [
+        "CPU Celeron G3930 21,75 €",
+        "Μητρική ASRock Q270 PRO BTC 249,00 €",
+        "RAM —",
+        "GPU —",
+        "Ψύκτρα —",
+        "Δίσκος —",
+        "Κουτί —",
+        "Ανεμιστήρες —",
+        "Τροφοδοτικό —"
+      ],
+      "saved": "{\"cpu\":\"Celeron G3930|false\",\"mobo\":\"asrockq270probtc\"}",
+      "errors": [],
+      "shots": [
+        "006-q1-el-1366-replaced.jpg",
+        "007-q1-el-1366-empty-search.jpg",
+        "008-q1-el-1366-switched-to-guided.jpg"
+      ]
+    },
+    "s": {
+      "picks": {
+        "cpu": {
+          "name": "Core Ultra 5 225",
+          "priceText": "161,99 €",
+          "label": "BestPrice"
+        },
+        "board": {
+          "name": "Asus PRIME Z890-P WiFi",
+          "priceText": "209,90 €",
+          "label": "Χωράει"
+        },
+        "ram": {
+          "name": "DDR5 32GB (1×32GB) 5600MHz",
+          "priceText": "280,47 €",
+          "label": "Χωράει"
+        }
+      },
+      "savedA": "{\"cpu\":\"Core Ultra 5 225|?\",\"mobo\":\"asusprimez890pwifi\",\"ram\":\"DDR5 32GB (1×32GB) 5600MHz Desktop\"}",
+      "rowsAfterReload": [
+        "CPU —",
+        "Μητρική —",
+        "RAM —",
+        "GPU —",
+        "Ψύκτρα —",
+        "Δίσκος —",
+        "Κουτί —",
+        "Ανεμιστήρες —",
+        "Τροφοδοτικό —"
+      ],
+      "link": "http://localhost:4180/#builder?cpu=Core+Ultra+5+225%7C%3F&mobo=asusprimez890pwifi&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop",
+      "reviewA": {
+        "items": [
+          {
+            "label": "Επεξεργαστής",
+            "name": "Core Ultra 5 225",
+            "price": "161,99 €",
+            "href": "https://www.bestprice.gr/item/2160277450/intel-core-ultra-5-225-box-epexergastis-10-pyrinon-gia-socket-1851.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μητρική",
+            "name": "Asus PRIME Z890-P WiFi",
+            "price": "209,90 €",
+            "href": "https://www.e-shop.gr/mitriki-asus-prime-z890-pwifi-d5-lga1851-retail-p-PER.608655",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μνήμη RAM",
+            "name": "DDR5 32GB (1×32GB) 5600MHz",
+            "price": "280,47 €",
+            "href": "https://www.bestprice.gr/item/2160475229/lexar-32gb-ddr5-ram-5600mhz-c46-ld5s32g56c46st-bgs.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Κάρτα γραφικών",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Ψύκτρα επεξεργαστή",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Αποθήκευση",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Κουτί",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Ανεμιστήρες κουτιού",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Τροφοδοτικό",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          }
+        ],
+        "total": "652,36 €",
+        "link": "http://localhost:4180/#builder?cpu=Core+Ultra+5+225%7C%3F&mobo=asusprimez890pwifi&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop"
+      },
+      "reviewB": {
+        "items": [
+          {
+            "label": "Επεξεργαστής",
+            "name": "Core Ultra 5 225",
+            "price": "161,99 €",
+            "href": "https://www.bestprice.gr/item/2160277450/intel-core-ultra-5-225-box-epexergastis-10-pyrinon-gia-socket-1851.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μητρική",
+            "name": "Asus PRIME Z890-P WiFi",
+            "price": "209,90 €",
+            "href": "https://www.e-shop.gr/mitriki-asus-prime-z890-pwifi-d5-lga1851-retail-p-PER.608655",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μνήμη RAM",
+            "name": "DDR5 32GB (1×32GB) 5600MHz",
+            "price": "280,47 €",
+            "href": "https://www.bestprice.gr/item/2160475229/lexar-32gb-ddr5-ram-5600mhz-c46-ld5s32g56c46st-bgs.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Κάρτα γραφικών",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Ψύκτρα επεξεργαστή",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Αποθήκευση",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Κουτί",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Ανεμιστήρες κουτιού",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Τροφοδοτικό",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          }
+        ],
+        "total": "652,36 €",
+        "link": "http://localhost:4180/#builder?cpu=Core+Ultra+5+225%7C%3F&mobo=asusprimez890pwifi&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop"
+      },
+      "notice": "Βλέπετε μια σύνθεση από σύνδεσμο. Η δική σας αποθηκευμένη σύνθεση μένει ως έχει μέχρι να αλλάξετε κάτι εδώ.",
+      "savedInClean": null,
+      "savedWhileViewing": "{\"cpu\":\"Core Ultra 5 225|?\",\"mobo\":\"asusprimez890pwifi\",\"ram\":\"DDR5 32GB (1×32GB) 5600MHz Desktop\"}",
+      "sharedReview": {
+        "items": [
+          {
+            "label": "Επεξεργαστής",
+            "name": "Core i5-14400F",
+            "price": "133,34 €",
+            "href": "https://www.bestprice.gr/item/2159493895/intel-core-i5-14400f-c0-tray-epexergastis-10-pyrinon-gia-socket-1700.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μητρική",
+            "name": "Asus Prime B760-Plus D4",
+            "price": "101,40 €",
+            "href": "https://www.bestprice.gr/item/2158207810/asus-prime-b760-plus-d4-motherboard-atx-me-intel-1700-socket.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μνήμη RAM",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Κάρτα γραφικών",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Ψύκτρα επεξεργαστή",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Αποθήκευση",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Κουτί",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Ανεμιστήρες κουτιού",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Τροφοδοτικό",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          }
+        ],
+        "total": "234,74 €",
+        "link": "http://localhost:4180/#builder?cpu=Core+i5-14400F%7Cfalse&mobo=asusprimeb760plusd4"
+      },
+      "savedAfterChange": "{\"cpu\":\"Core i5-14400F|false\",\"mobo\":\"asusprimeb760plusd4\",\"ram\":\"DDR4 32GB (2×16GB) 3600MHz Desktop\"}",
+      "hashAfterChange": "#builder?step=ram",
+      "errors": [],
+      "shots": [
+        "009-s-el-1366-shared-clean-profile.jpg"
+      ]
+    },
+    "c": {
+      "review": {
+        "items": [
+          {
+            "label": "Επεξεργαστής",
+            "name": "Ryzen 7 9700X",
+            "price": "234,90 €",
+            "href": "https://www.e-shop.gr/cpu-amd-ryzen-7-9700x-55ghz-8-core-tray-p-PER.275274",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μητρική",
+            "name": "Asus Prime X870-P WiFi",
+            "price": "242,06 €",
+            "href": "https://www.bestprice.gr/item/2160053961/asus-prime-x870-p-wifi-motherboard-atx-me-amd-am5-socket.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μνήμη RAM",
+            "name": "DDR5 32GB (2×16GB) 6000MHz",
+            "price": "466,35 €",
+            "href": "https://www.bestprice.gr/item/2157866269/patriot-viper-venom-rgb-32gb-ddr5-ram-6000mhz-c36-black-pvvr532g600c36k.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Κάρτα γραφικών",
+            "name": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+            "price": "847,96 €",
+            "href": "https://www.bestprice.gr/item/2160617918/zotac-geforce-rtx-5070-12gb-gddr7-twin-edge-oc-karta-grafikon.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Ψύκτρα επεξεργαστή",
+            "name": "Endorfy Fera 5",
+            "price": "23,08 €",
+            "href": "https://www.bestprice.gr/item/2158168838/endorfy-fera-5.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Αποθήκευση",
+            "name": "Samsung 990 Pro 1TB",
+            "price": "205,79 €",
+            "href": "https://www.bestprice.gr/item/2158093832/samsung-990-pro-ssd-1tb-m-2-nvme-pci-express-4-0.html",
+            "fit": "BestPrice"
+          },
+          {
+            "label": "Κουτί",
+            "name": "Kolink Observatory MX Mesh",
+            "price": "51,10 €",
+            "href": "https://www.bestprice.gr/item/2159268101/kolink-observatory-mx-mesh-argb-tempered-glass-black-white-gaming-midi-tower-kouti-ypologisti-me-plaino-parathyro.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Ανεμιστήρες κουτιού",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Τροφοδοτικό",
+            "name": "750W Gold",
+            "price": "50,52 €",
+            "href": "https://www.bestprice.gr/item/2164295415/adata-xpg-kyber-ii-750w-trofodotiko-ypologisti-atch-3-1-80-plus-gold.html",
+            "fit": "Χωράει"
+          }
+        ],
+        "total": "2.121,76 €",
+        "link": "http://localhost:4180/#builder?cpu=Ryzen+7+9700X%7Cfalse&mobo=asusprimex870pwifi&ram=DDR5+32GB+%282%C3%9716GB%29+6000MHz+Desktop&gpu=bestprice%3A2160617918&cooler=endorfyfera5&storage=samsung990pro1tbssd&case=kolinkobservatorymxmesh&psu=750W+Gold+ATX"
+      },
+      "clipboard": "BuildDraft.gr · Η σύνθεσή μου\r\n\r\nΕπεξεργαστής: Ryzen 7 9700X · 234,90 € (e-shop.gr) https://www.e-shop.gr/cpu-amd-ryzen-7-9700x-55ghz-8-core-tray-p-PER.275274\r\nΜητρική: Asus Prime X870-P WiFi · 242,06 € (BestPrice) https://www.bestprice.gr/item/2160053961/asus-prime-x870-p-wifi-motherboard-atx-me-amd-am5-socket.html\r\nΜνήμη RAM: DDR5 32GB (2×16GB) 6000MHz · 466,35 € (BestPrice) https://www.bestprice.gr/item/2157866269/patriot-viper-venom-rgb-32gb-ddr5-ram-6000mhz-c36-black-pvvr532g600c36k.html\r\nΚάρτα γραφικών: Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC · 847,96 € (BestPrice) https://www.bestprice.gr/item/2160617918/zotac-geforce-rtx-5070-12gb-gddr7-twin-edge-oc-karta-grafikon.html\r\nΨύκτρα επεξεργαστή: Endorfy Fera 5 · 23,08 € (BestPrice) https://www.bestprice.gr/item/2158168838/endorfy-fera-5.html\r\nΑποθήκευση: Samsung 990 Pro 1TB · 205,79 € (BestPrice) https://www.bestprice.gr/item/2158093832/samsung-990-pro-ssd-1tb-m-2-nvme-pci-express-4-0.html\r\nΚουτί: Kolink Observatory MX Mesh · 51,10 € (BestPrice) https://www.bestprice.gr/item/2159268101/kolink-observatory-mx-mesh-argb-tempered-glass-black-white-gaming-midi-tower-kouti-ypologisti-me-plaino-parathyro.html\r\nΤροφοδοτικό: 750W Gold · 50,52 € (BestPrice) https://www.bestprice.gr/item/2164295415/adata-xpg-kyber-ii-750w-trofodotiko-ypologisti-atch-3-1-80-plus-gold.html\r\n\r\nΣύνολο: 2.121,76 €\r\nΧαμηλότερες τιμές ανά προϊόν, χωρίς μεταφορικά · 4/10/2026\r\nhttp://localhost:4180/#builder?cpu=Ryzen+7+9700X%7Cfalse&mobo=asusprimex870pwifi&ram=DDR5+32GB+%282%C3%9716GB%29+6000MHz+Desktop&gpu=bestprice%3A2160617918&cooler=endorfyfera5&storage=samsung990pro1tbssd&case=kolinkobservatorymxmesh&psu=750W+Gold+ATX",
+      "errors": [],
+      "shots": [
+        "010-c-el-1366.jpg"
+      ]
+    },
+    "w": {
+      "S12": {
+        "psuLine": "Προτεινόμενο τροφοδοτικό: ≥ 850 W · CPU TDP 65 W",
+        "status": "Χαμηλότερη τιμή ανά προϊόν, χωρίς μεταφορικά· κάθε εξάρτημα μπορεί να είναι από διαφορετικό κατάστημα."
+      },
+      "S25": {
+        "psuLine": "Προτεινόμενο τροφοδοτικό: ≥ 650 W · CPU TDP 65 W",
+        "status": "Χαμηλότερη τιμή ανά προϊόν, χωρίς μεταφορικά· κάθε εξάρτημα μπορεί να είναι από διαφορετικό κατάστημα."
+      },
+      "S59": {
+        "psuLine": "Προτεινόμενο τροφοδοτικό: ≥ 750 W · CPU TDP 125 W",
+        "status": "Χαμηλότερη τιμή ανά προϊόν, χωρίς μεταφορικά· κάθε εξάρτημα μπορεί να είναι από διαφορετικό κατάστημα."
+      },
+      "S62": {
+        "psuLine": "Προτεινόμενο τροφοδοτικό: ≥ 1100 W · CPU TDP 170 W",
+        "status": "Χαμηλότερη τιμή ανά προϊόν, χωρίς μεταφορικά· κάθε εξάρτημα μπορεί να είναι από διαφορετικό κατάστημα."
+      },
+      "S63": {
+        "psuLine": "Προτεινόμενο τροφοδοτικό: ≥ 450 W · CPU TDP 125 W",
+        "status": "Χαμηλότερη τιμή ανά προϊόν, χωρίς μεταφορικά· κάθε εξάρτημα μπορεί να είναι από διαφορετικό κατάστημα."
+      },
+      "S64": {
+        "psuLine": "Προτεινόμενο τροφοδοτικό: ≥ 850 W · CPU TDP 120 W",
+        "status": "Χαμηλότερη τιμή ανά προϊόν, χωρίς μεταφορικά· κάθε εξάρτημα μπορεί να είναι από διαφορετικό κατάστημα."
+      }
+    },
+    "st": {
+      "storageCount": "1322 εμφανίζονται",
+      "storageFirst": "Samsung 990 Pro Heatsink 2TB\nNVMe Gen4 · M.2 2280 · 7450 MB/s · DRAM · 1200 TBW · 120,00 €/TB\n239,99 €\nSnif\nΕπιλογή",
+      "caseAdvice": "Ανεμιστήρες για αυτή τη σύνθεση\nΒάση: τουλάχιστον 2 εισαγωγής μπροστά και 1 εξαγωγής πίσω· σε σύνθεση υψηλής ισχύος 3 μπροστά, 1 πίσω και 2 πάνω.\nΤα μεγέθη εξαρτώνται από το κουτί· 120 mm χωράνε σε κάθε θέση.",
+      "caseCardFans": "Ανεμιστήρες στο κουτί: δεν αναφέρεται\nΣύνθεση υψηλής ισχύος: προσθέστε 3 × 120 mm εισαγωγή μπροστά και 1 × 120 mm εξαγωγή πίσω (και 2 εξαγωγής πάνω, αν το κουτί έχει θέσεις εκεί).",
+      "fanAdvice": "Ανεμιστήρες για αυτή τη σύνθεση\nΣύνθεση υψηλής ισχύος: προσθέστε 1 × 120 mm εξαγωγή πίσω και 2 × 120 mm εξαγωγή πάνω.\nΕισαγωγή και εξαγωγή: ανεμιστήρες ροής αέρα. Πίσω από γυάλινο ή κλειστό μπροστινό πάνελ και σε ψυγεία βοηθούν οι ανεμιστήρες στατικής πίεσης.\nΟ τύπος σημειώνεται μόνο όταν τον λέει το όνομα του προϊόντος (π.χ. Arctic P = πίεση, F = ροή).\nΣύνδεση: οι 4-pin PWM ρυθμίζουν στροφές από τη μητρική· οι 3-pin με την τάση. Οι μητρικές έχουν συνήθως 3–6 υποδοχές ανεμιστήρα· για περισσότερους, hub ή splitter. (Ο αριθμός υποδοχών της μητρικής δεν υπάρχει ακόμα στα στοιχεία μας.)",
+      "fanChips": [
+        "Μόνο συμβατά",
+        "120 mm"
+      ],
+      "fanCount": "1295 εμφανίζονται · 4 ασύμβατα κρυμμένα",
+      "errors": [],
+      "shots": [
+        "011-st-el-1366-storage.jpg",
+        "012-st-el-1366-case-step.jpg",
+        "013-st-el-1366-fan-step.jpg"
+      ]
+    },
+    "n": {
+      "slowStorage": {
+        "during": "Βήμα 7 από 11 Αποθήκευση Ένας NVMe SSD για το σύστημα και τα προγράμματα: 1TB είναι καλή βάση, 2TB για πολλά παιχνίδια. Ένας Gen4 αρκεί για όλους· ένας Gen5 θέλει μητρική με υποδοχή M.2 PCIe 5.0 για όλη την ταχύτητά του. Ο σκληρός δίσκος (HDD) δίνει φθηνό χώρο για αρχεία, όχι για το σύστημα· ένας 3.",
+        "readyAfterMs": 8132,
+        "errors": [],
+        "shots": [
+          "014-n-el-1366-storage-loading.jpg"
+        ]
+      },
+      "failedStorage": {
+        "after12s": "Βήμα 7 από 11 Αποθήκευση Ένας NVMe SSD για το σύστημα και τα προγράμματα: 1TB είναι καλή βάση, 2TB για πολλά παιχνίδια. Ένας Gen4 αρκεί για όλους· ένας Gen5 θέλει μητρική με υποδοχή M.2 PCIe 5.0 για όλη την ταχύτητά του. Ο σκληρός δίσκος (HDD) δίνει φθηνό χώρο για αρχεία, όχι για το σύστημα· ένας 3.",
+        "errors": [
+          "console: Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+        ],
+        "shots": [
+          "015-n-el-1366-storage-failed.jpg"
+        ]
+      },
+      "savedDriveLate": {
+        "earlyRows": [
+          "CPU Ryzen 7 9700X 234,90 €",
+          "Μητρική —",
+          "RAM —",
+          "GPU —",
+          "Ψύκτρα —",
+          "Δίσκος —",
+          "Κουτί —",
+          "Ανεμιστήρες —",
+          "Τροφοδοτικό —"
+        ],
+        "savedEarly": "{\"cpu\":\"Ryzen 7 9700X|false\",\"storage\":\"samsung990pro1tbssd\"}",
+        "lateRows": [
+          "CPU Ryzen 7 9700X 234,90 €",
+          "Μητρική —",
+          "RAM —",
+          "GPU —",
+          "Ψύκτρα —",
+          "Δίσκος Samsung 990 Pro 1TB 205,79 €",
+          "Κουτί —",
+          "Ανεμιστήρες —",
+          "Τροφοδοτικό —"
+        ],
+        "savedLate": "{\"cpu\":\"Ryzen 7 9700X|false\",\"storage\":\"samsung990pro1tbssd\"}",
+        "errors": []
+      },
+      "copyBeforeExtra": {
+        "review": {
+          "items": [
+            {
+              "label": "Επεξεργαστής",
+              "name": "Ryzen 7 9700X",
+              "price": "234,90 €",
+              "href": null,
+              "fit": "Χωράει"
+            },
+            {
+              "label": "Μητρική",
+              "name": "Asus Prime X870-P WiFi",
+              "price": "242,06 €",
+              "href": null,
+              "fit": "Χωράει"
+            },
+            {
+              "label": "Μνήμη RAM",
+              "name": "DDR5 32GB (2×16GB) 6000MHz",
+              "price": "466,35 €",
+              "href": null,
+              "fit": "Χωράει"
+            },
+            {
+              "label": "Κάρτα γραφικών",
+              "name": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+              "price": "847,96 €",
+              "href": null,
+              "fit": "Χωράει"
+            },
+            {
+              "label": "Ψύκτρα επεξεργαστή",
+              "name": "Endorfy Fera 5",
+              "price": "23,08 €",
+              "href": null,
+              "fit": "Χωράει"
+            },
+            {
+              "label": "Αποθήκευση",
+              "name": "Samsung 990 Pro 1TB",
+              "price": "205,79 €",
+              "href": "https://www.bestprice.gr/item/2158093832/samsung-990-pro-ssd-1tb-m-2-nvme-pci-express-4-0.html",
+              "fit": "BestPrice"
+            },
+            {
+              "label": "Κουτί",
+              "name": "Kolink Observatory MX Mesh",
+              "price": "51,10 €",
+              "href": null,
+              "fit": "Χωράει"
+            },
+            {
+              "label": "Ανεμιστήρες κουτιού",
+              "name": "— · Επιλογή",
+              "price": null,
+              "href": null,
+              "fit": null
+            },
+            {
+              "label": "Τροφοδοτικό",
+              "name": "750W Gold",
+              "price": "50,52 €",
+              "href": null,
+              "fit": "Χωράει"
+            }
+          ],
+          "total": "2.121,76 €",
+          "link": "http://localhost:4180/#builder?cpu=Ryzen+7+9700X%7Cfalse&mobo=asusprimex870pwifi&ram=DDR5+32GB+%282%C3%9716GB%29+6000MHz+Desktop&gpu=bestprice%3A2160617918&cooler=endorfyfera5&storage=samsung990pro1tbssd&case=kolinkobservatorymxmesh&psu=750W+Gold+ATX"
+        },
+        "clipboard": "BuildDraft.gr · Η σύνθεσή μου\r\n\r\nΕπεξεργαστής: Ryzen 7 9700X · 234,90 € (e-shop.gr)\r\nΜητρική: Asus Prime X870-P WiFi · 242,06 € (BestPrice)\r\nΜνήμη RAM: DDR5 32GB (2×16GB) 6000MHz · 466,35 € (BestPrice)\r\nΚάρτα γραφικών: Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC · 847,96 € (BestPrice)\r\nΨύκτρα επεξεργαστή: Endorfy Fera 5 · 23,08 € (BestPrice)\r\nΑποθήκευση: Samsung 990 Pro 1TB · 205,79 € (BestPrice) https://www.bestprice.gr/item/2158093832/samsung-990-pro-ssd-1tb-m-2-nvme-pci-express-4-0.html\r\nΚουτί: Kolink Observatory MX Mesh · 51,10 € (BestPrice)\r\nΤροφοδοτικό: 750W Gold · 50,52 € (BestPrice)\r\n\r\nΣύνολο: 2.121,76 €\r\nΧαμηλότερες τιμές ανά προϊόν, χωρίς μεταφορικά · 4/10/2026\r\nhttp://localhost:4180/#builder?cpu=Ryzen+7+9700X%7Cfalse&mobo=asusprimex870pwifi&ram=DDR5+32GB+%282%C3%9716GB%29+6000MHz+Desktop&gpu=bestprice%3A2160617918&cooler=endorfyfera5&storage=samsung990pro1tbssd&case=kolinkobservatorymxmesh&psu=750W+Gold+ATX",
+        "errors": [],
+        "shots": [
+          "016-c-el-1366-slow-extra.jpg"
+        ]
+      }
+    },
+    "m": null
+  },
+  "en-1366": {
+    "g2": {
+      "failed": "TimeoutError: locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('section[aria-labelledby=\"step-title\"]').getByRole('button', { name: /^(Next|Skip|Επόμενο|Παράλειψη)$/ }).last()\u001b[22m\n"
+    },
+    "g3": {
+      "cpu1": {
+        "name": "Ryzen 7 9700X",
+        "priceText": "€234.90",
+        "label": "e-shop.gr"
+      },
+      "board": {
+        "name": "Gigabyte B850M Gaming X WiFi 6E",
+        "priceText": "€172.10",
+        "label": "Fits"
+      },
+      "ram": {
+        "name": "DDR5 32GB (1×32GB) 5600MHz",
+        "priceText": "€280.47",
+        "label": "Fits"
+      },
+      "countOn": "0 shown · 4 incompatible hidden",
+      "intelState": {
+        "disabled": "true",
+        "chooseDisabled": true,
+        "reason": "Socket LGA1700 ≠ the board's AM5."
+      },
+      "cpu2": null,
+      "summaryAfter": "Your build\nClear build\nTotal · 2 parts\n€452.57\nLowest price per product, before shipping; each part may come from a different shop.\nEverything fits\nCPU\n—\nBoard\nGigabyte B850M Gaming X WiFi 6E\n€172.10\nRAM\nDDR5 32GB (1×32GB) 5600MHz\n€280.47\nGPU\n—\nCooler\n—\nStorage\n—\nCase\n—\nFans\n—\nPSU\n—\nPick a processor.\nPick a drive (SSD).\nPick a case.\nPick a power supply.",
+      "chosenBoardVisibleWithOnlyCompatible": 1,
+      "boardCount": "780 shown · 243 incompatible hidden",
+      "clashBoardCount": "449 shown · 574 incompatible hidden",
+      "clashChosenVisible": 0,
+      "clashChosenVisibleOff": 0,
+      "clashSummary": "Your build\nClear build\nYou're viewing a build from a link. Your own saved build stays as it is until you change something here.\nTotal · 2 parts\n€336.30\nLowest price per product, before shipping; each part may come from a different shop.\nRecommended PSU: ≥ 350 W · CPU TDP 65 W\n1 incompatible\nCPU\nRyzen 7 9700X\n€234.90\nBoard\nAsus Prime B760-Plus D4\n€101.40\nRAM\n—\nGPU\n—\nCooler\n—\nStorage\n—\nCase\n—\nFans\n—\nPSU\n—\nPick memory (RAM).\nPick a drive (SSD).\nPick a case.\nPick a power supply.\nThe CPU has no cooler: pick one.\nIncompatible: the CPU and the motherboard don't go together; change one of them.",
+      "saved": "{\"mobo\":\"gigabyteb850mgamingxwifi6e\",\"ram\":\"DDR5 32GB (1×32GB) 5600MHz Desktop\"}",
+      "errors": [],
+      "shots": [
+        "017-g3-en-1366-intel-hidden.jpg",
+        "018-g3-en-1366-intel-greyed.jpg",
+        "019-g3-en-1366-after-intel.jpg",
+        "020-g3-en-1366-board-step.jpg",
+        "021-g3-en-1366-clashing-board-step.jpg"
+      ]
+    },
+    "q1": {
+      "cpu": "Celeron G3930",
+      "board": "ASRock Q270 PRO BTC",
+      "ram1": "DDR4 8GB (1×8GB) 1600MHz",
+      "ram2": "DDR4 8GB (1×8GB) 2400MHz",
+      "afterReplace": "DDR4 8GB (1×8GB) 2400MHz",
+      "afterRemove": "Memory (RAM) — Choose",
+      "emptyText": "0 options Nothing compatible with the current build. Remove a part to see more options.",
+      "guidedStep": "Use and budget",
+      "progressDone": 2,
+      "summaryGuided": [
+        "CPU Celeron G3930 €21.75",
+        "Board ASRock Q270 PRO BTC €249.00",
+        "RAM —",
+        "GPU —",
+        "Cooler —",
+        "Storage —",
+        "Case —",
+        "Fans —",
+        "PSU —"
+      ],
+      "saved": "{\"cpu\":\"Celeron G3930|false\",\"mobo\":\"asrockq270probtc\"}",
+      "errors": [],
+      "shots": [
+        "022-q1-en-1366-replaced.jpg",
+        "023-q1-en-1366-empty-search.jpg",
+        "024-q1-en-1366-switched-to-guided.jpg"
+      ]
+    },
+    "s": {
+      "picks": {
+        "cpu": {
+          "name": "Core Ultra 5 225",
+          "priceText": "€161.99",
+          "label": "BestPrice"
+        },
+        "board": {
+          "name": "Asus PRIME Z890-P WiFi",
+          "priceText": "€209.90",
+          "label": "Fits"
+        },
+        "ram": {
+          "name": "DDR5 32GB (1×32GB) 5600MHz",
+          "priceText": "€280.47",
+          "label": "Fits"
+        }
+      },
+      "savedA": "{\"cpu\":\"Core Ultra 5 225|?\",\"mobo\":\"asusprimez890pwifi\",\"ram\":\"DDR5 32GB (1×32GB) 5600MHz Desktop\"}",
+      "rowsAfterReload": [
+        "CPU Core Ultra 5 225 €161.99",
+        "Board Asus PRIME Z890-P WiFi €209.90",
+        "RAM DDR5 32GB (1×32GB) 5600MHz €280.47",
+        "GPU —",
+        "Cooler —",
+        "Storage —",
+        "Case —",
+        "Fans —",
+        "PSU —"
+      ],
+      "link": "http://localhost:4180/#builder?cpu=Core+Ultra+5+225%7C%3F&mobo=asusprimez890pwifi&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop",
+      "reviewA": {
+        "items": [
+          {
+            "label": "Processor",
+            "name": "Core Ultra 5 225",
+            "price": "€161.99",
+            "href": "https://www.bestprice.gr/item/2160277450/intel-core-ultra-5-225-box-epexergastis-10-pyrinon-gia-socket-1851.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Motherboard",
+            "name": "Asus PRIME Z890-P WiFi",
+            "price": "€209.90",
+            "href": "https://www.e-shop.gr/mitriki-asus-prime-z890-pwifi-d5-lga1851-retail-p-PER.608655",
+            "fit": "Fits"
+          },
+          {
+            "label": "Memory (RAM)",
+            "name": "DDR5 32GB (1×32GB) 5600MHz",
+            "price": "€280.47",
+            "href": "https://www.bestprice.gr/item/2160475229/lexar-32gb-ddr5-ram-5600mhz-c46-ld5s32g56c46st-bgs.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Graphics card",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "CPU cooler",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Storage",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Case",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Case fans",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Power supply",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          }
+        ],
+        "total": "€652.36",
+        "link": "http://localhost:4180/#builder?cpu=Core+Ultra+5+225%7C%3F&mobo=asusprimez890pwifi&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop"
+      },
+      "reviewB": {
+        "items": [
+          {
+            "label": "Processor",
+            "name": "Core Ultra 5 225",
+            "price": "€161.99",
+            "href": "https://www.bestprice.gr/item/2160277450/intel-core-ultra-5-225-box-epexergastis-10-pyrinon-gia-socket-1851.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Motherboard",
+            "name": "Asus PRIME Z890-P WiFi",
+            "price": "€209.90",
+            "href": "https://www.e-shop.gr/mitriki-asus-prime-z890-pwifi-d5-lga1851-retail-p-PER.608655",
+            "fit": "Fits"
+          },
+          {
+            "label": "Memory (RAM)",
+            "name": "DDR5 32GB (1×32GB) 5600MHz",
+            "price": "€280.47",
+            "href": "https://www.bestprice.gr/item/2160475229/lexar-32gb-ddr5-ram-5600mhz-c46-ld5s32g56c46st-bgs.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Graphics card",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "CPU cooler",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Storage",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Case",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Case fans",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Power supply",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          }
+        ],
+        "total": "€652.36",
+        "link": "http://localhost:4180/#builder?cpu=Core+Ultra+5+225%7C%3F&mobo=asusprimez890pwifi&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop"
+      },
+      "notice": "You're viewing a build from a link. Your own saved build stays as it is until you change something here.",
+      "savedInClean": null,
+      "savedWhileViewing": "{\"cpu\":\"Core Ultra 5 225|?\",\"mobo\":\"asusprimez890pwifi\",\"ram\":\"DDR5 32GB (1×32GB) 5600MHz Desktop\"}",
+      "sharedReview": {
+        "items": [
+          {
+            "label": "Processor",
+            "name": "Core i5-14400F",
+            "price": "€133.34",
+            "href": "https://www.bestprice.gr/item/2159493895/intel-core-i5-14400f-c0-tray-epexergastis-10-pyrinon-gia-socket-1700.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Motherboard",
+            "name": "Asus Prime B760-Plus D4",
+            "price": "€101.40",
+            "href": "https://www.bestprice.gr/item/2158207810/asus-prime-b760-plus-d4-motherboard-atx-me-intel-1700-socket.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Memory (RAM)",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Graphics card",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "CPU cooler",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Storage",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Case",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Case fans",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Power supply",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          }
+        ],
+        "total": "€234.74",
+        "link": "http://localhost:4180/#builder?cpu=Core+i5-14400F%7Cfalse&mobo=asusprimeb760plusd4"
+      },
+      "savedAfterChange": "{\"cpu\":\"Core i5-14400F|false\",\"mobo\":\"asusprimeb760plusd4\",\"ram\":\"DDR4 32GB (2×16GB) 3600MHz Desktop\"}",
+      "hashAfterChange": "#builder?step=ram",
+      "errors": [],
+      "shots": [
+        "025-s-en-1366-shared-clean-profile.jpg"
+      ]
+    },
+    "c": {
+      "review": {
+        "items": [
+          {
+            "label": "Processor",
+            "name": "Ryzen 7 9700X",
+            "price": "€234.90",
+            "href": "https://www.e-shop.gr/cpu-amd-ryzen-7-9700x-55ghz-8-core-tray-p-PER.275274",
+            "fit": "Fits"
+          },
+          {
+            "label": "Motherboard",
+            "name": "Asus Prime X870-P WiFi",
+            "price": "€242.06",
+            "href": "https://www.bestprice.gr/item/2160053961/asus-prime-x870-p-wifi-motherboard-atx-me-amd-am5-socket.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Memory (RAM)",
+            "name": "DDR5 32GB (2×16GB) 6000MHz",
+            "price": "€466.35",
+            "href": "https://www.bestprice.gr/item/2157866269/patriot-viper-venom-rgb-32gb-ddr5-ram-6000mhz-c36-black-pvvr532g600c36k.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Graphics card",
+            "name": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+            "price": "€847.96",
+            "href": "https://www.bestprice.gr/item/2160617918/zotac-geforce-rtx-5070-12gb-gddr7-twin-edge-oc-karta-grafikon.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "CPU cooler",
+            "name": "Endorfy Fera 5",
+            "price": "€23.08",
+            "href": "https://www.bestprice.gr/item/2158168838/endorfy-fera-5.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Storage",
+            "name": "Samsung 990 Pro 1TB",
+            "price": "€205.79",
+            "href": "https://www.bestprice.gr/item/2158093832/samsung-990-pro-ssd-1tb-m-2-nvme-pci-express-4-0.html",
+            "fit": "BestPrice"
+          },
+          {
+            "label": "Case",
+            "name": "Kolink Observatory MX Mesh",
+            "price": "€51.10",
+            "href": "https://www.bestprice.gr/item/2159268101/kolink-observatory-mx-mesh-argb-tempered-glass-black-white-gaming-midi-tower-kouti-ypologisti-me-plaino-parathyro.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Case fans",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Power supply",
+            "name": "750W Gold",
+            "price": "€50.52",
+            "href": "https://www.bestprice.gr/item/2164295415/adata-xpg-kyber-ii-750w-trofodotiko-ypologisti-atch-3-1-80-plus-gold.html",
+            "fit": "Fits"
+          }
+        ],
+        "total": "€2,121.76",
+        "link": "http://localhost:4180/#builder?cpu=Ryzen+7+9700X%7Cfalse&mobo=asusprimex870pwifi&ram=DDR5+32GB+%282%C3%9716GB%29+6000MHz+Desktop&gpu=bestprice%3A2160617918&cooler=endorfyfera5&storage=samsung990pro1tbssd&case=kolinkobservatorymxmesh&psu=750W+Gold+ATX"
+      },
+      "clipboard": "BuildDraft.gr · My build\r\n\r\nProcessor: Ryzen 7 9700X · €234.90 (e-shop.gr) https://www.e-shop.gr/cpu-amd-ryzen-7-9700x-55ghz-8-core-tray-p-PER.275274\r\nMotherboard: Asus Prime X870-P WiFi · €242.06 (BestPrice) https://www.bestprice.gr/item/2160053961/asus-prime-x870-p-wifi-motherboard-atx-me-amd-am5-socket.html\r\nMemory (RAM): DDR5 32GB (2×16GB) 6000MHz · €466.35 (BestPrice) https://www.bestprice.gr/item/2157866269/patriot-viper-venom-rgb-32gb-ddr5-ram-6000mhz-c36-black-pvvr532g600c36k.html\r\nGraphics card: Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC · €847.96 (BestPrice) https://www.bestprice.gr/item/2160617918/zotac-geforce-rtx-5070-12gb-gddr7-twin-edge-oc-karta-grafikon.html\r\nCPU cooler: Endorfy Fera 5 · €23.08 (BestPrice) https://www.bestprice.gr/item/2158168838/endorfy-fera-5.html\r\nStorage: Samsung 990 Pro 1TB · €205.79 (BestPrice) https://www.bestprice.gr/item/2158093832/samsung-990-pro-ssd-1tb-m-2-nvme-pci-express-4-0.html\r\nCase: Kolink Observatory MX Mesh · €51.10 (BestPrice) https://www.bestprice.gr/item/2159268101/kolink-observatory-mx-mesh-argb-tempered-glass-black-white-gaming-midi-tower-kouti-ypologisti-me-plaino-parathyro.html\r\nPower supply: 750W Gold · €50.52 (BestPrice) https://www.bestprice.gr/item/2164295415/adata-xpg-kyber-ii-750w-trofodotiko-ypologisti-atch-3-1-80-plus-gold.html\r\n\r\nTotal: €2,121.76\r\nLowest price per product, before shipping · 04/10/2026\r\nhttp://localhost:4180/#builder?cpu=Ryzen+7+9700X%7Cfalse&mobo=asusprimex870pwifi&ram=DDR5+32GB+%282%C3%9716GB%29+6000MHz+Desktop&gpu=bestprice%3A2160617918&cooler=endorfyfera5&storage=samsung990pro1tbssd&case=kolinkobservatorymxmesh&psu=750W+Gold+ATX",
+      "errors": [],
+      "shots": [
+        "026-c-en-1366.jpg"
+      ]
+    },
+    "w": {
+      "S12": {
+        "psuLine": "Recommended PSU: ≥ 850 W · CPU TDP 65 W",
+        "status": "2 incompatible"
+      },
+      "S25": {
+        "psuLine": "Recommended PSU: ≥ 650 W · CPU TDP 65 W",
+        "status": "Everything fits"
+      },
+      "S59": {
+        "psuLine": "Recommended PSU: ≥ 750 W · CPU TDP 125 W",
+        "status": "Everything fits"
+      },
+      "S62": {
+        "psuLine": "Recommended PSU: ≥ 1100 W · CPU TDP 170 W",
+        "status": "2 fit · 2 incompatible"
+      },
+      "S63": {
+        "psuLine": "Recommended PSU: ≥ 450 W · CPU TDP 125 W",
+        "status": "Everything fits"
+      },
+      "S64": {
+        "psuLine": "Recommended PSU: ≥ 850 W · CPU TDP 120 W",
+        "status": "2 fit · 2 incompatible"
+      }
+    },
+    "st": {
+      "storageCount": "1322 shown",
+      "storageFirst": "Samsung 990 Pro Heatsink 2TB\nNVMe Gen4 · M.2 2280 · 7450 MB/s · DRAM · 1200 TBW · €120.00/TB\n€239.99\nSnif\nChoose",
+      "caseAdvice": "Fans for this build\nBase: at least 2 front intake and 1 rear exhaust; for a high-power build 3 front, 1 rear and 2 top.\nSizes depend on the case; 120 mm fits every position.",
+      "caseCardFans": "Fans in the box: not stated\nHigh-power build: add 3 × 120 mm front intake and 1 × 120 mm rear exhaust (and 2 top exhaust, if the case has positions there).",
+      "fanAdvice": "Fans for this build\nHigh-power build: add 1 × 120 mm rear exhaust and 2 × 120 mm top exhaust.\nIntake and exhaust: airflow fans. Behind a glass or solid front panel, and on radiators, static pressure fans help.\nThe type is shown only when the product name says it (e.g. Arctic P = pressure, F = airflow).\nConnector: 4-pin PWM fans have their speed set by the board; 3-pin fans by voltage. Boards usually have 3–6 fan headers; for more fans use a hub or splitter. (The board's header count is not in our data yet.)",
+      "fanChips": [
+        "Only compatible",
+        "120 mm"
+      ],
+      "fanCount": "The type is shown only when the product name says it (e.g. Arctic P = pressure, F = airflow).",
+      "errors": [],
+      "shots": [
+        "027-st-en-1366-storage.jpg",
+        "028-st-en-1366-case-step.jpg",
+        "029-st-en-1366-fan-step.jpg"
+      ]
+    },
+    "n": {
+      "slowStorage": {
+        "during": "Step 7 of 11 Storage An NVMe SSD for the system and programs: 1TB is a good base, 2TB for lots of games. Gen4 is plenty for everyone; a Gen5 drive needs a board with a PCIe 5.0 M.2 slot for its full speed. A hard drive (HDD) is cheap space for files, not for the system; a 3.5\" one needs a 3.5\" bay i",
+        "readyAfterMs": 8127,
+        "errors": [],
+        "shots": [
+          "030-n-en-1366-storage-loading.jpg"
+        ]
+      },
+      "failedStorage": {
+        "after12s": "Step 7 of 11 Storage An NVMe SSD for the system and programs: 1TB is a good base, 2TB for lots of games. Gen4 is plenty for everyone; a Gen5 drive needs a board with a PCIe 5.0 M.2 slot for its full speed. A hard drive (HDD) is cheap space for files, not for the system; a 3.5\" one needs a 3.5\" bay i",
+        "errors": [
+          "console: Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+        ],
+        "shots": [
+          "031-n-en-1366-storage-failed.jpg"
+        ]
+      },
+      "savedDriveLate": {
+        "earlyRows": [
+          "CPU Ryzen 7 9700X €234.90",
+          "Board —",
+          "RAM —",
+          "GPU —",
+          "Cooler —",
+          "Storage —",
+          "Case —",
+          "Fans —",
+          "PSU —"
+        ],
+        "savedEarly": "{\"cpu\":\"Ryzen 7 9700X|false\",\"storage\":\"samsung990pro1tbssd\"}",
+        "lateRows": [
+          "CPU Ryzen 7 9700X €234.90",
+          "Board —",
+          "RAM —",
+          "GPU —",
+          "Cooler —",
+          "Storage Samsung 990 Pro 1TB €205.79",
+          "Case —",
+          "Fans —",
+          "PSU —"
+        ],
+        "savedLate": "{\"cpu\":\"Ryzen 7 9700X|false\",\"storage\":\"samsung990pro1tbssd\"}",
+        "errors": []
+      },
+      "copyBeforeExtra": {
+        "review": {
+          "items": [
+            {
+              "label": "Processor",
+              "name": "Ryzen 7 9700X",
+              "price": "€234.90",
+              "href": null,
+              "fit": "Fits"
+            },
+            {
+              "label": "Motherboard",
+              "name": "Asus Prime X870-P WiFi",
+              "price": "€242.06",
+              "href": null,
+              "fit": "Fits"
+            },
+            {
+              "label": "Memory (RAM)",
+              "name": "DDR5 32GB (2×16GB) 6000MHz",
+              "price": "€466.35",
+              "href": null,
+              "fit": "Fits"
+            },
+            {
+              "label": "Graphics card",
+              "name": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+              "price": "€847.96",
+              "href": null,
+              "fit": "Fits"
+            },
+            {
+              "label": "CPU cooler",
+              "name": "Endorfy Fera 5",
+              "price": "€23.08",
+              "href": null,
+              "fit": "Fits"
+            },
+            {
+              "label": "Storage",
+              "name": "Samsung 990 Pro 1TB",
+              "price": "€205.79",
+              "href": "https://www.bestprice.gr/item/2158093832/samsung-990-pro-ssd-1tb-m-2-nvme-pci-express-4-0.html",
+              "fit": "BestPrice"
+            },
+            {
+              "label": "Case",
+              "name": "Kolink Observatory MX Mesh",
+              "price": "€51.10",
+              "href": null,
+              "fit": "Fits"
+            },
+            {
+              "label": "Case fans",
+              "name": "— · Choose",
+              "price": null,
+              "href": null,
+              "fit": null
+            },
+            {
+              "label": "Power supply",
+              "name": "750W Gold",
+              "price": "€50.52",
+              "href": null,
+              "fit": "Fits"
+            }
+          ],
+          "total": "€2,121.76",
+          "link": "http://localhost:4180/#builder?cpu=Ryzen+7+9700X%7Cfalse&mobo=asusprimex870pwifi&ram=DDR5+32GB+%282%C3%9716GB%29+6000MHz+Desktop&gpu=bestprice%3A2160617918&cooler=endorfyfera5&storage=samsung990pro1tbssd&case=kolinkobservatorymxmesh&psu=750W+Gold+ATX"
+        },
+        "clipboard": "BuildDraft.gr · My build\r\n\r\nProcessor: Ryzen 7 9700X · €234.90 (e-shop.gr)\r\nMotherboard: Asus Prime X870-P WiFi · €242.06 (BestPrice)\r\nMemory (RAM): DDR5 32GB (2×16GB) 6000MHz · €466.35 (BestPrice)\r\nGraphics card: Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC · €847.96 (BestPrice)\r\nCPU cooler: Endorfy Fera 5 · €23.08 (BestPrice)\r\nStorage: Samsung 990 Pro 1TB · €205.79 (BestPrice) https://www.bestprice.gr/item/2158093832/samsung-990-pro-ssd-1tb-m-2-nvme-pci-express-4-0.html\r\nCase: Kolink Observatory MX Mesh · €51.10 (BestPrice)\r\nPower supply: 750W Gold · €50.52 (BestPrice)\r\n\r\nTotal: €2,121.76\r\nLowest price per product, before shipping · 04/10/2026\r\nhttp://localhost:4180/#builder?cpu=Ryzen+7+9700X%7Cfalse&mobo=asusprimex870pwifi&ram=DDR5+32GB+%282%C3%9716GB%29+6000MHz+Desktop&gpu=bestprice%3A2160617918&cooler=endorfyfera5&storage=samsung990pro1tbssd&case=kolinkobservatorymxmesh&psu=750W+Gold+ATX",
+        "errors": [],
+        "shots": [
+          "032-c-en-1366-slow-extra.jpg"
+        ]
+      }
+    },
+    "m": null
+  },
+  "el-360": {
+    "g2": {
+      "failed": "TimeoutError: locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('section[aria-labelledby=\"step-title\"]').getByRole('button', { name: /^(Next|Skip|Επόμενο|Παράλειψη)$/ }).last()\u001b[22m\n"
+    },
+    "g3": {
+      "cpu1": {
+        "name": "Ryzen 7 9700X",
+        "priceText": "234,90 €",
+        "label": "e-shop.gr"
+      },
+      "board": {
+        "name": "Gigabyte B850M Gaming X WiFi 6E",
+        "priceText": "172,10 €",
+        "label": "Χωράει"
+      },
+      "ram": {
+        "name": "DDR5 32GB (1×32GB) 5600MHz",
+        "priceText": "280,47 €",
+        "label": "Χωράει"
+      },
+      "countOn": "0 εμφανίζονται · 4 ασύμβατα κρυμμένα",
+      "intelState": {
+        "disabled": "true",
+        "chooseDisabled": true,
+        "reason": "Socket LGA1700 ≠ μητρικής AM5."
+      },
+      "cpu2": null,
+      "summaryAfter": "Σύνολο · 2 εξαρτήματα\n452,57 €\n4\nΛεπτομέρειες",
+      "chosenBoardVisibleWithOnlyCompatible": 1,
+      "boardCount": "780 εμφανίζονται · 243 ασύμβατα κρυμμένα",
+      "clashBoardCount": "449 εμφανίζονται · 574 ασύμβατα κρυμμένα",
+      "clashChosenVisible": 0,
+      "clashChosenVisibleOff": 0,
+      "clashSummary": "Σύνολο · 2 εξαρτήματα\n336,30 €\n6\nΛεπτομέρειες",
+      "saved": "{\"mobo\":\"gigabyteb850mgamingxwifi6e\",\"ram\":\"DDR5 32GB (1×32GB) 5600MHz Desktop\"}",
+      "errors": [],
+      "shots": [
+        "033-g3-el-360-intel-hidden.jpg",
+        "034-g3-el-360-intel-greyed.jpg",
+        "035-g3-el-360-after-intel.jpg",
+        "036-g3-el-360-board-step.jpg",
+        "037-g3-el-360-clashing-board-step.jpg"
+      ]
+    },
+    "q1": {
+      "cpu": "Celeron G3930",
+      "board": "ASRock Q270 PRO BTC",
+      "ram1": "DDR4 8GB (1×8GB) 1600MHz",
+      "ram2": "DDR4 8GB (1×8GB) 2400MHz",
+      "afterReplace": "DDR4 8GB (1×8GB) 2400MHz",
+      "afterRemove": "Μνήμες RAM — Επιλογή",
+      "emptyText": "0 επιλογές Κανένα συμβατό προϊόν με την τρέχουσα επιλογή. Αφαιρέστε κάποιο εξάρτημα για περισσότερες επιλογές.",
+      "guidedStep": "Χρήση και προϋπολογισμός",
+      "progressDone": 2,
+      "summaryGuided": [
+        "CPUCeleron G393021,75 €",
+        "ΜητρικήASRock Q270 PRO BTC249,00 €",
+        "RAM—",
+        "GPU—",
+        "Ψύκτρα—",
+        "Δίσκος—",
+        "Κουτί—",
+        "Ανεμιστήρες—",
+        "Τροφοδοτικό—"
+      ],
+      "saved": "{\"cpu\":\"Celeron G3930|false\",\"mobo\":\"asrockq270probtc\"}",
+      "errors": [],
+      "shots": [
+        "038-q1-el-360-replaced.jpg",
+        "039-q1-el-360-empty-search.jpg",
+        "040-q1-el-360-switched-to-guided.jpg"
+      ]
+    },
+    "s": {
+      "picks": {
+        "cpu": {
+          "name": "Core Ultra 5 225",
+          "priceText": "161,99 €",
+          "label": "BestPrice"
+        },
+        "board": {
+          "name": "Asus PRIME Z890-P WiFi",
+          "priceText": "209,90 €",
+          "label": "Χωράει"
+        },
+        "ram": {
+          "name": "DDR5 32GB (1×32GB) 5600MHz",
+          "priceText": "280,47 €",
+          "label": "Χωράει"
+        }
+      },
+      "savedA": "{\"cpu\":\"Core Ultra 5 225|?\",\"mobo\":\"asusprimez890pwifi\",\"ram\":\"DDR5 32GB (1×32GB) 5600MHz Desktop\"}",
+      "rowsAfterReload": [
+        "CPUCore Ultra 5 225161,99 €",
+        "ΜητρικήAsus PRIME Z890-P WiFi209,90 €",
+        "RAMDDR5 32GB (1×32GB) 5600MHz280,47 €",
+        "GPU—",
+        "Ψύκτρα—",
+        "Δίσκος—",
+        "Κουτί—",
+        "Ανεμιστήρες—",
+        "Τροφοδοτικό—"
+      ],
+      "link": "http://localhost:4180/#builder?cpu=Core+Ultra+5+225%7C%3F&mobo=asusprimez890pwifi&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop",
+      "reviewA": {
+        "items": [
+          {
+            "label": "Επεξεργαστής",
+            "name": "Core Ultra 5 225",
+            "price": "161,99 €",
+            "href": "https://www.bestprice.gr/item/2160277450/intel-core-ultra-5-225-box-epexergastis-10-pyrinon-gia-socket-1851.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μητρική",
+            "name": "Asus PRIME Z890-P WiFi",
+            "price": "209,90 €",
+            "href": "https://www.e-shop.gr/mitriki-asus-prime-z890-pwifi-d5-lga1851-retail-p-PER.608655",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μνήμη RAM",
+            "name": "DDR5 32GB (1×32GB) 5600MHz",
+            "price": "280,47 €",
+            "href": "https://www.bestprice.gr/item/2160475229/lexar-32gb-ddr5-ram-5600mhz-c46-ld5s32g56c46st-bgs.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Κάρτα γραφικών",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Ψύκτρα επεξεργαστή",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Αποθήκευση",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Κουτί",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Ανεμιστήρες κουτιού",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Τροφοδοτικό",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          }
+        ],
+        "total": "652,36 €",
+        "link": "http://localhost:4180/#builder?cpu=Core+Ultra+5+225%7C%3F&mobo=asusprimez890pwifi&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop"
+      },
+      "reviewB": {
+        "items": [
+          {
+            "label": "Επεξεργαστής",
+            "name": "Core Ultra 5 225",
+            "price": "161,99 €",
+            "href": "https://www.bestprice.gr/item/2160277450/intel-core-ultra-5-225-box-epexergastis-10-pyrinon-gia-socket-1851.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μητρική",
+            "name": "Asus PRIME Z890-P WiFi",
+            "price": "209,90 €",
+            "href": "https://www.e-shop.gr/mitriki-asus-prime-z890-pwifi-d5-lga1851-retail-p-PER.608655",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μνήμη RAM",
+            "name": "DDR5 32GB (1×32GB) 5600MHz",
+            "price": "280,47 €",
+            "href": "https://www.bestprice.gr/item/2160475229/lexar-32gb-ddr5-ram-5600mhz-c46-ld5s32g56c46st-bgs.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Κάρτα γραφικών",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Ψύκτρα επεξεργαστή",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Αποθήκευση",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Κουτί",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Ανεμιστήρες κουτιού",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Τροφοδοτικό",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          }
+        ],
+        "total": "652,36 €",
+        "link": "http://localhost:4180/#builder?cpu=Core+Ultra+5+225%7C%3F&mobo=asusprimez890pwifi&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop"
+      },
+      "notice": "Βλέπετε μια σύνθεση από σύνδεσμο. Η δική σας αποθηκευμένη σύνθεση μένει ως έχει μέχρι να αλλάξετε κάτι εδώ.",
+      "savedInClean": null,
+      "savedWhileViewing": "{\"cpu\":\"Core Ultra 5 225|?\",\"mobo\":\"asusprimez890pwifi\",\"ram\":\"DDR5 32GB (1×32GB) 5600MHz Desktop\"}",
+      "sharedReview": {
+        "items": [
+          {
+            "label": "Επεξεργαστής",
+            "name": "Core i5-14400F",
+            "price": "133,34 €",
+            "href": "https://www.bestprice.gr/item/2159493895/intel-core-i5-14400f-c0-tray-epexergastis-10-pyrinon-gia-socket-1700.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μητρική",
+            "name": "Asus Prime B760-Plus D4",
+            "price": "101,40 €",
+            "href": "https://www.bestprice.gr/item/2158207810/asus-prime-b760-plus-d4-motherboard-atx-me-intel-1700-socket.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μνήμη RAM",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Κάρτα γραφικών",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Ψύκτρα επεξεργαστή",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Αποθήκευση",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Κουτί",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Ανεμιστήρες κουτιού",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Τροφοδοτικό",
+            "name": "Λείπει · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          }
+        ],
+        "total": "234,74 €",
+        "link": "http://localhost:4180/#builder?cpu=Core+i5-14400F%7Cfalse&mobo=asusprimeb760plusd4"
+      },
+      "savedAfterChange": "{\"cpu\":\"Core i5-14400F|false\",\"mobo\":\"asusprimeb760plusd4\",\"ram\":\"DDR4 32GB (2×16GB) 3600MHz Desktop\"}",
+      "hashAfterChange": "#builder?step=ram",
+      "errors": [],
+      "shots": [
+        "041-s-el-360-shared-clean-profile.jpg"
+      ]
+    },
+    "c": {
+      "review": {
+        "items": [
+          {
+            "label": "Επεξεργαστής",
+            "name": "Ryzen 7 9700X",
+            "price": "234,90 €",
+            "href": "https://www.e-shop.gr/cpu-amd-ryzen-7-9700x-55ghz-8-core-tray-p-PER.275274",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μητρική",
+            "name": "Asus Prime X870-P WiFi",
+            "price": "242,06 €",
+            "href": "https://www.bestprice.gr/item/2160053961/asus-prime-x870-p-wifi-motherboard-atx-me-amd-am5-socket.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Μνήμη RAM",
+            "name": "DDR5 32GB (2×16GB) 6000MHz",
+            "price": "466,35 €",
+            "href": "https://www.bestprice.gr/item/2157866269/patriot-viper-venom-rgb-32gb-ddr5-ram-6000mhz-c36-black-pvvr532g600c36k.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Κάρτα γραφικών",
+            "name": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+            "price": "847,96 €",
+            "href": "https://www.bestprice.gr/item/2160617918/zotac-geforce-rtx-5070-12gb-gddr7-twin-edge-oc-karta-grafikon.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Ψύκτρα επεξεργαστή",
+            "name": "Endorfy Fera 5",
+            "price": "23,08 €",
+            "href": "https://www.bestprice.gr/item/2158168838/endorfy-fera-5.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Αποθήκευση",
+            "name": "Samsung 990 Pro 1TB",
+            "price": "205,79 €",
+            "href": "https://www.bestprice.gr/item/2158093832/samsung-990-pro-ssd-1tb-m-2-nvme-pci-express-4-0.html",
+            "fit": "BestPrice"
+          },
+          {
+            "label": "Κουτί",
+            "name": "Kolink Observatory MX Mesh",
+            "price": "51,10 €",
+            "href": "https://www.bestprice.gr/item/2159268101/kolink-observatory-mx-mesh-argb-tempered-glass-black-white-gaming-midi-tower-kouti-ypologisti-me-plaino-parathyro.html",
+            "fit": "Χωράει"
+          },
+          {
+            "label": "Ανεμιστήρες κουτιού",
+            "name": "— · Επιλογή",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Τροφοδοτικό",
+            "name": "750W Gold",
+            "price": "50,52 €",
+            "href": "https://www.bestprice.gr/item/2164295415/adata-xpg-kyber-ii-750w-trofodotiko-ypologisti-atch-3-1-80-plus-gold.html",
+            "fit": "Χωράει"
+          }
+        ],
+        "total": "2.121,76 €",
+        "link": "http://localhost:4180/#builder?cpu=Ryzen+7+9700X%7Cfalse&mobo=asusprimex870pwifi&ram=DDR5+32GB+%282%C3%9716GB%29+6000MHz+Desktop&gpu=bestprice%3A2160617918&cooler=endorfyfera5&storage=samsung990pro1tbssd&case=kolinkobservatorymxmesh&psu=750W+Gold+ATX"
+      },
+      "clipboard": "BuildDraft.gr · Η σύνθεσή μου\r\n\r\nΕπεξεργαστής: Ryzen 7 9700X · 234,90 € (e-shop.gr) https://www.e-shop.gr/cpu-amd-ryzen-7-9700x-55ghz-8-core-tray-p-PER.275274\r\nΜητρική: Asus Prime X870-P WiFi · 242,06 € (BestPrice) https://www.bestprice.gr/item/2160053961/asus-prime-x870-p-wifi-motherboard-atx-me-amd-am5-socket.html\r\nΜνήμη RAM: DDR5 32GB (2×16GB) 6000MHz · 466,35 € (BestPrice) https://www.bestprice.gr/item/2157866269/patriot-viper-venom-rgb-32gb-ddr5-ram-6000mhz-c36-black-pvvr532g600c36k.html\r\nΚάρτα γραφικών: Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC · 847,96 € (BestPrice) https://www.bestprice.gr/item/2160617918/zotac-geforce-rtx-5070-12gb-gddr7-twin-edge-oc-karta-grafikon.html\r\nΨύκτρα επεξεργαστή: Endorfy Fera 5 · 23,08 € (BestPrice) https://www.bestprice.gr/item/2158168838/endorfy-fera-5.html\r\nΑποθήκευση: Samsung 990 Pro 1TB · 205,79 € (BestPrice) https://www.bestprice.gr/item/2158093832/samsung-990-pro-ssd-1tb-m-2-nvme-pci-express-4-0.html\r\nΚουτί: Kolink Observatory MX Mesh · 51,10 € (BestPrice) https://www.bestprice.gr/item/2159268101/kolink-observatory-mx-mesh-argb-tempered-glass-black-white-gaming-midi-tower-kouti-ypologisti-me-plaino-parathyro.html\r\nΤροφοδοτικό: 750W Gold · 50,52 € (BestPrice) https://www.bestprice.gr/item/2164295415/adata-xpg-kyber-ii-750w-trofodotiko-ypologisti-atch-3-1-80-plus-gold.html\r\n\r\nΣύνολο: 2.121,76 €\r\nΧαμηλότερες τιμές ανά προϊόν, χωρίς μεταφορικά · 4/10/2026\r\nhttp://localhost:4180/#builder?cpu=Ryzen+7+9700X%7Cfalse&mobo=asusprimex870pwifi&ram=DDR5+32GB+%282%C3%9716GB%29+6000MHz+Desktop&gpu=bestprice%3A2160617918&cooler=endorfyfera5&storage=samsung990pro1tbssd&case=kolinkobservatorymxmesh&psu=750W+Gold+ATX",
+      "errors": [],
+      "shots": [
+        "042-c-el-360.jpg"
+      ]
+    },
+    "st": {
+      "storageCount": "1322 εμφανίζονται",
+      "storageFirst": "Samsung 990 Pro Heatsink 2TB\nNVMe Gen4 · M.2 2280 · 7450 MB/s · DRAM · 1200 TBW · 120,00 €/TB\n239,99 €\nSnif\nΕπιλογή",
+      "caseAdvice": "Ανεμιστήρες για αυτή τη σύνθεση\nΒάση: τουλάχιστον 2 εισαγωγής μπροστά και 1 εξαγωγής πίσω· σε σύνθεση υψηλής ισχύος 3 μπροστά, 1 πίσω και 2 πάνω.\nΤα μεγέθη εξαρτώνται από το κουτί· 120 mm χωράνε σε κάθε θέση.",
+      "caseCardFans": "Ανεμιστήρες στο κουτί: δεν αναφέρεται\nΣύνθεση υψηλής ισχύος: προσθέστε 3 × 120 mm εισαγωγή μπροστά και 1 × 120 mm εξαγωγή πίσω (και 2 εξαγωγής πάνω, αν το κουτί έχει θέσεις εκεί).",
+      "fanAdvice": "Ανεμιστήρες για αυτή τη σύνθεση\nΣύνθεση υψηλής ισχύος: προσθέστε 1 × 120 mm εξαγωγή πίσω και 2 × 120 mm εξαγωγή πάνω.\nΕισαγωγή και εξαγωγή: ανεμιστήρες ροής αέρα. Πίσω από γυάλινο ή κλειστό μπροστινό πάνελ και σε ψυγεία βοηθούν οι ανεμιστήρες στατικής πίεσης.\nΟ τύπος σημειώνεται μόνο όταν τον λέει το όνομα του προϊόντος (π.χ. Arctic P = πίεση, F = ροή).\nΣύνδεση: οι 4-pin PWM ρυθμίζουν στροφές από τη μητρική· οι 3-pin με την τάση. Οι μητρικές έχουν συνήθως 3–6 υποδοχές ανεμιστήρα· για περισσότερους, hub ή splitter. (Ο αριθμός υποδοχών της μητρικής δεν υπάρχει ακόμα στα στοιχεία μας.)",
+      "fanChips": [
+        "Μόνο συμβατά",
+        "120 mm"
+      ],
+      "fanCount": "1295 εμφανίζονται · 4 ασύμβατα κρυμμένα",
+      "errors": [],
+      "shots": [
+        "043-st-el-360-storage.jpg",
+        "044-st-el-360-case-step.jpg",
+        "045-st-el-360-fan-step.jpg"
+      ]
+    },
+    "m": {
+      "barBox": {
+        "x": 0,
+        "y": 708,
+        "width": 360,
+        "height": 72
+      },
+      "backFwd": [
+        "Πίσω 44x44",
+        "Παράλειψη 44x44"
+      ],
+      "lastControl": {
+        "lastBottom": 371,
+        "barTop": 708,
+        "coveredBy": 0
+      },
+      "openHeight": 552,
+      "before": "Κάρτα γραφικών",
+      "after": "Ψύκτρα επεξεργαστή",
+      "errors": [],
+      "shots": [
+        "046-m-el-360-bottom.jpg",
+        "047-m-el-360-bar-open.jpg"
+      ]
+    }
+  },
+  "en-360": {
+    "g2": {
+      "failed": "TimeoutError: locator.textContent: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('section[aria-labelledby=\"step-title\"]').getByRole('button', { name: /^(Next|Skip|Επόμενο|Παράλειψη)$/ }).last()\u001b[22m\n"
+    },
+    "g3": {
+      "cpu1": {
+        "name": "Ryzen 7 9700X",
+        "priceText": "€234.90",
+        "label": "e-shop.gr"
+      },
+      "board": {
+        "name": "Gigabyte B850M Gaming X WiFi 6E",
+        "priceText": "€172.10",
+        "label": "Fits"
+      },
+      "ram": {
+        "name": "DDR5 32GB (1×32GB) 5600MHz",
+        "priceText": "€280.47",
+        "label": "Fits"
+      },
+      "countOn": "0 shown · 4 incompatible hidden",
+      "intelState": {
+        "disabled": "true",
+        "chooseDisabled": true,
+        "reason": "Socket LGA1700 ≠ the board's AM5."
+      },
+      "cpu2": null,
+      "summaryAfter": "Total · 2 parts\n€452.57\n4\nDetails",
+      "chosenBoardVisibleWithOnlyCompatible": 1,
+      "boardCount": "780 shown · 243 incompatible hidden",
+      "clashBoardCount": "449 shown · 574 incompatible hidden",
+      "clashChosenVisible": 0,
+      "clashChosenVisibleOff": 0,
+      "clashSummary": "Total · 2 parts\n€336.30\n6\nDetails",
+      "saved": "{\"mobo\":\"gigabyteb850mgamingxwifi6e\",\"ram\":\"DDR5 32GB (1×32GB) 5600MHz Desktop\"}",
+      "errors": [],
+      "shots": [
+        "048-g3-en-360-intel-hidden.jpg",
+        "049-g3-en-360-intel-greyed.jpg",
+        "050-g3-en-360-after-intel.jpg",
+        "051-g3-en-360-board-step.jpg",
+        "052-g3-en-360-clashing-board-step.jpg"
+      ]
+    },
+    "q1": {
+      "cpu": "Celeron G3930",
+      "board": "ASRock Q270 PRO BTC",
+      "ram1": "DDR4 8GB (1×8GB) 1600MHz",
+      "ram2": "DDR4 8GB (1×8GB) 2400MHz",
+      "afterReplace": "DDR4 8GB (1×8GB) 2400MHz",
+      "afterRemove": "Memory (RAM) — Choose",
+      "emptyText": "0 options Nothing compatible with the current build. Remove a part to see more options.",
+      "guidedStep": "Use and budget",
+      "progressDone": 2,
+      "summaryGuided": [
+        "CPUCeleron G3930€21.75",
+        "BoardASRock Q270 PRO BTC€249.00",
+        "RAM—",
+        "GPU—",
+        "Cooler—",
+        "Storage—",
+        "Case—",
+        "Fans—",
+        "PSU—"
+      ],
+      "saved": "{\"cpu\":\"Celeron G3930|false\",\"mobo\":\"asrockq270probtc\"}",
+      "errors": [],
+      "shots": [
+        "053-q1-en-360-replaced.jpg",
+        "054-q1-en-360-empty-search.jpg",
+        "055-q1-en-360-switched-to-guided.jpg"
+      ]
+    },
+    "s": {
+      "picks": {
+        "cpu": {
+          "name": "Core Ultra 5 225",
+          "priceText": "€161.99",
+          "label": "BestPrice"
+        },
+        "board": {
+          "name": "Asus PRIME Z890-P WiFi",
+          "priceText": "€209.90",
+          "label": "Fits"
+        },
+        "ram": {
+          "name": "DDR5 32GB (1×32GB) 5600MHz",
+          "priceText": "€280.47",
+          "label": "Fits"
+        }
+      },
+      "savedA": "{\"cpu\":\"Core Ultra 5 225|?\",\"mobo\":\"asusprimez890pwifi\",\"ram\":\"DDR5 32GB (1×32GB) 5600MHz Desktop\"}",
+      "rowsAfterReload": [
+        "CPU—",
+        "Board—",
+        "RAM—",
+        "GPU—",
+        "Cooler—",
+        "Storage—",
+        "Case—",
+        "Fans—",
+        "PSU—"
+      ],
+      "link": "http://localhost:4180/#builder?cpu=Core+Ultra+5+225%7C%3F&mobo=asusprimez890pwifi&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop",
+      "reviewA": {
+        "items": [
+          {
+            "label": "Processor",
+            "name": "Core Ultra 5 225",
+            "price": "€161.99",
+            "href": "https://www.bestprice.gr/item/2160277450/intel-core-ultra-5-225-box-epexergastis-10-pyrinon-gia-socket-1851.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Motherboard",
+            "name": "Asus PRIME Z890-P WiFi",
+            "price": "€209.90",
+            "href": "https://www.e-shop.gr/mitriki-asus-prime-z890-pwifi-d5-lga1851-retail-p-PER.608655",
+            "fit": "Fits"
+          },
+          {
+            "label": "Memory (RAM)",
+            "name": "DDR5 32GB (1×32GB) 5600MHz",
+            "price": "€280.47",
+            "href": "https://www.bestprice.gr/item/2160475229/lexar-32gb-ddr5-ram-5600mhz-c46-ld5s32g56c46st-bgs.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Graphics card",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "CPU cooler",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Storage",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Case",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Case fans",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Power supply",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          }
+        ],
+        "total": "€652.36",
+        "link": "http://localhost:4180/#builder?cpu=Core+Ultra+5+225%7C%3F&mobo=asusprimez890pwifi&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop"
+      },
+      "reviewB": {
+        "items": [
+          {
+            "label": "Processor",
+            "name": "Core Ultra 5 225",
+            "price": "€161.99",
+            "href": "https://www.bestprice.gr/item/2160277450/intel-core-ultra-5-225-box-epexergastis-10-pyrinon-gia-socket-1851.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Motherboard",
+            "name": "Asus PRIME Z890-P WiFi",
+            "price": "€209.90",
+            "href": "https://www.e-shop.gr/mitriki-asus-prime-z890-pwifi-d5-lga1851-retail-p-PER.608655",
+            "fit": "Fits"
+          },
+          {
+            "label": "Memory (RAM)",
+            "name": "DDR5 32GB (1×32GB) 5600MHz",
+            "price": "€280.47",
+            "href": "https://www.bestprice.gr/item/2160475229/lexar-32gb-ddr5-ram-5600mhz-c46-ld5s32g56c46st-bgs.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Graphics card",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "CPU cooler",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Storage",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Case",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Case fans",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Power supply",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          }
+        ],
+        "total": "€652.36",
+        "link": "http://localhost:4180/#builder?cpu=Core+Ultra+5+225%7C%3F&mobo=asusprimez890pwifi&ram=DDR5+32GB+%281%C3%9732GB%29+5600MHz+Desktop"
+      },
+      "notice": "You're viewing a build from a link. Your own saved build stays as it is until you change something here.",
+      "savedInClean": null,
+      "savedWhileViewing": "{\"cpu\":\"Core Ultra 5 225|?\",\"mobo\":\"asusprimez890pwifi\",\"ram\":\"DDR5 32GB (1×32GB) 5600MHz Desktop\"}",
+      "sharedReview": {
+        "items": [
+          {
+            "label": "Processor",
+            "name": "Core i5-14400F",
+            "price": "€133.34",
+            "href": "https://www.bestprice.gr/item/2159493895/intel-core-i5-14400f-c0-tray-epexergastis-10-pyrinon-gia-socket-1700.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Motherboard",
+            "name": "Asus Prime B760-Plus D4",
+            "price": "€101.40",
+            "href": "https://www.bestprice.gr/item/2158207810/asus-prime-b760-plus-d4-motherboard-atx-me-intel-1700-socket.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Memory (RAM)",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Graphics card",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "CPU cooler",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Storage",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Case",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Case fans",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Power supply",
+            "name": "Missing · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          }
+        ],
+        "total": "€234.74",
+        "link": "http://localhost:4180/#builder?cpu=Core+i5-14400F%7Cfalse&mobo=asusprimeb760plusd4"
+      },
+      "savedAfterChange": "{\"cpu\":\"Core i5-14400F|false\",\"mobo\":\"asusprimeb760plusd4\",\"ram\":\"DDR4 32GB (2×16GB) 3600MHz Desktop\"}",
+      "hashAfterChange": "#builder?step=ram",
+      "errors": [],
+      "shots": [
+        "056-s-en-360-shared-clean-profile.jpg"
+      ]
+    },
+    "c": {
+      "review": {
+        "items": [
+          {
+            "label": "Processor",
+            "name": "Ryzen 7 9700X",
+            "price": "€234.90",
+            "href": "https://www.e-shop.gr/cpu-amd-ryzen-7-9700x-55ghz-8-core-tray-p-PER.275274",
+            "fit": "Fits"
+          },
+          {
+            "label": "Motherboard",
+            "name": "Asus Prime X870-P WiFi",
+            "price": "€242.06",
+            "href": "https://www.bestprice.gr/item/2160053961/asus-prime-x870-p-wifi-motherboard-atx-me-amd-am5-socket.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Memory (RAM)",
+            "name": "DDR5 32GB (2×16GB) 6000MHz",
+            "price": "€466.35",
+            "href": "https://www.bestprice.gr/item/2157866269/patriot-viper-venom-rgb-32gb-ddr5-ram-6000mhz-c36-black-pvvr532g600c36k.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Graphics card",
+            "name": "Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC",
+            "price": "€847.96",
+            "href": "https://www.bestprice.gr/item/2160617918/zotac-geforce-rtx-5070-12gb-gddr7-twin-edge-oc-karta-grafikon.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "CPU cooler",
+            "name": "Endorfy Fera 5",
+            "price": "€23.08",
+            "href": "https://www.bestprice.gr/item/2158168838/endorfy-fera-5.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Storage",
+            "name": "Samsung 990 Pro 1TB",
+            "price": "€205.79",
+            "href": "https://www.bestprice.gr/item/2158093832/samsung-990-pro-ssd-1tb-m-2-nvme-pci-express-4-0.html",
+            "fit": "BestPrice"
+          },
+          {
+            "label": "Case",
+            "name": "Kolink Observatory MX Mesh",
+            "price": "€51.10",
+            "href": "https://www.bestprice.gr/item/2159268101/kolink-observatory-mx-mesh-argb-tempered-glass-black-white-gaming-midi-tower-kouti-ypologisti-me-plaino-parathyro.html",
+            "fit": "Fits"
+          },
+          {
+            "label": "Case fans",
+            "name": "— · Choose",
+            "price": null,
+            "href": null,
+            "fit": null
+          },
+          {
+            "label": "Power supply",
+            "name": "750W Gold",
+            "price": "€50.52",
+            "href": "https://www.bestprice.gr/item/2164295415/adata-xpg-kyber-ii-750w-trofodotiko-ypologisti-atch-3-1-80-plus-gold.html",
+            "fit": "Fits"
+          }
+        ],
+        "total": "€2,121.76",
+        "link": "http://localhost:4180/#builder?cpu=Ryzen+7+9700X%7Cfalse&mobo=asusprimex870pwifi&ram=DDR5+32GB+%282%C3%9716GB%29+6000MHz+Desktop&gpu=bestprice%3A2160617918&cooler=endorfyfera5&storage=samsung990pro1tbssd&case=kolinkobservatorymxmesh&psu=750W+Gold+ATX"
+      },
+      "clipboard": "BuildDraft.gr · My build\r\n\r\nProcessor: Ryzen 7 9700X · €234.90 (e-shop.gr) https://www.e-shop.gr/cpu-amd-ryzen-7-9700x-55ghz-8-core-tray-p-PER.275274\r\nMotherboard: Asus Prime X870-P WiFi · €242.06 (BestPrice) https://www.bestprice.gr/item/2160053961/asus-prime-x870-p-wifi-motherboard-atx-me-amd-am5-socket.html\r\nMemory (RAM): DDR5 32GB (2×16GB) 6000MHz · €466.35 (BestPrice) https://www.bestprice.gr/item/2157866269/patriot-viper-venom-rgb-32gb-ddr5-ram-6000mhz-c36-black-pvvr532g600c36k.html\r\nGraphics card: Zotac GeForce RTX 5070 12GB GDDR7 Twin Edge OC · €847.96 (BestPrice) https://www.bestprice.gr/item/2160617918/zotac-geforce-rtx-5070-12gb-gddr7-twin-edge-oc-karta-grafikon.html\r\nCPU cooler: Endorfy Fera 5 · €23.08 (BestPrice) https://www.bestprice.gr/item/2158168838/endorfy-fera-5.html\r\nStorage: Samsung 990 Pro 1TB · €205.79 (BestPrice) https://www.bestprice.gr/item/2158093832/samsung-990-pro-ssd-1tb-m-2-nvme-pci-express-4-0.html\r\nCase: Kolink Observatory MX Mesh · €51.10 (BestPrice) https://www.bestprice.gr/item/2159268101/kolink-observatory-mx-mesh-argb-tempered-glass-black-white-gaming-midi-tower-kouti-ypologisti-me-plaino-parathyro.html\r\nPower supply: 750W Gold · €50.52 (BestPrice) https://www.bestprice.gr/item/2164295415/adata-xpg-kyber-ii-750w-trofodotiko-ypologisti-atch-3-1-80-plus-gold.html\r\n\r\nTotal: €2,121.76\r\nLowest price per product, before shipping · 04/10/2026\r\nhttp://localhost:4180/#builder?cpu=Ryzen+7+9700X%7Cfalse&mobo=asusprimex870pwifi&ram=DDR5+32GB+%282%C3%9716GB%29+6000MHz+Desktop&gpu=bestprice%3A2160617918&cooler=endorfyfera5&storage=samsung990pro1tbssd&case=kolinkobservatorymxmesh&psu=750W+Gold+ATX",
+      "errors": [],
+      "shots": [
+        "057-c-en-360.jpg"
+      ]
+    },
+    "st": {
+      "storageCount": "1322 shown",
+      "storageFirst": "Samsung 990 Pro Heatsink 2TB\nNVMe Gen4 · M.2 2280 · 7450 MB/s · DRAM · 1200 TBW · €120.00/TB\n€239.99\nSnif\nChoose",
+      "caseAdvice": "Fans for this build\nBase: at least 2 front intake and 1 rear exhaust; for a high-power build 3 front, 1 rear and 2 top.\nSizes depend on the case; 120 mm fits every position.",
+      "caseCardFans": "Fans in the box: not stated\nHigh-power build: add 3 × 120 mm front intake and 1 × 120 mm rear exhaust (and 2 top exhaust, if the case has positions there).",
+      "fanAdvice": "Fans for this build\nHigh-power build: add 1 × 120 mm rear exhaust and 2 × 120 mm top exhaust.\nIntake and exhaust: airflow fans. Behind a glass or solid front panel, and on radiators, static pressure fans help.\nThe type is shown only when the product name says it (e.g. Arctic P = pressure, F = airflow).\nConnector: 4-pin PWM fans have their speed set by the board; 3-pin fans by voltage. Boards usually have 3–6 fan headers; for more fans use a hub or splitter. (The board's header count is not in our data yet.)",
+      "fanChips": [
+        "Only compatible",
+        "120 mm"
+      ],
+      "fanCount": "The type is shown only when the product name says it (e.g. Arctic P = pressure, F = airflow).",
+      "errors": [],
+      "shots": [
+        "058-st-en-360-storage.jpg",
+        "059-st-en-360-case-step.jpg",
+        "060-st-en-360-fan-step.jpg"
+      ]
+    },
+    "m": {
+      "barBox": {
+        "x": 0,
+        "y": 708,
+        "width": 360,
+        "height": 72
+      },
+      "backFwd": [
+        "Back 44x44",
+        "Skip 44x44"
+      ],
+      "lastControl": {
+        "lastBottom": 411,
+        "barTop": 708,
+        "coveredBy": 0
+      },
+      "openHeight": 552,
+      "before": "Graphics card",
+      "after": "CPU cooler",
+      "errors": [],
+      "shots": [
+        "061-m-en-360-bottom.jpg",
+        "062-m-en-360-bar-open.jpg"
+      ]
+    }
+  }
+}
