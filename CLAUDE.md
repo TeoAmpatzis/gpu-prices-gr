@@ -29,7 +29,7 @@ The approved plan is `docs/redesign-v2.md` (Greek). Phase 0 = audit of v1 → `d
 - `npm run lint` — ESLint 9 flat config `eslint.config.js` (@eslint/js + typescript-eslint + react + react-hooks recommended). v1's 39 errors are bulk-suppressed in `eslint-suppressions.json`, so lint fails only on new errors; `npm run lint:baseline` lists them all. Browser globals in Node scripts that run code in a page: `/* global document, window */`.
 - `npm test` — Vitest (`tests/**/*.test.ts`): the compatibility scenarios `tests/compat/scenarios/*.json` (format `tests/compat/scenario.ts`; v1 adapter `tests/compat/v1-adapter.ts`, can go once v2's engine replaces it).
 - `npm run e2e` — Playwright, Chromium only (`tests/e2e/`): builds and serves `dist` on port 4174 (`E2E_BASE_URL=http://localhost:4173` reuses a running preview). No GitHub workflow for it yet.
-- **`npm run check`** = typecheck → lint → test → build, in that order.
+- **`npm run check`** = typecheck → lint → test → build, in that order. The build's data check compares with the **live** manifest: if it fails with "Data check failed … more than 30% fewer", v2's data is behind main's (e.g. after a history import) — `git merge origin/main`, then re-run.
 
 ## Current state (2026-10-03) — start here
 - **Scraper outage 2026-10-03 16:19 → 2026-10-04 08:17 UTC** (3 scheduled scrapes failed at start-up): selectolax 1.0.0 removed `selectolax.parser`, which 14 scraper files import, and `requirements.txt` had no upper bound. Fixed on main by `7cf0c9d` (`selectolax>=0.3,<1.0` → 0.4.13); run 37184765099 green, data commit `b173895`. Moving to the lexbor backend is backlog #1 (`docs/v2-backlog.md`); the other dependencies still need caps (#2).
