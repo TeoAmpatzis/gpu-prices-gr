@@ -206,7 +206,12 @@ export const caseFanMounts = (m: Model<CaseListing>) => firstOf(m, (l) => l.fanM
 export const caseFansIncluded = (m: Model<CaseListing>) => firstOf(m, (l) => l.fansIncluded);
 export const caseRadiatorSizes = (m: Model<CaseListing>) => firstOf(m, (l) => l.radiators);
 export const coolerSockets = (m: Model<CoolerListing>) => (attr(m, (l) => l.sockets) ?? '').split(',').filter(Boolean);
-export const coolerHeight = (m: Model<CoolerListing>) => attr(m, (l) => l.heightMm);
+/** Under 30 mm is a fan's thickness read as the tower's height (some shop pages): treated as unknown. */
+const MIN_AIR_COOLER_MM = 30;
+export const coolerHeight = (m: Model<CoolerListing>) => {
+  const h = attr(m, (l) => l.heightMm);
+  return h != null && h < MIN_AIR_COOLER_MM ? null : h;
+};
 /** Fan sizes the builder offers: what case fan positions take (others are for coolers/radiators). */
 const FAN_SIZES = [120, 140];
 
