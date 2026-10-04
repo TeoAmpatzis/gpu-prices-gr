@@ -187,7 +187,12 @@ export const cpuHasIgpu = (m: Model<CpuListing>) => m.listings.some((l) => l.igp
 /** True/false when stated (Skroutz "Περιλαμβάνει Ψύκτρα", or a Tray CPU), null when not. */
 export const cpuCooler = (m: Model<CpuListing>) => m.cheapest.coolerIncluded ?? null;
 export const moboSocket = (m: Model<MoboListing>) => attr(m, (l) => l.socket);
-export const moboMemory = (m: Model<MoboListing>) => attr(m, (l) => l.memory);
+/**
+ * Unknown when the board's listings disagree (DDR4 and DDR5 versions sold under one name, or a wrong
+ * value): such a board is then left out of the builder (`usable`) rather than checked with a guess.
+ */
+export const moboMemory = (m: Model<MoboListing>) =>
+  new Set(m.listings.map((l) => l.memory).filter((v) => v != null)).size > 1 ? null : attr(m, (l) => l.memory);
 export const moboForm = (m: Model<MoboListing>) => attr(m, (l) => l.formFactor);
 /** RAM slots as stated, null when not. */
 export const moboSlotsStated = (m: Model<MoboListing>) => attr(m, (l) => l.ramSlots);
