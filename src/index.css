@@ -112,8 +112,9 @@
     @apply bg-danger-bg text-danger-strong;
   }
   /* Inline notices: warning (builder) and error (failed load). */
+  /* Information (shared build, data still being collected): the light-blue note, not orange "act now". */
   .notice-warn {
-    @apply rounded-xl bg-warn-bg text-warn-fg;
+    @apply rounded-xl bg-info-bg text-info-strong;
   }
   .notice-danger {
     @apply rounded-lg bg-danger-bg text-danger-fg;

@@ -9,31 +9,36 @@ import { STEP_SHORT } from '../../lib/wizard';
 import { SLOTS, buildNotes, buildStatus, requiredWatts, type Slot } from '../../lib/builder';
 import type { AnyModel, BuilderState } from '../../lib/builderState';
 import { tr, useLang, type Text } from '../../lib/i18n';
+import { plural } from '../../ui/strings';
 
 const S = {
   total: { el: 'Σύνολο', en: 'Total' },
-  parts: { el: 'εξαρτήματα', en: 'parts' },
   psuNeeded: { el: 'Προτεινόμενο τροφοδοτικό', en: 'Recommended PSU' },
   clear: { el: 'Καθαρισμός', en: 'Clear build' },
-  summary: { el: 'Η σύνθεσή σας', en: 'Your build' },
+  summary: { el: 'Η σύνθεσή σου', en: 'Your build' },
   details: { el: 'Λεπτομέρειες', en: 'Details' },
   priceNote: {
-    el: 'Χαμηλότερη τιμή ανά προϊόν, χωρίς μεταφορικά· κάθε εξάρτημα μπορεί να είναι από διαφορετικό κατάστημα.',
-    en: 'Lowest price per product, before shipping; each part may come from a different shop.',
+    el: 'Χαμηλότερη τιμή ανά προϊόν· τα μεταφορικά δεν περιλαμβάνονται, και κάθε εξάρτημα μπορεί να είναι από διαφορετικό κατάστημα.',
+    en: 'Lowest price per product; shipping not included, and each part may come from a different shop.',
   },
   budget: { el: 'Προϋπολογισμός', en: 'Budget' },
   left: { el: 'απομένουν', en: 'left' },
   over: { el: 'υπέρβαση', en: 'over' },
   allFit: { el: 'Όλα ταιριάζουν', en: 'Everything fits' },
-  fits: { el: 'χωράνε', en: 'fit' },
-  likely: { el: 'πιθανότατα', en: 'likely' },
-  unverified: { el: 'χωρίς επιβεβαίωση', en: 'not verified' },
-  clash: { el: 'ασύμβατα', en: 'incompatible' },
   shared: {
-    el: 'Βλέπετε μια σύνθεση από σύνδεσμο. Η δική σας αποθηκευμένη σύνθεση μένει ως έχει μέχρι να αλλάξετε κάτι εδώ.',
+    el: 'Βλέπεις μια σύνθεση από σύνδεσμο. Η δική σου αποθηκευμένη σύνθεση μένει ως έχει μέχρι να αλλάξεις κάτι εδώ.',
     en: "You're viewing a build from a link. Your own saved build stays as it is until you change something here.",
   },
 } satisfies Record<string, Text>;
+
+/** Counts in the summary, with the right singular/plural form (UX-47: no more "1 ασύμβατα"). */
+const N = {
+  parts: { el: ['εξάρτημα', 'εξαρτήματα'], en: ['part', 'parts'] },
+  fits: { el: ['χωράει', 'χωράνε'], en: ['fits', 'fit'] },
+  likely: { el: ['πιθανότατα', 'πιθανότατα'], en: ['likely', 'likely'] },
+  unverified: { el: ['χωρίς επιβεβαίωση', 'χωρίς επιβεβαίωση'], en: ['not verified', 'not verified'] },
+  clash: { el: ['ασύμβατο', 'ασύμβατα'], en: ['incompatible', 'incompatible'] },
+} satisfies Record<string, { el: [string, string]; en: [string, string] }>;
 
 interface Props {
   state: BuilderState;
@@ -73,14 +78,14 @@ export default function Summary({ state, onSlot, back, next }: Props) {
             ? t(S.allFit)
             : (
                 [
-                  [status.fits, S.fits],
-                  [status.likely, S.likely],
-                  [status.unverified, S.unverified],
-                  [status.no, S.clash],
+                  [status.fits, N.fits],
+                  [status.likely, N.likely],
+                  [status.unverified, N.unverified],
+                  [status.no, N.clash],
                 ] as const
               )
                 .filter(([n]) => n > 0)
-                .map(([n, label]) => `${n} ${t(label)}`)
+                .map(([n, forms]) => plural(lang, n, forms))
                 .join(' · ')}
         </span>
       </div>
@@ -98,7 +103,7 @@ export default function Summary({ state, onSlot, back, next }: Props) {
         >
           <span className="flex min-w-0 flex-col">
             <span className="truncate text-xs text-muted">
-              {t(S.total)} · {chosen.length} {t(S.parts)}
+              {t(S.total)} · {plural(lang, chosen.length, N.parts)}
             </span>
             <span className="text-xl font-semibold tabular-nums text-accent">{formatPrice(total, lang)}</span>
           </span>
@@ -128,7 +133,7 @@ export default function Summary({ state, onSlot, back, next }: Props) {
         {shared && <div className="notice-warn p-2.5 text-xs">{t(S.shared)}</div>}
         <div>
           <div className="hidden text-xs text-muted lg:block">
-            {t(S.total)} · {chosen.length} {t(S.parts)}
+            {t(S.total)} · {plural(lang, chosen.length, N.parts)}
           </div>
           <div className="hidden text-3xl font-semibold tabular-nums text-accent lg:block">{formatPrice(total, lang)}</div>
           <div className="mt-1 text-xs text-faint">{t(S.priceNote)}</div>

@@ -143,7 +143,7 @@ export function planText(p: FanPlan): Text {
   const top = p.topUnknown
     ? { el: ' (και 2 εξαγωγής πάνω, αν το κουτί έχει θέσεις εκεί)', en: ' (and 2 top exhaust, if the case has positions there)' }
     : { el: '', en: '' };
-  const add = { el: p.high ? 'προσθέστε' : 'Προσθέστε', en: p.high ? 'add' : 'Add' };
+  const add = { el: p.high ? 'πρόσθεσε' : 'Πρόσθεσε', en: p.high ? 'add' : 'Add' };
   return {
     el: `${lead.el}${add.el} ${join(items(true), true)}${top.el}.`,
     en: `${lead.en}${add.en} ${join(items(false), false)}${top.en}.`,

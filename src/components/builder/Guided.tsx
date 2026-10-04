@@ -41,8 +41,12 @@ import { CaseFansLine, FanAdviceBox } from './FanAdvice';
 import Review from './Review';
 import Summary from './Summary';
 import { FitBadge, partImage, specLine } from './parts';
+import { plural } from '../../ui/strings';
 
 const PAGE = 24; // cards per "Show more"
+
+/** "1 ασύμβατο κρυμμένο" / "3 ασύμβατα κρυμμένα" (UX-47). */
+const HIDDEN = { el: ['ασύμβατο κρυμμένο', 'ασύμβατα κρυμμένα'] as [string, string], en: ['incompatible hidden', 'incompatible hidden'] as [string, string] };
 
 const G = {
   step: { el: 'Βήμα', en: 'Step' },
@@ -61,7 +65,6 @@ const G = {
   shown: { el: 'εμφανίζονται', en: 'shown' },
   airflowType: { el: 'Ροής αέρα', en: 'Airflow' },
   pressureType: { el: 'Στατικής πίεσης', en: 'Static pressure' },
-  hidden: { el: 'ασύμβατα κρυμμένα', en: 'incompatible hidden' },
   showMore: { el: 'Περισσότερα', en: 'Show more' },
   none: { el: 'Κανένα προϊόν με αυτά τα φίλτρα.', en: 'No parts match these filters.' },
   suggested: { el: 'Πρόταση για αυτό το εξάρτημα', en: 'Suggested for this part' },
@@ -466,7 +469,7 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
           {onlyCompatible && hidden > 0 && (
             <>
               {' '}
-              · {hidden} {t(G.hidden)}
+              · {plural(lang, hidden, HIDDEN)}
             </>
           )}
         </span>

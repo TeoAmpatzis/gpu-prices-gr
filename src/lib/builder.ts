@@ -306,7 +306,7 @@ const W = {
     en: 'Small (SFF) cases often need an SFX power supply; not stated.',
   },
   bay35: {
-    el: 'Ελέγξτε ότι το κουτί έχει θέση για δίσκο 3.5″ (πολλά νέα κουτιά δεν έχουν)· οι θέσεις δίσκων δεν αναφέρονται εδώ.',
+    el: 'Έλεγξε ότι το κουτί έχει θέση για δίσκο 3.5″ (πολλά νέα κουτιά δεν έχουν)· οι θέσεις δίσκων δεν αναφέρονται εδώ.',
     en: 'Check that the case has a 3.5" drive bay (many new cases have none); drive bays are not listed here.',
   },
 } satisfies Record<string, Text>;
@@ -578,9 +578,9 @@ export function buildNotes(b: Build, ctx: FitContext = NO_CONTEXT): Note[] {
             level: 'error',
             text:
               inBox === false
-                ? { el: 'Ο επεξεργαστής δεν έχει ψύκτρα: διαλέξτε μία.', en: 'The CPU has no cooler: pick one.' }
+                ? { el: 'Ο επεξεργαστής δεν έχει ψύκτρα: διάλεξε μία.', en: 'The CPU has no cooler: pick one.' }
                 : {
-                    el: 'Δεν αναφέρεται αν ο επεξεργαστής έχει ψύκτρα: διαλέξτε μία για σιγουριά.',
+                    el: 'Δεν αναφέρεται αν ο επεξεργαστής έχει ψύκτρα: διάλεξε μία για σιγουριά.',
                     en: "It isn't stated whether the CPU includes a cooler: pick one to be safe.",
                   },
           },
@@ -651,18 +651,18 @@ const SLOT_NAME: Record<Slot, { el: string; en: string }> = {
   psu: { el: 'τροφοδοτικό', en: 'power supply' },
 };
 const clash = ([a, b]: [Slot, Slot]): Text => ({
-  el: `Ασυμβατότητα: ${SLOT_NAME[a].el} και ${SLOT_NAME[b].el} δεν ταιριάζουν· αλλάξτε ένα από τα δύο.`,
+  el: `Ασυμβατότητα: ${SLOT_NAME[a].el} και ${SLOT_NAME[b].el} δεν ταιριάζουν· άλλαξε ένα από τα δύο.`,
   en: `Incompatible: the ${SLOT_NAME[a].en} and the ${SLOT_NAME[b].en} don't go together; change one of them.`,
 });
 
 const MISSING: Record<Slot, Text> = {
-  cpu: { el: 'Διαλέξτε επεξεργαστή.', en: 'Pick a processor.' },
-  mobo: { el: 'Διαλέξτε μητρική.', en: 'Pick a motherboard.' },
-  ram: { el: 'Διαλέξτε μνήμη RAM.', en: 'Pick memory (RAM).' },
-  gpu: { el: 'Διαλέξτε κάρτα γραφικών.', en: 'Pick a graphics card.' },
-  cooler: { el: 'Διαλέξτε ψύκτρα.', en: 'Pick a cooler.' },
-  storage: { el: 'Διαλέξτε δίσκο (SSD).', en: 'Pick a drive (SSD).' },
-  case: { el: 'Διαλέξτε κουτί.', en: 'Pick a case.' },
-  fan: { el: 'Διαλέξτε ανεμιστήρες.', en: 'Pick fans.' },
-  psu: { el: 'Διαλέξτε τροφοδοτικό.', en: 'Pick a power supply.' },
+  cpu: { el: 'Διάλεξε επεξεργαστή.', en: 'Pick a processor.' },
+  mobo: { el: 'Διάλεξε μητρική.', en: 'Pick a motherboard.' },
+  ram: { el: 'Διάλεξε μνήμη RAM.', en: 'Pick memory (RAM).' },
+  gpu: { el: 'Διάλεξε κάρτα γραφικών.', en: 'Pick a graphics card.' },
+  cooler: { el: 'Διάλεξε ψύκτρα.', en: 'Pick a cooler.' },
+  storage: { el: 'Διάλεξε δίσκο (SSD).', en: 'Pick a drive (SSD).' },
+  case: { el: 'Διάλεξε κουτί.', en: 'Pick a case.' },
+  fan: { el: 'Διάλεξε ανεμιστήρες.', en: 'Pick fans.' },
+  psu: { el: 'Διάλεξε τροφοδοτικό.', en: 'Pick a power supply.' },
 };

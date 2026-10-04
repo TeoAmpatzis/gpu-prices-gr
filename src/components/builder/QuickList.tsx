@@ -27,7 +27,7 @@ const S = {
     en: 'Hides parts without the data to check them ("Fit not verified").',
   },
   noneCompatible: {
-    el: 'Κανένα συμβατό προϊόν με την τρέχουσα επιλογή. Αφαιρέστε κάποιο εξάρτημα για περισσότερες επιλογές.',
+    el: 'Κανένα συμβατό προϊόν με την τρέχουσα επιλογή. Αφαίρεσε κάποιο εξάρτημα για περισσότερες επιλογές.',
     en: 'Nothing compatible with the current build. Remove a part to see more options.',
   },
 } satisfies Record<string, Text>;
