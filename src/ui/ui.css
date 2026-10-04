@@ -1,0 +1,466 @@
+/*
+ * BuildDraft.gr v2 components — the parts of each component's look that need states (hover, focus,
+ * pressed, disabled, loading, selected). Layout lives in the components (Tailwind utilities); colours come
+ * only from the tokens in tokens.css.
+ *
+ * `data-force="hover focus active"` shows a state without the pointer/keyboard, for the component
+ * catalogue (/_preview). Motion rules (plan A4): only transform and opacity animate; colour changes
+ * are instant; durations come from --motion-* (0 with "reduce motion").
+ */
+
+/* In Tailwind's components layer, so utility classes on an element always win. */
+@layer components {
+
+  .ds :focus-visible,
+  .ds [data-force~='focus'] {
+    outline: 2px solid rgb(var(--focus));
+    outline-offset: 2px;
+  }
+
+  /* ---------- Button ---------- */
+  .ui-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.5rem;
+    padding: 0 1rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+    white-space: nowrap;
+    user-select: none;
+    cursor: pointer;
+    transition: transform var(--motion-fast) var(--ease-out);
+  }
+  .ui-btn--sm {
+    min-height: 2rem;
+    padding: 0 0.75rem;
+  }
+  .ui-btn--icon {
+    width: 2.5rem;
+    padding: 0;
+  }
+  .ui-btn--sm.ui-btn--icon {
+    width: 2rem;
+  }
+  .ui-btn:active:not(:disabled),
+  .ui-btn[data-force~='active'] {
+    transform: scale(0.97);
+  }
+  .ui-btn--primary {
+    background: rgb(var(--brand-solid));
+    color: rgb(var(--on-brand));
+  }
+  .ui-btn--primary:hover,
+  .ui-btn--primary[data-force~='hover'] {
+    background: rgb(var(--brand-solid-hover));
+  }
+  .ui-btn--primary:active,
+  .ui-btn--primary[data-force~='active'] {
+    background: rgb(var(--brand-solid-active));
+  }
+  .ui-btn--secondary {
+    background: rgb(var(--panel));
+    color: rgb(var(--fg));
+    border-color: rgb(var(--edge));
+    box-shadow: var(--shadow-1);
+  }
+  .ui-btn--secondary:hover,
+  .ui-btn--secondary[data-force~='hover'] {
+    background: rgb(var(--hover));
+    border-color: rgb(var(--edge-hover));
+  }
+  .ui-btn--ghost {
+    background: transparent;
+    color: rgb(var(--fg));
+  }
+  .ui-btn--ghost:hover,
+  .ui-btn--ghost[data-force~='hover'] {
+    background: rgb(var(--hover));
+  }
+  .ui-btn--danger {
+    background: rgb(var(--danger-solid));
+    color: rgb(var(--on-brand));
+  }
+  .ui-btn--danger:hover,
+  .ui-btn--danger[data-force~='hover'] {
+    background: rgb(var(--danger-solid-hover));
+  }
+  .ui-btn:disabled,
+  .ui-btn[aria-disabled='true'] {
+    background: rgb(var(--sunken));
+    color: rgb(var(--faint));
+    border-color: rgb(var(--line));
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+  }
+  /* Loading: the label keeps its width (no layout shift) and its accessible name, hidden under a spinner. */
+  .ui-btn[data-loading] {
+    cursor: progress;
+  }
+  .ui-btn[data-loading] > :not(.ui-spinner) {
+    opacity: 0;
+  }
+  .ui-btn > .ui-spinner {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+  }
+  .ui-spinner {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 9999px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    animation: ui-spin 0.7s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ui-spinner {
+      animation-duration: 1.6s; /* still shows progress, slowly */
+    }
+  }
+  @keyframes ui-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* ---------- Chips ---------- */
+  .ui-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2rem;
+    padding: 0 0.75rem;
+    border: 1px solid rgb(var(--line-strong));
+    border-radius: 9999px;
+    background: rgb(var(--panel));
+    color: rgb(var(--fg));
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .ui-chip:hover,
+  .ui-chip[data-force~='hover'] {
+    background: rgb(var(--hover));
+  }
+  .ui-chip[aria-pressed='true'],
+  .ui-chip--applied {
+    background: rgb(var(--brand-subtle));
+    border-color: rgb(var(--accent));
+    color: rgb(var(--accent));
+  }
+  .ui-chip:disabled {
+    background: rgb(var(--sunken));
+    border-color: rgb(var(--line));
+    color: rgb(var(--faint));
+    cursor: not-allowed;
+  }
+  .ui-chip .ui-count {
+    font-weight: 400;
+    color: rgb(var(--muted));
+    font-variant-numeric: tabular-nums;
+  }
+  .ui-chip:disabled .ui-count {
+    color: inherit;
+  }
+  .ui-chip-row {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .ui-chip-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ---------- Badges (compatibility, discount, source) ---------- */
+  .ui-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-height: 1.375rem;
+    padding: 0 0.5rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .ui-badge svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    flex: none;
+  }
+  .ui-badge--success {
+    background: rgb(var(--success-bg));
+    color: rgb(var(--success-strong));
+    border-color: rgb(var(--success-line));
+  }
+  .ui-badge--warning {
+    background: rgb(var(--warning-bg));
+    color: rgb(var(--warning-strong));
+    border-color: rgb(var(--warning-line));
+  }
+  .ui-badge--danger {
+    background: rgb(var(--danger-bg));
+    color: rgb(var(--danger-strong));
+    border-color: rgb(var(--danger-line));
+  }
+  .ui-badge--info {
+    background: rgb(var(--info-bg));
+    color: rgb(var(--info-strong));
+    border-color: rgb(var(--info-line));
+  }
+  .ui-badge--neutral {
+    background: rgb(var(--sunken));
+    color: rgb(var(--muted));
+    border-color: rgb(var(--line));
+  }
+
+  /* ---------- Form fields ---------- */
+  .ui-field {
+    min-height: 2.5rem;
+    width: 100%;
+    padding: 0 0.75rem;
+    border: 1px solid rgb(var(--line-strong));
+    border-radius: var(--radius-md);
+    background: rgb(var(--panel));
+    color: rgb(var(--fg));
+    font-size: 0.875rem;
+  }
+  .ui-field::placeholder {
+    color: rgb(var(--faint));
+  }
+  .ui-field:hover,
+  .ui-field[data-force~='hover'] {
+    border-color: rgb(var(--muted));
+  }
+  .ui-field:focus-visible,
+  .ui-field[data-force~='focus'] {
+    outline: 2px solid rgb(var(--focus));
+    outline-offset: -1px;
+    border-color: rgb(var(--focus));
+  }
+  .ui-field[aria-invalid='true'] {
+    border-color: rgb(var(--danger-solid));
+  }
+  .ui-check {
+    width: 1rem;
+    height: 1rem;
+    flex: none;
+    accent-color: rgb(var(--brand-solid));
+  }
+
+  /* ---------- Switch ---------- */
+  .ui-switch {
+    position: relative;
+    display: inline-flex;
+    flex: none;
+    width: 2.25rem;
+    height: 1.25rem;
+    border-radius: 9999px;
+    background: rgb(var(--line-strong));
+    cursor: pointer;
+  }
+  .ui-switch[data-on='true'] {
+    background: rgb(var(--brand-solid));
+  }
+  .ui-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 9999px;
+    background: rgb(var(--n-0));
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+    transition: transform var(--motion-fast) var(--ease-out);
+  }
+  .ui-switch[data-on='true']::after {
+    transform: translateX(1rem);
+  }
+  .ui-switch[data-disabled] {
+    opacity: 0.45;
+  }
+
+  /* ---------- Range with two thumbs (two native inputs on one track) ---------- */
+  .ui-range {
+    position: relative;
+    height: 1.75rem;
+  }
+  .ui-range__track,
+  .ui-range__fill {
+    position: absolute;
+    top: 50%;
+    height: 4px;
+    margin-top: -2px;
+    border-radius: 9999px;
+  }
+  .ui-range__track {
+    left: 0;
+    right: 0;
+    background: rgb(var(--line));
+  }
+  .ui-range__fill {
+    background: rgb(var(--brand-solid));
+  }
+  .ui-range input[type='range'] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    margin: 0;
+    background: none;
+    pointer-events: none;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  .ui-range input[type='range']::-webkit-slider-thumb {
+    pointer-events: auto;
+    -webkit-appearance: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 9999px;
+    background: rgb(var(--panel));
+    border: 2px solid rgb(var(--brand-solid));
+    cursor: grab;
+  }
+  .ui-range input[type='range']::-moz-range-thumb {
+    pointer-events: auto;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 9999px;
+    background: rgb(var(--panel));
+    border: 2px solid rgb(var(--brand-solid));
+    cursor: grab;
+  }
+  .ui-range input[type='range']:focus-visible {
+    outline: none;
+  }
+  .ui-range input[type='range']:focus-visible::-webkit-slider-thumb {
+    outline: 2px solid rgb(var(--focus));
+    outline-offset: 2px;
+  }
+  .ui-range input[type='range']:focus-visible::-moz-range-thumb {
+    outline: 2px solid rgb(var(--focus));
+    outline-offset: 2px;
+  }
+
+  /* ---------- Containers ---------- */
+  .ui-card {
+    border: 1px solid rgb(var(--edge));
+    border-radius: var(--radius-lg);
+    background: rgb(var(--panel));
+    box-shadow: var(--shadow-1);
+  }
+  .ui-pop {
+    border: 1px solid rgb(var(--edge));
+    border-radius: var(--radius-lg);
+    background: rgb(var(--overlay));
+    box-shadow: var(--shadow-2);
+  }
+  .ui-tooltip {
+    max-width: 16rem;
+    padding: 0.375rem 0.5rem;
+    border-radius: var(--radius-sm);
+    background: rgb(var(--fg));
+    color: rgb(var(--page));
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 500;
+  }
+  .ui-skeleton {
+    border-radius: var(--radius-sm);
+    background: rgb(var(--hover));
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .ui-skeleton {
+      animation: ui-pulse 1.6s ease-in-out infinite;
+    }
+  }
+  @keyframes ui-pulse {
+    50% {
+      opacity: 0.5;
+    }
+  }
+  .ui-mono {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0;
+  }
+  /* Prices, counts and specs line up in columns. */
+  .ui-num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- Motion (transform + opacity only) ---------- */
+  .ui-enter-pop {
+    animation: ui-pop-in var(--motion-base) var(--ease-out) both;
+  }
+  .ui-enter-fade {
+    animation: ui-fade-in var(--motion-base) var(--ease-out) both;
+  }
+  .ui-enter-sheet {
+    animation: ui-sheet-in var(--motion-slow) var(--ease-out) both;
+  }
+  .ui-enter-toast {
+    animation: ui-toast-in var(--motion-base) var(--ease-out) both;
+  }
+  @keyframes ui-pop-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+  @keyframes ui-fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes ui-sheet-in {
+    from {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes ui-toast-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  /* ---------- Touch screens (< 1024 px): 44 px targets, no text under 14 px ---------- */
+  @media (max-width: 1023px) {
+    .ui-btn,
+    .ui-btn--sm,
+    .ui-chip,
+    .ui-field {
+      min-height: 2.75rem;
+    }
+    .ui-btn--icon,
+    .ui-btn--sm.ui-btn--icon {
+      width: 2.75rem;
+    }
+    .ui-badge {
+      min-height: 1.625rem;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+    .ui-tooltip {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+    .ui-check {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+}

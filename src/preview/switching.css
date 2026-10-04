@@ -1,0 +1,9 @@
+/* Theme and language switches never animate (plan A4 rule 3): for one frame nothing transitions, so
+   colour transitions anywhere on the page (v1's included) don't all run at once (O-02). */
+html[data-switching] *,
+html[data-switching] *::before,
+html[data-switching] *::after {
+  transition: none !important;
+  animation: none !important;
+}
+

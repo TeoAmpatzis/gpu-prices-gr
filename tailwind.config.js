@@ -1,13 +1,22 @@
 /** @type {import('tailwindcss').Config} */
 const token = (name) => `rgb(var(--${name}) / <alpha-value>)`;
 
+// Phase 1, Stop 2: the design system (src/ui, src/shell) and its preview (src/preview) are used only by the
+// development-only /_preview page, so production builds don't scan them and ship exactly v1's CSS. Stop 3
+// removes this exclusion when the shell goes live.
+const devOnly = process.env.NODE_ENV === 'production' ? ['!./src/ui/**', '!./src/shell/**', '!./src/preview/**'] : [];
+
 export default {
-  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  content: ['./index.html', './src/**/*.{ts,tsx}', ...devOnly],
   darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+      },
+      // v2 type scale: xs 12, sm 14, base 16, lg 18, 2xl 24 (Tailwind's) + display 32.
+      fontSize: {
+        display: ['2rem', { lineHeight: '2.5rem', letterSpacing: '-0.02em' }],
       },
       colors: {
         // Design tokens, defined in src/index.css for light and .dark — no raw palette colours in components.
@@ -47,6 +56,21 @@ export default {
         faint: token('faint'),
         accent: token('accent'),
         up: token('up'),
+        // v2 design system (src/ui/tokens.css)
+        overlay: token('overlay'),
+        focus: token('focus'),
+        'brand-solid': token('brand-solid'),
+        'brand-solid-hover': token('brand-solid-hover'),
+        'on-brand': token('on-brand'),
+        'brand-subtle': token('brand-subtle'),
+        'brand-subtle-line': token('brand-subtle-line'),
+        'danger-solid-hover': token('danger-solid-hover'),
+        brand: Object.fromEntries([50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].map((n) => [n, token(`brand-${n}`)])),
+        ...Object.fromEntries(
+          ['success', 'warning', 'danger', 'info'].flatMap((m) =>
+            ['fg', 'strong', 'bg', 'line', 'solid'].map((r) => [`${m}-${r}`, token(`${m}-${r}`)]),
+          ),
+        ),
       },
     },
   },
