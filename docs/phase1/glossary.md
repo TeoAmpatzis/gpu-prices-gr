@@ -14,10 +14,12 @@ Every visible string comes from `src/lib/i18n.ts` (`Text` = `{el, en}`). When tw
 | One specific product (a card, a kit) | προϊόν | product | Graphics cards only, after Phase 2. |
 | The 9 categories, as a group | Εξαρτήματα | Parts | Menu button and `/parts`. |
 | Categories | Επεξεργαστές, Μητρικές, Μνήμη RAM, Κάρτες γραφικών, Δίσκοι, Κουτιά, Τροφοδοτικά, Ψύκτρες CPU, Ανεμιστήρες | Processors, Motherboards, Memory (RAM), Graphics cards, Storage, Cases, Power supplies, CPU coolers, Case fans | Same names in the menu, tiles, breadcrumbs and page titles. |
+| One part in the builder (slot) | Επεξεργαστής, Μητρική, Μνήμη RAM, Κάρτα γραφικών, Δίσκος, Κουτί, Τροφοδοτικό, Ψύκτρα CPU, Ανεμιστήρες | Processor, Motherboard, Memory, Graphics card, Storage drive, Case, Power supply, CPU cooler, Case fans | `CATS[cat].one` in `src/shell/nav.ts`. |
+| Count of models | 1 μοντέλο / 96 μοντέλα | 1 model / 96 models | Tiles and menu. |
 | Reset every filter | Καθαρισμός φίλτρων | Clear filters | One label for every reset (UX-17). |
 | Remove one applied filter | Αφαίρεση φίλτρου «…» | Remove filter "…" | Screen-reader label of the chip's "×". |
 | Price with delivery | τιμή με μεταφορικά | price with shipping | Only when the shipping belongs to the same offer (P-01). |
-| Delivery cost | μεταφορικά | shipping | "Μεταφορικά: άγνωστα" / "Shipping: unknown". |
+| Delivery cost | μεταφορικά | shipping | Unknown: "Χωρίς μεταφορικά" / "Excl. shipping" (the price shown excludes delivery); free: "Δωρεάν μεταφορικά" / "Free shipping". |
 | In stock / availability | διαθεσιμότητα | availability | Shown only when known (Phase 2). |
 | When a price was read | ελέγχθηκε πριν από … | checked … ago | Older than 24 h is marked ⚠. |
 | Change over 7 days | 7 ημέρες | 7 days | Always labelled (UX-24): "−4% σε 7 ημέρες". |
