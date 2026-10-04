@@ -45,7 +45,7 @@ def _latin(title: str) -> str:
 # platform + chipset/socket ("AMD A520", "Intel 1700"), "sAM5"/"s1700", "Socket" or a part number on.
 # Needs a space/comma before it, so "A520M-ITX" and "B650I" stay whole.
 SPEC_TAIL = re.compile(
-    r"(?:\s|,)\s*(?:(?:Extended[\s-])?E-?ATX|Micro(?:[\s-]?ATX)?|Mini(?:[\s-]?(?:ITX|DTX|ATX|STX))?|m-?ATX|uATX|"
+    r"(?:\s|,)\s*(?:Extended[\s-]ATX|(?:Extended[\s-])?E-?ATX|Micro(?:[\s-]?ATX)?|Mini(?:[\s-]?(?:ITX|DTX|ATX|STX))?|m-?ATX|uATX|"
     r"ATX|ITX|με|Socket|(?:AMD|Intel)\s+(?:[ABHQXZWC]\d{3}E?|AM[2-5]|LGA\s?\d{3,4}|\d{4})|"
     r"s(?:AM[2-5]|\d{4})|\d{2}-?[A-Z0-9]{4,}-[A-Z0-9]{4,})(?![\w-]).*$",
     re.I,

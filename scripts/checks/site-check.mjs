@@ -2,7 +2,8 @@
 //   node scripts/checks/site-check.mjs [https://gpu-prices-gr.vercel.app]
 // Every tab: products listed, no error, photos in view load; the first product opens with shop links,
 // a price chart and its large photo; the PC builder offers parts; the text pages render; the data and
-// photo files are served with the expected cache headers. Exit code 1 if anything fails.
+// photo files are served with the expected cache headers; the newest data is under 12 hours old.
+// Exit code 1 if anything fails.
 import { spawn } from 'node:child_process';
 import { existsSync, mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -47,6 +48,12 @@ for (const cat of CATS) {
   const c = manifest?.cats?.[cat];
   check(!!c && c.models > 0 && c.listings > 0, `${cat}: data`, c ? `${c.models} models, ${c.listings} listings, ${c.historyPoints ?? '?'} history points, updated ${c.updatedAt}` : 'missing');
 }
+// Scrapes run every 6 hours: newest data older than 12 hours means scheduled runs are failing
+// (2026-10-03: selectolax 1.0 broke three runs in a row and nobody noticed for ~15 hours).
+const MAX_AGE_H = 12;
+const newest = Math.max(0, ...CATS.map((cat) => Date.parse(manifest?.cats?.[cat]?.updatedAt ?? '') || 0));
+const ageH = (Date.now() - newest) / 36e5;
+check(newest > 0 && ageH <= MAX_AGE_H, `newest data under ${MAX_AGE_H} h old`, newest ? `${ageH.toFixed(1)} h since ${new Date(newest).toISOString()}` : 'no updatedAt in the manifest');
 const list = await head('/data/gpu/list.json');
 check(list.ok && /max-age=300/.test(list.cache), 'list.json cached 5 min', list.cache);
 

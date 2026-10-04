@@ -158,8 +158,11 @@ const GPU_PSU: Record<string, number> = {
   'Arc A380': 300,
   'Arc A310': 300,
 };
-/** The card's own stated minimum (product page), else the chip maker's recommendation. */
-export const gpuPsu = (g: GpuListing): number | null => g.minPsu ?? GPU_PSU[g.chip] ?? null;
+/**
+ * The larger of the card's own stated minimum (product page) and the chip maker's recommendation:
+ * some shop pages give the card's board power in the "minimum PSU" field (130–300 W).
+ */
+export const gpuPsu = (g: GpuListing): number | null => Math.max(g.minPsu ?? 0, GPU_PSU[g.chip] ?? 0) || null;
 
 /** Top-tier desktop CPUs draw well over their rated TDP under load; give them extra headroom. */
 const HIGH_END_CPU = /^(Ryzen 9|Core i9|Core Ultra 9)\b/;
@@ -184,7 +187,12 @@ export const cpuHasIgpu = (m: Model<CpuListing>) => m.listings.some((l) => l.igp
 /** True/false when stated (Skroutz "Περιλαμβάνει Ψύκτρα", or a Tray CPU), null when not. */
 export const cpuCooler = (m: Model<CpuListing>) => m.cheapest.coolerIncluded ?? null;
 export const moboSocket = (m: Model<MoboListing>) => attr(m, (l) => l.socket);
-export const moboMemory = (m: Model<MoboListing>) => attr(m, (l) => l.memory);
+/**
+ * Unknown when the board's listings disagree (DDR4 and DDR5 versions sold under one name, or a wrong
+ * value): such a board is then left out of the builder (`usable`) rather than checked with a guess.
+ */
+export const moboMemory = (m: Model<MoboListing>) =>
+  new Set(m.listings.map((l) => l.memory).filter((v) => v != null)).size > 1 ? null : attr(m, (l) => l.memory);
 export const moboForm = (m: Model<MoboListing>) => attr(m, (l) => l.formFactor);
 /** RAM slots as stated, null when not. */
 export const moboSlotsStated = (m: Model<MoboListing>) => attr(m, (l) => l.ramSlots);
@@ -206,7 +214,12 @@ export const caseFanMounts = (m: Model<CaseListing>) => firstOf(m, (l) => l.fanM
 export const caseFansIncluded = (m: Model<CaseListing>) => firstOf(m, (l) => l.fansIncluded);
 export const caseRadiatorSizes = (m: Model<CaseListing>) => firstOf(m, (l) => l.radiators);
 export const coolerSockets = (m: Model<CoolerListing>) => (attr(m, (l) => l.sockets) ?? '').split(',').filter(Boolean);
-export const coolerHeight = (m: Model<CoolerListing>) => attr(m, (l) => l.heightMm);
+/** Under 30 mm is a fan's thickness read as the tower's height (some shop pages): treated as unknown. */
+const MIN_AIR_COOLER_MM = 30;
+export const coolerHeight = (m: Model<CoolerListing>) => {
+  const h = attr(m, (l) => l.heightMm);
+  return h != null && h < MIN_AIR_COOLER_MM ? null : h;
+};
 /** Fan sizes the builder offers: what case fan positions take (others are for coolers/radiators). */
 const FAN_SIZES = [120, 140];
 
