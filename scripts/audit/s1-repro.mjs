@@ -1,12 +1,14 @@
 // Phase 0 (v2 audit): reproduce the S1 issues D-01 (air cooler height) and D-02 (card minimum PSU) in the
 // v1 UI through share links, and record the Review labels, their tooltips and the summary lines.
 //
-//   node scripts/audit/s1-repro.mjs <outDir>   (needs the audit preview on http://localhost:4180)
+//   node scripts/audit/s1-repro.mjs <outDir> [baseUrl=http://localhost:4180] [suffix]
+//   (before the fixes: "Fits"; after main 1cadff6 / 415d321: "Fit not verified" and "Incompatible")
 /* global document */
 import { chromium } from '@playwright/test';
 
-const BASE = 'http://localhost:4180';
 const OUT = process.argv[2];
+const BASE = (process.argv[3] ?? 'http://localhost:4180').replace(/\/$/, '');
+const SUFFIX = process.argv[4] ? `-${process.argv[4]}` : '';
 const cases = {
   'D-01': { case: 'sharkoonmsy1000', cooler: 'deepcoolak400g2', cpu: 'Ryzen 7 9700X|false' },
   'D-02': { gpu: 'skroutz:60811441', psu: '350W Bronze ATX', cpu: 'Ryzen 7 9700X|false' },
@@ -25,7 +27,7 @@ for (const [id, params] of Object.entries(cases)) {
     const aside = document.querySelector('aside')?.innerText.split('\n').filter((l) => /PSU|fit|Incompatible|W\b/.test(l)).slice(0, 6);
     return { items, aside };
   });
-  await page.screenshot({ path: `${OUT}/${id}-review-1366-en-light.jpg`, type: 'jpeg', quality: 70 });
+  await page.screenshot({ path: `${OUT}/${id}-review-1366-en-light${SUFFIX}.jpg`, type: 'jpeg', quality: 70 });
   console.log(id, JSON.stringify(facts, null, 1));
   await ctx.close();
 }
