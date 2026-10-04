@@ -1,247 +1,152 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
-import { Info, Loader2, Mail, ShieldCheck, Wrench } from 'lucide-react';
-import type { BaseListing, Category } from './types';
-import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './lib/categories';
-import CategoryView from './components/CategoryView';
-import Logo from './components/Logo';
-import LangToggle from './components/LangToggle';
-import { T, tr, useLang } from './lib/i18n';
-import { prefetch } from './lib/data';
-import { OWNER_NAME } from './lib/site';
+// The site (v2 shell, Phase 1): header, the page for the current address, footer. Real URLs (src/lib/routes.ts)
+// instead of v1's "#…" routes; old links are redirected before this renders (main.tsx). The category pages,
+// the builder and the text pages are separate chunks, loaded when opened or when their link is hovered,
+// focused or touched.
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { tr, useLang, type Text } from './lib/i18n';
+import { navigate, notifyUrl, useLinkNavigation, usePath } from './lib/router';
+import { CATEGORY_LIST, matchRoute, redirectLegacyLink } from './lib/routes';
+import type { Category } from './types';
+import { ErrorBoundary } from './shell/ErrorBoundary';
+import { Header } from './shell/Header';
+import { Home } from './shell/Home';
+import { BUILDER, CATS, href } from './shell/nav';
+import { Footer, NotFoundPage, PartsPage } from './shell/pages';
+import { PageTitle } from './shell/PageTitle';
+import { loadSearchIndex, useSite } from './shell/site';
+import { PAGE } from './shell/texts';
+import type { SearchSetup } from './ui/SearchBox';
+import { SkeletonRows } from './ui/states';
+import { UI } from './ui/strings';
 
-type InfoId = 'about' | 'contact' | 'privacy';
-type Page = Category | 'builder' | InfoId;
-
-// The PC builder and the text pages are separate chunks, loaded when opened (or when their link is
-// hovered/focused/touched, together with the builder's data).
+const loadCategoryPage = () => import('./shell/CategoryPage');
 const loadBuilderView = () => import('./components/Builder');
 const loadInfoView = () => import('./components/InfoPage');
+const CategoryPage = lazy(loadCategoryPage);
+const ModelRedirect = lazy(() => loadCategoryPage().then((m) => ({ default: m.ModelRedirect })));
 const Builder = lazy(loadBuilderView);
 const InfoPage = lazy(loadInfoView);
 
-/** While a lazily loaded page's code arrives (same look as the builder's own loading state). */
-function PageLoading() {
-  const lang = useLang();
-  return (
-    <div className="flex items-center justify-center gap-2 py-24 text-faint">
-      <Loader2 className="h-5 w-5 animate-spin" /> {tr(lang, T.loading)}
-    </div>
-  );
+/** Start loading a page's code and data before it opens (link hover, focus or touch; and the first page). */
+function prefetchPath(path: string) {
+  const r = matchRoute(new URL(path, location.origin).pathname);
+  if (r.kind === 'category' || r.kind === 'model') void loadCategoryPage().then((m) => m.prefetch(r.cat));
+  else if (r.kind === 'builder') {
+    void loadBuilderView();
+    void import('./lib/data').then((m) => m.prefetch('builder'));
+  } else if (r.kind === 'info') void loadInfoView();
 }
 
-/** Text pages, linked from the footer (#about, #contact, #privacy). */
-const INFO: Record<
-  InfoId,
-  {
-    title: { el: string; en: string };
-    subtitle: { el: string; en: string };
-    icon: typeof Info;
+/** The first page's code and data start downloading at once (main.tsx calls this after the old-link redirect). */
+export function startFirstPage() {
+  const first = matchRoute(location.pathname);
+  const data = first.kind === 'category' || first.kind === 'model' ? `/data/${first.cat}/list.json` : first.kind === 'builder' ? '/data/builder.json' : null;
+  if (data) {
+    const l = document.createElement('link');
+    l.rel = 'preload';
+    l.as = 'fetch';
+    l.href = data;
+    l.crossOrigin = 'anonymous';
+    document.head.append(l);
   }
-> = {
-  about: {
-    title: { el: 'Σχετικά', en: 'About' },
-    subtitle: {
-      el: 'Τι είναι το BuildDraft.gr και από πού έρχονται οι τιμές.',
-      en: 'What BuildDraft.gr is and where the prices come from.',
-    },
-    icon: Info,
-  },
-  contact: {
-    title: { el: 'Επικοινωνία', en: 'Contact' },
-    subtitle: { el: 'Ερωτήσεις, διορθώσεις και προτάσεις.', en: 'Questions, corrections and suggestions.' },
-    icon: Mail,
-  },
-  privacy: {
-    title: { el: 'Πολιτική απορρήτου', en: 'Privacy policy' },
-    subtitle: {
-      el: 'Ποια δεδομένα επεξεργάζονται και ποια είναι τα δικαιώματά σας.',
-      en: 'What data is processed and what your rights are.',
-    },
-    icon: ShieldCheck,
-  },
-};
-const INFO_IDS = Object.keys(INFO) as InfoId[];
+  prefetchPath(location.pathname);
+}
 
-/** Top-nav tab: outlined with an open bottom in light mode; dark keeps only the 2px underline. Sized so
- * the nine category tabs + the builder fit the 1248px container in Greek (scrolls sideways below). */
-const TAB =
-  'inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-t-lg border border-b-2 px-[7px] pb-3 pt-1 text-sm transition dark:rounded-none dark:border-x-0 dark:border-t-0';
-const isInfo = (p: Page): p is InfoId => (INFO_IDS as string[]).includes(p);
-
-/** Tab link props that start loading the tab's data on hover, keyboard focus or touch (data.ts prefetch). */
-const prefetchOn = (page: string) => {
-  const go = () => {
-    prefetch(page);
-    if (page === 'builder') void loadBuilderView();
-    if ((INFO_IDS as string[]).includes(page)) void loadInfoView();
-  };
-  return { onMouseEnter: go, onFocus: go, onTouchStart: go };
-};
-
-const fromHash = (): Page => {
-  // "#ram?type=ddr5" → "ram": filters live after the "?" (src/lib/filterUrl.ts).
-  const id = location.hash.slice(1).split('?')[0];
-  return id === 'builder' || (CATEGORY_IDS as string[]).includes(id) || (INFO_IDS as string[]).includes(id)
-    ? (id as Page)
-    : 'gpu';
-};
-
-const BUILDER = {
-  tab: { el: 'Συναρμολόγηση PC', en: 'PC Builder' },
-  title: { el: 'Συναρμολόγηση PC', en: 'PC Builder' },
-  subtitle: {
-    el: 'Διαλέξτε συμβατά εξαρτήματα με τις τρέχουσες τιμές της ελληνικής αγοράς.',
-    en: 'Pick compatible parts at current Greek market prices.',
+const SECTIONS: SearchSetup['sections'] = [...CATEGORY_LIST.map((c) => ({ id: c, ...CATS[c] })), { id: 'builder', ...BUILDER }];
+const SEARCH: SearchSetup = {
+  load: loadSearchIndex,
+  sections: SECTIONS,
+  href: {
+    section: (id) => (id === 'builder' ? href.builder : href.category(id)),
+    model: href.model,
+    all: href.search,
+    maker: href.maker,
   },
-  icon: Wrench,
+  go: (to) => navigate(to),
 };
 
 export default function App() {
-  const [active, setActive] = useState<Page>(fromHash);
-  // Keep visited tabs mounted so their filters survive switching back and forth.
-  const [visited, setVisited] = useState<Set<Page>>(() => new Set([fromHash()]));
-
+  const lang = useLang();
+  const path = usePath();
+  const route = useMemo(() => matchRoute(path), [path]);
+  const site = useSite();
+  useLinkNavigation(prefetchPath);
+  // An old "#…" link opened where the site is already showing (only the hash changes): same redirect.
   useEffect(() => {
-    const onHash = () => setActive(fromHash());
+    const onHash = () => redirectLegacyLink() && notifyUrl();
     window.addEventListener('hashchange', onHash);
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
-  useEffect(() => {
-    setVisited((v) => (v.has(active) ? v : new Set(v).add(active)));
-  }, [active]);
 
-  const lang = useLang();
-  const t = (x: Parameters<typeof tr>[1]) => tr(lang, x);
-  const cfg = active === 'builder' ? BUILDER : isInfo(active) ? INFO[active] : CATEGORIES[active];
+  // Visited category pages (and the builder) stay mounted, hidden, so their filters and state survive
+  // switching back and forth (as in v1).
+  const activeCat: Category | null = route.kind === 'category' ? route.cat : null;
+  // (Updated while rendering, React's pattern for remembering earlier renders.)
+  const [visited, setVisited] = useState<Category[]>([]);
+  if (activeCat && !visited.includes(activeCat)) setVisited([...visited, activeCat]);
+  const [builderSeen, setBuilderSeen] = useState(false);
+  if (route.kind === 'builder' && !builderSeen) setBuilderSeen(true);
 
-  // Text pages open at the top, like a new page.
+  const home = tr(lang, UI.home);
+  const crumbs = (label: Text) => [{ label: home, href: '/' }, { label: tr(lang, label) }];
+  const title: Text =
+    route.kind === 'category' || route.kind === 'model'
+      ? CATS[route.cat].name
+      : route.kind === 'info'
+        ? PAGE[route.page].title
+        : route.kind === 'home'
+          ? PAGE.home.title
+          : PAGE[route.kind].title;
   useEffect(() => {
-    if (isInfo(active)) window.scrollTo({ top: 0 });
-  }, [active]);
+    document.title = route.kind === 'home' ? `BuildDraft.gr — ${tr(lang, title)}` : `${tr(lang, title)} — BuildDraft.gr`;
+  }, [route, title, lang]);
 
+  // After an in-site navigation, focus moves to the new page's content (screen readers announce it).
+  const firstRender = useRef(true);
   useEffect(() => {
-    document.title = `${t(cfg.title)} — ${t(T.siteName)}`;
-  });
-  const Icon = cfg.icon;
-  // The logo goes to the home page ("/", which shows the first tab) without reloading the app.
-  const goHome = (e: React.MouseEvent) => {
-    e.preventDefault();
-    history.pushState(null, '', '/');
-    setActive('gpu');
-    window.scrollTo({ top: 0 });
-  };
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    document.getElementById('main')?.focus({ preventScroll: true });
+  }, [path]);
+
+  const current = route.kind === 'category' || route.kind === 'model' ? route.cat : route.kind === 'builder' ? 'builder' : null;
+  const notFound = <NotFoundPage counts={site?.counts} search={SEARCH} />;
 
   return (
-    <>
-      {/* On the builder, room at the bottom for its fixed summary bar (below lg). */}
-      <div className={`mx-auto max-w-7xl px-4 py-5 sm:py-8 ${active === 'builder' ? 'pb-32 sm:pb-32 lg:pb-8' : ''}`}>
-        <header className="mb-6 flex flex-col gap-6">
-          <div className="flex items-center justify-between gap-4">
-            <a href="/" onClick={goHome} className="tap flex min-w-0 items-center gap-2.5">
-              <Logo className="h-8 w-8 shrink-0 text-accent" />
-              <span className="min-w-0 leading-tight">
-                <span className="block text-[17px] font-bold tracking-tight">
-                  BuildDraft<span className="text-accent">.gr</span>
-                </span>
-                <span className="block text-xs text-faint">{t(T.siteTagline)}</span>
-                <span className="sr-only"> {t(T.homeLabel)}</span>
-              </span>
-            </a>
-            <div className="flex items-center gap-2">
-              <LangToggle />
-            </div>
-          </div>
-
-          {/* Bottom rule is an inset shadow so the active tab's underline can sit on it without
-            causing vertical overflow; tabs scroll sideways on narrow screens. */}
-          <nav className="flex gap-0.5 overflow-x-auto shadow-[inset_0_-1px_0_rgb(var(--line))] scrollbar-none">
-            {CATEGORY_IDS.map((id) => {
-              const c = CATEGORIES[id];
-              const TabIcon = c.icon;
-              return (
-                <a
-                  key={id}
-                  href={`#${id}`}
-                  {...prefetchOn(id)}
-                  aria-current={id === active ? 'page' : undefined}
-                  className={`tap ${TAB} font-medium ${
-                    id === active
-                      ? 'border-accent text-fg'
-                      : 'border-edge border-b-transparent text-muted hover:border-edge-hover hover:border-b-line-strong hover:text-fg'
-                  }`}
-                >
-                  <TabIcon className={`h-4 w-4 ${id === active ? 'text-accent' : ''}`} /> {t(c.tab)}
-                </a>
-              );
-            })}
-            {/* The builder sits apart, at the right end of the tab bar. */}
-            <a
-              href="#builder"
-              {...prefetchOn('builder')}
-              aria-current={active === 'builder' ? 'page' : undefined}
-              className={`tap ml-auto ${TAB} font-semibold ${
-                active === 'builder'
-                  ? 'border-accent text-accent'
-                  : 'border-edge border-b-transparent text-accent/80 hover:border-edge-hover hover:border-b-transparent hover:text-accent'
-              }`}
-            >
-              <Wrench className="h-4 w-4" /> {t(BUILDER.tab)}
-            </a>
-          </nav>
-
-          <div className="relative isolate flex items-start gap-3">
-            <span className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent ring-1 ring-inset ring-accent/20">
-              <Icon className="h-5 w-5" />
-            </span>
-            <div>
-              <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{t(cfg.title)}</h1>
-              <p className="mt-1 text-sm text-muted">{t(cfg.subtitle)}</p>
-            </div>
-          </div>
-        </header>
-
-        {/* Pages with data are at least a screen tall, so the footer starts below the fold while
-            they load and is not pushed down (a layout shift) when the table arrives. */}
-        <main className={isInfo(active) ? undefined : 'min-h-screen'}>
-          {/* Visited tabs stay mounted (hidden) so their filters survive switching back and forth.
-            Each config is typed for its own listing type, so it is widened here. */}
-          {CATEGORY_IDS.filter((id) => visited.has(id)).map((id) => (
-            <div key={id} hidden={active !== id}>
-              <CategoryView cfg={CATEGORIES[id] as unknown as CategoryConfig<BaseListing>} />
-            </div>
-          ))}
-          {visited.has('builder') && (
-            <div hidden={active !== 'builder'}>
-              <Suspense fallback={<PageLoading />}>
-              <Builder />
-            </Suspense>
-            </div>
-          )}
-          {isInfo(active) && (
-            <Suspense fallback={<PageLoading />}>
-              <InfoPage page={active} />
-            </Suspense>
-          )}
-        </main>
-
-        <footer className="mt-10 border-t border-line pt-6 text-center text-xs text-faint">
-          <nav aria-label={t(T.footerNav)} className="mb-3 flex flex-wrap justify-center gap-x-5 gap-y-1 text-sm">
-            {INFO_IDS.map((id) => (
-              <a
-                key={id}
-                href={`#${id}`}
-                {...prefetchOn(id)}
-                aria-current={active === id ? 'page' : undefined}
-                className={`tap inline-flex items-center rounded transition-colors duration-150 hover:text-fg ${active === id ? 'font-medium text-fg' : 'text-muted'}`}
-              >
-                {t(INFO[id].title)}
-              </a>
+    // On the builder, room at the bottom for its fixed summary bar on phones and tablets.
+    <div className={route.kind === 'builder' ? 'pb-32 lg:pb-0' : undefined}>
+      <Header current={current} search={SEARCH} counts={site?.counts} />
+      {/* Pages with data are at least a screen tall, so the footer starts below the fold while they load. */}
+      <main id="main" tabIndex={-1} className="mx-auto min-h-screen max-w-7xl px-4 py-6 outline-none sm:py-8">
+        <ErrorBoundary>
+          <Suspense fallback={<SkeletonRows />}>
+            {route.kind === 'home' && <Home counts={site?.counts} search={SEARCH} />}
+            {visited.map((c) => (
+              <div key={c} hidden={activeCat !== c}>
+                <CategoryPage cat={c} home={home} />
+              </div>
             ))}
-          </nav>
-          {t(T.footer)}
-          <div className="mt-1">BuildDraft.gr · © 2026 {t(OWNER_NAME)} · {t(T.notAffiliated)}</div>
-        </footer>
-      </div>
-    </>
+            {route.kind === 'model' && <ModelRedirect cat={route.cat} slug={route.slug} notFound={notFound} />}
+            {builderSeen && (
+              <div hidden={route.kind !== 'builder'}>
+                <PageTitle crumbs={crumbs(PAGE.builder.title)} title={PAGE.builder.title} subtitle={PAGE.builder.subtitle} />
+                <Builder />
+              </div>
+            )}
+            {route.kind === 'parts' && <PartsPage counts={site?.counts} search={SEARCH} />}
+            {route.kind === 'info' && (
+              <>
+                <PageTitle crumbs={crumbs(PAGE[route.page].title)} title={PAGE[route.page].title} subtitle={PAGE[route.page].subtitle} />
+                <InfoPage page={route.page} />
+              </>
+            )}
+            {route.kind === 'notFound' && notFound}
+          </Suspense>
+        </ErrorBoundary>
+      </main>
+      <Footer sources={site?.sources ?? {}} staleIn={site?.staleIn} />
+    </div>
   );
 }

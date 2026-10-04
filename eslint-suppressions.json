@@ -27,11 +27,6 @@
       "count": 1
     }
   },
-  "src/App.tsx": {
-    "react-hooks/set-state-in-effect": {
-      "count": 1
-    }
-  },
   "src/components/FilterBar.tsx": {
     "react-hooks/refs": {
       "count": 1

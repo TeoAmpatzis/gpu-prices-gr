@@ -33,6 +33,7 @@ import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './categories';
 import { fromColumns } from './columns';
 import { groupModels, mostCommon, saleOf, type Model } from './data';
 import { POP_SCALE, popularityRaw } from './ranking';
+import type { SearchIndexFile } from './search';
 import {
   LAZY_SLOTS,
   SLOTS,
@@ -261,6 +262,7 @@ export function manifest(
       listings: latest.listings.length,
       historyPoints: Object.values(history[cat] ?? {}).reduce((n, pts) => n + pts.length, 0),
       updatedAt: latest.updatedAt,
+      sources: Object.fromEntries(Object.entries(latest.sources).map(([s, m]) => [s, { updatedAt: m?.updatedAt ?? null, ok: !!m?.ok }])),
     };
   }
   const offered = Object.fromEntries(
@@ -326,4 +328,26 @@ export function checkData(next: Manifest, live: Manifest | null): string[] {
     if (!next.builder[slot]) problems.push(`builder: nothing to offer for ${slot}`);
   }
   return problems;
+}
+
+/**
+ * The global search's index (src/lib/search.ts), loaded only when the search box is used: per category,
+ * every model's shown name and exact cheapest price (the same price the lists show), most popular first,
+ * and the makers (graphics cards: the card maker).
+ */
+export function searchFile(all: Partial<Record<Category, Latest>>, builtAt: string): SearchIndexFile {
+  const cats: SearchIndexFile['cats'] = {};
+  for (const cat of CATEGORY_IDS) {
+    const latest = all[cat];
+    if (!latest) continue;
+    const models = groupModels(latest.listings, cfgOf(cat))
+      .map((m) => ({ m, pop: popularityRaw(m) }))
+      .sort((a, b) => b.pop - a.pop || a.m.chip.localeCompare(b.m.chip));
+    const maker = (l: BaseListing) => (cat === 'gpu' ? (l as BaseListing & { partner?: string }).partner : l.brand);
+    cats[cat] = {
+      m: models.map(({ m }) => [m.chip, m.cheapest.price]),
+      mk: [...new Set(latest.listings.map(maker).filter((x): x is string => !!x))].sort((a, b) => a.localeCompare(b)),
+    };
+  }
+  return { builtAt, cats };
 }

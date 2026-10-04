@@ -1,7 +1,7 @@
 import { ArrowRight, Search, X, type LucideIcon } from 'lucide-react';
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { tr, useLang, type Text } from '../lib/i18n';
-import { formatPrice } from '../lib/data';
+import { formatPrice } from '../lib/format';
 import { matchCategories, search, type Group, type PreparedIndex } from '../lib/search';
 import type { Category } from '../types';
 import { UI, num } from './strings';

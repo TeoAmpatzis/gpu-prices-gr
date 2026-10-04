@@ -229,6 +229,18 @@ export interface BuilderExtra {
 export interface Manifest {
   builtAt: string;
   /** historyPoints: all daily lows in history.json (a drop means history was lost; optional in older manifests). */
-  cats: Partial<Record<Category, { models: number; listings: number; historyPoints?: number; updatedAt: string }>>;
+  cats: Partial<
+    Record<
+      Category,
+      {
+        models: number;
+        listings: number;
+        historyPoints?: number;
+        updatedAt: string;
+        /** Each source's last successful read of this category (the status line; optional in older manifests). */
+        sources?: Partial<Record<SourceName, { updatedAt: string | null; ok: boolean }>>;
+      }
+    >
+  >;
   builder: Record<string, number>; // models offered per builder slot
 }

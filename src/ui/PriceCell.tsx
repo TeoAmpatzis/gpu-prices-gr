@@ -1,6 +1,6 @@
 import { Clock, PackageCheck, TrendingDown, TrendingUp, TriangleAlert, Truck } from 'lucide-react';
 import { tr, useLang, type Lang, type Text } from '../lib/i18n';
-import { formatPrice, timeAgo } from '../lib/data';
+import { formatPrice, timeAgo } from '../lib/format';
 import { SOURCES } from '../lib/sources';
 import type { SourceName } from '../types';
 import { UI, num } from './strings';
