@@ -29,8 +29,8 @@ const R = {
   },
   title: { el: 'Η σύνθεσή μου', en: 'My build' },
   prices: {
-    el: 'Χαμηλότερες τιμές ανά προϊόν, χωρίς μεταφορικά',
-    en: 'Lowest price per product, before shipping',
+    el: 'Χαμηλότερες τιμές ανά προϊόν· τα μεταφορικά δεν περιλαμβάνονται',
+    en: 'Lowest price per product; shipping not included',
   },
 } satisfies Record<string, Text>;
 

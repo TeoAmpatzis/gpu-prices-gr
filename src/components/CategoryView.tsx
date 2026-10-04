@@ -1,5 +1,5 @@
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
-import { AlertTriangle, SlidersHorizontal } from 'lucide-react';
+import { SlidersHorizontal } from 'lucide-react';
 import type { BaseListing } from '../types';
 import { PER_PAGE, activeFilterCount, applyFilters, defaultFilters, loadData, type CategoryData } from '../lib/data';
 import type { CategoryConfig } from '../lib/categories';
@@ -12,7 +12,9 @@ import FilterBar from './FilterBar';
 import ModelTable from './ModelTable';
 import Pagination from './Pagination';
 import Skeleton from './Skeleton';
-import SourcesStatus from './SourcesStatus';
+import { useMedia } from '../lib/useMedia';
+import { StatusLine, type SourceTimes } from '../ui/nav';
+import { ErrorState, SkeletonCards } from '../ui/states';
 
 /** One category page (one tab): source status, filters and the model table. */
 export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: CategoryConfig<L> }) {
@@ -25,11 +27,14 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
   const closeSheet = useCallback(() => setSheetOpen(false), []);
   const top = useRef<HTMLDivElement>(null); // the results column (pager scrolls back to it)
 
+  // "Δοκιμή ξανά" after a failed load: a new attempt re-runs the load (data.ts forgets failed requests).
+  const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     loadData<L>(cfg.id)
       .then(setData)
       .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)));
-  }, [cfg.id]);
+  }, [cfg.id, attempt]);
+  const wide = useMedia('(min-width: 1024px)');
 
   const models = useMemo(
     () => (data ? applyFilters(data.latest.listings, filters, cfg, data.history, data.imported) : []),
@@ -46,19 +51,29 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
     [data, deferred, cfg, options],
   );
 
+  // A failed load: the translated message and a retry, the technical detail folded (UX-19).
   if (error) {
     return (
-      <div className="notice-danger flex items-center gap-2 p-4">
-        <AlertTriangle className="h-5 w-5" /> {tr(lang, T.loadError)}: {error}
+      <div className="card">
+        <ErrorState
+          detail={error}
+          onRetry={() => {
+            setError(null);
+            setAttempt((a) => a + 1);
+          }}
+        />
       </div>
     );
   }
+  // Loading: the desktop layout's shape on wide screens, card shapes on phones and tablets (UX-21).
   if (!data) {
-    return (
+    return wide ? (
       <>
         <span className="sr-only">{tr(lang, T.loading)}</span>
         <Skeleton />
       </>
+    ) : (
+      <SkeletonCards cards={4} />
     );
   }
   const active = activeFilterCount(filters, cfg.groups);
@@ -115,7 +130,8 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
           <span>
             <span className="font-semibold text-fg">{models.length}</span> {tr(lang, T.models)}
           </span>
-          <SourcesStatus latest={data.latest} />
+          {/* Every source with its own last update; older than 24 hours is marked (UX-04, backlog #9). */}
+          <StatusLine sources={data.latest.sources as SourceTimes} />
         </div>
         <ActiveFilters cfg={cfg} filters={filters} onChange={setFilters} options={options} />
         {/* Filters, counts and sorting run on every model; only the rows of one page are rendered. */}

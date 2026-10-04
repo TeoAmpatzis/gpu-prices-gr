@@ -71,7 +71,7 @@ function PriceExtras<L extends BaseListing>({ m, delta, lang }: { m: Model<L>; d
     <>
       {moved && (
         <span
-          className={`inline-flex items-center gap-0.5 ${delta! < 0 ? 'text-accent' : 'text-up'}`}
+          className={`inline-flex items-center gap-0.5 ${delta! < 0 ? 'text-success-fg' : 'text-up'}`}
           title={tr(lang, T.weekChange)}
         >
           {delta! < 0 ? <TrendingDown className="h-3.5 w-3.5" /> : <TrendingUp className="h-3.5 w-3.5" />}
@@ -218,7 +218,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
           {/* Badges may wrap above the price when the column is tight (photos widen the name column). */}
           <div className="flex flex-wrap items-center justify-end gap-1.5">
             <PriceBadges m={m} lang={lang} />
-            <span className="ml-0.5 whitespace-nowrap text-[15px] font-semibold text-accent">{price(m.cheapest.price)}</span>
+            <span className="ml-0.5 whitespace-nowrap text-[15px] font-semibold text-fg">{price(m.cheapest.price)}</span>
           </div>
           <div className="mt-0.5 flex flex-wrap items-center justify-end gap-x-2 text-xs text-muted">
             <PriceExtras m={m} delta={delta} lang={lang} />
@@ -268,7 +268,7 @@ export function ModelCard<L extends BaseListing>({ cfg, model: m, history, image
             title={groupName(m.group, lang)}
           />
           <span className="min-w-0 flex-1 font-semibold leading-snug tracking-tight">{m.chip}</span>
-          <span className="whitespace-nowrap text-lg font-semibold tabular-nums text-accent">
+          <span className="whitespace-nowrap text-lg font-semibold tabular-nums text-fg">
             {formatPrice(m.cheapest.price, lang)}
           </span>
         </div>

@@ -64,7 +64,7 @@ export const ABOUT: InfoPageContent = {
           en: 'Prices update automatically **every 6 hours**. Price history is extended daily, and the specifications the PC builder needs (such as graphics card length) are added gradually.',
         },
         {
-          el: 'Οι τιμές είναι ενδεικτικές και μπορεί να έχουν αλλάξει από την τελευταία ενημέρωση. Πριν από κάθε αγορά, ελέγξτε την τιμή και τη διαθεσιμότητα στο κατάστημα.',
+          el: 'Οι τιμές είναι ενδεικτικές και μπορεί να έχουν αλλάξει από την τελευταία ενημέρωση. Πριν από κάθε αγορά, έλεγξε την τιμή και τη διαθεσιμότητα στο κατάστημα.',
           en: 'Prices are indicative and may have changed since the last update. Before buying, check the price and availability in the shop.',
         },
       ],
@@ -82,7 +82,7 @@ export const ABOUT: InfoPageContent = {
       heading: { el: 'Φωτογραφίες προϊόντων', en: 'Product photos' },
       paragraphs: [
         {
-          el: `Οι φωτογραφίες των προϊόντων προέρχονται από τις σελίδες των BestPrice, Shopflix, Skroutz και Snif. Ανήκουν στους κατόχους τους (κατασκευαστές και καταστήματα) και αφαιρούνται κατόπιν αιτήματος: γράψτε στο ${mail}.`,
+          el: `Οι φωτογραφίες των προϊόντων προέρχονται από τις σελίδες των BestPrice, Shopflix, Skroutz και Snif. Ανήκουν στους κατόχους τους (κατασκευαστές και καταστήματα) και αφαιρούνται κατόπιν αιτήματος: γράψε στο ${mail}.`,
           en: `Product photos come from the pages of BestPrice, Shopflix, Skroutz and Snif. They belong to their respective owners (manufacturers and shops) and are removed on request: write to ${mail}.`,
         },
       ],
@@ -105,21 +105,21 @@ export const CONTACT: InfoPageContent = {
       heading: { el: 'Email', en: 'Email' },
       paragraphs: [
         {
-          el: `Για ερωτήσεις, διορθώσεις ή προτάσεις, στείλτε email στο ${mail}.`,
+          el: `Για ερωτήσεις, διορθώσεις ή προτάσεις, στείλε email στο ${mail}.`,
           en: `For questions, corrections or suggestions, email ${mail}.`,
         },
       ],
     },
     {
-      heading: { el: 'Τι μπορείτε να μας στείλετε', en: 'What you can write about' },
+      heading: { el: 'Τι μπορείς να μας στείλεις', en: 'What you can write about' },
       bullets: [
         {
-          el: 'Λάθος τιμή ή προϊόν σε λάθος κατηγορία (στείλτε τον σύνδεσμο του προϊόντος).',
+          el: 'Λάθος τιμή ή προϊόν σε λάθος κατηγορία (στείλε τον σύνδεσμο του προϊόντος).',
           en: 'A wrong price or a product in the wrong category (include the product link).',
         },
         { el: 'Προτάσεις για νέες λειτουργίες ή καταστήματα.', en: 'Ideas for new features or shops.' },
         {
-          el: 'Αιτήματα για τα προσωπικά σας δεδομένα (δείτε την Πολιτική απορρήτου).',
+          el: 'Αιτήματα για τα προσωπικά σου δεδομένα (δες την Πολιτική απορρήτου).',
           en: 'Requests about your personal data (see the Privacy policy).',
         },
         {
@@ -132,7 +132,7 @@ export const CONTACT: InfoPageContent = {
       heading: { el: 'Σφάλματα στο site', en: 'Bugs on the site' },
       paragraphs: [
         {
-          el: `Τεχνικά προβλήματα μπορείτε να τα αναφέρετε και στο [GitHub](${REPO_URL}/issues).`,
+          el: `Τεχνικά προβλήματα μπορείς να τα αναφέρεις και στο [GitHub](${REPO_URL}/issues).`,
           en: `You can also report technical problems on [GitHub](${REPO_URL}/issues).`,
         },
       ],
@@ -171,19 +171,18 @@ export const PRIVACY: InfoPageContent = {
       ],
     },
     {
-      heading: { el: 'Τι αποθηκεύεται στον browser σας', en: 'What is stored in your browser' },
+      heading: { el: 'Τι αποθηκεύεται στον browser σου', en: 'What is stored in your browser' },
       paragraphs: [
         {
-          el: 'Το site αποθηκεύει τις επιλογές σας στον browser (localStorage), ώστε να τις θυμάται την επόμενη φορά. Τα στοιχεία αυτά **μένουν στη συσκευή σας** και δεν στέλνονται πουθενά:',
+          el: 'Το site αποθηκεύει τις επιλογές σου στον browser (localStorage), ώστε να τις θυμάται την επόμενη φορά. Τα στοιχεία αυτά **μένουν στη συσκευή σου** και δεν στέλνονται πουθενά:',
           en: 'The site keeps your choices in your browser (localStorage) so it remembers them next time. They **stay on your device** and are not sent anywhere:',
         },
       ],
       bullets: [
-        { el: '`theme`: φωτεινό ή σκοτεινό θέμα.', en: '`theme`: light or dark theme.' },
         { el: '`lang`: ελληνικά ή αγγλικά.', en: '`lang`: Greek or English.' },
         {
-          el: '`pcBuild`: τα εξαρτήματα που έχετε διαλέξει στη Συναρμολόγηση PC, και η χρήση και ο προϋπολογισμός αν τα ορίσατε. Ο σύνδεσμος κοινοποίησης μιας σύνθεσης περιέχει μόνο αυτά, στο τμήμα μετά το `#`, που ο browser δεν στέλνει στον διακομιστή.',
-          en: "`pcBuild`: the parts you picked in the PC Builder, and the use and budget if you set them. A build's share link holds only these, in the part after the `#`, which browsers don't send to the server.",
+          el: '`pcBuild`: τα εξαρτήματα που έχεις διαλέξει στο PC Builder, και η χρήση και ο προϋπολογισμός αν τα όρισες. Ο σύνδεσμος κοινοποίησης μιας σύνθεσης περιέχει μόνο αυτά, στη διεύθυνση της σελίδας (π.χ. `/builder?cpu=…`)· όπως κάθε διεύθυνση που ανοίγεις, εμφανίζεται στα αρχεία καταγραφής της φιλοξενίας (Vercel).',
+          en: "`pcBuild`: the parts you picked in the PC Builder, and the use and budget if you set them. A build's share link holds only these, in the page address (e.g. `/builder?cpu=…`); like any address you open, it appears in the hosting provider's logs (Vercel).",
         },
       ],
     },
@@ -206,15 +205,15 @@ export const PRIVACY: InfoPageContent = {
       ],
     },
     {
-      heading: { el: 'Τα δικαιώματά σας', en: 'Your rights' },
+      heading: { el: 'Τα δικαιώματά σου', en: 'Your rights' },
       paragraphs: [
         {
-          el: 'Σύμφωνα με τον Γενικό Κανονισμό Προστασίας Δεδομένων (ΓΚΠΔ), έχετε δικαίωμα:',
+          el: 'Σύμφωνα με τον Γενικό Κανονισμό Προστασίας Δεδομένων (ΓΚΠΔ), έχεις δικαίωμα:',
           en: 'Under the General Data Protection Regulation (GDPR) you have the right to:',
         },
       ],
       bullets: [
-        { el: 'πρόσβασης στα δεδομένα σας και διόρθωσής τους,', en: 'access and correct your data,' },
+        { el: 'πρόσβασης στα δεδομένα σου και διόρθωσής τους,', en: 'access and correct your data,' },
         { el: 'διαγραφής ή περιορισμού της επεξεργασίας,', en: 'have it erased or its processing restricted,' },
         {
           el: 'εναντίωσης στην επεξεργασία που βασίζεται σε έννομο συμφέρον,',
@@ -231,7 +230,7 @@ export const PRIVACY: InfoPageContent = {
       heading: { el: 'Άσκηση δικαιωμάτων', en: 'Using your rights' },
       paragraphs: [
         {
-          el: `Επειδή το BuildDraft.gr δεν κρατά προσωπικά σας δεδομένα, τα περισσότερα αιτήματα αφορούν τα αρχεία καταγραφής της φιλοξενίας. Στείλτε το αίτημά σας στο ${mail} και θα απαντήσουμε μέσα σε έναν μήνα. Τα στοιχεία που είναι αποθηκευμένα στον browser σας τα διαγράφετε μόνοι σας, καθαρίζοντας τα δεδομένα του site από τις ρυθμίσεις του browser.`,
+          el: `Επειδή το BuildDraft.gr δεν κρατά προσωπικά σου δεδομένα, τα περισσότερα αιτήματα αφορούν τα αρχεία καταγραφής της φιλοξενίας. Στείλε το αίτημά σου στο ${mail} και θα απαντήσουμε μέσα σε έναν μήνα. Τα στοιχεία που είναι αποθηκευμένα στον browser σου τα διαγράφεις εσύ, καθαρίζοντας τα δεδομένα του site από τις ρυθμίσεις του browser.`,
           en: `Because BuildDraft.gr keeps no personal data about you, most requests concern the hosting logs. Send your request to ${mail} and we will reply within one month. You can delete what is stored in your browser yourself by clearing the site's data in your browser settings.`,
         },
       ],

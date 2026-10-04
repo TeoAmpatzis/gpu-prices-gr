@@ -421,7 +421,7 @@ export const RAM: CategoryConfig<RamListing> = {
   groupParam: 'type',
   group: (l) => l.type,
   groupDot: { DDR5: 'bg-violet-500', DDR4: 'bg-sky-500', DDR3: 'bg-amber-500', DDR2: 'bg-zinc-400' },
-  segments: { main: 'Desktop', pro: 'Laptop / Server' },
+  segments: { main: { el: 'Επιτραπέζιοι', en: 'Desktop' }, pro: { el: 'Φορητοί / Διακομιστές', en: 'Laptop / Server' } },
   modelKey: (l) => `${l.chip} ${l.formFactor}`,
   isPro: (l) => l.formFactor !== 'Desktop',
   // Most-offered kits first (DDR5 32GB 6000 over a lone 384GB kit), then bigger, then faster.
@@ -434,11 +434,11 @@ export const RAM: CategoryConfig<RamListing> = {
     }),
     // Speeds seen on at least 10 listings, so odd one-offs don't flood the list.
     threshold('speed', atLeastLabel({ el: 'Ταχύτητα', en: 'Speed' }), (l) => l.speed, (v) => `≥ ${v}MHz`, { minCount: 10 }),
-    oneOf('modules', { el: 'Τεμάχια στο kit', en: 'Sticks in kit' }, (l) => l.modules, {
+    oneOf('modules', { el: 'Τεμάχια στο σετ', en: 'Sticks in kit' }, (l) => l.modules, {
       order: 'asc',
-      fmt: (v) => ({ el: `${v} × module`, en: `${v} × stick` }),
+      fmt: (v) => ({ el: `${v} ${Number(v) === 1 ? 'τεμάχιο' : 'τεμάχια'}`, en: `${v} × stick` }),
     }),
-    threshold('cas', { el: 'Latency (το πολύ)', en: 'Latency (at most)' }, (l) => l.cas, (v) => `≤ CL${v}`, {
+    threshold('cas', { el: 'Καθυστέρηση CL (το πολύ)', en: 'Latency (at most)' }, (l) => l.cas, (v) => `≤ CL${v}`, {
       max: true,
       minCount: 5,
     }),
@@ -455,9 +455,9 @@ export const RAM: CategoryConfig<RamListing> = {
 // Models are specs across vendors ("850W Gold"), split by form factor like RAM.
 
 const MODULAR_LABEL: Record<string, Text> = {
-  Full: { el: 'Πλήρως modular', en: 'Fully modular' },
-  Semi: 'Semi-modular',
-  Non: { el: 'Μη modular', en: 'Non-modular' },
+  Full: { el: 'Πλήρως αρθρωτό', en: 'Fully modular' },
+  Semi: { el: 'Ημι-αρθρωτό', en: 'Semi-modular' },
+  Non: { el: 'Μη αρθρωτό', en: 'Non-modular' },
 };
 
 export const PSU: CategoryConfig<PsuListing> = {
@@ -491,7 +491,7 @@ export const PSU: CategoryConfig<PsuListing> = {
     threshold('watts', atLeastLabel({ el: 'Ισχύς', en: 'Wattage' }), (l) => l.watts, (v) => `≥ ${v}W`, {
       fixed: [300, 400, 450, 500, 550, 600, 650, 700, 750, 850, 1000, 1200, 1300, 1500, 1600],
     }),
-    oneOf('modular', 'Modular', (l) => l.modular, { fixed: ['Full', 'Semi', 'Non'], fmt: (v) => MODULAR_LABEL[v] }),
+    oneOf('modular', { el: 'Αρθρωτά καλώδια', en: 'Modular' }, (l) => l.modular, { fixed: ['Full', 'Semi', 'Non'], fmt: (v) => MODULAR_LABEL[v] }),
     vendorFilter(),
   ],
   before: [{ header: TYPE, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.formFactor }],

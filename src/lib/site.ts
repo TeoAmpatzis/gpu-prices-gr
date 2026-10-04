@@ -12,4 +12,4 @@ export const OWNER_LOCATION = { el: 'Ελλάδα', en: 'Greece' };
 export const REPO_URL = 'https://github.com/TeoAmpatzis/gpu-prices-gr';
 
 /** Date of the current privacy policy text (YYYY-MM-DD); update it whenever the policy changes. */
-export const PRIVACY_UPDATED = '2026-10-03';
+export const PRIVACY_UPDATED = '2026-10-05';

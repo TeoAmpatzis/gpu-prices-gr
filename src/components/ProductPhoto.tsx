@@ -7,7 +7,7 @@ const PX = { sm: 40, md: 56, lg: 160 } as const;
 
 /**
  * A product photo with fixed dimensions (no layout shift), lazy-loaded, on a white rounded tile (shop
- * photos are on white, in both themes). No photo, or one that fails to load: the category icon.
+ * photos are on white) — neutral while it loads, so the dark page shows no blank white squares (UX-09). No photo, or one that fails to load: the category icon.
  * `hideOnPhone`: not shown below 640px (tight lists such as the builder's picker).
  */
 export default function ProductPhoto({
@@ -24,6 +24,7 @@ export default function ProductPhoto({
   hideOnPhone?: boolean;
 }) {
   const [failed, setFailed] = useState<string | null>(null);
+  const [loaded, setLoaded] = useState<string | null>(null);
   const px = PX[size];
   const tile = 'shrink-0 rounded-lg ring-1 ring-edge';
   if (!image || failed === image.src) {
@@ -45,8 +46,9 @@ export default function ProductPhoto({
       loading="lazy"
       decoding="async"
       alt={alt}
+      onLoad={() => setLoaded(image.src)}
       onError={() => setFailed(image.src)}
-      className={`${tile} ${hideOnPhone ? 'hidden sm:block' : ''} bg-white object-contain`}
+      className={`${tile} ${hideOnPhone ? 'hidden sm:block' : ''} ${loaded === image.src ? 'bg-white' : 'bg-sunken'} object-contain`}
     />
   );
 }

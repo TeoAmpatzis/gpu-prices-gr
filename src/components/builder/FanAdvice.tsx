@@ -23,7 +23,7 @@ const F = {
     en: "The case's maker doesn't list positions per size; 120 mm fits every position.",
   },
   aio: {
-    el: 'Το ψυγείο της υδρόψυξης έχει δικούς του ανεμιστήρες: τοποθετήστε το πάνω ως εξαγωγή, αν χωράει.',
+    el: 'Το ψυγείο της υδρόψυξης έχει δικούς του ανεμιστήρες: τοποθέτησέ το πάνω ως εξαγωγή, αν χωράει.',
     en: "The AIO's radiator has its own fans: mount it on top as exhaust where it fits.",
   },
   typeOpen: {
