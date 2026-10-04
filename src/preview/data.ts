@@ -4,7 +4,7 @@
 // sample in the catalogue.
 import { useEffect, useState } from 'react';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from '../lib/categories';
-import { groupModels, loadData, type CategoryData, type Model } from '../lib/data';
+import { groupModels, loadData, mostCommon, type CategoryData, type Model } from '../lib/data';
 import { productImage, type ProductImage } from '../lib/images';
 import { prepare, type PreparedIndex, type SearchIndexFile } from '../lib/search';
 import type { BaseListing, Category, DailyLow, SourceName } from '../types';
@@ -77,7 +77,7 @@ export function usePreviewData(): PreviewData | null {
           CATEGORY_IDS.map((c) => [
             c,
             {
-              m: models[c].map((m) => [m.chip, Math.round(m.cheapest.price)] as [string, number]),
+              m: models[c].map((m) => [m.chip, m.cheapest.price] as [string, number]),
               mk: [...new Set(data[c].latest.listings.map((l) => (c === 'gpu' ? (l as BaseListing & { partner: string }).partner : l.brand)))].filter(Boolean).sort(),
             },
           ]),
@@ -132,4 +132,64 @@ export function priceExamples(d: PreviewData) {
     if (isUnusual(m, m.cheapest) && (!unusual || ratio < unusual.ratio)) unusual = { c, m, l: m.cheapest, ratio };
   }
   return { known, noShipping, noAvail, stale, unusual };
+}
+
+const common = <T,>(m: AnyModel, f: (l: Record<string, unknown>) => T | null | undefined) => mostCommon(m.listings.map((l) => f(l as unknown as Record<string, unknown>)));
+/** A value every listing that states it agrees on (so the spec line shows the same), else null. */
+function agreed<T>(m: AnyModel, f: (l: Record<string, unknown>) => T | null | undefined): T | null {
+  const vals = new Set(m.listings.map((l) => f(l as unknown as Record<string, unknown>)).filter((v) => v != null));
+  return vals.size === 1 ? ([...vals][0] as T) : null;
+}
+
+export interface CompatExample {
+  a: { cat: Category; m: AnyModel };
+  b: { cat: Category; m: AnyModel };
+}
+
+/**
+ * Real product pairs whose data produces each compatibility state (the catalogue's examples; Phase 2
+ * brings the full rules). Values are read the same way as the spec line (most common across listings),
+ * and a stated value must be the one every listing agrees on.
+ */
+export function compatExamples(d: PreviewData) {
+  const num = (v: unknown) => (typeof v === 'number' ? v : null);
+  const len = (m: AnyModel) => common(m, (l) => num(l.lengthMm));
+  const gpus = d.models.gpu.filter((m) => len(m) != null);
+  const cases = d.models.case;
+  const boardOf = (m: AnyModel) => agreed(m, (l) => l.maxBoard as string | null);
+  const gpuMax = (m: AnyModel) => common(m, (l) => num(l.gpuMaxMm));
+  const coolerMax = (m: AnyModel) => common(m, (l) => num(l.coolerMaxMm));
+  const height = (m: AnyModel) => common(m, (l) => num(l.heightMm));
+  const airCoolers = d.models.cooler.filter((m) => common(m, (l) => l.type) === 'Air');
+
+  // A Micro ATX case (all listings agree) with a card that fits it by less than 10 mm.
+  let tight: { caseM: AnyModel; gpu: AnyModel; L: number; M: number } | null = null;
+  for (const c of cases) {
+    const M = gpuMax(c);
+    if (boardOf(c) !== 'Micro ATX' || M == null || coolerMax(c) == null) continue;
+    const g = gpus.find((x) => M - len(x)! >= 0 && M - len(x)! < 10);
+    if (g) {
+      tight = { caseM: c, gpu: g, L: len(g)!, M };
+      break;
+    }
+  }
+  const atxBoard = d.models.mobo.find((m) => common(m, (l) => l.socket) === 'AM5' && agreed(m, (l) => l.formFactor) === 'ATX' && common(m, (l) => l.memory) === 'DDR5') ?? null;
+  const am5Cpu = d.models.cpu.find((m) => m.chip === 'Ryzen 7 9800X3D') ?? d.models.cpu.find((m) => common(m, (l) => l.socket) === 'AM5')!;
+  const ddr5 = d.models.ram.find((m) => m.key.startsWith('DDR5 32GB (2×16GB) 6000MHz')) ?? d.models.ram[0];
+  // A case that states no largest board at all, sized Midi Tower (v1 guesses ATX from the size).
+  const guessCase = cases.find((m) => m.listings.every((l) => (l as unknown as { maxBoard?: unknown }).maxBoard == null) && common(m, (l) => l.size) === 'Midi Tower') ?? null;
+  const tightCoolerMax = tight ? coolerMax(tight.caseM) : null;
+  const unknownCooler = airCoolers.find((m) => height(m) == null) ?? null;
+  const fitsCooler = tightCoolerMax != null ? (airCoolers.find((m) => (height(m) ?? Infinity) <= tightCoolerMax) ?? null) : null;
+  return {
+    tight,
+    atxBoard,
+    am5Cpu,
+    ddr5,
+    guessCase,
+    unknownCooler,
+    fitsCooler,
+    coolerMaxOfCase: tightCoolerMax,
+    heightOf: height,
+  };
 }

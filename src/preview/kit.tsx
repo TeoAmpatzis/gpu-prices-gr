@@ -1,18 +1,7 @@
 // Small building blocks of the catalogue page (not part of the design system).
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useMemo, type ReactNode } from 'react';
 import { tr, useLang, type Text } from '../lib/i18n';
 import { parseRgb, toHex, type Rgb } from '../ui/contrast';
-
-export type Palette = 'blue' | 'indigo';
-
-/** A part of the page forced to a theme (logo on dark, the dark column of a table…). */
-export function Scope({ theme, palette, className = '', children }: { theme: 'light' | 'dark'; palette: Palette; className?: string; children: ReactNode }) {
-  return (
-    <div className={`ds ds-${theme} ${className}`} data-palette={palette}>
-      {children}
-    </div>
-  );
-}
 
 export function Section({ id, title, intro, children }: { id: string; title: Text; intro?: Text; children: ReactNode }) {
   const lang = useLang();
@@ -40,43 +29,13 @@ export function Spec({ label, children, className = '' }: { label: Text; childre
   );
 }
 
-/**
- * Token values (as "r g b") of a palette × theme, read from a short-lived probe element. Computed from
- * the live CSS, so the catalogue shows exactly what the stylesheet defines.
- */
-export function useTokens(palette: Palette, theme: 'light' | 'dark', names: string[]): Record<string, Rgb> | null {
+/** Token values (as "r g b") read from the live CSS, so the catalogue shows exactly what the site uses. */
+export function useTokens(names: string[]): Record<string, Rgb> {
   const key = names.join(',');
   return useMemo(() => {
-    const probe = document.createElement('div');
-    probe.className = `ds ds-${theme}`;
-    probe.dataset.palette = palette;
-    probe.style.display = 'none';
-    document.body.appendChild(probe);
-    const cs = getComputedStyle(probe);
-    const vals = Object.fromEntries(key.split(',').map((n) => [n, parseRgb(cs.getPropertyValue(`--${n}`))]));
-    probe.remove();
-    return vals;
-  }, [palette, theme, key]);
-}
-
-/** Draws children at a fixed size (e.g. the 1200 × 630 social image) scaled down to the available width. */
-export function Scaled({ width, height, children }: { width: number; height: number; children: ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0.3);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const ro = new ResizeObserver(([e]) => setScale(e.contentRect.width / width));
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [width]);
-  return (
-    <div ref={ref} className="relative w-full overflow-hidden rounded-lg" style={{ height: height * scale }}>
-      <div className="absolute left-0 top-0 origin-top-left" style={{ width, height, transform: `scale(${scale})` }}>
-        {children}
-      </div>
-    </div>
-  );
+    const cs = getComputedStyle(document.documentElement);
+    return Object.fromEntries(key.split(',').map((n) => [n, parseRgb(cs.getPropertyValue(`--${n}`))]));
+  }, [key]);
 }
 
 export const hex = (rgb: Rgb | undefined) => (rgb ? toHex(rgb) : '');
@@ -89,7 +48,7 @@ export function hue([r, g, b]: Rgb): number {
   if (max === min) return 0;
   const d = max - min;
   const h = max === R ? ((G - B) / d) % 6 : max === G ? (B - R) / d + 2 : (R - G) / d + 4;
-  return Math.round(((h * 60) + 360) % 360);
+  return Math.round((h * 60 + 360) % 360);
 }
 
 /** Segmented control for the catalogue's switches. */
@@ -105,7 +64,7 @@ export function Segmented<T extends string>({ label, value, options, onChange }:
             type="button"
             aria-pressed={value === o.v}
             onClick={() => onChange(o.v)}
-            className={`tap rounded-md px-2.5 py-1 text-sm font-medium ${value === o.v ? 'bg-panel text-fg shadow-[var(--shadow-1)]' : 'text-muted hover:text-fg'}`}
+            className={`tap rounded-md px-2.5 py-1 text-sm font-medium ${value === o.v ? 'bg-hover text-fg' : 'text-muted hover:text-fg'}`}
           >
             {tr(lang, o.label)}
           </button>

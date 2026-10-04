@@ -1,18 +1,18 @@
 /*
- * BuildDraft.gr v2 components — the parts of each component's look that need states (hover, focus,
+ * BuildDraft.gr v2 components: the parts of each component's look that need states (hover, focus,
  * pressed, disabled, loading, selected). Layout lives in the components (Tailwind utilities); colours come
- * only from the tokens in tokens.css.
+ * only from the tokens (tokens.css). Imported by index.css inside Tailwind's components layer, so a
+ * utility class on an element always wins.
  *
  * `data-force="hover focus active"` shows a state without the pointer/keyboard, for the component
  * catalogue (/_preview). Motion rules (plan A4): only transform and opacity animate; colour changes
  * are instant; durations come from --motion-* (0 with "reduce motion").
  */
 
-/* In Tailwind's components layer, so utility classes on an element always win. */
 @layer components {
 
-  .ds :focus-visible,
-  .ds [data-force~='focus'] {
+  :focus-visible,
+  [data-force~='focus'] {
     outline: 2px solid rgb(var(--focus));
     outline-offset: 2px;
   }
@@ -464,3 +464,13 @@
     }
   }
 }
+
+/* Language switches never animate (plan A4 rule 3): for one frame nothing transitions, so
+   colour transitions anywhere on the page (v1's included) don't all run at once (O-02). */
+html[data-switching] *,
+html[data-switching] *::before,
+html[data-switching] *::after {
+  transition: none !important;
+  animation: none !important;
+}
+

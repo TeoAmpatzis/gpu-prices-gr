@@ -1,52 +1,45 @@
 // Text of the component catalogue itself (headings, captions); the components' own text is in
-// src/ui/strings.ts.
+// src/ui/strings.ts. Greek in the "εσύ" register (docs/phase1/glossary.md).
+import type { Text } from '../lib/i18n';
+
+/** No-break space: a number never wraps away from its unit. */
+const NBSP = String.fromCharCode(0xa0);
+const mm = (n: number) => `${n}${NBSP}mm`;
+
 export const P = {
   pageTitle: { el: 'Κατάλογος components', en: 'Component catalogue' },
   intro: {
-    el: 'Φάση 1, στάση 2: τρία λογότυπα, δύο παλέτες και κάθε component σε κάθε κατάσταση, με πραγματικά προϊόντα και τιμές από τα σημερινά δεδομένα. Μόνο σε development.',
-    en: 'Phase 1, stop 2: three logos, two palettes and every component in every state, with real products and prices from today\'s data. Development builds only.',
+    el: 'Ο εσωτερικός κατάλογος του design system: το λογότυπο, τα χρώματα και κάθε component σε κάθε κατάσταση, με πραγματικά προϊόντα και τιμές από τα σημερινά δεδομένα. Μόνο σε development.',
+    en: "The design system's internal catalogue: the logo, the colours and every component in every state, with real products and prices from today's data. Development builds only.",
   },
-  logo: { el: 'Λογότυπο', en: 'Logo' },
-  palette: { el: 'Παλέτα', en: 'Palette' },
-  theme: { el: 'Θέμα', en: 'Theme' },
   language: { el: 'Γλώσσα', en: 'Language' },
-  blue: { el: 'Μπλε', en: 'Blue' },
-  indigo: 'Indigo',
-  light: { el: 'Φωτεινό', en: 'Light' },
-  dark: { el: 'Σκούρο', en: 'Dark' },
-  loadingData: { el: 'Φόρτωση σημερινών δεδομένων…', en: 'Loading today\'s data…' },
+  loadingData: { el: 'Φόρτωση σημερινών δεδομένων…', en: "Loading today's data…" },
   sections: { el: 'Ενότητες', en: 'Sections' },
 
   // Identity
-  sLogos: { el: 'Λογότυπα', en: 'Logos' },
+  sLogos: { el: 'Λογότυπο', en: 'Logo' },
   logosIntro: {
-    el: 'Ένα χρώμα, χωρίς gradients, SVG. Κάθε κατεύθυνση σε φωτεινό και σκούρο φόντο, στα 16, 32 και 48 px, στην κεφαλίδα, ως favicon καρτέλας και ως εικόνα κοινοποίησης (1200 × 630). Το επιλεγμένο λογότυπο οδηγεί την κεφαλίδα και το favicon αυτής της σελίδας.',
-    en: 'One colour, no gradients, SVG. Each direction on light and dark backgrounds, at 16, 32 and 48 px, in the header, as a browser-tab favicon and as a social image (1200 × 630). The selected logo drives this page\'s header and favicon.',
+    el: 'Το wordmark (Build έντονο, Draft λεπτό, chip στη θέση της τελείας) στο χρώμα του κειμένου, και το σύμβολό του (το B με την τελεία-chip) στο χρώμα του brand για favicon και εικονίδια εφαρμογής.',
+    en: 'The wordmark (Build bold, Draft light, a chip as the dot) in the text colour, and its symbol (the B with the chip dot) in the brand colour for the favicon and app icons.',
   },
-  logoA: { el: 'Α. Blueprint', en: 'A. Blueprint' },
-  logoAText: { el: 'Γωνίες τεχνικού σχεδίου γύρω από ένα chip, και το όνομα δίπλα.', en: 'Technical-drawing corner marks around a chip, the name beside it.' },
-  logoB: { el: 'Β. Monogram', en: 'B. Monogram' },
-  logoBText: { el: '«BD» σαν ίχνη πλακέτας, κομμένο από στρογγυλεμένο τετράγωνο.', en: '"BD" drawn like circuit traces, cut out of a rounded square.' },
-  logoC: { el: 'Γ. Wordmark', en: 'C. Wordmark' },
-  logoCText: {
-    el: 'Μόνο το όνομα: «Build» έντονο, «Draft» λεπτό, chip στη θέση της τελείας. Για favicon: το B με την τελεία-chip.',
-    en: 'The name only: "Build" bold, "Draft" light, a chip for the dot. Favicon: the B with the chip dot.',
+  inHeader: { el: 'Wordmark: κεφαλίδα (22 px), 32 px, 48 px', en: 'Wordmark: header (22 px), 32 px, 48 px' },
+  sizes: { el: 'Σύμβολο: 16, 32, 48 px', en: 'Symbol: 16, 32, 48 px' },
+  symbolNote: {
+    el: 'Κάτω από 20 px το σύμβολο σχεδιάζεται απλούστερο (παχύτερο B, η τελεία χωρίς ακίδες), ώστε να διαβάζεται στα 16 px.',
+    en: 'Below 20 px the symbol is drawn simpler (a thicker B, the dot without pins) so it reads at 16 px.',
   },
-  onLight: { el: 'Σε φωτεινό', en: 'On light' },
-  onDark: { el: 'Σε σκούρο', en: 'On dark' },
-  onBrand: { el: 'Σε brand', en: 'On brand' },
-  inBrand: { el: 'Σε χρώμα brand', en: 'In brand colour' },
-  sizes: { el: 'Μεγέθη', en: 'Sizes' },
-  tab: { el: 'Favicon σε καρτέλα', en: 'Favicon in a tab' },
-  social: { el: 'Εικόνα κοινοποίησης 1200 × 630 (σε σμίκρυνση)', en: 'Social image 1200 × 630 (scaled down)' },
-  socialTagline: { el: 'Τιμές εξαρτημάτων PC στην Ελλάδα · PC Builder', en: 'PC part prices in Greece · PC Builder' },
-  socialFacts: { el: '5 πηγές τιμών · 9 κατηγορίες · ενημέρωση κάθε 6 ώρες', en: '5 price sources · 9 categories · updated every 6 hours' },
-  inHeader: { el: 'Στην κεφαλίδα, σε πραγματικό μέγεθος', en: 'In the header, at real size' },
+  tab: { el: 'Favicon σε φωτεινή και σκούρα καρτέλα browser', en: 'Favicon in a light and a dark browser tab' },
+  social: { el: 'Εικόνα κοινοποίησης 1200 × 630 (public/og.png)', en: 'Social image 1200 × 630 (public/og.png)' },
+  outside: { el: 'Για χρήση εκτός site (README, κοινωνικά δίκτυα): public/brand/', en: 'For use outside the site (README, social profiles): public/brand/' },
+  outsideNote: {
+    el: 'Το wordmark σε φωτεινό και σκούρο φόντο (PNG) και το σύμβολο σε φωτεινό και σκούρο (SVG και PNG 512 px). Όλα παράγονται από τα ίδια σχήματα με το site: npx tsx scripts/brand/render.mts.',
+    en: 'The wordmark on light and dark backgrounds (PNG) and the symbol on light and dark (SVG and 512 px PNG). All rendered from the same shapes as the site: npx tsx scripts/brand/render.mts.',
+  },
 
   sColours: { el: 'Χρώματα', en: 'Colours' },
   coloursIntro: {
-    el: 'Το brand δεν είναι πράσινο: πράσινο, πορτοκαλί, κόκκινο και γαλάζιο σημαίνουν μόνο συμβατότητα και τιμή. Ο πίνακας αντίθεσης υπολογίζεται ζωντανά από τα tokens, για την τρέχουσα παλέτα και τα δύο θέματα.',
-    en: 'The brand is not green: green, orange, red and light blue only mean compatibility and price. The contrast table is computed live from the tokens, for the current palette and both themes.',
+    el: 'Indigo, μόνο σκούρο θέμα. Το brand δεν είναι πράσινο: πράσινο, πορτοκαλί, κόκκινο και γαλάζιο σημαίνουν μόνο συμβατότητα και τιμή. Ο πίνακας αντίθεσης υπολογίζεται ζωντανά από τα tokens.',
+    en: 'Indigo, dark only. The brand is not green: green, orange, red and light blue only mean compatibility and price. The contrast table is computed live from the tokens.',
   },
   brandScale: { el: 'Κλίμακα brand', en: 'Brand scale' },
   neutralScale: { el: 'Ουδέτερα', en: 'Neutrals' },
@@ -59,9 +52,14 @@ export const P = {
   contrast: { el: 'Αντίθεση WCAG (AA: 4,5 για κείμενο, 3 για εικονίδια και πλαίσια πεδίων)', en: 'WCAG contrast (AA: 4.5 text, 3 icons and field borders)' },
   pair: { el: 'Ζεύγος', en: 'Pair' },
   use: { el: 'Χρήση', en: 'Use' },
+  ratio: { el: 'Λόγος', en: 'Ratio' },
   need: { el: 'Ελάχιστο', en: 'Needs' },
   pass: { el: 'περνά', en: 'pass' },
   fail: { el: 'αποτυγχάνει', en: 'fails' },
+  printNote: {
+    el: 'Η εκτύπωση (λίστα ή build) βγαίνει με σκούρο κείμενο σε λευκό· οι τιμές της ελέγχονται από το tests/unit/tokens.test.ts.',
+    en: 'Printing (a list or a build) comes out as dark text on white; its colours are checked by tests/unit/tokens.test.ts.',
+  },
 
   sType: { el: 'Τυπογραφία και κίνηση', en: 'Type and motion' },
   typeIntro: {
@@ -97,26 +95,36 @@ export const P = {
     en: 'Selected = pressed (with ✓). With 0 results: disabled, unless already selected. Applied filters above the list scroll sideways on phones; "×" removes them.',
   },
   applied: { el: 'Ενεργά φίλτρα', en: 'Applied filters' },
-  upTo900: { el: 'Έως 900 €', en: 'Up to €900' },
+  upTo900: { el: `Έως 900${NBSP}€`, en: 'Up to €900' },
   saleOnly: { el: 'Μόνο προσφορές', en: 'On sale only' },
 
   sCompat: { el: 'Συμβατότητα', en: 'Compatibility' },
   compatIntro: {
-    el: 'Χρώμα, εικονίδιο και λέξη μαζί, ώστε να διαβάζεται και χωρίς χρώμα. Ο λόγος φαίνεται πάντα ως κείμενο. Τα μηνύματα είναι παραδείγματα· οι κανόνες έρχονται στη Φάση 2.',
-    en: 'Colour, icon and word together, so it reads without colour too. The reason is always visible text. The messages are examples; the rules come in Phase 2.',
+    el: 'Χρώμα, εικονίδιο και λέξη μαζί, ώστε να διαβάζεται και χωρίς χρώμα. Ο λόγος φαίνεται πάντα ως κείμενο. Τα ζεύγη είναι πραγματικά προϊόντα και ο λόγος βγαίνει από τα στοιχεία τους· οι πλήρεις κανόνες έρχονται στη Φάση 2.',
+    en: 'Colour, icon and word together, so it reads without colour too. The reason is always visible text. The pairs are real products and the reason comes from their data; the full rules come in Phase 2.',
   },
-  rError: { el: 'Η μητρική είναι ATX· το κουτί δέχεται έως Micro ATX.', en: 'The board is ATX; the case takes up to Micro ATX.' },
-  rWarning: { el: 'Η κάρτα (325 mm) χωράει, αλλά απέχει λιγότερο από 10 mm από το όριο του κουτιού (330 mm).', en: 'The card (325 mm) fits, but is less than 10 mm from the case limit (330 mm).' },
-  rLikely: { el: 'Εκτίμηση: κάρτες αυτού του chip είναι έως 305 mm· το κουτί δέχεται 360 mm.', en: 'Estimate: cards with this chip are up to 305 mm; the case takes 360 mm.' },
-  rUnverified: { el: 'Το ύψος της ψύκτρας δεν αναφέρεται από καμία πηγή.', en: 'No source states the cooler\'s height.' },
-  rPass: { el: 'Socket AM5 και στα δύο.', en: 'AM5 socket on both.' },
-  rFan: { el: 'Εκτίμηση: το κουτί έχει 6 θέσεις ανεμιστήρα· τα μεγέθη τους δεν αναφέρονται.', en: 'Estimate: the case has 6 fan positions; their sizes are not stated.' },
-  rFits: { el: 'Ύψος ψύκτρας 155 mm· το κουτί δέχεται 170 mm.', en: 'Cooler height 155 mm; the case takes 170 mm.' },
+  rBoardTooBig: (board: string, max: string): Text => ({ el: `Η μητρική είναι ${board}· το κουτί δέχεται έως ${max}.`, en: `The board is ${board}; the case takes up to ${max}.` }),
+  rCardTight: (card: number, max: number): Text => ({
+    el: `Η κάρτα (${mm(card)}) χωράει, αλλά απέχει λιγότερο από 10${NBSP}mm από το όριο του κουτιού (${mm(max)}).`,
+    en: `The card (${mm(card)}) fits, but is less than 10${NBSP}mm from the case limit (${mm(max)}).`,
+  }),
+  rBoardGuess: (board: string, size: string): Text => ({
+    el: `Εκτίμηση: το κουτί δεν αναφέρει μέγιστη μητρική· ένα ${size} συνήθως δέχεται ${board}.`,
+    en: `Estimate: the case states no largest board; a ${size} usually takes ${board}.`,
+  }),
+  rHeightUnknown: (max: number): Text => ({
+    el: `Το ύψος της ψύκτρας δεν αναφέρεται από καμία πηγή· το κουτί δέχεται έως ${mm(max)}.`,
+    en: `No source states the cooler's height; the case takes up to ${mm(max)}.`,
+  }),
+  rSocket: (socket: string): Text => ({ el: `Socket ${socket} και στα δύο.`, en: `${socket} socket on both.` }),
+  rHeightFits: (h: number, max: number): Text => ({ el: `Ύψος ψύκτρας ${mm(h)}· το κουτί δέχεται έως ${mm(max)}.`, en: `Cooler height ${mm(h)}; the case takes up to ${mm(max)}.` }),
+  rMemory: (type: string): Text => ({ el: `${type} και στα δύο.`, en: `${type} on both.` }),
+  pairWith: { el: 'Με', en: 'With' },
 
   sPrice: { el: 'Κελί τιμής', en: 'Price cell' },
   priceIntro: {
-    el: 'Τιμή, πραγματικό κατάστημα και πηγή, μεταφορικά όταν είναι γνωστά, διαθεσιμότητα όταν είναι γνωστή, πότε ελέγχθηκε και αλλαγή 7 ημερών με ετικέτα. Όλα ορατά, τίποτα μόνο σε hover.',
-    en: 'Price, the real shop and the source, shipping when known, availability when known, when it was checked and a labelled 7-day change. All visible, nothing hover-only.',
+    el: 'Τιμή, πραγματικό κατάστημα και πηγή, μεταφορικά, διαθεσιμότητα όταν είναι γνωστή, πότε ελέγχθηκε και αλλαγή 7 ημερών με ετικέτα. Όλα ορατά, τίποτα μόνο σε hover.',
+    en: 'Price, the real shop and the source, shipping, availability when known, when it was checked and a labelled 7-day change. All visible, nothing hover-only.',
   },
   pKnown: { el: 'Όλα γνωστά', en: 'Everything known' },
   pKnownNote: { el: 'Η διαθεσιμότητα είναι δείγμα: συλλέγεται από τη Φάση 2.', en: 'Availability is a sample: collected from Phase 2.' },
@@ -124,8 +132,7 @@ export const P = {
   pNoAvail: { el: 'Διαθεσιμότητα άγνωστη', en: 'Availability unknown' },
   pStale: { el: 'Παλαιότερη από 24 ώρες', en: 'Older than 24 hours' },
   pUnusual: { el: 'Ασυνήθιστα χαμηλή', en: 'Unusually low' },
-  pNone: { el: 'Δεν υπάρχει σήμερα στα δεδομένα.', en: 'Not in today\'s data.' },
-  pSample: { el: 'δείγμα', en: 'sample' },
+  pNone: { el: 'Δεν υπάρχει σήμερα στα δεδομένα.', en: "Not in today's data." },
 
   sSpecs: { el: 'Γραμμή specs', en: 'Spec line' },
   specsIntro: {
@@ -143,13 +150,13 @@ export const P = {
   priceRange: { el: 'Τιμή', en: 'Price' },
   lengthField: { el: 'Μήκος', en: 'Length' },
   switchOff: { el: 'Ανενεργός', en: 'Off' },
-  switchDisabled: { el: 'Μόνο ιστορικά χαμηλά (καμία σήμερα)', en: 'All-time lows only (none today)' },
+  switchDisabled: { el: 'Μόνο ιστορικά χαμηλά (κανένα σήμερα)', en: 'All-time lows only (none today)' },
   tooltipText: { el: 'Από τα καταστήματα και τους κατασκευαστές.', en: 'From the shops and the makers.' },
 
   sLists: { el: 'Πίνακας, κάρτες, part list', en: 'Table, cards, part list' },
   listsIntro: {
     el: 'Επικεφαλίδες που ταξινομούν· γραμμή σε κανονική, hover, εστίαση και επιλεγμένη κατάσταση· η ίδια πληροφορία ως κάρτα για κινητό· οι γραμμές του PC Builder.',
-    en: 'Sorting headers; a row as default, hover, focus and selected; the same information as a phone card; the PC Builder\'s rows.',
+    en: "Sorting headers; a row as default, hover, focus and selected; the same information as a phone card; the PC Builder's rows.",
   },
   cards: { el: 'Κάρτες (κινητό)', en: 'Cards (phones)' },
   partList: { el: 'Part list (PC Builder)', en: 'Part list (PC Builder)' },
@@ -165,9 +172,9 @@ export const P = {
   openDialog: { el: 'Άνοιγμα διαλόγου', en: 'Open dialog' },
   showToast: { el: 'Εμφάνιση toast', en: 'Show toast' },
   filtersTitle: { el: 'Φίλτρα', en: 'Filters' },
-  showModels: (n: number) => ({ el: `Εμφάνιση ${n} μοντέλων`, en: `Show ${n} models` }),
+  showModels: (n: number): Text => ({ el: `Εμφάνιση ${n} μοντέλων`, en: `Show ${n} models` }),
   dialogTitle: { el: 'Καθαρισμός build;', en: 'Clear the build?' },
-  dialogText: { el: 'Θα αφαιρεθούν και τα 8 εξαρτήματα. Μπορείτε να το αναιρέσετε αμέσως μετά.', en: 'All 8 parts will be removed. You can undo it right after.' },
+  dialogText: { el: 'Θα αφαιρεθούν και τα 8 εξαρτήματα. Μπορείς να το αναιρέσεις αμέσως μετά.', en: 'All 8 parts will be removed. You can undo it right after.' },
   clear: { el: 'Καθαρισμός', en: 'Clear' },
   toastCopied: { el: 'Η λίστα αντιγράφηκε.', en: 'List copied.' },
   toastCleared: { el: 'Το build καθαρίστηκε.', en: 'Build cleared.' },
@@ -184,13 +191,13 @@ export const P = {
   },
   statusCategory: { el: 'Σε σελίδα κατηγορίας (Δίσκοι)', en: 'On a category page (Storage)' },
   statusSite: { el: 'Σε όλο το site (footer)', en: 'Site-wide (footer)' },
-  searchLive: { el: 'Ζωντανά: γράψτε π.χ. «rtx 50», «990 pro», «corsair», «μητρικές»', en: 'Live: type e.g. "rtx 50", "990 pro", "corsair", "motherboards"' },
+  searchLive: { el: 'Ζωντανά: γράψε π.χ. «rtx 50», «990 pro», «corsair», «μητρικές»', en: 'Live: type e.g. "rtx 50", "990 pro", "corsair", "motherboards"' },
   searchOpen: { el: 'Ανοιχτή, με «rtx 50»', en: 'Open, with "rtx 50"' },
 
   sShell: { el: 'Κέλυφος: κεφαλίδα, μενού, πλακίδια, footer', en: 'Shell: header, menu, tiles, footer' },
   shellIntro: {
-    el: 'Η κεφαλίδα με το επιλεγμένο λογότυπο, το μενού «Εξαρτήματα» ανοιχτό, και σε πλαίσια 360 px: κινητό, η σελίδα πλακιδίων /parts, η αναζήτηση, το sheet φίλτρων και το part list.',
-    en: 'The header with the selected logo, the "Parts" menu open, and in 360 px frames: phone, the /parts tiles page, search, the filter sheet and the part list.',
+    el: 'Η κεφαλίδα, το μενού «Εξαρτήματα» ανοιχτό, το footer, και σε πλαίσια 360 px: κινητό, η σελίδα πλακιδίων /parts, η αναζήτηση, το sheet φίλτρων και το part list.',
+    en: 'The header, the "Parts" menu open, the footer, and in 360 px frames: phone, the /parts tiles page, search, the filter sheet and the part list.',
   },
   menuOpen: { el: 'Με ανοιχτό μενού', en: 'With the menu open' },
   phone: { el: 'Κινητό 360 px', en: 'Phone 360 px' },

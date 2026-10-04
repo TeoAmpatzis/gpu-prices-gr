@@ -115,8 +115,6 @@ export const T = {
   lowOnly: { el: 'Ιστορικά χαμηλά', en: 'All-time lows' },
   allTimeLow: { el: 'Ιστορικό χαμηλό', en: 'All-time low' },
   allTimeLowHint: { el: 'Η χαμηλότερη τιμή του από', en: 'Its lowest price since' },
-  darkTheme: { el: 'Σκούρο θέμα', en: 'Dark theme' },
-  lightTheme: { el: 'Φωτεινό θέμα', en: 'Light theme' },
   switchLang: { el: 'Switch to English', en: 'Αλλαγή σε Ελληνικά' },
   pagination: { el: 'Σελίδες αποτελεσμάτων', en: 'Result pages' },
   page: { el: 'Σελίδα', en: 'Page' },

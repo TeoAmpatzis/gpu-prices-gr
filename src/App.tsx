@@ -2,11 +2,9 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { Info, Loader2, Mail, ShieldCheck, Wrench } from 'lucide-react';
 import type { BaseListing, Category } from './types';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './lib/categories';
-import Backdrop from './components/Backdrop';
 import CategoryView from './components/CategoryView';
 import Logo from './components/Logo';
 import LangToggle from './components/LangToggle';
-import ThemeToggle from './components/ThemeToggle';
 import { T, tr, useLang } from './lib/i18n';
 import { prefetch } from './lib/data';
 import { OWNER_NAME } from './lib/site';
@@ -135,7 +133,6 @@ export default function App() {
 
   return (
     <>
-      <Backdrop />
       {/* On the builder, room at the bottom for its fixed summary bar (below lg). */}
       <div className={`mx-auto max-w-7xl px-4 py-5 sm:py-8 ${active === 'builder' ? 'pb-32 sm:pb-32 lg:pb-8' : ''}`}>
         <header className="mb-6 flex flex-col gap-6">
@@ -152,7 +149,6 @@ export default function App() {
             </a>
             <div className="flex items-center gap-2">
               <LangToggle />
-              <ThemeToggle />
             </div>
           </div>
 
@@ -194,8 +190,6 @@ export default function App() {
           </nav>
 
           <div className="relative isolate flex items-start gap-3">
-            {/* Soft green glow behind the title (index.css .bd-glow, intensity --bg-glow). */}
-            <span className="bd-glow" aria-hidden="true" />
             <span className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent ring-1 ring-inset ring-accent/20">
               <Icon className="h-5 w-5" />
             </span>
