@@ -1,10 +1,11 @@
-// Screenshots of the v2 component catalogue (/_preview, `npm run dev`), Phase 1 Stop 2.
+// Screenshots of the v2 component catalogue (/_preview, `npm run dev`). At Stop 2 it showed every
+// logo × palette × theme (those images are in docs/phase1/preview/); since Stop 3 there is one identity
+// (logo C, Indigo, dark only), so it shoots Greek at 1366 and 360 px and English at 1366 px.
 //
-//   node scripts/phase1/preview-shots.mjs <outDir> [baseUrl=http://localhost:5174] [--sections] [--only=a-blue-light]
+//   node scripts/phase1/preview-shots.mjs <outDir> [baseUrl=http://localhost:5174] [--sections] [--only=el-1366]
 //
-// Default: the full page for every logo × palette × theme at 1366 px in Greek (12), plus each palette ×
-// theme at 360 px in Greek and at 1366 px in English (8). --sections: one image per section of the first
-// combination (for review). Waits for today's data, the phone frames and the product photos.
+// --sections: one image per section of the first shot (for review). Waits for today's data, the phone
+// frames and the product photos.
 /* global document, window */
 import { mkdirSync } from 'node:fs';
 import { chromium } from '@playwright/test';
@@ -13,22 +14,20 @@ const OUT = process.argv[2];
 const BASE = (process.argv.find((a, i) => i > 2 && a.startsWith('http')) ?? 'http://localhost:5174').replace(/\/$/, '');
 const SECTIONS = process.argv.includes('--sections');
 const ONLY = process.argv.find((a) => a.startsWith('--only='))?.slice(7);
-if (!OUT) throw new Error('usage: preview-shots.mjs <outDir> [baseUrl] [--sections] [--only=a-blue-light]');
+if (!OUT) throw new Error('usage: preview-shots.mjs <outDir> [baseUrl] [--sections] [--only=el-1366]');
 mkdirSync(OUT, { recursive: true });
 
-const shots = [];
-for (const logo of ['a', 'b', 'c']) for (const palette of ['blue', 'indigo']) for (const theme of ['light', 'dark']) shots.push({ logo, palette, theme, lang: 'el', width: 1366 });
-for (const palette of ['blue', 'indigo'])
-  for (const theme of ['light', 'dark']) {
-    shots.push({ logo: 'a', palette, theme, lang: 'el', width: 360 });
-    shots.push({ logo: 'a', palette, theme, lang: 'en', width: 1366 });
-  }
+const shots = [
+  { lang: 'el', width: 1366 },
+  { lang: 'el', width: 360 },
+  { lang: 'en', width: 1366 },
+];
 
 const browser = await chromium.launch();
 async function open(s) {
   const ctx = await browser.newContext({ viewport: { width: s.width, height: 900 }, deviceScaleFactor: 1, locale: s.lang === 'el' ? 'el-GR' : 'en-US' });
   const page = await ctx.newPage();
-  await page.goto(`${BASE}/_preview?logo=${s.logo}&palette=${s.palette}&theme=${s.theme}&lang=${s.lang}`);
+  await page.goto(`${BASE}/_preview?lang=${s.lang}`);
   await page.locator('#shell').waitFor({ timeout: 60_000 });
   // Scroll through once so lazy photos and phone frames load, then back to the top.
   const height = await page.evaluate(() => document.body.scrollHeight);
@@ -47,7 +46,7 @@ async function open(s) {
 }
 
 for (const s of shots) {
-  const name = `${s.logo}-${s.palette}-${s.theme}-${s.lang}-${s.width}`;
+  const name = `${s.lang}-${s.width}`;
   if (ONLY && !name.startsWith(ONLY)) continue;
   const { ctx, page } = await open(s);
   if (SECTIONS) {

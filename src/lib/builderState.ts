@@ -6,6 +6,7 @@ import type { BaseListing, BuilderFile } from '../types';
 import { fromColumns } from './columns';
 import { loadBuilder, loadBuilderExtra, loadBuilderSlot, type Model } from './data';
 import { LAZY_SLOTS, SLOTS, fitContext, slotModels, type Build, type Slot, type SlotListing } from './builder';
+import { afterLargestPaint } from './paint';
 
 export type Models = { [S in Slot]: Model<SlotListing[S]>[] };
 export type AnyModel = Model<BaseListing>;
@@ -115,76 +116,83 @@ export function useBuilderState() {
 
   useEffect(() => {
     // builder.json: one row per model the builder can offer, in Recommended order (src/lib/derive.ts).
-    loadBuilder('all')
-      .then((file) => {
-        const m = Object.fromEntries(
-          SLOTS.map((s) => [s, slotModels(s, fromColumns<SlotListing[typeof s]>(file.slots[s] ?? { cols: [], rows: [] }))]),
-        ) as unknown as Models;
-        setCoverage(file.coverage);
-        setBuiltAt(file.builtAt);
-        setModels(m);
-        // The shared or the saved build; parts that disappeared from the market are dropped.
-        const parts = (sharedAtStart ?? readSaved()).parts;
-        const restored: Build = {};
-        for (const s of SLOTS) {
-          const found = (m[s] as AnyModel[]).find((x) => x.key === parts[s]);
-          if (found) (restored as Record<Slot, AnyModel>)[s] = found;
-        }
-        setBuild(restored);
-        // A lazy slot's own file: when its step or picker opens, or at once when the saved/shared
-        // build has a part there (no request otherwise, so the first load stays as it was).
-        const requestedSlots = new Set<Slot>();
-        slotRef.current = (slot) => {
-          if (!LAZY_SLOTS.includes(slot) || requestedSlots.has(slot)) return;
-          requestedSlots.add(slot);
-          loadBuilderSlot(`${slot}.json?v=${file.builtAt}`)
-            .then((f) => {
-              delete pendingLazy[slot];
-              const ms = slotModels(slot, fromColumns<SlotListing[typeof slot]>(f));
-              setModels((prev) => (prev ? ({ ...prev, [slot]: ms } as Models) : prev));
-              const found = (ms as AnyModel[]).find((x) => x.key === parts[slot]);
-              // Restored only if the user hasn't picked one meanwhile.
-              if (found) setBuild((b) => (b[slot] ? b : { ...b, [slot]: found }));
-              setLazyReady((r) => ({ ...r, [slot]: true }));
-            })
-            .catch(() => {
-              requestedSlots.delete(slot); // the next request retries
-              setLazyReady((r) => ({ ...r, [slot]: false }));
-            });
-        };
-        for (const s of LAZY_SLOTS) {
-          // Only the saved build is protected; a shared one isn't saved until changed (then it's the user's).
-          if (parts[s] && !sharedAtStart) pendingLazy[s] = parts[s];
-          if (parts[s]) slotRef.current(s);
-        }
-        // Then the shop links and the search titles (builder-extra.json, ~430 KB gzipped), written
-        // onto each model's one row; `extraVersion` makes searches and links pick them up. Only when
-        // needed: at once for a restored build (its parts need their links), else on the first
-        // interaction, or EXTRA_DELAY after the parts load, so a phone's first seconds download the
-        // parts only.
-        let requested = false;
-        extraRef.current = () => {
-          if (requested) return;
-          requested = true;
-          window.clearTimeout(extraTimer.current);
-          loadBuilderExtra(file.builtAt)
-            .then((extra) => {
-              for (const s of SLOTS) {
-                for (const model of m[s] as AnyModel[]) {
-                  const row = model.cheapest;
-                  row.url = extra.urls[row.id] ?? row.url;
-                  if (!row.title) row.title = extra.titles[row.id] ?? '';
+    // Requested once the builder's step text (the page's largest paint) is on screen: a download that
+    // finishes before that paint counts toward it in Lighthouse's phone simulation (src/lib/paint.ts).
+    const cancel = afterLargestPaint(() => {
+      loadBuilder('all')
+        .then((file) => {
+          const m = Object.fromEntries(
+            SLOTS.map((s) => [s, slotModels(s, fromColumns<SlotListing[typeof s]>(file.slots[s] ?? { cols: [], rows: [] }))]),
+          ) as unknown as Models;
+          setCoverage(file.coverage);
+          setBuiltAt(file.builtAt);
+          setModels(m);
+          // The shared or the saved build; parts that disappeared from the market are dropped.
+          const parts = (sharedAtStart ?? readSaved()).parts;
+          const restored: Build = {};
+          for (const s of SLOTS) {
+            const found = (m[s] as AnyModel[]).find((x) => x.key === parts[s]);
+            if (found) (restored as Record<Slot, AnyModel>)[s] = found;
+          }
+          setBuild(restored);
+          // A lazy slot's own file: when its step or picker opens, or at once when the saved/shared
+          // build has a part there (no request otherwise, so the first load stays as it was).
+          const requestedSlots = new Set<Slot>();
+          slotRef.current = (slot) => {
+            if (!LAZY_SLOTS.includes(slot) || requestedSlots.has(slot)) return;
+            requestedSlots.add(slot);
+            loadBuilderSlot(`${slot}.json?v=${file.builtAt}`)
+              .then((f) => {
+                delete pendingLazy[slot];
+                const ms = slotModels(slot, fromColumns<SlotListing[typeof slot]>(f));
+                setModels((prev) => (prev ? ({ ...prev, [slot]: ms } as Models) : prev));
+                const found = (ms as AnyModel[]).find((x) => x.key === parts[slot]);
+                // Restored only if the user hasn't picked one meanwhile.
+                if (found) setBuild((b) => (b[slot] ? b : { ...b, [slot]: found }));
+                setLazyReady((r) => ({ ...r, [slot]: true }));
+              })
+              .catch(() => {
+                requestedSlots.delete(slot); // the next request retries
+                setLazyReady((r) => ({ ...r, [slot]: false }));
+              });
+          };
+          for (const s of LAZY_SLOTS) {
+            // Only the saved build is protected; a shared one isn't saved until changed (then it's the user's).
+            if (parts[s] && !sharedAtStart) pendingLazy[s] = parts[s];
+            if (parts[s]) slotRef.current(s);
+          }
+          // Then the shop links and the search titles (builder-extra.json, ~430 KB gzipped), written
+          // onto each model's one row; `extraVersion` makes searches and links pick them up. Only when
+          // needed: at once for a restored build (its parts need their links), else on the first
+          // interaction, or EXTRA_DELAY after the parts load, so a phone's first seconds download the
+          // parts only.
+          let requested = false;
+          extraRef.current = () => {
+            if (requested) return;
+            requested = true;
+            window.clearTimeout(extraTimer.current);
+            loadBuilderExtra(file.builtAt)
+              .then((extra) => {
+                for (const s of SLOTS) {
+                  for (const model of m[s] as AnyModel[]) {
+                    const row = model.cheapest;
+                    row.url = extra.urls[row.id] ?? row.url;
+                    if (!row.title) row.title = extra.titles[row.id] ?? '';
+                  }
                 }
-              }
-              setExtraVersion((v) => v + 1);
-            })
-            .catch(() => {}); // the builder still works; links and title search just stay missing
-        };
-        if (Object.keys(restored).length || LAZY_SLOTS.some((s) => parts[s])) extraRef.current();
-        else extraTimer.current = window.setTimeout(() => extraRef.current?.(), EXTRA_DELAY);
-      })
-      .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)));
-    return () => window.clearTimeout(extraTimer.current);
+                setExtraVersion((v) => v + 1);
+              })
+              .catch(() => {}); // the builder still works; links and title search just stay missing
+          };
+          if (Object.keys(restored).length || LAZY_SLOTS.some((s) => parts[s])) extraRef.current();
+          else extraTimer.current = window.setTimeout(() => extraRef.current?.(), EXTRA_DELAY);
+        })
+        .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)));
+    });
+    return () => {
+      cancel();
+      window.clearTimeout(extraTimer.current);
+    };
   }, [sharedAtStart]);
 
   /** The first change to a shared build makes it the user's own: saved, and the link parameters go. */

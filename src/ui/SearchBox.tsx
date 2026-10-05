@@ -126,6 +126,8 @@ export function SearchBox({
         setup.go(target.href);
       }
     } else if (e.key === 'Escape') {
+      // A search field clears itself on Esc in Chrome; the first Esc should only close the suggestions.
+      e.preventDefault();
       if (open && q) setOpen(false);
       else setQ('');
       setActive(-1);

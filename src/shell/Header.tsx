@@ -106,9 +106,16 @@ export function Header({
             <Button variant="ghost" icon={Search} iconOnly onClick={() => setPhoneSearch(true)}>
               {tr(lang, UI.search)}
             </Button>
-            <LinkButton variant="ghost" icon={Wrench} iconOnly href={href.builder}>
-              PC Builder
-            </LinkButton>
+            {/* Icon only below 400 px (no room next to the wordmark at 360: 52 px free, the label needs 85);
+                from 400 px the name shows. Its accessible name is always "PC Builder". */}
+            <a
+              href={href.builder}
+              aria-current={current === 'builder' ? 'page' : undefined}
+              className="ui-btn ui-btn--ghost w-11 px-0 min-[400px]:w-auto min-[400px]:px-3"
+            >
+              <Wrench className="h-4 w-4 shrink-0" aria-hidden="true" />
+              <span className="sr-only min-[400px]:not-sr-only">PC Builder</span>
+            </a>
             <LinkButton variant="ghost" icon={LayoutGrid} iconOnly href={href.parts}>
               {tr(lang, UI.parts)}
             </LinkButton>

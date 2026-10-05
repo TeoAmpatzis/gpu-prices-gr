@@ -1,6 +1,6 @@
 import { StrictMode, lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
-import App, { startFirstPage } from './App';
+import App from './App';
 import { redirectLegacyLink } from './lib/routes';
 import './index.css';
 
@@ -10,7 +10,6 @@ const Preview = import.meta.env.DEV && location.pathname === '/_preview' ? lazy(
 
 // Old v1 links ("/#ram?type=ddr5", shared builds "/#builder?cpu=…") become real addresses before anything renders.
 redirectLegacyLink();
-if (!import.meta.env.DEV || location.pathname !== '/_preview') startFirstPage();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

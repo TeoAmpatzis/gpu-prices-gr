@@ -2,6 +2,8 @@
 // `RUNS` times for mobile (Lighthouse default: simulated slow 4G, mid-range phone) and desktop, one
 // run at a time, and writes the median of each metric plus the bytes each page downloaded (JS, data
 // JSON, fonts, images) from the run's own network log. Full reports stay in <rawDir> (not committed).
+// Phase 0 measured v1 at its #hash addresses; since v2 Phase 1 every page has its own address (the old
+// links redirect to them) and the home page exists, so the same script measures the new ones.
 //
 //   node scripts/audit/lighthouse-baseline.mjs <baseUrl> <outDir> <rawDir> [runs=3] [pageFilter]
 
@@ -15,9 +17,10 @@ mkdirSync(OUT, { recursive: true });
 mkdirSync(RAW, { recursive: true });
 
 const PAGES = [
-  ...['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler'].map((c) => ({ id: c, hash: `#${c}` })),
-  { id: 'builder-guided', hash: '#builder' },
-  { id: 'builder-quick', hash: '#builder?mode=quick' },
+  { id: 'home', path: '/' },
+  ...['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler'].map((c) => ({ id: c, path: `/${c}` })),
+  { id: 'builder-guided', path: '/builder' },
+  { id: 'builder-quick', path: '/builder?mode=quick' },
 ];
 const FORMS = ['mobile', 'desktop'];
 
@@ -58,7 +61,7 @@ for (const page of PAGES) {
     const runs = [];
     for (let i = 1; i <= RUNS; i++) {
       const file = join(RAW, `${page.id}-${form}-${i}.json`);
-      const args = ['-y', 'lighthouse@12', `${BASE}/${page.hash}`, '--quiet', '--output=json', `--output-path=${file}`,
+      const args = ['-y', 'lighthouse@12', `${BASE}${page.path}`, '--quiet', '--output=json', `--output-path=${file}`,
         '--only-categories=performance,accessibility', '--chrome-flags=--headless=new'];
       if (form === 'desktop') args.push('--preset=desktop');
       execFileSync('npx', args, { stdio: 'inherit', shell: true });
