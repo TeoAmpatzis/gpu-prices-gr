@@ -1,0 +1,146 @@
+{
+  "gpu/v1": {
+    "fcp": 1304,
+    "content": 1841,
+    "runs": [
+      {
+        "fcp": 1324,
+        "content": 1945
+      },
+      {
+        "fcp": 1288,
+        "content": 1841
+      },
+      {
+        "fcp": 1304,
+        "content": 1818
+      }
+    ]
+  },
+  "gpu/v2": {
+    "fcp": 1264,
+    "content": 2027,
+    "runs": [
+      {
+        "fcp": 1252,
+        "content": 2012
+      },
+      {
+        "fcp": 1280,
+        "content": 2031
+      },
+      {
+        "fcp": 1264,
+        "content": 2027
+      }
+    ]
+  },
+  "ram/v1": {
+    "fcp": 1308,
+    "content": 2704,
+    "runs": [
+      {
+        "fcp": 1308,
+        "content": 2728
+      },
+      {
+        "fcp": 1316,
+        "content": 2704
+      },
+      {
+        "fcp": 1284,
+        "content": 2656
+      }
+    ]
+  },
+  "ram/v2": {
+    "fcp": 1264,
+    "content": 2907,
+    "runs": [
+      {
+        "fcp": 1264,
+        "content": 2924
+      },
+      {
+        "fcp": 1244,
+        "content": 2907
+      },
+      {
+        "fcp": 1268,
+        "content": 2867
+      }
+    ]
+  },
+  "case/v1": {
+    "fcp": 1276,
+    "content": 3928,
+    "runs": [
+      {
+        "fcp": 1288,
+        "content": 3928
+      },
+      {
+        "fcp": 1276,
+        "content": 3799
+      },
+      {
+        "fcp": 1264,
+        "content": 4007
+      }
+    ]
+  },
+  "case/v2": {
+    "fcp": 1260,
+    "content": 4104,
+    "runs": [
+      {
+        "fcp": 1256,
+        "content": 4104
+      },
+      {
+        "fcp": 1280,
+        "content": 4285
+      },
+      {
+        "fcp": 1260,
+        "content": 4085
+      }
+    ]
+  },
+  "builder/v1": {
+    "fcp": 1284,
+    "content": 3186,
+    "runs": [
+      {
+        "fcp": 1260,
+        "content": 3163
+      },
+      {
+        "fcp": 1288,
+        "content": 3186
+      },
+      {
+        "fcp": 1284,
+        "content": 3215
+      }
+    ]
+  },
+  "builder/v2": {
+    "fcp": 1252,
+    "content": 3377,
+    "runs": [
+      {
+        "fcp": 1268,
+        "content": 3377
+      },
+      {
+        "fcp": 1252,
+        "content": 3382
+      },
+      {
+        "fcp": 1248,
+        "content": 3367
+      }
+    ]
+  }
+}
