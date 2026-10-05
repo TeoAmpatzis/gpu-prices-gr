@@ -2,6 +2,16 @@
 
 Branch `v2`, not deployed. Everything below was measured on the owner's PC on 2026-10-05, against a local production preview (`npm run preview:local`). The data was main's `3dd74e4` (prices of 2026-10-04 14:38). Afterwards main's two newer data commits were merged in (`549148d`, 2026-10-05 06:53); no code changed.
 
+## Owner's decisions at the gate (2026-10-05)
+
+- **Phase 1 gate approved.**
+- **Decision 1 → (a)**: the paint order stays as it is. Added to the Phase 3 gate, alongside the score targets: time to first product on a slow phone no slower than v1 (GPU 1.84 s, cases 3.93 s), measured the same way.
+- **Decision 2**: the builder changes and the shared error message stay.
+- Recorded in `docs/v2-backlog.md` ("Gate criteria added at the Phase 1 gate", "Launch checklist") and in the phases table of `docs/redesign-v2.md`:
+  - **Phase 3 gate:** the first product within a few key presses after the skip link (today 26); real model pages replacing the search stand-in.
+  - **Phase 4 gate:** Home → PC Builder passes the motion check; the dialog and the toast pass it on a real page.
+  - **Launch (blocking):** `site-check.mjs` updated to v2's real addresses; v2 does not deploy until the health check tests them and has been seen to fail on a broken page.
+
 ## Open it
 
 - `npm run preview:local` → **http://localhost:4173/** (production build), or `npm run dev` → **http://localhost:5174/** (hot reload; the component catalogue is at **/_preview**, dev only).
