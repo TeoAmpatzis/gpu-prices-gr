@@ -25,7 +25,7 @@ const SHOTS = [
   // Desktop, Greek
   { name: '01-home-el-1366-full', w: 1366, lang: 'el', path: '/', ready: h1, full: true },
   { name: '02-mega-menu-el-1366', w: 1366, lang: 'el', path: '/', ready: h1, act: (p) => p.locator('header button[aria-controls]').click() },
-  { name: '03-search-el-1366', w: 1366, lang: 'el', path: '/', ready: h1, act: (p) => typeSearch(p, 'header input[role=combobox]') },
+  { name: '03-search-el-1366', w: 1366, lang: 'el', path: '/', ready: h1, act: (p) => typeSearch(p, 'header input[role=combobox]:visible') },
   { name: '04-gpu-el-1366', w: 1366, lang: 'el', path: '/gpu', ready: rows },
   { name: '05-gpu-details-el-1366', w: 1366, lang: 'el', path: '/gpu', ready: rows, act: async (p) => { await p.locator('main tbody tr button[aria-expanded="false"]').filter({ visible: true }).first().click(); await p.waitForTimeout(1500); } },
   { name: '06-storage-filters-el-1366', w: 1366, lang: 'el', path: '/storage?seg=nas&type=hdd', ready: rows },
