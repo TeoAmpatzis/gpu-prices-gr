@@ -1,4 +1,5 @@
-// Layout audit: every page × width × language × theme, via Chrome DevTools Protocol.
+// Layout audit: every page × width × language, via Chrome DevTools Protocol. Since v2 Phase 1 the site is
+// dark only and every page has its own address (/gpu, /builder?mode=quick…; "home" = /, "404" = an unknown one).
 // Usage: node scripts/checks/layout-audit.mjs <baseUrl> <outDir> [pages] [widths]   (SHOTS=1 also saves screenshots)
 // Reports elements wider than their box, outside the viewport, or the page scrolling sideways.
 import { spawn } from 'node:child_process';
@@ -6,10 +7,10 @@ import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
 
 const BASE = process.argv[2];
 const OUT = process.argv[3];
-const PAGES = (process.argv[4] || 'gpu,cpu,mobo,ram,storage,psu,case,fan,cooler,builder,builder?mode=quick,about,contact,privacy').split(',');
+const PAGES = (process.argv[4] || 'home,gpu,cpu,mobo,ram,storage,psu,case,fan,cooler,builder,builder?mode=quick,parts,about,contact,privacy,404').split(',');
+const pathOf = (page) => (page === 'home' ? '/' : page === '404' ? '/no-such-page' : '/' + page);
 const WIDTHS = (process.argv[5] || '1920,1366,768,360').split(',').map(Number);
 const LANGS = ['el', 'en'];
-const THEMES = ['light', 'dark'];
 const SHOTS = process.env.SHOTS === '1';
 mkdirSync(OUT, { recursive: true });
 
@@ -72,7 +73,7 @@ const AUDIT = `(() => {
 const waitReady = async () => {
   for (let i = 0; i < 60; i++) {
     await sleep(250);
-    const ok = await evaluate(`document.readyState === 'complete' && !document.querySelector('.skeleton') && !!document.querySelector('main, h1')`);
+    const ok = await evaluate(`document.readyState === 'complete' && !document.querySelector('.skeleton, .ui-skeleton') && !!document.querySelector('main h1')`);
     if (ok) { await sleep(300); return true; }
   }
   return false;
@@ -103,15 +104,24 @@ const screenshot = async (label) => {
 for (const width of WIDTHS) {
   await send('Emulation.setDeviceMetricsOverride', { width, height: width <= 400 ? 780 : width < 1024 ? 1024 : 900, deviceScaleFactor: 1, mobile: width < 1024 });
   for (const lang of LANGS) {
-    await evaluate(`localStorage.setItem('lang', '${lang}'); localStorage.setItem('theme', 'light'); localStorage.removeItem('pcBuild'); true`);
+    await evaluate(`localStorage.setItem('lang', '${lang}'); localStorage.removeItem('pcBuild'); true`);
     for (const page of PAGES) {
-      // A query string per page forces a full load (a hash-only change could leave the last page shown).
-      await send('Page.navigate', { url: `${BASE}/?audit=${encodeURIComponent(page)}#${page}` });
-      await send('Page.reload', { ignoreCache: false }); // the same URL as before is only a hash change
+      await send('Page.navigate', { url: BASE + pathOf(page) });
       if (!(await waitReady())) { record(`${width} ${lang} ${page}`, [{ kind: 'PAGE did not load', el: page, px: 0 }]); continue; }
       const states = [['', async () => {}]];
       const builder = page.startsWith('builder');
-      if (!builder && !['about', 'contact', 'privacy'].includes(page)) {
+      if (page === 'home') {
+        // The Εξαρτήματα menu (mega menu on desktop, tiles on phones) and the search suggestions.
+        states.push(['menu', async () => click('header button[aria-controls]')]);
+        states.push(['search', async () => {
+          await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape'}))`);
+          await evaluate(`(() => { const i = document.querySelector('main input[role=combobox]'); i.focus(); return true; })()`);
+          await send('Input.insertText', { text: 'rtx 50' });
+          await sleep(1500);
+          return true;
+        }]);
+      }
+      if (!builder && !['home', 'parts', 'about', 'contact', 'privacy', '404'].includes(page)) {
         states.push(['details', async () => click('tbody button[aria-expanded="false"], li.card button[aria-expanded="false"], main button[aria-expanded="false"]')]);
         if (width < 1024) states.push(['filter-sheet', async () => { await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape'}))`); return click('button[aria-haspopup="dialog"]'); }]);
       }
@@ -149,13 +159,9 @@ for (const width of WIDTHS) {
       for (const [state, act] of states) {
         await act();
         await sleep(500);
-        for (const theme of THEMES) {
-          await evaluate(`document.documentElement.classList.toggle('dark', ${theme === 'dark'}); true`);
-          await sleep(100);
-          const where = `${width} ${lang} ${theme} ${page}${state ? ' ' + state : ''}`;
-          record(where, await evaluate(AUDIT));
-          if (theme === 'light' || width === 360) await screenshot(`${width}-${lang}-${theme}-${page.replace(/[^a-z0-9-]/gi, '_')}${state ? '-' + state : ''}`);
-        }
+        const where = `${width} ${lang} ${page}${state ? ' ' + state : ''}`;
+        record(where, await evaluate(AUDIT));
+        await screenshot(`${width}-${lang}-${page.replace(/[^a-z0-9-]/gi, '_')}${state ? '-' + state : ''}`);
       }
     }
   }

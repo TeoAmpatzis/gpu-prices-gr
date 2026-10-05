@@ -184,4 +184,4 @@ Each image is 1248 px wide and no taller than ~1,900 px; longer sections are spl
   - search: `src/lib/search.ts`;
   - catalogue: `src/preview/`;
   - dev-only route: `src/main.tsx`.
-- **Scripts:** `scripts/phase1/preview-shots.mjs`, `handoff-shots.mjs`, `check-no-preview.mjs`.
+- **Scripts:** `scripts/phase1/preview-shots.mjs`, `handoff-shots.mjs` (removed at Stop 3: it needed the Stop 2 logo/palette/theme options), `check-no-preview.mjs`.

@@ -18,6 +18,7 @@ import { formatPrice, mostCommon, type Model } from './data';
 import { slug } from './slug';
 import { T, tr, type Lang, type Text } from './i18n';
 import { fanValue, gpuValue, psuValue, ramValue, storageValue } from './value';
+import { CAT_PAGE } from '../shell/texts';
 
 export interface Column<L extends BaseListing> {
   header: Text;
@@ -115,11 +116,6 @@ const noResults = (el: string, en: string): Text => ({
   el: `Δεν βρέθηκαν ${el} με αυτά τα φίλτρα.`,
   en: `No ${en} match these filters.`,
 });
-const subtitle = (el: string, en: string): Text => ({
-  el: `Οι χαμηλότερες τιμές ${el} στην Ελλάδα, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.`,
-  en: `The lowest ${en} prices in Greece, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.`,
-});
-
 // ---------- Filter builders ----------
 
 type Value = string | number | null | undefined;
@@ -230,8 +226,8 @@ const gpuVram = (m: Model<GpuListing>) => m.cheapest.vram;
 export const GPU: CategoryConfig<GpuListing> = {
   id: 'gpu',
   tab: { el: 'Κάρτες Γραφικών', en: 'Graphics Cards' },
-  title: { el: 'Τιμές Καρτών Γραφικών', en: 'Graphics Card Prices' },
-  subtitle: subtitle('GPU', 'GPU'),
+  title: CAT_PAGE.gpu.title,
+  subtitle: CAT_PAGE.gpu.subtitle,
   icon: CircuitBoard,
   empty: noResults('κάρτες', 'graphics cards'),
   searchPlaceholder: search('5070 Ti, Sapphire'),
@@ -295,8 +291,8 @@ const socketRank = (s: string) => (/^(AM5|LGA1851|LGA1700|AM4)$/.test(s) ? 0 : 1
 export const CPU: CategoryConfig<CpuListing> = {
   id: 'cpu',
   tab: { el: 'Επεξεργαστές', en: 'Processors' },
-  title: { el: 'Τιμές Επεξεργαστών', en: 'Processor Prices' },
-  subtitle: subtitle('CPU', 'CPU'),
+  title: CAT_PAGE.cpu.title,
+  subtitle: CAT_PAGE.cpu.subtitle,
   icon: Cpu,
   empty: noResults('επεξεργαστές', 'processors'),
   searchPlaceholder: search('9800X3D, 14600K'),
@@ -347,11 +343,8 @@ const BOARD_SIZES: BoardSize[] = ['ATX', 'Micro ATX', 'Mini ITX', 'E-ATX'];
 export const MOBO: CategoryConfig<MoboListing> = {
   id: 'mobo',
   tab: { el: 'Μητρικές', en: 'Motherboards' },
-  title: { el: 'Τιμές Μητρικών', en: 'Motherboard Prices' },
-  subtitle: {
-    el: 'Οι χαμηλότερες τιμές για κάθε μητρική στην Ελλάδα, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
-    en: 'The lowest price for every motherboard in Greece, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
-  },
+  title: CAT_PAGE.mobo.title,
+  subtitle: CAT_PAGE.mobo.subtitle,
   icon: Microchip,
   empty: noResults('μητρικές', 'motherboards'),
   searchPlaceholder: search('B850, Tomahawk'),
@@ -408,11 +401,8 @@ const FORM_LABEL: Record<RamListing['formFactor'], string> = { Desktop: 'Desktop
 export const RAM: CategoryConfig<RamListing> = {
   id: 'ram',
   tab: { el: 'Μνήμες RAM', en: 'Memory (RAM)' },
-  title: { el: 'Τιμές Μνημών RAM', en: 'Memory (RAM) Prices' },
-  subtitle: {
-    el: 'Οι χαμηλότερες τιμές RAM στην Ελλάδα ανά χωρητικότητα και ταχύτητα, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
-    en: 'The lowest RAM prices in Greece by capacity and speed, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
-  },
+  title: CAT_PAGE.ram.title,
+  subtitle: CAT_PAGE.ram.subtitle,
   icon: MemoryStick,
   empty: noResults('μνήμες', 'memory kits'),
   searchPlaceholder: search('2x16GB 6000, Fury'),
@@ -463,11 +453,8 @@ const MODULAR_LABEL: Record<string, Text> = {
 export const PSU: CategoryConfig<PsuListing> = {
   id: 'psu',
   tab: { el: 'Τροφοδοτικά', en: 'Power Supplies' },
-  title: { el: 'Τιμές Τροφοδοτικών', en: 'Power Supply Prices' },
-  subtitle: {
-    el: 'Οι χαμηλότερες τιμές τροφοδοτικών PC στην Ελλάδα ανά ισχύ και πιστοποίηση, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
-    en: 'The lowest PC power supply prices in Greece by wattage and efficiency rating, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
-  },
+  title: CAT_PAGE.psu.title,
+  subtitle: CAT_PAGE.psu.subtitle,
   icon: Plug,
   empty: noResults('τροφοδοτικά', 'power supplies'),
   searchPlaceholder: search('850W, RM850x'),
@@ -515,11 +502,8 @@ export const caseMaxBoard = (l: CaseListing): BoardSize => l.maxBoard ?? BOARD_B
 export const CASE: CategoryConfig<CaseListing> = {
   id: 'case',
   tab: { el: 'Κουτιά', en: 'Cases' },
-  title: { el: 'Τιμές Κουτιών PC', en: 'PC Case Prices' },
-  subtitle: {
-    el: 'Οι χαμηλότερες τιμές για κάθε κουτί υπολογιστή στην Ελλάδα, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
-    en: 'The lowest price for every PC case in Greece, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
-  },
+  title: CAT_PAGE.case.title,
+  subtitle: CAT_PAGE.case.subtitle,
   icon: Box,
   empty: noResults('κουτιά', 'cases'),
   searchPlaceholder: search('Lancool 216, H5'),
@@ -564,11 +548,8 @@ const fanGroup = (size: number) =>
 export const FAN: CategoryConfig<FanListing> = {
   id: 'fan',
   tab: { el: 'Ανεμιστήρες', en: 'Case Fans' },
-  title: { el: 'Τιμές Ανεμιστήρων', en: 'Case Fan Prices' },
-  subtitle: {
-    el: 'Οι χαμηλότερες τιμές ανεμιστήρων κουτιού στην Ελλάδα, ανά μοντέλο και συσκευασία, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
-    en: 'The lowest case fan prices in Greece, by model and pack size, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
-  },
+  title: CAT_PAGE.fan.title,
+  subtitle: CAT_PAGE.fan.subtitle,
   icon: Fan,
   empty: noResults('ανεμιστήρες', 'fans'),
   searchPlaceholder: search('P12 Pro, Uni Fan'),
@@ -616,11 +597,8 @@ const coolerGroup = (l: CoolerListing) =>
 export const COOLER: CategoryConfig<CoolerListing> = {
   id: 'cooler',
   tab: { el: 'Ψύκτρες CPU', en: 'CPU Coolers' },
-  title: { el: 'Τιμές Ψυκτρών CPU', en: 'CPU Cooler Prices' },
-  subtitle: {
-    el: 'Οι χαμηλότερες τιμές για ψύκτρες αέρα και υδροψύξεις AIO στην Ελλάδα, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
-    en: 'The lowest prices for air coolers and AIO liquid coolers in Greece, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
-  },
+  title: CAT_PAGE.cooler.title,
+  subtitle: CAT_PAGE.cooler.subtitle,
   icon: Snowflake,
   empty: noResults('ψύκτρες', 'coolers'),
   searchPlaceholder: search('Peerless Assassin'),
@@ -709,11 +687,8 @@ export const STORAGE: CategoryConfig<StorageListing> = {
   id: 'storage',
   // "Δίσκοι" (not "Αποθήκευση"): with nine tabs + the builder, the Greek tab bar must fit 1248px.
   tab: { el: 'Δίσκοι', en: 'Storage' },
-  title: { el: 'Τιμές SSD & Σκληρών Δίσκων', en: 'SSD & Hard Drive Prices' },
-  subtitle: {
-    el: 'Οι χαμηλότερες τιμές για κάθε SSD και σκληρό δίσκο στην Ελλάδα, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
-    en: 'The lowest price for every SSD and hard drive in Greece, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
-  },
+  title: CAT_PAGE.storage.title,
+  subtitle: CAT_PAGE.storage.subtitle,
   icon: HardDrive,
   empty: noResults('δίσκοι', 'drives'),
   searchPlaceholder: search('990 Pro, IronWolf'),

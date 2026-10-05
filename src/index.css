@@ -77,9 +77,10 @@
   .card {
     @apply rounded-2xl bg-panel ring-1 ring-edge shadow-[var(--card-shadow)];
   }
-  /* Inputs and selects keep the darker --line-strong outline (WCAG 3:1 for form controls). */
+  /* Inputs and selects keep the darker --line-strong outline (WCAG 3:1 for form controls). Hover and focus
+     outlines change instantly (plan A4 rule 2: only transform and opacity animate). */
   .field {
-    @apply rounded-lg bg-sunken text-sm text-fg ring-1 ring-inset ring-line-strong transition placeholder:text-faint hover:ring-muted focus:outline-none focus:ring-2 focus:ring-accent dark:hover:ring-faint/60 dark:focus:ring-accent/50;
+    @apply rounded-lg bg-sunken text-sm text-fg ring-1 ring-inset ring-line-strong placeholder:text-faint hover:ring-muted focus:outline-none focus:ring-2 focus:ring-accent dark:hover:ring-faint/60 dark:focus:ring-accent/50;
   }
   /* Bordered button outline in light mode (cards, toggles, popover buttons); dark keeps its look via the tokens. */
   .edge {

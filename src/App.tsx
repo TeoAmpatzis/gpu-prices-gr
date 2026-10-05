@@ -2,8 +2,9 @@
 // instead of v1's "#…" routes; old links are redirected before this renders (main.tsx). The category pages,
 // the builder and the text pages are separate chunks, loaded when opened or when their link is hovered,
 // focused or touched.
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { tr, useLang, type Text } from './lib/i18n';
+import { afterFirstPaint } from './lib/paint';
 import { navigate, notifyUrl, useLinkNavigation, usePath } from './lib/router';
 import { CATEGORY_LIST, matchRoute, redirectLegacyLink } from './lib/routes';
 import type { Category } from './types';
@@ -14,10 +15,16 @@ import { BUILDER, CATS, href } from './shell/nav';
 import { Footer, NotFoundPage, PartsPage } from './shell/pages';
 import { PageTitle } from './shell/PageTitle';
 import { loadSearchIndex, useSite } from './shell/site';
-import { PAGE } from './shell/texts';
+import { CAT_PAGE, PAGE } from './shell/texts';
 import type { SearchSetup } from './ui/SearchBox';
-import { SkeletonRows } from './ui/states';
+import { useMedia } from './lib/useMedia';
+import { SkeletonCards, SkeletonRows } from './ui/states';
 import { UI } from './ui/strings';
+
+/** Loading placeholder while a page's code arrives: rows on wide screens, card shapes on phones (UX-21). */
+function PageSkeleton() {
+  return useMedia('(min-width: 1024px)') ? <SkeletonRows /> : <SkeletonCards cards={4} />;
+}
 
 const loadCategoryPage = () => import('./shell/CategoryPage');
 const loadBuilderView = () => import('./components/Builder');
@@ -37,10 +44,20 @@ function prefetchPath(path: string) {
   } else if (r.kind === 'info') void loadInfoView();
 }
 
-/** The first page's code and data start downloading at once (main.tsx calls this after the old-link redirect). */
-export function startFirstPage() {
+/**
+ * The first page's code and data. App starts them right after the first paint (see `painted`), as v1 fetched
+ * its data after painting: anything requested before the first paint counts toward it in Lighthouse's phone
+ * simulation (measured on /gpu: mobile 97 → 92, LCP 2.5 → 3.2 s when they started before React rendered).
+ */
+function startFirstPage() {
   const first = matchRoute(location.pathname);
-  const data = first.kind === 'category' || first.kind === 'model' ? `/data/${first.cat}/list.json` : first.kind === 'builder' ? '/data/builder.json' : null;
+  if (first.kind === 'builder') {
+    // Code only: the builder requests builder.json itself once it has rendered, as in v1. Its step text is
+    // the page's largest paint, and the 270 KB file finishing before it counted toward it (mobile 91 → 88).
+    void loadBuilderView();
+    return;
+  }
+  const data = first.kind === 'category' || first.kind === 'model' ? `/data/${first.cat}/list.json` : null;
   if (data) {
     const l = document.createElement('link');
     l.rel = 'preload';
@@ -71,6 +88,19 @@ export default function App() {
   const route = useMemo(() => matchRoute(path), [path]);
   const site = useSite();
   useLinkNavigation(prefetchPath);
+  // The first frame paints the header, the page title and a skeleton; the page's own (lazy) code and data
+  // start right after that paint.
+  const [painted, setPainted] = useState(false);
+  useEffect(
+    () =>
+      afterFirstPaint(() => {
+        startFirstPage();
+        setPainted(true);
+      }),
+    [],
+  );
+  /** A lazy page part: a skeleton until the first paint is done and while its code arrives. */
+  const later = (node: ReactNode) => (painted ? <Suspense fallback={<PageSkeleton />}>{node}</Suspense> : <PageSkeleton />);
   // An old "#…" link opened where the site is already showing (only the hash changes): same redirect.
   useEffect(() => {
     const onHash = () => redirectLegacyLink() && notifyUrl();
@@ -121,25 +151,26 @@ export default function App() {
       {/* Pages with data are at least a screen tall, so the footer starts below the fold while they load. */}
       <main id="main" tabIndex={-1} className="mx-auto min-h-screen max-w-7xl px-4 py-6 outline-none sm:py-8">
         <ErrorBoundary>
-          <Suspense fallback={<SkeletonRows />}>
+          <Suspense fallback={<PageSkeleton />}>
             {route.kind === 'home' && <Home counts={site?.counts} search={SEARCH} />}
             {visited.map((c) => (
               <div key={c} hidden={activeCat !== c}>
-                <CategoryPage cat={c} home={home} />
+                <PageTitle crumbs={crumbs(CATS[c].name)} title={CAT_PAGE[c].title} subtitle={CAT_PAGE[c].subtitle} />
+                {later(<CategoryPage cat={c} />)}
               </div>
             ))}
-            {route.kind === 'model' && <ModelRedirect cat={route.cat} slug={route.slug} notFound={notFound} />}
+            {route.kind === 'model' && later(<ModelRedirect cat={route.cat} slug={route.slug} notFound={notFound} />)}
             {builderSeen && (
               <div hidden={route.kind !== 'builder'}>
                 <PageTitle crumbs={crumbs(PAGE.builder.title)} title={PAGE.builder.title} subtitle={PAGE.builder.subtitle} />
-                <Builder />
+                {later(<Builder />)}
               </div>
             )}
             {route.kind === 'parts' && <PartsPage counts={site?.counts} search={SEARCH} />}
             {route.kind === 'info' && (
               <>
                 <PageTitle crumbs={crumbs(PAGE[route.page].title)} title={PAGE[route.page].title} subtitle={PAGE[route.page].subtitle} />
-                <InfoPage page={route.page} />
+                {later(<InfoPage page={route.page} />)}
               </>
             )}
             {route.kind === 'notFound' && notFound}

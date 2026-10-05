@@ -2,9 +2,10 @@
 // or Quick list: #builder?mode=quick), the measurement notice and the summary.
 
 import { useState } from 'react';
-import { AlertTriangle, Info, ListChecks, ListOrdered } from 'lucide-react';
+import { Info, ListChecks, ListOrdered } from 'lucide-react';
 import { builderParams, useBuilderState, writeBuilderParams } from '../lib/builderState';
-import { T, tr, useLang, type Text } from '../lib/i18n';
+import { tr, useLang, type Text } from '../lib/i18n';
+import { ErrorState } from '../ui/states';
 import Guided from './builder/Guided';
 import QuickList from './builder/QuickList';
 import Summary from './builder/Summary';
@@ -15,6 +16,18 @@ const M = {
   guided: { el: 'Βήμα-βήμα', en: 'Guided' },
   quick: { el: 'Γρήγορη λίστα', en: 'Quick list' },
   mode: { el: 'Τρόπος συναρμολόγησης', en: 'Builder mode' },
+} satisfies Record<string, Text>;
+
+/** The measurement notice: the text, then a line with today's percentages (from builder.json). */
+const C = {
+  text: {
+    el: 'Οι διαστάσεις για τον έλεγχο συμβατότητας συλλέγονται σταδιακά. Όσα δεν έχουν ακόμα στοιχεία εμφανίζονται ως «Χωρίς επιβεβαίωση»· προστίθενται καθημερινά.',
+    en: 'Measurements for the compatibility check are being collected gradually. Parts without them are shown as "Fit not verified"; more are added every day.',
+  },
+  known: { el: 'Γνωστές σήμερα:', en: 'Known today:' },
+  gpu: { el: 'κάρτες γραφικών', en: 'graphics cards' },
+  case: { el: 'κουτιά', en: 'cases' },
+  cooler: { el: 'ψύκτρες', en: 'coolers' },
 } satisfies Record<string, Text>;
 
 export default function Builder() {
@@ -32,10 +45,12 @@ export default function Builder() {
     });
   };
 
+  // A failed load: the translated message, the detail folded, and a retry (UX-19). The builder's data
+  // loader keeps its result for the session, so the retry reloads the page.
   if (error) {
     return (
-      <div className="notice-danger flex items-center gap-2 p-4">
-        <AlertTriangle className="h-5 w-5" /> {t(T.loadError)}: {error}
+      <div className="card">
+        <ErrorState detail={error} onRetry={() => location.reload()} />
       </div>
     );
   }
@@ -68,11 +83,16 @@ export default function Builder() {
       {collecting && (
         <div className="notice-warn flex gap-2 p-3 text-sm">
           <Info className="mt-0.5 h-4 w-4 shrink-0" />
-          <span>
-            {t({
-              el: `Οι διαστάσεις για τον έλεγχο συμβατότητας συλλέγονται σταδιακά${coverage ? ` (κάρτες γραφικών ${coverage.gpu}%, κουτιά ${coverage.case}%, ψύκτρες ${coverage.cooler}%)` : ''}. Όσα δεν έχουν ακόμα στοιχεία εμφανίζονται ως «Χωρίς επιβεβαίωση»· προστίθενται καθημερινά.`,
-              en: `Measurements for the compatibility check are being collected gradually${coverage ? ` (graphics cards ${coverage.gpu}%, cases ${coverage.case}%, coolers ${coverage.cooler}%)` : ''}. Parts without them are shown as "Fit not verified"; more are added every day.`,
-            })}
+          <span className="flex flex-col gap-1">
+            <span>{t(C.text)}</span>
+            {/* The percentages are their own line, which keeps its room while builder.json loads (invisible,
+                fixed-width digits): the notice doesn't grow and push the steps down when they arrive (CLS), and
+                the large text above is complete in the first render (it's the page's largest paint). */}
+            <span className={coverage ? undefined : 'invisible'} aria-hidden={coverage ? undefined : true}>
+              {t(C.known)} {t(C.gpu)} <span className="tabular-nums">{coverage?.gpu ?? 88}</span>%, {t(C.case)}{' '}
+              <span className="tabular-nums">{coverage?.case ?? 88}</span>%, {t(C.cooler)}{' '}
+              <span className="tabular-nums">{coverage?.cooler ?? 88}</span>%.
+            </span>
           </span>
         </div>
       )}
