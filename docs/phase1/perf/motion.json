@@ -1,0 +1,790 @@
+{
+  "P1-open-parts-tiles": {
+    "form": "phone",
+    "server": "preview",
+    "inPass": true,
+    "pass": true,
+    "median": {
+      "longestFrameMs": 17,
+      "framesOver33": 0,
+      "framesOver50": 0,
+      "inputToPaintMs": 40
+    },
+    "runs": [
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 40,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 40,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 40,
+        "longAnimationFrames": []
+      }
+    ]
+  },
+  "P2-close-parts-tiles": {
+    "form": "phone",
+    "server": "preview",
+    "inPass": true,
+    "pass": true,
+    "median": {
+      "longestFrameMs": 17,
+      "framesOver33": 0,
+      "framesOver50": 0,
+      "inputToPaintMs": null
+    },
+    "runs": [
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": null,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": null,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": null,
+        "longAnimationFrames": []
+      }
+    ]
+  },
+  "P3-open-search-panel": {
+    "form": "phone",
+    "server": "preview",
+    "inPass": true,
+    "pass": true,
+    "median": {
+      "longestFrameMs": 50,
+      "framesOver33": 1,
+      "framesOver50": 0,
+      "inputToPaintMs": 32
+    },
+    "runs": [
+      {
+        "longestFrameMs": 50,
+        "framesOver33": 1,
+        "framesOver50": 1,
+        "inputToPaintMs": 32,
+        "longAnimationFrames": [
+          70
+        ]
+      },
+      {
+        "longestFrameMs": 50,
+        "framesOver33": 1,
+        "framesOver50": 0,
+        "inputToPaintMs": 32,
+        "longAnimationFrames": [
+          61
+        ]
+      },
+      {
+        "longestFrameMs": 50,
+        "framesOver33": 1,
+        "framesOver50": 0,
+        "inputToPaintMs": 32,
+        "longAnimationFrames": [
+          69
+        ]
+      }
+    ]
+  },
+  "P4-type-rtx-50": {
+    "form": "phone",
+    "server": "preview",
+    "inPass": true,
+    "pass": true,
+    "median": {
+      "longestFrameMs": 17,
+      "framesOver33": 0,
+      "framesOver50": 0,
+      "inputToPaintMs": null
+    },
+    "runs": [
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": null,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": null,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": null,
+        "longAnimationFrames": []
+      }
+    ]
+  },
+  "P5-search-arrow-down": {
+    "form": "phone",
+    "server": "preview",
+    "inPass": true,
+    "pass": true,
+    "median": {
+      "longestFrameMs": 17,
+      "framesOver33": 0,
+      "framesOver50": 0,
+      "inputToPaintMs": 16
+    },
+    "runs": [
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 16,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": null,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 16,
+        "longAnimationFrames": []
+      }
+    ]
+  },
+  "P6-search-enter": {
+    "form": "phone",
+    "server": "preview",
+    "inPass": false,
+    "pass": false,
+    "median": {
+      "longestFrameMs": 67,
+      "framesOver33": 1,
+      "framesOver50": 1,
+      "inputToPaintMs": 32
+    },
+    "runs": [
+      {
+        "longestFrameMs": 67,
+        "framesOver33": 1,
+        "framesOver50": 1,
+        "inputToPaintMs": 40,
+        "longAnimationFrames": [
+          82
+        ]
+      },
+      {
+        "longestFrameMs": 67,
+        "framesOver33": 1,
+        "framesOver50": 1,
+        "inputToPaintMs": 32,
+        "longAnimationFrames": [
+          75
+        ]
+      },
+      {
+        "longestFrameMs": 50,
+        "framesOver33": 1,
+        "framesOver50": 0,
+        "inputToPaintMs": 32,
+        "longAnimationFrames": [
+          75
+        ]
+      }
+    ]
+  },
+  "P7-language-switch": {
+    "form": "phone",
+    "server": "preview",
+    "inPass": true,
+    "pass": true,
+    "median": {
+      "longestFrameMs": 17,
+      "framesOver33": 0,
+      "framesOver50": 0,
+      "inputToPaintMs": 56
+    },
+    "runs": [
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 56,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 56,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 48,
+        "longAnimationFrames": []
+      }
+    ]
+  },
+  "P8-home-to-builder": {
+    "form": "phone",
+    "server": "preview",
+    "inPass": true,
+    "pass": false,
+    "median": {
+      "longestFrameMs": 50,
+      "framesOver33": 2,
+      "framesOver50": 0,
+      "inputToPaintMs": 40
+    },
+    "runs": [
+      {
+        "longestFrameMs": 50,
+        "framesOver33": 2,
+        "framesOver50": 0,
+        "inputToPaintMs": 40,
+        "longAnimationFrames": [
+          65
+        ]
+      },
+      {
+        "longestFrameMs": 50,
+        "framesOver33": 2,
+        "framesOver50": 0,
+        "inputToPaintMs": 48,
+        "longAnimationFrames": [
+          67
+        ]
+      },
+      {
+        "longestFrameMs": 50,
+        "framesOver33": 1,
+        "framesOver50": 0,
+        "inputToPaintMs": 40,
+        "longAnimationFrames": [
+          66
+        ]
+      }
+    ]
+  },
+  "D1-open-mega-menu": {
+    "form": "desktop",
+    "server": "preview",
+    "inPass": true,
+    "pass": true,
+    "median": {
+      "longestFrameMs": 17,
+      "framesOver33": 0,
+      "framesOver50": 0,
+      "inputToPaintMs": 32
+    },
+    "runs": [
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 32,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 40,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 32,
+        "longAnimationFrames": []
+      }
+    ]
+  },
+  "D2-close-mega-menu": {
+    "form": "desktop",
+    "server": "preview",
+    "inPass": true,
+    "pass": true,
+    "median": {
+      "longestFrameMs": 17,
+      "framesOver33": 0,
+      "framesOver50": 0,
+      "inputToPaintMs": 16
+    },
+    "runs": [
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 16,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 16,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 16,
+        "longAnimationFrames": []
+      }
+    ]
+  },
+  "D3-focus-search": {
+    "form": "desktop",
+    "server": "preview",
+    "inPass": true,
+    "pass": true,
+    "median": {
+      "longestFrameMs": 50,
+      "framesOver33": 1,
+      "framesOver50": 0,
+      "inputToPaintMs": 16
+    },
+    "runs": [
+      {
+        "longestFrameMs": 33,
+        "framesOver33": 1,
+        "framesOver50": 0,
+        "inputToPaintMs": 16,
+        "longAnimationFrames": [
+          60
+        ]
+      },
+      {
+        "longestFrameMs": 67,
+        "framesOver33": 1,
+        "framesOver50": 1,
+        "inputToPaintMs": 16,
+        "longAnimationFrames": [
+          82
+        ]
+      },
+      {
+        "longestFrameMs": 50,
+        "framesOver33": 1,
+        "framesOver50": 0,
+        "inputToPaintMs": 16,
+        "longAnimationFrames": [
+          69
+        ]
+      }
+    ]
+  },
+  "D4-type-rtx-50": {
+    "form": "desktop",
+    "server": "preview",
+    "inPass": true,
+    "pass": true,
+    "median": {
+      "longestFrameMs": 17,
+      "framesOver33": 0,
+      "framesOver50": 0,
+      "inputToPaintMs": null
+    },
+    "runs": [
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": null,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": null,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": null,
+        "longAnimationFrames": []
+      }
+    ]
+  },
+  "D5-search-arrow-down": {
+    "form": "desktop",
+    "server": "preview",
+    "inPass": true,
+    "pass": true,
+    "median": {
+      "longestFrameMs": 17,
+      "framesOver33": 0,
+      "framesOver50": 0,
+      "inputToPaintMs": 16
+    },
+    "runs": [
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 16,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 16,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 16,
+        "longAnimationFrames": []
+      }
+    ]
+  },
+  "D6-search-enter": {
+    "form": "desktop",
+    "server": "preview",
+    "inPass": false,
+    "pass": false,
+    "median": {
+      "longestFrameMs": 100,
+      "framesOver33": 1,
+      "framesOver50": 1,
+      "inputToPaintMs": 40
+    },
+    "runs": [
+      {
+        "longestFrameMs": 100,
+        "framesOver33": 1,
+        "framesOver50": 1,
+        "inputToPaintMs": 40,
+        "longAnimationFrames": [
+          112
+        ]
+      },
+      {
+        "longestFrameMs": 100,
+        "framesOver33": 1,
+        "framesOver50": 1,
+        "inputToPaintMs": 40,
+        "longAnimationFrames": [
+          110
+        ]
+      },
+      {
+        "longestFrameMs": 100,
+        "framesOver33": 1,
+        "framesOver50": 1,
+        "inputToPaintMs": 40,
+        "longAnimationFrames": [
+          107
+        ]
+      }
+    ]
+  },
+  "D7-language-switch": {
+    "form": "desktop",
+    "server": "preview",
+    "inPass": true,
+    "pass": true,
+    "median": {
+      "longestFrameMs": 17,
+      "framesOver33": 0,
+      "framesOver50": 0,
+      "inputToPaintMs": 48
+    },
+    "runs": [
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 48,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 48,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 48,
+        "longAnimationFrames": []
+      }
+    ]
+  },
+  "D8-home-to-builder": {
+    "form": "desktop",
+    "server": "preview",
+    "inPass": true,
+    "pass": false,
+    "median": {
+      "longestFrameMs": 50,
+      "framesOver33": 3,
+      "framesOver50": 0,
+      "inputToPaintMs": 32
+    },
+    "runs": [
+      {
+        "longestFrameMs": 50,
+        "framesOver33": 3,
+        "framesOver50": 0,
+        "inputToPaintMs": 32,
+        "longAnimationFrames": [
+          67,
+          69
+        ]
+      },
+      {
+        "longestFrameMs": 50,
+        "framesOver33": 3,
+        "framesOver50": 0,
+        "inputToPaintMs": 40,
+        "longAnimationFrames": [
+          67,
+          52,
+          66
+        ]
+      },
+      {
+        "longestFrameMs": 50,
+        "framesOver33": 3,
+        "framesOver50": 1,
+        "inputToPaintMs": 32,
+        "longAnimationFrames": [
+          75,
+          52,
+          70
+        ]
+      }
+    ]
+  },
+  "C1-open-bottom-sheet": {
+    "form": "phone",
+    "server": "dev",
+    "inPass": true,
+    "pass": true,
+    "median": {
+      "longestFrameMs": 33,
+      "framesOver33": 0,
+      "framesOver50": 0,
+      "inputToPaintMs": 64
+    },
+    "runs": [
+      {
+        "longestFrameMs": 33,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 64,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 33,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 64,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 33,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 72,
+        "longAnimationFrames": []
+      }
+    ]
+  },
+  "C2-close-bottom-sheet": {
+    "form": "phone",
+    "server": "dev",
+    "inPass": true,
+    "pass": true,
+    "median": {
+      "longestFrameMs": 17,
+      "framesOver33": 0,
+      "framesOver50": 0,
+      "inputToPaintMs": 32
+    },
+    "runs": [
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 32,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 32,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": 32,
+        "longAnimationFrames": []
+      }
+    ]
+  },
+  "C3-open-dialog": {
+    "form": "desktop",
+    "server": "dev",
+    "inPass": true,
+    "pass": false,
+    "median": {
+      "longestFrameMs": 133,
+      "framesOver33": 1,
+      "framesOver50": 1,
+      "inputToPaintMs": 160
+    },
+    "runs": [
+      {
+        "longestFrameMs": 133,
+        "framesOver33": 1,
+        "framesOver50": 1,
+        "inputToPaintMs": 152,
+        "longAnimationFrames": [
+          113
+        ]
+      },
+      {
+        "longestFrameMs": 133,
+        "framesOver33": 1,
+        "framesOver50": 1,
+        "inputToPaintMs": 160,
+        "longAnimationFrames": [
+          115
+        ]
+      },
+      {
+        "longestFrameMs": 133,
+        "framesOver33": 1,
+        "framesOver50": 1,
+        "inputToPaintMs": 160,
+        "longAnimationFrames": [
+          113
+        ]
+      }
+    ]
+  },
+  "C4-close-dialog": {
+    "form": "desktop",
+    "server": "dev",
+    "inPass": true,
+    "pass": true,
+    "median": {
+      "longestFrameMs": 17,
+      "framesOver33": 0,
+      "framesOver50": 0,
+      "inputToPaintMs": null
+    },
+    "runs": [
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": null,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": null,
+        "longAnimationFrames": []
+      },
+      {
+        "longestFrameMs": 17,
+        "framesOver33": 0,
+        "framesOver50": 0,
+        "inputToPaintMs": null,
+        "longAnimationFrames": []
+      }
+    ]
+  },
+  "C5-show-toast": {
+    "form": "desktop",
+    "server": "dev",
+    "inPass": true,
+    "pass": false,
+    "median": {
+      "longestFrameMs": 233,
+      "framesOver33": 1,
+      "framesOver50": 1,
+      "inputToPaintMs": 256
+    },
+    "runs": [
+      {
+        "longestFrameMs": 233,
+        "framesOver33": 2,
+        "framesOver50": 1,
+        "inputToPaintMs": 264,
+        "longAnimationFrames": [
+          224
+        ]
+      },
+      {
+        "longestFrameMs": 250,
+        "framesOver33": 1,
+        "framesOver50": 1,
+        "inputToPaintMs": 256,
+        "longAnimationFrames": [
+          223
+        ]
+      },
+      {
+        "longestFrameMs": 233,
+        "framesOver33": 1,
+        "framesOver50": 1,
+        "inputToPaintMs": 248,
+        "longAnimationFrames": [
+          219
+        ]
+      }
+    ]
+  }
+}

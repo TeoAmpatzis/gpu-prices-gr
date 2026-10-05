@@ -26,12 +26,22 @@ const OLD_LINKS: [string, string][] = [
   ['/#mobo?sock=am5&chipset=b850&wifi=yes', '/mobo?sock=am5&chipset=b850&wifi=yes'],
   ['/#psu?eff=gold&watts=850', '/psu?eff=gold&watts=850'],
   ['/#cpu?q=9800x3d&sale=1', '/cpu?q=9800x3d&sale=1'],
+  ['/#case?size=midi-tower&fits=atx&window=yes&rgb=no&brand=lian-li&low=1', '/case?size=midi-tower&fits=atx&window=yes&rgb=no&brand=lian-li&low=1'],
+  ['/#fan?size=120&pack=3&pwm=yes&src=skroutz&max=60', '/fan?size=120&pack=3&pwm=yes&src=skroutz&max=60'],
+  ['/#cooler?type=aio&rad=360&rgb=yes&sort=discount', '/cooler?type=aio&rad=360&rgb=yes&sort=discount'],
   ['/#builder', '/builder'],
   ['/#builder?mode=quick', '/builder?mode=quick'],
-  ['/#builder?step=case', '/builder?step=case'],
+  ...['use', 'cpu', 'mobo', 'ram', 'gpu', 'cooler', 'storage', 'case', 'psu', 'fan', 'review'].map((s): [string, string] => [`/#builder?step=${s}`, `/builder?step=${s}`]),
+  [
+    '/#builder?cpu=a&mobo=b&ram=c&gpu=d&cooler=e&storage=f&case=g&fan=h&psu=i&use=gaming&budget=1200',
+    '/builder?cpu=a&mobo=b&ram=c&gpu=d&cooler=e&storage=f&case=g&fan=h&psu=i&use=gaming&budget=1200',
+  ],
   ['/#about', '/about'],
   ['/#contact', '/contact'],
   ['/#privacy', '/privacy'],
+  ['/#', '/'],
+  // A query before the hash is dropped; the hash's parameters win (v1 ignored it too).
+  ['/?x=1#gpu?vram=16', '/gpu?vram=16'],
 ];
 
 for (const [from, to] of OLD_LINKS) {
@@ -41,6 +51,14 @@ for (const [from, to] of OLD_LINKS) {
     await expect(page.locator('main h1').first()).toBeVisible({ timeout: 20_000 });
   });
 }
+
+test('other hashes are in-page anchors and stay as they are', async ({ page }) => {
+  for (const hash of ['#main', '#foo']) {
+    await open(page, `/${hash}`);
+    await expect(page.locator('main h1').first()).toBeVisible();
+    expect(new URL(page.url()).pathname + new URL(page.url()).hash).toBe(`/${hash}`);
+  }
+});
 
 test('an old filter link applies its filters', async ({ page }) => {
   await open(page, '/#gpu?vram=16');

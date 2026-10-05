@@ -44,10 +44,10 @@ const INTERACTIONS = [
   { id: 'P8-home-to-builder', form: 'phone', path: '/', ready: tiles, target: (p) => visible(p, 'header a[href="/builder"]') },
   { id: 'D1-open-mega-menu', form: 'desktop', path: '/', ready: tiles, target: (p) => p.locator('header button[aria-controls]') },
   { id: 'D2-close-mega-menu', form: 'desktop', path: '/', ready: tiles, pre: async (p) => { await p.locator('header button[aria-controls]').click(); await p.waitForTimeout(500); }, key: 'Escape' },
-  { id: 'D3-focus-search', form: 'desktop', path: '/', ready: tiles, target: (p) => p.locator('header input[role=combobox]') },
-  { id: 'D4-type-rtx-50', form: 'desktop', path: '/', ready: tiles, pre: async (p) => { await p.locator('header input[role=combobox]').click(); await p.waitForTimeout(1500); }, text: 'rtx 50' },
-  { id: 'D5-search-arrow-down', form: 'desktop', path: '/', ready: tiles, pre: (p) => typed(p, 'header input[role=combobox]'), key: 'ArrowDown' },
-  { id: 'D6-search-enter', form: 'desktop', path: '/', ready: tiles, report: true, pre: async (p) => { await typed(p, 'header input[role=combobox]'); await p.keyboard.press('ArrowDown'); await p.waitForTimeout(300); }, key: 'Enter' },
+  { id: 'D3-focus-search', form: 'desktop', path: '/', ready: tiles, target: (p) => p.locator('header input[role=combobox]:visible') },
+  { id: 'D4-type-rtx-50', form: 'desktop', path: '/', ready: tiles, pre: async (p) => { await p.locator('header input[role=combobox]:visible').click(); await p.waitForTimeout(1500); }, text: 'rtx 50' },
+  { id: 'D5-search-arrow-down', form: 'desktop', path: '/', ready: tiles, pre: (p) => typed(p, 'header input[role=combobox]:visible'), key: 'ArrowDown' },
+  { id: 'D6-search-enter', form: 'desktop', path: '/', ready: tiles, report: true, pre: async (p) => { await typed(p, 'header input[role=combobox]:visible'); await p.keyboard.press('ArrowDown'); await p.waitForTimeout(300); }, key: 'Enter' },
   { id: 'D7-language-switch', form: 'desktop', path: '/', ready: tiles, target: (p) => p.locator('header button[lang="en"]') },
   { id: 'D8-home-to-builder', form: 'desktop', path: '/', ready: tiles, target: (p) => p.locator('header a[href="/builder"]').first() },
   { id: 'C1-open-bottom-sheet', form: 'phone', dev: true, path: '/_preview', ready: catalogue, target: (p) => p.locator('#overlays button').filter({ hasText: /Άνοιγμα sheet/ }) },
@@ -59,6 +59,27 @@ const INTERACTIONS = [
 
 const KEYS = { ArrowDown: 40, Enter: 13, Escape: 27 };
 
+/** Requests in flight per page (all frames), to wait for a quiet network. */
+const inflight = new WeakMap();
+function track(page) {
+  inflight.set(page, 0);
+  page.on('request', () => inflight.set(page, inflight.get(page) + 1));
+  const done = () => inflight.set(page, Math.max(0, inflight.get(page) - 1));
+  page.on('requestfinished', done);
+  page.on('requestfailed', done);
+}
+/** Waits until no request has been in flight for `ms` (max 30 s): scrolling the catalogue brings lazily
+ *  loaded parts into view (its 360 px frames run the whole app), whose data loads would land in the window. */
+async function quiet(page, ms = 1500) {
+  const end = Date.now() + 30_000;
+  let since = Date.now();
+  while (Date.now() < end) {
+    await page.waitForTimeout(100);
+    if (inflight.get(page) > 0) since = Date.now();
+    else if (Date.now() - since >= ms) return;
+  }
+}
+
 /** Prepare the input outside the measured window; return the function that sends it as raw CDP events. */
 async function prepare(it, page, cdp) {
   if (it.script) return () => page.evaluate(it.script);
@@ -69,6 +90,7 @@ async function prepare(it, page, cdp) {
   };
   const loc = it.target(page);
   await loc.scrollIntoViewIfNeeded();
+  await quiet(page);
   await page.waitForTimeout(300);
   const b = await loc.boundingBox();
   const x = b.x + b.width / 2;
@@ -92,11 +114,16 @@ async function run(it) {
     : { viewport: { width: 1366, height: 900 } });
   await ctx.addInitScript(() => localStorage.setItem('lang', 'el'));
   const page = await ctx.newPage();
+  track(page);
   const cdp = await ctx.newCDPSession(page);
   await page.goto(`${it.dev ? DEV : PROD}${it.path}`);
   await it.ready(page);
+  // Measure a settled page: the catalogue (and its five 360 px frames) keeps loading every category's data
+  // for seconds, and those JSON parses otherwise land inside the measured window.
+  await page.waitForLoadState('networkidle', { timeout: 60_000 }).catch(() => {});
   await page.waitForTimeout(2000); // fonts, photos, idle work
   if (it.pre) await it.pre(page);
+  await quiet(page);
   const send = await prepare(it, page, cdp);
   await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
   await page.evaluate(() => {
