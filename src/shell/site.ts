@@ -8,6 +8,7 @@ import type { Category, Manifest, SourceName } from '../types';
 import type { SourceTimes } from '../ui/nav';
 import { isStale } from '../ui/PriceCell';
 import { CATS } from './nav';
+import { afterFirstPaint } from '../lib/paint';
 
 let manifestPromise: Promise<Manifest> | null = null;
 /** The build's manifest.json, fetched once (a failure is forgotten, so the next call retries). */
@@ -51,17 +52,24 @@ function siteInfo(m: Manifest): SiteInfo {
   return { builtAt: m.builtAt, counts, sources, staleIn, sourcesOf: (cat) => (m.cats[cat]?.sources ?? {}) as SourceTimes };
 }
 
-/** The manifest as the shell uses it; null while loading (and if it can't load: the shell works without it). */
+/**
+ * The manifest as the shell uses it; null while loading (and if it can't load: the shell works without it).
+ * Requested after the first paint (src/lib/paint.ts): the first frame doesn't need it (the counts' room is
+ * reserved), and a request finished before that paint counts toward it in Lighthouse's phone simulation.
+ */
 export function useSite(): SiteInfo | null {
   const [info, setInfo] = useState<SiteInfo | null>(null);
   useEffect(() => {
     let live = true;
-    loadManifest().then(
-      (m) => live && setInfo(siteInfo(m)),
-      () => {},
+    const cancel = afterFirstPaint(() =>
+      loadManifest().then(
+        (m) => live && setInfo(siteInfo(m)),
+        () => {},
+      ),
     );
     return () => {
       live = false;
+      cancel();
     };
   }, []);
   return info;

@@ -29,7 +29,10 @@ export function Tiles({ current, counts, cats }: { current?: Current; counts?: P
               <c.icon className="h-6 w-6" aria-hidden="true" />
               <span>
                 <span className="block text-sm font-semibold leading-5">{tr(lang, c.name)}</span>
-                {counts?.[cat] != null && <span className="ui-num block text-xs text-muted">{plural(lang, counts[cat]!, UI.modelForms)}</span>}
+                {/* Always one line tall, so the tile keeps its size when the counts arrive (no layout shift). */}
+                <span className="ui-num block text-xs text-muted" aria-hidden={counts?.[cat] == null || undefined}>
+                  {counts?.[cat] != null ? plural(lang, counts[cat]!, UI.modelForms) : '\u00a0'}
+                </span>
               </span>
             </a>
           </li>

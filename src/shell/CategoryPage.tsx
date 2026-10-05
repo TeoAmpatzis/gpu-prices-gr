@@ -4,25 +4,16 @@ import { useEffect, useState, type ReactNode } from 'react';
 import CategoryView from '../components/CategoryView';
 import { CATEGORIES, type CategoryConfig } from '../lib/categories';
 import { groupModels, loadData, prefetch } from '../lib/data';
-import { tr, useLang } from '../lib/i18n';
 import { navigate } from '../lib/router';
 import { modelSlug } from '../lib/slug';
 import type { BaseListing, Category } from '../types';
 import { SkeletonRows } from '../ui/states';
-import { CATS } from './nav';
-import { PageTitle } from './PageTitle';
 
 export { prefetch };
 
-export default function CategoryPage({ cat, home }: { cat: Category; home: string }) {
-  const lang = useLang();
-  const cfg = CATEGORIES[cat] as unknown as CategoryConfig<BaseListing>;
-  return (
-    <>
-      <PageTitle crumbs={[{ label: home, href: '/' }, { label: tr(lang, CATS[cat].name) }]} title={cfg.title} subtitle={cfg.subtitle} />
-      <CategoryView cfg={cfg} />
-    </>
-  );
+/** The list part of a category page; its title is the shell's (App), so it paints before this code arrives. */
+export default function CategoryPage({ cat }: { cat: Category }) {
+  return <CategoryView cfg={CATEGORIES[cat] as unknown as CategoryConfig<BaseListing>} />;
 }
 
 /**
