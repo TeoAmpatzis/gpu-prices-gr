@@ -177,6 +177,9 @@ def parse_mobo(sp: dict[str, str]) -> dict:
     }
 
 
+USB_C = re.compile(r"\b(USB[\s-]?C|Type[\s-]?C)\b", re.I)
+
+
 def parse_case(sp: dict[str, str]) -> dict:
     # Fan positions: "Μπροστινές/Πίσω/Άνω/Κάτω/Πλαϊνές Θέσεις" (Skroutz) or "… Θέσεις Ανεμιστήρων"
     # (BestPrice); drive bays ("Eξωτερικές Θέσεις 5.25\"", "Εσωτερικές Θέσεις 3.5''") end differently.
@@ -190,6 +193,11 @@ def parse_case(sp: dict[str, str]) -> dict:
         "radiatorMounts": _list(_first(sp, "Θέση Ψυγείου", "Θέση Ψυγείου Υδρόψυξης")),
         # "Πρόσθετα: Πλαϊνό Παράθυρο • RGB Lighting • Προεγκατεστημένοι Ανεμιστήρες": fans, count not stated.
         "hasFans": True if "Προεγκατεστημένοι Ανεμιστήρες" in (sp.get("Πρόσθετα") or "") else None,
+        # Drive bays "Εσωτερικές Θύρες 3.5''" (Skroutz) / "Εσωτερικές Θέσεις 3.5''" (BestPrice); front ports
+        # "Συνδεσιμότητα: USB 3.2, USB-C" / "Ήχος • USB-C • USB 3.0" (a stated list without USB-C = no).
+        "bays35": _count(_first(sp, "Εσωτερικές Θύρες 3.5''", "Εσωτερικές Θέσεις 3.5''")),
+        "bays25": _count(_first(sp, "Εσωτερικές Θύρες 2.5''", "Εσωτερικές Θέσεις 2.5''")),
+        "usbCFront": bool(USB_C.search(sp["Συνδεσιμότητα"])) if sp.get("Συνδεσιμότητα") else None,
         # The product page's board list beats the one guessed from the title.
         **({"maxBoard": board} if board else {}),
     }
@@ -257,6 +265,11 @@ SITES = {"gpu": ("skroutz", "bestprice"), "cpu": ("skroutz",), "case": ("skroutz
 # New page reads a site may not make yet: the owner approves a Skroutz budget before Skroutz reads
 # any new kind of page (v2 Phase 2 plan, 2026-10-10). Until then these categories go to the next site.
 PAUSED = {"skroutz": {"mobo"}}
+# Parser version per category (1 when not listed). A cached page read by an older version lacks the
+# newer fields; such products are read again, after every product without a page, and only on
+# REREAD_SITES (Skroutz re-reads wait for the owner's Skroutz budget too). Cases v2: drive bays, USB-C.
+VERSION = {"case": 2}
+REREAD_SITES = ("bestprice",)
 # A product still needs a page while one of these is unknown (air coolers also need their height;
 # storage: SSDs only — an HDD's title already gives its speed and cache).
 NEEDED = {"gpu": ("lengthMm",), "cpu": ("coolerIncluded",), "case": ("gpuMaxMm", "coolerMaxMm"),
@@ -265,7 +278,8 @@ NEEDED = {"gpu": ("lengthMm",), "cpu": ("coolerIncluded",), "case": ("gpuMaxMm",
 # Measurements the builder checks, and which of two disagreeing values is the safe one to assume
 # (sites, or a site and the maker): the longer card / taller cooler / higher PSU minimum, the
 # smaller case clearance.
-SAFER = {"lengthMm": max, "minPsu": max, "heightMm": max, "gpuMaxMm": min, "coolerMaxMm": min}
+SAFER = {"lengthMm": max, "minPsu": max, "heightMm": max, "gpuMaxMm": min, "coolerMaxMm": min,
+         "bays35": min, "bays25": min}
 # Workstation/server parts the builder never offers.
 NOT_DESKTOP = re.compile(r"^(RTX PRO|RTX A\d|RTX \d+ (Ada|\(Pro\))|T\d+$|Quadro|EPYC|Xeon|Ryzen Threadripper)")
 
@@ -294,17 +308,29 @@ def queue(cat: str, listings: list[dict], cache: dict, model_key) -> dict[str, l
             products.setdefault(key(l), []).append(l)
     listed = Counter(model_key(l) for l in listings)
     out: dict[str, list[dict]] = {site: [] for site in SITES[cat]}
+    stale: dict[str, list[dict]] = {site: [] for site in SITES[cat]}
+    version = VERSION.get(cat, 1)
     for ls in sorted(products.values(), key=lambda ls: (-len(ls), -listed[model_key(ls[0])])):
-        if not _needs(cat, ls):
-            continue
-        fetched = {l["source"] for l in ls if l["id"] in cache}
         sources = {l["source"] for l in ls}
-        for site in SITES[cat]:
-            if site in fetched or site not in sources or cat in PAUSED.get(site, ()):
+        if _needs(cat, ls):
+            fetched = {l["source"] for l in ls if l["id"] in cache}
+            queued = False
+            for site in SITES[cat]:
+                if site in fetched or site not in sources or cat in PAUSED.get(site, ()):
+                    continue
+                out[site].append(min((l for l in ls if l["source"] == site), key=lambda l: l["price"]))
+                queued = True
+                break  # one site at a time: BestPrice only once Skroutz has been tried (or has none)
+            if queued:
                 continue
-            out[site].append(min((l for l in ls if l["source"] == site), key=lambda l: l["price"]))
-            break  # one site at a time: BestPrice only once Skroutz has been tried (or has none)
-    return out
+        # Read before, but only by an older parser: once more, on a site allowed to re-read.
+        read = [cache[l["id"]] for l in ls if l["id"] in cache]
+        if read and all(e.get("v", 1) < version for e in read):
+            site = next((s for s in SITES[cat] if s in REREAD_SITES and s in sources), None)
+            if site:
+                mine = [l for l in ls if l["source"] == site]
+                stale[site].append(next((l for l in mine if l["id"] in cache), min(mine, key=lambda l: l["price"])))
+    return {site: out[site] + stale[site] for site in out}
 
 
 def _load(path: Path) -> dict:
@@ -357,7 +383,7 @@ def collect(cats: list[tuple[str, Path, list[dict], Callable]], budget: dict[str
                 continue
             failures = 0
             with lock:
-                caches[name][l["id"]] = {**entry, "checked": now_iso()}
+                caches[name][l["id"]] = {**entry, "checked": now_iso(), **({"v": VERSION[name]} if name in VERSION else {})}
             done[name] += 1
             got[name] += any(entry.get(f) is not None for f in NEEDED[name])
             if sum(done.values()) % SAVE_EVERY == 0:
@@ -388,7 +414,7 @@ def apply(cat: str, out_dir: Path, listings: list[dict]) -> None:
             l.setdefault(k, v)
         entry = cache.get(l["id"])
         if entry:
-            l.update({k: v for k, v in entry.items() if k != "checked" and v is not None})
+            l.update({k: v for k, v in entry.items() if k not in ("checked", "v") and v is not None})
         if cat == "cpu" and l.get("packaging") == "Tray" and l.get("coolerIncluded") is None:
             l["coolerIncluded"] = False  # a tray CPU is the bare chip
         if cat == "fan" and l.get("connector") == "4-pin PWM":

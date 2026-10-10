@@ -1,9 +1,12 @@
 """Unit tests for scraper/specs.py product-page parsers, with real page values (v2 Phase 2, probe of
 2026-10-10). Run from the repo root: venv/Scripts/python scripts/checks/test_specs.py"""
+import json
 import sys
+import tempfile
 from pathlib import Path
 
 sys.path.insert(0, "scraper")
+import names  # noqa: E402
 import specs  # noqa: E402
 
 FIXTURES = Path(__file__).parent / "fixtures" / "specs"
@@ -76,6 +79,49 @@ q = specs.queue("mobo", [board(2, "bestprice")], {"bestprice:2": {"maxMemoryGB":
 expect("a board BestPrice already answered is not read again", q, {"skroutz": [], "bestprice": []})
 q = specs.queue("case", [{**board(3, "skroutz"), "chip": "NZXT H5"}], {}, lambda l: "nzxth5")
 expect("other categories still read Skroutz", [l["id"] for l in q["skroutz"]], ["skroutz:3"])
+
+# --- Cases: drive bays and front USB-C (labels as read on 2026-10-10)
+def case_fields(sp):
+    p = specs.parse_case(sp)
+    return {k: p[k] for k in ("bays35", "bays25", "usbCFront")}
+
+
+expect("BestPrice Thermaltake The Tower 300 (bestprice.gr/item/2159412153)", case_fields({
+    "Εσωτερικές Θέσεις 3.5''": "3", "Εσωτερικές Θέσεις 2.5''": "3", "Συνδεσιμότητα": "Ήχος • USB-C • USB 3.0"}),
+    {"bays35": 3, "bays25": 3, "usbCFront": True})
+expect("Skroutz Asus ProArt PA401 (skroutz.gr/s/59013449)", case_fields({
+    "Εσωτερικές Θύρες 3.5''": "2", "Εσωτερικές Θύρες 2.5''": "2", "Συνδεσιμότητα": "USB 3.2, USB-C"}),
+    {"bays35": 2, "bays25": 2, "usbCFront": True})
+expect("Skroutz The Tower 300: no bay labels = unknown", case_fields({"Συνδεσιμότητα": "USB 3.2, USB-C"}),
+       {"bays35": None, "bays25": None, "usbCFront": True})
+expect("a stated port list without USB-C = no front USB-C", case_fields({"Συνδεσιμότητα": "Ήχος • USB 3.0"})["usbCFront"], False)
+expect("'Type-C' counts as USB-C", case_fields({"Συνδεσιμότητα": "USB 3.2 Gen 2 Type-C"})["usbCFront"], True)
+expect("no port list = unknown", case_fields({})["usbCFront"], None)
+expect("drive bays are not fan positions", specs.parse_case({"Εσωτερικές Θέσεις 3.5''": "3", "Άνω Θέσεις": "2"})["fanSlots"], 2)
+expect("fewer bays is the safe value when sites disagree", (specs.SAFER["bays35"](1, 2), specs.SAFER["bays25"](2, 3)), (1, 2))
+
+# --- Re-reading pages of an older parser version (cases v2), BestPrice only
+key = lambda l: "thermaltakethetower600"
+tt = lambda i, src: {"id": f"{src}:{i}", "source": src, "chip": "Thermaltake The Tower 600", "price": 120.0}
+old = {"gpuMaxMm": 415.0, "coolerMaxMm": 185.0, "checked": "2026-10-01T00:00:00+00:00"}
+q = specs.queue("case", [tt(1, "skroutz"), tt(2, "bestprice")], {"skroutz:1": old}, key)
+expect("a case read by v1 on Skroutz is re-read on BestPrice (never on Skroutz)", {k: [l["id"] for l in v] for k, v in q.items()},
+       {"skroutz": [], "bestprice": ["bestprice:2"]})
+q = specs.queue("case", [tt(1, "skroutz"), tt(2, "bestprice")], {"skroutz:1": old, "bestprice:2": {**old, "v": 2}}, key)
+expect("a case with a v2 page is not read again", q, {"skroutz": [], "bestprice": []})
+q = specs.queue("case", [tt(1, "skroutz")], {"skroutz:1": old}, key)
+expect("a case only Skroutz lists waits (no re-read anywhere)", q, {"skroutz": [], "bestprice": []})
+new_case = {"id": "skroutz:9", "source": "skroutz", "chip": "NZXT H5 Flow", "price": 90.0}
+q = specs.queue("case", [tt(1, "skroutz"), tt(2, "bestprice"), new_case], {"skroutz:1": old},
+                lambda l: names.model_key(l["chip"]))
+expect("new products come before re-reads", ([l["id"] for l in q["skroutz"]], [l["id"] for l in q["bestprice"]]),
+       (["skroutz:9"], ["bestprice:2"]))
+with tempfile.TemporaryDirectory() as d:
+    Path(d, "specs.json").write_text(json.dumps({"bestprice:2": {"bays35": 1, "usbCFront": True, "checked": "x", "v": 2}}), encoding="utf-8")
+    ls = [dict(tt(2, "bestprice"))]
+    specs.apply("case", Path(d), ls)
+    expect("apply copies the fields and leaves the version marker out", (ls[0]["bays35"], ls[0]["usbCFront"], "v" in ls[0], "checked" in ls[0]),
+           (1, True, False, False))
 
 print(f"\n{ok} passed, {bad} failed")
 sys.exit(1 if bad else 0)
