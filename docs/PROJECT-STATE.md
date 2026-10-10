@@ -18,7 +18,7 @@
 | Branch | Commit | Τι είναι | Push |
 | --- | --- | --- | --- |
 | main | 2bdc58f | v1, live στο Vercel | ναι (origin/main) |
-| v2 | 972741b και 4a647a1 (τοπικά) | ανασχεδιασμός v2 | όχι (origin/v2 = 019b7cf) |
+| v2 | 972741b, 4a647a1 και 6a47984 (τοπικά) | ανασχεδιασμός v2 | όχι (origin/v2 = 019b7cf) |
 | claude/project-thread-hz3qdi | 8ac2a12 | PR #2, ανοιχτό (αυτόματη σύνθεση για τον builder του v1) | ναι (remote) |
 | claude/project-thread-5s9nkz | — | διαγραμμένο (PR #1, ESLint, κλειστό χωρίς merge· επαναφέρεται με "Restore branch") | — |
 
