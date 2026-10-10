@@ -155,11 +155,11 @@ def _pcie_gen(text: str | None) -> int | None:
 
 
 def _gb(text: str | None) -> int | None:
-    """"96GB" / "256 GB" / "2TB" -> GB."""
-    m = re.search(r"(\d+(?:[.,]\d+)?)\s*(GB|TB)\b", text or "", re.I)
+    """"96GB" / "256 GB" / "2TB" / BestPrice "3.072GB" (dot = thousands) / "1,5TB" (comma = decimal) -> GB."""
+    m = re.search(r"(\d{1,3}(?:\.\d{3})+|\d+(?:,\d+)?)\s*(GB|TB)\b", text or "", re.I)
     if not m:
         return None
-    value = float(m.group(1).replace(",", "."))
+    value = float(m.group(1).replace(".", "").replace(",", "."))
     return round(value * 1024) if m.group(2).upper() == "TB" else round(value)
 
 
