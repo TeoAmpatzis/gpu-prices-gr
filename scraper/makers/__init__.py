@@ -85,6 +85,7 @@ def collect(listings: dict[str, list[dict]], budget: int = BUDGET) -> None:
             with lock:
                 _path(maker).write_text(json.dumps(cache, ensure_ascii=False, separators=(",", ":"), sort_keys=True), encoding="utf-8")
 
+        http.set_label(f"makers/{maker.__name__.rsplit('.', 1)[-1]}")  # request counts (run log)
         s = http.session()
         try:
             products = maker.catalogue(s)

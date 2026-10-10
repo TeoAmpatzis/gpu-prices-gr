@@ -34,12 +34,64 @@ def _reserve_wait(seconds: float) -> bool:
         return True
 
 
+# Request counts per label ("case/bestprice", "specs/skroutz"…), for the run log (speed plan step 0:
+# measurement only). The label belongs to the calling thread; requests themselves are unchanged.
+_stats: dict[str, dict[str, int]] = {}
+_stats_lock = threading.Lock()
+_local = threading.local()
+
+
+def set_label(label: str | None) -> None:
+    _local.label = label
+
+
+def stats() -> dict[str, dict[str, int]]:
+    with _stats_lock:
+        return {k: dict(v) for k, v in _stats.items()}
+
+
+def reset_stats() -> None:
+    with _stats_lock:
+        _stats.clear()
+
+
+def _count(key: str) -> None:
+    label = getattr(_local, "label", None) or "other"
+    with _stats_lock:
+        row = _stats.setdefault(label, {"requests": 0, "blocked": 0, "errors": 0})
+        row["requests"] += 1
+        if key:
+            row[key] += 1
+
+
+class _CountingSession(requests.Session):
+    def request(self, method, url, *args, **kwargs):
+        try:
+            r = super().request(method, url, *args, **kwargs)
+        except Exception:
+            _count("errors")  # no answer (timeout, connection reset…)
+            raise
+        _count("blocked" if _block(r) else "")
+        return r
+
+
 def session() -> requests.Session:
-    return requests.Session(
+    return _CountingSession(
         impersonate="chrome",
         headers={"Accept-Language": "el-GR,el;q=0.9,en;q=0.8"},
         timeout=30,
     )
+
+
+def summary(prefix: str, seconds: dict[str, float]) -> str:
+    """"[timing] case: max 312s, sum 592s | case/skroutz 312s 41 req 12 blocked 0 err | …" (slowest first)."""
+    counts = stats()
+    parts = []
+    for label, sec in sorted(seconds.items(), key=lambda kv: -kv[1]):
+        c = counts.get(label, {"requests": 0, "blocked": 0, "errors": 0})
+        parts.append(f"{label} {sec:.0f}s {c['requests']} req {c['blocked']} blocked {c['errors']} err")
+    total = f"max {max(seconds.values(), default=0):.0f}s, sum {sum(seconds.values()):.0f}s"
+    return f"[timing] {prefix}: {total} | " + " | ".join(parts)
 
 
 def _block(r) -> str | None:

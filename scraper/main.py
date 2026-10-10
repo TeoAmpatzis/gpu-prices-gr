@@ -198,13 +198,19 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
     sources_meta: dict[str, dict] = {}
     listings: list[dict] = []
 
+    seconds: dict[str, float] = {}  # per source, for the [timing] line (measurement only)
+
     def run(name: str) -> list[dict]:
         print(f"[{cat.name}/{name}] fetching…")
+        http_client.set_label(f"{cat.name}/{name}")
+        start = time.monotonic()
         try:
             return [l.to_dict() for l in SOURCES[name](cat)]
         except Exception:
             traceback.print_exc()
             return []
+        finally:
+            seconds[f"{cat.name}/{name}"] = time.monotonic() - start
 
     # Sources are different sites, so they run in parallel; each stays polite to its own host.
     wanted = [name for name in SOURCES if not only or name in only]
@@ -236,7 +242,11 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
     listings.sort(key=lambda l: (l["chip"], l["price"]))
     if with_shipping:
         print(f"[{cat.name}] best totals (price + shipping)…")
+        http_client.set_label(f"{cat.name}/shipping")
+        start = time.monotonic()
         shipping.enrich(out_dir, listings, cat.model_key)
+        print(http_client.summary(f"{cat.name} shipping", {f"{cat.name}/shipping": time.monotonic() - start}))
+        http_client.set_label(None)
     latest_path.write_text(
         json.dumps({"updatedAt": run_at, "sources": sources_meta, "listings": listings}, ensure_ascii=False, indent=1),
         encoding="utf-8",
@@ -245,6 +255,7 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
     history = update_history(load_json(history_path, {}), fresh, run_at[:10], cat.model_key)
     history_path.write_text(json.dumps(history, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"[{cat.name}] wrote {len(listings)} listings, {len(history)} models in history")
+    print(http_client.summary(f"{cat.name} sources", seconds))
     return any(m["ok"] for m in sources_meta.values())
 
 
@@ -279,8 +290,15 @@ def main() -> int:
         return 0
     cats = run_order(cats)
     print("order: " + ", ".join(cat.name for cat in cats))
+    start = time.monotonic()
     ok = [scrape_category(cat, args.only) for cat in cats]
+    lists = time.monotonic() - start
     collect_specs(cats, budget, args.makers_budget)
+    rest = time.monotonic() - start - lists
+    print(f"[timing] run: lists {lists:.0f}s, specs + makers {rest:.0f}s, total {lists + rest:.0f}s")
+    other = http_client.stats().get("other")
+    if other:
+        print(f"[timing] requests without a label: {other}")
     return 0 if any(ok) else 1
 
 

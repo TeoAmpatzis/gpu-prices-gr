@@ -339,6 +339,8 @@ def collect(cats: list[tuple[str, Path, list[dict], Callable]], budget: dict[str
         print(f"  specs {site}: {len(queues[site])} products waiting {dict(waiting)}; budget {budget[site]}")
 
     def work(site: str) -> None:
+        http.set_label(f"specs/{site}")  # request counts (run log)
+        start = time.monotonic()
         s = http.session()
         done, failures, got = Counter(), 0, Counter()
         for i, (name, l) in enumerate(queues[site][: budget[site]]):
@@ -361,6 +363,7 @@ def collect(cats: list[tuple[str, Path, list[dict], Callable]], budget: dict[str
             if sum(done.values()) % SAVE_EVERY == 0:
                 save()
         print(f"  specs {site}: fetched {dict(done)}, with the needed measurement {dict(got)}")
+        print(http.summary(f"specs {site}", {f"specs/{site}": time.monotonic() - start}))
 
     with ThreadPoolExecutor(max_workers=len(budget)) as pool:
         list(pool.map(work, [site for site in budget if queues[site] and budget[site] > 0]))
