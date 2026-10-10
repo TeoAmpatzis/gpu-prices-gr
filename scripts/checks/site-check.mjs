@@ -2,12 +2,14 @@
 //   node scripts/checks/site-check.mjs [https://gpu-prices-gr.vercel.app]
 // Every tab: products listed, no error, photos in view load; the first product opens with shop links,
 // a price chart and its large photo; the PC builder offers parts; the text pages render; the data and
-// photo files are served with the expected cache headers; the newest data is under 12 hours old.
+// photo files are served with the expected cache headers; the newest data is under 12 hours old, and
+// every source of every category is under 24 hours old (warning over 12; source-age.mjs).
 // Exit code 1 if anything fails.
 import { spawn } from 'node:child_process';
 import { existsSync, mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { FAIL_H, WARN_H, sourceAges } from './source-age.mjs';
 
 const BASE = (process.argv[2] || 'https://gpu-prices-gr.vercel.app').replace(/\/$/, '');
 const CATS = ['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler'];
@@ -54,6 +56,17 @@ const MAX_AGE_H = 12;
 const newest = Math.max(0, ...CATS.map((cat) => Date.parse(manifest?.cats?.[cat]?.updatedAt ?? '') || 0));
 const ageH = (Date.now() - newest) / 36e5;
 check(newest > 0 && ageH <= MAX_AGE_H, `newest data under ${MAX_AGE_H} h old`, newest ? `${ageH.toFixed(1)} h since ${new Date(newest).toISOString()}` : 'no updatedAt in the manifest');
+// Per source (backlog #8): a source that keeps failing keeps its old listings, so its prices age while
+// the newest data above looks fresh (2026-10-04: Skroutz storage 35 h old, the check above green).
+const lists = Object.fromEntries(await Promise.all(CATS.map(async (cat) => {
+  const r = await fetch(`${BASE}/data/${cat}/list.json`);
+  return [cat, r.ok ? await r.json() : null];
+})));
+const ages = sourceAges(lists);
+for (const r of ages.filter((r) => r.level === 'warn')) console.log(`WARN ${r.cat}/${r.source} data ${r.ageH} h old (over ${WARN_H} h; fails over ${FAIL_H} h)`);
+const old = ages.filter((r) => r.level === 'fail');
+check(ages.length > 0 && old.length === 0, `every source's data under ${FAIL_H} h old`,
+  old.length ? old.map((r) => `${r.cat}/${r.source} ${r.ageH ?? 'never'} h`).join(', ') : `${ages.length} category × source pairs, oldest ${Math.max(...ages.map((r) => r.ageH))} h`);
 const list = await head('/data/gpu/list.json');
 check(list.ok && /max-age=300/.test(list.cache), 'list.json cached 5 min', list.cache);
 
