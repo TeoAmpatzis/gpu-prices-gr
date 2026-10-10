@@ -93,6 +93,7 @@ class PsuListing:
     modular: str | None  # Full | Semi | Non; None if unknown (BestPrice titles don't say)
     formFactor: str  # ATX | SFX | TFX | Flex
     scrapedAt: str
+    atx3: bool | None = None  # True when a title or BestPrice's URL says ATX 3.x; None = not stated
 
     def to_dict(self) -> dict:
         return listing_dict(self)

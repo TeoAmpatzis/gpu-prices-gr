@@ -81,6 +81,7 @@ export interface PsuListing extends BaseListing {
   efficiency: 'Titanium' | 'Platinum' | 'Gold' | 'Silver' | 'Bronze' | 'Diamond' | 'Standard' | null; // null = not stated
   modular: 'Full' | 'Semi' | 'Non' | null; // null = unknown (BestPrice titles don't say)
   formFactor: 'ATX' | 'SFX' | 'TFX' | 'Flex';
+  atx3?: boolean | null; // a title or BestPrice's URL says ATX 3.x; null = not stated. Per product, not shared.
 }
 
 export interface CaseListing extends BaseListing {
