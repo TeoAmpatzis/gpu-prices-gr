@@ -1,6 +1,6 @@
 {
   "id": "S09",
-  "title": "AIO 360 mm + case whose maker lists radiators up to 280 mm: error",
+  "title": "AIO 360 mm + case whose maker lists radiators up to 280 mm: warning (maker list only)",
   "planExample": "AIO 360 mm + κουτί που δέχεται μέχρι 280 mm → Σφάλμα: δεν χωράει το ψυγείο",
   "parts": [
     {
@@ -118,10 +118,10 @@
   "expected": [
     {
       "rule": 9,
-      "level": "error"
+      "level": "warning"
     }
   ],
-  "why": "Fractal lists front 120/140/240/280, top 120/240 and rear 120: no position takes a 360 mm radiator.",
+  "why": "Fractal lists front 120/140/240/280, top 120/240 and rear 120: no position takes a 360 mm radiator. Only a maker list says so, and a list read wrongly must never hide a part, so it is a warning, not an error (owner, decisions after Phase 0).",
   "capturedFrom": {
     "builtAt": "2026-10-03T18:51:07.582Z",
     "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
