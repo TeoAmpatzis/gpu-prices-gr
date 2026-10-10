@@ -55,6 +55,12 @@ export interface MoboListing extends BaseListing {
   memory: 'DDR4' | 'DDR5' | null; // null = unknown (LGA1700 boards come in both)
   wifi: boolean;
   ramSlots?: number | null;
+  // From product pages (scraper/specs.py parse_mobo); not used by v1, so list.json leaves them out.
+  m2Slots?: number | null;
+  m2Gen?: number | null; // highest PCIe generation of its M.2 slots
+  sataPorts?: number | null;
+  maxMemoryGB?: number | null;
+  biosFlashback?: boolean | null; // true when stated; null = not stated
 }
 
 export interface RamListing extends BaseListing {

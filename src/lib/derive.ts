@@ -61,7 +61,9 @@ import {
 /** Only needed when a product is opened (URL) or never shown (scrape time). */
 const DETAIL_ONLY = new Set(['url', 'scrapedAt']);
 /** Not in list.json either: only the builder reads them (builder.json keeps them). */
-const LIST_SKIP = new Set([...DETAIL_ONLY, 'fanMounts', 'fansIncluded', 'radiators', 'airflowCfm', 'pressureMm']);
+// Board fields for v2's rules (Phase 2): collected now, not shown or checked by v1.
+const V2_ONLY = ['m2Slots', 'm2Gen', 'sataPorts', 'maxMemoryGB', 'biosFlashback'];
+const LIST_SKIP = new Set([...DETAIL_ONLY, 'fanMounts', 'fansIncluded', 'radiators', 'airflowCfm', 'pressureMm', ...V2_ONLY]);
 
 export function toColumns(listings: object[], skip: Set<string> = DETAIL_ONLY): Columns {
   const cols: string[] = [];
