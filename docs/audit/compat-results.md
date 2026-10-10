@@ -37,7 +37,7 @@ on a field v1 does not have, or the plan’s margin band (rules 6, 8, 14: a warn
 | 6 | gpu–case check (card length) | S07 error→correct, S14 note→correct, S20 note→correct, S23 warning→not checked, S24 pass→correct |
 | 7 | none | S52 error→not checked |
 | 8 | cooler–case check (air cooler height) | S08 error→correct, S22 note→correct, S44 warning→not checked, S45 pass→correct |
-| 9 | cooler–case check (AIO radiator) | S09 error→wrong, S21 note→correct, S41 pass→correct, S42 pass→correct |
+| 9 | cooler–case check (AIO radiator) | S09 warning→wrong, S21 note→correct, S41 pass→correct, S42 pass→correct |
 | 10 | cpu–cooler check (sockets) | S05 pass→correct, S15 note→correct, S41 pass→correct, S43 error→correct, S44 pass→correct, S45 pass→correct |
 | 11 | build note: CPU cooler | S01 pass→correct, S06 error→correct, S18 warning→wrong, S39 error→correct, S40 pass→correct |
 | 12 | build note: integrated graphics | S01 pass→correct, S05 error→correct, S06 pass→correct, S18 pass→correct, S39 pass→correct, S40 error→correct |
@@ -49,7 +49,7 @@ on a field v1 does not have, or the plan’s margin band (rules 6, 8, 14: a warn
 | 18 | none | S30 note→not checked, S55 error→not checked |
 | 19 | storage–case check (only: 3.5" → not verified) | S13 note→correct, S30 note→not checked, S61 pass→correct |
 | 20 | build note: PCIe 5.0 drive | S46 note→correct, S47 pass→correct |
-| 21 | fan–case check | S21 note→correct, S31 pass→not checked, S32 pass→correct, S33 error→wrong, S34 error→correct, S35 note→wrong, S56 pass→not checked |
+| 21 | fan–case check | S21 note→correct, S31 pass→not checked, S32 pass→correct, S33 warning→wrong, S34 error→correct, S35 note→wrong, S56 pass→not checked |
 | 22 | none | S31 pass→not checked, S32 pass→not checked, S48 warning→not checked |
 | 23 | none | S56 note→not checked |
 | 24 | none | S57 note→not checked |
@@ -68,7 +68,7 @@ on a field v1 does not have, or the plan’s margin band (rules 6, 8, 14: a warn
 | **S06** Core i5-14600KF (Tray) with no cooler: error *(plan example)* | R11 error<br>R12 pass | R11: error: The CPU has no cooler: pick one.<br>R12: no graphics note | R11 correct<br>R12 correct |
 | **S07** Graphics card 340 mm + case that takes 330 mm: error *(plan example)* | R6 error | R6: Incompatible: 340 mm card; the case takes up to 330 mm. | R6 correct |
 | **S08** Air cooler 165 mm + case that takes 160 mm: error *(plan example)* | R8 error | R8: Incompatible: 165 mm cooler; the case takes up to 160 mm. | R8 correct |
-| **S09** AIO 360 mm + case whose maker lists radiators up to 280 mm: error *(plan example)* | R9 error | R9: Fit not verified: The case maker lists 120/140/240/280 mm radiators; a 360 mm one isn't listed. | R9 **wrong** (v1 says note, plan says error: more lenient than the plan) |
+| **S09** AIO 360 mm + case whose maker lists radiators up to 280 mm: warning (maker list only) *(plan example)* | R9 warning | R9: Fit not verified: The case maker lists 120/140/240/280 mm radiators; a 360 mm one isn't listed. | R9 **wrong** (v1 says note, plan says warning: more lenient than the plan) |
 | **S10** ATX board + Mini-ITX case: error *(plan example)* | R5 error | R5: Incompatible: ATX board; the case takes up to Mini ITX. | R5 correct |
 | **S11** 4 RAM sticks + board with 2 slots: error *(plan example)* | R2 pass<br>R3 error | R2: memory type matches<br>R3: Incompatible: 4 sticks; the board has 2 slots. | R2 correct<br>R3 correct |
 | **S12** RTX 5080 + 550 W power supply: error *(plan example)* | R14 error | R14: Incompatible: 550 W power supply; at least 850 W is needed. 550 W power supply; at least 850 W is needed. (v1 recommends ≥ 850 W) | R14 correct |
@@ -92,7 +92,7 @@ on a field v1 does not have, or the plan’s margin band (rules 6, 8, 14: a warn
 | **S30** One NVMe SSD + two 3.5" HDDs on a B650 board in a Midi Tower: notes<br>v1 cannot hold: second storage (Seagate Barracuda 2TB) dropped; 2 × Seagate Barracuda 2TB counted once | R17 note<br>R18 note<br>R19 note | R17: v1 has no such check<br>R18: v1 has no such check<br>R19: — | R17 v1 does not check this<br>R18 v1 does not check this<br>R19 v1 does not check this (v1 holds one storage; the scenario has 3) |
 | **S31** Two 3-packs of 120 mm fans in a case with 9 × 120 mm positions: pass<br>v1 cannot hold: 2 × Arctic P12 Pro 120mm ×3 counted once | R21 pass<br>R22 pass | R21: —<br>R22: v1 has no such check | R21 v1 does not check this (v1 holds one fan; the scenario has 2)<br>R22 v1 does not check this |
 | **S32** One 3-pack of 120 mm fans in a case with 9 × 120 mm positions: pass | R21 pass<br>R22 pass | R21: Fits<br>R22: v1 has no such check | R21 correct<br>R22 v1 does not check this |
-| **S33** 3 × 140 mm fans in a case whose maker lists only 2 × 140 mm positions: error | R21 error | R21: Fit not verified: The maker lists 2 positions for 140 mm fans. | R21 **wrong** (v1 says note, plan says error: more lenient than the plan) |
+| **S33** 3 × 140 mm fans in a case whose maker lists only 2 × 140 mm positions: warning (maker list only) | R21 warning | R21: Fit not verified: The maker lists 2 positions for 140 mm fans. | R21 **wrong** (v1 says note, plan says warning: more lenient than the plan) |
 | **S34** 5-pack of 120 mm fans in a case whose shop page states 3 positions: error | R21 error | R21: Incompatible: 5 fans; the case has 3 fan positions. | R21 correct |
 | **S35** 3-pack of fans in a case whose data say 6 fans included but 1 position: note | R21 note | R21: Incompatible: 3 fans; the case has 1 fan positions. | R21 **wrong** (v1 says error, plan says note: stricter than the plan) |
 | **S36** Mini-ITX board + ATX case: pass | R5 pass | R5: Fits | R5 correct |

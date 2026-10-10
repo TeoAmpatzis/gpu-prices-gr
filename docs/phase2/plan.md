@@ -1,8 +1,8 @@
 # Phase 2 plan: data validation, compatibility engine, new data fields
 
-**Status: proposal, waiting for the owner's approval (Stop 1). No code has been written.** Branch `v2` at `d95751c` + merge of main `25d16a7` (data 2026-10-10 06:41 UTC). Numbers below were measured on 2026-10-10 with that data unless they say *estimate*. Evidence: `docs/phase2/probe-labels.{json,txt}` (30 product pages read on 2026-10-10, script `scripts/phase2/probe-labels.py`, summary `scripts/phase2/probe-summary.mjs`).
+**Status: approved by the owner on 2026-10-10, with the answers in B11 (Stop 2 in progress).** Branch `v2` at `d95751c` + merge of main `25d16a7` (data 2026-10-10 06:41 UTC). Numbers below were measured on 2026-10-10 with that data unless they say *estimate*. Evidence: `docs/phase2/probe-labels.{json,txt}` (30 product pages read on 2026-10-10, script `scripts/phase2/probe-labels.py`, summary `scripts/phase2/probe-summary.mjs`).
 
-**In one paragraph.** Phase 2 has four parts. (1) A **validation layer** that runs when the site is built: a value that fails a check becomes *unknown* and never reaches a rule. It replaces v1's four interim patches with one mechanism and writes a report of every value it rejected. (2) **One compatibility engine** (`src/engine/`), pure TypeScript with no React. It covers rules 1–26 (27–30 if you say so, question Q1). It has three levels plus "pass", and each finding names the parts that cause it, which fixes C-01. It contains the power formula, the BIOS table and the performance tiers, and it is checked against the 64 Phase 0 scenarios. (3) **New scraper fields on main**: board M.2 slots, M.2 PCIe generation, SATA ports, max memory and BIOS Flashback; card thickness and power connector; PSU ATX 3.x; case drive bays and front USB-C; per-offer availability and the real shop. The probe shows the shops state these, mostly on Skroutz. Boards and PSUs have never had product pages read, so coverage takes days of scheduled scrapes to fill. That is why the scraper work goes **first**. (4) **Grouping fixes** that the audit assigned to Phase 2 (D-06, D-09–D-12, backlog #10). These rename or merge models, so each batch is measured offline and approved separately. **Gate:** all scenarios pass in the engine, and every desktop CPU and consumer GPU chip in the most-listed quarter has a tier.
+**In one paragraph.** Phase 2 has four parts. (1) A **validation layer** that runs when the site is built: a value that fails a check becomes *unknown* and never reaches a rule. It replaces v1's four interim patches with one mechanism and writes a report of every value it rejected. (2) **One compatibility engine** (`src/engine/`), pure TypeScript with no React. It covers rules 1–26 (27–30 come in Phase 4, owner 2026-10-10). It has three levels plus "pass", and each finding names the parts that cause it, which fixes C-01. It contains the power formula, the BIOS table and the performance tiers, and it is checked against the 64 Phase 0 scenarios. (3) **New scraper fields on main**: board M.2 slots, M.2 PCIe generation, SATA ports, max memory and BIOS Flashback; card thickness and power connector; PSU ATX 3.x; case drive bays and front USB-C; per-offer availability and the real shop. The probe shows the shops state these, mostly on Skroutz. Boards and PSUs have never had product pages read, so coverage takes days of scheduled scrapes to fill. That is why the scraper work goes **first**. (4) **Grouping fixes** that the audit assigned to Phase 2 (D-06, D-09–D-12, backlog #10). These rename or merge models, so each batch is measured offline and approved separately. **Gate:** all scenarios pass in the engine, and every desktop CPU and consumer GPU chip in the most-listed quarter has a tier.
 
 ---
 
@@ -31,10 +31,10 @@ The scraper fields need many scheduled runs to fill, so they start first. Everyt
 | Stop | What | Branch | Your approval needed |
 | --- | --- | --- | --- |
 | **1** | This plan | — | **now** |
-| **2** | Scraper: new fields + offer fields (B7, B8), with Python tests on saved pages; push, then run `scrape.yml` once | **main** | Covered by approving this plan; you see the field list and schema diff below |
+| **2** | Scraper: new fields + offer fields (B7, B8), with Python tests on saved pages; **one commit per change, each pushed only after the previous one's scrape is green** | **main** | Approved; **new Skroutz page reads need the Skroutz budget approved first** (BestPrice only until then) |
 | **3** | Validation layer (B2) + its report | v2 | — |
 | **4** | Engine rules 1–26 (B3), power (B4), BIOS (B5); scenarios run against the engine | v2 | — |
-| **5** | Tier files (B6) + coverage check; rules 27–30 if Q1 = yes | v2 | — |
+| **5** | Tier files (B6) + coverage check (rules 27–30: Phase 4) | v2 | — |
 | **6** | Grouping fixes (B9), one batch per category: offline before/after, **then your OK per batch**, then main with `allow_history_shrink` / `allow_data_drop` | **main** | **yes, per batch** |
 | **7** | Gate report: scenarios, coverage per field after the scrapes, validation report, Lighthouse unchanged | v2 | gate |
 
@@ -108,7 +108,7 @@ Each code commit passes `npm run check` (v2) or the Python tests + build (main),
 | 25 | RAM faster than the CPU's official speed | note (XMP/EXPO) | **table**: official speed per CPU family (B4) |
 | 26 | Tall RAM next to a big air cooler | note, always | — |
 
-**Scenario updates required by your post-Phase-0 decisions:** S09 and S33 expect `error` from a maker list alone; the decision makes them `warning`. Both files get that change with a line in `why`. No other scenario conflicts. `validate()` accepts rules 27–30 if Q1 = yes.
+**Scenario updates required by your post-Phase-0 decisions:** S09 and S33 expected `error` from a maker list alone; the decision makes them `warning`. **Done 2026-10-10** (both files, with a line in `why`). No other scenario conflicts.
 
 **Tests.**
 - Each rule has unit tests: pass, each level, unknown.
@@ -214,6 +214,15 @@ Changed model URLs are covered by Phase 1's alias redirects (A2.3), which apply 
 ---
 
 ## B11. Questions for you (my recommendation first)
+
+**Owner's answers (2026-10-10)** — they replace the questions below:
+1. **Rules 27–30: Phase 4**, not Phase 2. The engine keeps rules 1–26; scenario ids stay 1–26.
+2. **Scraper changes approved**, **one commit per change on main, each with its evidence and a green scrape** before the next is pushed. **New Skroutz product-page fetches need a separate Skroutz budget approval first** (pages per run, categories, pace): until then new reads (boards, PSUs, re-reading cards and cases) run on **BestPrice only**, and the Skroutz side of every new parser is switched off.
+3. **Grouping fixes: one batch at a time, each with the owner's OK** (as B9).
+4. **PSU 12V-2x6: "ATX 3.x" counts as a likely yes, shown as an estimate** (`basis: 'estimate'`).
+5. **Tiers: Tom's Hardware 2026 rankings plus one more source, cited per chip; where they disagree, the tier is unknown and the chip goes on a list for the owner** (not decided by me).
+
+Also done with the approval: scenarios S09 and S33 now expect `warning` (maker list only).
 
 1. **Rules 27–30 (CPU/card balance, cores, VRAM, over-spent CPU):** the plan lists 26 rules for Phase 2 but puts tiers in Phase 2 and the rules' use in Phase 4. → **Build them in Phase 2** as engine rules that take the use + resolution as input, with new scenarios (S65+). They're small once tiers exist, and Phase 4 then only wires them. The alternative leaves them for Phase 4.
 2. **Scraper first, on main, as part of this approval** (Stop 2), so coverage fills while v2 work goes on. → **Yes.** The alternative is a separate approval for the scraper diff before Stop 2.

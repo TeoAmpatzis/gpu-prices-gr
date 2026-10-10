@@ -537,7 +537,7 @@
   },
   {
     "id": "S09",
-    "title": "AIO 360 mm + case whose maker lists radiators up to 280 mm: error",
+    "title": "AIO 360 mm + case whose maker lists radiators up to 280 mm: warning (maker list only)",
     "ui": {
       "parts": [
         {
@@ -575,11 +575,11 @@
     "rules": [
       {
         "rule": 9,
-        "expected": "error",
+        "expected": "warning",
         "v1": "note",
         "v1Says": "Fit not verified: The case maker lists 120/140/240/280 mm radiators; a 360 mm one isn't listed.",
         "verdict": "wrong",
-        "detail": "v1 says note, plan says error: more lenient than the plan"
+        "detail": "v1 says note, plan says warning: more lenient than the plan"
       }
     ],
     "verdict": "wrong"
@@ -1884,7 +1884,7 @@
   },
   {
     "id": "S33",
-    "title": "3 × 140 mm fans in a case whose maker lists only 2 × 140 mm positions: error",
+    "title": "3 × 140 mm fans in a case whose maker lists only 2 × 140 mm positions: warning (maker list only)",
     "ui": {
       "parts": [
         {
@@ -1922,11 +1922,11 @@
     "rules": [
       {
         "rule": 21,
-        "expected": "error",
+        "expected": "warning",
         "v1": "note",
         "v1Says": "Fit not verified: The maker lists 2 positions for 140 mm fans.",
         "verdict": "wrong",
-        "detail": "v1 says note, plan says error: more lenient than the plan"
+        "detail": "v1 says note, plan says warning: more lenient than the plan"
       }
     ],
     "verdict": "wrong"
