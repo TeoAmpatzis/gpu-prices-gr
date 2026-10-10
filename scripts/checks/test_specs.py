@@ -55,6 +55,11 @@ expect("Skroutz ASRock H610M-HDV/M.2 (no M.2 label: unknown, not 0)", specs.pars
     {"m2Slots": None, "m2Gen": None, "sataPorts": 4, "maxMemoryGB": None, "biosFlashback": None})
 expect("Skroutz 'Extra: -' is silence, not 'no Flashback'", specs.parse_mobo({"Extra": "-"})["biosFlashback"], None)
 
+# --- BestPrice writes thousands with a dot ("3.072GB" = 3,072 GB): run 38033729453 stored 3 for this board
+expect("BestPrice Supermicro H13SSL-N: '3.072GB' is 3,072 GB, not 3",
+       specs.parse_mobo(page("bestprice-mobo-supermicro-h13ssl-n.html"))["maxMemoryGB"], 3072)
+expect("'1.024GB' is 1,024 GB", specs._gb("1.024GB"), 1024)
+expect("a decimal comma still works ('1,5TB')", specs._gb("1,5TB"), 1536)
 # --- Helpers
 expect("highest PCIe generation of mixed M.2 slots", specs._pcie_gen("1 Θύρα PCIe 5.0, 2 Θύρες PCIe 4.0"), 5)
 expect("max memory in TB", specs._gb("2TB"), 2048)
