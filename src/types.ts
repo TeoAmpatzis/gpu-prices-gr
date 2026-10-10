@@ -94,6 +94,9 @@ export interface CaseListing extends BaseListing {
   gpuMaxMm?: number | null; // longest graphics card it takes
   coolerMaxMm?: number | null; // tallest CPU air cooler it takes
   fanSlots?: number | null; // fan positions (front + rear + top + …)
+  bays35?: number | null; // internal 3.5" drive bays (v2 Phase 2; not in v1's list.json)
+  bays25?: number | null; // internal 2.5" drive bays
+  usbCFront?: boolean | null; // front USB-C port; null = the page lists no front ports
   radiatorMounts?: string | null; // e.g. "Άνω, Κάτω, Μπροστά"
   // From the case maker's own page (scraper/makers): per position and fan size.
   fanMounts?: CaseFans[] | null; // positions: front 3 × 120 or 2 × 140 = two entries

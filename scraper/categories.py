@@ -132,7 +132,8 @@ CATEGORIES = {
         make_listing=normalize_case.make_listing,
         model_key=lambda l: names.model_key(l["chip"]),
         eshop_categories=(("ypologistes-koutia-cases-list", "ΚΟΥΤΙΑ - CASES"),),
-        shared=("maxBoard", "window", "rgb", "gpuMaxMm", "coolerMaxMm", "fanSlots", "radiatorMounts", "fansIncluded", "hasFans"),
+        shared=("maxBoard", "window", "rgb", "gpuMaxMm", "coolerMaxMm", "fanSlots", "radiatorMounts", "fansIncluded", "hasFans",
+                "bays35", "bays25", "usbCFront"),
     ),
     "fan": Category(
         name="fan",
