@@ -11,6 +11,9 @@ Both sites' product pages have a spec table (`dl` of `dt`/`dd`) with nearly the 
           "Ύψος: 155 mm" / "37mm"
   Fan:    "Σύνδεση: 4-Pin PWM" / "3-Pin"; "Ροή Αέρα (Max): 77 cfm" / "Ροή Αέρα: 77cfm";
           Skroutz only "Πίεση Αέρα: 6,9 mmH₂O"
+  Board:  Skroutz "Πλήθος Υποδοχών M.2: 2", "Τύπος M.2: 2 Θύρες PCIe 4.0", "Πλήθος SATA III 6Gb/s: 4 Port",
+          "Extra: Bios Flashback"; BestPrice "Μέγιστη Μνήμη: 96GB", "M.2 Θύρες", "SATA 3.0 Θύρες",
+          "Bios Flashback" (yes/no icon)
   SSD:    "Read Speed: 6000 MB/s" / "Ταχύτητα Ανάγνωσης: 6.000MB/s"; Skroutz only "Τύπος Κρυφής Μνήμης:
           DRAM-less", "Αντοχή Εγγραφών (TBW): 600 TBW", "Ψύκτρα: Ναι"
 
@@ -52,14 +55,22 @@ SAVE_EVERY = 25
 
 
 def page_specs(s, url: str) -> dict[str, str]:
-    r = http.get(s, url)
+    return labels(http.get(s, url).text)
+
+
+def labels(html: str) -> dict[str, str]:
+    """A product page's spec table as {label: value}. BestPrice's yes/no features have no text, only an
+    icon (`<dl data-type="yesno"><dd><span class="specs-yes|specs-no">`): they read as "Ναι" / "Όχι"."""
     out: dict[str, str] = {}
-    for dt in HTMLParser(r.text).css("dl dt"):
+    for dt in HTMLParser(html).css("dl dt"):
         dd = dt.next
         while dd is not None and dd.tag != "dd":
             dd = dd.next
         if dd is not None:
-            out.setdefault(re.sub(r"\s+", " ", dt.text()).strip(), re.sub(r"\s+", " ", dd.text()).strip())
+            value = re.sub(r"\s+", " ", dd.text()).strip()
+            if not value:
+                value = "Ναι" if dd.css_first(".specs-yes") else "Όχι" if dd.css_first(".specs-no") else ""
+            out.setdefault(re.sub(r"\s+", " ", dt.text()).strip(), value)
     return out
 
 
@@ -129,6 +140,41 @@ def parse_gpu(sp: dict[str, str]) -> dict:
 
 def parse_cpu(sp: dict[str, str]) -> dict:
     return {"coolerIncluded": _yes_no(sp.get("Περιλαμβάνει Ψύκτρα")), "tdp": _watts(sp.get("Thermal Design Power (TDP)"))}
+
+
+def _count(text: str | None) -> int | None:
+    """"4 Port" / "2" / "2 DIMM Slots" -> the first whole number."""
+    m = re.match(r"\s*(\d+)\b", text or "")
+    return int(m.group(1)) if m else None
+
+
+def _pcie_gen(text: str | None) -> int | None:
+    """"2 Θύρες PCIe 4.0" / "1 Θύρα PCIe 5.0, 2 Θύρες PCIe 4.0" -> the highest generation (5)."""
+    gens = [int(g) for g in re.findall(r"PCIe\s*(\d)(?:\.0)?", text or "", re.I)]
+    return max(gens) if gens else None
+
+
+def _gb(text: str | None) -> int | None:
+    """"96GB" / "256 GB" / "2TB" -> GB."""
+    m = re.search(r"(\d+(?:[.,]\d+)?)\s*(GB|TB)\b", text or "", re.I)
+    if not m:
+        return None
+    value = float(m.group(1).replace(",", "."))
+    return round(value * 1024) if m.group(2).upper() == "TB" else round(value)
+
+
+def parse_mobo(sp: dict[str, str]) -> dict:
+    # Skroutz: "Πλήθος Υποδοχών M.2: 2", "Τύπος M.2: 2 Θύρες PCIe 4.0", "Πλήθος SATA III 6Gb/s: 4 Port",
+    # "Extra: Bios Flashback, …" (silence is not "no"); BestPrice: "Μέγιστη Μνήμη: 96GB", "M.2 Θύρες: 2",
+    # "SATA 3.0 Θύρες: 8", "Bios Flashback" as a yes/no icon (labels()). Probe 2026-10-10: docs/phase2 on v2.
+    extra = (sp.get("Extra") or "").lower()
+    return {
+        "m2Slots": _count(_first(sp, "Πλήθος Υποδοχών M.2", "M.2 Θύρες")),
+        "m2Gen": _pcie_gen(sp.get("Τύπος M.2")),
+        "sataPorts": _count(_first(sp, "Πλήθος SATA III 6Gb/s", "SATA 3.0 Θύρες")),
+        "maxMemoryGB": _gb(sp.get("Μέγιστη Μνήμη")),
+        "biosFlashback": True if "flashback" in extra else _yes_no(sp.get("Bios Flashback")),
+    }
 
 
 def parse_case(sp: dict[str, str]) -> dict:
@@ -201,16 +247,21 @@ def parse_storage(sp: dict[str, str]) -> dict:
 
 PARSERS: dict[str, Callable[[dict[str, str]], dict]] = {
     "gpu": parse_gpu, "cpu": parse_cpu, "case": parse_case, "cooler": parse_cooler, "fan": parse_fan,
-    "storage": parse_storage,
+    "storage": parse_storage, "mobo": parse_mobo,
 }
 EMPTY = {cat: parse({}) for cat, parse in PARSERS.items()}
 # Sites per category, in order of preference (BestPrice states nothing about a CPU's cooler).
 SITES = {"gpu": ("skroutz", "bestprice"), "cpu": ("skroutz",), "case": ("skroutz", "bestprice"),
-         "cooler": ("skroutz", "bestprice"), "fan": ("skroutz", "bestprice"), "storage": ("skroutz", "bestprice")}
+         "cooler": ("skroutz", "bestprice"), "fan": ("skroutz", "bestprice"), "storage": ("skroutz", "bestprice"),
+         "mobo": ("skroutz", "bestprice")}
+# New page reads a site may not make yet: the owner approves a Skroutz budget before Skroutz reads
+# any new kind of page (v2 Phase 2 plan, 2026-10-10). Until then these categories go to the next site.
+PAUSED = {"skroutz": {"mobo"}}
 # A product still needs a page while one of these is unknown (air coolers also need their height;
 # storage: SSDs only — an HDD's title already gives its speed and cache).
 NEEDED = {"gpu": ("lengthMm",), "cpu": ("coolerIncluded",), "case": ("gpuMaxMm", "coolerMaxMm"),
-          "cooler": ("sockets",), "fan": ("connector",), "storage": ("readMBs",)}
+          "cooler": ("sockets",), "fan": ("connector",), "storage": ("readMBs",),
+          "mobo": ("m2Slots", "sataPorts", "maxMemoryGB")}
 # Measurements the builder checks, and which of two disagreeing values is the safe one to assume
 # (sites, or a site and the maker): the longer card / taller cooler / higher PSU minimum, the
 # smaller case clearance.
@@ -249,7 +300,7 @@ def queue(cat: str, listings: list[dict], cache: dict, model_key) -> dict[str, l
         fetched = {l["source"] for l in ls if l["id"] in cache}
         sources = {l["source"] for l in ls}
         for site in SITES[cat]:
-            if site in fetched or site not in sources:
+            if site in fetched or site not in sources or cat in PAUSED.get(site, ()):
                 continue
             out[site].append(min((l for l in ls if l["source"] == site), key=lambda l: l["price"]))
             break  # one site at a time: BestPrice only once Skroutz has been tried (or has none)

@@ -82,7 +82,8 @@ CATEGORIES = {
         make_listing=normalize_mobo.make_listing,
         model_key=lambda l: names.model_key(l["chip"]),
         eshop_categories=(("ypologistes-mitrikes-motherboards-list", "ΜΗΤΡΙΚΗ ΚΑΡΤΑ"),),
-        shared=("ramSlots", "chipset", "socket", "memory"),
+        # m2Slots … biosFlashback come from product pages (specs.parse_mobo).
+        shared=("ramSlots", "chipset", "socket", "memory", "m2Slots", "m2Gen", "sataPorts", "maxMemoryGB", "biosFlashback"),
     ),
     "ram": Category(
         name="ram",
