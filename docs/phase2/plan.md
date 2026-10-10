@@ -40,6 +40,19 @@ The scraper fields need many scheduled runs to fill, so they start first. Everyt
 
 Each code commit passes `npm run check` (v2) or the Python tests + build (main), with no new lint suppressions.
 
+**Stop 2 on main: the commits, in push order** (owner's rule: one at a time, each only after the previous scrape is green, the history check OK and the Vercel build accepted; stop and ask if the history check rejects anything; no Skroutz timing, concurrency or new Skroutz pages):
+
+| # | Commit | What | Status (2026-10-10) |
+| --- | --- | --- | --- |
+| 1 | `9bb9224` | Boards from BestPrice: max memory, M.2, SATA, BIOS Flashback; BestPrice yes/no icons read | **Pushed. Scrape 38033729453 green** (71 min of 90; history "nothing lost"; Vercel deployed `5a8e9c3`). BestPrice read 135 boards, all with max memory |
+| 1a | `c41e3f8` | **Fix: BestPrice "3.072GB" = 3,072 GB, not 3** | Waiting. **Why before #8:** commit 1 introduced the bug (one board, Supermicro H13SSL-N, stored 3 GB) and every further run reads up to ~135 more BestPrice boards with the same parser (~70 once commit 5 shares the BestPrice budget with case re-reads), so server/workstation boards stating ≥ 1,000 GB would be stored wrong until it lands. Tested on that board's saved page: 3 → 3,072. The one cached wrong value stays until the page is read again (v1 doesn't use the field; the validation layer B2 makes it unknown) |
+| 2 | `a252c37` | #8: per-source data age in `site-check.mjs` (warn > 12 h, fail > 24 h) | Waiting (goes before any further new field) |
+| 3 | `2ff530d` | Speed plan step 0: log time, requests, blocks per source and phase (measurement only) | Waiting (before commit 5, so its BestPrice case re-reads don't blur the baseline; commit 4 makes no requests) |
+| 4 | `d5f0961` | PSU ATX 3.x from titles and BestPrice URLs (no page reads; called "change 2" in earlier messages) | Waiting |
+| 5 | `e2878d8` | Case bays + front USB-C; re-read old case pages on BestPrice only ("change 3" in earlier messages) | Waiting |
+
+Dot-thousands check (2026-10-10, data `5a8e9c3`), every BestPrice value: **titles** write large numbers without a dot ("1600MHz", "1000W", "7200rpm"; dots there are versions or decimals: `PCIe 4.0`, `2.5"`, `V3.1`); **prices and shipping** come in cents from `data-*` attributes (0 odd values in 6,495 cached BestPrice offers); **product-page values** are the only place BestPrice writes "3.072GB" / "1.000W" / "6.000MB/s": `_mbs` and `_tbw` already read them, `_gb` did not (fixed in 1a), and `_number` (mm, cfm, mmH₂O) would misread a value ≥ 1,000, which no value of these fields reaches in today's data; BestPrice's "1.000W" PSU labels are not parsed. Two odd page values that are not this bug: Spire U20M max card length "3.502mm" (BestPrice's own typo, seen on its page; v1's builder hides every card for that case) and a cooler (`bestprice:2157822321`) read as 65.099 mm (as thousands it would be 65,099 mm, so not this bug; its page was not checked) — both for the validation layer (B2).
+
 ---
 
 ## B2. Validation layer (build time, v2)
