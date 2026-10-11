@@ -13,12 +13,15 @@ import { pathToFileURL } from 'node:url';
 
 const ROOT = process.cwd();
 const B = await import(pathToFileURL(join(ROOT, 'src/lib/builder.ts')).href);
+const { VALIDATION_MODE, validateLatest } = await import(pathToFileURL(join(ROOT, 'src/data/validate/index.ts')).href);
 
 const arg = (name: string) => {
   const i = process.argv.indexOf(name);
   return i > 0 ? process.argv[i + 1] : undefined;
 };
-const read = (cat: string) => JSON.parse(readFileSync(join(ROOT, 'public/data', cat, 'latest.json'), 'utf8'));
+// validated like the build, so the coverage is what the site's builder sees
+const read = (cat: string) =>
+  validateLatest(cat, JSON.parse(readFileSync(join(ROOT, 'public/data', cat, 'latest.json'), 'utf8')), VALIDATION_MODE).latest;
 
 const gpuCtx = B.fitContext(B.slotModels('gpu', read('gpu').listings));
 type Get = (m: any) => unknown;
@@ -101,7 +104,7 @@ for (const slot of B.SLOTS as string[]) {
   out[slot] = { offered: pct(offered, models.length) };
   console.log(`\n${slot}: ${models.length} models, offered with an empty build ${offered} (${pct(offered, models.length)}%)`);
   console.log(`  ${'field'.padEnd(38)} ${'all'.padStart(14)} ${'popular'.padStart(8)}${before ? '   before -> now' : ''}`);
-  for (const [label, get, only] of FIELDS[slot]) {
+  for (const [label, get, only] of FIELDS[slot] ?? []) {
     const pool = only ? models.filter(only) : models;
     const n = pool.filter((m) => known(get(m))).length;
     const pop = pool.filter((m) => popular.has(m));

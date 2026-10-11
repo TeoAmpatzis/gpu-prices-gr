@@ -11,6 +11,7 @@ const { applyFilters, defaultFilters, allTimeLow, saleOf } = await import(src('l
 const { listFile, builderFile } = await import(src('lib/derive.ts'));
 const { fromColumns, expandHistory } = await import(src('lib/columns.ts'));
 const B = await import(src('lib/builder.ts'));
+const { VALIDATION_MODE, validateLatest } = await import(src('data/validate/index.ts'));
 
 const read = (cat: string, f: string, fb: unknown = {}) => {
   try {
@@ -53,7 +54,9 @@ const built = new RealDate().toISOString();
 const allLatest: Record<string, unknown> = {};
 for (const cat of CATEGORY_IDS) {
   const cfg = CATEGORIES[cat];
-  const latest = read(cat, 'latest.json', null);
+  const rawLatest = read(cat, 'latest.json', null);
+  // like the build: out-of-range values are "not stated" on both sides of the comparison
+  const latest = rawLatest ? validateLatest(cat, rawLatest, VALIDATION_MODE).latest : rawLatest;
   allLatest[cat] = latest;
   const history = read(cat, 'history.json');
   const imported = read(cat, 'history_imported.json');
