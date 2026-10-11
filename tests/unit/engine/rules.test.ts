@@ -4,6 +4,7 @@
 import { describe, expect, it } from 'vitest';
 import { evaluate, type Context, type Part, type PartCategory, type RuleId } from '../../../src/engine';
 import { ruleResult } from '../../compat/engine-adapter';
+import { cpuRow } from '../../../src/engine/data/cpuMemory';
 
 let n = 0;
 const part = (category: PartCategory, fields: Record<string, unknown>, opts: { name?: string; qty?: number } = {}): Part => ({
@@ -219,9 +220,18 @@ describe('rule 24: front USB-C and the board header', () => {
 });
 
 describe('rule 25: memory speed vs the CPU official speed', () => {
-  it('pass', () => expect(status(25, [cpu({ officialMemMhz: 5600 }), ram({ speed: 5200 })])).toBe('pass'));
-  it('faster → note (XMP/EXPO)', () => expect(status(25, [cpu({ officialMemMhz: 5200 }), ram()])).toBe('note'));
-  it('unknown', () => expect(status(25, [cpu(), ram()])).toBe('unknown'));
+  const row = cpuRow('Ryzen 5 7600')!.memory.DDR5!;
+  const two = row.sticks2!;
+  it('pass: 2 sticks at the official speed', () => expect(status(25, [cpu(), ram({ speed: two })])).toBe('pass'));
+  it('faster → note (XMP/EXPO)', () => expect(status(25, [cpu(), ram({ speed: two + 1 })])).toBe('note'));
+  it('4 sticks use the 4-stick value (note if lower, else unknown)', () => {
+    const expected = row.sticks4 === undefined ? 'unknown' : row.sticks4 < two ? 'note' : 'pass';
+    expect(status(25, [cpu(), ram({ speed: two, modules: 4 })])).toBe(expected);
+  });
+  it('unknown: DDR4 kit on a DDR5-only row', () => expect(status(25, [cpu(), ram({ type: 'DDR4', speed: 3200 })])).toBe('unknown'));
+  it('unknown: CPU not in the table', () => expect(status(25, [cpu({}, 'EPYC 4124P'), ram()])).toBe('unknown'));
+  it('unknown: RAM without a module count', () => expect(status(25, [cpu(), ram({ modules: null })])).toBe('unknown'));
+  it('unknown: RAM without a speed', () => expect(status(25, [cpu(), ram({ speed: null })])).toBe('unknown'));
 });
 
 describe('rule 26: RAM–air-cooler clearance (always a note: not checked)', () => {

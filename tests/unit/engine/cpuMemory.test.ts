@@ -1,0 +1,44 @@
+import { describe, expect, it } from 'vitest';
+import { CPU_MEMORY, OFFICIAL_DOMAINS, cpuRow, officialSpeed } from '../../../src/engine/data/cpuMemory';
+
+describe('CPU memory table integrity', () => {
+  it('has rows', () => expect(CPU_MEMORY.length).toBeGreaterThan(0));
+  it('every row has models, an official source, a date and sane speeds', () => {
+    for (const r of CPU_MEMORY) {
+      expect(r.models.length).toBeGreaterThan(0);
+      const host = new URL(r.source).hostname;
+      expect(OFFICIAL_DOMAINS.some((d) => host === d || host.endsWith(`.${d}`))).toBe(true);
+      expect(r.checked).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      const speeds = Object.values(r.memory).flatMap((m) => (m ? [m.sticks2, m.sticks4] : []));
+      expect(speeds.some((s) => s !== undefined)).toBe(true);
+      for (const s of speeds) if (s !== undefined) expect(Number.isInteger(s) && s > 0).toBe(true);
+      for (const m of Object.values(r.memory)) if (m?.sticks2 !== undefined && m.sticks4 !== undefined) expect(m.sticks4).toBeLessThanOrEqual(m.sticks2);
+    }
+  });
+  it('no model appears twice', () => {
+    const all = CPU_MEMORY.flatMap((r) => r.models.map((m) => m.toLowerCase().replace(/\s+/g, ' ')));
+    expect(new Set(all).size).toBe(all.length);
+  });
+});
+
+describe('cpuRow / officialSpeed', () => {
+  it('finds a row ignoring case and spacing', () => expect(cpuRow('ryzen 5  7600')?.models).toContain('Ryzen 5 7600'));
+  it('is exact: a name that only starts like a row is not a match', () => {
+    expect(cpuRow('Ryzen 5 7600')?.models).toContain('Ryzen 5 7600');
+    expect(cpuRow('Ryzen 5 7600XT')).toBeUndefined();
+    expect(cpuRow('Ryzen 5 760')).toBeUndefined();
+    expect(cpuRow('Ryzen 5 7600X')?.models.includes('Ryzen 5 7600X')).toBe(true);
+  });
+  it('unknown CPU', () => expect(cpuRow('EPYC 4124P')).toBeUndefined());
+  it('sticks map to 2 or 4', () => {
+    const row = cpuRow('Ryzen 5 7600')!.memory.DDR5!;
+    expect([1, 2].map((s) => officialSpeed('Ryzen 5 7600', 'DDR5', s)?.sticks)).toEqual([2, 2]);
+    expect([3, 4].map((s) => officialSpeed('Ryzen 5 7600', 'DDR5', s)?.sticks)).toEqual([4, 4]);
+    expect(officialSpeed('Ryzen 5 7600', 'DDR5', 2)?.mhz).toBe(row.sticks2);
+    expect(officialSpeed('Ryzen 5 7600', 'DDR5', 4)?.mhz).toBe(row.sticks4);
+  });
+  it('null for a type the row lacks and for an unknown CPU', () => {
+    expect(officialSpeed('Ryzen 5 7600', 'DDR4', 2)).toBeNull();
+    expect(officialSpeed('EPYC 4124P', 'DDR5', 2)).toBeNull();
+  });
+});

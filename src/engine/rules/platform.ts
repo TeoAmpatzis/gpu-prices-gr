@@ -1,6 +1,7 @@
 // Rules about the CPU, board and memory: 1 socket, 2 memory type, 3 RAM slots, 4 max memory, 12 graphics,
 // 13 BIOS, 24 front USB-C header, 25 memory speed.
 import type { Build, Context, Finding } from '../types';
+import { cpuRow, officialSpeed } from '../data/cpuMemory';
 import { all, bool, finding, keys, msg, num, one, str, total, unknown } from '../util';
 
 export function rule1(b: Build): Finding[] {
@@ -104,13 +105,24 @@ export function rule24(b: Build): Finding[] {
 export function rule25(b: Build): Finding[] {
   const cpu = one(b, 'cpu'), rams = all(b, 'ram');
   if (!cpu || !rams.length) return [];
-  const official = num(cpu, 'officialMemMhz');
+  const sticks = total(rams, 'modules');
   return rams.map((ram) => {
-    const ps = keys(cpu, ram), speed = num(ram, 'speed');
-    if (official === null || speed === null) return unknown(25, ps, msg('την ταχύτητα μνήμης: δεν ξέρουμε την επίσημη υποστήριξη του επεξεργαστή.', "the memory speed: the CPU's official support isn't known."));
-    if (speed <= official) return finding(25, 'pass', 'stated', ps, msg(`${speed} MHz, μέσα στην επίσημη υποστήριξη (${official} MHz).`, `${speed} MHz, within the official support (${official} MHz).`));
+    const ps = keys(cpu, ram), speed = num(ram, 'speed'), type = str(ram, 'type');
+    if (sticks === null || speed === null || (type !== 'DDR4' && type !== 'DDR5'))
+      return unknown(25, ps, msg('την ταχύτητα μνήμης: δεν ξέρουμε την ταχύτητα, τον τύπο ή τον αριθμό στικ του κιτ.', "the memory speed: the kit's speed, type or stick count isn't known."));
+    if (!cpuRow(cpu.name))
+      return unknown(25, ps, msg('την ταχύτητα μνήμης: ο επεξεργαστής δεν υπάρχει ακόμα στον πίνακα επίσημης υποστήριξης.', "the memory speed: the CPU isn't in the official-support table yet."));
+    const official = officialSpeed(cpu.name, type, sticks);
+    if (!official) {
+      const row = cpuRow(cpu.name);
+      return unknown(25, ps, row?.memory[type]
+        ? msg(`την ταχύτητα μνήμης: η σελίδα του κατασκευαστή δεν δίνει επίσημη ταχύτητα για ${sticks} μονάδες.`, `the memory speed: the maker's page gives no official speed for ${sticks} sticks.`)
+        : msg(`την ταχύτητα μνήμης: ο κατασκευαστής δεν δίνει επίσημη ταχύτητα ${type} για αυτόν τον επεξεργαστή.`, `the memory speed: the maker gives no official ${type} speed for this CPU.`));
+    }
+    const { mhz, sticks: n } = official;
+    if (speed <= mhz) return finding(25, 'pass', 'stated', ps, msg(`${speed} MHz, μέσα στην επίσημη υποστήριξη (έως ${mhz} MHz με ${n} μονάδες).`, `${speed} MHz, within the official support (up to ${mhz} MHz with ${n} sticks).`));
     return finding(25, 'note', 'stated', ps,
-      msg(`Η μνήμη (${speed} MHz) είναι πιο γρήγορη από την επίσημη υποστήριξη του επεξεργαστή (${official} MHz).`, `The memory (${speed} MHz) is faster than the CPU's official support (${official} MHz).`),
+      msg(`Η μνήμη (${speed} MHz) είναι πιο γρήγορη από την επίσημη υποστήριξη του επεξεργαστή (επίσημα έως ${mhz} MHz με ${n} μονάδες).`, `The memory (${speed} MHz) is faster than the CPU's official support (officially up to ${mhz} MHz with ${n} sticks).`),
       msg('Ενεργοποίησε το XMP/EXPO στο BIOS για να τρέξει στην ταχύτητά της.', 'Turn on XMP/EXPO in the BIOS for it to run at its speed.'));
   });
 }
