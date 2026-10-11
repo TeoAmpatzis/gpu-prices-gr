@@ -15,6 +15,7 @@ import { join } from 'node:path';
 import type { Plugin } from 'vite';
 import type { Category, History, Imported, Latest, Manifest } from './src/types';
 import { CATEGORY_IDS } from './src/lib/categories';
+import { VALIDATION_MODE, validateLatest } from './src/data/validate';
 import { builderFile, checkData, detailFile, listFile, manifest, searchFile, type CategoryInput, type ImageLookup } from './src/lib/derive';
 
 const DATA_DIR = join(process.cwd(), 'public', 'data');
@@ -68,14 +69,22 @@ function derive(builtAt: string, image?: ImageLookup): { files: Record<string, s
   const files: Record<string, string> = {};
   const latest: Partial<Record<Category, Latest>> = {};
   const history: Partial<Record<Category, History>> = {};
+  const rejected: string[] = [];
+  let rejectedTotal = 0;
   for (const cat of CATEGORY_IDS) {
     const input = inputs[cat];
     if (!input) continue;
-    latest[cat] = input.latest;
+    const v = validateLatest(cat, input.latest, VALIDATION_MODE);
+    if (v.rejections.length) {
+      rejectedTotal += v.rejections.length;
+      rejected.push(`${cat} ${v.rejections.length}`);
+    }
+    latest[cat] = v.latest;
     history[cat] = input.history;
-    files[`data/${cat}/list.json`] = JSON.stringify(listFile(cat, input, builtAt, image));
-    files[`data/${cat}/detail.json`] = JSON.stringify(detailFile(input.latest));
+    files[`data/${cat}/list.json`] = JSON.stringify(listFile(cat, { ...input, latest: v.latest }, builtAt, image));
+    files[`data/${cat}/detail.json`] = JSON.stringify(detailFile(v.latest));
   }
+  console.log(`[data] validation (${VALIDATION_MODE}): ${rejectedTotal ? `${rejectedTotal} value(s) out of range — ${rejected.join(', ')}` : 'none'}`);
   const { file: builder, extra, lazy } = builderFile(latest, builtAt, image);
   files['data/builder.json'] = JSON.stringify(builder);
   files['data/builder-extra.json'] = JSON.stringify(extra);
