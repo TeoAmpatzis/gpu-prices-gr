@@ -17,6 +17,7 @@
 - No new dependencies. `npm run check` passes at the end of every task. No new lint suppressions.
 - **Hallucination rule (owner, verbatim): "every value must be read from its source page fetched during the work, never from memory. If a value can't be found on an official page, leave it out (unknown)."**
   - "Fetched during the work" = downloaded in this task, either with the WebFetch tool (load it with ToolSearch `select:WebFetch` if it's deferred) or, when WebFetch times out (it does on amd.com, 2026-10-11), with `curl.exe -s -L -m 40 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36" -o <file> <url>`, saving the raw HTML under `.superpowers/sdd/2026-10-11-engine-tables/pages/` (git-ignored) as evidence; the value is read from that file's text. WebSearch may be used only to *find* an official URL; a search snippet is never a source of a value.
+  - Intel pages download with `-A "curl/8.0"` when the Chrome user agent is refused (Task 2). AMD's specifications table `https://www.amd.com/en/products/specifications/processors.html` counts as an official page for each chip's own record. If live amd.com refuses downloads (Akamai 403), a `https://web.archive.org/web/2026id_/<exact amd.com URL>` snapshot may be read instead; `source` stays the amd.com URL and the row gets a comment `// read from web.archive.org snapshot <timestamp>` (controller ruling, 2026-10-11).
   - Official = the maker's own site only: `amd.com`, `intel.com` (incl. `ark.intel.com`), `nvidia.com`, and for B5 the chipset/CPU maker's or the board maker's own support pages. Not Wikipedia, TechPowerUp, retailers, reviews.
   - Every row stores `source` (the exact URL fetched) and `checked` (`'2026-10-11'` or the day it was fetched).
   - If a page doesn't show a value (e.g. Intel shows no 4-stick speed, or the page needs JavaScript and WebFetch sees no spec), that value is **omitted**. Never derive one value from another (no "4-stick = 2-stick minus X", no "PPT = 1.35 × TDP" unless the official page states that figure for that model).
@@ -101,4 +102,115 @@ export function officialSpeed(name: string, type: 'DDR4' | 'DDR5', sticks: numbe
 
 ---
 
-*(Items 2 (B4) and 3 (B5) are added as Tasks 3+ after Task 2 is complete, using Task 1–2's names.)*
+---
+
+## Item 2 — B4: power formula (Tasks 3–5)
+
+**Decisions for item 2 (controller, 2026-10-12, from the owner's rules):**
+- "Card maker's figure" `makerW` = the larger of the card's own stated minimum PSU (`minPsu`, validated) and the **chip maker's** stated system-power figure (NVIDIA "Required System Power", AMD "Recommended PSU", Intel's if stated). Both are makers' figures; the owner's example ("NVIDIA says 1000 W") is the chip maker's.
+- The formula `formulaW` = ⌈(card board power + CPU power limit + 50 W board + 5 W per RAM stick + 8 W per drive + 3 W per fan + 5 W AIO pump) × 1.3 / 50⌉ × 50 (plan §B4). With no graphics card the card term is 0. If the card's board power or the CPU's power limit isn't in the tables, `formulaW` is **null** (never a guess).
+- CPU power limit: Intel "Maximum Turbo Power" (PL2) from its intel.com page; AMD "PPT" **only** where an official amd.com page states it for that model, or states the PPT for that model's TDP class while the model's own page states its TDP. In the second case cite both URLs in a comment and list it in the report. Never compute 1.35 × TDP.
+- **S59 changes too** (14700K + RTX 5070 Ti + 750 W, card maker 750 W, formula 850 W): by the owner's rule it is a warning, the same case as S62. Ruling recorded; reported to the owner.
+- v1's `V1_GPU_PSU` table and its +100 W bump (no source) are no longer used by rule 14. `v1RecommendedPsu` stays exported for the before/after report.
+
+### Task 3: GPU power table + coverage
+
+**Files:**
+- Create: `src/engine/data/gpuPower.ts`
+- Create: `tests/unit/engine/gpuPower.test.ts`
+- Create: `scripts/phase2/gpu-power-coverage.ts`; Modify: `package.json` (`"gpu-power:coverage": "vite-node scripts/phase2/gpu-power-coverage.ts"`)
+- Create (generated, committed): `docs/phase2/gpu-power-coverage.md`
+
+**Interfaces (produces):**
+
+```ts
+// src/engine/data/gpuPower.ts
+export interface GpuPowerRow {
+  chips: string[];        // GPU chip names exactly as in the data (`chip`, e.g. 'RTX 5070', 'RX 9070 XT', 'Arc B580')
+  boardPowerW?: number;   // NVIDIA "Total Graphics Power", AMD "Typical Board Power (Desktop)", Intel "Total Board Power"
+  makerPsuW?: number;     // NVIDIA "Required System Power", AMD "Recommended PSU", Intel's recommended PSU if stated
+  source: string;         // exact official URL fetched
+  checked: string;        // 'YYYY-MM-DD'
+}
+export const GPU_POWER: GpuPowerRow[];
+export const GPU_OFFICIAL_DOMAINS: string[]; // ['nvidia.com', 'amd.com', 'intel.com']
+export function gpuPowerRow(chip: string): GpuPowerRow | undefined; // case-insensitive, spaces collapsed, exact
+```
+
+- [ ] **Step 1: Coverage script first.** Reads `public/data/gpu/latest.json`; consumer chips only (exclude what the site calls workstation: reuse the GPU category's own `pro` test from `src/lib/categories.tsx` if it can be imported under vite-node, else exclude `/RTX PRO|RTX A\d|\bAda\b|^T\d|Quadro|Radeon PRO|Arc Pro/i` and say so); groups by `chip` with listing counts; writes `docs/phase2/gpu-power-coverage.md` (deterministic): totals, then per brand a table: chip, listings, covered, board power, maker PSU, source host.
+- [ ] **Step 2: Failing tests** in `tests/unit/engine/gpuPower.test.ts`: integrity (≥1 chip, official domain, date format, at least one of the two figures, positive integers, no chip in two rows); exact lookup (`'rtx  5070'` finds `RTX 5070`; `RTX 5070` ≠ `RTX 5070 Ti` both ways; unknown chip undefined). Run → FAIL.
+- [ ] **Step 3: Fill rows**, most-listed first, per the hallucination rule (nvidia.com product/spec pages, amd.com graphics product pages, intel.com Arc pages). A chip with no fetchable official figure stays uncovered with the reason. Run tests → PASS; regenerate coverage.
+- [ ] **Step 4:** `npm run check` → passes. Commit the files: `git commit -m "feat(engine): official GPU board power and system PSU table + coverage"`.
+
+### Task 4: CPU power limit table + coverage
+
+**Files:**
+- Create: `src/engine/data/cpuPower.ts`
+- Create: `tests/unit/engine/cpuPower.test.ts`
+- Create: `scripts/phase2/cpu-power-coverage.ts`; Modify: `package.json` (`"cpu-power:coverage": "vite-node scripts/phase2/cpu-power-coverage.ts"`)
+- Create (generated, committed): `docs/phase2/cpu-power-coverage.md`
+
+**Interfaces (produces):**
+
+```ts
+// src/engine/data/cpuPower.ts
+export interface CpuPowerRow {
+  models: string[];       // CPU chip names exactly as in the data; several only if each model's page states the same figure
+  kind: 'PL2' | 'PPT';    // Intel "Maximum Turbo Power" / AMD "PPT"
+  watts: number;
+  source: string;         // exact official URL (for a TDP-class PPT: the PPT page; the model page URL in a comment)
+  checked: string;
+}
+export const CPU_POWER: CpuPowerRow[];
+export function cpuPowerRow(name: string): CpuPowerRow | undefined; // same matching as cpuRow
+```
+
+- [ ] **Step 1: Coverage script** (same CPU list and exclusions as `scripts/phase2/cpu-memory-coverage.ts`; reuse its code by importing a shared helper or copying the 10-line chip-list part — say which). Writes `docs/phase2/cpu-power-coverage.md`.
+- [ ] **Step 2: Failing tests** in `tests/unit/engine/cpuPower.test.ts`: integrity (official domains = `OFFICIAL_DOMAINS` from cpuMemory.ts, date, positive integer watts, kind matches brand: Intel models → PL2, Ryzen → PPT; no model in two rows); exact lookup incl. a real K/KF pair. Run → FAIL.
+- [ ] **Step 3: Fill rows.** Intel: "Maximum Turbo Power" from each model's intel.com page (Task 2's downloads in `.superpowers/sdd/2026-10-11-engine-tables/pages/` were fetched during this work and may be re-read; download any missing). AMD: per the decision above; if no official page states PPT, AMD models stay uncovered with the reason. Run tests → PASS; regenerate coverage.
+- [ ] **Step 4:** `npm run check` → passes. Commit: `git commit -m "feat(engine): official CPU power limits (PL2/PPT) table + coverage"`.
+
+### Task 5: Power estimate, rule 14, scenarios, before/after PSU report
+
+**Files:**
+- Modify: `src/engine/tables.ts` (add `POWER` constants), `src/engine/rules/power.ts` (`powerEstimate`, `rule14`), `src/engine/index.ts` (export `powerEstimate` and its types)
+- Modify: `tests/unit/engine/rules.test.ts` (rule 14 block)
+- Modify: `tests/compat/scenarios/s62-psu-9950x-5090-1000w.json`, `tests/compat/scenarios/s59-*.json` (expected rule 14 → `warning`, `why` rewritten with the owner's rule)
+- Modify: `tests/compat/engine-scenarios.test.ts` (`KNOWN_GAPS`: remove or update the R14 entries the new rule settles, each change with its reason)
+- Create: `scripts/phase2/psu-before-after.ts`; Modify: `package.json` (`"psu:before-after": "vite-node scripts/phase2/psu-before-after.ts"`)
+- Create (generated, committed): `docs/phase2/psu-before-after.md`
+
+**Interfaces (produces):**
+
+```ts
+// src/engine/tables.ts
+export const POWER = { boardW: 50, perStickW: 5, perDriveW: 8, perFanW: 3, pumpW: 5, headroom: 1.3, roundToW: 50 } as const;
+
+// src/engine/rules/power.ts
+export interface PowerPart { key: string; label: Msg; watts: number }
+export interface PowerEstimate {
+  parts: PowerPart[];          // per-part breakdown (card, CPU, board, RAM, drives, fans, pump)
+  totalW: number | null;       // null when the card's board power or the CPU's limit is unknown
+  formulaW: number | null;     // ⌈totalW × headroom / roundToW⌉ × roundToW
+  makerW: number | null;       // max(card minPsu, chip makerPsuW), null when neither
+  makerFrom: 'card' | 'chip' | null;
+  missing: Msg[];              // what kept totalW null, for messages
+}
+export function powerEstimate(b: Build): PowerEstimate;
+```
+
+Rule 14 levels (owner's rule):
+1. `makerW` and `formulaW` both null → unknown (as today).
+2. `makerW` ≠ null and watts < `makerW` → **error**, basis `stated`.
+3. `makerW` = null and watts < `formulaW` → **error**, basis `estimate`.
+4. `makerW` ≠ null, `formulaW` ≠ null, `makerW` ≤ watts < `formulaW` → **warning**, basis `estimate` ("reaches the maker's figure but not the estimate for the whole build").
+5. Otherwise R = max of the non-null figures; watts ≤ R × (1 + `MARGIN.psuShare`) → warning (tight); else pass. Basis `stated` when `makerW` ≥ `formulaW` (or formula null), else `estimate`.
+Messages `{el, en}` name the figures, e.g. "Τροφοδοτικό 1000 W· ο κατασκευαστής ζητά 1000 W, η εκτίμηση για όλο το build είναι 1200 W." and, when `formulaW` is null, why (from `missing`).
+
+- [ ] **Step 1: Failing tests** (rules.test.ts rule 14 block, numbers read from the tables, not hard-coded): each of the 5 levels; the owner's example 9950X + RTX 5090 + 1000 W → warning (if the 9950X has no PPT row, the test still expects warning via level 5 and says so); a card whose chip isn't in `GPU_POWER` → formula null, maker figure from `minPsu` only; no card + an Intel CPU with a PL2 row → formula from CPU + rest; `powerEstimate` breakdown sums to `totalW`; quantities (2 RAM kits × modules, storage quantity, fan pack × quantity, AIO pump). Run → FAIL.
+- [ ] **Step 2: Implement** `POWER`, `powerEstimate`, new `rule14`. Run the unit tests → PASS.
+- [ ] **Step 3: Scenarios.** Update S62 and S59 (`expected` rule 14 `warning`; `why` cites the owner's rule and the figures the engine now uses). Run `npx vitest run tests/compat`; for every R14 entry in `KNOWN_GAPS` that no longer holds, remove it (or update it with the new engine answer and a reason) — list every change in the report. Totals still add up to 64.
+- [ ] **Step 4: Before/after PSU report.** `scripts/phase2/psu-before-after.ts`: builds the builder's GPU rows the way `scripts/validation-report.ts` does (validated data, `builderFile`), and for each consumer card row computes (a) v1's figure `v1RecommendedPsu(card, undefined)`, (b) `makerW`, (c) `formulaW` and the recommended PSU (max of maker and formula) for two reference builds: the most-listed Intel desktop CPU with a PL2 row, and the most-listed AMD desktop CPU with a PPT row (skip with a note if none), each with 2 RAM sticks, 1 NVMe drive, 3 fans, an air cooler. Writes `docs/phase2/psu-before-after.md` (deterministic): the reference builds, a summary (cards whose recommendation rises / falls / stays vs v1, per reference build), the 20 largest changes, and the full table sorted by chip then card. Run it twice: no diff.
+- [ ] **Step 5:** `npm run check` → passes. Commit: `git commit -m "feat(engine): whole-build power estimate and rule 14 per owner's rule + PSU report"`.
+
+*(Item 3 (B5) is added as Tasks 6+ after Task 5.)*
