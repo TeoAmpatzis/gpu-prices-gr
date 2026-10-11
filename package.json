@@ -17,6 +17,7 @@
     "test": "vitest run",
     "e2e": "playwright test",
     "validation:report": "vite-node scripts/validation-report.ts",
+    "cpu-memory:coverage": "vite-node scripts/phase2/cpu-memory-coverage.ts",
     "check": "npm run typecheck && npm run lint && npm run test && npm run build"
   },
   "dependencies": {
