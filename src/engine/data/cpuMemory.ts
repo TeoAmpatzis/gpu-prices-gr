@@ -99,9 +99,10 @@ export const CPU_MEMORY: CpuMemoryRow[] = [
     checked: '2026-10-11',
   },
   // AMD specifications table row: System Memory Type DDR4, System Memory Specification 3200 (MT/s), no per-stick figure.
+  // 'Ryzen 3 5300G' is AMD's record "AMD Ryzen™ 3 5300G (OEM Only)".
   {
     models: [
-      'Ryzen 5 5600G', 'Ryzen 5 5600GT', 'Ryzen 7 5700G', 'Ryzen 5 PRO 5650G',
+      'Ryzen 5 5600G', 'Ryzen 5 5600GT', 'Ryzen 7 5700G', 'Ryzen 5 PRO 5650G', 'Ryzen 3 5300G',
     ],
     generation: 'ryzen-5000g',
     memory: { DDR4: { sticks2: 3200 } },
@@ -118,6 +119,15 @@ export const CPU_MEMORY: CpuMemoryRow[] = [
     source: 'https://www.amd.com/en/products/specifications/processors.html',
     checked: '2026-10-11',
   },
+  // AMD specifications table row: System Memory Type DDR4, System Memory Specification 2933 (MT/s), no per-stick figure.
+  // 'Ryzen 3 3200G' is AMD's record "AMD Ryzen™ 3 3200G with Radeon™ Vega 8 Graphics".
+  {
+    models: ['Ryzen 3 3200G'],
+    generation: 'ryzen-3000',
+    memory: { DDR4: { sticks2: 2933 } },
+    source: 'https://www.amd.com/en/products/specifications/processors.html',
+    checked: '2026-10-11',
+  },
   // AMD specifications table row: System Memory Type DDR4, System Memory Specification 3200 (MT/s), no per-stick figure.
   {
     models: [
@@ -129,9 +139,10 @@ export const CPU_MEMORY: CpuMemoryRow[] = [
     checked: '2026-10-11',
   },
   // AMD specifications table row: System Memory Type DDR4, System Memory Specification 3200 (MT/s), no per-stick figure.
+  // 'Ryzen 3 4300G' / 'Ryzen 3 4300GE' are AMD's records "AMD Ryzen™ 3 4300G (OEM Only)" / "AMD Ryzen™ 3 4300GE (OEM Only)".
   {
     models: [
-      'Ryzen 5 4600G', 'Ryzen 5 PRO 4655G',
+      'Ryzen 3 4300G', 'Ryzen 3 4300GE', 'Ryzen 5 4600G', 'Ryzen 5 PRO 4655G',
     ],
     generation: 'ryzen-4000g',
     memory: { DDR4: { sticks2: 3200 } },
@@ -198,7 +209,7 @@ export const CPU_MEMORY: CpuMemoryRow[] = [
   {
     models: [
       'Core i3-14100', 'Core i3-14100F', 'Core i3-14100T', 'Core i5-14400', 'Core i5-14400F', 'Core i5-14400T',
-      'Core i5-14500', 'Core i5-14500T', 'Processor 300',
+      'Core i5-14500', 'Core i5-14500T',
     ],
     generation: 'intel-14',
     memory: { DDR4: { sticks2: 3200 }, DDR5: { sticks2: 4800 } },
@@ -226,6 +237,40 @@ export const CPU_MEMORY: CpuMemoryRow[] = [
     generation: 'intel-14',
     memory: { DDR4: { sticks2: 3200 }, DDR5: { sticks2: 5600 } },
     source: 'https://www.intel.com/content/www/us/en/products/sku/236845/intel-core-i5-processor-14600-24m-cache-up-to-5-20-ghz/specifications.html',
+    checked: '2026-10-11',
+  },
+  // The page states "Max Memory Speed 2x1R DDR5-5600 2x2R DDR5-5600 4x1R DDR5-3600 4x2R DDR5-3600". The page name is "AMD Ryzen 9 9950X3D2 Dual Edition"; the data calls the same chip 'Ryzen 9 9950X3D2'.
+  {
+    models: ['Ryzen 9 9950X3D2'],
+    generation: 'ryzen-9000',
+    memory: { DDR5: { sticks2: 5600, sticks4: 3600 } },
+    source: 'https://www.amd.com/en/products/processors/desktops/ryzen/9000-series/amd-ryzen-9-9950x3d2-dual-edition.html',
+    checked: '2026-10-11',
+  },
+  // Each ryzen-pro page states "Max Memory Speed 2x1R DDR5-5200 2x2R DDR5-5200 4x1R DDR5-3600 4x2R DDR5-3600".
+  {
+    models: ['Ryzen 3 PRO 8300G', 'Ryzen 5 PRO 8500G', 'Ryzen 5 PRO 8500GE', 'Ryzen 5 PRO 8600G', 'Ryzen 7 PRO 8700G'],
+    generation: 'ryzen-8000g',
+    memory: { DDR5: { sticks2: 5200, sticks4: 3600 } },
+    source: 'https://www.amd.com/en/products/processors/desktops/ryzen-pro/8000-series/amd-ryzen-5-pro-8500g.html',
+    checked: '2026-10-11',
+  },
+  // Each ryzen-pro page states "Max Memory Speed 2x1R DDR5-5600 2x2R DDR5-5600 4x1R DDR5-3600 4x2R DDR5-3600".
+  {
+    models: ['Ryzen 5 PRO 9645', 'Ryzen 7 PRO 9745', 'Ryzen 9 PRO 9945'],
+    generation: 'ryzen-9000',
+    memory: { DDR5: { sticks2: 5600, sticks4: 3600 } },
+    source: 'https://www.amd.com/en/products/processors/desktops/ryzen-pro/9000-series/amd-ryzen-5-pro-9645.html',
+    checked: '2026-10-11',
+  },
+  // Intel lists "Processor 300" as "Intel® Processor for Desktop" in the product collection, "Products formerly Raptor Lake", not as a 14th gen Core.
+  // 'intel-14' is the closest value (same Raptor Lake LGA1700 platform); the BIOS rule reads generation.
+  // Page: Memory Types "Up to DDR5 4800 MT/s / Up to DDR4 3200 MT/s".
+  {
+    models: ['Processor 300'],
+    generation: 'intel-14',
+    memory: { DDR4: { sticks2: 3200 }, DDR5: { sticks2: 4800 } },
+    source: 'https://www.intel.com/content/www/us/en/products/sku/236846/intel-processor-300-6m-cache-up-to-3-90-ghz/specifications.html',
     checked: '2026-10-11',
   },
 ];

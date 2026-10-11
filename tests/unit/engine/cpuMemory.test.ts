@@ -45,14 +45,14 @@ describe('cpuRow / officialSpeed', () => {
 
 describe('Intel rows (one figure per DDR type, no 4-stick value)', () => {
   const k = cpuRow('Core i5-14600K');
-  it('exact names: a row lists the exact name; near names and missing suffixes are not matches', () => {
+  it('exact names: Core i5-13600KF is covered, Core i5-13600K (a different chip) is not', () => {
+    expect(cpuRow('Core i5-13600KF')?.models).toContain('Core i5-13600KF');
+    expect(cpuRow('Core i5-13600K')).toBeUndefined();
     expect(k?.models).toContain('Core i5-14600K');
     expect(k?.models).not.toContain('Core i5-14600KS');
-    expect(cpuRow('Core i5-14600')?.models).toContain('Core i5-14600');
     expect(cpuRow('Core i5-1460')).toBeUndefined();
-    expect(cpuRow('Core i5-14600KFX')).toBeUndefined();
   });
-  it('a name with and without a suffix is a different chip: 250K Plus is covered, plain 250K is not', () => {
+  it('exact match only, no suffix stripping: "250K Plus" is covered, "250K" is not', () => {
     expect(cpuRow('Core Ultra 5 250K Plus')?.models).toContain('Core Ultra 5 250K Plus');
     expect(cpuRow('Core Ultra 5 250K')).toBeUndefined();
   });
