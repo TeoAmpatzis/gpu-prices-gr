@@ -23,7 +23,7 @@
 
 | Check id | Category | Field | Applies when | Min | Max | Unit | Enforce? |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cooler-height` | cooler | `heightMm` | always | 15 | 200 | mm | yes |
+| `cooler-height` | cooler | `heightMm` | always | 15 (Tasks 1–2) → **30** (Task 3, owner 2026-10-11) | 200 | mm | yes |
 | `case-gpu-max` | case | `gpuMaxMm` | always | 100 | 700 | mm | yes |
 | `case-cooler-max` | case | `coolerMaxMm` | always | 25 | 250 | mm | yes |
 | `gpu-length` | gpu | `lengthMm` | always | 100 | 400 | mm | yes |
@@ -34,7 +34,7 @@
 | `cpu-tdp` | cpu | `tdp` | always | 10 | 500 | W | yes |
 | `mobo-max-memory` | mobo | `maxMemoryGB` | always | 4 | 16384 | GB | yes |
 
-- Review band (report only, never rejects): `cooler-height-low` = cooler `heightMm` ≥ 15 and < 30. Note text: "Real low-profile coolers are 21–27 mm, but shop pages also give a fan's 25 mm thickness as the tower height (audit D-01, v1 ignores < 30 mm). Owner decides."
+- Review band (Tasks 1–2 only; **removed in Task 3** by the owner's decision "under 30 mm = unknown"): `cooler-height-low` = cooler `heightMm` ≥ 15 and < 30. Note text: "Real low-profile coolers are 21–27 mm, but shop pages also give a fan's 25 mm thickness as the tower height (audit D-01, v1 ignores < 30 mm). Owner decides."
 
 ## Review Focus
 
@@ -160,3 +160,40 @@ Behaviour of `validateLatest`:
 ## After the plan (not a task here)
 
 The owner reads `docs/phase2/validation-report.md` and approves the ranges (and decides the 15–30 mm cooler band). Only then does a separate, owner-approved change set `VALIDATION_MODE = 'enforce'` and decide whether the v1 patch `MIN_AIR_COOLER_MM = 30` (`src/lib/builder.ts`, `src/engine/tables.ts`) changes.
+
+**Owner's decisions, 2026-10-11 (after the first report):** ranges approved; cooler heights under 30 mm are unknown, same as v1 (so `cooler-height` becomes 30–200 and the 15–30 band is no longer needed); PSU max 3000 W must include 3000; switch to `'enforce'` approved → Task 3.
+
+---
+
+### Task 3: Switch to enforce
+
+**Files:**
+- Modify: `src/data/validate/ranges.ts` (`cooler-height` min 15 → **30**; remove `ReviewBand` and `REVIEW_BANDS`: the owner's decision makes the band redundant, the range itself now rejects 15–30)
+- Modify: `src/data/validate/index.ts` (`VALIDATION_MODE = 'enforce'`)
+- Modify: `scripts/validation-report.ts` (text follows the mode; drop the band section; add a before/after section)
+- Modify: `scripts/checks/data-equivalence.test.mts`, `scripts/checks/builder-coverage.mts` (read validated data the same way the build does)
+- Modify: `tests/unit/validate.test.ts`
+- Regenerate (committed): `docs/phase2/validation-report.md`
+- Leave unchanged: `MIN_AIR_COOLER_MM = 30` in `src/lib/builder.ts` and `src/engine/tables.ts` (now the same value as the range; they stay as guards for data that doesn't pass through the build, e.g. synthetic engine test parts).
+
+**Interfaces:**
+- Consumes: Task 1's `validateLatest`, `RANGES`, `VALIDATION_MODE`; `builderFile` from `src/lib/derive.ts`; `fromColumns` from `src/lib/columns.ts`.
+- Produces: no new exports (removes `ReviewBand`/`REVIEW_BANDS`; nothing outside `scripts/validation-report.ts` and the test imports them — check with a search).
+
+- [ ] **Step 1: Tests first** (`tests/unit/validate.test.ts`):
+  - Update the cooler test: 21.8 is now **rejected** (`cooler-height`), 30 kept, 29.9 rejected, 200 kept, 200.1 rejected.
+  - New: `psu-watts` 3000 is **not** a rejection, 3000.1 is (still report-only: value unchanged).
+  - New: `VALIDATION_MODE` equals `'enforce'`.
+  - New: builder data: the Spire U20M case ends up with `gpuMaxMm: null` in the builder row. Run `builderFile` from `src/lib/derive.ts` on a minimal fixture whose case listings include Spire U20M `gpuMaxMm: 3.502` validated in enforce mode, and expect that case's row to have `gpuMaxMm === null` (decode with `fromColumns`). If the builder's `candidates()` makes a fixture impractical, test instead `caseGpuMax` (`src/lib/builder.ts`) on the model from `slotModels('case', validated listings)`, and say which in the report.
+  - Remove the band test if one exists.
+  Run: `npx vitest run tests/unit/validate.test.ts` → the new/changed tests FAIL.
+- [ ] **Step 2: Implement** the range and mode changes; remove the band; run the test file → PASS.
+- [ ] **Step 3: Equivalence and coverage scripts.** In `scripts/checks/data-equivalence.test.mts` and `scripts/checks/builder-coverage.mts`, wherever a category's raw `latest.json` is read for derivation, pass it through `validateLatest(cat, latest, VALIDATION_MODE)` first (both sides of the equivalence comparison, so it keeps comparing like with like). Run each the way `scripts/checks/README.md` says; both must still pass/run. Record the commands and output in the report.
+- [ ] **Step 4: Report script.**
+  - The intro paragraph and the summary's "Mode" column follow `VALIDATION_MODE`: in `'enforce'`, say that the listed values are treated as "not stated" on the site (list.json, builder.json); keep `psu-watts` labelled report-only.
+  - Add one sentence under the RAM speed sections: "RAM model names keep the speed the scraper read (e.g. "60000MHz"); the fix for the names is in the scraper (queued for main)."
+  - Remove the review-band section.
+  - New section "Builder rows changed": run `builderFile` on the raw data and on the validated data (all categories), decode both, and for each `RANGES` check whose field exists in builder rows, count the rows (by `id`) whose value of that field differs, with up to 10 examples (chip, before → after). A check whose field is not in builder rows says "not a builder field".
+  - Still deterministic (no timestamps). Run `npm run validation:report` twice; the second run leaves no diff.
+- [ ] **Step 5: Build and check the shipped data.** `npm run build`; then confirm in `dist/data/builder.json` (decoded) that the Spire U20M case row has `gpuMaxMm` null, and in `dist/data/case/list.json` that its listing's `gpuMaxMm` is null. Record how you checked. The build's log line now says `validation (enforce)`.
+- [ ] **Step 6: Full check, then commit.** `npm run check` passes. Commit only the files listed above: `git commit -m "feat(data): enforce range validation (owner-approved ranges)"` (no Co-Authored-By line).
