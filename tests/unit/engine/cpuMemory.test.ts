@@ -42,3 +42,25 @@ describe('cpuRow / officialSpeed', () => {
     expect(officialSpeed('EPYC 4124P', 'DDR5', 2)).toBeNull();
   });
 });
+
+describe('Intel rows (one figure per DDR type, no 4-stick value)', () => {
+  const k = cpuRow('Core i5-14600K');
+  it('exact names: a row lists the exact name; near names and missing suffixes are not matches', () => {
+    expect(k?.models).toContain('Core i5-14600K');
+    expect(k?.models).not.toContain('Core i5-14600KS');
+    expect(cpuRow('Core i5-14600')?.models).toContain('Core i5-14600');
+    expect(cpuRow('Core i5-1460')).toBeUndefined();
+    expect(cpuRow('Core i5-14600KFX')).toBeUndefined();
+  });
+  it('a name with and without a suffix is a different chip: 250K Plus is covered, plain 250K is not', () => {
+    expect(cpuRow('Core Ultra 5 250K Plus')?.models).toContain('Core Ultra 5 250K Plus');
+    expect(cpuRow('Core Ultra 5 250K')).toBeUndefined();
+  });
+  it('Intel row has no 4-stick value: 2 sticks give the speed, 4 sticks give null', () => {
+    expect(k?.memory.DDR5?.sticks4).toBeUndefined();
+    expect(officialSpeed('Core i5-14600K', 'DDR5', 2)?.mhz).toBe(5600);
+    expect(officialSpeed('Core i5-14600K', 'DDR5', 4)).toBeNull();
+    expect(officialSpeed('Core i5-14600K', 'DDR4', 2)?.mhz).toBe(3200);
+  });
+  it('a DDR5-only Intel row gives null for DDR4', () => expect(officialSpeed('Core Ultra 7 265K', 'DDR4', 2)).toBeNull());
+});

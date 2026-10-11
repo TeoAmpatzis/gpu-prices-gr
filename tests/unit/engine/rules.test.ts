@@ -232,6 +232,14 @@ describe('rule 25: memory speed vs the CPU official speed', () => {
   it('unknown: CPU not in the table', () => expect(status(25, [cpu({}, 'EPYC 4124P'), ram()])).toBe('unknown'));
   it('unknown: RAM without a module count', () => expect(status(25, [cpu(), ram({ modules: null })])).toBe('unknown'));
   it('unknown: RAM without a speed', () => expect(status(25, [cpu(), ram({ speed: null })])).toBe('unknown'));
+
+  describe('with a real Intel row (no 4-stick value)', () => {
+    const i5 = (f: Record<string, unknown> = {}) => cpu({ socket: 'LGA1700', ...f }, 'Core i5-14600K');
+    it('pass: 2 sticks at the official speed', () => expect(status(25, [i5(), ram({ speed: 5600 })])).toBe('pass'));
+    it('faster → note', () => expect(status(25, [i5(), ram({ speed: 6000 })])).toBe('note'));
+    it('unknown: 4 sticks (not the 2-stick value)', () => expect(status(25, [i5(), ram({ speed: 5600, modules: 4 })])).toBe('unknown'));
+    it('DDR4 kit at the official DDR4 speed → pass', () => expect(status(25, [i5(), ram({ type: 'DDR4', speed: 3200 })])).toBe('pass'));
+  });
 });
 
 describe('rule 26: RAM–air-cooler clearance (always a note: not checked)', () => {
