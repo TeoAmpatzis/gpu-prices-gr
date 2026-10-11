@@ -8,7 +8,7 @@
       "modelKey": "Ryzen 5 7600",
       "name": "Ryzen 5 7600",
       "quantity": 1,
-      "synthetic": true,
+      "synthetic": false,
       "source": {
         "site": "skroutz",
         "id": "skroutz:40307498",
@@ -21,13 +21,8 @@
         "coolerIncluded": true,
         "packaging": null,
         "tdp": 65,
-        "cores": 6,
-        "officialMemMhz": 5200
-      },
-      "syntheticFields": [
-        "officialMemMhz"
-      ],
-      "note": "Reference value: AMD lists DDR5-5200 for Ryzen 7000 (recalled, not fetched)."
+        "cores": 6
+      }
     },
     {
       "category": "mobo",
@@ -83,7 +78,7 @@
       "level": "note"
     }
   ],
-  "why": "6000 MHz runs only with EXPO/XMP enabled.",
+  "why": "AMD lists DDR5-5200 for the Ryzen 5 7600 with 2 modules (https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-5-7600.html, fetched 2026-10-11); 6000 MHz runs only with EXPO/XMP.",
   "capturedFrom": {
     "builtAt": "2026-10-03T18:51:07.582Z",
     "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
