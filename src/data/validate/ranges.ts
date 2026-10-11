@@ -13,10 +13,9 @@ export interface RangeCheck {
   reportOnly?: true; // never set to null, even in 'enforce'
 }
 
-export interface ReviewBand { id: string; cat: Category; field: string; min: number; below: number; note: string } // min <= v < below
-
 export const RANGES: RangeCheck[] = [
-  { id: 'cooler-height', cat: 'cooler', field: 'heightMm', min: 15, max: 200, unit: 'mm' },
+  // under 30 mm is unknown: shop pages also give a fan's 25 mm thickness as the tower height (owner 2026-10-11)
+  { id: 'cooler-height', cat: 'cooler', field: 'heightMm', min: 30, max: 200, unit: 'mm' },
   { id: 'case-gpu-max', cat: 'case', field: 'gpuMaxMm', min: 100, max: 700, unit: 'mm' },
   { id: 'case-cooler-max', cat: 'case', field: 'coolerMaxMm', min: 25, max: 250, unit: 'mm' },
   { id: 'gpu-length', cat: 'gpu', field: 'lengthMm', min: 100, max: 400, unit: 'mm' },
@@ -26,11 +25,4 @@ export const RANGES: RangeCheck[] = [
   { id: 'ram-cas', cat: 'ram', field: 'cas', min: 5, max: 60, unit: 'CL' },
   { id: 'cpu-tdp', cat: 'cpu', field: 'tdp', min: 10, max: 500, unit: 'W' },
   { id: 'mobo-max-memory', cat: 'mobo', field: 'maxMemoryGB', min: 4, max: 16384, unit: 'GB' },
-];
-
-export const REVIEW_BANDS: ReviewBand[] = [
-  {
-    id: 'cooler-height-low', cat: 'cooler', field: 'heightMm', min: 15, below: 30,
-    note: "Real low-profile coolers are 21–27 mm, but shop pages also give a fan's 25 mm thickness as the tower height (audit D-01, v1 ignores < 30 mm). Owner decides.",
-  },
 ];

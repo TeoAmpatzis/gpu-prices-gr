@@ -1,16 +1,19 @@
 // Writes docs/phase2/validation-report.md: every measured value in public/data/<cat>/latest.json that is
-// outside its plausible range (src/data/validate). Run: npm run validation:report
+// outside its plausible range (src/data/validate), and what that changes in the builder's data.
+// Run: npm run validation:report
 // The file has no "generated at" time, so the same data gives the same file.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import type { Latest } from '../src/types';
+import type { Category, Latest } from '../src/types';
 import { CATEGORY_IDS } from '../src/lib/categories';
-import { REVIEW_BANDS, RANGES } from '../src/data/validate/ranges';
-import { validateLatest, type Rejection } from '../src/data/validate';
+import { RANGES } from '../src/data/validate/ranges';
+import { VALIDATION_MODE, validateLatest, type Rejection } from '../src/data/validate';
+import { builderFile } from '../src/lib/derive';
+import { fromColumns } from '../src/lib/columns';
 
 const OUT = join(process.cwd(), 'docs', 'phase2', 'validation-report.md');
 const EXAMPLES = 10;
-const BAND_ROWS = 60;
+const BUILT_AT = '2026-01-01T00:00:00.000Z'; // any fixed value: it is not compared
 
 const cmp = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
 const cut = (s: string, n: number) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
@@ -20,36 +23,33 @@ const fmt = (n: number) => n.toLocaleString('en-US', { maximumFractionDigits: 3 
 const stated: Record<string, number> = {};
 const rejections: Rejection[] = [];
 const updated: string[] = [];
-const bandRows: Record<string, Map<string, { values: Set<number>; listings: number }>> = {};
-for (const b of REVIEW_BANDS) bandRows[b.id] = new Map();
+const raw: Partial<Record<Category, Latest>> = {};
+const checked: Partial<Record<Category, Latest>> = {};
 
 for (const cat of CATEGORY_IDS) {
   const path = join(process.cwd(), 'public', 'data', cat, 'latest.json');
   if (!existsSync(path)) continue; // category not scraped yet
   const latest = JSON.parse(readFileSync(path, 'utf8')) as Latest;
-  const v = validateLatest(cat, latest, 'report');
+  const v = validateLatest(cat, latest, 'enforce'); // the lists below are what enforce changes
   Object.assign(stated, v.stated);
   rejections.push(...v.rejections);
   updated.push(`${cat}: ${latest.updatedAt}`);
-  for (const band of REVIEW_BANDS.filter((b) => b.cat === cat)) {
-    for (const l of latest.listings) {
-      const x = (l as unknown as Record<string, unknown>)[band.field];
-      if (typeof x !== 'number' || !Number.isFinite(x) || x < band.min || x >= band.below) continue;
-      const row = bandRows[band.id].get(l.chip) ?? { values: new Set<number>(), listings: 0 };
-      row.values.add(x);
-      row.listings++;
-      bandRows[band.id].set(l.chip, row);
-    }
-  }
+  raw[cat] = latest;
+  checked[cat] = v.latest;
 }
 
+const enforced = VALIDATION_MODE === 'enforce';
 const lines: string[] = [];
 lines.push('# Data validation report', '');
 lines.push(
   'Measured values (lengths, heights, speeds, wattages) that fall outside the plausible range for their field. ' +
     'These are almost always scraping mistakes (for example a case "up to 3.502 mm"), not real measurements. ' +
-    'In report mode nothing is changed on the site; the owner approves the ranges before `VALIDATION_MODE` becomes `\'enforce\'`, ' +
-    'which then treats the listed values as "not stated".',
+    (enforced
+      ? 'The site runs in enforce mode: each listed value is treated as "not stated" in the site\'s data files (list.json, builder.json), ' +
+        'so the compatibility checks say "unknown" instead of using it. The scraper\'s own files are not changed. ' +
+        '`psu-watts` is report only (a wattage cannot be "not stated").'
+      : 'The site runs in report mode: nothing is changed on the site; the owner approves the ranges before `VALIDATION_MODE` becomes `\'enforce\'`, ' +
+        'which then treats the listed values as "not stated".'),
   '',
 );
 lines.push('Data times (`latest.updatedAt`):', '');
@@ -61,7 +61,7 @@ for (const c of RANGES) {
   const rej = rejections.filter((r) => r.check === c.id);
   const models = new Set(rej.map((r) => r.chip)).size;
   lines.push(
-    `| \`${c.id}\` | ${c.cat}.${c.field} | ${fmt(c.min)}–${fmt(c.max)} ${c.unit} | ${c.reportOnly ? 'report only' : 'enforced'} | ` +
+    `| \`${c.id}\` | ${c.cat}.${c.field} | ${fmt(c.min)}–${fmt(c.max)} ${c.unit} | ${c.reportOnly || !enforced ? 'report only' : 'enforced'} | ` +
       `${stated[c.id] ?? 0} | ${rej.length} | ${models} |`,
   );
 }
@@ -77,20 +77,65 @@ for (const c of RANGES) {
     lines.push(`| ${cell(r.chip)} | ${fmt(r.value)} ${c.unit} | ${cell(cut(r.title, 80))} | \`${r.id}\` |`);
   }
   lines.push('');
+  if (c.id === 'ram-ddr4-speed' || c.id === 'ram-ddr5-speed') {
+    lines.push('RAM model names keep the speed the scraper read (e.g. "60000MHz"); the fix for the names is in the scraper (queued for main).', '');
+  }
 }
 
-for (const b of REVIEW_BANDS) {
-  const rows = [...bandRows[b.id].entries()].sort((x, y) => cmp(x[0], y[0]));
-  lines.push(`## Review band \`${b.id}\`: ${b.cat}.${b.field} from ${b.min} to under ${b.below}`, '');
-  lines.push(`${b.note} (Report only: these values are kept in every mode.)`, '');
-  lines.push(`${rows.length} model(s).`, '');
-  lines.push('| Model | Value(s) | Listings |', '| --- | --- | ---: |');
-  for (const [chip, row] of rows.slice(0, BAND_ROWS)) {
-    lines.push(`| ${cell(chip)} | ${[...row.values].sort((p, q) => p - q).map(fmt).join(', ')} | ${row.listings} |`);
+// Builder rows changed: the same builder files built from the raw and from the checked data.
+type Cols = { cols: string[]; rows: unknown[][] };
+const builderRows = (all: Partial<Record<Category, Latest>>) => {
+  const out: Record<string, Map<string, Record<string, unknown>>> = {};
+  const { file, lazy } = builderFile(all, BUILT_AT);
+  const put = (slot: string, c: Cols) => {
+    const m = new Map<string, Record<string, unknown>>();
+    for (const r of fromColumns<Record<string, unknown>>(c as never)) m.set(String(r['id']), r);
+    out[slot] = m;
+  };
+  for (const [slot, c] of Object.entries(file.slots)) put(slot, c as unknown as Cols);
+  for (const [slot, f] of Object.entries(lazy)) put(slot, f as unknown as Cols);
+  return out;
+};
+const before = builderRows(raw);
+const after = builderRows(checked);
+lines.push('## Builder rows changed', '');
+lines.push(
+  "builder.json built from the scraper's raw data and again from the checked data, rows matched by listing id " +
+    '(a row is one model; its value is the one the builder uses for that model). Rows whose value differs:',
+  '',
+);
+lines.push('| Check | Builder rows changed | Rows in the slot |', '| --- | ---: | ---: |');
+const detail: string[] = [];
+for (const c of RANGES) {
+  const b = before[c.cat];
+  const a = after[c.cat];
+  const isField = !!b && [...b.values()].some((r) => c.field in r);
+  if (!isField || !a) {
+    lines.push(`| \`${c.id}\` | not a builder field | ${b?.size ?? 0} |`);
+    continue;
   }
-  if (rows.length > BAND_ROWS) lines.push('', `… and ${rows.length - BAND_ROWS} more`);
-  lines.push('');
+  const changed: { chip: string; from: unknown; to: unknown; id: string }[] = [];
+  for (const [id, r] of b) {
+    const n = a.get(id);
+    if (c.applies && !c.applies(r)) continue; // e.g. the DDR4 check only looks at DDR4 rows
+    if (n && r[c.field] !== n[c.field]) changed.push({ id, chip: String(r['chip']), from: r[c.field], to: n[c.field] });
+  }
+  lines.push(`| \`${c.id}\` | ${changed.length} | ${b.size} |`);
+  if (!changed.length) continue;
+  changed.sort((x, y) => cmp(x.chip, y.chip) || cmp(x.id, y.id));
+  detail.push(`### \`${c.id}\`: ${c.cat}.${c.field}`, '', `Showing ${Math.min(EXAMPLES, changed.length)} of ${changed.length}.`, '');
+  detail.push('| Model | Before | After | Listing id |', '| --- | ---: | ---: | --- |');
+  for (const x of changed.slice(0, EXAMPLES)) {
+    detail.push(
+      `| ${cell(x.chip)} | ${typeof x.from === 'number' ? fmt(x.from) : String(x.from)} | ${x.to === null ? 'not stated' : String(x.to)} | \`${x.id}\` |`,
+    );
+  }
+  detail.push('');
 }
+lines.push('');
+const unmatched = Object.keys(before).reduce((n, slot) => n + [...before[slot].keys()].filter((id) => !after[slot]?.has(id)).length, 0);
+lines.push(`Rows only in one of the two builds: ${unmatched}.`, '');
+lines.push(...detail);
 
 mkdirSync(dirname(OUT), { recursive: true });
 writeFileSync(OUT, lines.join('\n'));

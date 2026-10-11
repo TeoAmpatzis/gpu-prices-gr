@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { evaluate, type Part } from '../../src/engine';
 import { ruleResult } from '../compat/engine-adapter';
 import { RANGES } from '../../src/data/validate/ranges';
-import { validateLatest } from '../../src/data/validate';
+import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
+import { builderFile } from '../../src/lib/derive';
+import { fromColumns } from '../../src/lib/columns';
 import type { BaseListing, Latest } from '../../src/types';
 
 type Row = Record<string, unknown>;
@@ -52,14 +54,44 @@ describe('validateLatest', () => {
     expect(r.stated['ram-ddr5-speed']).toBe(2);
   });
 
-  it('cooler height: 21.8 kept, 12 rejected, null not counted', () => {
+  it('cooler height: under 30 mm is unknown (owner 2026-10-11), 30 and 200 kept', () => {
     const r = validateLatest('cooler', latest([
-      row('akasa', { heightMm: 21.8 }), row('low', { heightMm: 12 }), row('none', { heightMm: null }),
+      row('akasa', { heightMm: 21.8 }), row('lo', { heightMm: 29.9 }), row('min', { heightMm: 30 }),
+      row('max', { heightMm: 200 }), row('hi', { heightMm: 200.1 }), row('none', { heightMm: null }),
     ]), 'enforce');
-    expect(r.rejections.map((x) => x.id)).toEqual(['low']);
-    expect(get(r.latest, 0, 'heightMm')).toBe(21.8);
-    expect(get(r.latest, 2, 'heightMm')).toBeNull();
-    expect(r.stated['cooler-height']).toBe(2);
+    expect(r.rejections.map((x) => [x.check, x.id])).toEqual([['cooler-height', 'akasa'], ['cooler-height', 'lo'], ['cooler-height', 'hi']]);
+    expect(get(r.latest, 2, 'heightMm')).toBe(30);
+    expect(get(r.latest, 3, 'heightMm')).toBe(200);
+    expect(get(r.latest, 0, 'heightMm')).toBeNull();
+    expect(get(r.latest, 5, 'heightMm')).toBeNull();
+    expect(r.stated['cooler-height']).toBe(5);
+  });
+
+  it('runs in enforce mode', () => {
+    expect(VALIDATION_MODE).toBe('enforce');
+  });
+
+  it('builder row of the Spire U20M case has gpuMaxMm null after validation', () => {
+    const spire = {
+      id: 'skroutz:spire', source: 'skroutz', title: 'Spire U20M Midi Tower', url: 'https://x/spire', price: 40, shopCount: 1,
+      brand: 'Spire', chip: 'Spire U20M', size: 'Midi Tower', window: false, rgb: false, maxBoard: 'ATX', gpuMaxMm: 3.502,
+      scrapedAt: '2026-10-11T00:00:00Z',
+    };
+    const input = latest([spire]);
+    const caseRow = (all: Latest<BaseListing>) => {
+      const rows = fromColumns(builderFile({ case: all as never }, '2026-10-11T00:00:00Z').file.slots.case!) as unknown as Row[];
+      return rows.find((r) => r['id'] === 'skroutz:spire');
+    };
+    expect(caseRow(input)?.['gpuMaxMm']).toBe(3.502); // raw data: the bad value reaches the builder
+    const fixed = caseRow(validateLatest('case', input, 'enforce').latest);
+    expect(fixed).toBeDefined();
+    expect(fixed?.['gpuMaxMm']).toBeNull();
+  });
+
+  it('psu watts: 3000 kept, 3000.1 listed (report only, value unchanged)', () => {
+    const r = validateLatest('psu', latest([row('ok', { watts: 3000 }), row('big', { watts: 3000.1 })]), 'enforce');
+    expect(r.rejections.map((x) => x.id)).toEqual(['big']);
+    expect(get(r.latest, 1, 'watts')).toBe(3000.1);
   });
 
   it('enforce does not mutate its input', () => {

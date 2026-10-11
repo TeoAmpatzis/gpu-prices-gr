@@ -4,7 +4,7 @@ import type { BaseListing, Category, Latest } from '../../types';
 import { RANGES } from './ranges';
 
 export type ValidationMode = 'report' | 'enforce';
-export const VALIDATION_MODE: ValidationMode = 'report';
+export const VALIDATION_MODE: ValidationMode = 'enforce';
 
 export interface Rejection { check: string; cat: Category; id: string; title: string; chip: string; field: string; value: number }
 export interface ValidationResult<L extends BaseListing> {

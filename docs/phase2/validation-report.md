@@ -1,6 +1,6 @@
 # Data validation report
 
-Measured values (lengths, heights, speeds, wattages) that fall outside the plausible range for their field. These are almost always scraping mistakes (for example a case "up to 3.502 mm"), not real measurements. In report mode nothing is changed on the site; the owner approves the ranges before `VALIDATION_MODE` becomes `'enforce'`, which then treats the listed values as "not stated".
+Measured values (lengths, heights, speeds, wattages) that fall outside the plausible range for their field. These are almost always scraping mistakes (for example a case "up to 3.502 mm"), not real measurements. The site runs in enforce mode: each listed value is treated as "not stated" in the site's data files (list.json, builder.json), so the compatibility checks say "unknown" instead of using it. The scraper's own files are not changed. `psu-watts` is report only (a wattage cannot be "not stated").
 
 Data times (`latest.updatedAt`):
 
@@ -18,7 +18,7 @@ Data times (`latest.updatedAt`):
 
 | Check | Field | Range | Mode | Values stated | Out of range | Distinct models out of range |
 | --- | --- | --- | --- | ---: | ---: | ---: |
-| `cooler-height` | cooler.heightMm | 15–200 mm | enforced | 1557 | 12 | 7 |
+| `cooler-height` | cooler.heightMm | 30–200 mm | enforced | 1557 | 138 | 66 |
 | `case-gpu-max` | case.gpuMaxMm | 100–700 mm | enforced | 5259 | 1 | 1 |
 | `case-cooler-max` | case.coolerMaxMm | 25–250 mm | enforced | 4614 | 0 | 0 |
 | `gpu-length` | gpu.lengthMm | 100–400 mm | enforced | 1233 | 0 | 0 |
@@ -29,22 +29,22 @@ Data times (`latest.updatedAt`):
 | `cpu-tdp` | cpu.tdp | 10–500 W | enforced | 745 | 0 | 0 |
 | `mobo-max-memory` | mobo.maxMemoryGB | 4–16,384 GB | enforced | 0 | 0 | 0 |
 
-## `cooler-height`: cooler.heightMm outside 15–200 mm
+## `cooler-height`: cooler.heightMm outside 30–200 mm
 
-12 value(s), 7 model(s). Showing 10.
+138 value(s), 66 model(s). Showing 10.
 
 | Model | Value | Title | Listing id |
 | --- | ---: | --- | --- |
-| Akasa Alucia H4i | 12 mm | Akasa Alucia H4i | `bestprice:2163333292` |
-| Akasa Alucia H4i | 12 mm | Akasa Alucia H4i Socket 115x/1200/1700/1851 | `skroutz:56533164` |
-| Inter-Tech A-45 | 13 mm | Inter-Tech A-45 | `bestprice:2164214442` |
-| Inter-Tech A-45 | 13 mm | Inter-Tech A-45 Ψύκτρα Επεξεργαστή για Socket AM4 / AM5 | `shopflix:SF-200080806` |
-| Inter-Tech A-45 | 13 mm | Inter-Tech A-45 Socket AM4/AM5 | `skroutz:54765776` |
-| Inter-Tech IP-3 | 12 mm | Inter-Tech IP-3 Socket AM4/1200/115x/1700 | `skroutz:35276996` |
-| Inter-Tech IP-3 Παθητική | 12 mm | Inter-Tech IP-3 Παθητική για Socket AM4 / 1200 / 115x / 1700 Ασημί | `shopflix:SF-11324138` |
-| Inter-Tech Q-7 | 13 mm | Inter-Tech Q-7 Ψύκτρα Επεξεργαστή για Socket 1700 | `shopflix:SF-201054176` |
-| Inter-Tech Q-7 | 13 mm | Inter-Tech Q-7 Socket 1700 | `skroutz:64624870` |
-| Xilence M404 Pro | 14 mm | Xilence M404 Pro ARGB Black | `bestprice:2164587206` |
+| Aerocool AEROPGSRAVE3-FRGB-4P | 25 mm | Aerocool AEROPGSRAVE3-FRGB-4P για Socket AM4 / 115x / 1700 με RGB Φωτισμό | `shopflix:SF-11324143` |
+| Aerocool AEROPGSRAVE3-FRGB-4P | 25 mm | Aerocool AEROPGSRAVE3-FRGB-4P Socket AM4/115x/1700 | `skroutz:37057174` |
+| Aerocool AEROPGSRAVE4-FRGB-4P | 25 mm | Aerocool AEROPGSRAVE4-FRGB-4P για Socket 115x / 1200 / 1700 / 775 με RGB Φωτισμό | `shopflix:SF-11324182` |
+| Aerocool AEROPGSRAVE4-FRGB-4P | 25 mm | Aerocool AEROPGSRAVE4-FRGB-4P Socket AM4/1200/115x/1700 | `skroutz:37056900` |
+| Akasa AK-CC1109BP01 | 27.6 mm | Akasa AK-CC1109BP01 Socket AM4 | `skroutz:39815292` |
+| Akasa AK-CC6601EP01 | 26.92 mm | Akasa AK-CC6601EP01 για Socket 1700 | `shopflix:SF-11324018` |
+| Akasa AK-CC6601EP01 | 26.92 mm | Akasa AK-CC6601EP01 Socket 1700/1851 | `skroutz:36966924` |
+| Akasa AK-CC6602HP01 | 29.92 mm | Akasa AK-CC6602HP01 για Socket 1700 | `shopflix:SF-103481560` |
+| Akasa AK-CC6602HP01 | 29.92 mm | Akasa AK-CC6602HP01 Socket 1700/1851 | `skroutz:54017034` |
+| Akasa AK-CC6609EP01 | 21.8 mm | Akasa AK-CC6609EP01 Low Profile για Socket 1700 Ασημί | `shopflix:SF-103272353` |
 
 ## `case-gpu-max`: case.gpuMaxMm outside 100–700 mm
 
@@ -62,6 +62,8 @@ Data times (`latest.updatedAt`):
 | --- | ---: | --- | --- |
 | DDR4 32GB (1×32GB) 6400MHz | 6,400 MHz | Lenovo 32GB DDR4 4X77A90965 | `skroutz:68019327` |
 
+RAM model names keep the speed the scraper read (e.g. "60000MHz"); the fix for the names is in the scraper (queued for main).
+
 ## `ram-ddr5-speed`: ram.speed outside 4,000–10,000 MHz
 
 9 value(s), 5 model(s). Showing 9.
@@ -78,70 +80,40 @@ Data times (`latest.updatedAt`):
 | DDR5 64GB (2×32GB) 60000MHz | 60,000 MHz | G.SKILL F5-6000J3040G32GX2-TZ5RK TRIDENT Z5 RGB 64GB (2X32GB) DDR5 60000MHZ CL3… | `eshop:PER.559539` |
 | DDR5 64GB (2×32GB) 60000MHz | 60,000 MHz | G.SKILL F5-6000J3238G32GX2-TZ5S TRIDENT Z5 64GB (2X32GB) DDR5 60000MHZ CL32 DUA… | `eshop:PER.559544` |
 
-## Review band `cooler-height-low`: cooler.heightMm from 15 to under 30
+RAM model names keep the speed the scraper read (e.g. "60000MHz"); the fix for the names is in the scraper (queued for main).
 
-Real low-profile coolers are 21–27 mm, but shop pages also give a fan's 25 mm thickness as the tower height (audit D-01, v1 ignores < 30 mm). Owner decides. (Report only: these values are kept in every mode.)
+## Builder rows changed
 
-59 model(s).
+builder.json built from the scraper's raw data and again from the checked data, rows matched by listing id (a row is one model; its value is the one the builder uses for that model). Rows whose value differs:
 
-| Model | Value(s) | Listings |
-| --- | --- | ---: |
-| Aerocool AEROPGSRAVE3-FRGB-4P | 25 | 2 |
-| Aerocool AEROPGSRAVE4-FRGB-4P | 25 | 2 |
-| Akasa AK-CC1109BP01 | 27.6 | 1 |
-| Akasa AK-CC6601EP01 | 26.92 | 2 |
-| Akasa AK-CC6602HP01 | 29.92 | 2 |
-| Akasa AK-CC6609EP01 | 21.8 | 2 |
-| Akasa AK-CC6610EP01 | 26.92 | 2 |
-| Akasa AK-CC7122BP01 | 26 | 3 |
-| Akasa AK-CC7129BP01 | 21 | 3 |
-| Akasa AK-CCE-7106HP | 29.5 | 2 |
-| Akasa Vegas Chroma iLG | 29.92 | 2 |
-| Alpenfoehn Brocken 4 | 27 | 5 |
-| Alpenfoehn Brocken 4 MAX | 27 | 2 |
-| Alpenfoehn Brocken 4 Max | 27 | 2 |
-| Alpenfoehn Brocken 4 Max Διπλού Ανεμιστήρα | 27 | 1 |
-| Alpenfoehn Dolomit Premium | 25 | 2 |
-| Apnx AP1-V | 25 | 2 |
-| Armaggeddon Blizzard 1 | 25 | 5 |
-| Armaggeddon Blizzard 2 | 25 | 5 |
-| Armaggeddon Blizzard 3 | 25 | 5 |
-| Darkflash L6 | 25 | 1 |
-| Deepcool AK400 G2 | 25 | 4 |
-| Deepcool Theta 31 PWM | 25 | 1 |
-| Dynatron K199 | 28.5 | 1 |
-| Dynatron K666 | 25 | 3 |
-| Dynatron Q1 | 27 | 1 |
-| Dynatron Q3 | 28 | 1 |
-| Dynatron S3 | 27 | 1 |
-| Dynatron S5 | 25 | 1 |
-| Dynatron S7 | 27.4 | 1 |
-| Inter-Tech A-18 | 27.5 | 3 |
-| Inter-Tech A-41 | 28.4 | 3 |
-| Inter-Tech K-129 | 26.5 | 1 |
-| Inter-Tech K-199 | 28.5 | 3 |
-| Inter-Tech K129 | 26.5 | 1 |
-| Inter-Tech K129 Παθητική | 26.5 | 1 |
-| Inter-Tech Q-3 | 28 | 2 |
-| Inter-Tech Q-5 | 28 | 3 |
-| Inter-Tech Q3 | 28 | 1 |
-| LC-Power LC-CC-120-RGB | 25 | 1 |
-| LC-Power LC-CC-65 | 20 | 2 |
-| Power Train DL-200T | 25 | 1 |
-| Serioux CC92ARGB | 25 | 2 |
-| SilverStone AR09-115XP | 25 | 1 |
-| SilverStone AR09-115XS | 25 | 1 |
-| SilverStone NT07-1700 | 22 | 2 |
-| SilverStone NT09-1700 | 25 | 3 |
-| SilverStone SST-XE04-4677VB | 25 | 2 |
-| SilverStone XE01-1700A | 28 | 2 |
-| Soeyi CLA902 | 25 | 1 |
-| Thermalright AXP90-X36 | 15 | 4 |
-| Thermalright Assassin Spirit 120 Vision | 25.6 | 4 |
-| Thermalright Assassin X 120 Refined SE PLUS | 25 | 1 |
-| Thermalright Assassin X 120 Refined SE Plus | 25 | 1 |
-| Thermalright Peerless Assassin 140 | 27 | 4 |
-| Thermalright Peerless Assassin 140 Διπλού Ανεμιστήρα | 27 | 1 |
-| Thermaltake NIC C4 | 25 | 2 |
-| Xilence XC232 | 25 | 2 |
-| Zalman CNPS9X Performa | 25 | 4 |
+| Check | Builder rows changed | Rows in the slot |
+| --- | ---: | ---: |
+| `cooler-height` | 0 | 2089 |
+| `case-gpu-max` | 1 | 2588 |
+| `case-cooler-max` | 0 | 2588 |
+| `gpu-length` | 0 | 1536 |
+| `psu-watts` | 0 | 137 |
+| `ram-ddr4-speed` | 0 | 222 |
+| `ram-ddr5-speed` | 2 | 222 |
+| `ram-cas` | 0 | 222 |
+| `cpu-tdp` | 0 | 337 |
+| `mobo-max-memory` | not a builder field | 984 |
+
+Rows only in one of the two builds: 0.
+
+### `case-gpu-max`: case.gpuMaxMm
+
+Showing 1 of 1.
+
+| Model | Before | After | Listing id |
+| --- | ---: | ---: | --- |
+| Spire U20M | 3.502 | not stated | `bestprice:2163830217` |
+
+### `ram-ddr5-speed`: ram.speed
+
+Showing 2 of 2.
+
+| Model | Before | After | Listing id |
+| --- | ---: | ---: | --- |
+| DDR5 32GB (1×32GB) 2400MHz | 2,400 | not stated | `bestprice:2160758270` |
+| DDR5 64GB (2×32GB) 60000MHz | 60,000 | not stated | `eshop:PER.559539` |
