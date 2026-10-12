@@ -158,27 +158,34 @@ const BUILDER_SKIP = new Set(['scrapedAt', 'shopCount', 'shipping', 'total', 'me
  * - `drop`: the model's sale (`saleOf`, the picker's "−N%"), which may come from another listing.
  */
 function builderRow<S extends Slot>(slot: S, m: Model<SlotListing[S]>): Record<string, unknown> {
-  const most = <V>(get: (l: SlotListing[S]) => V | null | undefined) => mostCommon(m.listings.map(get));
   const sale = saleOf(m.listings, m.cheapest);
   // `pop`: the model's popularity (listings, shops, sites), the one input of the Recommended sort a
   // one-row model can't recompute (src/lib/ranking.ts popularityRaw), as a small integer.
   const row: Record<string, unknown> = { ...m.cheapest, drop: sale?.pct ?? null, pop: Math.round(POP_SCALE * popularityRaw(m)) };
   if (slot !== 'gpu') row.title = [...new Set(m.listings.map((l) => l.title))].join(' | ');
+  return Object.assign(row, slotFields(slot, m));
+}
+
+/**
+ * The values the rules take across all of a model's listings (most common socket, board size,
+ * measurements…), per slot: written onto the builder's one-row model, and onto the engine part of
+ * the category pages' "pick" mode, so both see the same numbers.
+ */
+export function slotFields<S extends Slot>(slot: S, m: Model<SlotListing[S]>): Record<string, unknown> {
+  const most = <V>(get: (l: SlotListing[S]) => V | null | undefined) => mostCommon(m.listings.map(get));
   const any = m as Model<never>;
   switch (slot) {
     case 'cpu':
-      Object.assign(row, { socket: cpuSocket(any), igpu: cpuHasIgpu(any) });
-      break;
+      return { socket: cpuSocket(any), igpu: cpuHasIgpu(any) };
     case 'mobo':
-      Object.assign(row, {
+      return {
         socket: moboSocket(any),
         memory: moboMemory(any),
         formFactor: moboForm(any),
         ramSlots: most((l) => (l as MoboListing).ramSlots),
-      });
-      break;
+      };
     case 'case':
-      Object.assign(row, {
+      return {
         // Only the stated size: the builder tells it apart from the guess by case size.
         maxBoard: caseBoardStated(any),
         gpuMaxMm: caseGpuMax(any),
@@ -189,13 +196,12 @@ function builderRow<S extends Slot>(slot: S, m: Model<SlotListing[S]>): Record<s
         fansIncluded: caseFansIncluded(any),
         hasFans: (any as Model<CaseListing>).listings.some((l) => l.hasFans) || null,
         radiators: caseRadiatorSizes(any),
-      });
-      break;
+      };
     case 'cooler':
-      Object.assign(row, { sockets: most((l) => (l as CoolerListing).sockets), heightMm: coolerHeight(any) });
-      break;
+      return { sockets: most((l) => (l as CoolerListing).sockets), heightMm: coolerHeight(any) };
+    default:
+      return {};
   }
-  return row;
 }
 
 /** Share (%) of the parts whose measurements are known yet; the builder shows a notice under 90%. */
