@@ -2,7 +2,7 @@
 // A pair with no official statement has no row (rule 13 stays unknown); nothing here is derived from memory or from another row.
 //   ok          the page lists the chipset as supporting that generation and says nothing about a BIOS update for it
 //   update      the page says the chipset needs (or may need) a BIOS update for that generation
-//   unsupported the page's table marks the chipset as not compatible with that generation
+//   unsupported reserved: an official list that says it is complete and omits the chipset (none found; AMD's AM4 table is not exhaustive)
 import { cpuRow, type CpuGeneration } from './cpuMemory';
 
 export type BiosVerdict = 'ok' | 'update' | 'unsupported';
@@ -28,15 +28,26 @@ const AM5_ALL =
   'With the AMD Ryzen 600 and 800 series chipsets, all AMD Socket AM5 motherboards are compatible with all AMD Socket AM5 processors. ' +
   'That means you can choose any Socket AM5 board for AMD Ryzen 7000, 8000, and 9000 compatibility.';
 const AM5_BIOS = '(A BIOS update may be required for Ryzen 8000 and 9000 series processors on 600 series boards.)';
-const AM5_600 = ['A620', 'B650', 'B650E', 'X670', 'X670E'];
+// Series membership: no amd.com page labels a chipset "600 series" by name. am5.html names, besides the 800 series
+// (X870E, X870, B850, B840), only X670E, X670 and "A620 / A620A / PRO 600" as AM5 chipsets, and its sentence covers "600 and 800 series
+// chipsets", so on that page these three are the 600 series. B650 and B650E are not named on am5.html (only on amd.com driver pages and
+// the EPYC 4000 chipset page, without a series label), so they get no row.
+const AM5_600 = ['A620', 'X670', 'X670E'];
 const AM5_800 = ['B840', 'B850', 'X870', 'X870E'];
 
 // ---- AM4: amd.com "AM4 chipsets" compatibility table (read cell by cell) ----------------------------------------
 const AM4 = 'https://www.amd.com/en/products/processors/chipsets/am4.html';
+const AM4_NOTE =
+  'CHIPSET FEATURES: Note that not all processors are supported on every chipset, and support may require a BIOS upgrade. See your motherboard manufacturer’s website for compatibility.';
+const H1000 = 'AMD Ryzen™ 1000 Series Processors';
+const H3000G = 'AMD Ryzen™ 3000 Series Processors with Radeon™ Graphics';
+const H3000 = 'AMD Ryzen™ 3000 Series Processors';
+const H4000 = 'AMD Ryzen™ 4000 Series Processors';
+const H5000 = 'AMD Ryzen™ 5000 Series Processors';
+/** The page's column headers in order. */
 const AM4_COLUMNS = [
-  'AMD Athlon™ Processors with Radeon Graphics', 'AMD Ryzen™ 1000 Series Processors', 'AMD Ryzen™ 2000 Series Processors with Radeon™ Graphics',
-  'AMD Ryzen™ 2000 Series Processors', 'AMD Ryzen™ 3000 Series Processors with Radeon™ Graphics', 'AMD Ryzen™ 3000 Series Processors',
-  'AMD Ryzen™ 4000 Series Processors', 'AMD Ryzen™ 5000 Series Processors',
+  'AMD Athlon™ Processors with Radeon Graphics', H1000, 'AMD Ryzen™ 2000 Series Processors with Radeon™ Graphics',
+  'AMD Ryzen™ 2000 Series Processors', H3000G, H3000, H4000, H5000,
 ];
 const SB = 'Selective Beta BIOS update needed';
 type Cell = '✓' | 'X' | typeof SB;
@@ -51,22 +62,27 @@ const AM4_TABLE: Record<string, Cell[]> = {
   B350: ['X', '✓', '✓', '✓', '✓', SB, SB, SB],
   A320: ['✓', '✓', '✓', '✓', '✓', 'X', SB, SB],
 };
-/** Generation -> the page columns it is read from. A generation that spans two columns gets a verdict only when both cells agree. */
-const AM4_GENERATIONS: [CpuGeneration, number[]][] = [
-  ['ryzen-1000', [1]], ['ryzen-3000', [4, 5]], ['ryzen-4000', [6]], ['ryzen-4000g', [6]], ['ryzen-5000', [7]], ['ryzen-5000g', [7]],
+/** Generation -> the page columns (by header) it is read from. A generation that spans two columns gets a row only when neither cell is an X. */
+const AM4_GENERATIONS: [CpuGeneration, string[]][] = [
+  ['ryzen-1000', [H1000]], ['ryzen-3000', [H3000G, H3000]], ['ryzen-4000', [H4000]], ['ryzen-4000g', [H4000]],
+  ['ryzen-5000', [H5000]], ['ryzen-5000g', [H5000]],
 ];
-const VERDICT_OF: Record<Cell, BiosVerdict> = { '✓': 'ok', X: 'unsupported', [SB]: 'update' };
 
+// A tick or "Selective Beta BIOS update needed" -> 'update': the page's own note under its table (AM4_NOTE) says support "may require a
+// BIOS upgrade", so a tick is never "no update needed".
+// An X gives NO row (unknown, not 'unsupported'): the sentence right under the table says "Additional hardware combinations may be
+// available through system suppliers. Check with your manufacturer for details.", so the table is not an exhaustive list.
 function am4Rows(): BiosRow[] {
   const rows: BiosRow[] = [];
   for (const [chipset, cells] of Object.entries(AM4_TABLE)) {
     const rowText = `${chipset} ${cells.join(' ')}`;
-    for (const [generation, cols] of AM4_GENERATIONS) {
-      const verdicts = new Set(cols.map((c) => VERDICT_OF[cells[c]!]));
-      if (verdicts.size !== 1) continue;
+    for (const [generation, headers] of AM4_GENERATIONS) {
+      const cols = headers.map((h) => AM4_COLUMNS.indexOf(h));
+      if (cols.some((c) => c < 0)) throw new Error(`bios: unknown AM4 column for ${generation}`);
+      if (cols.some((c) => cells[c] === 'X')) continue;
       rows.push({
-        chipsets: [chipset], generation, verdict: [...verdicts][0]!, source: AM4, checked: CHECKED,
-        quote: `Column "${cols.map((c) => AM4_COLUMNS[c]).join('" and "')}", row: "${rowText}"`,
+        chipsets: [chipset], generation, verdict: 'update', source: AM4, checked: CHECKED,
+        quote: [...headers, rowText, AM4_NOTE].join(' … '),
       });
     }
   }
@@ -104,10 +120,15 @@ export const BIOS: BiosRow[] = [
   { chipsets: LGA1851, generation: 'core-ultra-200s', verdict: 'ok', source: INTEL_800, quote: INTEL_ULTRA, checked: CHECKED },
 ];
 
+/** CPUs whose cpuMemory generation is only the "closest value" for memory, so the generation's BIOS statement does not apply:
+ *  Processor 300 is ARK's "Intel® Processor for Desktop", not a 13th/14th gen Core. */
+const NOT_THAT_GENERATION = new Set(['PROCESSOR 300']);
+
 const norm = (s: string) => s.toUpperCase().replace(/\s+/g, ' ').trim();
 
 /** Same shape as the engine's BiosLookup: generation from cpuRow(cpuName); undefined when the CPU, its generation or the pair isn't in the tables. */
 export function biosSupport(chipset: string, cpuName: string): BiosVerdict | undefined {
+  if (NOT_THAT_GENERATION.has(norm(cpuName))) return undefined;
   const generation = cpuRow(cpuName)?.generation;
   if (!generation) return undefined;
   const c = norm(chipset);
