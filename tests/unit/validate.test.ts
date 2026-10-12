@@ -67,17 +67,20 @@ describe('validateLatest', () => {
     expect(r.stated['cooler-height']).toBe(5);
   });
 
-  it('card minPsu plausibility: B570 170 W rejected, RTX 5070 650 W kept, a chip without a row not checked', () => {
+  it('card minPsu plausibility: only the board-power + 100 W floor (owner 2026-10-12)', () => {
     const r = validateLatest('gpu', latest([
       row('luna', { chip: 'Arc B570', minPsu: 170 }), row('ok570', { chip: 'Arc B570', minPsu: 250 }),
-      row('5070', { chip: 'RTX 5070', minPsu: 650 }), row('5070lo', { chip: 'RTX 5070', minPsu: 540 }),
-      row('5070edge', { chip: 'RTX 5070', minPsu: 550 }), row('nochip', { chip: 'Unknown X', minPsu: 100 }),
-      row('nominpsu', { chip: 'RTX 5070', minPsu: null }),
+      row('5070', { chip: 'RTX 5070', minPsu: 650 }), row('5070maker', { chip: 'RTX 5070', minPsu: 540 }),
+      row('5070edge', { chip: 'RTX 5070', minPsu: 350 }), row('5070lo', { chip: 'RTX 5070', minPsu: 349 }),
+      row('nochip', { chip: 'Unknown X', minPsu: 100 }), row('nominpsu', { chip: 'RTX 5070', minPsu: null }),
+      row('rx550', { chip: 'RX 550', minPsu: 250 }), // board 50 + 100 = 150 floor; maker's 400 no longer counts
+      row('4060ti', { chip: 'RTX 4060 Ti', minPsu: 100 }), // maker figure only, no board power: not checked
     ]), 'enforce');
     expect(r.rejections.map((x) => [x.check, x.id])).toEqual([['gpu-minpsu-plausible', 'luna'], ['gpu-minpsu-plausible', '5070lo']]);
-    expect([0, 1, 2, 4, 5].map((i) => get(r.latest, i, 'minPsu'))).toEqual([null, 250, 650, 550, 100]);
-    expect(get(r.latest, 3, 'minPsu')).toBeNull();
-    expect(r.stated['gpu-minpsu-plausible']).toBe(5); // the unknown chip and the null are not counted
+    expect([1, 2, 3, 4, 6, 8, 9].map((i) => get(r.latest, i, 'minPsu'))).toEqual([250, 650, 540, 350, 100, 250, 100]);
+    expect(get(r.latest, 0, 'minPsu')).toBeNull();
+    expect(get(r.latest, 5, 'minPsu')).toBeNull();
+    expect(r.stated['gpu-minpsu-plausible']).toBe(7); // the unknown chip, the null and the maker-only chip are not counted
   });
 
   it('runs in enforce mode', () => {
