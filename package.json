@@ -19,6 +19,7 @@
     "validation:report": "vite-node scripts/validation-report.ts",
     "psu:before-after": "vite-node scripts/phase2/psu-before-after.ts",
     "cpu-memory:coverage": "vite-node scripts/phase2/cpu-memory-coverage.ts",
+    "bios:coverage": "vite-node scripts/phase2/bios-coverage.ts",
     "cpu-power:coverage": "vite-node scripts/phase2/cpu-power-coverage.ts",
     "gpu-power:coverage": "vite-node scripts/phase2/gpu-power-coverage.ts",
     "check": "npm run typecheck && npm run lint && npm run test && npm run build"
