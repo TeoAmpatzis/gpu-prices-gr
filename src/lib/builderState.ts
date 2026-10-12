@@ -7,6 +7,7 @@ import { fromColumns } from './columns';
 import { loadBuilder, loadBuilderExtra, loadBuilderSlot, type Model } from './data';
 import { LAZY_SLOTS, SLOTS, fitContext, slotModels, type Build, type Slot, type SlotListing } from './builder';
 import { afterLargestPaint } from './paint';
+import { readBuild, writeBuild, type StoredBuild } from './buildStore';
 
 export type Models = { [S in Slot]: Model<SlotListing[S]>[] };
 export type AnyModel = Model<BaseListing>;
@@ -16,11 +17,9 @@ export interface Prefs {
   use: Use | null;
   budget: number | null; // €
 }
-const NO_PREFS: Prefs = { use: null, budget: null };
 
-// localStorage `pcBuild`: { <slot>: model key, use?, budget? } — per-browser convenience only (listed
-// on the privacy page).
-const STORAGE_KEY = 'pcBuild';
+// The saved build lives in localStorage `pcBuild` (src/lib/buildStore.ts) — per-browser convenience
+// only (listed on the privacy page).
 const EXTRA_DELAY = 5000; // ms after the parts load before builder-extra.json is fetched unasked
 
 interface Saved {
@@ -34,28 +33,27 @@ const asPrefs = (use: unknown, budget: unknown): Prefs => ({
 });
 
 function readSaved(): Saved {
-  try {
-    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}') as Record<string, unknown>;
-    const parts = Object.fromEntries(SLOTS.filter((s) => typeof raw[s] === 'string').map((s) => [s, raw[s]]));
-    return { parts, prefs: asPrefs(raw.use, raw.budget) };
-  } catch {
-    return { parts: {}, prefs: NO_PREFS };
-  }
+  const b = readBuild();
+  const parts = Object.fromEntries(SLOTS.filter((s) => b.parts[s]).map((s) => [s, b.parts[s]!.key]));
+  return { parts, prefs: asPrefs(b.use, b.budget) };
 }
 
 /** Saved parts of lazy slots whose file hasn't arrived yet: kept when the build is saved meanwhile. */
 const pendingLazy: Partial<Record<Slot, string>> = {};
 
-function writeSaved(b: Build, p: Prefs) {
-  try {
-    const parts = {
-      ...pendingLazy,
-      ...Object.fromEntries(SLOTS.filter((s) => b[s]).map((s) => [s, b[s]!.key])),
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...parts, ...(p.use && { use: p.use }), ...(p.budget && { budget: p.budget }) }));
-  } catch {
-    /* storage unavailable (private mode): the build just isn't remembered */
+/** Saves the build; a part whose key didn't change keeps its stored engine fields and data date. */
+export function writeSaved(b: Build, p: Prefs) {
+  const old = readBuild().parts;
+  const keys: Partial<Record<Slot, string>> = {
+    ...pendingLazy,
+    ...Object.fromEntries(SLOTS.filter((s) => b[s]).map((s) => [s, b[s]!.key])),
+  };
+  const parts: StoredBuild['parts'] = {};
+  for (const s of SLOTS) {
+    const key = keys[s];
+    if (key !== undefined) parts[s] = old[s]?.key === key ? old[s] : { key };
   }
+  writeBuild({ parts, ...(p.use && { use: p.use }), ...(p.budget && { budget: p.budget }) });
 }
 
 // ---------- The builder's URL parameters (/builder?mode=quick&step=case&cpu=…) ----------
