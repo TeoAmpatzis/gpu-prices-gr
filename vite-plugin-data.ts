@@ -16,6 +16,7 @@ import type { Plugin } from 'vite';
 import type { Category, History, Imported, Latest, Manifest } from './src/types';
 import { CATEGORY_IDS } from './src/lib/categories';
 import { VALIDATION_MODE, validateLatest } from './src/data/validate';
+import { compatFiles } from './src/lib/compatBuild';
 import { builderFile, checkData, detailFile, listFile, manifest, searchFile, type CategoryInput, type ImageLookup } from './src/lib/derive';
 
 const DATA_DIR = join(process.cwd(), 'public', 'data');
@@ -89,6 +90,7 @@ function derive(builtAt: string, image?: ImageLookup): { files: Record<string, s
   files['data/builder.json'] = JSON.stringify(builder);
   files['data/builder-extra.json'] = JSON.stringify(extra);
   for (const [slot, file] of Object.entries(lazy)) files[`data/builder-${slot}.json`] = JSON.stringify(file);
+  for (const [path, chunk] of Object.entries(compatFiles(latest, builtAt))) files[path] = JSON.stringify(chunk);
   files['data/search.json'] = JSON.stringify(searchFile(latest, builtAt));
   const m = manifest(latest, builder, builtAt, history, lazy);
   files['data/manifest.json'] = JSON.stringify(m);
@@ -159,7 +161,7 @@ export default function dataFiles(): Plugin {
       }
       for (const [fileName, source] of Object.entries(files)) this.emitFile({ type: 'asset', fileName, source });
       const sizes = Object.entries(files)
-        .filter(([p]) => !p.endsWith('detail.json'))
+        .filter(([p]) => !p.endsWith('detail.json') && !p.startsWith('data/compat/'))
         .map(([p, s]) => `${p.replace('data/', '')} ${kb(s)}`);
       this.info(`data files: ${sizes.join(', ')}`);
     },
