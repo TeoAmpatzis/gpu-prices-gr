@@ -478,7 +478,7 @@ export function rate<S extends Slot>(slot: S, m: Model<SlotListing[S]>, build: B
 // ---------- Rules ----------
 
 /** Can this part be offered at all (a desktop part the builder can place)? */
-const usable: { [S in Slot]: (m: Model<SlotListing[S]>) => boolean } = {
+export const usable: { [S in Slot]: (m: Model<SlotListing[S]>) => boolean } = {
   cpu: (m) => !m.pro && DESKTOP_SOCKET.test(cpuSocket(m) ?? ''),
   mobo: (m) => {
     const form = moboForm(m);
