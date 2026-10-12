@@ -3,14 +3,17 @@
 // Run: npm run cpu-memory:coverage
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { cpuRow } from '../../src/engine/data/cpuMemory';
+// Resolved from this file, not the working directory, so the script runs from anywhere.
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 const SOCKETS = ['AM5', 'AM4', 'LGA1700', 'LGA1851'];
 const SERVER = /EPYC|Xeon|Threadripper|Opteron/i;
-const OUT = join(process.cwd(), 'docs', 'phase2', 'cpu-memory-coverage.md');
+const OUT = join(ROOT, 'docs', 'phase2', 'cpu-memory-coverage.md');
 
 interface Listing { chip: string; socket: string | null }
-const data = JSON.parse(readFileSync(join(process.cwd(), 'public', 'data', 'cpu', 'latest.json'), 'utf8')) as { listings: Listing[] };
+const data = JSON.parse(readFileSync(join(ROOT, 'public', 'data', 'cpu', 'latest.json'), 'utf8')) as { listings: Listing[] };
 
 const counts = new Map<string, Map<string, number>>(SOCKETS.map((s) => [s, new Map()]));
 for (const l of data.listings) {

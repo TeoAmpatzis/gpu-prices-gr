@@ -7,6 +7,10 @@ export type PartCategory = 'cpu' | 'mobo' | 'ram' | 'gpu' | 'cooler' | 'storage'
 export interface Part {
   category: PartCategory;
   key: string;
+  /**
+   * Display name. The CPU tables (memory, power, BIOS) match the bare model name, e.g. "Ryzen 5 7600": a CPU's
+   * `fields.chip` (same form) is read first and `name` is the fallback. GPU tables read `fields.chip`.
+   */
   name: string;
   quantity: number;
   /** Validated field values (null / missing = not known), as in the data files and the scenarios. */

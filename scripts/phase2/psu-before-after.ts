@@ -5,6 +5,7 @@
 // The file has no "generated at" time, so the same data gives the same file.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { Category, CpuListing, Latest } from '../../src/types';
 import { validateLatest, type Rejection } from '../../src/data/validate';
 import { minPsuFloor } from '../../src/data/validate/ranges';
@@ -13,8 +14,10 @@ import { fromColumns } from '../../src/lib/columns';
 import { powerEstimate, v1RecommendedPsu, type Part } from '../../src/engine';
 import { cpuPowerRow } from '../../src/engine/data/cpuPower';
 import { POWER } from '../../src/engine/tables';
+// Resolved from this file, not the working directory, so the script runs from anywhere.
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
-const OUT = join(process.cwd(), 'docs', 'phase2', 'psu-before-after.md');
+const OUT = join(ROOT, 'docs', 'phase2', 'psu-before-after.md');
 const BUILT_AT = '2026-01-01T00:00:00.000Z'; // any fixed value: it is not compared
 const TOP = 20;
 
@@ -29,7 +32,7 @@ const all: Partial<Record<Category, Latest>> = {};
 const updated: string[] = [];
 let rejectedMinPsu: Rejection[] = [];
 for (const cat of ['gpu', 'cpu'] as const) {
-  const latest = JSON.parse(readFileSync(join(process.cwd(), 'public', 'data', cat, 'latest.json'), 'utf8')) as Latest;
+  const latest = JSON.parse(readFileSync(join(ROOT, 'public', 'data', cat, 'latest.json'), 'utf8')) as Latest;
   const v = validateLatest(cat, latest, 'enforce');
   all[cat] = v.latest;
   if (cat === 'gpu') rejectedMinPsu = v.rejections.filter((r) => r.check === 'gpu-minpsu-plausible');

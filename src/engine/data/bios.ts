@@ -110,8 +110,9 @@ export const BIOS: BiosRow[] = [
 ];
 
 /** CPUs whose cpuMemory generation is only the "closest value" for memory, so the generation's BIOS statement does not apply:
- *  Processor 300 is ARK's "Intel® Processor for Desktop", not a 13th/14th gen Core. */
-const NOT_THAT_GENERATION = new Set(['PROCESSOR 300']);
+ *  Processor 300 is ARK's "Intel® Processor for Desktop", not a 13th/14th gen Core.
+ *  The three "Plus" models are 2026 refresh CPUs, not covered by Intel's 800-series statement (which names the Series 2 launch CPUs). */
+const NOT_THAT_GENERATION = new Set(['PROCESSOR 300', 'CORE ULTRA 5 250K PLUS', 'CORE ULTRA 5 250KF PLUS', 'CORE ULTRA 7 270K PLUS']);
 
 const norm = (s: string) => s.toUpperCase().replace(/\s+/g, ' ').trim();
 
