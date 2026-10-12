@@ -1,13 +1,25 @@
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { biosSupport, evaluate, type Context, type Part, type PartCategory } from '../../src/engine';
+import { biosSupport, evaluate, type Context, type Finding, type Part, type PartCategory } from '../../src/engine';
 import { SLOTS, slotModels, type Slot } from '../../src/lib/builder';
 import {
-  CATEGORY_RULE_SLOTS, HIDE_RULES, NEVER_HIDE_WHEN_MISSING, NOT_IN_DATA, PART_FIELDS, checkAll, hidingErrors, toPart, usable,
+  CATEGORY_RULE_SLOTS, HIDE_RULES, hides, NEVER_HIDE_WHEN_MISSING, NOT_IN_DATA, PART_FIELDS, checkAll, hidingErrors, toPart, usable,
 } from '../../src/lib/pick';
 import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
 import { CATEGORY_IDS } from '../../src/lib/categories';
 import type { Category, Latest } from '../../src/types';
+
+// One loader for the validated latest.json of every category (validated like the build does).
+let loaded: Partial<Record<Category, Latest>> | undefined;
+function validatedData(): Partial<Record<Category, Latest>> {
+  if (!loaded) {
+    loaded = {};
+    for (const c of CATEGORY_IDS) {
+      loaded[c] = validateLatest(c, JSON.parse(readFileSync(`public/data/${c}/latest.json`, 'utf8')) as Latest, VALIDATION_MODE).latest;
+    }
+  }
+  return loaded;
+}
 
 let n = 0;
 const part = (category: PartCategory, fields: Record<string, unknown>, name: string = category): Part => ({ category, key: `${category}-${++n}`, name, quantity: 1, fields });
@@ -64,7 +76,12 @@ describe('hide rules', () => {
   it('warnings, notes and unknown never hide', () => {
     const ok = part('case', { size: 'Midi Tower' });
     const candidate = part('mobo', { socket: null, formFactor: null, memory: null });
-    expect(hidingErrors([ok, cpu('AM5', 'Ryzen 5 7600')], candidate, ctx)).toEqual([]);
+    const build = [ok, cpu('AM5', 'Ryzen 5 7600')];
+    // the engine does say something about it (unknowns / warnings), and none of it hides
+    const said = evaluate([...build, candidate], ctx).filter((f) => f.parts.includes(candidate.key));
+    expect(said.some((f) => f.status === 'unknown' || f.status === 'warning')).toBe(true);
+    expect(said.some((f) => f.status === 'error')).toBe(false);
+    expect(hidingErrors(build, candidate, ctx)).toEqual([]);
   });
   it('rule 13 not-listed (a warning) does not hide a board', () => {
     const c = cpu('AM5', 'Ryzen 5 7600');
@@ -99,9 +116,28 @@ describe('rules 11 and 12', () => {
     const intel = part('mobo', { socket: 'LGA1700', chipset: 'B660', formFactor: 'ATX', memory: 'DDR5', ramSlots: 4 });
     expect(hidingErrors([intel], f, ctx)).toEqual([]);
   });
-  it('even with the other part present, nothing is hidden for 11/12 (they pass)', () => {
+  it('with the other part present the engine passes 11/12 (nothing to hide)', () => {
     const f = cpu('LGA1700', 'Core i5-12400F', { igpu: false });
+    expect(evaluate([card, f], ctx).filter((x) => x.rule === 12).map((x) => x.status)).toEqual(['pass']);
     expect(hidingErrors([card], f, ctx).filter((x) => x.rule === 12)).toEqual([]);
+  });
+  it('a faked 11/12 error with the other part present follows HIDE_RULES (not in it: not hidden); missing part: never', () => {
+    const fake = (rule: 11 | 12): Finding => ({ rule, status: 'error', basis: 'stated', parts: ['x'], message: { el: '', en: '' } });
+    const cooler = part('cooler', { type: 'Air' });
+    expect(HIDE_RULES.has(11)).toBe(false);
+    expect(HIDE_RULES.has(12)).toBe(false);
+    expect(hides(fake(11), [cooler])).toBe(false);
+    expect(hides(fake(12), [card])).toBe(false);
+    expect(hides(fake(11), [])).toBe(false);
+    expect(hides(fake(12), [])).toBe(false);
+  });
+  it('hides() follows the set for other rules: rule 1 error hides, 14 estimate does not, 14 stated does, warning never', () => {
+    const f = (rule: number, status: Finding['status'], basis: Finding['basis']): Finding => ({ rule: rule as Finding['rule'], status, basis, parts: ['x'], message: { el: '', en: '' } });
+    expect(hides(f(1, 'error', 'stated'), [])).toBe(true);
+    expect(hides(f(14, 'error', 'estimate'), [])).toBe(false);
+    expect(hides(f(14, 'error', 'stated'), [])).toBe(true);
+    expect(hides(f(1, 'warning', 'stated'), [])).toBe(false);
+    expect(hides(f(21, 'error', 'stated'), [])).toBe(false);
   });
 });
 
@@ -125,7 +161,20 @@ describe('checkAll', () => {
     expect(out.get(wrong.key)?.hide).toBe(true);
     expect(out.get(right.key)?.hide).toBe(false);
     expect(out.get(wrong.key)?.findings.some((f) => f.rule === 1 && f.status === 'error')).toBe(true);
-    expect(out.get(right.key)?.findings.every((f) => f.parts.includes(right.key))).toBe(true);
+    expect(out.get(right.key)?.findings.some((f) => f.status === 'error')).toBe(false);
+  });
+  it('C-01 row: a pre-existing PSU error is not shown as the CPU\'s own (RTX 5080 + 550 W + AM5 board)', () => {
+    const c = cpu('AM5', 'Ryzen 5 7600');
+    const out = checkAll([card, small, board], 'cpu', [c], ctx).get(c.key)!;
+    expect(out.hide).toBe(false);
+    expect(evaluate([card, small, board, c], ctx).some((f) => f.rule === 14 && f.status === 'error' && f.parts.includes(c.key))).toBe(true); // the engine names it
+    expect(out.findings.some((f) => f.rule === 14 && f.status === 'error')).toBe(false);
+    expect(out.findings.every((f) => f.status !== 'error')).toBe(true);
+  });
+  it('a candidate\'s own errors are in its findings (PSU too small for the card)', () => {
+    const out = checkAll([card, board], 'psu', [small], ctx).get(small.key)!;
+    expect(out.hide).toBe(true);
+    expect(out.findings.filter((f) => f.status === 'error').map((f) => f.rule)).toEqual([14]);
   });
   it('hide equals hidingErrors for every candidate (one shared evaluation of the base build)', () => {
     const psus = [small, part('psu', { watts: 1000, formFactor: 'ATX' }), part('psu', { watts: 350, formFactor: 'ATX' })];
@@ -139,24 +188,46 @@ describe('checkAll', () => {
     expect(out.get(right.key)?.hide).toBe(false);
   });
   it('the candidate\'s findings include warnings and notes (for the row)', () => {
-    const right = cpu('AM5', 'Ryzen 5 7600');
+    const right = cpu('AM5', 'Ryzen 5 7600', { igpu: null }); // rule 12 can't tell: an unknown names it
     const out = checkAll([board], 'cpu', [right], ctx);
-    expect(out.get(right.key)?.findings.length).toBeGreaterThan(0);
+    const rule1 = out.get(right.key)!.findings.filter((f) => f.rule === 1);
+    expect(rule1.map((f) => f.status)).toEqual(['pass']);
+    expect(out.get(right.key)!.findings.filter((f) => f.rule === 12).map((f) => f.status)).toEqual(['unknown']);
   });
 });
 
+// The rule files (every .ts in src/engine/rules): function bodies by name, so helpers a rule calls are followed.
+const RULES_DIR = 'src/engine/rules';
+const ruleFiles = readdirSync(RULES_DIR).filter((f) => f.endsWith('.ts'));
+const sources = new Map(ruleFiles.map((f) => [f, readFileSync(`${RULES_DIR}/${f}`, 'utf8')]));
+const bodies = new Map<string, string>();
+for (const src of sources.values()) {
+  for (const m of src.matchAll(/(?:export )?function (\w+)\([^)]*\)[^{]*\{([\s\S]*?)\n\}\n/g)) bodies.set(m[1], m[2]);
+}
+const directSlots = (body: string) => new Set([...body.matchAll(/\b(?:one|all)\(b, '(\w+)'\)/g)].map((u) => u[1]));
+/** Slots read by helpers (functions of the rule files) a body calls, transitively. */
+function helperSlots(body: string, seen = new Set<string>()): Set<string> {
+  const out = new Set<string>();
+  for (const c of body.matchAll(/\b(\w+)\(/g)) {
+    const h = bodies.get(c[1]);
+    if (!h || seen.has(c[1])) continue;
+    seen.add(c[1]);
+    for (const s of directSlots(h)) out.add(s);
+    for (const s of helperSlots(h, seen)) out.add(s);
+  }
+  return out;
+}
+
 describe('CATEGORY_RULE_SLOTS', () => {
-  // Every rule's function body names the slots it reads with one(b, '…') / all(b, '…'); two slots in one rule means
-  // the category page of each needs the other's part.
+  // A rule's own slots (one/all in its body) need each other's parts, and the slots its helpers read (rule 14's
+  // `powerEstimate`: ram, storage, fan, cooler) are needed by the rule's own slots' pages.
   const SLOT_NAMES = ['cpu', 'mobo', 'ram', 'gpu', 'cooler', 'storage', 'case', 'fan', 'psu'];
   const pairs = new Set<string>();
-  for (const file of ['cooling', 'fit', 'platform', 'power', 'storage']) {
-    const src = readFileSync(`src/engine/rules/${file}.ts`, 'utf8');
-    for (const m of src.matchAll(/export function (rule\d+)\([^)]*\)[^{]*\{([\s\S]*?)\n\}\n/g)) {
-      const used = new Set<string>();
-      for (const u of m[2].matchAll(/\b(?:one|all)\(b, '(\w+)'\)/g)) used.add(u[1]);
-      for (const a of used) for (const b of used) if (a !== b) pairs.add(`${a}>${b}`);
-    }
+  for (const [name, body] of bodies) {
+    if (!/^rule\d+$/.test(name)) continue;
+    const own = directSlots(body);
+    const everything = new Set([...own, ...helperSlots(body)]);
+    for (const a of own) for (const b of everything) if (a !== b) pairs.add(`${a}>${b}`);
   }
   it('has an entry per slot, all valid slots, no self-reference', () => {
     expect(Object.keys(CATEGORY_RULE_SLOTS).sort()).toEqual([...SLOT_NAMES].sort());
@@ -164,7 +235,12 @@ describe('CATEGORY_RULE_SLOTS', () => {
       for (const o of list) { expect(SLOT_NAMES).toContain(o); expect(o).not.toBe(s); }
     }
   });
-  it('covers every pair of slots a rule reads together (found in the rule files)', () => {
+  it('the scan follows helpers: rule 14 reaches ram, storage, fan and cooler through powerEstimate', () => {
+    expect(bodies.has('powerEstimate')).toBe(true);
+    expect(helperSlots(bodies.get('rule14')!)).toEqual(new Set(['gpu', 'cpu', 'ram', 'storage', 'fan', 'cooler']));
+    for (const a of ['cpu', 'gpu', 'psu']) for (const b of ['ram', 'storage', 'fan', 'cooler']) expect(pairs.has(`${a}>${b}`)).toBe(true);
+  });
+  it('covers every slot pair the rules read together (own reads and helpers)', () => {
     expect(pairs.size).toBeGreaterThan(20);
     for (const p of pairs) {
       const [a, b] = p.split('>');
@@ -178,23 +254,28 @@ describe('CATEGORY_RULE_SLOTS', () => {
   });
 });
 
-describe('PART_FIELDS guard: every field a rule reads is carried or listed as not in the data', () => {
+describe('field guard: every field a rule reads is carried by toPart or has no value in the data (NOT_IN_DATA)', () => {
   const CATEGORY_OF_VAR: Record<string, PartCategory> = {
     cpu: 'cpu', mobo: 'mobo', ram: 'ram', rams: 'ram', r: 'ram', gpu: 'gpu', cooler: 'cooler', c: 'cooler',
     drives: 'storage', d: 'storage', big: 'storage', gen5: 'storage', fans: 'fan', f: 'fan', pc: 'case', psu: 'psu',
   };
   const reads: { cat: PartCategory; field: string; where: string }[] = [];
-  for (const file of ['cooling', 'fit', 'platform', 'power', 'storage']) {
-    const src = readFileSync(`src/engine/rules/${file}.ts`, 'utf8');
+  for (const [file, src] of sources) {
     for (const m of src.matchAll(/\b(?:num|str|bool|total|list)(?:<[^>]*>)?\(\s*([A-Za-z0-9_]+)\s*,\s*'([A-Za-z0-9]+)'/g)) {
       const cat = CATEGORY_OF_VAR[m[1]];
       expect([`${file}: variable ${m[1]} for field ${m[2]}`, cat !== undefined]).toEqual([`${file}: variable ${m[1]} for field ${m[2]}`, true]);
       reads.push({ cat, field: m[2], where: file });
     }
   }
+  const readSet = new Map(reads.map((r) => [`${r.cat}.${r.field}`, r]));
+  /** Listings of the category with a non-null value for the field (v2's validated data). */
+  const valueCount = (cat: PartCategory, field: string) =>
+    ((validatedData()[cat as Category]?.listings ?? []) as unknown as Record<string, unknown>[]).filter((l) => l[field] != null).length;
+
   it('finds the reads (the scan is not vacuous)', () => {
     expect(reads.length).toBeGreaterThan(50);
-    expect(reads).toContainEqual({ cat: 'mobo', field: 'm2Slots', where: 'storage' });
+    expect(reads).toContainEqual({ cat: 'mobo', field: 'm2Slots', where: 'storage.ts' });
+    expect(readSet.has('psu.atx3')).toBe(true);
   });
   it('each is in PART_FIELDS for its category or on NOT_IN_DATA', () => {
     for (const { cat, field, where } of reads) {
@@ -202,28 +283,20 @@ describe('PART_FIELDS guard: every field a rule reads is carried or listed as no
       expect([`${where}: ${cat}.${field}`, ok]).toEqual([`${where}: ${cat}.${field}`, true]);
     }
   });
-  it('NOT_IN_DATA entries are really read by a rule, and really absent from the data', () => {
-    const validated: Partial<Record<Category, Latest>> = {};
-    for (const c of CATEGORY_IDS) {
-      validated[c] = validateLatest(c, JSON.parse(readFileSync(`public/data/${c}/latest.json`, 'utf8')) as Latest, VALIDATION_MODE).latest;
-    }
-    for (const slot of SLOTS) {
-      for (const field of NOT_IN_DATA[slot]) {
-        expect([`${slot}.${field} read`, reads.some((r) => r.cat === slot && r.field === field)]).toEqual([`${slot}.${field} read`, true]);
-        const models = slotModels(slot, (validated[slot as Category]?.listings ?? []) as never[]);
-        const have = models.filter((m) => toPart(slot, m as never).fields[field] != null).length;
-        expect([`${slot}.${field} values`, have]).toEqual([`${slot}.${field} values`, 0]);
-      }
+  it('a read field with no value in any listing is on NOT_IN_DATA; a listed one has none', () => {
+    for (const { cat, field } of readSet.values()) {
+      const listed = NOT_IN_DATA[cat].includes(field);
+      const count = valueCount(cat, field);
+      expect([`${cat}.${field} listed=${listed}`, listed ? count === 0 : count > 0]).toEqual([`${cat}.${field} listed=${listed}`, true]);
     }
   });
+  it('every NOT_IN_DATA entry is a field a rule reads', () => {
+    for (const slot of SLOTS) for (const field of NOT_IN_DATA[slot]) expect([`${slot}.${field}`, readSet.has(`${slot}.${field}`)]).toEqual([`${slot}.${field}`, true]);
+  });
 });
-
 describe('performance', () => {
   it('checkAll over every usable case with a full build', () => {
-    const validated: Partial<Record<Category, Latest>> = {};
-    for (const c of CATEGORY_IDS) {
-      validated[c] = validateLatest(c, JSON.parse(readFileSync(`public/data/${c}/latest.json`, 'utf8')) as Latest, VALIDATION_MODE).latest;
-    }
+    const validated = validatedData();
     const pick = (slot: Slot) => {
       const ms = slotModels(slot, (validated[slot as Category]?.listings ?? []) as never[]).filter((m) => usable(slot, m as never));
       return toPart(slot, ms[Math.floor(ms.length / 3)] as never);
