@@ -67,7 +67,7 @@ export function powerEstimate(b: Build): PowerEstimate {
     const cpuName = str(cpu, 'chip') ?? cpu.name;
     const row = cpuPowerRow(cpuName);
     if (row) parts.push({ key: 'cpu', label: row.kind === 'TDP' ? TDP_LABEL : msg(`Επεξεργαστής (${row.kind})`, `CPU (${row.kind})`), watts: row.watts });
-    else { cpuUnknown = true; missing.push(msg(`το όριο ισχύος του επεξεργαστή (${cpuName}: καμία επίσημη σελίδα στις πηγές μας)`, `the CPU's power limit (${cpuName}: no official page in our tables)`)); }
+    else { cpuUnknown = true; missing.push(msg(`την ισχύ του επεξεργαστή (${cpuName}: δεν υπάρχει στις πηγές μας)`, `the CPU's power figure (${cpuName}: not in our tables)`)); }
   } else missing.push(NO_CPU);
 
   parts.push({ key: 'board', label: msg('Μητρική και υπόλοιπα', 'Motherboard and the rest'), watts: POWER.boardW });
@@ -141,7 +141,7 @@ export function rule14(b: Build): Finding[] {
   else f = msg(`η εκτίμηση για όλο το build είναι ${formulaW} W`, `the estimate for the whole build is ${formulaW} W`);
   // An AMD CPU went into the estimate as its TDP: say so, with the label.
   const tdp = formulaW !== null ? e.parts.find((p) => p.key === 'cpu' && p.label === TDP_LABEL) : undefined;
-  if (tdp) f = msg(`${f.el} (επεξεργαστής: ${tdp.label.el} ${tdp.watts} W)`, `${f.en} (CPU: ${tdp.label.en} ${tdp.watts} W)`);
+  if (tdp) f = msg(`${f.el} (επεξεργαστής: ${tdp.watts} W, ${tdp.label.el})`, `${f.en} (CPU: ${tdp.watts} W, ${tdp.label.en})`);
   const need = Math.max(makerW ?? 0, formulaW ?? 0);
 
   if (makerW !== null && watts < makerW) return [finding(14, 'error', 'stated', ps,
