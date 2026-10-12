@@ -93,7 +93,7 @@ export const CPU_POWER: CpuPowerRow[] = [
   { models: ['Core i9-14900KF'], kind: 'PL2', watts: 253, source: 'https://www.intel.com/content/www/us/en/products/sku/236787/intel-core-i9-processor-14900kf-36m-cache-up-to-6-00-ghz/specifications.html', checked: '2026-10-11' },
   { models: ['Core i9-14900KS'], kind: 'PL2', watts: 253, source: 'https://www.intel.com/content/www/us/en/products/sku/237504/intel-core-i9-processor-14900ks-36m-cache-up-to-6-20-ghz/specifications.html', checked: '2026-10-11' },
   { models: ['Core i9-14900T'], kind: 'PL2', watts: 106, source: 'https://www.intel.com/content/www/us/en/products/sku/236791/intel-core-i9-processor-14900t-36m-cache-up-to-5-50-ghz/specifications.html', checked: '2026-10-11' },
-{ models: ['Athlon 200GE'], kind: 'TDP', watts: 35, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Athlon™ 200GE": Default TDP 35 W
+  { models: ['Athlon 200GE'], kind: 'TDP', watts: 35, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Athlon™ 200GE": Default TDP 35 W
   { models: ['Athlon 300GE'], kind: 'TDP', watts: 35, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Athlon™ 300GE": Default TDP 35 W
   { models: ['Athlon 3000G'], kind: 'TDP', watts: 35, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Athlon™ 3000G": Default TDP 35 W
   { models: ['Ryzen 3 1200'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 3 1200": Default TDP 65 W

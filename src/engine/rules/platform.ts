@@ -83,7 +83,7 @@ export function rule13(b: Build, ctx: Context): Finding[] {
   if (verdict === 'unsupported') return [finding(13, 'error', 'stated', ps,
     msg('Η μητρική δεν υποστηρίζει αυτόν τον επεξεργαστή.', "The board doesn't support this CPU."), msg('Διάλεξε άλλη μητρική ή επεξεργαστή.', 'Choose another board or CPU.'))];
   if (verdict === 'may-update') return [finding(13, 'note', 'stated', ps,
-    msg('Η AMD σημειώνει ότι η υποστήριξη ίσως χρειάζεται ενημέρωση BIOS· έλεγξε τη λίστα της μητρικής.', "AMD notes that support may require a BIOS update; check the board's CPU list."), fix)];
+    msg('Η AMD σημειώνει ότι η υποστήριξη ίσως χρειάζεται ενημέρωση BIOS· έλεγξε τη λίστα επεξεργαστών της μητρικής.', "AMD notes that support may require a BIOS update; check the board's CPU list."))];
   if (verdict === 'not-listed') return [finding(13, 'warning', 'stated', ps,
     msg('Η AMD δηλώνει αυτόν τον συνδυασμό ως μη υποστηριζόμενο.', 'AMD lists this as not supported.'), fix)];
   const flashback = bool(mobo, 'biosFlashback');

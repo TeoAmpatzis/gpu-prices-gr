@@ -127,7 +127,8 @@ describe('rule 13: BIOS (injected lookup)', () => {
     const f = ruleResult(evaluate(r9('B450'), { bios }), 13)!;
     expect(f.status).toBe('note');
     expect(f.message.en).toBe("AMD notes that support may require a BIOS update; check the board's CPU list.");
-    expect(f.message.el).toBe('Η AMD σημειώνει ότι η υποστήριξη ίσως χρειάζεται ενημέρωση BIOS· έλεγξε τη λίστα της μητρικής.');
+    expect(f.message.el).toBe('Η AMD σημειώνει ότι η υποστήριξη ίσως χρειάζεται ενημέρωση BIOS· έλεγξε τη λίστα επεξεργαστών της μητρικής.');
+    expect(f.fix).toBeUndefined();
   });
   it('not-listed → a warning (never an error, never unknown)', () => {
     const f = ruleResult(evaluate(r9('X570'), { bios }), 13)!;
@@ -277,8 +278,8 @@ describe("rule 14: PSU vs the maker figure and the whole-build estimate (owner's
     const r = ruleResult(evaluate(parts, {}), 14)!;
     expect([r.status, r.basis]).toEqual(['warning', 'estimate']);
     expect(r.message.en).toContain("it reaches the maker's figure but not the estimate for the whole build");
-    expect(r.message.en).toContain(`the estimate for the whole build is ${e.formulaW} W (CPU: TDP (AMD gives no PPT) 170 W)`);
-    expect(r.message.el).toContain('επεξεργαστής: TDP (η AMD δεν δίνει PPT) 170 W');
+    expect(r.message.en).toContain(`the estimate for the whole build is ${e.formulaW} W (CPU: 170 W, TDP (AMD gives no PPT))`);
+    expect(r.message.el).toContain('επεξεργαστής: 170 W, TDP (η AMD δεν δίνει PPT)');
     expect(r.parts).toContain(parts[0].key);
   });
   it('AMD with no maker figure: a PSU below the TDP-based formula -> error, estimate', () => {
@@ -322,8 +323,8 @@ describe("rule 14: PSU vs the maker figure and the whole-build estimate (owner's
   it('estimate-missing text reads after "we don\'t know" (AMD CPU, maker figure only)', () => {
     const parts = [cpu({}, NOROW), gpu(), psu(2000)];
     const r = ruleResult(evaluate(parts, {}), 14)!;
-    expect(r.message.en).toBe(`2000 W power supply; the maker asks for ${maker} W. The whole-build estimate is missing: we don't know the CPU's power limit (Ryzen 7 5755G: no official page in our tables).`);
-    expect(r.message.el).toBe(`Τροφοδοτικό 2000 W· ο κατασκευαστής ζητά ${maker} W. Η εκτίμηση για όλο το build λείπει: δεν ξέρουμε το όριο ισχύος του επεξεργαστή (Ryzen 7 5755G: καμία επίσημη σελίδα στις πηγές μας).`);
+    expect(r.message.en).toBe(`2000 W power supply; the maker asks for ${maker} W. The whole-build estimate is missing: we don't know the CPU's power figure (Ryzen 7 5755G: not in our tables).`);
+    expect(r.message.el).toBe(`Τροφοδοτικό 2000 W· ο κατασκευαστής ζητά ${maker} W. Η εκτίμηση για όλο το build λείπει: δεν ξέρουμε την ισχύ του επεξεργαστή (Ryzen 7 5755G: δεν υπάρχει στις πηγές μας).`);
   });
   it('estimate-missing text for the no-CPU case stands on its own', () => {
     const r = ruleResult(evaluate([gpu(), psu(2000)], {}), 14)!;

@@ -54,7 +54,8 @@ export interface ChipLengths {
 }
 
 /** Rule 13's table (chipset × CPU generation). None exists in the data yet, so rule 13 is unknown without it. */
-export type BiosLookup = (chipset: string, cpuName: string) => 'ok' | 'update' | 'may-update' | 'not-listed' | 'unsupported' | undefined;
+export type BiosVerdict = 'ok' | 'update' | 'may-update' | 'not-listed' | 'unsupported';
+export type BiosLookup = (chipset: string, cpuName: string) => BiosVerdict | undefined;
 
 export interface Context {
   chipLengths?: Record<string, ChipLengths>;

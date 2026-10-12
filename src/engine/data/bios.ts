@@ -4,10 +4,13 @@
 //   update      the page says the chipset needs (or may need) a BIOS update for that generation (rule 13: warning)
 //   may-update  only a page-wide caveat "support may require a BIOS upgrade" applies (AM4 tick cells) (rule 13: quiet note)
 //   not-listed  the maker's table marks the pair as not supported, but says it is not exhaustive (AM4 X cells) (rule 13: warning)
+//   NOTE: 'may-update' and 'not-listed' are AMD-only verdicts (rule 13's texts name AMD: "AMD notes ...", "AMD lists ..."); a future Intel row
+//   must not use them unless rule 13 gets a vendor-neutral text for them.
 //   unsupported reserved: an official list that says it is complete and omits the chipset (none found; AMD's AM4 table is not exhaustive)
 import { cpuRow, type CpuGeneration } from './cpuMemory';
+import type { BiosVerdict } from '../types';
 
-export type BiosVerdict = 'ok' | 'update' | 'may-update' | 'not-listed' | 'unsupported';
+export type { BiosVerdict };
 
 export interface BiosRow {
   /** Chipset names exactly as in the mobo data (`chipset`). */
@@ -37,7 +40,8 @@ const AM5_ALL =
 // Ryzen 7000 is not named in that caveat, and the sentence above says every AM5 board is compatible with every AM5 processor, so 'ok' is
 // given for the chipsets the page itself names as AM5 chipsets.
 const AM5_NAMED = ['A620', 'X670', 'X670E', 'B840', 'B850', 'X870', 'X870E'];
-// B650 / B650E: named as AM5 chipsets only on the CPU product page ("Supporting Chipsets"), so that page is the source of their row.
+// B650 / B650E: named as AM5 chipsets only on the CPU product page ("Supporting Chipsets"), so that page is the source of their row; the
+// generation-wide 'ok' also rests on am5.html's sentence that every AM5 board works with every AM5 processor (AM5_ALL), so both are quoted.
 const AM5_7600X = 'https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-5-7600x.html';
 const AM5_7600X_QUOTE =
   'AMD Ryzen™ 5 7600X Desktop Processor … CPU Socket AM5 Supporting Chipsets A620 , X670E , X670 , B650E , B650 , X870E , X870 , B840 , B850';
@@ -115,7 +119,7 @@ const INTEL_ULTRA =
 
 export const BIOS: BiosRow[] = [
   { chipsets: AM5_NAMED, generation: 'ryzen-7000', verdict: 'ok', source: AM5, quote: AM5_ALL, checked: CHECKED },
-  { chipsets: ['B650', 'B650E'], generation: 'ryzen-7000', verdict: 'ok', source: AM5_7600X, quote: AM5_7600X_QUOTE, checked: CHECKED },
+  { chipsets: ['B650', 'B650E'], generation: 'ryzen-7000', verdict: 'ok', source: AM5_7600X, quote: `${AM5_ALL} … ${AM5_7600X_QUOTE}`, checked: CHECKED },
   ...am4Rows(),
   // LGA1700: Intel's article names 13th and 14th gen only (12th gen has no statement of its own: "may require ... between 12th, 13th, or 14th gen").
   ...(['intel-13', 'intel-14'] as const).map((generation): BiosRow => ({
