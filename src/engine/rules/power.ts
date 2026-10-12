@@ -39,6 +39,9 @@ export interface PowerEstimate {
   missing: Msg[];
 }
 
+/** The "no CPU yet" entry of `missing`: not a thing we don't know, so rule 14 words it on its own. */
+const NO_CPU = msg('δεν έχεις διαλέξει ακόμα επεξεργαστή', 'no CPU is chosen yet');
+
 /**
  * The plan's power formula (B4) for the whole build: (card board power + CPU power limit + board + 5 W per RAM
  * stick + 8 W per drive + 3 W per fan + 5 W AIO pump) × 1.3, rounded up to 50 W. The card and CPU figures come
@@ -54,14 +57,15 @@ export function powerEstimate(b: Build): PowerEstimate {
   const chipRow = chip ? gpuPowerRow(chip) : undefined;
   if (gpu) {
     if (chipRow?.boardPowerW !== undefined) parts.push({ key: 'gpu', label: msg('Κάρτα γραφικών', 'Graphics card'), watts: chipRow.boardPowerW });
-    else missing.push(msg('η κατανάλωση της κάρτας (δεν υπάρχει επίσημη σελίδα για το τσιπ στις πηγές μας)', "the card's board power (the chip has no official page in our tables)"));
+    else missing.push(msg('την κατανάλωση της κάρτας (δεν υπάρχει επίσημη σελίδα για το τσιπ στις πηγές μας)', "the card's board power (the chip has no official page in our tables)"));
   }
 
   if (cpu) {
-    const row = cpuPowerRow(cpu.name);
+    const cpuName = str(cpu, 'chip') ?? cpu.name;
+    const row = cpuPowerRow(cpuName);
     if (row) parts.push({ key: 'cpu', label: msg(`Επεξεργαστής (${row.kind})`, `CPU (${row.kind})`), watts: row.watts });
-    else { cpuUnknown = true; missing.push(msg(`το όριο ισχύος του επεξεργαστή (${cpu.name}: καμία επίσημη σελίδα στις πηγές μας)`, `the CPU's power limit (${cpu.name}: no official page in our tables)`)); }
-  } else missing.push(msg('ο επεξεργαστής δεν έχει επιλεγεί', 'no CPU is chosen'));
+    else { cpuUnknown = true; missing.push(msg(`το όριο ισχύος του επεξεργαστή (${cpuName}: καμία επίσημη σελίδα στις πηγές μας)`, `the CPU's power limit (${cpuName}: no official page in our tables)`)); }
+  } else missing.push(NO_CPU);
 
   parts.push({ key: 'board', label: msg('Μητρική και υπόλοιπα', 'Motherboard and the rest'), watts: POWER.boardW });
 
@@ -70,8 +74,8 @@ export function powerEstimate(b: Build): PowerEstimate {
     const m = num(r, 'modules');
     if (m === null) sticksKnown = false; else sticks += m * r.quantity;
   }
-  if (!sticksKnown) missing.push(msg('ο αριθμός modules της μνήμης', "the RAM's number of sticks"));
-  else if (sticks) parts.push({ key: 'ram', label: msg(`Μνήμη (${sticks} modules)`, `RAM (${sticks} sticks)`), watts: sticks * POWER.perStickW });
+  if (!sticksKnown) missing.push(msg('τον αριθμό των μονάδων μνήμης', 'the number of memory sticks'));
+  else if (sticks) parts.push({ key: 'ram', label: msg(`Μνήμη (${sticks} μονάδες)`, `RAM (${sticks} sticks)`), watts: sticks * POWER.perStickW });
 
   const drives = all(b, 'storage').reduce((n, d) => n + d.quantity, 0);
   if (drives) parts.push({ key: 'storage', label: msg(`Δίσκοι (${drives})`, `Drives (${drives})`), watts: drives * POWER.perDriveW });
@@ -111,13 +115,22 @@ export function rule14(b: Build): Finding[] {
     msg(`Τροφοδοτικό ${watts} W· ακόμα και χωρίς την ισχύ του επεξεργαστή η εκτίμηση για το build είναι ${lower} W.`,
       `${watts} W power supply; even without the CPU's power the estimate for the build is ${lower} W.`),
     msg(`Διάλεξε τροφοδοτικό τουλάχιστον ${lower} W.`, `Choose a power supply of at least ${lower} W.`))];
-  if (watts === null || (makerW === null && formulaW === null)) return [unknown(14, ps, msg(
+  if (watts === null) return [unknown(14, ps, msg(
+    'αν φτάνει το τροφοδοτικό: δεν δηλώνει την ισχύ του (W).',
+    "whether the power supply is enough: it doesn't state its wattage."),
+    msg('Έλεγξε την ισχύ στη σελίδα του τροφοδοτικού.', "Check the wattage on the power supply's page."))];
+  if (makerW === null && formulaW === null) return [unknown(14, ps, msg(
     'αν φτάνει το τροφοδοτικό: δεν υπάρχει προτεινόμενη ισχύς για αυτό το build (χωρίς κάρτα, ή κάρτα και επεξεργαστής χωρίς επίσημα στοιχεία).',
     "whether the power supply is enough: there's no recommended wattage for this build (no card, or a card and CPU without official figures)."),
     msg('Έλεγξε την προτεινόμενη ισχύ στις σελίδες του επεξεργαστή και της κάρτας.', "Check the recommended wattage on the CPU's and card's pages."))];
 
-  const why = formulaW === null && e.missing.length
-    ? { el: ` Η εκτίμηση για όλο το build λείπει: δεν ξέρουμε ${e.missing.map((m) => m.el).join(', ')}.`, en: ` The whole-build estimate is missing: we don't know ${e.missing.map((m) => m.en).join(', ')}.` }
+  // What kept the whole-build estimate out: "we don't know <noun phrase>" items, and the no-CPU case worded on its own.
+  const unknownItems = e.missing.filter((m) => m !== NO_CPU);
+  const reasons: Msg[] = [];
+  if (unknownItems.length) reasons.push(msg(`δεν ξέρουμε ${unknownItems.map((m) => m.el).join(', ')}`, `we don't know ${unknownItems.map((m) => m.en).join(', ')}`));
+  if (e.missing.includes(NO_CPU)) reasons.push(NO_CPU);
+  const why = formulaW === null && reasons.length
+    ? { el: ` Η εκτίμηση για όλο το build λείπει: ${reasons.map((m) => m.el).join('· ')}.`, en: ` The whole-build estimate is missing: ${reasons.map((m) => m.en).join('; ')}.` }
     : { el: '', en: '' };
   let f: Msg;
   if (makerW !== null && formulaW !== null) f = msg(`ο κατασκευαστής ζητά ${makerW} W, η εκτίμηση για όλο το build είναι ${formulaW} W`, `the maker asks for ${makerW} W; the estimate for the whole build is ${formulaW} W`);
@@ -131,6 +144,11 @@ export function rule14(b: Build): Finding[] {
   if (makerW === null && formulaW !== null && watts < formulaW) return [finding(14, 'error', 'estimate', ps,
     msg(`Τροφοδοτικό ${watts} W· ${f.el}.`, `${watts} W power supply; ${f.en}.`),
     msg(`Διάλεξε τροφοδοτικό τουλάχιστον ${formulaW} W.`, `Choose a power supply of at least ${formulaW} W.`))];
+  // CPU power unknown but a lower bound exists: the full formula is at least that, so reaching the maker's figure without it is level 4.
+  if (formulaW === null && lower !== null && makerW !== null && watts < lower) return [finding(14, 'warning', 'estimate', ps,
+    msg(`Τροφοδοτικό ${watts} W· φτάνει το νούμερο του κατασκευαστή αλλά όχι την εκτίμηση για όλο το build: ${f.el}· ακόμα και χωρίς την ισχύ του επεξεργαστή η εκτίμηση είναι ${lower} W.${why.el}`,
+      `${watts} W power supply; it reaches the maker's figure but not the estimate for the whole build: ${f.en}; even without the CPU's power the estimate is ${lower} W.${why.en}`),
+    msg(`Για περιθώριο διάλεξε τροφοδοτικό τουλάχιστον ${lower} W.`, `For headroom choose a power supply of at least ${lower} W.`))];
   if (makerW !== null && formulaW !== null && watts < formulaW) return [finding(14, 'warning', 'estimate', ps,
     msg(`Τροφοδοτικό ${watts} W· φτάνει το νούμερο του κατασκευαστή αλλά όχι την εκτίμηση για όλο το build: ${f.el}.`,
       `${watts} W power supply; it reaches the maker's figure but not the estimate for the whole build: ${f.en}.`),

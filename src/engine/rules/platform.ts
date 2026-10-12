@@ -74,10 +74,12 @@ export function rule13(b: Build, ctx: Context): Finding[] {
   const cpu = one(b, 'cpu'), mobo = one(b, 'mobo');
   if (!cpu || !mobo) return [];
   const ps = keys(cpu, mobo), chipset = str(mobo, 'chipset');
-  const verdict = chipset && ctx.bios ? ctx.bios(chipset, cpu.name) : undefined;
+  const verdict = chipset && ctx.bios ? ctx.bios(chipset, str(cpu, 'chip') ?? cpu.name) : undefined;
   const fix = msg('Έλεγξε τη λίστα υποστηριζόμενων επεξεργαστών στη σελίδα του κατασκευαστή της μητρικής.', "Check the supported CPU list on the board maker's page.");
   if (!verdict) return [unknown(13, ps, msg('αν η μητρική χρειάζεται ενημέρωση BIOS για αυτόν τον επεξεργαστή: ο κατασκευαστής δεν δίνει επίσημη δήλωση για αυτό το chipset και αυτή τη γενιά επεξεργαστή.', 'whether the board needs a BIOS update for this CPU: there is no official statement for this chipset and CPU generation.'), fix)];
-  if (verdict === 'ok') return [finding(13, 'pass', 'stated', ps, msg('Η μητρική υποστηρίζει τον επεξεργαστή χωρίς ενημέρωση BIOS.', 'The board supports the CPU without a BIOS update.'))];
+  if (verdict === 'ok') return [finding(13, 'pass', 'stated', ps,
+    msg('Ο κατασκευαστής δηλώνει αυτό το chipset συμβατό με αυτή τη γενιά επεξεργαστή.', 'The maker lists this chipset as compatible with this CPU generation.'),
+    msg('Έλεγξε την έκδοση BIOS της μητρικής στη σελίδα του κατασκευαστή της.', "Check the board's BIOS version on the board maker's page."))];
   if (verdict === 'unsupported') return [finding(13, 'error', 'stated', ps,
     msg('Η μητρική δεν υποστηρίζει αυτόν τον επεξεργαστή.', "The board doesn't support this CPU."), msg('Διάλεξε άλλη μητρική ή επεξεργαστή.', 'Choose another board or CPU.'))];
   const flashback = bool(mobo, 'biosFlashback');
@@ -110,11 +112,12 @@ export function rule25(b: Build): Finding[] {
     const ps = keys(cpu, ram), speed = num(ram, 'speed'), type = str(ram, 'type');
     if (sticks === null || speed === null || (type !== 'DDR4' && type !== 'DDR5'))
       return unknown(25, ps, msg('την ταχύτητα μνήμης: δεν ξέρουμε την ταχύτητα, τον τύπο ή τον αριθμό στικ του κιτ.', "the memory speed: the kit's speed, type or stick count isn't known."));
-    if (!cpuRow(cpu.name))
+    const cpuName = str(cpu, 'chip') ?? cpu.name;
+    if (!cpuRow(cpuName))
       return unknown(25, ps, msg('την ταχύτητα μνήμης: ο επεξεργαστής δεν υπάρχει ακόμα στον πίνακα επίσημης υποστήριξης.', "the memory speed: the CPU isn't in the official-support table yet."));
-    const official = officialSpeed(cpu.name, type, sticks);
+    const official = officialSpeed(cpuName, type, sticks);
     if (!official) {
-      const row = cpuRow(cpu.name);
+      const row = cpuRow(cpuName);
       return unknown(25, ps, row?.memory[type]
         ? msg(`την ταχύτητα μνήμης: η σελίδα του κατασκευαστή δεν δίνει επίσημη ταχύτητα για ${sticks} μονάδες.`, `the memory speed: the maker's page gives no official speed for ${sticks} sticks.`)
         : msg(`την ταχύτητα μνήμης: ο κατασκευαστής δεν δίνει επίσημη ταχύτητα ${type} για αυτόν τον επεξεργαστή.`, `the memory speed: the maker gives no official ${type} speed for this CPU.`));

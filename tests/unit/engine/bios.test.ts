@@ -64,6 +64,12 @@ describe('biosSupport', () => {
     expect(biosSupport('B450', 'Ryzen 5 5600X')).toBe('update');
     expect(biosSupport('X470', 'Ryzen 5 5600X')).toBe('update');
   });
+  it('the 2026 refresh "Plus" CPUs are not covered by Intel\'s 800-series statement: unknown', () => {
+    expect(biosSupport('Z890', 'Core Ultra 5 250K Plus')).toBeUndefined();
+    expect(biosSupport('Z890', 'Core Ultra 5 250KF Plus')).toBeUndefined();
+    expect(biosSupport('Z890', 'Core Ultra 7 270K Plus')).toBeUndefined();
+    expect(biosSupport('Z890', 'Core Ultra 7 265K')).toBe('ok');
+  });
   it('Processor 300 is not a 13th/14th gen Core: unknown', () => {
     expect(biosSupport('B760', 'Processor 300')).toBeUndefined();
     expect(biosSupport('H610', 'processor  300')).toBeUndefined();

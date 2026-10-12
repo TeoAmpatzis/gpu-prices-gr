@@ -4,14 +4,17 @@
 // The file has no "generated at" time, so the same data gives the same file.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { Category, Latest } from '../src/types';
 import { CATEGORY_IDS } from '../src/lib/categories';
 import { RANGES } from '../src/data/validate/ranges';
 import { VALIDATION_MODE, validateLatest, type Rejection } from '../src/data/validate';
 import { builderFile } from '../src/lib/derive';
 import { fromColumns } from '../src/lib/columns';
+// Resolved from this file, not the working directory, so the script runs from anywhere.
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
-const OUT = join(process.cwd(), 'docs', 'phase2', 'validation-report.md');
+const OUT = join(ROOT, 'docs', 'phase2', 'validation-report.md');
 const EXAMPLES = 10;
 const BUILT_AT = '2026-01-01T00:00:00.000Z'; // any fixed value: it is not compared
 
@@ -27,7 +30,7 @@ const raw: Partial<Record<Category, Latest>> = {};
 const checked: Partial<Record<Category, Latest>> = {};
 
 for (const cat of CATEGORY_IDS) {
-  const path = join(process.cwd(), 'public', 'data', cat, 'latest.json');
+  const path = join(ROOT, 'public', 'data', cat, 'latest.json');
   if (!existsSync(path)) continue; // category not scraped yet
   const latest = JSON.parse(readFileSync(path, 'utf8')) as Latest;
   const v = validateLatest(cat, latest, 'enforce'); // the lists below are what enforce changes

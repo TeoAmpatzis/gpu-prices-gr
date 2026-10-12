@@ -5,14 +5,17 @@
 // Run: npm run gpu-power:coverage
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { gpuPowerRow } from '../../src/engine/data/gpuPower';
+// Resolved from this file, not the working directory, so the script runs from anywhere.
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 const WORKSTATION = /^(RTX PRO |RTX A\d|T\d|RTX \d{4} (Ada|\(Pro\)))|Quadro|Radeon PRO|Arc Pro/;
 const BRANDS = ['NVIDIA', 'AMD', 'Intel'];
-const OUT = join(process.cwd(), 'docs', 'phase2', 'gpu-power-coverage.md');
+const OUT = join(ROOT, 'docs', 'phase2', 'gpu-power-coverage.md');
 
 interface Listing { chip: string; brand: string }
-const data = JSON.parse(readFileSync(join(process.cwd(), 'public', 'data', 'gpu', 'latest.json'), 'utf8')) as { listings: Listing[] };
+const data = JSON.parse(readFileSync(join(ROOT, 'public', 'data', 'gpu', 'latest.json'), 'utf8')) as { listings: Listing[] };
 
 const counts = new Map<string, Map<string, number>>(BRANDS.map((b) => [b, new Map()]));
 for (const l of data.listings) {

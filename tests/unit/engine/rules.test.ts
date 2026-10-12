@@ -136,7 +136,15 @@ describe('rule 13: BIOS (the real official table)', () => {
   const run = (p: { chipset: string; cpuName: string }, mf: Record<string, unknown> = {}) =>
     ruleResult(evaluate([cpu({}, p.cpuName), mobo({ chipset: p.chipset, ...mf })], { bios: biosSupport }), 13)!;
 
-  it('ok pair → pass', () => { const p = pair('ok')!; expect(p).toBeDefined(); expect(run(p).status).toBe('pass'); });
+  it('ok pair → pass, worded as what the maker lists (no claim about a BIOS update)', () => {
+    const p = pair('ok')!; expect(p).toBeDefined();
+    const f = run(p);
+    expect(f.status).toBe('pass');
+    expect(f.message.en).toBe('The maker lists this chipset as compatible with this CPU generation.');
+    expect(f.message.el).toBe('Ο κατασκευαστής δηλώνει αυτό το chipset συμβατό με αυτή τη γενιά επεξεργαστή.');
+    expect(f.fix?.en).toMatch(/BIOS version/);
+    expect(f.fix?.el).toMatch(/BIOS/);
+  });
   it('update pair → warning, Flashback wording when the board has it', () => {
     const p = pair('update')!; expect(p).toBeDefined();
     expect(run(p).status).toBe('warning');
@@ -233,6 +241,45 @@ describe("rule 14: PSU vs the maker figure and the whole-build estimate (owner's
     const keysOf = (parts: Part[]) => ruleResult(evaluate(parts, {}), 14)!.parts;
     expect(keysOf([amd, gpu(), psu(500)])).not.toContain(amd.key);
     expect(keysOf([il, gpu(), psu(maker - 50)])).toContain(il.key);
+  });
+  it('level 4 with a lower bound: maker figure reached, CPU power unknown, lower bound not -> warning, estimate', () => {
+    // Arc A750 has a board-power row but no maker PSU figure; the card states 300 W. AMD CPU: no power-limit row.
+    const arc = gpu({ chip: 'Arc A750', minPsu: 300 }), amd = cpu({}, 'Ryzen 5 7600');
+    const parts = (w: number) => [arc, amd, ram(), drive(), fan(120, 3, 2), psu(w)];
+    const e = powerEstimate(parts(300));
+    expect([e.makerW, e.formulaW]).toEqual([300, null]);
+    const lower = e.formulaWithoutCpuW!;
+    expect(lower).toBeGreaterThan(300);
+    expect([status(14, parts(300)), basis(14, parts(300))]).toEqual(['warning', 'estimate']);
+    expect(msgEl(parts(300))).toContain('φτάνει το νούμερο του κατασκευαστή');
+    expect(msgEl(parts(300))).toContain(`${lower} W`);
+    expect(msgEl(parts(300))).toContain('χωρίς την ισχύ του επεξεργαστή');
+    expect(ruleResult(evaluate(parts(300), {}), 14)!.message.en).toContain("even without the CPU's power");
+    expect(status(14, parts(299))).toBe('error'); // below the maker figure
+    expect(status(14, parts(lower))).not.toBe('error');
+    expect(msgEl(parts(lower))).not.toContain('φτάνει το νούμερο');
+  });
+  it('estimate-missing text reads after "we don\'t know" (AMD CPU, maker figure only)', () => {
+    const parts = [cpu({}, 'Ryzen 5 7600'), gpu(), psu(2000)];
+    const r = ruleResult(evaluate(parts, {}), 14)!;
+    expect(r.message.en).toBe(`2000 W power supply; the maker asks for ${maker} W. The whole-build estimate is missing: we don't know the CPU's power limit (Ryzen 5 7600: no official page in our tables).`);
+    expect(r.message.el).toBe(`Τροφοδοτικό 2000 W· ο κατασκευαστής ζητά ${maker} W. Η εκτίμηση για όλο το build λείπει: δεν ξέρουμε το όριο ισχύος του επεξεργαστή (Ryzen 5 7600: καμία επίσημη σελίδα στις πηγές μας).`);
+  });
+  it('estimate-missing text for the no-CPU case stands on its own', () => {
+    const r = ruleResult(evaluate([gpu(), psu(2000)], {}), 14)!;
+    expect(r.message.en).toBe(`2000 W power supply; the maker asks for ${maker} W. The whole-build estimate is missing: no CPU is chosen yet.`);
+    expect(r.message.el).toBe(`Τροφοδοτικό 2000 W· ο κατασκευαστής ζητά ${maker} W. Η εκτίμηση για όλο το build λείπει: δεν έχεις διαλέξει ακόμα επεξεργαστή.`);
+  });
+  it('estimate-missing text: unknown card power and stick count are accusative noun phrases', () => {
+    const r = ruleResult(evaluate([intel(), gpu({ chip: 'Unknown X' }), ram({ modules: null }), psu(2000)], {}), 14)!;
+    expect(r.message.en).toContain("we don't know the card's board power (the chip has no official page in our tables), the number of memory sticks.");
+    expect(r.message.el).toContain('δεν ξέρουμε την κατανάλωση της κάρτας (δεν υπάρχει επίσημη σελίδα για το τσιπ στις πηγές μας), τον αριθμό των μονάδων μνήμης.');
+  });
+  it("unknown when the PSU's own wattage is not stated says so", () => {
+    const r = ruleResult(evaluate([intel(), gpu(), psu(0, { watts: null })], {}), 14)!;
+    expect(r.status).toBe('unknown');
+    expect(r.message.en).toContain("doesn't state its wattage");
+    expect(r.message.el).toContain('δεν δηλώνει την ισχύ του');
   });
   it('level 4: at the maker figure but below the formula -> warning, estimate', () => {
     for (const w of [maker, formula - 50]) {
@@ -388,9 +435,10 @@ describe('rule 25: memory speed vs the CPU official speed', () => {
   const two = row.sticks2!;
   it('pass: 2 sticks at the official speed', () => expect(status(25, [cpu(), ram({ speed: two })])).toBe('pass'));
   it('faster → note (XMP/EXPO)', () => expect(status(25, [cpu(), ram({ speed: two + 1 })])).toBe('note'));
-  it('4 sticks use the 4-stick value (note if lower, else unknown)', () => {
-    const expected = row.sticks4 === undefined ? 'unknown' : row.sticks4 < two ? 'note' : 'pass';
-    expect(status(25, [cpu(), ram({ speed: two, modules: 4 })])).toBe(expected);
+  it('4 sticks use the 4-stick value (Ryzen 5 7600: 4-stick speed below the 2-stick one → note)', () => {
+    expect(row.sticks4).toBeDefined();
+    expect(row.sticks4!).toBeLessThan(two);
+    expect(status(25, [cpu(), ram({ speed: two, modules: 4 })])).toBe('note');
   });
   it('unknown: DDR4 kit on a DDR5-only row', () => expect(status(25, [cpu(), ram({ type: 'DDR4', speed: 3200 })])).toBe('unknown'));
   it('unknown: CPU not in the table', () => expect(status(25, [cpu({}, 'EPYC 4124P'), ram()])).toBe('unknown'));

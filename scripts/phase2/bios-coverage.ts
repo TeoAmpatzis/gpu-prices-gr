@@ -3,8 +3,11 @@
 // Run: npm run bios:coverage
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { BIOS } from '../../src/engine/data/bios';
-import type { CpuGeneration } from '../../src/engine/data/cpuMemory';
+import type { CpuGeneration } from '../../src/engine/data/cpuMemory';
+// Resolved from this file, not the working directory, so the script runs from anywhere.
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 const SOCKETS: Record<string, CpuGeneration[]> = {
   AM4: ['ryzen-1000', 'ryzen-3000', 'ryzen-4000', 'ryzen-4000g', 'ryzen-5000', 'ryzen-5000g'],
@@ -12,11 +15,11 @@ const SOCKETS: Record<string, CpuGeneration[]> = {
   LGA1700: ['intel-12', 'intel-13', 'intel-14'],
   LGA1851: ['core-ultra-200s'],
 };
-const OUT = join(process.cwd(), 'docs', 'phase2', 'bios-coverage.md');
+const OUT = join(ROOT, 'docs', 'phase2', 'bios-coverage.md');
 const up = (s: string) => s.toUpperCase();
 
 interface Listing { chipset: string | null; socket: string | null }
-const data = JSON.parse(readFileSync(join(process.cwd(), 'public', 'data', 'mobo', 'latest.json'), 'utf8')) as { listings: Listing[] };
+const data = JSON.parse(readFileSync(join(ROOT, 'public', 'data', 'mobo', 'latest.json'), 'utf8')) as { listings: Listing[] };
 
 const rowFor = (chipset: string, gen: CpuGeneration) => BIOS.find((r) => r.generation === gen && r.chipsets.some((c) => up(c) === up(chipset)));
 const host = (u: string) => new URL(u).hostname;
