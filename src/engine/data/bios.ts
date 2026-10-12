@@ -27,13 +27,11 @@ const AM5 = 'https://www.amd.com/en/products/processors/chipsets/am5.html';
 const AM5_ALL =
   'With the AMD Ryzen 600 and 800 series chipsets, all AMD Socket AM5 motherboards are compatible with all AMD Socket AM5 processors. ' +
   'That means you can choose any Socket AM5 board for AMD Ryzen 7000, 8000, and 9000 compatibility.';
-const AM5_BIOS = '(A BIOS update may be required for Ryzen 8000 and 9000 series processors on 600 series boards.)';
-// Series membership: no amd.com page labels a chipset "600 series" by name. am5.html names, besides the 800 series
-// (X870E, X870, B850, B840), only X670E, X670 and "A620 / A620A / PRO 600" as AM5 chipsets, and its sentence covers "600 and 800 series
-// chipsets", so on that page these three are the 600 series. B650 and B650E are not named on am5.html (only on amd.com driver pages and
-// the EPYC 4000 chipset page, without a series label), so they get no row.
-const AM5_600 = ['A620', 'X670', 'X670E'];
-const AM5_800 = ['B840', 'B850', 'X870', 'X870E'];
+// am5.html also says "(A BIOS update may be required for Ryzen 8000 and 9000 series processors on 600 series boards.)", but no amd.com page
+// states which chipsets are the "600 series" (or the "800 series"), and series membership by name or by elimination is not used. So Ryzen
+// 8000/8000G/9000 get no AM5 row at all (unknown). Ryzen 7000 is not named in that caveat, and the sentence above says every AM5 board is
+// compatible with every AM5 processor, so 'ok' is given for the chipsets the page itself names as AM5 chipsets.
+const AM5_NAMED = ['A620', 'X670', 'X670E', 'B840', 'B850', 'X870', 'X870E'];
 
 // ---- AM4: amd.com "AM4 chipsets" compatibility table (read cell by cell) ----------------------------------------
 const AM4 = 'https://www.amd.com/en/products/processors/chipsets/am4.html';
@@ -102,16 +100,7 @@ const INTEL_ULTRA =
   'the Intel® Core™ Ultra Desktop Processors (Series 2) are paired with new Intel® 800 Series Desktop Chipsets and are not compatible with older chipsets, such as the Intel® 700 and Intel® 600 Series Desktop Chipsets.';
 
 export const BIOS: BiosRow[] = [
-  // AM5, 600 series: compatible with Ryzen 7000; the page's BIOS note names Ryzen 8000 and 9000 on 600 series boards
-  // (8000G is part of the Ryzen 8000 series on amd.com).
-  { chipsets: AM5_600, generation: 'ryzen-7000', verdict: 'ok', source: AM5, quote: AM5_ALL, checked: CHECKED },
-  ...(['ryzen-8000', 'ryzen-8000g', 'ryzen-9000'] as const).map((generation): BiosRow => ({
-    chipsets: AM5_600, generation, verdict: 'update', source: AM5, quote: `${AM5_ALL} ${AM5_BIOS}`, checked: CHECKED,
-  })),
-  // AM5, 800 series: the same sentence, and no BIOS note for them.
-  ...(['ryzen-7000', 'ryzen-8000', 'ryzen-8000g', 'ryzen-9000'] as const).map((generation): BiosRow => ({
-    chipsets: AM5_800, generation, verdict: 'ok', source: AM5, quote: AM5_ALL, checked: CHECKED,
-  })),
+  { chipsets: AM5_NAMED, generation: 'ryzen-7000', verdict: 'ok', source: AM5, quote: AM5_ALL, checked: CHECKED },
   ...am4Rows(),
   // LGA1700: Intel's article names 13th and 14th gen only (12th gen has no statement of its own: "may require ... between 12th, 13th, or 14th gen").
   ...(['intel-13', 'intel-14'] as const).map((generation): BiosRow => ({
