@@ -52,13 +52,18 @@ export function usable<S extends Slot>(slot: S, m: Model<SlotListing[S]>): boole
 }
 
 /**
- * Rule fields the compatibility rules read that the listing data does not carry (yet), per slot: a part has them
- * as null, so those checks answer "unknown". The guard test (tests/unit/pick.test.ts) scans src/engine/rules for every
- * field read and fails if one is neither in `PART_FIELDS` nor listed here, and fails if a listed one gains data.
+ * Documentation + test of which engine-read fields have NO value today in v2's validated listings (any listing of
+ * the category with a non-null value counts as "has data"). `PART_FIELDS` is what `toPart` copies, and still copies
+ * these, so their values flow as soon as the data has them; this list only says which have none now (those checks
+ * answer "unknown"). The guard test (tests/unit/pick.test.ts) scans every engine rule (and the helpers they call)
+ * for the fields read and fails if a read field is in neither list, if a listed field gains values (move it out of
+ * this list), or if a read field with no values is missing here.
  */
 export const NOT_IN_DATA: Record<Slot, string[]> = {
   cpu: [],
-  mobo: ['fanHeaders', 'usbCHeader'], // m2Gen, m2Slots, sataPorts, maxMemoryGB, biosFlashback ARE in the data (board spec pages)
+  // fanHeaders, usbCHeader: not on any spec page we read. m2Gen, m2Slots, sataPorts, maxMemoryGB, biosFlashback: main's
+  // scraper started filling them 2026-10-10; v2's data copy is from 2026-10-10 05:51 and has none.
+  mobo: ['fanHeaders', 'usbCHeader', 'm2Gen', 'm2Slots', 'sataPorts', 'maxMemoryGB', 'biosFlashback'],
   ram: [],
   gpu: ['powerConnector', 'slots'],
   cooler: [],
@@ -86,9 +91,11 @@ function ownErrors(beforeErrors: Finding[], after: Finding[], key: string): Find
   });
 }
 
-function hides(f: Finding, build: Build): boolean {
+/** Does this error of the candidate hide it? Exported for the rule-set tests. */
+export function hides(f: Finding, build: Build): boolean {
   if (f.status !== 'error') return false;
-  if (f.rule === 11 || f.rule === 12) return build.some((p) => p.category === NEVER_HIDE_WHEN_MISSING[f.rule as 11 | 12]);
+  const need = NEVER_HIDE_WHEN_MISSING[f.rule as 11 | 12]; // undefined for every other rule
+  if (need && !build.some((p) => p.category === need)) return false;
   if (!HIDE_RULES.has(f.rule)) return false;
   return f.rule !== 14 || f.basis === 'stated';
 }
@@ -99,9 +106,13 @@ export function hidingErrors(build: Part[], candidate: Part, ctx: Context): Find
 }
 
 /**
- * Check a whole page's candidates for one slot: `build` minus that slot's part(s), then each candidate added.
- * `findings` = everything the engine says about the candidate (errors, warnings, notes, unknowns: for the row),
- * `hide` = at least one of its own errors is a hiding one.
+ * Check a whole page's candidates for one slot. Unlike `hidingErrors` (whose `build` the caller has already
+ * stripped), `checkAll` drops the slot itself: it replaces the candidate's WHOLE category in `build` (one part per
+ * category, like today's builder; multi-part slots are Phase 4). Then each candidate is added in turn.
+ * `findings` = what the engine says about the candidate for its row: its own errors (clashes the build did not
+ * already have, same filter as `candidateErrors`) plus every warning, note and unknown that names it. A clash that
+ * existed without it (v1 C-01: a PSU too small for the card) is not shown as the candidate's own.
+ * `hide` = at least one of its own errors is a hiding one (`hidingErrors`' rule).
  */
 export function checkAll(build: Part[], slot: Slot, candidates: Part[], ctx: Context): Map<string, { hide: boolean; findings: Finding[] }> {
   const base = build.filter((p) => p.category !== slot);
@@ -109,24 +120,28 @@ export function checkAll(build: Part[], slot: Slot, candidates: Part[], ctx: Con
   const out = new Map<string, { hide: boolean; findings: Finding[] }>();
   for (const c of candidates) {
     const after = evaluate([...base, c], ctx);
-    const own = after.filter((f) => f.parts.includes(c.key));
-    out.set(c.key, { hide: ownErrors(before, after, c.key).some((f) => hides(f, base)), findings: own });
+    const ownErr = new Set(ownErrors(before, after, c.key));
+    const findings = after.filter((f) => f.parts.includes(c.key) && (f.status !== 'error' || ownErr.has(f)));
+    out.set(c.key, { hide: [...ownErr].some((f) => hides(f, base)), findings });
   }
   return out;
 }
 
 /**
  * Which other slots' parts the rules of each category page need (step2-plan section 2, "Ποιες θέσεις αφορούν οι
- * κανόνες"): the page loads these from the build. Asserted against the pairs of slots the rule files read together.
+ * κανόνες"): the page loads these from the build. Differs from step2-plan section 2 on
+ * purpose: rule 14's formula (`powerEstimate`) also reads ram, storage, fan and cooler, so the pages whose rules
+ * include 14 (cpu, gpu, psu) list them too (controller ruling 2026-10-12; extra chunks about 2.5 KB at most).
+ * Asserted against the slots the rule files (and the helpers they call) read together.
  */
 export const CATEGORY_RULE_SLOTS: Record<Slot, Slot[]> = {
-  cpu: ['mobo', 'ram', 'gpu', 'cooler', 'psu'],
+  cpu: ['mobo', 'ram', 'gpu', 'cooler', 'psu', 'storage', 'fan'],
   mobo: ['cpu', 'ram', 'storage', 'case', 'fan'],
   ram: ['cpu', 'mobo', 'cooler'],
-  gpu: ['case', 'psu', 'cpu'],
+  gpu: ['case', 'psu', 'cpu', 'ram', 'storage', 'fan', 'cooler'],
   cooler: ['cpu', 'case', 'ram'],
   storage: ['mobo', 'case'],
   case: ['mobo', 'gpu', 'cooler', 'fan', 'psu', 'storage'],
   fan: ['case', 'mobo'],
-  psu: ['gpu', 'cpu', 'case'],
+  psu: ['gpu', 'cpu', 'case', 'ram', 'storage', 'fan', 'cooler'],
 };
