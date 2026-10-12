@@ -76,10 +76,12 @@ interface Props<L extends BaseListing> {
   counts?: FacetCounts;
   /** Inside the phone bottom sheet: no card frame and no own title row. */
   bare?: boolean;
+  /** Shown first, above the search (pick mode: "Μόνο συμβατά"). */
+  top?: ReactNode;
 }
 
 /** Filters: search + sort, group pills, segment, sales, sources, category-specific specs, max price. */
-export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onChange, options, counts, bare }: Props<L>) {
+export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onChange, options, counts, bare, top }: Props<L>) {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
   const set = <K extends keyof Filters>(k: K, v: Filters[K]) => onChange({ ...f, [k]: v });
@@ -114,7 +116,7 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
           <span className="text-sm font-semibold">{t(T.filters)}</span>
           <button
             type="button"
-            onClick={() => onChange({ ...defaultFilters(cfg.groups), per: f.per })}
+            onClick={() => onChange({ ...defaultFilters(cfg.groups, f.pick), per: f.per })}
             className="tap inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-medium text-muted edge transition hover:bg-hover hover:text-fg dark:ring-0"
             title={t(T.resetTitle)}
           >
@@ -122,6 +124,7 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
           </button>
         </div>
       )}
+      {top}
       <label className="relative">
         <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
         <input

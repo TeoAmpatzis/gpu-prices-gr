@@ -181,8 +181,8 @@ export const PRIVACY: InfoPageContent = {
       bullets: [
         { el: '`lang`: ελληνικά ή αγγλικά.', en: '`lang`: Greek or English.' },
         {
-          el: '`pcBuild`: τα εξαρτήματα που έχεις διαλέξει στο PC Builder, και η χρήση και ο προϋπολογισμός αν τα όρισες. Ο σύνδεσμος κοινοποίησης μιας σύνθεσης περιέχει μόνο αυτά, στη διεύθυνση της σελίδας (π.χ. `/builder?cpu=…`)· όπως κάθε διεύθυνση που ανοίγεις, εμφανίζεται στα αρχεία καταγραφής της φιλοξενίας (Vercel).',
-          en: "`pcBuild`: the parts you picked in the PC Builder, and the use and budget if you set them. A build's share link holds only these, in the page address (e.g. `/builder?cpu=…`); like any address you open, it appears in the hosting provider's logs (Vercel).",
+          el: '`pcBuild`: τα εξαρτήματα που έχεις διαλέξει στο PC Builder, με τα τεχνικά στοιχεία συμβατότητας (π.χ. socket, μέγεθος, διαστάσεις). Ξεχωριστά από αυτά, η χρήση και ο προϋπολογισμός, αν τα όρισες. Ο σύνδεσμος κοινοποίησης μιας σύνθεσης περιέχει μόνο τα εξαρτήματα, τη χρήση και τον προϋπολογισμό, στη διεύθυνση της σελίδας (π.χ. `/builder?cpu=…`)· όπως κάθε διεύθυνση που ανοίγεις, εμφανίζεται στα αρχεία καταγραφής της φιλοξενίας (Vercel).',
+          en: "`pcBuild`: the parts you picked in the PC Builder, with technical details such as socket, size and dimensions. Separately from these, the use and budget, if you set them. A build's share link holds only the parts, the use and the budget, in the page address (e.g. `/builder?cpu=…`); like any address you open, it appears in the hosting provider's logs (Vercel).",
         },
       ],
     },

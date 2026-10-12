@@ -5,7 +5,7 @@ import type { Model } from '../lib/data';
 import type { CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Text } from '../lib/i18n';
 import { useMedia } from '../lib/useMedia';
-import ModelRow, { ModelCard } from './ModelRow';
+import ModelRow, { ModelCard, type RowPick } from './ModelRow';
 import { productImage } from '../lib/images';
 
 interface Props<L extends BaseListing> {
@@ -16,9 +16,11 @@ interface Props<L extends BaseListing> {
   img: Record<string, string>;
   /** Resets every filter (the empty state's "Clear filters" button). */
   onReset: () => void;
+  /** Pick mode: what each row adds (from the lazy pick code). */
+  pick?: RowPick<L>;
 }
 
-export default function ModelTable<L extends BaseListing>({ cfg, models, history, img, onReset }: Props<L>) {
+export default function ModelTable<L extends BaseListing>({ cfg, models, history, img, onReset, pick }: Props<L>) {
   const lang = useLang();
   const [openKey, setOpenKey] = useState<string | null>(null);
   // The table needs a desktop-wide column (≥ 1024px); phones and tablets get cards.
@@ -57,6 +59,7 @@ export default function ModelTable<L extends BaseListing>({ cfg, models, history
             image={productImage(img[m.key])}
             open={openKey === m.key}
             onToggle={() => setOpenKey(openKey === m.key ? null : m.key)}
+            pick={pick?.(m)}
           />
         ))}
       </ul>
@@ -91,6 +94,7 @@ export default function ModelTable<L extends BaseListing>({ cfg, models, history
               image={productImage(img[m.key])}
               open={openKey === m.key}
               onToggle={() => setOpenKey(openKey === m.key ? null : m.key)}
+              pick={pick?.(m)}
             />
           ))}
         </tbody>

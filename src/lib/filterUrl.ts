@@ -43,8 +43,11 @@ export function parseUrl(): { page: string; params: URLSearchParams | null } {
 const groupSlug = (g: string) => slug(groupName(g, 'en'));
 
 export function encodeFilters<L extends BaseListing>(f: Filters, cfg: CategoryConfig<L>): string {
-  const d = defaultFilters(cfg.groups);
+  // Pick mode (`pick=1`, its own default sort) and "Only compatible" off (`compat=0`) are kept on every change.
+  const d = defaultFilters(cfg.groups, f.pick);
   const p = new URLSearchParams();
+  if (f.pick) p.set('pick', '1');
+  if (f.pick && !f.compat) p.set('compat', '0');
   if (f.query.trim()) p.set('q', f.query.trim());
   if (f.groups.length !== d.groups.length) p.set(cfg.groupParam, f.groups.map(groupSlug).join(','));
   if (f.sources.length !== d.sources.length) p.set('src', f.sources.join(','));
@@ -61,7 +64,9 @@ export function encodeFilters<L extends BaseListing>(f: Filters, cfg: CategoryCo
 }
 
 export function decodeFilters<L extends BaseListing>(p: URLSearchParams, cfg: CategoryConfig<L>): Filters {
-  const f = defaultFilters(cfg.groups);
+  const pick = p.get('pick') === '1';
+  const f = defaultFilters(cfg.groups, pick);
+  f.compat = !(pick && p.get('compat') === '0');
   f.query = p.get('q') ?? '';
   const groups = p.get(cfg.groupParam);
   if (groups != null) {
@@ -91,6 +96,15 @@ export function decodeFilters<L extends BaseListing>(p: URLSearchParams, cfg: Ca
   const per = Number(p.get('per'));
   if ((PER_PAGE as readonly number[]).includes(per)) f.per = per;
   return f;
+}
+
+/**
+ * A plain link to the page ("/mobo", no parameters) leaves pick mode: the other filters stay, "Only compatible"
+ * and the pick default sort (price ascending) don't carry over to the normal page.
+ */
+export function leavePick(f: Filters): Filters {
+  if (!f.pick) return f;
+  return { ...f, pick: false, compat: true, sort: f.sort === 'price-asc' ? 'model' : f.sort };
 }
 
 /**

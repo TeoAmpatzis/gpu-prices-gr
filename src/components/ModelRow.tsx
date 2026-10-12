@@ -30,6 +30,17 @@ function totalHint(l: BaseListing, lang: Lang): string {
   return l.merchant ? `${l.merchant}: ${parts}` : parts;
 }
 
+/** Pick mode (`?pick=1`, src/components/PickView.tsx): what a model's row adds. */
+export interface RowExtra<L extends BaseListing> {
+  /** Greyed: "Only compatible" is off and the model would be hidden (its reason is in `extra`). */
+  dim: boolean;
+  /** Findings and the "Add to build" button, under the name. */
+  extra: ReactNode;
+  /** Per offer in the open row (graphics cards: each card is added on its own): greyed or not, and what it adds. */
+  listing?: (l: L) => { dim: boolean; extra: ReactNode };
+}
+export type RowPick<L extends BaseListing> = (m: Model<L>) => RowExtra<L>;
+
 interface Props<L extends BaseListing> {
   cfg: CategoryConfig<L>;
   model: Model<L>;
@@ -38,7 +49,10 @@ interface Props<L extends BaseListing> {
   image: ProductImage | null;
   open: boolean;
   onToggle: () => void;
+  pick?: RowExtra<L>;
 }
+
+const DIM = 'opacity-50';
 
 /** All-time low, sale and source badges of a model's cheapest offer. */
 function PriceBadges<L extends BaseListing>({ m, lang }: { m: Model<L>; lang: Lang }) {
@@ -109,25 +123,29 @@ function ModelDetails<L extends BaseListing>({
   image,
   icon,
   lang,
+  listingExtra,
 }: {
   cat: Category;
   m: Model<L>;
   image: ProductImage | null;
   icon: LucideIcon;
   lang: Lang;
+  listingExtra?: RowExtra<L>['listing'];
 }) {
   const price = (n: number) => formatPrice(n, lang);
   const details = useDetails(cat);
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_22rem]">
       <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-xl bg-panel ring-1 ring-edge">
-        {m.listings.map((l) => (
+        {m.listings.map((l) => {
+          const x = listingExtra?.(l);
+          return (
           <li key={l.id}>
             <a
               href={details?.urls[l.id]}
               target="_blank"
               rel="noopener noreferrer"
-              className="tap flex items-center gap-3 px-3 py-2 text-sm tabular-nums transition-colors duration-150 hover:bg-hover"
+              className={`tap flex items-center gap-3 px-3 py-2 text-sm tabular-nums transition-colors duration-150 hover:bg-hover ${x?.dim ? DIM : ''}`}
             >
               <span className="w-20 shrink-0 text-right font-medium sm:w-24">{price(l.price)}</span>
               {/* Narrow boxes (cards, the list beside the chart): badges, then the title across the
@@ -158,8 +176,10 @@ function ModelDetails<L extends BaseListing>({
               </span>
               <ExternalLink className="h-3.5 w-3.5 shrink-0 text-faint" />
             </a>
+            {x?.extra}
           </li>
-        ))}
+          );
+        })}
       </ul>
       <div className="flex flex-col gap-3">
         <ProductPhoto image={image} size="lg" icon={icon} alt={m.chip} />
@@ -179,15 +199,17 @@ function ModelDetails<L extends BaseListing>({
 }
 
 /** Table row (tablet and desktop); the details open in a full-width row under it. */
-export default function ModelRow<L extends BaseListing>({ cfg, model: m, history, image, open, onToggle }: Props<L>) {
+export default function ModelRow<L extends BaseListing>({ cfg, model: m, history, image, open, onToggle, pick }: Props<L>) {
   const lang = useLang();
   const price = (n: number) => formatPrice(n, lang);
   const delta = weekChange(history, m.cheapest.price);
   const colSpan = 4 + cfg.before.length + cfg.after.length;
+  // Greyed (pick mode, "Only compatible" off): everything but the reason, which stays readable.
+  const dim = pick?.dim ? DIM : '';
   const td = (c: CategoryConfig<L>['before'][number]) => (
     <td
       key={tr('en', c.header)}
-      className={`whitespace-nowrap px-2 text-sm text-fg-soft ${c.numeric ? 'text-right' : ''} ${c.className ?? ''}`}
+      className={`whitespace-nowrap px-2 text-sm text-fg-soft ${c.numeric ? 'text-right' : ''} ${c.className ?? ''} ${dim}`}
     >
       {c.cell(m, lang)}
     </td>
@@ -200,7 +222,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
       >
         <td className="py-3 pl-4 pr-2">
           {/* A real button so the row opens from the keyboard too (Tab, Enter); the click reaches the row. */}
-          <button type="button" aria-expanded={open} className="tap flex items-center gap-2 rounded-md text-left">
+          <button type="button" aria-expanded={open} className={`tap flex items-center gap-2 rounded-md text-left ${dim}`}>
             <ChevronDown
               className={`h-4 w-4 shrink-0 text-faint transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
             />
@@ -211,9 +233,10 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
             />
             <span className="font-semibold tracking-tight">{m.chip}</span>
           </button>
+          {pick?.extra}
         </td>
         {cfg.before.map(td)}
-        <td className="px-2 text-right">
+        <td className={`px-2 text-right ${dim}`}>
           {/* Badges first and the price last, so prices line up on the right edge of the column. */}
           {/* Badges may wrap above the price when the column is tight (photos widen the name column). */}
           <div className="flex flex-wrap items-center justify-end gap-1.5">
@@ -225,15 +248,15 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
           </div>
         </td>
         {cfg.after.map(td)}
-        <td className="hidden whitespace-nowrap px-2 text-right text-sm text-muted xl:table-cell">
+        <td className={`hidden whitespace-nowrap px-2 text-right text-sm text-muted xl:table-cell ${dim}`}>
           {m.listings.length > 1 ? `${tr(lang, T.upTo)} ${price(m.maxPrice)}` : '—'}
         </td>
-        <td className="pl-2 pr-4 text-right text-sm text-muted">{m.listings.length}</td>
+        <td className={`pl-2 pr-4 text-right text-sm text-muted ${dim}`}>{m.listings.length}</td>
       </tr>
       {open && (
         <tr className="bg-sunken">
           <td colSpan={colSpan} className="border-t border-line px-4 pb-5 pt-4">
-            <ModelDetails cat={cfg.id} m={m} image={image} icon={cfg.icon} lang={lang} />
+            <ModelDetails cat={cfg.id} m={m} image={image} icon={cfg.icon} lang={lang} listingExtra={pick?.listing} />
           </td>
         </tr>
       )}
@@ -245,7 +268,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
  * Phone and tablet layout (< 1024px): one card per model instead of a table row — name and price on top, the
  * category's spec columns as one line, badges and listing count below. Tapping opens the details.
  */
-export function ModelCard<L extends BaseListing>({ cfg, model: m, history, image, open, onToggle }: Props<L>) {
+export function ModelCard<L extends BaseListing>({ cfg, model: m, history, image, open, onToggle, pick }: Props<L>) {
   const lang = useLang();
   const delta = weekChange(history, m.cheapest.price);
   // The same values as the table columns, without headers; empty ones ("—") are skipped.
@@ -258,7 +281,7 @@ export function ModelCard<L extends BaseListing>({ cfg, model: m, history, image
         type="button"
         aria-expanded={open}
         onClick={onToggle}
-        className="flex w-full items-start gap-3 p-4 text-left transition-colors duration-150 active:bg-hover"
+        className={`flex w-full items-start gap-3 p-4 text-left transition-colors duration-150 active:bg-hover ${pick?.dim ? DIM : ''}`}
       >
         <ProductPhoto image={image} size="md" icon={cfg.icon} alt="" />
         <div className="flex min-w-0 flex-1 flex-col gap-2">
@@ -294,9 +317,10 @@ export function ModelCard<L extends BaseListing>({ cfg, model: m, history, image
         </div>
         </div>
       </button>
+      {pick?.extra && <div className="-mt-1 px-4 pb-4">{pick.extra}</div>}
       {open && (
         <div className="border-t border-line bg-sunken p-3">
-          <ModelDetails cat={cfg.id} m={m} image={image} icon={cfg.icon} lang={lang} />
+          <ModelDetails cat={cfg.id} m={m} image={image} icon={cfg.icon} lang={lang} listingExtra={pick?.listing} />
         </div>
       )}
     </li>

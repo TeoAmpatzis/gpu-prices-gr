@@ -16,7 +16,7 @@ interface Props<L extends BaseListing> {
 export default function ActiveFilters<L extends BaseListing>({ cfg, filters: f, onChange, options }: Props<L>) {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
-  const d = defaultFilters(cfg.groups);
+  const d = defaultFilters(cfg.groups, f.pick);
   const chips: { id: string; label: string; clear: Partial<Filters> }[] = [];
 
   if (f.query.trim()) chips.push({ id: 'q', label: `“${f.query.trim()}”`, clear: { query: '' } });
