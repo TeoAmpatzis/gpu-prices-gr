@@ -3,6 +3,7 @@ import type { HistoryPoint } from '../types';
 import { formatPrice } from '../lib/data';
 import { SOURCES } from '../lib/sources';
 import { T, tr, useLang } from '../lib/i18n';
+import { implausibleDips } from '../lib/dips';
 
 // Price history as a small hand-drawn SVG step chart (replaced recharts, ~100 KB gzipped). Colours
 // are Tailwind classes on the design tokens (stroke-accent, fill-muted…), so they follow light/dark
@@ -63,6 +64,9 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
   }, [(points?.length ?? 0) < 2]); // the box only exists once there is something to draw
 
   const data = useMemo(() => [...(points ?? [])].sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0)), [points]);
+  // C6: implausible short dips are not part of the line: hollow markers with a warning in the tooltip.
+  // The arrow keys and taps still reach them (they are real data, only not trusted).
+  const dips = useMemo(() => implausibleDips(data), [data]);
 
   // A tap elsewhere closes a tooltip opened by touch.
   useEffect(() => {
@@ -94,8 +98,9 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
   const y = (v: number) => PAD.top + (1 - (v - yLo) / (yHi - yLo || 1)) * plotH;
 
   // Step after: the price holds until the next day with a different low.
-  let path = `M${x(time(data[0].d))},${y(data[0].min)}`;
-  for (let i = 1; i < data.length; i++) path += `H${x(time(data[i].d))}V${y(data[i].min)}`;
+  const line = data.filter((q) => !dips.has(q));
+  let path = `M${x(time(line[0].d))},${y(line[0].min)}`;
+  for (let i = 1; i < line.length; i++) path += `H${x(time(line[i].d))}V${y(line[i].min)}`;
 
   const nearest = (clientX: number) => {
     const rect = box.current!.getBoundingClientRect();
@@ -115,7 +120,7 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
 
   const p = active != null ? data[active] : null;
   const px = p ? x(time(p.d)) : 0;
-  const lowest = Math.min(...prices);
+  const lowest = Math.min(...line.map((q) => q.min));
   const summary = `${tr(lang, T.dailyLow)}: ${fullDate(data[0].d)}–${fullDate(data[data.length - 1].d)}, ${tr(lang, T.lowest)} ${formatPrice(lowest, lang)}`;
 
   return (
@@ -157,10 +162,21 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
               </text>
             ))}
             <path d={path} fill="none" strokeWidth={2} strokeLinejoin="round" className="stroke-accent" />
+            {data.map((q) =>
+              dips.has(q) ? (
+                <circle key={q.d} cx={x(time(q.d))} cy={y(q.min)} r={3.5} strokeWidth={1.5} className="fill-panel stroke-warn" />
+              ) : null,
+            )}
             {p && (
               <g>
                 <line x1={px} x2={px} y1={PAD.top} y2={PAD.top + plotH} strokeDasharray="3 3" className="stroke-faint" />
-                <circle cx={px} cy={y(p.min)} r={4} strokeWidth={2} className="fill-accent stroke-panel" />
+                <circle
+                  cx={px}
+                  cy={y(p.min)}
+                  r={4}
+                  strokeWidth={2}
+                  className={dips.has(p) ? 'fill-panel stroke-warn' : 'fill-accent stroke-panel'}
+                />
               </g>
             )}
           </svg>
@@ -176,6 +192,7 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
               {formatPrice(p.min, lang)}
               {SOURCES[p.source] && <span className="font-normal text-muted"> · {SOURCES[p.source].label}</span>}
             </div>
+            {dips.has(p) && <div className="mt-0.5 max-w-[14rem] whitespace-normal text-warn-fg">{tr(lang, T.dipHint)}</div>}
           </div>
         )}
       </div>

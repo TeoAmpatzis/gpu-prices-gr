@@ -15,6 +15,7 @@ import type {
 import { SOURCE_NAMES } from './sources';
 import type { CategoryConfig } from './categories';
 import { recommendedScores } from './ranking';
+import { implausibleDips, isDipPrice } from './dips';
 import { expandHistory, fromColumns } from './columns';
 
 // The site reads files derived at build time (src/lib/derive.ts); browsers cache them for a few
@@ -155,8 +156,10 @@ export function allTimeLow(
   price: number,
 ): AllTimeLow | null {
   const today = new Date().toISOString().slice(0, 10);
-  const past = (points ?? []).filter((p) => p.d < today);
-  const importedLow = typeof imp === 'object' ? imp : undefined;
+  const dips = implausibleDips(points ?? []); // C6: not the chart's hollow dots either
+  const past = (points ?? []).filter((p) => p.d < today && !dips.has(p));
+  let importedLow = typeof imp === 'object' ? imp : undefined;
+  if (importedLow?.low != null && isDipPrice(importedLow.low, dips)) importedLow = { ...importedLow, low: undefined };
   const firstDays = [past[0]?.d, importedLow?.since].filter((d): d is string => !!d).sort();
   const since = firstDays[0];
   if (!since || Date.now() - new Date(since).getTime() < LOW_MIN_DAYS * 864e5) return null;
