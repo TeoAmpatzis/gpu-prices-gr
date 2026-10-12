@@ -1,12 +1,12 @@
-// Official CPU power limit for the PSU formula, read from the maker's own product page.
-// Intel: "Maximum Turbo Power" (PL2) on the model's intel.com page. AMD: "PPT" -- no official amd.com page states
-// PPT for a model or a TDP class (checked 2026-10-12), so no AMD row exists and AMD models are unknown.
-// A value the page does not show is left out; nothing here is derived from TDP or any other value.
+// Official CPU power figure for the PSU formula, read from the maker's own page.
+// Intel: "Maximum Turbo Power" (PL2) on the model's intel.com page.
+// AMD: "Default TDP" from AMD's specifications table (amd.com publishes no PPT for a model; owner's decision 2026-10-12:
+// use the stated TDP, labelled "TDP (AMD gives no PPT)"). Never derived from any other value; a record without a TDP has no row.
 export interface CpuPowerRow {
   /** Chip names exactly as in the data; several only if each model's page states the same figure. */
   models: string[];
-  /** Intel "Maximum Turbo Power" / AMD "PPT". */
-  kind: 'PL2' | 'PPT';
+  /** Intel "Maximum Turbo Power" (PL2) / AMD "Default TDP" (TDP); PPT is kept in the type for a future official source. */
+  kind: 'PL2' | 'PPT' | 'TDP';
   watts: number;
   /** Exact official URL fetched. */
   source: string;
@@ -15,6 +15,7 @@ export interface CpuPowerRow {
 }
 
 // Not covered (page shows no "Maximum Turbo Power"): Pentium G7400, Celeron G6900, Processor 300 (they list only Processor Base Power 46 W).
+const AMD_TABLE = 'https://www.amd.com/en/products/specifications/processors.html';
 export const CPU_POWER: CpuPowerRow[] = [
   { models: ['Core Ultra 5 225'], kind: 'PL2', watts: 121, source: 'https://www.intel.com/content/www/us/en/products/sku/241070/intel-core-ultra-5-processor-225-20m-cache-up-to-4-90-ghz/specifications.html', checked: '2026-10-11' },
   { models: ['Core Ultra 5 225F'], kind: 'PL2', watts: 121, source: 'https://www.intel.com/content/www/us/en/products/sku/241069/intel-core-ultra-5-processor-225f-20m-cache-up-to-4-90-ghz/specifications.html', checked: '2026-10-11' },
@@ -92,6 +93,84 @@ export const CPU_POWER: CpuPowerRow[] = [
   { models: ['Core i9-14900KF'], kind: 'PL2', watts: 253, source: 'https://www.intel.com/content/www/us/en/products/sku/236787/intel-core-i9-processor-14900kf-36m-cache-up-to-6-00-ghz/specifications.html', checked: '2026-10-11' },
   { models: ['Core i9-14900KS'], kind: 'PL2', watts: 253, source: 'https://www.intel.com/content/www/us/en/products/sku/237504/intel-core-i9-processor-14900ks-36m-cache-up-to-6-20-ghz/specifications.html', checked: '2026-10-11' },
   { models: ['Core i9-14900T'], kind: 'PL2', watts: 106, source: 'https://www.intel.com/content/www/us/en/products/sku/236791/intel-core-i9-processor-14900t-36m-cache-up-to-5-50-ghz/specifications.html', checked: '2026-10-11' },
+{ models: ['Athlon 200GE'], kind: 'TDP', watts: 35, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Athlon™ 200GE": Default TDP 35 W
+  { models: ['Athlon 300GE'], kind: 'TDP', watts: 35, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Athlon™ 300GE": Default TDP 35 W
+  { models: ['Athlon 3000G'], kind: 'TDP', watts: 35, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Athlon™ 3000G": Default TDP 35 W
+  { models: ['Ryzen 3 1200'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 3 1200": Default TDP 65 W
+  { models: ['Ryzen 3 3200G'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 3 3200G with Radeon™ Vega 8 Graphics": Default TDP 65 W
+  { models: ['Ryzen 3 4100'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 3 4100": Default TDP 65 W
+  { models: ['Ryzen 3 4300G'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 3 4300G (OEM Only)": Default TDP 65 W
+  { models: ['Ryzen 3 4300GE'], kind: 'TDP', watts: 35, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 3 4300GE (OEM Only)": Default TDP 35 W
+  { models: ['Ryzen 3 5300G'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 3 5300G (OEM Only)": Default TDP 65 W
+  { models: ['Ryzen 3 PRO 8300G'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 3 PRO 8300G": Default TDP 65 W
+  { models: ['Ryzen 5 3400G'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 3400G with Radeon™ RX Vega 11 Graphics": Default TDP 65 W
+  { models: ['Ryzen 5 3600'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 3600": Default TDP 65 W
+  { models: ['Ryzen 5 3600X'], kind: 'TDP', watts: 95, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 3600X": Default TDP 95 W
+  { models: ['Ryzen 5 4500'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 4500": Default TDP 65 W
+  { models: ['Ryzen 5 4600G'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 4600G": Default TDP 65 W
+  { models: ['Ryzen 5 5500'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 5500": Default TDP 65 W
+  { models: ['Ryzen 5 5500F'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 5500F": Default TDP 65 W
+  { models: ['Ryzen 5 5500GT'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 5500GT": Default TDP 65 W
+  { models: ['Ryzen 5 5600'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 5600": Default TDP 65 W
+  { models: ['Ryzen 5 5600G'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 5600G": Default TDP 65 W
+  { models: ['Ryzen 5 5600GT'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 5600GT": Default TDP 65 W
+  { models: ['Ryzen 5 5600T'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 5600T": Default TDP 65 W
+  { models: ['Ryzen 5 5600X'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 5600X": Default TDP 65 W
+  { models: ['Ryzen 5 5600XT'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 5600XT": Default TDP 65 W
+  { models: ['Ryzen 5 7400'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 7400": Default TDP 65 W
+  { models: ['Ryzen 5 7500'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 7500": Default TDP 65 W
+  { models: ['Ryzen 5 7500F'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 7500F": Default TDP 65 W
+  { models: ['Ryzen 5 7500X3D'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 7500X3D": Default TDP 65 W
+  { models: ['Ryzen 5 7600'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 7600": Default TDP 65 W
+  { models: ['Ryzen 5 7600X'], kind: 'TDP', watts: 105, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 7600X": Default TDP 105 W
+  { models: ['Ryzen 5 8400F'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 8400F": Default TDP 65 W
+  { models: ['Ryzen 5 8500G'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 8500G": Default TDP 65 W
+  { models: ['Ryzen 5 8600G'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 8600G": Default TDP 65 W
+  { models: ['Ryzen 5 9500F'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 9500F": Default TDP 65 W
+  { models: ['Ryzen 5 9600'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 9600": Default TDP 65 W
+  { models: ['Ryzen 5 9600X'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 9600X": Default TDP 65 W
+  { models: ['Ryzen 5 PRO 4655G'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 PRO 4655G": Default TDP 65 W
+  { models: ['Ryzen 5 PRO 5650G'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 PRO 5650G": Default TDP 65 W
+  { models: ['Ryzen 5 PRO 7645'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 PRO 7645": Default TDP 65 W
+  { models: ['Ryzen 5 PRO 8500G'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 PRO 8500G": Default TDP 65 W
+  { models: ['Ryzen 5 PRO 8500GE'], kind: 'TDP', watts: 35, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 PRO 8500GE": Default TDP 35 W
+  { models: ['Ryzen 5 PRO 8600G'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 PRO 8600G": Default TDP 65 W
+  { models: ['Ryzen 5 PRO 9645'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 5 PRO 9645": Default TDP 65 W
+  { models: ['Ryzen 7 5700'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 5700": Default TDP 65 W
+  { models: ['Ryzen 7 5700G'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 5700G": Default TDP 65 W
+  { models: ['Ryzen 7 5700X'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 5700X": Default TDP 65 W
+  { models: ['Ryzen 7 5800X'], kind: 'TDP', watts: 105, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 5800X": Default TDP 105 W
+  { models: ['Ryzen 7 5800X3D'], kind: 'TDP', watts: 105, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 5800X3D": Default TDP 105 W
+  { models: ['Ryzen 7 5800XT'], kind: 'TDP', watts: 105, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 5800XT": Default TDP 105 W
+  { models: ['Ryzen 7 7700'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 7700": Default TDP 65 W
+  { models: ['Ryzen 7 7700X'], kind: 'TDP', watts: 105, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 7700X": Default TDP 105 W
+  { models: ['Ryzen 7 7700X3D'], kind: 'TDP', watts: 120, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 7700X3D": Default TDP 120 W
+  { models: ['Ryzen 7 7800X3D'], kind: 'TDP', watts: 120, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 7800X3D": Default TDP 120 W
+  { models: ['Ryzen 7 8700F'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 8700F": Default TDP 65 W
+  { models: ['Ryzen 7 8700G'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 8700G": Default TDP 65 W
+  { models: ['Ryzen 7 9700X'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 9700X": Default TDP 65 W
+  { models: ['Ryzen 7 9800X3D'], kind: 'TDP', watts: 120, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 9800X3D": Default TDP 120 W
+  { models: ['Ryzen 7 9850X3D'], kind: 'TDP', watts: 120, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 9850X3D": Default TDP 120 W
+  { models: ['Ryzen 7 PRO 3700'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 PRO 3700": Default TDP 65 W
+  { models: ['Ryzen 7 PRO 7745'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 PRO 7745": Default TDP 65 W
+  { models: ['Ryzen 7 PRO 8700G'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 PRO 8700G": Default TDP 65 W
+  { models: ['Ryzen 7 PRO 9745'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 7 PRO 9745": Default TDP 65 W
+  { models: ['Ryzen 9 5900XT'], kind: 'TDP', watts: 105, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 9 5900XT": Default TDP 105 W
+  { models: ['Ryzen 9 5950X'], kind: 'TDP', watts: 105, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 9 5950X": Default TDP 105 W
+  { models: ['Ryzen 9 7900'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 9 7900": Default TDP 65 W
+  { models: ['Ryzen 9 7900X'], kind: 'TDP', watts: 170, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 9 7900X": Default TDP 170 W
+  { models: ['Ryzen 9 7900X3D'], kind: 'TDP', watts: 120, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 9 7900X3D": Default TDP 120 W
+  { models: ['Ryzen 9 7950X'], kind: 'TDP', watts: 170, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 9 7950X": Default TDP 170 W
+  { models: ['Ryzen 9 7950X3D'], kind: 'TDP', watts: 120, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 9 7950X3D": Default TDP 120 W
+  { models: ['Ryzen 9 9900X'], kind: 'TDP', watts: 120, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 9 9900X": Default TDP 120 W
+  { models: ['Ryzen 9 9900X3D'], kind: 'TDP', watts: 120, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 9 9900X3D": Default TDP 120 W
+  { models: ['Ryzen 9 9950X'], kind: 'TDP', watts: 170, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 9 9950X": Default TDP 170 W
+  { models: ['Ryzen 9 9950X3D'], kind: 'TDP', watts: 170, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 9 9950X3D": Default TDP 170 W
+  { models: ['Ryzen 9 9950X3D2'], kind: 'TDP', watts: 200, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 9 9950X3D2 Dual Edition": Default TDP 200 W
+  { models: ['Ryzen 9 PRO 7945'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 9 PRO 7945": Default TDP 65 W
+  { models: ['Ryzen 9 PRO 9945'], kind: 'TDP', watts: 65, source: AMD_TABLE, checked: '2026-10-12' }, // "AMD Ryzen™ 9 PRO 9945": Default TDP 65 W
+// AMD rows: one per chip, each quoting its record in the table (record field "Default TDP").
+// Uncovered (no record of that name in the table; not mapped to a similarly named one): Ryzen 7 5755G (the table has only PRO 5755G / PRO 5755GE), Ryzen 7 9850X3 (the table has Ryzen 7 9850X3D).
 ];
 
 const norm = (s: string) => s.toLowerCase().replace(/\s+/g, ' ').trim();

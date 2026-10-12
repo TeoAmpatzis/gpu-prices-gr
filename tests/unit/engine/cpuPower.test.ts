@@ -13,10 +13,18 @@ describe('CPU power table integrity', () => {
       expect(Number.isInteger(r.watts) && r.watts > 0).toBe(true);
       for (const m of r.models) {
         if (/^(Core|Pentium|Celeron|Processor)/i.test(m)) expect(r.kind).toBe('PL2');
-        else if (/^Ryzen/i.test(m)) expect(r.kind).toBe('PPT');
+        else if (/^(Ryzen|Athlon)/i.test(m)) expect(r.kind).toBe('TDP');
         else throw new Error(`unknown brand: ${m}`);
       }
     }
+  });
+  it('Intel rows are only PL2, AMD rows only TDP, and no PPT row exists', () => {
+    expect(CPU_POWER.some((r) => r.kind === 'PPT')).toBe(false);
+    expect(CPU_POWER.filter((r) => r.kind === 'TDP').length).toBeGreaterThan(0);
+    for (const r of CPU_POWER) for (const m of r.models) expect(/^(Ryzen|Athlon)/i.test(m)).toBe(r.kind === 'TDP');
+  });
+  it('AMD rows come from the AMD specifications table', () => {
+    for (const r of CPU_POWER.filter((x) => x.kind === 'TDP')) expect(r.source).toBe('https://www.amd.com/en/products/specifications/processors.html');
   });
   it('no model appears twice', () => {
     const all = CPU_POWER.flatMap((r) => r.models.map((m) => m.toLowerCase().replace(/\s+/g, ' ')));
@@ -37,6 +45,15 @@ describe('cpuPowerRow', () => {
     expect(cpuPowerRow('Core Ultra 5 250K Plus')).toBeDefined();
     expect(cpuPowerRow('Core Ultra 5 250K')).toBeUndefined();
     expect(cpuPowerRow('Core i5-1460')).toBeUndefined();
+  });
+  it('AMD chips carry their stated default TDP', () => {
+    expect(cpuPowerRow('Ryzen 5 7600')).toMatchObject({ kind: 'TDP', watts: 65 });
+    expect(cpuPowerRow('Ryzen 9 9950X')).toMatchObject({ kind: 'TDP', watts: 170 });
+    expect(cpuPowerRow('Ryzen 7 5800X3D')).toMatchObject({ kind: 'TDP', watts: 105 });
+  });
+  it('a chip whose record states no TDP stays uncovered', () => {
+    expect(cpuPowerRow('Ryzen 7 5755G')).toBeUndefined();
+    expect(cpuPowerRow('Ryzen 7 9850X3')).toBeUndefined();
   });
   it('unknown CPU gives undefined, never a guess', () => {
     expect(cpuPowerRow('EPYC 4124P')).toBeUndefined();

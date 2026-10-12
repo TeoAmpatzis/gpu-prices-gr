@@ -34,7 +34,8 @@ describe('candidateErrors (C-01)', () => {
     const arc = part('gpu', { chip: 'Arc A750', lengthMm: 250, minPsu: null });
     const mid = part('psu', { watts: 400, formFactor: 'ATX' }); // card + board: 400 W; with a 117 W PL2 CPU more
     expect(candidateErrors([arc, mid], cpu('LGA1700', 'Core i5-12400F')).map((f) => f.rule)).toEqual([14]);
-    expect(candidateErrors([arc, mid], cpu('AM5', 'Ryzen 5 7600'))).toEqual([]);
+    expect(candidateErrors([arc, mid], cpu('AM5', 'Ryzen 7 5755G'))).toEqual([]); // no TDP row: its power is unknown, never a guess
+    expect(candidateErrors([arc, mid], cpu('AM5', 'Ryzen 9 9950X')).map((f) => f.rule)).toEqual([14]); // AMD's stated TDP now counts
   });
   it('a CPU for another socket is hidden for its own clash', () =>
     expect(candidateErrors([card, ok, board], cpu('AM4', 'Ryzen 5 5600')).map((f) => f.rule)).toEqual([1]));

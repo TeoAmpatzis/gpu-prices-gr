@@ -23,6 +23,9 @@ export function v1RecommendedPsu(gpu: Part | undefined, cpu: Part | undefined): 
 }
 
 export interface PowerPart { key: string; label: Msg; watts: number }
+
+/** The CPU term of an AMD chip: its stated default TDP (AMD publishes no PPT). The label says so wherever it is shown. */
+const TDP_LABEL = msg('TDP (η AMD δεν δίνει PPT)', 'TDP (AMD gives no PPT)');
 export interface PowerEstimate {
   /** Per-part breakdown (card, CPU, board, RAM, drives, fans, pump). */
   parts: PowerPart[];
@@ -63,7 +66,7 @@ export function powerEstimate(b: Build): PowerEstimate {
   if (cpu) {
     const cpuName = str(cpu, 'chip') ?? cpu.name;
     const row = cpuPowerRow(cpuName);
-    if (row) parts.push({ key: 'cpu', label: msg(`Επεξεργαστής (${row.kind})`, `CPU (${row.kind})`), watts: row.watts });
+    if (row) parts.push({ key: 'cpu', label: row.kind === 'TDP' ? TDP_LABEL : msg(`Επεξεργαστής (${row.kind})`, `CPU (${row.kind})`), watts: row.watts });
     else { cpuUnknown = true; missing.push(msg(`το όριο ισχύος του επεξεργαστή (${cpuName}: καμία επίσημη σελίδα στις πηγές μας)`, `the CPU's power limit (${cpuName}: no official page in our tables)`)); }
   } else missing.push(NO_CPU);
 
@@ -136,6 +139,9 @@ export function rule14(b: Build): Finding[] {
   if (makerW !== null && formulaW !== null) f = msg(`ο κατασκευαστής ζητά ${makerW} W, η εκτίμηση για όλο το build είναι ${formulaW} W`, `the maker asks for ${makerW} W; the estimate for the whole build is ${formulaW} W`);
   else if (makerW !== null) f = msg(`ο κατασκευαστής ζητά ${makerW} W`, `the maker asks for ${makerW} W`);
   else f = msg(`η εκτίμηση για όλο το build είναι ${formulaW} W`, `the estimate for the whole build is ${formulaW} W`);
+  // An AMD CPU went into the estimate as its TDP: say so, with the label.
+  const tdp = formulaW !== null ? e.parts.find((p) => p.key === 'cpu' && p.label === TDP_LABEL) : undefined;
+  if (tdp) f = msg(`${f.el} (επεξεργαστής: ${tdp.label.el} ${tdp.watts} W)`, `${f.en} (CPU: ${tdp.label.en} ${tdp.watts} W)`);
   const need = Math.max(makerW ?? 0, formulaW ?? 0);
 
   if (makerW !== null && watts < makerW) return [finding(14, 'error', 'stated', ps,
