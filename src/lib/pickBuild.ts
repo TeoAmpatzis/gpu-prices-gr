@@ -68,38 +68,68 @@ export interface Refreshed {
   parts: Part[];
   /** Keys the data no longer has (A9): shown as "no longer available", left out of the checks. */
   missing: { slot: Slot; key: string }[];
-  /** Fresh fields to save back (`setPart`), so the next visit needs no chunk. */
-  writes: { slot: Slot; part: StoredPart }[];
+  /** Parts whose chunk failed to load and that have no valid stored fields: left out, the bar says so. */
+  unchecked: { slot: Slot; key: string }[];
 }
 
 /**
- * The refreshed parts from `loadCompat` results per slot (`undefined` = that slot's chunk failed to load:
- * the old valid fields are used if there are any, nothing is marked missing and nothing is saved).
+ * What the compat chunks answered for one saved part: its fields (under its current key), gone from the data,
+ * or the chunk failed to load. Kept per page data date; an answer is never asked for again, whatever it was.
  */
-export function applyRefresh(
+export type Outcome = { key: string; fields: Record<string, unknown> } | 'missing' | 'failed';
+
+export const outcomeKey = (builtAt: string, slot: Slot, key: string) => `${builtAt}\n${slot}\n${key}`;
+
+/** One key's answer from a `loadCompat` result (`undefined` = the chunk failed to load). */
+export function outcomeOf(slot: Slot, key: string, rows: Record<string, { fields: Record<string, unknown> }> | undefined): Outcome {
+  if (!rows) return 'failed';
+  const r = resolveKey(slot, key, new Set(Object.keys(rows)));
+  return r.status === 'missing' ? 'missing' : { key: r.key, fields: rows[r.key].fields };
+}
+
+/**
+ * The build the page checks against, from the plan and the chunks' answers so far.
+ * - `toFetch`: the parts to refresh that have no answer yet (sorted, so its JSON is a stable effect key);
+ * - `result`: null while any of them is unanswered; a failed chunk uses the stored fields when they are
+ *   valid (older data), else the part is left out and listed in `unchecked`.
+ * A part answered once is never fetched again, even when its fresh fields could not be saved back
+ * (no refetch loop on a failing chunk or a full storage).
+ */
+export function resolvePlan(
   plan: BuildPlan,
-  results: Partial<Record<Slot, Record<string, { fields: Record<string, unknown> }> | undefined>>,
+  outcomes: Readonly<Record<string, Outcome>>,
   pageBuiltAt: string,
-): Refreshed {
-  const out: Refreshed = { parts: [...plan.ready], missing: [], writes: [] };
-  for (const s of Object.keys(plan.refresh) as Slot[]) {
+): { result: Refreshed | null; toFetch: { slot: Slot; key: string }[] } {
+  const out: Refreshed = { parts: [...plan.ready], missing: [], unchecked: [] };
+  const toFetch: { slot: Slot; key: string }[] = [];
+  for (const s of (Object.keys(plan.refresh) as Slot[]).sort()) {
     const key = plan.refresh[s]!;
-    const rows = results[s];
-    if (!rows) {
+    const o = outcomes[outcomeKey(pageBuiltAt, s, key)];
+    if (o === undefined) toFetch.push({ slot: s, key });
+    else if (o === 'missing') out.missing.push({ slot: s, key });
+    else if (o === 'failed') {
       const old = plan.fallback[s];
       if (old) out.parts.push(partOf(s, key, old));
-      continue;
-    }
-    const r = resolveKey(s, key, new Set(Object.keys(rows)));
-    if (r.status === 'missing') {
-      out.missing.push({ slot: s, key });
-      continue;
-    }
-    const fields = rows[r.key].fields;
-    out.parts.push(partOf(s, r.key, fields));
-    out.writes.push({ slot: s, part: { key: r.key, fields, builtAt: pageBuiltAt } });
+      else out.unchecked.push({ slot: s, key });
+    } else out.parts.push(partOf(s, o.key, o.fields));
   }
-  return out;
+  return { result: toFetch.length ? null : out, toFetch };
+}
+
+type Load = (slot: Slot, keys: string[], builtAt: string) => Promise<Record<string, { fields: Record<string, unknown> }>>;
+
+/** Asks the chunks once for each part in `toFetch` (`load` = compatChunks.loadCompat); a failure is an answer too. */
+export async function fetchOutcomes(toFetch: { slot: Slot; key: string }[], builtAt: string, load: Load): Promise<Record<string, Outcome>> {
+  const rows = await Promise.all(toFetch.map((p) => load(p.slot, [p.key], builtAt).catch(() => undefined)));
+  return Object.fromEntries(toFetch.map((p, i) => [outcomeKey(builtAt, p.slot, p.key), outcomeOf(p.slot, p.key, rows[i])]));
+}
+
+/**
+ * The offer whose candidate a row's "Add" button adds: the cheapest one "Only compatible" doesn't hide (a CPU's
+ * Box or Tray), or the cheapest when every offer is hidden (its reasons are shown). `listings` are price-sorted.
+ */
+export function shownOffer<L extends { id: string }>(listings: L[], hidden: (id: string) => boolean): L {
+  return listings.find((l) => !hidden(l.id)) ?? listings[0];
 }
 
 /** Schedules `fn` when the browser is idle (a timer where requestIdleCallback is missing); returns a cancel. */

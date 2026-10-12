@@ -17,7 +17,9 @@ export interface StoredBuild {
 }
 
 const STORAGE_KEY = 'pcBuild';
-const listeners = new Set<() => void>();
+/** Where a change came from: a write in this tab, or another tab (the `storage` event). */
+export type BuildChangeSource = 'tab' | 'other-tab';
+const listeners = new Set<(source: BuildChangeSource) => void>();
 
 const isObject = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);
 
@@ -64,7 +66,7 @@ export function writeBuild(b: StoredBuild): void {
   } catch {
     /* storage unavailable (private mode): the build just isn't remembered */
   }
-  for (const fn of [...listeners]) fn();
+  for (const fn of [...listeners]) fn('tab');
 }
 
 /** Read-modify-write one slot (null removes it) and notify. */
@@ -76,10 +78,10 @@ export function setPart(slot: Slot, part: StoredPart | null): void {
 }
 
 /** Called after a write in this tab and when another tab changes the build (the `storage` event). */
-export function onBuildChange(fn: () => void): () => void {
+export function onBuildChange(fn: (source: BuildChangeSource) => void): () => void {
   listeners.add(fn);
   const onStorage = (e: { key: string | null }) => {
-    if (e.key === null || e.key === STORAGE_KEY) fn();
+    if (e.key === null || e.key === STORAGE_KEY) fn('other-tab');
   };
   if (typeof window !== 'undefined') window.addEventListener('storage', onStorage);
   return () => {

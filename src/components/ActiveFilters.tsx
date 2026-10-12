@@ -1,6 +1,6 @@
 import { X } from 'lucide-react';
 import type { BaseListing } from '../types';
-import { defaultFilters, formatPrice, type Filters } from '../lib/data';
+import { clearedFilters, defaultFilters, formatPrice, type Filters } from '../lib/data';
 import { groupName, segmentOptions, type CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Text } from '../lib/i18n';
 import { SOURCES } from '../lib/sources';
@@ -67,7 +67,7 @@ export default function ActiveFilters<L extends BaseListing>({ cfg, filters: f, 
       ))}
       <button
         type="button"
-        onClick={() => onChange({ ...d, sort: f.sort, per: f.per })}
+        onClick={() => onChange(clearedFilters(f, cfg.groups, true))}
         className="tap rounded-full px-3 py-1 text-sm font-medium text-muted edge underline-offset-2 transition-colors duration-150 hover:text-fg hover:underline dark:ring-0"
       >
         {t(T.clearAll)}

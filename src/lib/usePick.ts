@@ -16,7 +16,7 @@ import { slotModels, type Slot } from './builder';
 import { loadCompat } from './compatChunks';
 import type { CategoryData } from './data';
 import { checkAll, toPart, usable } from './pick';
-import { applyRefresh, idle, partOf, planBuild, runSliced, SLICE, validStored, type Refreshed } from './pickBuild';
+import { fetchOutcomes, idle, outcomeKey, partOf, planBuild, resolvePlan, runSliced, SLICE, validStored, type Outcome } from './pickBuild';
 import { navigate } from './router';
 
 /** Pick mode's engine context: the BIOS table only (no chip length estimates: they need every card's data). */
@@ -53,10 +53,14 @@ export interface PickState {
   /** The build parts the page checks against (other slots only). */
   build: Part[];
   missing: { slot: Slot; key: string; name: string }[];
+  /** Saved parts whose chunk failed to load and that have no usable stored fields: not checked. */
+  unchecked: { slot: Slot; key: string; name: string }[];
   /** Candidate key → the engine's verdict; null until the check is done. */
   verdicts: Map<string, Verdict> | null;
   /** Listing ids hidden by "Only compatible" (empty until the check is done). */
   hidden: Set<string>;
+  /** False until the candidates are built (keyOf / part answer undefined meanwhile: not "not offered"). */
+  candidatesReady: boolean;
   /** The candidate key of a listing (a card's own id, a CPU's chip + cooler-in-box, else the model). */
   keyOf: (l: BaseListing) => string | undefined;
   /** The candidate's part when the builder offers it (else no "Add" button). */
@@ -69,42 +73,25 @@ export function usePick(slot: Slot, data: CategoryData): PickState {
   const [stored, setStored] = useState(readBuild);
   useEffect(() => onBuildChange(() => setStored(readBuild())), []);
 
-  // 1. The build.
+  // 1. The build. The chunks' answers are kept per part (and data date): each part is asked for once, whatever
+  // the answer, so a failing chunk or a write-back that can't be saved never loops (fix round 1).
   const plan = useMemo(() => planBuild(stored, slot, data.builtAt), [stored, slot, data.builtAt]);
-  const planKey = useMemo(() => JSON.stringify(plan), [plan]);
-  const [fetched, setFetched] = useState<{ key: string; builtAt: string; r: Refreshed } | null>(null);
-  // Keys the chunks already said are gone (same data): not fetched again, still listed as missing.
-  const known = useMemo(() => (fetched?.builtAt === data.builtAt ? fetched.r.missing : []), [fetched, data.builtAt]);
-  const pending = useMemo(
-    () => (Object.keys(plan.refresh) as Slot[]).filter((s) => !known.some((m) => m.slot === s && m.key === plan.refresh[s])),
-    [plan, known],
-  );
+  const [outcomes, setOutcomes] = useState<Record<string, Outcome>>({});
+  const { result: engine, toFetch } = useMemo(() => resolvePlan(plan, outcomes, data.builtAt), [plan, outcomes, data.builtAt]);
+  const fetchKey = JSON.stringify(toFetch);
   useEffect(() => {
-    if (!pending.length) return;
-    let live = true;
-    // A slot whose chunk fails to load is `undefined`: its old fields (if valid) are used, nothing is saved.
-    void Promise.all(pending.map((s) => loadCompat(s, [plan.refresh[s]!], data.builtAt).catch(() => undefined))).then((rows) => {
-      if (!live) return;
-      const results: Parameters<typeof applyRefresh>[1] = {};
-      for (const s of Object.keys(plan.refresh) as Slot[]) results[s] = {}; // known missing
-      pending.forEach((s, i) => (results[s] = rows[i]));
-      const r = applyRefresh(plan, results, data.builtAt);
-      setFetched({ key: planKey, builtAt: data.builtAt, r });
-      // Saved once, so the next visit (and the builder) has them: this changes `stored`, and the new plan
-      // needs no chunk for these parts.
-      for (const w of r.writes) setPart(w.slot, w.part);
+    const parts = JSON.parse(fetchKey) as { slot: Slot; key: string }[];
+    if (!parts.length) return;
+    const builtAt = data.builtAt;
+    void fetchOutcomes(parts, builtAt, loadCompat).then((got) => {
+      setOutcomes((prev) => ({ ...prev, ...got }));
+      // Saved back once, so the next visit (and the builder) has them; only if that part is still the one saved.
+      for (const p of parts) {
+        const o = got[outcomeKey(builtAt, p.slot, p.key)];
+        if (typeof o === 'object' && readBuild().parts[p.slot]?.key === p.key) setPart(p.slot, { key: o.key, fields: o.fields, builtAt });
+      }
     });
-    return () => {
-      live = false;
-    };
-  }, [pending, plan, planKey, data.builtAt]);
-  const engine = useMemo<Refreshed | null>(() => {
-    if (!pending.length) {
-      const missing = (Object.keys(plan.refresh) as Slot[]).map((s) => ({ slot: s, key: plan.refresh[s]! }));
-      return { parts: plan.ready, missing, writes: [] };
-    }
-    return fetched?.key === planKey ? fetched.r : null;
-  }, [pending, plan, fetched, planKey]);
+  }, [fetchKey, data.builtAt]);
 
   // 2. The candidates, built after the first paint (slotModels + toPart of a few thousand models).
   const [cands, setCands] = useState<Candidates | null>(null);
@@ -139,21 +126,26 @@ export function usePick(slot: Slot, data: CategoryData): PickState {
   }, [verdicts, current]);
 
   const missing = useMemo(
-    () =>
-      (engine?.missing ?? []).map(({ slot: s, key }) => {
-        const p = stored.parts[s];
-        const fields = (p && validStored(p)?.fields) ?? {};
-        return { slot: s, key, name: partOf(s, key, fields).name };
-      }),
+    () => {
+      const named = (list: { slot: Slot; key: string }[]) =>
+        list.map(({ slot: s, key }) => {
+          const p = stored.parts[s];
+          const fields = (p && validStored(p)?.fields) ?? {};
+          return { slot: s, key, name: partOf(s, key, fields).name };
+        });
+      return { missing: named(engine?.missing ?? []), unchecked: named(engine?.unchecked ?? []) };
+    },
     [engine, stored],
   );
 
   return {
     status: !engine ? 'loading' : !verdicts ? 'checking' : 'ready',
     build: engineParts ?? [],
-    missing,
+    missing: missing.missing,
+    unchecked: missing.unchecked,
     verdicts,
     hidden,
+    candidatesReady: current !== null,
     keyOf: (l) => current?.keyOf.get(l.id),
     part: (key) => (current?.offered.has(key) ? current.parts.get(key) : undefined),
     add: (key) => {

@@ -1,7 +1,7 @@
 import { lazy, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ComponentType, type ReactNode } from 'react';
 import { SlidersHorizontal } from 'lucide-react';
 import type { BaseListing } from '../types';
-import { PER_PAGE, activeFilterCount, applyFilters, defaultFilters, loadData, type CategoryData, type Filters } from '../lib/data';
+import { PER_PAGE, activeFilterCount, applyFilters, clearedFilters, loadData, type CategoryData, type Filters } from '../lib/data';
 import type { CategoryConfig } from '../lib/categories';
 import { facetCounts } from '../lib/facets';
 import { T, tr, useLang } from '../lib/i18n';
@@ -25,6 +25,8 @@ export interface PickSlots<L extends BaseListing> {
   toggle: ReactNode;
   /** Per model: greyed or not, its findings and "Add" button, and per card for graphics cards. */
   row: RowPick<L>;
+  /** In the empty state, when "Only compatible" hid everything: how many, and a button to turn it off. */
+  empty?: ReactNode;
 }
 
 export interface LayoutProps<L extends BaseListing> {
@@ -123,7 +125,7 @@ export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setF
   // A page number from an old link may be past the end now: show the last page instead.
   const pages = Math.max(1, Math.ceil(models.length / filters.per));
   const page = Math.min(filters.page, pages);
-  const reset = () => setFilters({ ...defaultFilters(cfg.groups, filters.pick), sort: filters.sort, per: filters.per });
+  const reset = () => setFilters(clearedFilters(filters, cfg.groups, true));
   return (
     // Filters in a left sidebar (sticky) on wide screens; below lg they open in a bottom sheet.
     <div className="grid items-start gap-4 lg:grid-cols-[17rem_minmax(0,1fr)]">
@@ -186,6 +188,7 @@ export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setF
           img={data.img}
           onReset={reset}
           pick={pick?.row}
+          emptyExtra={pick?.empty}
         />
         {models.length > PER_PAGE[0] && (
           <Pagination

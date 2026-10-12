@@ -2,7 +2,7 @@
 // pick page's default sort is price ascending unless the URL says otherwise.
 import { describe, expect, it } from 'vitest';
 import { CATEGORIES, type CategoryConfig } from '../../src/lib/categories';
-import { defaultFilters, type Filters } from '../../src/lib/data';
+import { clearedFilters, defaultFilters, type Filters } from '../../src/lib/data';
 import { decodeFilters, encodeFilters, leavePick } from '../../src/lib/filterUrl';
 import type { BaseListing } from '../../src/types';
 
@@ -66,10 +66,14 @@ describe('pick mode in the URL', () => {
     expect(f).toMatchObject({ query: 'b650', saleOnly: true, maxPrice: 200, sort: 'model', page: 3, per: 100 });
   });
 
-  it('the filter resets keep pick mode (the "Clear" buttons build on defaultFilters(groups, pick))', () => {
-    const f = decode('pick=1&compat=0&q=x');
-    const cleared = { ...defaultFilters(mobo.groups, f.pick), per: f.per };
-    expect(encode(cleared)).toBe('pick=1');
+  it('the filter resets keep pick mode and leave "Only compatible" as it is (a mode, not a filter)', () => {
+    const off = decode('pick=1&compat=0&q=x&sale=1&sort=offers&per=100');
+    expect(encode(clearedFilters(off, mobo.groups, false))).toBe('pick=1&compat=0&per=100'); // "Clear filters" (sidebar)
+    expect(encode(clearedFilters(off, mobo.groups, true))).toBe('pick=1&compat=0&sort=offers&per=100'); // "Clear all", empty state
+    expect(encode(clearedFilters(decode('pick=1&q=x'), mobo.groups, false))).toBe('pick=1');
+    // A normal page: as before (the sort kept or not, nothing else).
+    expect(encode(clearedFilters(decode('q=x&sort=offers'), mobo.groups, true))).toBe('sort=offers');
+    expect(encode(clearedFilters(decode('q=x&sort=offers'), mobo.groups, false))).toBe('');
   });
 
   it('leaving pick mode (a plain link to the page) keeps the other filters', () => {
