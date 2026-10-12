@@ -208,11 +208,14 @@ test('a compat chunk that fails: one request, the stored fields are used, no ret
   await withBuild(page, { cpu: AM5_CPU }, '/mobo?pick=1&sock=am4&q=b550');
   await waitChecked(page);
   const bar = page.locator('main [data-pick=bar]:visible');
-  await expect(bar).toContainText("Couldn't check");
-  await expect(bar).toContainText('Ryzen 7 7700');
+  await expect(bar).toContainText("Couldn't check Processor: Ryzen 7 7700");
   await expect(bar.locator('[role=status]')).toHaveText(/Your build is empty/);
   await page.waitForTimeout(3000);
   expect(compat).toHaveLength(1);
+  // Greek: the part's name stays in the nominative, after a dash (not after «για»).
+  await withBuild(page, { cpu: AM5_CPU }, '/mobo?pick=1&sock=am4&q=b550', 'el');
+  await waitChecked(page);
+  await expect(page.locator('main [data-pick=bar]:visible')).toContainText('Δεν ήταν δυνατός ο έλεγχος — Επεξεργαστής: Ryzen 7 7700');
   expect(errors).toEqual([]);
 });
 

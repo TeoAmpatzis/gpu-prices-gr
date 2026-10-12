@@ -9,7 +9,7 @@ export const PICK = {
   checkedWith: { el: 'Έλεγχος με το build σου:', en: 'Checked against your build:' },
   noLongerAvailable: { el: 'δεν διατίθεται πια', en: 'no longer available' },
   notChecked: { el: 'δεν ελέγχεται', en: 'not checked' },
-  couldNotCheck: { el: 'Δεν ήταν δυνατός ο έλεγχος για', en: "Couldn't check" },
+  couldNotCheck: { el: 'Δεν ήταν δυνατός ο έλεγχος —', en: "Couldn't check" },
   hiddenByCompat: { el: 'από το «Μόνο συμβατά»', en: 'by "Only compatible"' },
   turnOffCompat: { el: 'Κλείσε το «Μόνο συμβατά»', en: 'Turn off "Only compatible"' },
   onlyCompatible: { el: 'Μόνο συμβατά', en: 'Only compatible' },
