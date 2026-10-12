@@ -30,6 +30,8 @@ export interface PowerEstimate {
   totalW: number | null;
   /** ⌈totalW × headroom / roundToW⌉ × roundToW. */
   formulaW: number | null;
+  /** With no CPU chosen yet: the formula with the CPU term 0, a lower bound of any build with this card; else null. */
+  formulaWithoutCpuW: number | null;
   /** The larger of the card's own stated minimum PSU and the chip maker's system-power figure. */
   makerW: number | null;
   makerFrom: 'card' | 'chip' | null;
@@ -79,12 +81,15 @@ export function powerEstimate(b: Build): PowerEstimate {
   if (all(b, 'cooler').some((c) => str(c, 'type') === 'AIO')) parts.push({ key: 'pump', label: msg('Αντλία AIO', 'AIO pump'), watts: POWER.pumpW });
 
   const totalW = missing.length ? null : parts.reduce((s, p) => s + p.watts, 0);
-  const formulaW = totalW === null ? null : Math.ceil((totalW * POWER.headroom) / POWER.roundToW) * POWER.roundToW;
+  const roundUp = (x: number) => Math.ceil((x * POWER.headroom) / POWER.roundToW) * POWER.roundToW;
+  const formulaW = totalW === null ? null : roundUp(totalW);
+  // No CPU yet and nothing else unknown: the build needs at least this much whatever CPU is added.
+  const formulaWithoutCpuW = !cpu && missing.length === 1 ? roundUp(parts.reduce((s, p) => s + p.watts, 0)) : null;
 
   const cardW = gpu ? num(gpu, 'minPsu') : null, chipW = chipRow?.makerPsuW ?? null;
   const makerW = cardW === null && chipW === null ? null : Math.max(cardW ?? 0, chipW ?? 0);
   const makerFrom = makerW === null ? null : (cardW ?? 0) >= (chipW ?? 0) ? 'card' : 'chip';
-  return { parts, totalW, formulaW, makerW, makerFrom, missing };
+  return { parts, totalW, formulaW, formulaWithoutCpuW, makerW, makerFrom, missing };
 }
 
 /**
@@ -98,7 +103,13 @@ export function rule14(b: Build): Finding[] {
   const gpu = one(b, 'gpu'), cpu = one(b, 'cpu'), watts = num(psu, 'watts');
   const e = powerEstimate(b);
   const { makerW, formulaW } = e;
-  const ps = keys(psu, gpu, cpu);
+  // The CPU is part of the finding only when its power limit went into the figure.
+  const ps = keys(psu, gpu, e.parts.some((p) => p.key === 'cpu') ? cpu : undefined);
+  const lower = e.formulaWithoutCpuW;
+  if (watts !== null && makerW === null && formulaW === null && lower !== null && watts < lower) return [finding(14, 'error', 'estimate', ps,
+    msg(`Τροφοδοτικό ${watts} W· ακόμα και χωρίς τον επεξεργαστή η εκτίμηση για το build είναι ${lower} W.`,
+      `${watts} W power supply; even without the CPU the estimate for the build is ${lower} W.`),
+    msg(`Διάλεξε τροφοδοτικό τουλάχιστον ${lower} W.`, `Choose a power supply of at least ${lower} W.`))];
   if (watts === null || (makerW === null && formulaW === null)) return [unknown(14, ps, msg(
     'αν φτάνει το τροφοδοτικό: δεν υπάρχει προτεινόμενη ισχύς για αυτό το build (χωρίς κάρτα, ή κάρτα και επεξεργαστής χωρίς επίσημα στοιχεία).',
     "whether the power supply is enough: there's no recommended wattage for this build (no card, or a card and CPU without official figures)."),
@@ -125,10 +136,10 @@ export function rule14(b: Build): Finding[] {
     msg(`Για περιθώριο διάλεξε τροφοδοτικό τουλάχιστον ${formulaW} W.`, `For headroom choose a power supply of at least ${formulaW} W.`))];
 
   const basis: Basis = makerW !== null && (formulaW === null || makerW >= formulaW) ? 'stated' : 'estimate';
-  const limit = Math.ceil(need * (1 + MARGIN.psuShare));
+  const limit = Math.floor(need * (1 + MARGIN.psuShare)) + 1; // the smallest wattage that passes
   if (watts <= need * (1 + MARGIN.psuShare)) return [finding(14, 'warning', basis, ps,
     msg(`Οριακό: τροφοδοτικό ${watts} W· ${f.el}.${why.el}`, `Tight: ${watts} W power supply; ${f.en}.${why.en}`),
-    msg(`Ένα τροφοδοτικό πάνω από ${limit} W αφήνει περιθώριο για τις αιχμές.`, `A power supply above ${limit} W leaves room for spikes.`))];
+    msg(`Ένα τροφοδοτικό τουλάχιστον ${limit} W αφήνει περιθώριο για τις αιχμές.`, `A power supply of at least ${limit} W leaves room for spikes.`))];
   return [finding(14, 'pass', basis, ps, msg(`Τροφοδοτικό ${watts} W· ${f.el}.${why.el}`, `${watts} W power supply; ${f.en}.${why.en}`))];
 }
 

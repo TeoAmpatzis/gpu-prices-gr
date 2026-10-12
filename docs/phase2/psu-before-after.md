@@ -22,12 +22,12 @@ Data times (`latest.updatedAt`):
 
 ## Summary
 
-1536 cards. Maker W exists for 1414, Formula W (Intel reference) for 1193, a v1 figure for 1536. "Not comparable" = either side has no figure.
+1536 cards. Maker W exists for 1411, Formula W (Intel reference) for 1193, a v1 figure for 1536. "Not comparable" = either side has no figure.
 
 | Reference | Compared figure | Rises vs v1 | Falls vs v1 | Same as v1 | Not comparable |
 | --- | --- | ---: | ---: | ---: | ---: |
 | Intel (Core i5-12400F) | Recommended (max of maker and formula) | 14 | 118 | 1291 | 113 |
-| AMD (no formula) | Maker W alone | 8 | 115 | 1291 | 122 |
+| AMD (no formula) | Maker W alone | 8 | 112 | 1291 | 125 |
 
 ## The 20 largest changes (Intel reference)
 
@@ -53,6 +53,29 @@ Data times (`latest.updatedAt`):
 | RTX 3050 | MSI GeForce RTX 3050 6GB Ventus 2X E 6G OC | 300 | — | 550 | 300 | — | 300 | -250 |
 | RTX 3050 | Palit GeForce RTX 3050 6GB StormX (Refresh) | 300 | — | 550 | 300 | — | 300 | -250 |
 | RTX 3050 | ASUS DUAL GEFORCE RTX 3050 V2 OC EDITION 8GB GDDR6 PCI-E RETAIL | 450 | — | 550 | 450 | — | 450 | -100 |
+
+## Card minPsu values the validation rejected
+
+A card's own `minPsu` is treated as not stated when the chip has a row in the GPU power table and the value is under the chip's board power + 100 W or more than 100 W under the chip maker's system figure (check `gpu-minpsu-plausible`). The cards above were computed without these values.
+
+14 listing(s) rejected.
+
+| Chip | Listing | Stated minPsu | Lowest accepted |
+| --- | --- | ---: | ---: |
+| Arc B570 | Sparkle ARC B570 10GB GDDR6 GUARDIAN LUNA OC | 170 | 250 |
+| Arc B570 | Sparkle Arc B570 10GB GDDR6 Luna Guardian OC | 170 | 250 |
+| Arc B570 | Sparkle Arc B570 10GB GUARDIAN LUNA OC | 170 | 250 |
+| RTX 5050 | PNY GeForce RTX 5050 8GB Dual | 130 | 450 |
+| RTX 5050 | PNY GeForce RTX 5050 8GB GDDR6 Dual | 130 | 450 |
+| RTX 5060 | MSI GeForce RTX 5060 8GB Shadow 2x OC Max | 145 | 450 |
+| RTX 5070 Ti | PNY GeForce RTX 5070 Ti 16GB | 300 | 650 |
+| RX 550 | PowerColor Radeon RX 550 4GB GDDR5 Red Dragon PCI-E x16 3.0 με HDMI | 250 | 300 |
+| RX 550 | PowerColor Radeon RX 550 4GB Red Dragon | 250 | 300 |
+| RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Predator BiFrost | 245 | 550 |
+| RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Predator BiFrost OC White | 245 | 550 |
+| RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Predator Bifrost OC White Edition | 245 | 550 |
+| RX 9070 | Acer Radeon RX 9070 16GB Predator BiFrost | 245 | 550 |
+| RX 9070 | Acer Radeon RX 9070 16GB Predator Bifrost OC White Edition | 245 | 550 |
 
 ## All cards
 
@@ -92,12 +115,12 @@ Sorted by chip, then card name.
 | Arc B570 | ASRock Arc B570 10GB GDDR6 Challenger OC | 600 | — | 600 | 600 | 450 | 600 | 0 |
 | Arc B570 | Asrock Arc B570 10GB GDDR6 Challenger OC | 600 | — | 600 | 600 | 450 | 600 | 0 |
 | Arc B570 | Sparkle ARC B570 10GB GDDR6 Eclipse OC | 600 | — | 600 | 600 | 450 | 600 | 0 |
-| Arc B570 | Sparkle ARC B570 10GB GDDR6 GUARDIAN LUNA OC | 170 | — | 500 | 170 | 450 | 450 | -50 |
+| Arc B570 | Sparkle ARC B570 10GB GDDR6 GUARDIAN LUNA OC | — | — | 500 | — | 450 | 450 | -50 |
 | Arc B570 | Sparkle ARC B570 10GB GDDR6 Guardian OC | 600 | — | 600 | 600 | 450 | 600 | 0 |
 | Arc B570 | Sparkle Arc B570 10GB Eclipse OC | 600 | — | 600 | 600 | 450 | 600 | 0 |
 | Arc B570 | Sparkle Arc B570 10GB GDDR6 Guardian OC | 600 | — | 600 | 600 | 450 | 600 | 0 |
-| Arc B570 | Sparkle Arc B570 10GB GDDR6 Luna Guardian OC | 170 | — | 500 | 170 | 450 | 450 | -50 |
-| Arc B570 | Sparkle Arc B570 10GB GUARDIAN LUNA OC | 170 | — | 500 | 170 | 450 | 450 | -50 |
+| Arc B570 | Sparkle Arc B570 10GB GDDR6 Luna Guardian OC | — | — | 500 | — | 450 | 450 | -50 |
+| Arc B570 | Sparkle Arc B570 10GB GUARDIAN LUNA OC | — | — | 500 | — | 450 | 450 | -50 |
 | Arc B570 | Sparkle Arc B570 10GB Guardian OC | 600 | — | 600 | 600 | 450 | 600 | 0 |
 | Arc B570 | Sparkle Technology Arc B570 10GB GDDR6 Eclipse OC | — | — | 500 | — | 450 | 450 | -50 |
 | Arc B580 | ASROCK INTEL ARC B580 CHALLENGER 12GB OC GDDR6 | 650 | 600 | 650 | 650 | 500 | 650 | 0 |
@@ -457,10 +480,10 @@ Sorted by chip, then card name.
 | RTX 5050 | MSI GeForce RTX 5050 8GB Gaming OC | 550 | 550 | 550 | 550 | 450 | 550 | 0 |
 | RTX 5050 | MSI GeForce RTX 5050 8GB SHADOW 2X OC | 550 | 550 | 550 | 550 | 450 | 550 | 0 |
 | RTX 5050 | MSI GeForce RTX 5050 8GB Ventus 2X OC | 550 | 550 | 550 | 550 | 450 | 550 | 0 |
-| RTX 5050 | PNY GeForce RTX 5050 8GB Dual | 130 | 550 | 550 | 550 | 450 | 550 | 0 |
+| RTX 5050 | PNY GeForce RTX 5050 8GB Dual | — | 550 | 550 | 550 | 450 | 550 | 0 |
 | RTX 5050 | PNY GeForce RTX 5050 8GB GDDR6 | — | 550 | 550 | 550 | 450 | 550 | 0 |
 | RTX 5050 | PNY GeForce RTX 5050 8GB GDDR6 | — | 550 | 550 | 550 | 450 | 550 | 0 |
-| RTX 5050 | PNY GeForce RTX 5050 8GB GDDR6 Dual | 130 | 550 | 550 | 550 | 450 | 550 | 0 |
+| RTX 5050 | PNY GeForce RTX 5050 8GB GDDR6 Dual | — | 550 | 550 | 550 | 450 | 550 | 0 |
 | RTX 5050 | PNY GeForce RTX 5050 8GB Single | 550 | 550 | 550 | 550 | 450 | 550 | 0 |
 | RTX 5050 | Palit GeForce RTX 5050 8GB Dual | 550 | 550 | 550 | 550 | 450 | 550 | 0 |
 | RTX 5050 | Palit GeForce RTX 5050 8GB GDDR6 Dual | 550 | 550 | 550 | 550 | 450 | 550 | 0 |
@@ -573,7 +596,7 @@ Sorted by chip, then card name.
 | RTX 5060 | MSI GeForce RTX 5060 8GB GDDR7 Ventus 2X OC White | 550 | 550 | 550 | 550 | 450 | 550 | 0 |
 | RTX 5060 | MSI GeForce RTX 5060 8GB GDDR7 Ventus 3X OC | 550 | 550 | 550 | 550 | 450 | 550 | 0 |
 | RTX 5060 | MSI GeForce RTX 5060 8GB GDDR7 Ventus 3X OC | 550 | 550 | 550 | 550 | 450 | 550 | 0 |
-| RTX 5060 | MSI GeForce RTX 5060 8GB Shadow 2x OC Max | 145 | 550 | 550 | 550 | 450 | 550 | 0 |
+| RTX 5060 | MSI GeForce RTX 5060 8GB Shadow 2x OC Max | — | 550 | 550 | 550 | 450 | 550 | 0 |
 | RTX 5060 | MSI GeForce RTX 5060 8GB Ventus 2X OC | 550 | 550 | 550 | 550 | 450 | 550 | 0 |
 | RTX 5060 | MSI GeForce RTX 5060 8GB Ventus 2X OC White | 550 | 550 | 550 | 550 | 450 | 550 | 0 |
 | RTX 5060 | MSI GeForce RTX 5060 8GB Ventus 3X OC | 550 | 550 | 550 | 550 | 450 | 550 | 0 |
@@ -986,7 +1009,7 @@ Sorted by chip, then card name.
 | RTX 5070 Ti | MSI GeForce RTX 5070 Ti 16GB Ventus 3X OC | 750 | 750 | 750 | 750 | 650 | 750 | 0 |
 | RTX 5070 Ti | MSI NVIDIA GEFORCE RTX 5070TI 16G VENTUS 3X OC 16GB GDDR7 RETAIL | 750 | 750 | 750 | 750 | 650 | 750 | 0 |
 | RTX 5070 Ti | PALIT NVIDIA GEFORCE RTX 5070 TI GAMINGPRO-S 16GB GDDR7 RETAIL | 750 | 750 | 750 | 750 | 650 | 750 | 0 |
-| RTX 5070 Ti | PNY GeForce RTX 5070 Ti 16GB | 300 | 750 | 750 | 750 | 650 | 750 | 0 |
+| RTX 5070 Ti | PNY GeForce RTX 5070 Ti 16GB | — | 750 | 750 | 750 | 650 | 750 | 0 |
 | RTX 5070 Ti | PNY GeForce RTX 5070 Ti 16GB ARGB Overclocked Triple Fan Plus | 750 | 750 | 750 | 750 | 650 | 750 | 0 |
 | RTX 5070 Ti | PNY GeForce RTX 5070 Ti 16GB Dual Slim OC | 750 | 750 | 750 | 750 | 650 | 750 | 0 |
 | RTX 5070 Ti | PNY GeForce RTX 5070 Ti 16GB GDDR7 | — | 750 | 750 | 750 | 650 | 750 | 0 |
@@ -1232,8 +1255,8 @@ Sorted by chip, then card name.
 | RX 550 | Biostar Radeon RX 550 4GB Gaming | 450 | 400 | 450 | 450 | 350 | 450 | 0 |
 | RX 550 | Biostar Radeon RX 550 GDDR5 4 GB PCI Express x16 3.0 | — | 400 | 400 | 400 | 350 | 400 | 0 |
 | RX 550 | Biostar VA5505RF41 Radeon RX 550 4GB GDDR5 Gaming | 450 | 400 | 450 | 450 | 350 | 450 | 0 |
-| RX 550 | PowerColor Radeon RX 550 4GB GDDR5 Red Dragon PCI-E x16 3.0 με HDMI | 250 | 400 | 400 | 400 | 350 | 400 | 0 |
-| RX 550 | PowerColor Radeon RX 550 4GB Red Dragon | 250 | 400 | 400 | 400 | 350 | 400 | 0 |
+| RX 550 | PowerColor Radeon RX 550 4GB GDDR5 Red Dragon PCI-E x16 3.0 με HDMI | — | 400 | 400 | 400 | 350 | 400 | 0 |
+| RX 550 | PowerColor Radeon RX 550 4GB Red Dragon | — | 400 | 400 | 400 | 350 | 400 | 0 |
 | RX 550 | PowerColor Radeon RX 550 4GB Red Dragon Low Profile | — | 400 | 400 | 400 | 350 | 400 | 0 |
 | RX 560 | Afox Radeon RX 560 4GB ATX Dual Fan | — | 450 | 400 | 450 | — | 450 | +50 |
 | RX 560 | Afox Radeon RX 560 4GB GDDR5 | — | 450 | 400 | 450 | — | 450 | +50 |
@@ -1397,13 +1420,13 @@ Sorted by chip, then card name.
 | RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Nitro OC | 650 | 650 | 650 | 650 | 550 | 650 | 0 |
 | RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Nitro OC | 650 | 650 | 650 | 650 | 550 | 650 | 0 |
 | RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Nitro OC | 650 | 650 | 650 | 650 | 550 | 650 | 0 |
-| RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Predator BiFrost | 245 | 650 | 650 | 650 | 550 | 650 | 0 |
+| RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Predator BiFrost | — | 650 | 650 | 650 | 550 | 650 | 0 |
 | RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Predator BiFrost OC | — | 650 | 650 | 650 | 550 | 650 | 0 |
-| RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Predator BiFrost OC White | 245 | 650 | 650 | 650 | 550 | 650 | 0 |
-| RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Predator Bifrost OC White Edition | 245 | 650 | 650 | 650 | 550 | 650 | 0 |
+| RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Predator BiFrost OC White | — | 650 | 650 | 650 | 550 | 650 | 0 |
+| RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Predator Bifrost OC White Edition | — | 650 | 650 | 650 | 550 | 650 | 0 |
 | RX 9070 | Acer Radeon RX 9070 16GB Nitro OC | 650 | 650 | 650 | 650 | 550 | 650 | 0 |
-| RX 9070 | Acer Radeon RX 9070 16GB Predator BiFrost | 245 | 650 | 650 | 650 | 550 | 650 | 0 |
-| RX 9070 | Acer Radeon RX 9070 16GB Predator Bifrost OC White Edition | 245 | 650 | 650 | 650 | 550 | 650 | 0 |
+| RX 9070 | Acer Radeon RX 9070 16GB Predator BiFrost | — | 650 | 650 | 650 | 550 | 650 | 0 |
+| RX 9070 | Acer Radeon RX 9070 16GB Predator Bifrost OC White Edition | — | 650 | 650 | 650 | 550 | 650 | 0 |
 | RX 9070 | Asrock 90-GA5NZZ-00UANF Radeon RX 9070 16GB | — | 650 | 650 | 650 | 550 | 650 | 0 |
 | RX 9070 | Asrock Radeon RX 9070 16GB GDDR6 Challenger | 700 | 650 | 700 | 700 | 550 | 700 | 0 |
 | RX 9070 | Asrock Radeon RX 9070 16GB GDDR6 Steel Legend | — | 650 | 650 | 650 | 550 | 650 | 0 |

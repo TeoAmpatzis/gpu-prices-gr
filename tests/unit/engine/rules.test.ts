@@ -157,6 +157,43 @@ describe("rule 14: PSU vs the maker figure and the whole-build estimate (owner's
     expect([e.makerW, e.formulaW]).toEqual([null, roundUp(pl2 + POWER.boardW + 2 * POWER.perStickW + POWER.perDriveW)]);
     expect([status(14, parts), basis(14, parts)]).toEqual(['error', 'estimate']);
   });
+  it('level 3 edge: exactly at the formula is not an error (tight warning)', () => {
+    const f = powerEstimate([intel(), ram(), drive(), psu(300)]).formulaW!;
+    const parts = [intel(), ram(), drive(), psu(f)];
+    expect(status(14, parts)).toBe('warning');
+    expect(msgEl(parts)).toContain('Οριακό');
+    expect(status(14, [intel(), ram(), drive(), psu(f - 50)])).toBe('error');
+  });
+  it('level 5 at watts == formula says "Tight", level 4 says it reaches the maker figure', () => {
+    expect(msgEl(base(formula))).toContain('Οριακό');
+    expect(msgEl(base(formula))).not.toContain('φτάνει το νούμερο');
+    expect(msgEl(base(maker))).toContain('φτάνει το νούμερο');
+    expect(msgEl(base(maker))).not.toContain('Οριακό');
+  });
+  it('fix text names the smallest passing wattage', () => {
+    const limit = Math.floor(formula * (1 + MARGIN.psuShare)) + 1;
+    const r = ruleResult(evaluate(base(formula), {}), 14)!;
+    expect(r.fix?.en).toContain(`at least ${limit} W`);
+    expect(status(14, base(limit))).toBe('pass');
+    expect(status(14, base(limit - 1))).toBe('warning');
+  });
+  it('no CPU yet and no maker figure: error only when even card + board is too much for the PSU', () => {
+    const arc = gpu({ chip: 'Arc A750', minPsu: null });
+    const lower = powerEstimate([arc, psu(300)]).formulaWithoutCpuW!;
+    expect(lower).toBe(roundUp(gpuPowerRow('Arc A750')!.boardPowerW! + POWER.boardW));
+    expect([status(14, [arc, psu(lower - 50)]), basis(14, [arc, psu(lower - 50)])]).toEqual(['error', 'estimate']);
+    expect(msgEl([arc, psu(lower - 50)])).toContain('χωρίς τον επεξεργαστή');
+    expect(status(14, [arc, psu(lower)])).toBe('unknown');
+    // a maker figure present: the lower bound is not used, and with a CPU it is null
+    expect(powerEstimate([gpu(), psu(300)]).formulaW).toBeNull();
+    expect(powerEstimate([intel(), arc, psu(300)]).formulaWithoutCpuW).toBeNull();
+  });
+  it('the CPU is in the finding parts only when its row went into the figure', () => {
+    const amd = cpu({}, 'Ryzen 5 7600'), il = intel();
+    const keysOf = (parts: Part[]) => ruleResult(evaluate(parts, {}), 14)!.parts;
+    expect(keysOf([amd, gpu(), psu(500)])).not.toContain(amd.key);
+    expect(keysOf([il, gpu(), psu(maker - 50)])).toContain(il.key);
+  });
   it('level 4: at the maker figure but below the formula -> warning, estimate', () => {
     for (const w of [maker, formula - 50]) {
       const parts = base(w);

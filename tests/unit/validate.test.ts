@@ -67,6 +67,19 @@ describe('validateLatest', () => {
     expect(r.stated['cooler-height']).toBe(5);
   });
 
+  it('card minPsu plausibility: B570 170 W rejected, RTX 5070 650 W kept, a chip without a row not checked', () => {
+    const r = validateLatest('gpu', latest([
+      row('luna', { chip: 'Arc B570', minPsu: 170 }), row('ok570', { chip: 'Arc B570', minPsu: 250 }),
+      row('5070', { chip: 'RTX 5070', minPsu: 650 }), row('5070lo', { chip: 'RTX 5070', minPsu: 540 }),
+      row('5070edge', { chip: 'RTX 5070', minPsu: 550 }), row('nochip', { chip: 'Unknown X', minPsu: 100 }),
+      row('nominpsu', { chip: 'RTX 5070', minPsu: null }),
+    ]), 'enforce');
+    expect(r.rejections.map((x) => [x.check, x.id])).toEqual([['gpu-minpsu-plausible', 'luna'], ['gpu-minpsu-plausible', '5070lo']]);
+    expect([0, 1, 2, 4, 5].map((i) => get(r.latest, i, 'minPsu'))).toEqual([null, 250, 650, 550, 100]);
+    expect(get(r.latest, 3, 'minPsu')).toBeNull();
+    expect(r.stated['gpu-minpsu-plausible']).toBe(5); // the unknown chip and the null are not counted
+  });
+
   it('runs in enforce mode', () => {
     expect(VALIDATION_MODE).toBe('enforce');
   });

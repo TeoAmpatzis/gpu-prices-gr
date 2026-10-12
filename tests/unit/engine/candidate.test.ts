@@ -20,9 +20,21 @@ describe('candidateErrors (C-01)', () => {
     const weak = part('psu', { watts: 350, formFactor: 'ATX' });
     expect(candidateErrors([weak], cpu('LGA1700', 'Core i9-14900K')).map((f) => f.rule)).toEqual([14]);
   });
-  it('with a card the maker figure decides, so a CPU alone never hides a part by rule 14 (owner: warning, not error)', () => {
-    const exact = part('psu', { watts: 900, formFactor: 'ATX' });
-    expect(candidateErrors([card, exact, board], cpu('AM5', 'Ryzen 9 9950X'))).toEqual([]);
+  it('with a card the maker figure decides: an Intel CPU with a PL2 row at maker <= PSU < formula is a warning, not hidden (owner)', () => {
+    const exact = part('psu', { watts: 850, formFactor: 'ATX' });
+    expect(candidateErrors([card, exact], cpu('LGA1700', 'Core i9-14900K'))).toEqual([]);
+  });
+  it('no maker figure, no CPU yet: a PSU too small for the card alone already errors, so no CPU is hidden for it', () => {
+    const arc = part('gpu', { chip: 'Arc A750', lengthMm: 250, minPsu: null });
+    const weak = part('psu', { watts: 300, formFactor: 'ATX' });
+    expect(candidateErrors([arc, weak], cpu('LGA1700', 'Core i5-12400F'))).toEqual([]);
+    expect(candidateErrors([arc, weak], cpu('AM5', 'Ryzen 5 7600'))).toEqual([]);
+  });
+  it('no maker figure: a PSU that fits the card alone but not card + this CPU hides that CPU (its own clash)', () => {
+    const arc = part('gpu', { chip: 'Arc A750', lengthMm: 250, minPsu: null });
+    const mid = part('psu', { watts: 400, formFactor: 'ATX' }); // card + board: 400 W; with a 117 W PL2 CPU more
+    expect(candidateErrors([arc, mid], cpu('LGA1700', 'Core i5-12400F')).map((f) => f.rule)).toEqual([14]);
+    expect(candidateErrors([arc, mid], cpu('AM5', 'Ryzen 5 7600'))).toEqual([]);
   });
   it('a CPU for another socket is hidden for its own clash', () =>
     expect(candidateErrors([card, ok, board], cpu('AM4', 'Ryzen 5 5600')).map((f) => f.rule)).toEqual([1]));
