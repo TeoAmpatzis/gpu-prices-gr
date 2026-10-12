@@ -3,9 +3,9 @@
 export interface GpuPowerRow {
   /** GPU chip names exactly as in the data (`chip`). */
   chips: string[];
-  /** NVIDIA "Total Graphics Power", AMD "Typical Board Power (Desktop)", Intel "Total Board Power". */
+  /** NVIDIA "Total Graphics Power (W)" (30-series and GT 1030 pages: "Graphics Card Power (W)"), AMD "Typical Board Power (Desktop)", Intel "TBP". */
   boardPowerW?: number;
-  /** NVIDIA "Required System Power", AMD "Recommended PSU", Intel's recommended PSU if stated. */
+  /** NVIDIA "Required System Power (W)" (GT 1030: "Minimum Recommended System Power"), AMD "Minimum PSU Recommendation", Intel "Minimum Power Supply Unit" if stated. */
   makerPsuW?: number;
   /** Exact official URL fetched. */
   source: string;
@@ -50,9 +50,9 @@ export const GPU_POWER: GpuPowerRow[] = [
   // Columns "RTX 3090 Ti, RTX 3090": Graphics Card Power 450 350, system power 850 750.
   { chips: ['RTX 3090'], boardPowerW: 350, makerPsuW: 750,
     source: 'https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3090-3090ti/', checked: '2026-10-12' },
-  // Board power left out: the page says "350 / 320" for the RTX 3080. System power 750.
+  // Board power left out: this family page (RTX 3080 Ti / RTX 3080) says "350 / 320" for the RTX 3080 (10 GB and 12 GB cards). System power 750.
   { chips: ['RTX 3080'], makerPsuW: 750,
-    source: 'https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3080/', checked: '2026-10-12' },
+    source: 'https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3080-3080ti/', checked: '2026-10-12' },
   // Columns "RTX 3070 Ti, RTX 3070": Graphics Card Power 290 220, system power 750 650.
   { chips: ['RTX 3070 Ti'], boardPowerW: 290, makerPsuW: 750,
     source: 'https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3070-3070ti/', checked: '2026-10-12' },
@@ -96,6 +96,19 @@ export const GPU_POWER: GpuPowerRow[] = [
     source: 'https://www.amd.com/en/products/graphics/desktops/radeon/6000-series/amd-radeon-rx-6600-xt.html', checked: '2026-10-12' },
   { chips: ['RX 6400'], boardPowerW: 53, makerPsuW: 350,
     source: 'https://www.amd.com/en/products/graphics/desktops/radeon/6000-series/amd-radeon-rx-6400.html', checked: '2026-10-12' },
+  // AMD graphics specifications table (embedded spec records), read from the downloaded page: record "Radeon RX 5600 XT"
+  // (listed as "AMD Radeon RX 5600 XT"): Typical Board Power (Desktop) "150 W", Minimum PSU Recommendation "550" W.
+  { chips: ['RX 5600 XT'], boardPowerW: 150, makerPsuW: 550,
+    source: 'https://www.amd.com/en/products/specifications/graphics.html', checked: '2026-10-12' },
+  // Record "Radeon RX 580": Typical Board Power (Desktop) "185 W", Minimum PSU Recommendation "500" W.
+  { chips: ['RX 580'], boardPowerW: 185, makerPsuW: 500,
+    source: 'https://www.amd.com/en/products/specifications/graphics.html', checked: '2026-10-12' },
+  // Record "Radeon RX 550": Typical Board Power (Desktop) "50 W", Minimum PSU Recommendation "400" W.
+  { chips: ['RX 550'], boardPowerW: 50, makerPsuW: 400,
+    source: 'https://www.amd.com/en/products/specifications/graphics.html', checked: '2026-10-12' },
+  // Record "Radeon RX 560": Typical Board Power (Desktop) "60-80 W" is a range, so board power is left out; Minimum PSU Recommendation "450" W.
+  { chips: ['RX 560'], makerPsuW: 450,
+    source: 'https://www.amd.com/en/products/specifications/graphics.html', checked: '2026-10-12' },
   // Intel pages: "TBP"; "Minimum Power Supply Unit" only where the page has it (B580).
   { chips: ['Arc B580'], boardPowerW: 190, makerPsuW: 600,
     source: 'https://www.intel.com/content/www/us/en/products/sku/241598/intel-arc-b580-graphics/specifications.html', checked: '2026-10-12' },
