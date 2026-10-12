@@ -40,13 +40,18 @@ describe('biosSupport', () => {
   });
   it('undefined for an unknown chipset', () => expect(biosSupport('ZZ999', 'Ryzen 7 9700X')).toBeUndefined());
   it('chipset match is exact: a partial or longer name is not a match', () => {
-    expect(biosSupport('X670', 'Ryzen 7 9700X')).toBe('update');
-    expect(biosSupport('X67', 'Ryzen 7 9700X')).toBeUndefined();
-    expect(biosSupport('X6700', 'Ryzen 7 9700X')).toBeUndefined();
+    expect(biosSupport('X670', 'Ryzen 5 7600')).toBe('ok');
+    expect(biosSupport('X67', 'Ryzen 5 7600')).toBeUndefined();
+    expect(biosSupport('X6700', 'Ryzen 5 7600')).toBeUndefined();
   });
-  it('official statements: 600-series AM5 board with a Ryzen 9000 may need an update, 800-series does not', () => {
-    expect(biosSupport('X670E', 'Ryzen 7 9700X')).toBe('update');
-    expect(biosSupport('X870E', 'Ryzen 7 9700X')).toBe('ok');
+  it('official statement: every AM5 board named on the page works with a Ryzen 7000', () => {
+    expect(biosSupport('X670E', 'Ryzen 5 7600')).toBe('ok');
+    expect(biosSupport('X870E', 'Ryzen 5 7600')).toBe('ok');
+  });
+  it('Ryzen 8000/9000 on AM5: no series membership is stated, so unknown', () => {
+    expect(biosSupport('X670E', 'Ryzen 7 9700X')).toBeUndefined();
+    expect(biosSupport('X870E', 'Ryzen 7 9700X')).toBeUndefined();
+    expect(biosSupport('A620', 'Ryzen 5 8400F')).toBeUndefined();
   });
   it('deliberate gaps stay unknown', () => {
     expect(biosSupport('B650', 'Ryzen 7 9700X')).toBeUndefined(); // am5.html never names B650
