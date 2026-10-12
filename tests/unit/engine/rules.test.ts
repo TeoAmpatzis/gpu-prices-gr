@@ -182,11 +182,20 @@ describe("rule 14: PSU vs the maker figure and the whole-build estimate (owner's
     const lower = powerEstimate([arc, psu(300)]).formulaWithoutCpuW!;
     expect(lower).toBe(roundUp(gpuPowerRow('Arc A750')!.boardPowerW! + POWER.boardW));
     expect([status(14, [arc, psu(lower - 50)]), basis(14, [arc, psu(lower - 50)])]).toEqual(['error', 'estimate']);
-    expect(msgEl([arc, psu(lower - 50)])).toContain('χωρίς τον επεξεργαστή');
+    expect(msgEl([arc, psu(lower - 50)])).toContain('χωρίς την ισχύ του επεξεργαστή');
     expect(status(14, [arc, psu(lower)])).toBe('unknown');
     // a maker figure present: the lower bound is not used, and with a CPU it is null
     expect(powerEstimate([gpu(), psu(300)]).formulaW).toBeNull();
     expect(powerEstimate([intel(), arc, psu(300)]).formulaWithoutCpuW).toBeNull();
+  });
+  it('a CPU without a power-limit row (AMD): the lower bound still gives an error, the CPU not in the finding', () => {
+    const arc = gpu({ chip: 'Arc A750', minPsu: null }), amd = cpu({}, 'Ryzen 5 7600');
+    const lower = powerEstimate([arc, amd, psu(300)]).formulaWithoutCpuW!;
+    expect(lower).toBe(roundUp(gpuPowerRow('Arc A750')!.boardPowerW! + POWER.boardW));
+    const low = [arc, amd, psu(300)];
+    expect([status(14, low), basis(14, low)]).toEqual(['error', 'estimate']);
+    expect(ruleResult(evaluate(low, {}), 14)!.parts).not.toContain(amd.key);
+    expect(status(14, [arc, amd, psu(450)])).toBe('unknown');
   });
   it('the CPU is in the finding parts only when its row went into the figure', () => {
     const amd = cpu({}, 'Ryzen 5 7600'), il = intel();

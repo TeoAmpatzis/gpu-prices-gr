@@ -28,7 +28,7 @@ describe('candidateErrors (C-01)', () => {
     const arc = part('gpu', { chip: 'Arc A750', lengthMm: 250, minPsu: null });
     const weak = part('psu', { watts: 300, formFactor: 'ATX' });
     expect(candidateErrors([arc, weak], cpu('LGA1700', 'Core i5-12400F'))).toEqual([]);
-    expect(candidateErrors([arc, weak], cpu('AM5', 'Ryzen 5 7600'))).toEqual([]);
+    expect(candidateErrors([arc, weak], cpu('AM5', 'Ryzen 5 7600'))).toEqual([]); // the error is there without it, and stays
   });
   it('no maker figure: a PSU that fits the card alone but not card + this CPU hides that CPU (its own clash)', () => {
     const arc = part('gpu', { chip: 'Arc A750', lengthMm: 250, minPsu: null });
