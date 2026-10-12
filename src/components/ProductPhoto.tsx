@@ -17,6 +17,7 @@ export default function ProductPhoto({
   alt,
   hideOnPhone = false,
   hint,
+  caption,
 }: {
   image: ProductImage | null;
   size: keyof typeof PX;
@@ -25,6 +26,8 @@ export default function ProductPhoto({
   hideOnPhone?: boolean;
   /** Tooltip, e.g. "example photo" when the model has products from several makers. */
   hint?: string;
+  /** Short visible text on the tile's bottom edge (does not change the tile's size). */
+  caption?: string;
 }) {
   const [failed, setFailed] = useState<string | null>(null);
   const [loaded, setLoaded] = useState<string | null>(null);
@@ -41,7 +44,7 @@ export default function ProductPhoto({
       </span>
     );
   }
-  return (
+  const photo = (
     <img
       src={`${image.src}-${px <= 48 ? 96 : 320}.webp`}
       width={px}
@@ -54,5 +57,12 @@ export default function ProductPhoto({
       onError={() => setFailed(image.src)}
       className={`${tile} ${hideOnPhone ? 'hidden sm:block' : ''} ${loaded === image.src ? 'bg-white' : 'bg-sunken'} object-contain`}
     />
+  );
+  if (!caption) return photo;
+  return (
+    <span className={`relative shrink-0 ${hideOnPhone ? 'hidden sm:block' : 'block'}`} style={{ width: px, height: px }} title={hint}>
+      {photo}
+      <span className="pointer-events-none absolute inset-x-0 bottom-0 truncate rounded-b-lg bg-black/70 px-0.5 text-center text-[9px] font-medium leading-4 text-white">{caption}</span>
+    </span>
   );
 }
