@@ -213,4 +213,57 @@ Messages `{el, en}` name the figures, e.g. "Τροφοδοτικό 1000 W· ο �
 - [ ] **Step 4: Before/after PSU report.** `scripts/phase2/psu-before-after.ts`: builds the builder's GPU rows the way `scripts/validation-report.ts` does (validated data, `builderFile`), and for each consumer card row computes (a) v1's figure `v1RecommendedPsu(card, undefined)`, (b) `makerW`, (c) `formulaW` and the recommended PSU (max of maker and formula) for two reference builds: the most-listed Intel desktop CPU with a PL2 row, and the most-listed AMD desktop CPU with a PPT row (skip with a note if none), each with 2 RAM sticks, 1 NVMe drive, 3 fans, an air cooler. Writes `docs/phase2/psu-before-after.md` (deterministic): the reference builds, a summary (cards whose recommendation rises / falls / stays vs v1, per reference build), the 20 largest changes, and the full table sorted by chip then card. Run it twice: no diff.
 - [ ] **Step 5:** `npm run check` → passes. Commit: `git commit -m "feat(engine): whole-build power estimate and rule 14 per owner's rule + PSU report"`.
 
-*(Item 3 (B5) is added as Tasks 6+ after Task 5.)*
+---
+
+## Item 3 — B5: BIOS support table (Tasks 6–7)
+
+**Decisions for item 3 (controller, 2026-10-12):**
+- A verdict is per **chipset × CPU generation** (`CpuGeneration` from `src/engine/data/cpuMemory.ts`), never guessed: `ok` = an official page lists the chipset as supporting that generation and says nothing about a BIOS update for it; `update` = an official page says that chipset needs (or "may need") a BIOS update for that generation; `unsupported` = an official page for that generation lists the supported chipsets of the same socket and this one is not among them. No official statement → no row (rule 13 stays unknown).
+- Official sources for B5: amd.com / intel.com (CPU product pages' "supported chipsets", chipset pages, AMD/Intel support articles). Board makers' pages are per board, not per chipset, so they are **not** used for a chipset-wide verdict.
+- Scope: desktop sockets AM4, AM5, LGA1700, LGA1851; chipsets as they appear in `public/data/mobo/latest.json` (`chipset`), generations as in `CPU_MEMORY` rows.
+- Rule 13 already reads `ctx.bios` (a `BiosLookup`); existing unit tests expect "unknown without a table", so the table is supplied through the context, not hard-wired: export a `biosSupport` lookup and use it in the scenario adapter (`tests/compat/engine-adapter.ts` `toContext`). Phases 3/4 pass the same lookup.
+
+### Task 6: BIOS table + lookup + coverage
+
+**Files:**
+- Create: `src/engine/data/bios.ts`
+- Create: `tests/unit/engine/bios.test.ts`
+- Create: `scripts/phase2/bios-coverage.ts`; Modify: `package.json` (`"bios:coverage": "vite-node scripts/phase2/bios-coverage.ts"`)
+- Create (generated, committed): `docs/phase2/bios-coverage.md`
+
+**Interfaces (produces):**
+
+```ts
+// src/engine/data/bios.ts
+import type { CpuGeneration } from './cpuMemory';
+export type BiosVerdict = 'ok' | 'update' | 'unsupported';
+export interface BiosRow {
+  chipsets: string[];         // as in the data, e.g. ['B650', 'B650E', 'X670', 'X670E', 'A620']
+  generation: CpuGeneration;
+  verdict: BiosVerdict;
+  source: string;             // exact official URL fetched
+  quote: string;              // the sentence/list on the page the verdict comes from
+  checked: string;            // 'YYYY-MM-DD'
+}
+export const BIOS: BiosRow[];
+/** Same shape as the engine's BiosLookup: generation from cpuRow(cpuName); undefined when the CPU, its generation or the pair isn't in the tables. */
+export function biosSupport(chipset: string, cpuName: string): BiosVerdict | undefined;
+```
+
+- [ ] **Step 1: Coverage script first.** Pairs that matter = chipset (desktop sockets above, from mobo data, with listing counts) × each generation whose CPUs fit that socket. Writes `docs/phase2/bios-coverage.md` (deterministic): per socket, a chipset × generation grid with the verdict or "—", plus the source host.
+- [ ] **Step 2: Failing tests** in `tests/unit/engine/bios.test.ts`: integrity (official domain via `OFFICIAL_DOMAINS`, date, non-empty quote, valid verdict, no chipset × generation pair in two rows); `biosSupport` returns the row's verdict for a covered pair, `undefined` for an unknown CPU name, for a CPU without a generation row, and for an uncovered pair; chipset match exact (`B650` ≠ `B650E` unless both are listed). Run → FAIL.
+- [ ] **Step 3: Fill rows**, per the hallucination rule and the decision above: each row's `quote` is the exact text from the downloaded page. Most-listed chipsets first. Run tests → PASS; regenerate coverage.
+- [ ] **Step 4:** `npm run check` → passes. Commit: `git commit -m "feat(engine): official chipset x CPU generation BIOS table + coverage"`.
+
+### Task 7: Rule 13 on the BIOS table
+
+**Files:**
+- Modify: `src/engine/index.ts` (export `biosSupport` and the BIOS types)
+- Modify: `tests/compat/engine-adapter.ts` (`toContext` adds `bios: biosSupport`)
+- Modify: `tests/compat/engine-scenarios.test.ts` (`KNOWN_GAPS`: S01/S03/S04 R13 entries removed or updated per the engine's new answer, each with its reason; never edit a scenario file)
+- Modify: `tests/unit/engine/rules.test.ts` (rule 13: keep the injected-lookup tests; add tests with the real `biosSupport`)
+- Modify: `src/engine/rules/platform.ts` only if rule 13's messages must change (e.g. the unknown message says "no table yet" — reword to "no official statement for this chipset and CPU generation").
+
+- [ ] **Step 1: Failing tests:** rule 13 with `ctx.bios = biosSupport` for one covered `ok`, one `update` (if the table has one) and one `unsupported` (if any) pair from the table (read from `BIOS`, not hard-coded), and for an uncovered pair → unknown with the new wording; `biosFlashback` true on an `update` pair → the Flashback wording. Run → FAIL.
+- [ ] **Step 2: Implement** the export, the adapter context and (if needed) the message wording. Run unit + compat tests → PASS; update `KNOWN_GAPS` for S01/S03/S04 R13 by what the engine now answers, never editing scenarios; if a scenario now disagrees, record it as a gap with the engine's answer and why. Totals still add up to 64, 0 failures.
+- [ ] **Step 3:** `npm run check` → passes. Commit: `git commit -m "feat(engine): rule 13 uses the official BIOS table"`.
