@@ -249,25 +249,32 @@ export interface Filters {
   /** Pagination (not a filter: not counted, not a chip); any filter change goes back to page 1. */
   page: number;
   per: number;
+  /** Pick mode (`?pick=1`, v2 step 3): the page picks a part for the build. UI state, not a filter. */
+  pick: boolean;
+  /** "Only compatible" in pick mode (`compat=0` = off); always true outside it. */
+  compat: boolean;
 }
 
 /** Results per page offered (Modrinth-style); 50 is the default. */
 export const PER_PAGE = [20, 50, 100] as const;
 export const DEFAULT_PER = 50;
 
-export function defaultFilters(groups: string[]): Filters {
+/** The defaults; in pick mode the sort is "Price ↑" (step2-plan section 2) and stays in pick mode. */
+export function defaultFilters(groups: string[], pick = false): Filters {
   return {
     query: '',
     groups,
     sources: [...SOURCE_NAMES],
     segment: 'main',
     maxPrice: null,
-    sort: 'model',
+    sort: pick ? 'price-asc' : 'model',
     extra: {},
     saleOnly: false,
     lowOnly: false,
     page: 1,
     per: DEFAULT_PER,
+    pick,
+    compat: true,
   };
 }
 

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { BaseListing } from '../types';
 import type { CategoryConfig } from './categories';
 import { defaultFilters, type Filters } from './data';
-import { decodeFilters, parseUrl, writeFiltersToUrl } from './filterUrl';
+import { decodeFilters, leavePick, parseUrl, writeFiltersToUrl } from './filterUrl';
 import { onUrlChange } from './router';
 
 /**
@@ -25,7 +25,12 @@ export function useFilterState<L extends BaseListing>(cfg: CategoryConfig<L>) {
       const { page, params } = parseUrl();
       if (page !== cfg.id || location.pathname !== `/${cfg.id}`) return;
       if (params) setState(decodeFilters(params, cfg));
-      else writeFiltersToUrl(cfg, ref.current, cfg.id);
+      else {
+        // A plain link never opens pick mode: it ends it, keeping the other filters.
+        const plain = leavePick(ref.current);
+        if (plain !== ref.current) setState(plain);
+        writeFiltersToUrl(cfg, plain, cfg.id);
+      }
     };
     // Back/forward and in-site navigation (router); filter changes themselves don't notify.
     return onUrlChange(onNavigate);

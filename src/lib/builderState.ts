@@ -7,7 +7,7 @@ import { fromColumns } from './columns';
 import { loadBuilder, loadBuilderExtra, loadBuilderSlot, type Model } from './data';
 import { LAZY_SLOTS, SLOTS, fitContext, slotModels, type Build, type Slot, type SlotListing } from './builder';
 import { afterLargestPaint } from './paint';
-import { readBuild, writeBuild, type StoredBuild } from './buildStore';
+import { onBuildChange, readBuild, writeBuild, type StoredBuild } from './buildStore';
 
 export type Models = { [S in Slot]: Model<SlotListing[S]>[] };
 export type AnyModel = Model<BaseListing>;
@@ -41,6 +41,9 @@ function readSaved(): Saved {
 /** Saved parts of lazy slots whose file hasn't arrived yet: kept when the build is saved meanwhile. */
 const pendingLazy: Partial<Record<Slot, string>> = {};
 
+/** True while the builder writes its own build (its change listener ignores that write). */
+let ownWrite = false;
+
 /** Saves the build; a part whose key didn't change keeps its stored engine fields and data date. */
 export function writeSaved(b: Build, p: Prefs) {
   const old = readBuild().parts;
@@ -53,7 +56,12 @@ export function writeSaved(b: Build, p: Prefs) {
     const key = keys[s];
     if (key !== undefined) parts[s] = old[s]?.key === key ? old[s] : { key };
   }
-  writeBuild({ parts, ...(p.use && { use: p.use }), ...(p.budget && { budget: p.budget }) });
+  ownWrite = true;
+  try {
+    writeBuild({ parts, ...(p.use && { use: p.use }), ...(p.budget && { budget: p.budget }) });
+  } finally {
+    ownWrite = false;
+  }
 }
 
 // ---------- The builder's URL parameters (/builder?mode=quick&step=case&cpu=…) ----------
@@ -141,10 +149,12 @@ export function useBuilderState() {
             requestedSlots.add(slot);
             loadBuilderSlot(`${slot}.json?v=${file.builtAt}`)
               .then((f) => {
+                // The part saved meanwhile (a category page's "Add to build") wins over the one at load.
+                const want = pendingLazy[slot] ?? parts[slot];
                 delete pendingLazy[slot];
                 const ms = slotModels(slot, fromColumns<SlotListing[typeof slot]>(f));
                 setModels((prev) => (prev ? ({ ...prev, [slot]: ms } as Models) : prev));
-                const found = (ms as AnyModel[]).find((x) => x.key === parts[slot]);
+                const found = (ms as AnyModel[]).find((x) => x.key === want);
                 // Restored only if the user hasn't picked one meanwhile.
                 if (found) setBuild((b) => (b[slot] ? b : { ...b, [slot]: found }));
                 setLazyReady((r) => ({ ...r, [slot]: true }));
@@ -192,6 +202,37 @@ export function useBuilderState() {
       window.clearTimeout(extraTimer.current);
     };
   }, [sharedAtStart]);
+
+  // The builder stays mounted while other pages are open: when the saved build changes there (a category
+  // page's "Add to build", v2 step 3) or in another tab, show that build. Its own saves are ignored.
+  useEffect(() => {
+    if (!models) return;
+    // Only a change of parts, use or budget counts: a page saving fresh engine fields for the same parts
+    // (compat) changes nothing here, and a shared build on screen stays.
+    let last = JSON.stringify(readSaved());
+    return onBuildChange(() => {
+      const saved = readSaved();
+      const now = JSON.stringify(saved);
+      const changed = now !== last;
+      last = now;
+      if (ownWrite || !changed) return;
+      const next: Build = {};
+      for (const s of SLOTS) {
+        const key = saved.parts[s];
+        if (!key) continue;
+        const found = (models[s] as AnyModel[]).find((x) => x.key === key);
+        if (found) (next as Record<Slot, AnyModel>)[s] = found;
+        else if (LAZY_SLOTS.includes(s)) {
+          // Its file hasn't arrived (or doesn't have it): restored when it does.
+          pendingLazy[s] = key;
+          slotRef.current?.(s);
+        }
+      }
+      setBuild(next);
+      setPrefsState(saved.prefs);
+      setShared(false);
+    });
+  }, [models]);
 
   /** The first change to a shared build makes it the user's own: saved, and the link parameters go. */
   const own = () => {
