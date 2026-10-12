@@ -53,6 +53,7 @@ export const T = {
   colRange: { el: 'Εύρος', en: 'Range' },
   colOffers: { el: 'Προϊόντα', en: 'Listings' },
   examplePhoto: { el: 'Ενδεικτική φωτογραφία: το μοντέλο έχει προϊόντα από διάφορους κατασκευαστές', en: 'Example photo: this model comes from several makers' },
+  examplePhotoShort: { el: 'Ενδεικτική', en: 'Example' },
   upTo: { el: 'έως', en: 'up to' },
   weekChange: { el: 'Μεταβολή 7 ημερών', en: '7-day change' },
   shops: { el: 'καταστ.', en: 'shops' },
