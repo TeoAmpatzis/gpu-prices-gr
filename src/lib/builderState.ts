@@ -45,11 +45,18 @@ const pendingLazy: Partial<Record<Slot, string>> = {};
  * Does the builder show a saved build that changed while it is open? Not its own saves; not a change of compat
  * fields only (a page saving fresh engine fields for the same parts); and a shared link on screen stays as it is
  * when another tab changes the saved build. A part added in this tab (a category page's "Add to build") applies,
- * shared link or not: that is the user's own edit.
+ * shared link or not: that is the user's own edit, so a shared view it replaces becomes the user's own, as when
+ * they edit it in the builder ('own': the share parameters leave the address).
  */
-export function followSavedBuild(c: { ownWrite: boolean; changed: boolean; shared: boolean; source: BuildChangeSource }): boolean {
-  if (c.ownWrite || !c.changed) return false;
-  return !(c.shared && c.source === 'other-tab');
+export function followSavedBuild(c: {
+  ownWrite: boolean;
+  changed: boolean;
+  shared: boolean;
+  source: BuildChangeSource;
+}): 'ignore' | 'follow' | 'own' {
+  if (c.ownWrite || !c.changed) return 'ignore';
+  if (!c.shared) return 'follow';
+  return c.source === 'other-tab' ? 'ignore' : 'own';
 }
 
 /** True while the builder writes its own build (its change listener ignores that write). */
@@ -93,6 +100,9 @@ export function writeBuilderParams(change: (p: URLSearchParams) => void) {
 }
 
 const SHARE_KEYS = [...SLOTS, 'use', 'budget'];
+
+/** A shared build became the user's own: its parameters leave the builder's address. */
+export const clearShareParams = () => writeBuilderParams((p) => SHARE_KEYS.forEach((k) => p.delete(k)));
 
 /** A build in a share link: one parameter per part (model keys hold "|", ":" and spaces). */
 export function shareLink(b: Build, p: Prefs): string {
@@ -224,7 +234,8 @@ export function useBuilderState() {
       const now = JSON.stringify(saved);
       const changed = now !== last;
       last = now;
-      if (!followSavedBuild({ ownWrite, changed, shared, source })) return;
+      const action = followSavedBuild({ ownWrite, changed, shared, source });
+      if (action === 'ignore') return;
       const next: Build = {};
       for (const s of SLOTS) {
         const key = saved.parts[s];
@@ -239,7 +250,11 @@ export function useBuilderState() {
       }
       setBuild(next);
       setPrefsState(saved.prefs);
-      setShared(false);
+      if (action === 'own') {
+        // The same path as editing a shared build: it is the user's own now, and the link parameters go.
+        setShared(false);
+        clearShareParams();
+      }
     });
   }, [models, shared]);
 
@@ -247,7 +262,7 @@ export function useBuilderState() {
   const own = () => {
     if (!shared) return;
     setShared(false);
-    writeBuilderParams((p) => SHARE_KEYS.forEach((k) => p.delete(k)));
+    clearShareParams();
   };
   const update = (b: Build) => {
     // A lazy slot the user empties or fills themselves is no longer pending.

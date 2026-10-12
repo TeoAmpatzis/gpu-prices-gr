@@ -5,7 +5,7 @@ vi.hoisted(() => {
   (globalThis as { window?: unknown }).window = { addEventListener: () => {}, removeEventListener: () => {} };
 });
 import { onBuildChange, readBuild, resolveKey, setPart, writeBuild } from '../../src/lib/buildStore';
-import { followSavedBuild, writeSaved } from '../../src/lib/builderState';
+import { clearShareParams, followSavedBuild, writeSaved } from '../../src/lib/builderState';
 
 function stubStorage(initial: Record<string, string> = {}) {
   const data = { ...initial };
@@ -128,17 +128,29 @@ describe('resolveKey', () => {
 
 describe('builderState.followSavedBuild (the open builder and outside changes)', () => {
   const base = { ownWrite: false, changed: true, shared: false, source: 'tab' as const };
-  it('follows a part added in this tab (a pick page), also over a shared link on screen', () => {
-    expect(followSavedBuild(base)).toBe(true);
-    expect(followSavedBuild({ ...base, shared: true })).toBe(true);
+  it('follows a part added in this tab (a pick page); over a shared link it makes the build the user\'s own', () => {
+    expect(followSavedBuild(base)).toBe('follow');
+    expect(followSavedBuild({ ...base, shared: true })).toBe('own');
   });
   it('follows another tab, except while a shared link is on screen (kept until the user edits it)', () => {
-    expect(followSavedBuild({ ...base, source: 'other-tab' })).toBe(true);
-    expect(followSavedBuild({ ...base, source: 'other-tab', shared: true })).toBe(false);
+    expect(followSavedBuild({ ...base, source: 'other-tab' })).toBe('follow');
+    expect(followSavedBuild({ ...base, source: 'other-tab', shared: true })).toBe('ignore');
   });
   it('ignores its own saves and changes of compat fields only', () => {
-    expect(followSavedBuild({ ...base, ownWrite: true })).toBe(false);
-    expect(followSavedBuild({ ...base, changed: false })).toBe(false);
-    expect(followSavedBuild({ ...base, changed: false, source: 'other-tab' })).toBe(false);
+    expect(followSavedBuild({ ...base, ownWrite: true })).toBe('ignore');
+    expect(followSavedBuild({ ...base, changed: false })).toBe('ignore');
+    expect(followSavedBuild({ ...base, changed: false, source: 'other-tab', shared: true })).toBe('ignore');
+  });
+  it('"own" clears the share parameters from the builder address (the same path as editing a shared build)', () => {
+    let url = '/builder?mode=quick&cpu=Ryzen+7+7700%7Ctrue&mobo=b&use=gaming&budget=900';
+    const loc = () => new URL(url, 'http://x');
+    vi.stubGlobal('location', {
+      get pathname() { return loc().pathname; },
+      get search() { return loc().search; },
+    });
+    vi.stubGlobal('history', { state: null, replaceState: (_s: unknown, _t: string, next: string) => void (url = next) });
+    expect(followSavedBuild({ ...base, shared: true })).toBe('own');
+    clearShareParams();
+    expect(url).toBe('/builder?mode=quick');
   });
 });
