@@ -2,7 +2,7 @@
 // Rules 23 and 26 are notes by design (no "unknown"); rule 13 reads the BIOS lookup from the context:
 // small injected lookups test every verdict, the real official table (biosSupport) is tested on pairs read from BIOS.
 import { describe, expect, it } from 'vitest';
-import { evaluate, powerEstimate, type Context, type Part, type PartCategory, type RuleId } from '../../../src/engine';
+import { candidateErrors, evaluate, powerEstimate, summary, type Context, type Part, type PartCategory, type RuleId } from '../../../src/engine';
 import { ruleResult } from '../../compat/engine-adapter';
 import { CPU_MEMORY, cpuRow } from '../../../src/engine/data/cpuMemory';
 import { BIOS, biosSupport } from '../../../src/engine';
@@ -115,18 +115,42 @@ describe('rule 12: graphics', () => {
 });
 
 describe('rule 13: BIOS (injected lookup)', () => {
-  const bios: Context['bios'] = (chipset, name) => (chipset === 'B650' && /9\d00X/.test(name) ? 'update' : chipset === 'X870' ? 'ok' : chipset === 'A320' ? 'unsupported' : undefined);
+  const bios: Context['bios'] = (chipset, name) => (chipset === 'B650' && /9\d00X/.test(name) ? 'update' : chipset === 'X870' ? 'ok' : chipset === 'A320' ? 'unsupported'
+    : chipset === 'B450' ? 'may-update' : chipset === 'X570' ? 'not-listed' : undefined);
   const r9 = (chipset: string) => [cpu({}, 'Ryzen 7 9700X'), mobo({ chipset })];
   it('unknown without a lookup', () => expect(status(13, r9('B650'))).toBe('unknown'));
   it('pass (with a table)', () => expect(status(13, r9('X870'), { bios })).toBe('pass'));
   it('update → warning (with a table)', () => expect(status(13, r9('B650'), { bios })).toBe('warning'));
   it('fail (with a table)', () => expect(status(13, r9('A320'), { bios })).toBe('error'));
   it('unknown when the table has no row', () => expect(status(13, r9('B850'), { bios })).toBe('unknown'));
+  it('may-update → a quiet note, not a warning (owner)', () => {
+    const f = ruleResult(evaluate(r9('B450'), { bios }), 13)!;
+    expect(f.status).toBe('note');
+    expect(f.message.en).toBe("AMD notes that support may require a BIOS update; check the board's CPU list.");
+    expect(f.message.el).toBe('Η AMD σημειώνει ότι η υποστήριξη ίσως χρειάζεται ενημέρωση BIOS· έλεγξε τη λίστα της μητρικής.');
+  });
+  it('not-listed → a warning (never an error, never unknown)', () => {
+    const f = ruleResult(evaluate(r9('X570'), { bios }), 13)!;
+    expect(f.status).toBe('warning');
+    expect(f.message.en).toBe('AMD lists this as not supported.');
+    expect(f.message.el).toBe('Η AMD δηλώνει αυτόν τον συνδυασμό ως μη υποστηριζόμενο.');
+    expect(f.fix?.en).toMatch(/board maker/);
+  });
+  it('summary counts a may-update finding as a note and not a warning; not-listed as a warning', () => {
+    const s1 = summary(evaluate(r9('B450'), { bios }).filter((f) => f.rule === 13));
+    expect(s1).toMatchObject({ note: 1, warning: 0, error: 0, unknown: 0 });
+    const s2 = summary(evaluate(r9('X570'), { bios }).filter((f) => f.rule === 13));
+    expect(s2).toMatchObject({ note: 0, warning: 1, error: 0 });
+  });
+  it('"Only compatible" does not hide a board AMD lists as not supported (warning, not error)', () => {
+    expect(candidateErrors([cpu({}, 'Ryzen 7 9700X')], mobo({ chipset: 'X570' }), { bios })).toEqual([]);
+    expect(candidateErrors([mobo({ chipset: 'X570' })], cpu({}, 'Ryzen 7 9700X'), { bios })).toEqual([]);
+  });
 });
 
 describe('rule 13: BIOS (the real official table)', () => {
   // Pairs are read from BIOS, not hard-coded: the first row of a verdict and a CPU of its generation.
-  const pair = (verdict: 'ok' | 'update' | 'unsupported') => {
+  const pair = (verdict: 'ok' | 'update' | 'may-update' | 'not-listed' | 'unsupported') => {
     for (const row of BIOS.filter((r) => r.verdict === verdict)) {
       const model = CPU_MEMORY.flatMap((c) => c.models.map((m) => ({ m, g: c.generation }))).find((c) => c.g === row.generation && biosSupport(row.chipsets[0], c.m) === verdict);
       if (model) return { chipset: row.chipsets[0], cpuName: model.m };
@@ -145,7 +169,13 @@ describe('rule 13: BIOS (the real official table)', () => {
     expect(f.fix?.en).toMatch(/BIOS version/);
     expect(f.fix?.el).toMatch(/BIOS/);
   });
-  it('update pair → warning, Flashback wording when the board has it', () => {
+  it('may-update pair (AM4 tick) → note; not-listed pair (AM4 X) → warning; both from the real table', () => {
+    const m = pair('may-update')!, n = pair('not-listed')!; expect(m).toBeDefined(); expect(n).toBeDefined();
+    expect(run(m).status).toBe('note');
+    expect(run(n).status).toBe('warning');
+    expect(run(n).message.en).toBe('AMD lists this as not supported.');
+  });
+  it('update pair (AM4 Selective Beta) → warning, Flashback wording when the board has it', () => {
     const p = pair('update')!; expect(p).toBeDefined();
     expect(run(p).status).toBe('warning');
     expect(run(p, { biosFlashback: false }).message.en).not.toMatch(/Flashback/);
@@ -154,7 +184,7 @@ describe('rule 13: BIOS (the real official table)', () => {
   // The table has no 'unsupported' row today (AMD's lists say they are not exhaustive); the verdict is covered by the injected lookup above.
   it('no unsupported row exists today', () => expect(pair('unsupported')).toBeUndefined());
   it('a pair with no official statement → unknown with the new wording', () => {
-    const f = run({ chipset: 'B650', cpuName: 'Ryzen 5 7600' });
+    const f = run({ chipset: 'B650', cpuName: 'Ryzen 7 9700X' }); // no amd.com page says B650 is a "600 series" chipset
     expect(f.status).toBe('unknown');
     expect(f.message.en).toMatch(/no official statement for this chipset and CPU generation/);
     expect(f.message.en).not.toMatch(/no .*table yet/);

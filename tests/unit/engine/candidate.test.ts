@@ -1,7 +1,7 @@
 // "Μόνο συμβατά" hides a part only for an error it causes itself (v1 audit C-01: with an RTX 5080 and a
 // 550 W PSU, v1 hid every CPU — "0 shown · 359 incompatible hidden").
 import { describe, expect, it } from 'vitest';
-import { candidateErrors, type Part, type PartCategory } from '../../../src/engine';
+import { biosSupport, candidateErrors, type Part, type PartCategory } from '../../../src/engine';
 
 let n = 0;
 const part = (category: PartCategory, fields: Record<string, unknown>, name: string = category): Part => ({ category, key: `${category}-${++n}`, name, quantity: 1, fields });
@@ -44,5 +44,12 @@ describe('candidateErrors (C-01)', () => {
   it('warnings and notes never hide a part', () => {
     const tight = part('psu', { watts: 850, formFactor: 'ATX' });
     expect(candidateErrors([card, board], tight)).toEqual([]);
+  });
+  it('an AM4 board AMD marks X for the CPU (not-listed) is a warning: "Only compatible" keeps it', () => {
+    const x570 = part('mobo', { socket: 'AM4', chipset: 'X570', formFactor: 'ATX', memory: 'DDR4', ramSlots: 4 });
+    const old = cpu('AM4', 'Ryzen 3 1200');
+    expect(biosSupport('X570', 'Ryzen 3 1200')).toBe('not-listed');
+    expect(candidateErrors([old], x570, { bios: biosSupport })).toEqual([]);
+    expect(candidateErrors([x570], old, { bios: biosSupport })).toEqual([]);
   });
 });

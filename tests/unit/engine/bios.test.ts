@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { BIOS, biosSupport } from '../../../src/engine/data/bios';
 import { OFFICIAL_DOMAINS, cpuRow } from '../../../src/engine/data/cpuMemory';
 
-const VERDICTS = ['ok', 'update', 'unsupported'];
+const VERDICTS = ['ok', 'update', 'may-update', 'not-listed', 'unsupported'];
 
 describe('BIOS table integrity', () => {
   it('has rows', () => expect(BIOS.length).toBeGreaterThan(0));
@@ -48,21 +48,43 @@ describe('biosSupport', () => {
     expect(biosSupport('X670E', 'Ryzen 5 7600')).toBe('ok');
     expect(biosSupport('X870E', 'Ryzen 5 7600')).toBe('ok');
   });
-  it('Ryzen 8000/9000 on AM5: no series membership is stated, so unknown', () => {
+  it('B650/B650E x Ryzen 7000: the Ryzen 5 7600X page on amd.com lists them under Supporting Chipsets', () => {
+    expect(biosSupport('B650', 'Ryzen 5 7600')).toBe('ok');
+    expect(biosSupport('B650E', 'Ryzen 7 7800X3D')).toBe('ok');
+    const row = BIOS.find((r) => r.chipsets.includes('B650'))!;
+    expect(row.source).toBe('https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-5-7600x.html');
+    expect(row.quote).toContain('Supporting Chipsets A620 , X670E , X670 , B650E , B650 , X870E , X870 , B840 , B850');
+  });
+  it('Ryzen 8000/9000 on AM5: no amd.com page says which chipsets are the 600/800 series, so unknown', () => {
     expect(biosSupport('X670E', 'Ryzen 7 9700X')).toBeUndefined();
     expect(biosSupport('X870E', 'Ryzen 7 9700X')).toBeUndefined();
     expect(biosSupport('A620', 'Ryzen 5 8400F')).toBeUndefined();
   });
   it('deliberate gaps stay unknown', () => {
-    expect(biosSupport('B650', 'Ryzen 7 9700X')).toBeUndefined(); // am5.html never names B650
+    expect(biosSupport('B650', 'Ryzen 7 9700X')).toBeUndefined(); // no amd.com page says B650 is a "600 series" chipset
     expect(biosSupport('B550', 'Ryzen 5 3600')).toBeUndefined(); // the two 3000 columns disagree
     expect(biosSupport('B760', 'Core i5-12400')).toBeUndefined(); // no 12th gen statement
     expect(biosSupport('A320', 'Ryzen 3 3200G')).toBeUndefined();
-    expect(biosSupport('X570', 'Ryzen 3 1200')).toBeUndefined(); // an X in AMD's table is not exhaustive
   });
-  it('AM4 ticks are not "no update needed" (AMD: support may require a BIOS upgrade)', () => {
-    expect(biosSupport('B450', 'Ryzen 5 5600X')).toBe('update');
-    expect(biosSupport('X470', 'Ryzen 5 5600X')).toBe('update');
+  it('AM4 ticks are "may need a BIOS update" (AMD: support may require a BIOS upgrade), not "no update needed"', () => {
+    expect(biosSupport('B450', 'Ryzen 5 5600X')).toBe('may-update');
+    expect(biosSupport('X470', 'Ryzen 5 5600X')).toBe('may-update');
+  });
+  it('AM4 "Selective Beta BIOS update needed" cells say needed: update', () => {
+    expect(biosSupport('B350', 'Ryzen 5 5600X')).toBe('update');
+    expect(biosSupport('A320', 'Ryzen 5 4600G')).toBe('update');
+    expect(biosSupport('X370', 'Ryzen 5 3600')).toBe('update'); // 3000G column tick, 3000 column SB: the cautious one
+  });
+  it('AM4 X cells are "not listed" (the table is not exhaustive, but AMD does not list the pair)', () => {
+    expect(biosSupport('X570', 'Ryzen 3 1200')).toBe('not-listed');
+    expect(biosSupport('B550', 'Ryzen 3 1200')).toBe('not-listed');
+    for (const r of BIOS.filter((x) => x.verdict === 'not-listed'))
+      expect(r.quote).toContain('Additional hardware combinations may be available through system suppliers. Check with your manufacturer for details.');
+  });
+  it('every AM4 may-update quote carries the CHIPSET FEATURES sentence', () => {
+    const rows = BIOS.filter((x) => x.verdict === 'may-update');
+    expect(rows.length).toBeGreaterThan(0);
+    for (const r of rows) expect(r.quote).toContain('CHIPSET FEATURES: Note that not all processors are supported on every chipset, and support may require a BIOS upgrade.');
   });
   it('the 2026 refresh "Plus" CPUs are not covered by Intel\'s 800-series statement: unknown', () => {
     expect(biosSupport('Z890', 'Core Ultra 5 250K Plus')).toBeUndefined();
