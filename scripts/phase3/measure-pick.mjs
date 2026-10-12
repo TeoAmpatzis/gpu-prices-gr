@@ -1,3 +1,4 @@
+/* global document */
 // Step 3 (pick mode) measurements, roadmap task 6 / A8. Two modes:
 //
 //   node scripts/phase3/measure-pick.mjs bytes <baseUrl> <outFile>

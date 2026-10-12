@@ -16,12 +16,15 @@ export default function ProductPhoto({
   icon: Icon,
   alt,
   hideOnPhone = false,
+  hint,
 }: {
   image: ProductImage | null;
   size: keyof typeof PX;
   icon: LucideIcon;
   alt: string;
   hideOnPhone?: boolean;
+  /** Tooltip, e.g. "example photo" when the model has products from several makers. */
+  hint?: string;
 }) {
   const [failed, setFailed] = useState<string | null>(null);
   const [loaded, setLoaded] = useState<string | null>(null);
@@ -46,6 +49,7 @@ export default function ProductPhoto({
       loading="lazy"
       decoding="async"
       alt={alt}
+      title={hint}
       onLoad={() => setLoaded(image.src)}
       onError={() => setFailed(image.src)}
       className={`${tile} ${hideOnPhone ? 'hidden sm:block' : ''} ${loaded === image.src ? 'bg-white' : 'bg-sunken'} object-contain`}

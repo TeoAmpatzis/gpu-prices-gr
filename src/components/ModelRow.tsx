@@ -30,6 +30,13 @@ function totalHint(l: BaseListing, lang: Lang): string {
   return l.merchant ? `${l.merchant}: ${parts}` : parts;
 }
 
+/** The model's listings come from several makers, so its one photo is an example (photos exist per model, not per listing). */
+function isExamplePhoto<L extends BaseListing>(cfg: CategoryConfig<L>, m: Model<L>): boolean {
+  const maker = [...cfg.before, ...cfg.after].find((c) => c.maker)?.maker;
+  if (!maker) return false;
+  return new Set(m.listings.map((l) => maker(l)).filter(Boolean)).size > 1;
+}
+
 /** Pick mode (`?pick=1`, src/components/PickView.tsx): what a model's row adds. */
 export interface RowExtra<L extends BaseListing> {
   /** Greyed: "Only compatible" is off and the model would be hidden (its reason is in `extra`). */
@@ -121,6 +128,7 @@ function ModelDetails<L extends BaseListing>({
   cat,
   m,
   image,
+  example,
   icon,
   lang,
   listingExtra,
@@ -128,6 +136,7 @@ function ModelDetails<L extends BaseListing>({
   cat: Category;
   m: Model<L>;
   image: ProductImage | null;
+  example: boolean;
   icon: LucideIcon;
   lang: Lang;
   listingExtra?: RowExtra<L>['listing'];
@@ -182,7 +191,10 @@ function ModelDetails<L extends BaseListing>({
         })}
       </ul>
       <div className="flex flex-col gap-3">
-        <ProductPhoto image={image} size="lg" icon={icon} alt={m.chip} />
+        <div>
+          <ProductPhoto image={image} size="lg" icon={icon} alt={m.chip} hint={image && example ? tr(lang, T.examplePhoto) : undefined} />
+          {image && example && <p className="mt-1 max-w-40 text-xs text-faint">{tr(lang, T.examplePhoto)}</p>}
+        </div>
         <div>
           <div className="mb-1.5 text-xs text-faint">{tr(lang, T.dailyLow)}</div>
           {details ? (
@@ -226,7 +238,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
             <ChevronDown
               className={`h-4 w-4 shrink-0 text-faint transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
             />
-            <ProductPhoto image={image} size="sm" icon={cfg.icon} alt="" />
+            <ProductPhoto image={image} size="sm" icon={cfg.icon} alt="" hint={image && isExamplePhoto(cfg, m) ? tr(lang, T.examplePhoto) : undefined} />
             <span
               className={`h-2 w-2 shrink-0 rounded-full ${cfg.groupDot[m.group] ?? 'bg-idle'}`}
               title={groupName(m.group, lang)}
@@ -256,7 +268,7 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
       {open && (
         <tr className="bg-sunken">
           <td colSpan={colSpan} className="border-t border-line px-4 pb-5 pt-4">
-            <ModelDetails cat={cfg.id} m={m} image={image} icon={cfg.icon} lang={lang} listingExtra={pick?.listing} />
+            <ModelDetails cat={cfg.id} m={m} image={image} example={isExamplePhoto(cfg, m)} icon={cfg.icon} lang={lang} listingExtra={pick?.listing} />
           </td>
         </tr>
       )}
@@ -273,8 +285,9 @@ export function ModelCard<L extends BaseListing>({ cfg, model: m, history, image
   const delta = weekChange(history, m.cheapest.price);
   // The same values as the table columns, without headers; empty ones ("—") are skipped.
   const specs: ReactNode[] = [...cfg.before, ...cfg.after]
-    .map((c) => c.cell(m, lang))
-    .filter((v) => v != null && v !== '' && v !== '—');
+    .map((c) => ({ v: c.cell(m, lang), label: c.cardLabel }))
+    .filter(({ v }) => v != null && v !== '' && v !== '—')
+    .map(({ v, label }) => (label ? <>{tr(lang, label)} {v}</> : v));
   return (
     <li className="card overflow-hidden">
       <button
@@ -283,7 +296,7 @@ export function ModelCard<L extends BaseListing>({ cfg, model: m, history, image
         onClick={onToggle}
         className={`flex w-full items-start gap-3 p-4 text-left transition-colors duration-150 active:bg-hover ${pick?.dim ? DIM : ''}`}
       >
-        <ProductPhoto image={image} size="md" icon={cfg.icon} alt="" />
+        <ProductPhoto image={image} size="md" icon={cfg.icon} alt="" hint={image && isExamplePhoto(cfg, m) ? tr(lang, T.examplePhoto) : undefined} />
         <div className="flex min-w-0 flex-1 flex-col gap-2">
         <div className="flex w-full items-start gap-3">
           <span
@@ -320,7 +333,7 @@ export function ModelCard<L extends BaseListing>({ cfg, model: m, history, image
       {pick?.extra && <div className="-mt-1 px-4 pb-4">{pick.extra}</div>}
       {open && (
         <div className="border-t border-line bg-sunken p-3">
-          <ModelDetails cat={cfg.id} m={m} image={image} icon={cfg.icon} lang={lang} listingExtra={pick?.listing} />
+          <ModelDetails cat={cfg.id} m={m} image={image} example={isExamplePhoto(cfg, m)} icon={cfg.icon} lang={lang} listingExtra={pick?.listing} />
         </div>
       )}
     </li>

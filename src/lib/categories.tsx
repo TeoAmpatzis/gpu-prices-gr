@@ -25,6 +25,10 @@ export interface Column<L extends BaseListing> {
   className?: string; // applied to both <th> and <td>, e.g. responsive hiding
   numeric?: boolean; // right-aligned (numbers are tabular everywhere in the table)
   cell: (m: Model<L>, lang: Lang) => ReactNode;
+  /** Set on the maker column of categories whose model spans several makers: the maker of one listing. */
+  maker?: (l: L) => string | null;
+  /** Phone cards have no headers: this label goes before the value. */
+  cardLabel?: Text;
 }
 
 /**
@@ -105,6 +109,7 @@ export function segmentOptions<L extends BaseListing>(cfg: CategoryConfig<L>): {
   ];
 }
 
+const CHEAPEST_FROM: Text = { el: 'Φθηνότερο από', en: 'Cheapest from' };
 const VENDOR: Text = { el: 'Κατασκευαστής', en: 'Manufacturer' };
 const TYPE: Text = { el: 'Τύπος', en: 'Type' };
 const SIZE: Text = { el: 'Μέγεθος', en: 'Size' };
@@ -253,7 +258,7 @@ export const GPU: CategoryConfig<GpuListing> = {
     { header: 'VRAM', numeric: true, cell: (m) => `${gpuVram(m)}GB` },
     { header: MEMORY, className: 'hidden md:table-cell', cell: (m) => mostCommon(m.listings.map((l) => l.memType)) ?? '—' },
   ],
-  after: [{ header: VENDOR, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.partner }],
+  after: [{ header: CHEAPEST_FROM, cardLabel: CHEAPEST_FROM, maker: (l) => l.partner, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.partner }],
 };
 
 // ---------- CPU ----------
@@ -437,7 +442,7 @@ export const RAM: CategoryConfig<RamListing> = {
   before: [{ header: TYPE, className: 'hidden sm:table-cell', cell: (m) => FORM_LABEL[m.cheapest.formFactor] }],
   after: [
     { header: 'CL', className: 'hidden md:table-cell', numeric: true, cell: (m) => m.cheapest.cas ?? '—' },
-    { header: VENDOR, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.brand },
+    { header: CHEAPEST_FROM, cardLabel: CHEAPEST_FROM, maker: (l) => l.brand, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.brand },
   ],
 };
 
@@ -482,7 +487,7 @@ export const PSU: CategoryConfig<PsuListing> = {
     vendorFilter(),
   ],
   before: [{ header: TYPE, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.formFactor }],
-  after: [{ header: VENDOR, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.brand }],
+  after: [{ header: CHEAPEST_FROM, cardLabel: CHEAPEST_FROM, maker: (l) => l.brand, className: 'hidden sm:table-cell', cell: (m) => m.cheapest.brand }],
 };
 
 // ---------- Cases, fans, coolers ----------
