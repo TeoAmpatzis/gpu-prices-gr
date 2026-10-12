@@ -16,9 +16,13 @@ describe('candidateErrors (C-01)', () => {
     expect(candidateErrors([card, small, board], cpu('AM5', 'Ryzen 5 7600'))).toEqual([]));
   it('nor a top-tier one: the PSU was already too small without it', () =>
     expect(candidateErrors([card, small, board], cpu('AM5', 'Ryzen 9 9950X'))).toEqual([]));
-  it('a top-tier CPU that makes an enough PSU too small is hidden (its +100 W)', () => {
+  it('a CPU whose power limit makes the PSU too small is hidden (no card: the whole-build estimate decides)', () => {
+    const weak = part('psu', { watts: 350, formFactor: 'ATX' });
+    expect(candidateErrors([weak], cpu('LGA1700', 'Core i9-14900K')).map((f) => f.rule)).toEqual([14]);
+  });
+  it('with a card the maker figure decides, so a CPU alone never hides a part by rule 14 (owner: warning, not error)', () => {
     const exact = part('psu', { watts: 900, formFactor: 'ATX' });
-    expect(candidateErrors([card, exact, board], cpu('AM5', 'Ryzen 9 9950X')).map((f) => f.rule)).toEqual([14]);
+    expect(candidateErrors([card, exact, board], cpu('AM5', 'Ryzen 9 9950X'))).toEqual([]);
   });
   it('a CPU for another socket is hidden for its own clash', () =>
     expect(candidateErrors([card, ok, board], cpu('AM4', 'Ryzen 5 5600')).map((f) => f.rule)).toEqual([1]));

@@ -41,3 +41,6 @@ export const MIN_AIR_COOLER_MM = 30;
 
 /** Fans a board can drive without a hub, when the board doesn't say (plan rule 23: a general note). */
 export const TYPICAL_FAN_HEADERS = 3;
+
+/** The plan's power formula (B4): (card + CPU limit + board + sticks + drives + fans + pump) × headroom, rounded up to a step. */
+export const POWER = { boardW: 50, perStickW: 5, perDriveW: 8, perFanW: 3, pumpW: 5, headroom: 1.3, roundToW: 50 } as const;
