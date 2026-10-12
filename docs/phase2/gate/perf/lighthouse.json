@@ -1,0 +1,422 @@
+{
+  "gpu/mobile": {
+    "median": {
+      "performance": 98,
+      "accessibility": 100,
+      "fcpMs": 1549.8038999999999,
+      "lcpMs": 2299.8039,
+      "tbtMs": 30.5,
+      "cls": 0,
+      "siMs": 1549.8038999999999,
+      "totalKB": 507.9501953125,
+      "jsKB": 86.2998046875,
+      "dataKB": 46.3525390625,
+      "fontKB": 66.30078125,
+      "imageKB": 294.6923828125
+    },
+    "runs": [
+      {
+        "performance": 96,
+        "accessibility": 100,
+        "fcpMs": 1868.3498,
+        "lcpMs": 2618.3498,
+        "tbtMs": 42.5,
+        "cls": 0,
+        "siMs": 1868.3498,
+        "totalKB": 507.9951171875,
+        "jsKB": 86.2998046875,
+        "dataKB": 46.3525390625,
+        "fontKB": 66.30078125,
+        "imageKB": 294.7373046875
+      },
+      {
+        "performance": 98,
+        "accessibility": 100,
+        "fcpMs": 1523.2544,
+        "lcpMs": 2273.2544000000003,
+        "tbtMs": 28,
+        "cls": 0,
+        "siMs": 1523.2544,
+        "totalKB": 507.9501953125,
+        "jsKB": 86.2998046875,
+        "dataKB": 46.3525390625,
+        "fontKB": 66.30078125,
+        "imageKB": 294.6923828125
+      },
+      {
+        "performance": 98,
+        "accessibility": 100,
+        "fcpMs": 1549.8038999999999,
+        "lcpMs": 2299.8039,
+        "tbtMs": 30.5,
+        "cls": 0,
+        "siMs": 1549.8038999999999,
+        "totalKB": 507.9501953125,
+        "jsKB": 86.2998046875,
+        "dataKB": 46.3525390625,
+        "fontKB": 66.30078125,
+        "imageKB": 294.6923828125
+      }
+    ],
+    "scripts": [
+      "index-4LwT0uTk.js 64.1",
+      "CategoryPage-DMwnkeEV.js 10.2",
+      "data-BFgqgf16.js 3.9",
+      "images-DDuzqHyk.js 8.1"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "gpu/list.json 45.5"
+    ]
+  },
+  "gpu/desktop": {
+    "median": {
+      "performance": 97,
+      "accessibility": 100,
+      "fcpMs": 872.7776,
+      "lcpMs": 1109.1664,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 872.7776,
+      "totalKB": 349.916015625,
+      "jsKB": 86.2998046875,
+      "dataKB": 46.3525390625,
+      "fontKB": 66.30078125,
+      "imageKB": 136.658203125
+    },
+    "runs": [
+      {
+        "performance": 97,
+        "accessibility": 100,
+        "fcpMs": 890.4235,
+        "lcpMs": 1135.63525,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 890.4235,
+        "totalKB": 349.96484375,
+        "jsKB": 86.2998046875,
+        "dataKB": 46.3525390625,
+        "fontKB": 66.30078125,
+        "imageKB": 136.70703125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 557.9288,
+        "lcpMs": 677.9287999999999,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 557.9288,
+        "totalKB": 349.8681640625,
+        "jsKB": 86.2998046875,
+        "dataKB": 46.3525390625,
+        "fontKB": 66.30078125,
+        "imageKB": 136.6103515625
+      },
+      {
+        "performance": 97,
+        "accessibility": 100,
+        "fcpMs": 872.7776,
+        "lcpMs": 1109.1664,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 872.7776,
+        "totalKB": 349.916015625,
+        "jsKB": 86.2998046875,
+        "dataKB": 46.3525390625,
+        "fontKB": 66.30078125,
+        "imageKB": 136.658203125
+      }
+    ],
+    "scripts": [
+      "index-4LwT0uTk.js 64.1",
+      "CategoryPage-DMwnkeEV.js 10.2",
+      "data-BFgqgf16.js 3.9",
+      "images-DDuzqHyk.js 8.1"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "gpu/list.json 45.5"
+    ]
+  },
+  "case/mobile": {
+    "median": {
+      "performance": 89,
+      "accessibility": 100,
+      "fcpMs": 1388.9098,
+      "lcpMs": 2138.9098,
+      "tbtMs": 382.49999999999955,
+      "cls": 0,
+      "siMs": 1388.9098,
+      "totalKB": 628.8203125,
+      "jsKB": 86.2998046875,
+      "dataKB": 268.900390625,
+      "fontKB": 66.30078125,
+      "imageKB": 193.0146484375
+    },
+    "runs": [
+      {
+        "performance": 86,
+        "accessibility": 100,
+        "fcpMs": 1686.013,
+        "lcpMs": 2436.013,
+        "tbtMs": 438.5,
+        "cls": 0,
+        "siMs": 1686.013,
+        "totalKB": 628.86328125,
+        "jsKB": 86.2998046875,
+        "dataKB": 268.900390625,
+        "fontKB": 66.30078125,
+        "imageKB": 193.0576171875
+      },
+      {
+        "performance": 89,
+        "accessibility": 100,
+        "fcpMs": 1388.9098,
+        "lcpMs": 2138.9098,
+        "tbtMs": 382.49999999999955,
+        "cls": 0,
+        "siMs": 1388.9098,
+        "totalKB": 628.8203125,
+        "jsKB": 86.2998046875,
+        "dataKB": 268.900390625,
+        "fontKB": 66.30078125,
+        "imageKB": 193.0146484375
+      },
+      {
+        "performance": 90,
+        "accessibility": 100,
+        "fcpMs": 1388.4929,
+        "lcpMs": 2138.4928999999997,
+        "tbtMs": 352.5,
+        "cls": 0,
+        "siMs": 1388.4929,
+        "totalKB": 628.8203125,
+        "jsKB": 86.2998046875,
+        "dataKB": 268.900390625,
+        "fontKB": 66.30078125,
+        "imageKB": 193.0146484375
+      }
+    ],
+    "scripts": [
+      "index-4LwT0uTk.js 64.1",
+      "CategoryPage-DMwnkeEV.js 10.2",
+      "data-BFgqgf16.js 3.9",
+      "images-DDuzqHyk.js 8.1"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "case/list.json 268.0"
+    ]
+  },
+  "case/desktop": {
+    "median": {
+      "performance": 98,
+      "accessibility": 100,
+      "fcpMs": 794.0307,
+      "lcpMs": 991.04605,
+      "tbtMs": 73.5,
+      "cls": 0,
+      "siMs": 794.0307,
+      "totalKB": 532.740234375,
+      "jsKB": 86.2998046875,
+      "dataKB": 268.900390625,
+      "fontKB": 66.30078125,
+      "imageKB": 96.9345703125
+    },
+    "runs": [
+      {
+        "performance": 98,
+        "accessibility": 100,
+        "fcpMs": 794.0307,
+        "lcpMs": 991.04605,
+        "tbtMs": 72.49999999999989,
+        "cls": 0,
+        "siMs": 794.0307,
+        "totalKB": 532.7705078125,
+        "jsKB": 86.2998046875,
+        "dataKB": 268.900390625,
+        "fontKB": 66.30078125,
+        "imageKB": 96.96484375
+      },
+      {
+        "performance": 99,
+        "accessibility": 100,
+        "fcpMs": 509.85159999999996,
+        "lcpMs": 629.8516,
+        "tbtMs": 73.5,
+        "cls": 0,
+        "siMs": 509.85159999999996,
+        "totalKB": 532.6748046875,
+        "jsKB": 86.2998046875,
+        "dataKB": 268.900390625,
+        "fontKB": 66.30078125,
+        "imageKB": 96.869140625
+      },
+      {
+        "performance": 92,
+        "accessibility": 100,
+        "fcpMs": 1055.1903000000002,
+        "lcpMs": 1382.7854500000003,
+        "tbtMs": 121.5,
+        "cls": 0,
+        "siMs": 1055.1903000000002,
+        "totalKB": 532.740234375,
+        "jsKB": 86.2998046875,
+        "dataKB": 268.900390625,
+        "fontKB": 66.30078125,
+        "imageKB": 96.9345703125
+      }
+    ],
+    "scripts": [
+      "index-4LwT0uTk.js 64.1",
+      "CategoryPage-DMwnkeEV.js 10.2",
+      "data-BFgqgf16.js 3.9",
+      "images-DDuzqHyk.js 8.1"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "case/list.json 268.0"
+    ]
+  },
+  "builder-guided/mobile": {
+    "median": {
+      "performance": 98,
+      "accessibility": 100,
+      "fcpMs": 1203.4892,
+      "lcpMs": 2409.2338,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 1203.4892,
+      "totalKB": 459.248046875,
+      "jsKB": 101.9267578125,
+      "dataKB": 276.7158203125,
+      "fontKB": 66.30078125,
+      "imageKB": 0
+    },
+    "runs": [
+      {
+        "performance": 98,
+        "accessibility": 100,
+        "fcpMs": 1203.1091,
+        "lcpMs": 2408.66365,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1203.1091,
+        "totalKB": 459.248046875,
+        "jsKB": 101.9267578125,
+        "dataKB": 276.7158203125,
+        "fontKB": 66.30078125,
+        "imageKB": 0
+      },
+      {
+        "performance": 98,
+        "accessibility": 100,
+        "fcpMs": 1203.4892,
+        "lcpMs": 2409.2338,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1203.4892,
+        "totalKB": 459.248046875,
+        "jsKB": 101.9267578125,
+        "dataKB": 276.7158203125,
+        "fontKB": 66.30078125,
+        "imageKB": 0
+      },
+      {
+        "performance": 98,
+        "accessibility": 100,
+        "fcpMs": 1203.569,
+        "lcpMs": 2409.3535,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1203.569,
+        "totalKB": 459.248046875,
+        "jsKB": 101.9267578125,
+        "dataKB": 276.7158203125,
+        "fontKB": 66.30078125,
+        "imageKB": 0
+      }
+    ],
+    "scripts": [
+      "index-4LwT0uTk.js 64.1",
+      "Builder-CNqoY9Yt.js 25.8",
+      "data-BFgqgf16.js 3.9",
+      "images-DDuzqHyk.js 8.1"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "builder.json 275.8"
+    ]
+  },
+  "builder-guided/desktop": {
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "fcpMs": 324.5185,
+      "lcpMs": 487.77775,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 324.5185,
+      "totalKB": 459.248046875,
+      "jsKB": 101.9267578125,
+      "dataKB": 276.7158203125,
+      "fontKB": 66.30078125,
+      "imageKB": 0
+    },
+    "runs": [
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 324.5185,
+        "lcpMs": 487.77775,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 324.5185,
+        "totalKB": 459.248046875,
+        "jsKB": 101.9267578125,
+        "dataKB": 276.7158203125,
+        "fontKB": 66.30078125,
+        "imageKB": 0
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 324.9903,
+        "lcpMs": 488.48545,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 324.9903,
+        "totalKB": 459.248046875,
+        "jsKB": 101.9267578125,
+        "dataKB": 276.7158203125,
+        "fontKB": 66.30078125,
+        "imageKB": 0
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 323.567,
+        "lcpMs": 486.3505,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 323.567,
+        "totalKB": 459.248046875,
+        "jsKB": 101.9267578125,
+        "dataKB": 276.7158203125,
+        "fontKB": 66.30078125,
+        "imageKB": 0
+      }
+    ],
+    "scripts": [
+      "index-4LwT0uTk.js 64.1",
+      "Builder-CNqoY9Yt.js 25.8",
+      "data-BFgqgf16.js 3.9",
+      "images-DDuzqHyk.js 8.1"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "builder.json 275.8"
+    ]
+  }
+}

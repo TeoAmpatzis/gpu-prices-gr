@@ -1,0 +1,1931 @@
+{
+ "builderBuiltAt": "2026-10-03T18:51:07.582Z",
+ "categories": {
+  "gpu": {
+   "models": 95,
+   "quarterCutoff": 17,
+   "quarterModels": 24,
+   "builderRows": 1567,
+   "fields": [
+    {
+     "plan": "Chip",
+     "json": "chip",
+     "used": "filter, quick; 14 (table)",
+     "status": "collected",
+     "all": {
+      "n": 95,
+      "k": 95
+     },
+     "quarter": {
+      "n": 24,
+      "k": 24
+     },
+     "builder": {
+      "n": 1567,
+      "k": 1567
+     }
+    },
+    {
+     "plan": "Board partner",
+     "json": "partner",
+     "used": "filter",
+     "status": "collected",
+     "all": {
+      "n": 95,
+      "k": 95
+     },
+     "quarter": {
+      "n": 24,
+      "k": 24
+     },
+     "builder": {
+      "n": 1567,
+      "k": 1567
+     }
+    },
+    {
+     "plan": "VRAM",
+     "json": "vram",
+     "used": "filter, column",
+     "status": "collected",
+     "all": {
+      "n": 95,
+      "k": 95
+     },
+     "quarter": {
+      "n": 24,
+      "k": 24
+     },
+     "builder": {
+      "n": 1567,
+      "k": 1567
+     }
+    },
+    {
+     "plan": "Τύπος μνήμης (memory type)",
+     "json": "memType",
+     "used": "filter",
+     "status": "collected",
+     "all": {
+      "n": 95,
+      "k": 91
+     },
+     "quarter": {
+      "n": 24,
+      "k": 24
+     },
+     "builder": {
+      "n": 1567,
+      "k": 1565
+     }
+    },
+    {
+     "plan": "Μήκος (length)",
+     "json": "lengthMm",
+     "used": "6; filter, column",
+     "status": "collected",
+     "all": {
+      "n": 95,
+      "k": 56
+     },
+     "quarter": {
+      "n": 24,
+      "k": 20
+     },
+     "builder": {
+      "n": 1567,
+      "k": 1257
+     }
+    },
+    {
+     "plan": "Πάχος σε slots (thickness)",
+     "json": "not collected",
+     "used": "7; filter",
+     "status": "not collected",
+     "all": {
+      "n": 95,
+      "k": null
+     },
+     "quarter": {
+      "n": 24,
+      "k": null
+     },
+     "builder": {
+      "n": 1567,
+      "k": null
+     }
+    },
+    {
+     "plan": "Προτεινόμενο τροφοδοτικό (recommended PSU)",
+     "json": "minPsu (card page / maker)",
+     "used": "14; filter, column",
+     "status": "collected",
+     "all": {
+      "n": 95,
+      "k": 59
+     },
+     "quarter": {
+      "n": 24,
+      "k": 20
+     },
+     "builder": {
+      "n": 1567,
+      "k": 1124
+     }
+    },
+    {
+     "plan": "Προτεινόμενο τροφοδοτικό, με πίνακα chip (PSU incl. chip table)",
+     "json": "minPsu ?? GPU_PSU[chip] (builder gpuPsu)",
+     "used": "14 (what v1 uses)",
+     "status": "derivable",
+     "all": {
+      "n": 95,
+      "k": 67
+     },
+     "quarter": {
+      "n": 24,
+      "k": 20
+     },
+     "builder": {
+      "n": 1567,
+      "k": 1567
+     }
+    },
+    {
+     "plan": "Βύσμα ρεύματος (power connector)",
+     "json": "not collected",
+     "used": "15; filter, column",
+     "status": "not collected",
+     "all": {
+      "n": 95,
+      "k": null
+     },
+     "quarter": {
+      "n": 24,
+      "k": null
+     },
+     "builder": {
+      "n": 1567,
+      "k": null
+     }
+    },
+    {
+     "plan": "Αριθμός ανεμιστήρων (fan count)",
+     "json": "not collected",
+     "used": "filter",
+     "status": "not collected",
+     "all": {
+      "n": 95,
+      "k": null
+     },
+     "quarter": {
+      "n": 24,
+      "k": null
+     },
+     "builder": {
+      "n": 1567,
+      "k": null
+     }
+    },
+    {
+     "plan": "Χρώμα (colour)",
+     "json": "not collected",
+     "used": "filter",
+     "status": "not collected",
+     "all": {
+      "n": 95,
+      "k": null
+     },
+     "quarter": {
+      "n": 24,
+      "k": null
+     },
+     "builder": {
+      "n": 1567,
+      "k": null
+     }
+    },
+    {
+     "plan": "TBP (board power)",
+     "json": "not collected (plan: per-chip table)",
+     "used": "power estimate",
+     "status": "not collected",
+     "all": {
+      "n": 95,
+      "k": null
+     },
+     "quarter": {
+      "n": 24,
+      "k": null
+     },
+     "builder": {
+      "n": 1567,
+      "k": null
+     }
+    }
+   ]
+  },
+  "cpu": {
+   "models": 409,
+   "quarterCutoff": 5,
+   "quarterModels": 106,
+   "builderRows": 359,
+   "fields": [
+    {
+     "plan": "Socket",
+     "json": "socket",
+     "used": "1, 10, 13; filter, quick",
+     "status": "collected",
+     "all": {
+      "n": 409,
+      "k": 397
+     },
+     "quarter": {
+      "n": 106,
+      "k": 106
+     },
+     "builder": {
+      "n": 359,
+      "k": 359
+     }
+    },
+    {
+     "plan": "Σειρά (series)",
+     "json": "derivable from chip (cpuSeries)",
+     "used": "filter",
+     "status": "derivable",
+     "all": {
+      "n": 409,
+      "k": 408
+     },
+     "quarter": {
+      "n": 106,
+      "k": 106
+     },
+     "builder": {
+      "n": 359,
+      "k": 357
+     }
+    },
+    {
+     "plan": "Γενιά/αρχιτεκτονική (generation)",
+     "json": "derivable from chip model number",
+     "used": "13, 25; filter",
+     "status": "derivable",
+     "all": {
+      "n": 409,
+      "k": 366
+     },
+     "quarter": {
+      "n": 106,
+      "k": 106
+     },
+     "builder": {
+      "n": 359,
+      "k": 357
+     }
+    },
+    {
+     "plan": "Πυρήνες (cores)",
+     "json": "cores",
+     "used": "filter, column",
+     "status": "collected",
+     "all": {
+      "n": 409,
+      "k": 390
+     },
+     "quarter": {
+      "n": 106,
+      "k": 106
+     },
+     "builder": {
+      "n": 359,
+      "k": 355
+     }
+    },
+    {
+     "plan": "Threads",
+     "json": "not collected",
+     "used": "filter, column",
+     "status": "not collected",
+     "all": {
+      "n": 409,
+      "k": null
+     },
+     "quarter": {
+      "n": 106,
+      "k": null
+     },
+     "builder": {
+      "n": 359,
+      "k": null
+     }
+    },
+    {
+     "plan": "Συχνότητα boost (boost clock)",
+     "json": "not collected",
+     "used": "filter, column",
+     "status": "not collected",
+     "all": {
+      "n": 409,
+      "k": null
+     },
+     "quarter": {
+      "n": 106,
+      "k": null
+     },
+     "builder": {
+      "n": 359,
+      "k": null
+     }
+    },
+    {
+     "plan": "TDP",
+     "json": "tdp",
+     "used": "filter, column",
+     "status": "collected",
+     "all": {
+      "n": 409,
+      "k": 127
+     },
+     "quarter": {
+      "n": 106,
+      "k": 88
+     },
+     "builder": {
+      "n": 359,
+      "k": 249
+     }
+    },
+    {
+     "plan": "PPT/PL2 (real power limit)",
+     "json": "not collected (plan: hand table per family)",
+     "used": "power estimate, 14",
+     "status": "not collected",
+     "all": {
+      "n": 409,
+      "k": null
+     },
+     "quarter": {
+      "n": 106,
+      "k": null
+     },
+     "builder": {
+      "n": 359,
+      "k": null
+     }
+    },
+    {
+     "plan": "Ενσωματωμένα γραφικά (iGPU)",
+     "json": "igpu (computed from the model number, never null)",
+     "used": "12; filter, quick, column",
+     "status": "collected",
+     "all": {
+      "n": 409,
+      "k": 409
+     },
+     "quarter": {
+      "n": 106,
+      "k": 106
+     },
+     "builder": {
+      "n": 359,
+      "k": 359
+     }
+    },
+    {
+     "plan": "Ψύκτρα στο κουτί (cooler in box)",
+     "json": "coolerIncluded",
+     "used": "11; filter, quick",
+     "status": "collected",
+     "all": {
+      "n": 409,
+      "k": 374
+     },
+     "quarter": {
+      "n": 106,
+      "k": 106
+     },
+     "builder": {
+      "n": 359,
+      "k": 205
+     }
+    },
+    {
+     "plan": "Box/Tray",
+     "json": "packaging",
+     "used": "11; filter",
+     "status": "collected",
+     "all": {
+      "n": 409,
+      "k": 386
+     },
+     "quarter": {
+      "n": 106,
+      "k": 106
+     },
+     "builder": {
+      "n": 359,
+      "k": 297
+     }
+    }
+   ]
+  },
+  "mobo": {
+   "models": 1172,
+   "quarterCutoff": 4,
+   "quarterModels": 297,
+   "builderRows": 1023,
+   "fields": [
+    {
+     "plan": "Socket",
+     "json": "socket",
+     "used": "1, 13; filter, quick",
+     "status": "collected",
+     "all": {
+      "n": 1172,
+      "k": 1140
+     },
+     "quarter": {
+      "n": 297,
+      "k": 296
+     },
+     "builder": {
+      "n": 1023,
+      "k": 1023
+     }
+    },
+    {
+     "plan": "Chipset",
+     "json": "chipset",
+     "used": "13; filter, column",
+     "status": "collected",
+     "all": {
+      "n": 1172,
+      "k": 1075
+     },
+     "quarter": {
+      "n": 297,
+      "k": 293
+     },
+     "builder": {
+      "n": 1023,
+      "k": 1023
+     }
+    },
+    {
+     "plan": "Form factor",
+     "json": "formFactor (≠ 'Άλλο')",
+     "used": "5; filter, quick, column",
+     "status": "collected",
+     "all": {
+      "n": 1172,
+      "k": 1170
+     },
+     "quarter": {
+      "n": 297,
+      "k": 297
+     },
+     "builder": {
+      "n": 1023,
+      "k": 1023
+     }
+    },
+    {
+     "plan": "Τύπος μνήμης (memory type)",
+     "json": "memory",
+     "used": "2; filter, quick, column",
+     "status": "collected",
+     "all": {
+      "n": 1172,
+      "k": 1082
+     },
+     "quarter": {
+      "n": 297,
+      "k": 296
+     },
+     "builder": {
+      "n": 1023,
+      "k": 1023
+     }
+    },
+    {
+     "plan": "Θέσεις RAM (RAM slots)",
+     "json": "ramSlots",
+     "used": "3; filter",
+     "status": "collected",
+     "all": {
+      "n": 1172,
+      "k": 842
+     },
+     "quarter": {
+      "n": 297,
+      "k": 293
+     },
+     "builder": {
+      "n": 1023,
+      "k": 773
+     }
+    },
+    {
+     "plan": "Μέγιστη μνήμη (max memory)",
+     "json": "not collected",
+     "used": "4; filter",
+     "status": "not collected",
+     "all": {
+      "n": 1172,
+      "k": null
+     },
+     "quarter": {
+      "n": 297,
+      "k": null
+     },
+     "builder": {
+      "n": 1023,
+      "k": null
+     }
+    },
+    {
+     "plan": "Θέσεις M.2 (M.2 slots)",
+     "json": "not collected",
+     "used": "17, 20; filter, column",
+     "status": "not collected",
+     "all": {
+      "n": 1172,
+      "k": null
+     },
+     "quarter": {
+      "n": 297,
+      "k": null
+     },
+     "builder": {
+      "n": 1023,
+      "k": null
+     }
+    },
+    {
+     "plan": "Θύρες SATA (SATA ports)",
+     "json": "not collected",
+     "used": "18; filter",
+     "status": "not collected",
+     "all": {
+      "n": 1172,
+      "k": null
+     },
+     "quarter": {
+      "n": 297,
+      "k": null
+     },
+     "builder": {
+      "n": 1023,
+      "k": null
+     }
+    },
+    {
+     "plan": "WiFi",
+     "json": "wifi (from the title; false = title does not say WiFi)",
+     "used": "filter, quick, column",
+     "status": "title words",
+     "all": {
+      "n": 1172,
+      "k": 530
+     },
+     "quarter": {
+      "n": 297,
+      "k": 142
+     },
+     "builder": {
+      "n": 1023,
+      "k": 530
+     }
+    },
+    {
+     "plan": "Bluetooth",
+     "json": "not collected",
+     "used": "filter",
+     "status": "not collected",
+     "all": {
+      "n": 1172,
+      "k": null
+     },
+     "quarter": {
+      "n": 297,
+      "k": null
+     },
+     "builder": {
+      "n": 1023,
+      "k": null
+     }
+    },
+    {
+     "plan": "USB-C header μπροστά (front USB-C header)",
+     "json": "not collected",
+     "used": "24; filter",
+     "status": "not collected",
+     "all": {
+      "n": 1172,
+      "k": null
+     },
+     "quarter": {
+      "n": 297,
+      "k": null
+     },
+     "builder": {
+      "n": 1023,
+      "k": null
+     }
+    },
+    {
+     "plan": "BIOS Flashback",
+     "json": "not collected",
+     "used": "13; filter",
+     "status": "not collected",
+     "all": {
+      "n": 1172,
+      "k": null
+     },
+     "quarter": {
+      "n": 297,
+      "k": null
+     },
+     "builder": {
+      "n": 1023,
+      "k": null
+     }
+    },
+    {
+     "plan": "Fan headers",
+     "json": "not collected",
+     "used": "23",
+     "status": "not collected",
+     "all": {
+      "n": 1172,
+      "k": null
+     },
+     "quarter": {
+      "n": 297,
+      "k": null
+     },
+     "builder": {
+      "n": 1023,
+      "k": null
+     }
+    }
+   ]
+  },
+  "ram": {
+   "models": 471,
+   "quarterCutoff": 13,
+   "quarterModels": 120,
+   "builderRows": 239,
+   "fields": [
+    {
+     "plan": "Τύπος (type)",
+     "json": "type",
+     "used": "2; filter, quick",
+     "status": "collected",
+     "all": {
+      "n": 471,
+      "k": 471
+     },
+     "quarter": {
+      "n": 120,
+      "k": 120
+     },
+     "builder": {
+      "n": 239,
+      "k": 239
+     }
+    },
+    {
+     "plan": "Συνολική χωρητικότητα (total capacity)",
+     "json": "capacity",
+     "used": "4; filter",
+     "status": "collected",
+     "all": {
+      "n": 471,
+      "k": 471
+     },
+     "quarter": {
+      "n": 120,
+      "k": 120
+     },
+     "builder": {
+      "n": 239,
+      "k": 239
+     }
+    },
+    {
+     "plan": "Διαμόρφωση κιτ (kit layout)",
+     "json": "modules (+ capacity)",
+     "used": "3; filter, quick, column",
+     "status": "collected",
+     "all": {
+      "n": 471,
+      "k": 471
+     },
+     "quarter": {
+      "n": 120,
+      "k": 120
+     },
+     "builder": {
+      "n": 239,
+      "k": 239
+     }
+    },
+    {
+     "plan": "Συχνότητα (speed)",
+     "json": "speed",
+     "used": "25; filter, column",
+     "status": "collected",
+     "all": {
+      "n": 471,
+      "k": 388
+     },
+     "quarter": {
+      "n": 120,
+      "k": 93
+     },
+     "builder": {
+      "n": 239,
+      "k": 207
+     }
+    },
+    {
+     "plan": "CL",
+     "json": "cas",
+     "used": "filter, column",
+     "status": "collected",
+     "all": {
+      "n": 471,
+      "k": 247
+     },
+     "quarter": {
+      "n": 120,
+      "k": 91
+     },
+     "builder": {
+      "n": 239,
+      "k": 136
+     }
+    },
+    {
+     "plan": "Latency σε ns (latency in ns)",
+     "json": "derivable: 2000 × cas / speed",
+     "used": "filter",
+     "status": "derivable",
+     "all": {
+      "n": 471,
+      "k": 239
+     },
+     "quarter": {
+      "n": 120,
+      "k": 84
+     },
+     "builder": {
+      "n": 239,
+      "k": 134
+     }
+    },
+    {
+     "plan": "XMP/EXPO",
+     "json": "not collected",
+     "used": "filter",
+     "status": "not collected",
+     "all": {
+      "n": 471,
+      "k": null
+     },
+     "quarter": {
+      "n": 120,
+      "k": null
+     },
+     "builder": {
+      "n": 239,
+      "k": null
+     }
+    },
+    {
+     "plan": "Ύψος (height)",
+     "json": "not collected",
+     "used": "26; filter",
+     "status": "not collected",
+     "all": {
+      "n": 471,
+      "k": null
+     },
+     "quarter": {
+      "n": 120,
+      "k": null
+     },
+     "builder": {
+      "n": 239,
+      "k": null
+     }
+    },
+    {
+     "plan": "RGB",
+     "json": "not collected (titles name it sometimes)",
+     "used": "filter",
+     "status": "not collected",
+     "all": {
+      "n": 471,
+      "k": null
+     },
+     "quarter": {
+      "n": 120,
+      "k": null
+     },
+     "builder": {
+      "n": 239,
+      "k": null
+     }
+    },
+    {
+     "plan": "Χρώμα (colour)",
+     "json": "not collected",
+     "used": "filter",
+     "status": "not collected",
+     "all": {
+      "n": 471,
+      "k": null
+     },
+     "quarter": {
+      "n": 120,
+      "k": null
+     },
+     "builder": {
+      "n": 239,
+      "k": null
+     }
+    },
+    {
+     "plan": "€/GB",
+     "json": "derivable: price / capacity",
+     "used": "column, sort",
+     "status": "derivable",
+     "all": {
+      "n": 471,
+      "k": 471
+     },
+     "quarter": {
+      "n": 120,
+      "k": 120
+     },
+     "builder": {
+      "n": 239,
+      "k": 239
+     }
+    },
+    {
+     "plan": "(builder) Desktop/Laptop/Server",
+     "json": "formFactor (default Desktop when not stated)",
+     "used": "builder: usable",
+     "status": "collected",
+     "all": {
+      "n": 471,
+      "k": 471
+     },
+     "quarter": {
+      "n": 120,
+      "k": 120
+     },
+     "builder": {
+      "n": 239,
+      "k": 239
+     }
+    }
+   ]
+  },
+  "storage": {
+   "models": 2219,
+   "quarterCutoff": 3,
+   "quarterModels": 726,
+   "builderRows": 1322,
+   "fields": [
+    {
+     "plan": "Τύπος (type)",
+     "json": "media",
+     "used": "filter, quick",
+     "status": "collected",
+     "all": {
+      "n": 2219,
+      "k": 2219
+     },
+     "quarter": {
+      "n": 726,
+      "k": 726
+     },
+     "builder": {
+      "n": 1322,
+      "k": 1322
+     }
+    },
+    {
+     "plan": "Interface",
+     "json": "iface",
+     "used": "17, 18; filter, column",
+     "status": "collected",
+     "all": {
+      "n": 2219,
+      "k": 2169
+     },
+     "quarter": {
+      "n": 726,
+      "k": 725
+     },
+     "builder": {
+      "n": 1322,
+      "k": 1296
+     }
+    },
+    {
+     "plan": "Χωρητικότητα (capacity)",
+     "json": "capacity",
+     "used": "filter, quick, column",
+     "status": "collected",
+     "all": {
+      "n": 2219,
+      "k": 2219
+     },
+     "quarter": {
+      "n": 726,
+      "k": 726
+     },
+     "builder": {
+      "n": 1322,
+      "k": 1322
+     }
+    },
+    {
+     "plan": "PCIe gen (NVMe only)",
+     "json": "pcie",
+     "used": "20; filter",
+     "status": "collected",
+     "all": {
+      "n": 860,
+      "k": 832
+     },
+     "quarter": {
+      "n": 334,
+      "k": 332
+     },
+     "builder": {
+      "n": 694,
+      "k": 670
+     }
+    },
+    {
+     "plan": "Form factor",
+     "json": "formFactor",
+     "used": "17, 19; filter",
+     "status": "collected",
+     "all": {
+      "n": 2219,
+      "k": 2209
+     },
+     "quarter": {
+      "n": 726,
+      "k": 726
+     },
+     "builder": {
+      "n": 1322,
+      "k": 1322
+     }
+    },
+    {
+     "plan": "DRAM (SSD only)",
+     "json": "dram",
+     "used": "filter",
+     "status": "collected",
+     "all": {
+      "n": 1519,
+      "k": 723
+     },
+     "quarter": {
+      "n": 543,
+      "k": 433
+     },
+     "builder": {
+      "n": 1125,
+      "k": 29
+     }
+    },
+    {
+     "plan": "Ταχύτητες: ανάγνωση (read speed, SSD)",
+     "json": "readMBs",
+     "used": "filter, column",
+     "status": "collected",
+     "all": {
+      "n": 1519,
+      "k": 863
+     },
+     "quarter": {
+      "n": 543,
+      "k": 476
+     },
+     "builder": {
+      "n": 1125,
+      "k": 151
+     }
+    },
+    {
+     "plan": "Ταχύτητες: εγγραφή (write speed, SSD)",
+     "json": "writeMBs",
+     "used": "filter",
+     "status": "collected",
+     "all": {
+      "n": 1519,
+      "k": 846
+     },
+     "quarter": {
+      "n": 543,
+      "k": 466
+     },
+     "builder": {
+      "n": 1125,
+      "k": 149
+     }
+    },
+    {
+     "plan": "TBW (SSD only)",
+     "json": "tbw",
+     "used": "filter",
+     "status": "collected",
+     "all": {
+      "n": 1519,
+      "k": 299
+     },
+     "quarter": {
+      "n": 543,
+      "k": 215
+     },
+     "builder": {
+      "n": 1125,
+      "k": 17
+     }
+    },
+    {
+     "plan": "Στροφές (RPM, HDD only)",
+     "json": "rpm",
+     "used": "filter",
+     "status": "collected",
+     "all": {
+      "n": 700,
+      "k": 652
+     },
+     "quarter": {
+      "n": 183,
+      "k": 182
+     },
+     "builder": {
+      "n": 197,
+      "k": 181
+     }
+    },
+    {
+     "plan": "Κατηγορία χρήσης (usage tier)",
+     "json": "tier",
+     "used": "filter (segment)",
+     "status": "collected",
+     "all": {
+      "n": 2219,
+      "k": 2219
+     },
+     "quarter": {
+      "n": 726,
+      "k": 726
+     },
+     "builder": {
+      "n": 1322,
+      "k": 1322
+     }
+    },
+    {
+     "plan": "(v1 only) Cache (HDD)",
+     "json": "cacheMB",
+     "used": "v1 card text",
+     "status": "collected",
+     "all": {
+      "n": 700,
+      "k": 314
+     },
+     "quarter": {
+      "n": 183,
+      "k": 161
+     },
+     "builder": {
+      "n": 197,
+      "k": 161
+     }
+    },
+    {
+     "plan": "(v1 only) Heatsink (NVMe)",
+     "json": "heatsink",
+     "used": "v1 data",
+     "status": "collected",
+     "all": {
+      "n": 860,
+      "k": 515
+     },
+     "quarter": {
+      "n": 334,
+      "k": 293
+     },
+     "builder": {
+      "n": 694,
+      "k": 73
+     }
+    },
+    {
+     "plan": "€/TB",
+     "json": "derivable: price / capacity",
+     "used": "column, sort",
+     "status": "derivable",
+     "all": {
+      "n": 2219,
+      "k": 2219
+     },
+     "quarter": {
+      "n": 726,
+      "k": 726
+     },
+     "builder": {
+      "n": 1322,
+      "k": 1322
+     }
+    }
+   ]
+  },
+  "psu": {
+   "models": 187,
+   "quarterCutoff": 15,
+   "quarterModels": 47,
+   "builderRows": 139,
+   "fields": [
+    {
+     "plan": "Watt",
+     "json": "watts",
+     "used": "14; filter, quick, column",
+     "status": "collected",
+     "all": {
+      "n": 187,
+      "k": 187
+     },
+     "quarter": {
+      "n": 47,
+      "k": 47
+     },
+     "builder": {
+      "n": 139,
+      "k": 139
+     }
+    },
+    {
+     "plan": "Πιστοποίηση 80+ (80 PLUS)",
+     "json": "efficiency",
+     "used": "filter, quick, column",
+     "status": "collected",
+     "all": {
+      "n": 187,
+      "k": 130
+     },
+     "quarter": {
+      "n": 47,
+      "k": 36
+     },
+     "builder": {
+      "n": 139,
+      "k": 99
+     }
+    },
+    {
+     "plan": "Modular",
+     "json": "modular",
+     "used": "filter, column",
+     "status": "collected",
+     "all": {
+      "n": 187,
+      "k": 162
+     },
+     "quarter": {
+      "n": 47,
+      "k": 47
+     },
+     "builder": {
+      "n": 139,
+      "k": 57
+     }
+    },
+    {
+     "plan": "Form factor (ATX/SFX)",
+     "json": "formFactor — stated in title/URL (default ATX otherwise)",
+     "used": "16; filter; builder usable",
+     "status": "collected (defaulted)",
+     "all": {
+      "n": 187,
+      "k": 135
+     },
+     "quarter": {
+      "n": 47,
+      "k": 47
+     },
+     "builder": {
+      "n": 139,
+      "k": 77
+     }
+    },
+    {
+     "plan": "ATX 3.x",
+     "json": "not collected (title words \"ATX 3.0/3.1\", positive only)",
+     "used": "filter, quick, column",
+     "status": "title words",
+     "all": {
+      "n": 187,
+      "k": 34
+     },
+     "quarter": {
+      "n": 47,
+      "k": 18
+     },
+     "builder": {
+      "n": 139,
+      "k": 30
+     }
+    },
+    {
+     "plan": "Βύσμα 12V-2x6 (12V-2x6 connector)",
+     "json": "not collected (title words, positive only)",
+     "used": "15; filter",
+     "status": "title words",
+     "all": {
+      "n": 187,
+      "k": 10
+     },
+     "quarter": {
+      "n": 47,
+      "k": 9
+     },
+     "builder": {
+      "n": 139,
+      "k": 9
+     }
+    },
+    {
+     "plan": "Μήκος (length)",
+     "json": "not collected",
+     "used": "filter",
+     "status": "not collected",
+     "all": {
+      "n": 187,
+      "k": null
+     },
+     "quarter": {
+      "n": 47,
+      "k": null
+     },
+     "builder": {
+      "n": 139,
+      "k": null
+     }
+    },
+    {
+     "plan": "€/W",
+     "json": "derivable: price / watts",
+     "used": "column, sort",
+     "status": "derivable",
+     "all": {
+      "n": 187,
+      "k": 187
+     },
+     "quarter": {
+      "n": 47,
+      "k": 47
+     },
+     "builder": {
+      "n": 139,
+      "k": 139
+     }
+    }
+   ]
+  },
+  "case": {
+   "models": 2588,
+   "quarterCutoff": 3,
+   "quarterModels": 1005,
+   "builderRows": 2609,
+   "fields": [
+    {
+     "plan": "Τύπος (type / size)",
+     "json": "size (≠ 'Άλλο')",
+     "used": "5 (fallback); filter, quick, column",
+     "status": "collected",
+     "all": {
+      "n": 2588,
+      "k": 2307
+     },
+     "quarter": {
+      "n": 1005,
+      "k": 997
+     },
+     "builder": {
+      "n": 2609,
+      "k": 2289
+     }
+    },
+    {
+     "plan": "Μητρικές που δέχεται (boards it takes)",
+     "json": "maxBoard (stated)",
+     "used": "5; filter, quick",
+     "status": "collected",
+     "all": {
+      "n": 2588,
+      "k": 2306
+     },
+     "quarter": {
+      "n": 1005,
+      "k": 1003
+     },
+     "builder": {
+      "n": 2609,
+      "k": 2243
+     }
+    },
+    {
+     "plan": "Max μήκος κάρτας (max GPU length)",
+     "json": "gpuMaxMm",
+     "used": "6; filter, column",
+     "status": "collected",
+     "all": {
+      "n": 2588,
+      "k": 1426
+     },
+     "quarter": {
+      "n": 1005,
+      "k": 972
+     },
+     "builder": {
+      "n": 2609,
+      "k": 692
+     }
+    },
+    {
+     "plan": "Max ύψος ψύκτρας (max cooler height)",
+     "json": "coolerMaxMm",
+     "used": "8; filter, column",
+     "status": "collected",
+     "all": {
+      "n": 2588,
+      "k": 1035
+     },
+     "quarter": {
+      "n": 1005,
+      "k": 919
+     },
+     "builder": {
+      "n": 2609,
+      "k": 387
+     }
+    },
+    {
+     "plan": "Radiators ανά θέση: μεγέθη (radiator sizes per position)",
+     "json": "radiators (makers)",
+     "used": "9; filter",
+     "status": "collected",
+     "all": {
+      "n": 2588,
+      "k": 67
+     },
+     "quarter": {
+      "n": 1005,
+      "k": 34
+     },
+     "builder": {
+      "n": 2609,
+      "k": 66
+     }
+    },
+    {
+     "plan": "Radiators ανά θέση: μόνο θέσεις (positions only)",
+     "json": "radiatorMounts (shops)",
+     "used": "9 (fallback)",
+     "status": "collected",
+     "all": {
+      "n": 2588,
+      "k": 1079
+     },
+     "quarter": {
+      "n": 1005,
+      "k": 766
+     },
+     "builder": {
+      "n": 2609,
+      "k": 502
+     }
+    },
+    {
+     "plan": "Θέσεις ανεμιστήρων ανά μέγεθος (fan positions per size)",
+     "json": "fanMounts (makers)",
+     "used": "21",
+     "status": "collected",
+     "all": {
+      "n": 2588,
+      "k": 67
+     },
+     "quarter": {
+      "n": 1005,
+      "k": 35
+     },
+     "builder": {
+      "n": 2609,
+      "k": 67
+     }
+    },
+    {
+     "plan": "Θέσεις ανεμιστήρων, πλήθος (fan positions, count)",
+     "json": "fanSlots",
+     "used": "21 (fallback)",
+     "status": "collected",
+     "all": {
+      "n": 2588,
+      "k": 1329
+     },
+     "quarter": {
+      "n": 1005,
+      "k": 885
+     },
+     "builder": {
+      "n": 2609,
+      "k": 615
+     }
+    },
+    {
+     "plan": "Ανεμιστήρες στο κουτί (fans included)",
+     "json": "fansIncluded (list or []) or hasFans",
+     "used": "22; filter, quick, column",
+     "status": "collected",
+     "all": {
+      "n": 2588,
+      "k": 490
+     },
+     "quarter": {
+      "n": 1005,
+      "k": 345
+     },
+     "builder": {
+      "n": 2609,
+      "k": 148
+     }
+    },
+    {
+     "plan": "Θέσεις 3.5\"/2.5\" (drive bays)",
+     "json": "not collected",
+     "used": "19; filter",
+     "status": "not collected",
+     "all": {
+      "n": 2588,
+      "k": null
+     },
+     "quarter": {
+      "n": 1005,
+      "k": null
+     },
+     "builder": {
+      "n": 2609,
+      "k": null
+     }
+    },
+    {
+     "plan": "Θέσεις επέκτασης (expansion slots)",
+     "json": "not collected",
+     "used": "7",
+     "status": "not collected",
+     "all": {
+      "n": 2588,
+      "k": null
+     },
+     "quarter": {
+      "n": 1005,
+      "k": null
+     },
+     "builder": {
+      "n": 2609,
+      "k": null
+     }
+    },
+    {
+     "plan": "Μορφή τροφοδοτικού (PSU form factor it takes)",
+     "json": "not collected",
+     "used": "16",
+     "status": "not collected",
+     "all": {
+      "n": 2588,
+      "k": null
+     },
+     "quarter": {
+      "n": 1005,
+      "k": null
+     },
+     "builder": {
+      "n": 2609,
+      "k": null
+     }
+    },
+    {
+     "plan": "Γυάλινο πλαϊνό (glass side)",
+     "json": "window (from the title; false = not said)",
+     "used": "filter",
+     "status": "title words",
+     "all": {
+      "n": 2588,
+      "k": 1783
+     },
+     "quarter": {
+      "n": 1005,
+      "k": 869
+     },
+     "builder": {
+      "n": 2609,
+      "k": 1782
+     }
+    },
+    {
+     "plan": "USB-C μπροστά (front USB-C)",
+     "json": "not collected",
+     "used": "24; filter",
+     "status": "not collected",
+     "all": {
+      "n": 2588,
+      "k": null
+     },
+     "quarter": {
+      "n": 1005,
+      "k": null
+     },
+     "builder": {
+      "n": 2609,
+      "k": null
+     }
+    },
+    {
+     "plan": "Χρώμα (colour)",
+     "json": "not collected (colours merged by design)",
+     "used": "filter",
+     "status": "not collected",
+     "all": {
+      "n": 2588,
+      "k": null
+     },
+     "quarter": {
+      "n": 1005,
+      "k": null
+     },
+     "builder": {
+      "n": 2609,
+      "k": null
+     }
+    },
+    {
+     "plan": "Mesh (quick filter)",
+     "json": "title words \"Mesh\"/\"Airflow\"/\"Flow\" (positive only)",
+     "used": "quick",
+     "status": "title words",
+     "all": {
+      "n": 2588,
+      "k": 140
+     },
+     "quarter": {
+      "n": 1005,
+      "k": 68
+     },
+     "builder": {
+      "n": 2609,
+      "k": 144
+     }
+    }
+   ]
+  },
+  "fan": {
+   "models": 2037,
+   "quarterCutoff": 2,
+   "quarterModels": 970,
+   "builderRows": 1720,
+   "fields": [
+    {
+     "plan": "Μέγεθος (size)",
+     "json": "size",
+     "used": "21; filter, quick, column",
+     "status": "collected",
+     "all": {
+      "n": 2037,
+      "k": 2037
+     },
+     "quarter": {
+      "n": 970,
+      "k": 970
+     },
+     "builder": {
+      "n": 1720,
+      "k": 1720
+     }
+    },
+    {
+     "plan": "Πλήθος στο πακέτο (pack)",
+     "json": "pack",
+     "used": "21, 23; filter, quick, column",
+     "status": "collected",
+     "all": {
+      "n": 2037,
+      "k": 2037
+     },
+     "quarter": {
+      "n": 970,
+      "k": 970
+     },
+     "builder": {
+      "n": 1720,
+      "k": 1720
+     }
+    },
+    {
+     "plan": "PWM/3-pin (connector)",
+     "json": "connector (stated)",
+     "used": "filter, quick, column",
+     "status": "collected",
+     "all": {
+      "n": 2037,
+      "k": 1598
+     },
+     "quarter": {
+      "n": 970,
+      "k": 889
+     },
+     "builder": {
+      "n": 1720,
+      "k": 1147
+     }
+    },
+    {
+     "plan": "PWM (title word)",
+     "json": "pwm (true = \"PWM\" in the title/URL; false = not said)",
+     "used": "v1 filter",
+     "status": "title words",
+     "all": {
+      "n": 2037,
+      "k": 1425
+     },
+     "quarter": {
+      "n": 970,
+      "k": 801
+     },
+     "builder": {
+      "n": 1720,
+      "k": 1264
+     }
+    },
+    {
+     "plan": "Airflow/static pressure (type)",
+     "json": "fanType (maker series only)",
+     "used": "filter",
+     "status": "collected",
+     "all": {
+      "n": 2037,
+      "k": 126
+     },
+     "quarter": {
+      "n": 970,
+      "k": 83
+     },
+     "builder": {
+      "n": 1720,
+      "k": 107
+     }
+    },
+    {
+     "plan": "CFM",
+     "json": "airflowCfm",
+     "used": "filter",
+     "status": "collected",
+     "all": {
+      "n": 2037,
+      "k": 492
+     },
+     "quarter": {
+      "n": 970,
+      "k": 143
+     },
+     "builder": {
+      "n": 1720,
+      "k": 230
+     }
+    },
+    {
+     "plan": "Static pressure (mmH2O)",
+     "json": "pressureMm",
+     "used": "filter",
+     "status": "collected",
+     "all": {
+      "n": 2037,
+      "k": 298
+     },
+     "quarter": {
+      "n": 970,
+      "k": 119
+     },
+     "builder": {
+      "n": 1720,
+      "k": 166
+     }
+    },
+    {
+     "plan": "Θόρυβος (noise)",
+     "json": "not collected",
+     "used": "filter",
+     "status": "not collected",
+     "all": {
+      "n": 2037,
+      "k": null
+     },
+     "quarter": {
+      "n": 970,
+      "k": null
+     },
+     "builder": {
+      "n": 1720,
+      "k": null
+     }
+    },
+    {
+     "plan": "RGB",
+     "json": "rgb (from the title; false = not said)",
+     "used": "filter",
+     "status": "title words",
+     "all": {
+      "n": 2037,
+      "k": 1242
+     },
+     "quarter": {
+      "n": 970,
+      "k": 654
+     },
+     "builder": {
+      "n": 1720,
+      "k": 1180
+     }
+    },
+    {
+     "plan": "€/ανεμιστήρα (€/fan)",
+     "json": "derivable: price / pack",
+     "used": "column, sort",
+     "status": "derivable",
+     "all": {
+      "n": 2037,
+      "k": 2037
+     },
+     "quarter": {
+      "n": 970,
+      "k": 970
+     },
+     "builder": {
+      "n": 1720,
+      "k": 1720
+     }
+    }
+   ]
+  },
+  "cooler": {
+   "models": 2089,
+   "quarterCutoff": 2,
+   "quarterModels": 984,
+   "builderRows": 2113,
+   "fields": [
+    {
+     "plan": "Τύπος (type)",
+     "json": "type",
+     "used": "8, 9; filter, quick, column",
+     "status": "collected",
+     "all": {
+      "n": 2089,
+      "k": 2089
+     },
+     "quarter": {
+      "n": 984,
+      "k": 984
+     },
+     "builder": {
+      "n": 2113,
+      "k": 2113
+     }
+    },
+    {
+     "plan": "Socket",
+     "json": "sockets",
+     "used": "10; filter, quick, column",
+     "status": "collected",
+     "all": {
+      "n": 2089,
+      "k": 1360
+     },
+     "quarter": {
+      "n": 984,
+      "k": 898
+     },
+     "builder": {
+      "n": 2113,
+      "k": 699
+     }
+    },
+    {
+     "plan": "Ύψος (height, air only)",
+     "json": "heightMm",
+     "used": "8, 26; filter, column",
+     "status": "collected",
+     "all": {
+      "n": 1174,
+      "k": 585
+     },
+     "quarter": {
+      "n": 545,
+      "k": 428
+     },
+     "builder": {
+      "n": 1206,
+      "k": 314
+     }
+    },
+    {
+     "plan": "Μέγεθος radiator (radiator, AIO only)",
+     "json": "radiator",
+     "used": "9; filter, quick, column",
+     "status": "collected",
+     "all": {
+      "n": 915,
+      "k": 915
+     },
+     "quarter": {
+      "n": 439,
+      "k": 439
+     },
+     "builder": {
+      "n": 907,
+      "k": 907
+     }
+    },
+    {
+     "plan": "Θόρυβος (noise)",
+     "json": "not collected",
+     "used": "filter",
+     "status": "not collected",
+     "all": {
+      "n": 2089,
+      "k": null
+     },
+     "quarter": {
+      "n": 984,
+      "k": null
+     },
+     "builder": {
+      "n": 2113,
+      "k": null
+     }
+    },
+    {
+     "plan": "RGB",
+     "json": "rgb (from the title; false = not said)",
+     "used": "filter",
+     "status": "title words",
+     "all": {
+      "n": 2089,
+      "k": 1279
+     },
+     "quarter": {
+      "n": 984,
+      "k": 648
+     },
+     "builder": {
+      "n": 2113,
+      "k": 1160
+     }
+    },
+    {
+     "plan": "Χρώμα (colour)",
+     "json": "not collected",
+     "used": "filter",
+     "status": "not collected",
+     "all": {
+      "n": 2089,
+      "k": null
+     },
+     "quarter": {
+      "n": 984,
+      "k": null
+     },
+     "builder": {
+      "n": 2113,
+      "k": null
+     }
+    }
+   ]
+  }
+ }
+}
