@@ -11,8 +11,8 @@
 //     this one re-implements its summarize/median, because that file runs on import). Pages carry a
 //     precondition: a fresh Chromium profile per run (cold HTTP cache) with localStorage `pcBuild` preset
 //     through Playwright, then `lighthouse --port=<that Chromium> --disable-storage-reset`. Raw JS/data KB in
-//     the Lighthouse JSON are what the preview serves (it does not compress): compare them with Phase 2's
-//     the same way; gzip bytes come from the `bytes` mode.
+//     the Lighthouse JSON are compressed transfer sizes (response headers included): compare them with
+//     Phase 2's the same way; exact gzip body bytes come from the `bytes` mode.
 //
 // The builds use real keys from dist/data/compat (run `npm run build` first). Lighthouse needs `npx`.
 

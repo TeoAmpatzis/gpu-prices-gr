@@ -9,16 +9,24 @@
 | JS ≤ 110 KB gzip per page (A8) | **Exceeded on every `?pick=1` page: 115.0 KiB** (first paint alone: 85.4 KiB, within) |
 | Data ≤ 300 KB gzip per page (A8) | **Within**: `/case?pick=1` is the largest, 268.0 / 268.0 / 271.1 KiB (a / b / c) |
 | `/gpu?pick=1` phone ≥ 90 | **Yes**: 98 / 98 / 99 (a / b / c) |
-| `/case` phone ≥ 90 | 90 (Phase 2 gate: 89); `/case?pick=1` phone **91 empty, 84 with a build** |
+| `/case` phone ≥ 90 | 90 (Phase 2 gate: 89); `/case?pick=1` phone **91 empty, 84 with a build** (plain `/case` 90); desktop 100 empty, **85 / 91 with a build**, mostly layout shift (CLS), see below |
 
 **Stop rule applies** (a page exceeds the byte budget): measured, nothing fixed, no app code changed. Decision needed from the owner (options below).
+
+## Two readings of the budget
+
+- **(A) Counting the lazy pick chunks** until the check finished: 114.97 KiB = 117.7 kB, over 110 in both KiB and kB. Data within.
+- **(B) The brief's pre-approved fallback** (pick code lazy, loaded after the first paint) is already in place, so the first-load JS is 85.4 KiB (within). Note: the chunk is requested from a `useEffect` right after mount, not on idle, so it competes with the first paint's network time on a slow phone (Lighthouse shows no cost on `/gpu`).
+
+The stop rule was applied on reading (A).
 
 ## Method
 
 - Build: `npm run build`, then `vite preview` on :4173 (same as the Phase 2 gate). Chrome: Playwright's Chromium 1243, launched headless=new with its own profile for every Lighthouse run (cold HTTP cache).
 - **Test builds** (real keys from `dist/data/compat`, `scripts/phase3/measure-pick.mjs`): (a) no build; (b) typical: cpu `Ryzen 7 7700|?`, board `asrockchallengerb850wifiwhite`, RAM `DDR5 32GB (2×16GB) 6800MHz Desktop`, card `bestprice:2160830031`, PSU `750W Gold ATX`, all five with `compat` fields and `builtAt` of the current data; (c) worst: an old keys-only `pcBuild` (no `compat`) with a part in all nine slots (cpu, mobo, ram, gpu, cooler, storage, case, fan, psu).
+- Build (b) has no case, cooler, fan or storage part, so on `/case` it exercises only the board, card and PSU inputs of the rules (and on `/mobo` and `/cpu` the other four slots). Build (c) has all nine.
 - **Bytes** (`measure-pick.mjs bytes`): Playwright, gzip (level 6) of every response body, from navigation until the pick bar's status is no longer "Checking compatibility…" and the network is idle. JS = scripts, data = `/data/**.json`, fonts separate. KiB = 1024 bytes (vite's build log prints kB = 1000, so its "65.25 kB" is 63.7 KiB here). Against the budget in either unit the result is the same: 115.0 KiB = 117.8 kB > 110.
-- **Lighthouse** (`measure-pick.mjs lighthouse`): the same metrics, preset and median-of-3 as `scripts/audit/lighthouse-baseline.mjs`, which is **unchanged**; the wrapper re-implements its small `summarize`/`median` because that file runs on import. Lighthouse cannot preset localStorage itself, so the wrapper starts Chromium, writes `pcBuild` through Playwright (CDP) on `/favicon.svg` (a page that loads no app code, so nothing is cached for the measured run), closes Playwright and runs `lighthouse --port=<that Chromium> --disable-storage-reset`. So (b) and (c) are measured in Lighthouse too. Its JS/data KB are transfer sizes from the run's network log (they include headers: 117.2 vs 115.0 KiB here).
+- **Lighthouse** (`measure-pick.mjs lighthouse`): the same metrics, preset and median-of-3 as `scripts/audit/lighthouse-baseline.mjs`, which is **unchanged**; the wrapper re-implements its small `summarize`/`median` because that file runs on import. Lighthouse cannot preset localStorage itself, so the wrapper starts Chromium, writes `pcBuild` through Playwright (CDP) on `/favicon.svg` (a page that loads no app code, so nothing is cached for the measured run), closes Playwright and runs `lighthouse --port=<that Chromium> --disable-storage-reset`. So (b) and (c) are measured in Lighthouse too. Its JS/data KB are compressed transfer sizes from the run's network log (they include response headers: 117.2 vs 115.0 KiB here).
 - Raw files: `docs/phase3/perf/lighthouse.json` (medians + 3 runs each), `docs/phase3/perf/bytes.json`.
 
 ## Bytes at first load (gzip, KiB)
@@ -43,30 +51,32 @@
 
 ### Engine table share (option only, not implemented)
 
-`PickView` holds the whole engine (`src/engine`, about 19 KiB gzip as separate minified files; the chunk is 23.0 KiB gzip). The four data tables are about **5.3 KiB gzip** of it (each minified on its own, so the number is approximate): `cpuPower` 1.9, `bios` 1.7, `cpuMemory` 1.5, `gpuPower` 1.0. Moving them out of the JS (a JSON chunk fetched when the check runs, or a lazy import split from the rules) would take the pick pages from 115.0 to about 109.7 KiB, just under 110 and without margin. Other options for the owner: (1) raise the JS limit for pick pages to 120 KB; (2) split the engine rules by slot so a page loads only the rules it needs; (3) accept the definition as "first paint" (85.4 KiB).
+`PickView` holds the whole engine (`src/engine`; about 19 KiB gzip as separate minified files, the chunk is 23.0 KiB gzip). The four data tables gzipped **each on its own** add up to about 5.3 KiB: `cpuPower` 1.9, `bios` 1.7, `cpuMemory` 1.5, `gpuPower` 1.0. Inside the chunk they compress better with the rest, so the real saving is probably **4–5 KiB**, which gives about **110–112 KiB**: at best at the limit, with no margin (and 109.7 KiB would be 112.3 kB, so the result also depends on the unit). Moving the tables out is therefore not enough alone. Other options for the owner: (1) raise the JS limit for pick pages to 120 KB; (2) split the engine rules by slot so a page loads only the rules it needs, together with the tables; (3) accept reading (B).
 
 ## Lighthouse (median of 3, performance / TBT / LCP)
 
 Phase 2 gate numbers (`docs/phase2/gate/perf/lighthouse.json`, same method) in the last column.
 
-| Page | Build | Phone | Phone TBT, LCP | Desktop | Phase 2 phone / desktop |
-| --- | --- | ---: | --- | ---: | --- |
-| `/gpu` | | 98 | 39 ms, 2.13 s | 100 | 98 / 97 |
-| `/gpu?pick=1` | a | 98 | 13 ms, 2.13 s | 100 | |
-| | b | 98 | 24 ms, 2.13 s | 100 | |
-| | c | 99 | 10 ms, 1.96 s | 100 | |
-| `/case` | | **90** | 362 ms, 2.14 s | 99 | 89 / 98 |
-| `/case?pick=1` | a | 91 | 291 ms, 2.38 s | 100 | |
-| | b | **84** | 546 ms, 2.14 s | **85** | |
-| | c | **84** | 589 ms, 2.05 s | 91 | |
-| `/builder` (guided) | | 98 | 0 ms, 2.41 s | 100 | 98 / 100 |
+| Page | Build | Phone | Phone TBT, CLS, LCP | Desktop | Desktop TBT, CLS | Phase 2 phone / desktop |
+| --- | --- | ---: | --- | ---: | --- | --- |
+| `/gpu` | | 98 | 39 ms, 0, 2.13 s | 100 | 0 ms, 0 | 98 / 97 |
+| `/gpu?pick=1` | a | 98 | 13 ms, 0, 2.13 s | 100 | 0 ms, 0 | |
+| | b | 98 | 24 ms, 0, 2.13 s | 100 | 0 ms, 0 | |
+| | c | 99 | 10 ms, 0, 1.96 s | 100 | 0 ms, 0 | |
+| `/case` | | **90** | 362 ms, 0, 2.14 s | 99 | 63 ms, 0 | 89 / 98 |
+| `/case?pick=1` | a | 91 | 291 ms, 0, 2.38 s | 100 | 59 ms, 0.0005 | |
+| | b | **84** | 546 ms, 0.073, 2.14 s | **85** | 146 ms, **0.234** | |
+| | c | **84** | 589 ms, 0, 2.05 s | 91 | 131 ms, **0.159** | |
+| `/builder` (guided) | | 98 | 0 ms, 0, 2.41 s | 100 | 0 ms, 0 | 98 / 100 |
 
 Accessibility is 100 on every page. JS/data KB in the Lighthouse log: 86.9 without pick, 117.2 with pick (data as in the bytes table, `/gpu` 46.4); `/builder` 104.8 JS and 276.7 data (within the budget; the builder has no pick chunks).
 
 Reading:
 - `/gpu`, `/gpu?pick=1` and `/builder` are unchanged within noise. Lighthouse's phone load (slow 4G) hides the extra 30 KiB because the pick chunks load after the first paint.
 - `/case` is at the 90 line (89–90 on the three runs), as at the Phase 2 gate: the known cost of the facet counts over 2,588 cases.
-- `/case?pick=1` with a saved build (b, c) loses 6 points on the phone and 15 on the desktop (b): total blocking time rises from about 360 to 550–590 ms on the phone. That is the pick check running the engine over the case candidates (2,588 cases × the saved parts) right after the list arrives, on top of the facet counts. With an empty build (a) the extra work is not there. It is a candidate for the same fix as the facet counts (idle chunks, or a worker) and is not part of this task's budget, but it is below 90 and should be in the Phase 3 gate list.
+- `/case?pick=1` with a saved build (b, c), against plain `/case` (phone 90, desktop 99): phone **84**, desktop **85 / 91**. Two separate causes show in the numbers:
+  - **Layout shift (CLS), mostly the desktop drop.** Desktop CLS is 0.234 (b) and 0.159 (c) against 0.0005 for (a), and desktop TBT is only 146 / 131 ms, so the desktop score falls because of CLS. Phone (b) CLS is 0.073. When the check finishes, the rows change (hidden, greyed, "Add to build" buttons) and the layout moves. Not caused by the engine's cost; it is a **Phase 3 gate item** of its own.
+  - **Blocking time on the phone.** TBT goes from 291 ms (a) to 546 / 589 ms (b / c), about +255–300 ms. The engine running over the page's candidates after the list arrives is the likely reason, but it is an inference from this a / b / c difference: no trace or long-task data was recorded. (Plain `/case` shows 362 ms against 291 ms for (a), so the baseline itself moves by about 70 ms between runs of different pages.)
 
 ## Stop-rule outcome
 
