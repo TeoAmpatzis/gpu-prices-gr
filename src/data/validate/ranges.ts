@@ -19,18 +19,14 @@ export interface RangeCheck {
 }
 
 /**
- * A card's own `minPsu` is implausible when it is under the chip's board power + 100 W, or more than 100 W under the
- * chip maker's system figure (a misread: e.g. the card's own power). Only for chips with a row in the GPU table;
- * each condition only when its figure exists. Returns the lowest plausible value, or null when not checked.
+ * A card's own `minPsu` is implausible when it is under the chip's board power + 100 W (owner 2026-10-12: a card
+ * maker's own lower figure than the chip maker's is a real statement, so that is not checked). Only for chips whose
+ * row in the GPU table has a board power. Returns the lowest plausible value, or null when not checked.
  */
 export function minPsuFloor(l: Record<string, unknown>): number | null {
   const chip = l['chip'];
   const row = typeof chip === 'string' ? gpuPowerRow(chip) : undefined;
-  if (!row) return null;
-  const floors: number[] = [];
-  if (row.boardPowerW !== undefined) floors.push(row.boardPowerW + 100);
-  if (row.makerPsuW !== undefined) floors.push(row.makerPsuW - 100);
-  return floors.length ? Math.max(...floors) : null;
+  return row?.boardPowerW !== undefined ? row.boardPowerW + 100 : null;
 }
 
 export const RANGES: RangeCheck[] = [
@@ -40,7 +36,7 @@ export const RANGES: RangeCheck[] = [
   { id: 'case-cooler-max', cat: 'case', field: 'coolerMaxMm', min: 25, max: 250, unit: 'mm' },
   { id: 'gpu-length', cat: 'gpu', field: 'lengthMm', min: 100, max: 400, unit: 'mm' },
   { id: 'gpu-minpsu-plausible', cat: 'gpu', field: 'minPsu', min: 0, max: 100000, unit: 'W', lowerBound: minPsuFloor,
-    rangeText: 'at least the chip board power + 100 W, and the chip maker figure − 100 W (chips with a row in the GPU power table)' },
+    rangeText: 'at least the chip board power + 100 W (chips with a board power in the GPU power table)' },
   { id: 'psu-watts', cat: 'psu', field: 'watts', min: 150, max: 3000, unit: 'W', reportOnly: true }, // watts is not nullable
   { id: 'ram-ddr4-speed', cat: 'ram', field: 'speed', min: 1600, max: 5333, unit: 'MHz', applies: (l) => l['type'] === 'DDR4' },
   { id: 'ram-ddr5-speed', cat: 'ram', field: 'speed', min: 4000, max: 10000, unit: 'MHz', applies: (l) => l['type'] === 'DDR5' },

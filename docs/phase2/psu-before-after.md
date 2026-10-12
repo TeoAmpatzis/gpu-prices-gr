@@ -58,24 +58,22 @@ Data times (`latest.updatedAt`):
 
 A card's own `minPsu` is treated as not stated when the chip has a row in the GPU power table and the value is under the chip's board power + 100 W or more than 100 W under the chip maker's system figure (check `gpu-minpsu-plausible`). The cards above were computed without these values.
 
-14 listing(s) rejected.
+12 listing(s) rejected.
 
 | Chip | Listing | Stated minPsu | Lowest accepted |
 | --- | --- | ---: | ---: |
 | Arc B570 | Sparkle ARC B570 10GB GDDR6 GUARDIAN LUNA OC | 170 | 250 |
 | Arc B570 | Sparkle Arc B570 10GB GDDR6 Luna Guardian OC | 170 | 250 |
 | Arc B570 | Sparkle Arc B570 10GB GUARDIAN LUNA OC | 170 | 250 |
-| RTX 5050 | PNY GeForce RTX 5050 8GB Dual | 130 | 450 |
-| RTX 5050 | PNY GeForce RTX 5050 8GB GDDR6 Dual | 130 | 450 |
-| RTX 5060 | MSI GeForce RTX 5060 8GB Shadow 2x OC Max | 145 | 450 |
-| RTX 5070 Ti | PNY GeForce RTX 5070 Ti 16GB | 300 | 650 |
-| RX 550 | PowerColor Radeon RX 550 4GB GDDR5 Red Dragon PCI-E x16 3.0 με HDMI | 250 | 300 |
-| RX 550 | PowerColor Radeon RX 550 4GB Red Dragon | 250 | 300 |
-| RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Predator BiFrost | 245 | 550 |
-| RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Predator BiFrost OC White | 245 | 550 |
-| RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Predator Bifrost OC White Edition | 245 | 550 |
-| RX 9070 | Acer Radeon RX 9070 16GB Predator BiFrost | 245 | 550 |
-| RX 9070 | Acer Radeon RX 9070 16GB Predator Bifrost OC White Edition | 245 | 550 |
+| RTX 5050 | PNY GeForce RTX 5050 8GB Dual | 130 | 230 |
+| RTX 5050 | PNY GeForce RTX 5050 8GB GDDR6 Dual | 130 | 230 |
+| RTX 5060 | MSI GeForce RTX 5060 8GB Shadow 2x OC Max | 145 | 245 |
+| RTX 5070 Ti | PNY GeForce RTX 5070 Ti 16GB | 300 | 400 |
+| RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Predator BiFrost | 245 | 320 |
+| RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Predator BiFrost OC White | 245 | 320 |
+| RX 9070 | Acer Radeon RX 9070 16GB GDDR6 Predator Bifrost OC White Edition | 245 | 320 |
+| RX 9070 | Acer Radeon RX 9070 16GB Predator BiFrost | 245 | 320 |
+| RX 9070 | Acer Radeon RX 9070 16GB Predator Bifrost OC White Edition | 245 | 320 |
 
 ## All cards
 
@@ -1255,8 +1253,8 @@ Sorted by chip, then card name.
 | RX 550 | Biostar Radeon RX 550 4GB Gaming | 450 | 400 | 450 | 450 | 350 | 450 | 0 |
 | RX 550 | Biostar Radeon RX 550 GDDR5 4 GB PCI Express x16 3.0 | — | 400 | 400 | 400 | 350 | 400 | 0 |
 | RX 550 | Biostar VA5505RF41 Radeon RX 550 4GB GDDR5 Gaming | 450 | 400 | 450 | 450 | 350 | 450 | 0 |
-| RX 550 | PowerColor Radeon RX 550 4GB GDDR5 Red Dragon PCI-E x16 3.0 με HDMI | — | 400 | 400 | 400 | 350 | 400 | 0 |
-| RX 550 | PowerColor Radeon RX 550 4GB Red Dragon | — | 400 | 400 | 400 | 350 | 400 | 0 |
+| RX 550 | PowerColor Radeon RX 550 4GB GDDR5 Red Dragon PCI-E x16 3.0 με HDMI | 250 | 400 | 400 | 400 | 350 | 400 | 0 |
+| RX 550 | PowerColor Radeon RX 550 4GB Red Dragon | 250 | 400 | 400 | 400 | 350 | 400 | 0 |
 | RX 550 | PowerColor Radeon RX 550 4GB Red Dragon Low Profile | — | 400 | 400 | 400 | 350 | 400 | 0 |
 | RX 560 | Afox Radeon RX 560 4GB ATX Dual Fan | — | 450 | 400 | 450 | — | 450 | +50 |
 | RX 560 | Afox Radeon RX 560 4GB GDDR5 | — | 450 | 400 | 450 | — | 450 | +50 |

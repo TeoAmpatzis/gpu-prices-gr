@@ -22,7 +22,7 @@ Data times (`latest.updatedAt`):
 | `case-gpu-max` | case.gpuMaxMm | 100–700 mm | enforced | 5259 | 1 | 1 |
 | `case-cooler-max` | case.coolerMaxMm | 25–250 mm | enforced | 4614 | 0 | 0 |
 | `gpu-length` | gpu.lengthMm | 100–400 mm | enforced | 1233 | 0 | 0 |
-| `gpu-minpsu-plausible` | gpu.minPsu | at least the chip board power + 100 W, and the chip maker figure − 100 W (chips with a row in the GPU power table) | enforced | 1015 | 14 | 6 |
+| `gpu-minpsu-plausible` | gpu.minPsu | at least the chip board power + 100 W (chips with a board power in the GPU power table) | enforced | 922 | 12 | 5 |
 | `psu-watts` | psu.watts | 150–3,000 W | report only | 3947 | 0 | 0 |
 | `ram-ddr4-speed` | ram.speed | 1,600–5,333 MHz | enforced | 2235 | 1 | 1 |
 | `ram-ddr5-speed` | ram.speed | 4,000–10,000 MHz | enforced | 2368 | 9 | 5 |
@@ -55,9 +55,9 @@ Data times (`latest.updatedAt`):
 | --- | ---: | --- | --- |
 | Spire U20M | 3.502 mm | Spire U20M Black Gaming Midi Tower RGB με Πλαϊνό Παράθυρο | `bestprice:2163830217` |
 
-## `gpu-minpsu-plausible`: gpu.minPsu needs at least the chip board power + 100 W, and the chip maker figure − 100 W (chips with a row in the GPU power table)
+## `gpu-minpsu-plausible`: gpu.minPsu needs at least the chip board power + 100 W (chips with a board power in the GPU power table)
 
-14 value(s), 6 model(s). Showing 10.
+12 value(s), 5 model(s). Showing 10.
 
 | Model | Value | Title | Listing id |
 | --- | ---: | --- | --- |
@@ -68,9 +68,9 @@ Data times (`latest.updatedAt`):
 | RTX 5050 | 130 W | PNY GeForce RTX 5050 8GB Dual | `skroutz:63278778` |
 | RTX 5060 | 145 W | MSI GeForce RTX 5060 8GB Shadow 2x OC Max | `skroutz:66091976` |
 | RTX 5070 Ti | 300 W | PNY GeForce RTX 5070 Ti 16GB | `skroutz:60811441` |
-| RX 550 | 250 W | PowerColor Radeon RX 550 4GB GDDR5 Red Dragon PCI-E x16 3.0 με HDMI | `shopflix:SF-105463361` |
-| RX 550 | 250 W | PowerColor Radeon RX 550 4GB Red Dragon | `skroutz:33201308` |
 | RX 9070 | 245 W | Acer Radeon RX 9070 16GB GDDR6 Predator BiFrost OC White | `bestprice:2163311809` |
+| RX 9070 | 245 W | Acer Radeon RX 9070 16GB GDDR6 Predator BiFrost | `shopflix:SF-106359451` |
+| RX 9070 | 245 W | Acer Radeon RX 9070 16GB GDDR6 Predator Bifrost OC White Edition | `shopflix:SF-202432109` |
 
 ## `ram-ddr4-speed`: ram.speed outside 1,600–5,333 MHz
 
@@ -110,7 +110,7 @@ builder.json built from the scraper's raw data and again from the checked data, 
 | `case-gpu-max` | 1 | 2588 |
 | `case-cooler-max` | 0 | 2588 |
 | `gpu-length` | 0 | 1536 |
-| `gpu-minpsu-plausible` | 14 | 1536 |
+| `gpu-minpsu-plausible` | 12 | 1536 |
 | `psu-watts` | 0 | 137 |
 | `ram-ddr4-speed` | 0 | 222 |
 | `ram-ddr5-speed` | 2 | 222 |
@@ -130,7 +130,7 @@ Showing 1 of 1.
 
 ### `gpu-minpsu-plausible`: gpu.minPsu
 
-Showing 10 of 14.
+Showing 10 of 12.
 
 | Model | Before | After | Listing id |
 | --- | ---: | ---: | --- |
@@ -141,9 +141,9 @@ Showing 10 of 14.
 | RTX 5050 | 130 | not stated | `skroutz:63278778` |
 | RTX 5060 | 145 | not stated | `skroutz:66091976` |
 | RTX 5070 Ti | 300 | not stated | `skroutz:60811441` |
-| RX 550 | 250 | not stated | `shopflix:SF-105463361` |
-| RX 550 | 250 | not stated | `skroutz:33201308` |
 | RX 9070 | 245 | not stated | `bestprice:2163311809` |
+| RX 9070 | 245 | not stated | `shopflix:SF-106359451` |
+| RX 9070 | 245 | not stated | `shopflix:SF-202432109` |
 
 ### `ram-ddr5-speed`: ram.speed
 
