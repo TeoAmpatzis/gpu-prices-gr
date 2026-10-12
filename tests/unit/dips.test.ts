@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { implausibleDips, isDipPrice, withoutDips } from '../../src/lib/dips';
+import { chartLine, implausibleDips, isDipPrice, withoutDips } from '../../src/lib/dips';
 import { allTimeLow } from '../../src/lib/data';
 import { listFile, reduceHistory } from '../../src/lib/derive';
 import { CATEGORIES } from '../../src/lib/categories';
@@ -52,16 +52,17 @@ describe('implausibleDips (C6)', () => {
 });
 
 describe('dip run length and window edge (C6)', () => {
-  it('a 4-day run is a dip, an 8-day run of the same low is real clearance', () => {
-    expect(implausibleDips(series([...flat(30, 100), ...flat(4, 40), ...flat(30, 100)])).size).toBe(4);
-    expect(implausibleDips(series([...flat(30, 100), ...flat(7, 40), ...flat(30, 100)])).size).toBe(7);
-    expect(implausibleDips(series([...flat(30, 100), ...flat(8, 40), ...flat(30, 100)])).size).toBe(0);
+  it('a 15-day run that snaps back is flagged; a drop that lasts 30+ days is not', () => {
+    expect(implausibleDips(series([...flat(30, 100), ...flat(15, 40), ...flat(30, 100)])).size).toBe(15);
+    expect(implausibleDips(series([...flat(40, 100), ...flat(40, 40)])).size).toBe(0);
+    expect(implausibleDips(series([...flat(30, 100), ...flat(45, 40)])).size).toBe(0);
   });
 
-  it('gaps in the data do not break a run', () => {
-    const pts = [...series(flat(30, 100)), ...series(flat(4, 40), 30), ...series(flat(4, 40), 38), ...series(flat(30, 100), 42)];
-    // two 4-point groups with a 4-day gap = one run of 12 calendar days
-    expect(implausibleDips(pts).size).toBe(0);
+  it('chartLine falls back to all points when fewer than two would remain', () => {
+    const pts = series([100, 40, 40]);
+    expect(chartLine(pts, new Set([pts[1], pts[2]]))).toHaveLength(3);
+    expect(chartLine(pts, new Set([pts[2]]))).toHaveLength(2);
+    expect(chartLine([], new Set())).toEqual([]);
   });
 
   it('window edge: a point exactly 30 days away counts, 31 does not', () => {

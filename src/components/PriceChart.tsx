@@ -3,7 +3,7 @@ import type { HistoryPoint } from '../types';
 import { formatPrice } from '../lib/data';
 import { SOURCES } from '../lib/sources';
 import { T, tr, useLang } from '../lib/i18n';
-import { implausibleDips } from '../lib/dips';
+import { chartLine, implausibleDips } from '../lib/dips';
 
 // Price history as a small hand-drawn SVG step chart (replaced recharts, ~100 KB gzipped). Colours
 // are Tailwind classes on the design tokens (stroke-accent, fill-muted…), so they follow light/dark
@@ -89,7 +89,7 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
   const t0 = time(data[0].d);
   const t1 = Math.max(time(data[data.length - 1].d), t0 + DAY);
   // The range follows the line only; dip markers are clamped to the bottom edge (tooltip keeps the real price).
-  const line = data.filter((q) => !dips.has(q));
+  const line = chartLine(data, dips);
   const prices = line.map((p) => p.min);
   const yTicks = niceTicks(Math.min(...prices), Math.max(...prices));
   const yLo = yTicks[0];
