@@ -32,22 +32,36 @@ describe('biosSupport', () => {
     }
   });
   it('is case-insensitive on chipset and CPU name', () => {
-    expect(biosSupport('b650', 'ryzen 7  9700x')).toBe(biosSupport('B650', 'Ryzen 7 9700X'));
+    expect(biosSupport('x670e', 'ryzen 7  9700x')).toBe(biosSupport('X670E', 'Ryzen 7 9700X'));
   });
-  it('undefined for an unknown CPU name', () => expect(biosSupport('B650', 'EPYC 4124P')).toBeUndefined());
+  it('undefined for an unknown CPU name', () => expect(biosSupport('X670E', 'EPYC 4124P')).toBeUndefined());
   it('undefined for a CPU whose generation has no row for the chipset', () => {
-    expect(biosSupport('B650', 'Core i5-14600K')).toBeUndefined();
+    expect(biosSupport('X670E', 'Core i5-14600K')).toBeUndefined();
   });
   it('undefined for an unknown chipset', () => expect(biosSupport('ZZ999', 'Ryzen 7 9700X')).toBeUndefined());
-  it('chipset match is exact: B650 is not B650E and H61 is not H610', () => {
-    const only = BIOS.filter((r) => r.chipsets.includes('B650') && !r.chipsets.includes('B650E'));
-    expect(only.length).toBe(0); // both are listed together, so a partial name must not match on its own
-    expect(biosSupport('B65', 'Ryzen 7 9700X')).toBeUndefined();
-    expect(biosSupport('B6500', 'Ryzen 7 9700X')).toBeUndefined();
+  it('chipset match is exact: a partial or longer name is not a match', () => {
+    expect(biosSupport('X670', 'Ryzen 7 9700X')).toBe('update');
+    expect(biosSupport('X67', 'Ryzen 7 9700X')).toBeUndefined();
+    expect(biosSupport('X6700', 'Ryzen 7 9700X')).toBeUndefined();
   });
-  it('official pages: 600-series AM5 board with a Ryzen 9000 may need an update', () => {
-    expect(biosSupport('B650', 'Ryzen 7 9700X')).toBe('update');
+  it('official statements: 600-series AM5 board with a Ryzen 9000 may need an update, 800-series does not', () => {
+    expect(biosSupport('X670E', 'Ryzen 7 9700X')).toBe('update');
     expect(biosSupport('X870E', 'Ryzen 7 9700X')).toBe('ok');
+  });
+  it('deliberate gaps stay unknown', () => {
+    expect(biosSupport('B650', 'Ryzen 7 9700X')).toBeUndefined(); // am5.html never names B650
+    expect(biosSupport('B550', 'Ryzen 5 3600')).toBeUndefined(); // the two 3000 columns disagree
+    expect(biosSupport('B760', 'Core i5-12400')).toBeUndefined(); // no 12th gen statement
+    expect(biosSupport('A320', 'Ryzen 3 3200G')).toBeUndefined();
+    expect(biosSupport('X570', 'Ryzen 3 1200')).toBeUndefined(); // an X in AMD's table is not exhaustive
+  });
+  it('AM4 ticks are not "no update needed" (AMD: support may require a BIOS upgrade)', () => {
+    expect(biosSupport('B450', 'Ryzen 5 5600X')).toBe('update');
+    expect(biosSupport('X470', 'Ryzen 5 5600X')).toBe('update');
+  });
+  it('Processor 300 is not a 13th/14th gen Core: unknown', () => {
+    expect(biosSupport('B760', 'Processor 300')).toBeUndefined();
+    expect(biosSupport('H610', 'processor  300')).toBeUndefined();
   });
 });
 
