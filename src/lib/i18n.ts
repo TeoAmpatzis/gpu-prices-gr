@@ -62,6 +62,7 @@ export const T = {
   freeShipping: { el: 'δωρεάν μεταφορικά', en: 'free shipping' },
   dailyLow: { el: 'Χαμηλότερη τιμή ανά ημέρα', en: 'Lowest price per day' },
   lowest: { el: 'Χαμηλότερη', en: 'Lowest' },
+  dipHint: { el: 'Ασυνήθιστα χαμηλή τιμή, έλεγξε το κατάστημα', en: 'Unusually low price, check the shop' },
   noHistory: {
     el: 'Το ιστορικό τιμών θα εμφανιστεί μετά από λίγες μέρες συλλογής δεδομένων.',
     en: 'Price history will appear after a few days of data collection.',

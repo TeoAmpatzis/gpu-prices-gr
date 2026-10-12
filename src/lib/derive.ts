@@ -31,6 +31,7 @@ import type {
 } from '../types';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './categories';
 import { fromColumns } from './columns';
+import { implausibleDips, isDipPrice } from './dips';
 import { groupModels, mostCommon, saleOf, type Model } from './data';
 import { POP_SCALE, popularityRaw } from './ranking';
 import type { SearchIndexFile } from './search';
@@ -122,10 +123,19 @@ export function listFile(cat: Category, input: CategoryInput, builtAt: string, i
   // Only models that are listed now (history.json also keeps a year of delisted ones).
   const keys = new Set(input.latest.listings.map((l) => cfg.modelKey(l)));
   const hist: ListFile['hist'] = {};
-  for (const [k, pts] of Object.entries(input.history)) {
-    if (keys.has(k)) hist[k] = reduceHistory(pts as HistoryPoint[], day);
-  }
+  // C6: implausible short dips (src/lib/dips.ts) are left out before reducing, so the browser's all-time
+  // low and week change (whose comparison points skip them too) never see them; an imported low that is
+  // one of those dips is dropped from `imported` for the same reason.
   const imported = Object.fromEntries(Object.entries(input.imported).filter(([k]) => keys.has(k)));
+  for (const [k, pts] of Object.entries(input.history)) {
+    if (!keys.has(k)) continue;
+    const dips = implausibleDips(pts as HistoryPoint[]);
+    hist[k] = reduceHistory(dips.size ? (pts as HistoryPoint[]).filter((p) => !dips.has(p)) : (pts as HistoryPoint[]), day);
+    const imp = imported[k];
+    if (dips.size && typeof imp === 'object' && imp.low != null && isDipPrice(imp.low, dips)) {
+      imported[k] = { ...imp, low: undefined };
+    }
+  }
   const img: Record<string, string> = {};
   for (const k of keys) {
     const path = image?.(cat, k);
