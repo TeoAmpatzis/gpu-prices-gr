@@ -12,6 +12,8 @@ export type * from './types';
 export { shownLevel } from './util';
 export { powerEstimate, v1RecommendedPsu } from './rules/power';
 export type { PowerEstimate, PowerPart } from './rules/power';
+export { BIOS, biosSupport } from './data/bios';
+export type { BiosRow, BiosVerdict } from './data/bios';
 
 type Rule = (b: Build, ctx: Context) => Finding[];
 
