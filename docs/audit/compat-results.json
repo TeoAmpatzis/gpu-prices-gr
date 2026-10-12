@@ -3220,7 +3220,7 @@
   },
   {
     "id": "S59",
-    "title": "Core i7-14700K + RTX 5070 Ti + 750 W: error by the plan formula, pass by the card maker",
+    "title": "Core i7-14700K + RTX 5070 Ti + 750 W: warning (card maker 750 W reached, whole-build estimate 850 W not)",
     "ui": {
       "parts": [
         {
@@ -3282,14 +3282,14 @@
     "rules": [
       {
         "rule": 14,
-        "expected": "error",
+        "expected": "warning",
         "v1": "pass",
         "v1Says": "Fits (v1 recommends ≥ 750 W)",
-        "verdict": "wrong",
-        "detail": "v1 says pass, plan says error: more lenient than the plan"
+        "verdict": "gap",
+        "detail": "v1 has no margin warning (it passes)"
       }
     ],
-    "verdict": "wrong"
+    "verdict": "not checked by v1"
   },
   {
     "id": "S60",
@@ -3383,7 +3383,7 @@
   },
   {
     "id": "S62",
-    "title": "Ryzen 9 9950X + RTX 5090 + 4 sticks + 2 SSDs + 6 fans + 1000 W: error",
+    "title": "Ryzen 9 9950X + RTX 5090 + 4 sticks + 2 SSDs + 6 fans + 1000 W: warning (maker figure reached, no formula)",
     "ui": {
       "parts": [
         {
@@ -3469,14 +3469,14 @@
     "rules": [
       {
         "rule": 14,
-        "expected": "error",
+        "expected": "warning",
         "v1": "error",
         "v1Says": "Incompatible: 1000 W power supply; at least 1100 W is needed. 1000 W power supply; at least 1100 W is needed. (v1 recommends ≥ 1100 W)",
-        "verdict": "correct",
-        "detail": ""
+        "verdict": "wrong",
+        "detail": "v1 says error, plan says warning: stricter than the plan"
       }
     ],
-    "verdict": "correct"
+    "verdict": "wrong"
   },
   {
     "id": "S63",

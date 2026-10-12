@@ -2,9 +2,12 @@
 // Rules 23 and 26 are notes by design (no "unknown"); rule 13 needs a BIOS table (none in the data yet),
 // so its pass and fail are tested with a small table passed through the context.
 import { describe, expect, it } from 'vitest';
-import { evaluate, type Context, type Part, type PartCategory, type RuleId } from '../../../src/engine';
+import { evaluate, powerEstimate, type Context, type Part, type PartCategory, type RuleId } from '../../../src/engine';
 import { ruleResult } from '../../compat/engine-adapter';
 import { cpuRow } from '../../../src/engine/data/cpuMemory';
+import { cpuPowerRow } from '../../../src/engine/data/cpuPower';
+import { gpuPowerRow } from '../../../src/engine/data/gpuPower';
+import { MARGIN, POWER } from '../../../src/engine/tables';
 
 let n = 0;
 const part = (category: PartCategory, fields: Record<string, unknown>, opts: { name?: string; qty?: number } = {}): Part => ({
@@ -120,27 +123,111 @@ describe('rule 13: BIOS (no table in the data → unknown)', () => {
   it('unknown when the table has no row', () => expect(status(13, r9('B850'), { bios })).toBe('unknown'));
 });
 
-describe('rule 14: PSU vs v1 estimate (≤ +10% → warning)', () => {
-  const el = (parts: Part[]) => ruleResult(evaluate(parts, {}), 14)?.message.el ?? '';
-  it('pass', () => expect([status(14, [gpu(), psu(750)]), basis(14, [gpu(), psu(750)])]).toEqual(['pass', 'stated']));
-  it('basis: only the stated figure (no table row) → stated, no "Εκτίμηση v1"', () => {
-    const parts = [gpu({ chip: 'Unknown X', minPsu: 650 }), psu(750)];
-    expect([status(14, parts), basis(14, parts), el(parts).includes('Εκτίμηση v1')]).toEqual(['pass', 'stated', false]);
+describe("rule 14: PSU vs the maker figure and the whole-build estimate (owner's rule)", () => {
+  const msgEl = (parts: Part[]) => ruleResult(evaluate(parts, {}), 14)?.message.el ?? '';
+  const I7 = 'Core i7-14700K'; // Intel: a PL2 row, so the formula exists
+  const pl2 = cpuPowerRow(I7)!.watts;
+  const g70 = gpuPowerRow('RTX 5070')!;
+  const g90 = gpuPowerRow('RTX 5090')!;
+  const intel = (name = I7) => cpu({ socket: 'LGA1700' }, name);
+  const roundUp = (w: number) => Math.ceil((w * POWER.headroom) / POWER.roundToW) * POWER.roundToW;
+  // Base build: Intel CPU + RTX 5070 (card minPsu 650), one RAM kit of 2 sticks, one drive, no fans.
+  const base = (w: number, card: Part = gpu()) => [intel(), card, ram(), drive(), psu(w)];
+  const est = powerEstimate(base(1000));
+  const formula = est.formulaW!;
+  const maker = est.makerW!;
+
+  it('numbers come from the tables', () => {
+    expect(est.totalW).toBe(g70.boardPowerW! + pl2 + POWER.boardW + 2 * POWER.perStickW + POWER.perDriveW);
+    expect(formula).toBe(roundUp(est.totalW!));
+    expect(maker).toBe(Math.max(650, g70.makerPsuW!));
+    expect(maker).toBeLessThan(formula); // the levels below need this gap
   });
-  it('basis: the table decides (card figure lower or missing) → v1-estimate, "Εκτίμηση v1"', () => {
-    const lower = [gpu({ minPsu: 300 }), psu(750)], missing = [gpu({ minPsu: null }), psu(750)];
-    expect([basis(14, lower), basis(14, missing), el(lower).includes('Εκτίμηση v1')]).toEqual(['v1-estimate', 'v1-estimate', true]);
+  it('level 1: neither figure -> unknown (AMD CPU, no card)', () => expect(status(14, [cpu(), psu(550)])).toBe('unknown'));
+  it('level 1: unknown card chip without minPsu, AMD CPU -> unknown', () =>
+    expect(status(14, [cpu(), gpu({ chip: 'Unknown X', minPsu: null }), psu(550)])).toBe('unknown'));
+  it('level 2: below the maker figure -> error, stated', () => {
+    const parts = base(maker - 50);
+    expect([status(14, parts), basis(14, parts)]).toEqual(['error', 'stated']);
+    expect(msgEl(parts)).toContain(`${maker} W`);
   });
-  it('basis: +100 W for a top-tier CPU → v1-estimate, "Εκτίμηση v1"', () => {
-    const parts = [cpu({}, 'Ryzen 9 9950X'), gpu(), psu(850)];
-    expect([status(14, parts), basis(14, parts), el(parts).includes('Εκτίμηση v1')]).toEqual(['pass', 'v1-estimate', true]);
+  it('level 3: no maker figure (no card), below the formula -> error, estimate', () => {
+    const parts = [intel(), ram(), drive(), psu(300)];
+    const e = powerEstimate(parts);
+    expect([e.makerW, e.formulaW]).toEqual([null, roundUp(pl2 + POWER.boardW + 2 * POWER.perStickW + POWER.perDriveW)]);
+    expect([status(14, parts), basis(14, parts)]).toEqual(['error', 'estimate']);
   });
-  it('margin and equal → warning', () => expect([status(14, [gpu(), psu(650)]), status(14, [gpu(), psu(700)])]).toEqual(['warning', 'warning']));
-  it('fail', () => expect(status(14, [gpu({ chip: 'RTX 5080', minPsu: 850 }), psu(550)])).toBe('error'));
-  it('+100 W for a top-tier CPU', () => expect(status(14, [cpu({}, 'Ryzen 9 9950X'), gpu(), psu(700)])).toBe('error'));
-  it('the card figure and the chip table: the larger wins', () => expect(status(14, [gpu({ minPsu: 300 }), psu(550)])).toBe('error'));
-  it('unknown: no card', () => expect(status(14, [cpu(), psu(550)])).toBe('unknown'));
-  it('unknown: card without a figure or table row', () => expect(status(14, [gpu({ chip: 'Unknown X', minPsu: null }), psu(550)])).toBe('unknown'));
+  it('level 4: at the maker figure but below the formula -> warning, estimate', () => {
+    for (const w of [maker, formula - 50]) {
+      const parts = base(w);
+      expect([status(14, parts), basis(14, parts)]).toEqual(['warning', 'estimate']);
+    }
+    expect(msgEl(base(maker))).toContain(`${formula} W`);
+  });
+  it('level 5: at/above both figures, within +10% of the larger -> warning (tight)', () => {
+    expect(status(14, base(formula))).toBe('warning');
+    expect(status(14, base(Math.floor(formula * (1 + MARGIN.psuShare))))).toBe('warning');
+  });
+  it('level 5: above +10% -> pass', () => expect(status(14, base(Math.floor(formula * (1 + MARGIN.psuShare)) + 1))).toBe('pass'));
+  it('level 5 basis: estimate when the formula is the larger, stated when the maker figure decides', () => {
+    expect(basis(14, base(10000))).toBe('estimate');
+    const amd = [cpu({}, 'Ryzen 5 7600'), gpu({ chip: 'RTX 5090', minPsu: 1000 }), psu(2000)];
+    const e = powerEstimate(amd);
+    expect([e.formulaW, e.makerW]).toEqual([null, Math.max(1000, g90.makerPsuW!)]);
+    expect([status(14, amd), basis(14, amd)]).toEqual(['pass', 'stated']);
+  });
+  it("owner's example, level 5: 9950X (no AMD PPT row, so no formula) + RTX 5090 + 1000 W -> warning", () => {
+    const parts = [cpu({}, 'Ryzen 9 9950X'), mobo(), ram({ modules: 4 }), gpu({ chip: 'RTX 5090', minPsu: 1000 }), drive({}, 2), fan(120, 3, 2), psu(1000)];
+    const e = powerEstimate(parts);
+    expect([e.formulaW, e.makerW, e.makerFrom]).toEqual([null, 1000, 'card']);
+    expect(status(14, parts)).toBe('warning');
+    expect(status(14, [...parts.slice(0, -1), psu(950)])).toBe('error');
+  });
+  it('a card chip not in the table: formula null, maker figure from the card minPsu only', () => {
+    const parts = base(700, gpu({ chip: 'Unknown X', minPsu: 650 }));
+    const e = powerEstimate(parts);
+    expect([e.totalW, e.formulaW, e.makerW, e.makerFrom]).toEqual([null, null, 650, 'card']);
+    expect(e.missing.length).toBeGreaterThan(0);
+    expect(status(14, parts)).toBe('warning'); // 700 <= 650 * 1.1 = 715
+    expect(msgEl(parts)).toContain('650');
+  });
+  it('makerFrom: chip when the chip table is larger, card on a tie or when it is larger', () => {
+    expect(powerEstimate([gpu({ chip: 'RTX 5070', minPsu: 300 })]).makerFrom).toBe('chip');
+    expect(powerEstimate([gpu({ chip: 'RTX 5070', minPsu: g70.makerPsuW })]).makerFrom).toBe('card');
+    expect(powerEstimate([gpu({ chip: 'RTX 5070', minPsu: 2000 })]).makerFrom).toBe('card');
+    expect(powerEstimate([gpu({ chip: 'RTX 5070', minPsu: null })]).makerW).toBe(g70.makerPsuW);
+  });
+  it('no card: card term 0, maker figure null, formula from CPU + rest', () => {
+    const e = powerEstimate([intel(), ram(), psu(500)]);
+    expect(e.makerW).toBeNull();
+    expect(e.parts.some((p) => p.key === 'gpu')).toBe(false);
+    expect(e.totalW).toBe(pl2 + POWER.boardW + 2 * POWER.perStickW);
+  });
+  it('the breakdown sums to totalW', () => {
+    const parts = [intel(), mobo(), ram({ modules: 2 }, 2), gpu(), cooler({ type: 'AIO' }), drive({}, 3), fan(120, 3, 2), psu(1000)];
+    const e = powerEstimate(parts);
+    expect(e.parts.reduce((s, p) => s + p.watts, 0)).toBe(e.totalW);
+    expect(e.parts.map((p) => p.key)).toEqual(['gpu', 'cpu', 'board', 'ram', 'storage', 'fan', 'pump']);
+  });
+  it('quantities: RAM kits x modules, drives, fans pack x quantity, AIO pump', () => {
+    const w = (extra: Part[]) => powerEstimate([intel(), gpu(), ...extra]).totalW!;
+    const none = w([]);
+    expect(w([ram({ modules: 2 }, 2)]) - none).toBe(4 * POWER.perStickW);
+    expect(w([drive({}, 3)]) - none).toBe(3 * POWER.perDriveW);
+    expect(w([fan(120, 3, 2)]) - none).toBe(6 * POWER.perFanW);
+    expect(w([cooler({ type: 'AIO' })]) - none).toBe(POWER.pumpW);
+    expect(w([cooler({ type: 'Air' })]) - none).toBe(0);
+  });
+  it('a RAM part without modules: total unknown', () => {
+    const e = powerEstimate([intel(), gpu(), ram({ modules: null })]);
+    expect([e.totalW, e.formulaW]).toEqual([null, null]);
+    expect(e.missing.length).toBeGreaterThan(0);
+  });
+  it('an AMD CPU has no power-limit row: total unknown, reason listed', () => {
+    const e = powerEstimate([cpu(), gpu()]);
+    expect([e.totalW, e.formulaW]).toEqual([null, null]);
+    expect(e.missing.length).toBeGreaterThan(0);
+  });
 });
 
 describe('rule 15: 12V-2x6 card and a native PSU cable', () => {

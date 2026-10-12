@@ -15,13 +15,10 @@ interface Gap {
 
 /** Known gaps with today's data and tables (owner-approved list, 2026-10-10). Key: "<scenario>:R<rule>". */
 export const KNOWN_GAPS: Record<string, Gap> = {
-  'S59:R14': { engine: 'warning', expected: 'error', why: 'Η κάρτα δηλώνει 750 W και το τροφοδοτικό είναι ακριβώς 750 W· το σενάριο θέλει σφάλμα με τον τύπο του plan' },
-  'S63:R14': { engine: 'unknown', expected: 'pass', why: "No graphics card, so v1's table has no figure; v1's 350 W baseline has no source, so it cannot support a pass (the scenario's 550 W pass comes from the plan's formula)." },
   'S01:R13': { engine: 'unknown', expected: 'pass', why: 'No BIOS table (chipset × CPU generation) exists yet.' },
   'S03:R13': { engine: 'unknown', expected: 'warning', why: 'No BIOS table (chipset × CPU generation) exists yet.' },
   'S04:R13': { engine: 'unknown', expected: 'pass', why: 'No BIOS table (chipset × CPU generation) exists yet.' },
   'S35:R21': { engine: 'error', expected: 'note', why: 'The case states 1 fan position but 6 included fans; only the validation layer (not in this step) would make that value unknown.' },
-  'S62:R14': { engine: 'error', expected: 'error', basis: 'v1-estimate', why: "The error depends on v1's +100 W for a Ryzen 9, which has no source: with the card's stated 1000 W alone, the 1000 W PSU is a warning." },
   'S45:R26': { engine: 'note', expected: 'note', basis: 'unknown', why: 'A note without a basis: rule 26 (RAM–air-cooler clearance) always gives this note by its definition; nothing is checked.' },
 };
 

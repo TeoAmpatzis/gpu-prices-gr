@@ -6,9 +6,9 @@ Do not edit by hand; `npx vitest run -u` rewrites it after an intended change.
 
 ## Totals
 
-- Scenarios: 64 — correct 46, wrong 5, not checked by v1 13.
+- Scenarios: 64 — correct 45, wrong 5, not checked by v1 14.
   (A scenario is "wrong" if any of its expected rules is wrong; "correct" if at least one rule is correct and the rest are not checked by v1.)
-- Expected rule results: 99 — correct 66, wrong 5, not checked by v1 28.
+- Expected rule results: 99 — correct 65, wrong 5, not checked by v1 29.
 
 ## How v1 answers are mapped to the plan’s levels
 
@@ -42,7 +42,7 @@ on a field v1 does not have, or the plan’s margin band (rules 6, 8, 14: a warn
 | 11 | build note: CPU cooler | S01 pass→correct, S06 error→correct, S18 warning→wrong, S39 error→correct, S40 pass→correct |
 | 12 | build note: integrated graphics | S01 pass→correct, S05 error→correct, S06 pass→correct, S18 pass→correct, S39 pass→correct, S40 error→correct |
 | 13 | none | S01 pass→not checked, S03 warning→not checked, S04 pass→not checked |
-| 14 | psu–gpu / psu–cpu check (recommended watts) | S12 error→correct, S25 warning→not checked, S26 error→correct, S27 pass→correct, S53 pass→correct, S59 error→wrong, S62 error→correct, S63 pass→correct, S64 error→correct |
+| 14 | psu–gpu / psu–cpu check (recommended watts) | S12 error→correct, S25 warning→not checked, S26 error→correct, S27 pass→correct, S53 pass→correct, S59 warning→not checked, S62 warning→wrong, S63 pass→correct, S64 error→correct |
 | 15 | none | S53 note→not checked |
 | 16 | psu–case check (only: SFF case → not verified) | S49 note→correct, S50 error→not checked, S60 pass→correct |
 | 17 | none | S30 note→not checked, S54 error→not checked |
@@ -118,10 +118,10 @@ on a field v1 does not have, or the plan’s margin band (rules 6, 8, 14: a warn
 | **S56** Six case fans + board with 3 fan headers: note (synthetic field)<br>v1 cannot hold: 2 × Arctic P12 Pro 120mm ×3 counted once | R21 pass<br>R23 note | R21: —<br>R23: v1 has no such check | R21 v1 does not check this (v1 holds one fan; the scenario has 2)<br>R23 v1 does not check this |
 | **S57** Case with front USB-C + board without a USB-C header: note (synthetic fields) | R5 pass<br>R24 note | R5: Fits<br>R24: v1 has no such check | R5 correct<br>R24 v1 does not check this |
 | **S58** DDR5-6000 kit with a Ryzen 5 7600 (official DDR5-5200): note | R2 pass<br>R25 note | R2: memory type matches<br>R25: v1 has no such check | R2 correct<br>R25 v1 does not check this |
-| **S59** Core i7-14700K + RTX 5070 Ti + 750 W: error by the plan formula, pass by the card maker | R14 error | R14: Fits (v1 recommends ≥ 750 W) | R14 **wrong** (v1 says pass, plan says error: more lenient than the plan) |
+| **S59** Core i7-14700K + RTX 5070 Ti + 750 W: warning (card maker 750 W reached, whole-build estimate 850 W not) | R14 warning | R14: Fits (v1 recommends ≥ 750 W) | R14 v1 does not check this (v1 has no margin warning (it passes)) |
 | **S60** ATX power supply in a Midi Tower: pass | R16 pass | R16: no PSU–case check (case is not SFF) | R16 correct |
 | **S61** M.2 SSD + case without drive bay data: pass | R19 pass | R19: no drive–case check (not a 3.5" drive) | R19 correct |
-| **S62** Ryzen 9 9950X + RTX 5090 + 4 sticks + 2 SSDs + 6 fans + 1000 W: error<br>v1 cannot hold: 2 × Samsung 990 Pro 1TB counted once; 2 × Arctic P12 Pro 120mm ×3 counted once | R14 error | R14: Incompatible: 1000 W power supply; at least 1100 W is needed. 1000 W power supply; at least 1100 W is needed. (v1 recommends ≥ 1100 W) | R14 correct |
+| **S62** Ryzen 9 9950X + RTX 5090 + 4 sticks + 2 SSDs + 6 fans + 1000 W: warning (maker figure reached, no formula)<br>v1 cannot hold: 2 × Samsung 990 Pro 1TB counted once; 2 × Arctic P12 Pro 120mm ×3 counted once | R14 warning | R14: Incompatible: 1000 W power supply; at least 1100 W is needed. 1000 W power supply; at least 1100 W is needed. (v1 recommends ≥ 1100 W) | R14 **wrong** (v1 says error, plan says warning: stricter than the plan) |
 | **S63** Core i9-14900K without a graphics card + 550 W: pass | R14 pass | R14: Fits (v1 recommends ≥ 450 W) | R14 correct |
 | **S64** Ryzen 7 9800X3D + RX 9070 XT (card asks 850 W) + 750 W: error | R14 error | R14: Incompatible: 750 W power supply; at least 850 W is needed. 750 W power supply; at least 850 W is needed. (v1 recommends ≥ 850 W) | R14 correct |
 

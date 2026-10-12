@@ -1,6 +1,6 @@
 {
   "id": "S59",
-  "title": "Core i7-14700K + RTX 5070 Ti + 750 W: error by the plan formula, pass by the card maker",
+  "title": "Core i7-14700K + RTX 5070 Ti + 750 W: warning (card maker 750 W reached, whole-build estimate 850 W not)",
   "parts": [
     {
       "category": "cpu",
@@ -134,10 +134,10 @@
   "expected": [
     {
       "rule": 14,
-      "level": "error"
+      "level": "warning"
     }
   ],
-  "why": "Plan formula: (300 W TBP + 253 W PL2 + 50 + 2×5 + 8) × 1.3 = 807 → 850 W > 750 W, although the card maker asks for 750 W.",
+  "why": "Owner's rule (2026-10-12): a PSU at or above the maker's figure but below the formula is a warning, not an error. Card maker 750 W (the card's own minimum and NVIDIA's Required System Power are both 750 W); formula (300 W TGP + 253 W PL2 + 50 + 2×5 + 8) × 1.3 = 807 → 850 W; 750 W reaches the maker's figure but not 850 W.",
   "capturedFrom": {
     "builtAt": "2026-10-03T18:51:07.582Z",
     "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"
