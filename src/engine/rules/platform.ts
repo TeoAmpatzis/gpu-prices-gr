@@ -76,7 +76,7 @@ export function rule13(b: Build, ctx: Context): Finding[] {
   const ps = keys(cpu, mobo), chipset = str(mobo, 'chipset');
   const verdict = chipset && ctx.bios ? ctx.bios(chipset, cpu.name) : undefined;
   const fix = msg('Έλεγξε τη λίστα υποστηριζόμενων επεξεργαστών στη σελίδα του κατασκευαστή της μητρικής.', "Check the supported CPU list on the board maker's page.");
-  if (!verdict) return [unknown(13, ps, msg('αν η μητρική χρειάζεται ενημέρωση BIOS για αυτόν τον επεξεργαστή: δεν υπάρχει ακόμα πίνακας chipset × γενιά.', 'whether the board needs a BIOS update for this CPU: there is no chipset × generation table yet.'), fix)];
+  if (!verdict) return [unknown(13, ps, msg('αν η μητρική χρειάζεται ενημέρωση BIOS για αυτόν τον επεξεργαστή: ο κατασκευαστής δεν δίνει επίσημη δήλωση για αυτό το chipset και αυτή τη γενιά επεξεργαστή.', 'whether the board needs a BIOS update for this CPU: there is no official statement for this chipset and CPU generation.'), fix)];
   if (verdict === 'ok') return [finding(13, 'pass', 'stated', ps, msg('Η μητρική υποστηρίζει τον επεξεργαστή χωρίς ενημέρωση BIOS.', 'The board supports the CPU without a BIOS update.'))];
   if (verdict === 'unsupported') return [finding(13, 'error', 'stated', ps,
     msg('Η μητρική δεν υποστηρίζει αυτόν τον επεξεργαστή.', "The board doesn't support this CPU."), msg('Διάλεξε άλλη μητρική ή επεξεργαστή.', 'Choose another board or CPU.'))];

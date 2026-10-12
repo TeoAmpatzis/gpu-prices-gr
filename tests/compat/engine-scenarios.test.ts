@@ -15,9 +15,9 @@ interface Gap {
 
 /** Known gaps with today's data and tables (owner-approved list, 2026-10-10). Key: "<scenario>:R<rule>". */
 export const KNOWN_GAPS: Record<string, Gap> = {
-  'S01:R13': { engine: 'unknown', expected: 'pass', why: 'No BIOS table (chipset × CPU generation) exists yet.' },
-  'S03:R13': { engine: 'unknown', expected: 'warning', why: 'No BIOS table (chipset × CPU generation) exists yet.' },
-  'S04:R13': { engine: 'unknown', expected: 'pass', why: 'No BIOS table (chipset × CPU generation) exists yet.' },
+  'S01:R13': { engine: 'unknown', expected: 'pass', why: 'The BIOS table has no B650 row: the AM5 page of AMD never names B650 as one of its chipsets nor says which are the "600 series" (owner decision pending).' },
+  'S03:R13': { engine: 'unknown', expected: 'warning', why: 'No B650 x Ryzen 9000 row: AMD says a BIOS update may be needed on "600 series" boards but no amd.com page says which chipsets those are (owner decision pending).' },
+  'S04:R13': { engine: 'unknown', expected: 'pass', why: 'No X870 x Ryzen 9000 row: the AM5 page of AMD names X870 but gives no statement per CPU generation beyond the 600-series caveat, and never says which chipsets are the "800 series" (owner decision pending).' },
   'S35:R21': { engine: 'error', expected: 'note', why: 'The case states 1 fan position but 6 included fans; only the validation layer (not in this step) would make that value unknown.' },
   'S45:R26': { engine: 'note', expected: 'note', basis: 'unknown', why: 'A note without a basis: rule 26 (RAM–air-cooler clearance) always gives this note by its definition; nothing is checked.' },
 };

@@ -1,10 +1,11 @@
 // Every rule of the engine (1–26) with a pass, a fail and an unknown case where the rule has them.
-// Rules 23 and 26 are notes by design (no "unknown"); rule 13 needs a BIOS table (none in the data yet),
-// so its pass and fail are tested with a small table passed through the context.
+// Rules 23 and 26 are notes by design (no "unknown"); rule 13 reads the BIOS lookup from the context:
+// small injected lookups test every verdict, the real official table (biosSupport) is tested on pairs read from BIOS.
 import { describe, expect, it } from 'vitest';
 import { evaluate, powerEstimate, type Context, type Part, type PartCategory, type RuleId } from '../../../src/engine';
 import { ruleResult } from '../../compat/engine-adapter';
-import { cpuRow } from '../../../src/engine/data/cpuMemory';
+import { CPU_MEMORY, cpuRow } from '../../../src/engine/data/cpuMemory';
+import { BIOS, biosSupport } from '../../../src/engine';
 import { cpuPowerRow } from '../../../src/engine/data/cpuPower';
 import { gpuPowerRow } from '../../../src/engine/data/gpuPower';
 import { MARGIN, POWER } from '../../../src/engine/tables';
@@ -113,14 +114,44 @@ describe('rule 12: graphics', () => {
   it('unknown', () => expect(status(12, [cpu({ igpu: null })])).toBe('unknown'));
 });
 
-describe('rule 13: BIOS (no table in the data → unknown)', () => {
+describe('rule 13: BIOS (injected lookup)', () => {
   const bios: Context['bios'] = (chipset, name) => (chipset === 'B650' && /9\d00X/.test(name) ? 'update' : chipset === 'X870' ? 'ok' : chipset === 'A320' ? 'unsupported' : undefined);
   const r9 = (chipset: string) => [cpu({}, 'Ryzen 7 9700X'), mobo({ chipset })];
-  it('unknown without a table', () => expect(status(13, r9('B650'))).toBe('unknown'));
+  it('unknown without a lookup', () => expect(status(13, r9('B650'))).toBe('unknown'));
   it('pass (with a table)', () => expect(status(13, r9('X870'), { bios })).toBe('pass'));
   it('update → warning (with a table)', () => expect(status(13, r9('B650'), { bios })).toBe('warning'));
   it('fail (with a table)', () => expect(status(13, r9('A320'), { bios })).toBe('error'));
   it('unknown when the table has no row', () => expect(status(13, r9('B850'), { bios })).toBe('unknown'));
+});
+
+describe('rule 13: BIOS (the real official table)', () => {
+  // Pairs are read from BIOS, not hard-coded: the first row of a verdict and a CPU of its generation.
+  const pair = (verdict: 'ok' | 'update' | 'unsupported') => {
+    for (const row of BIOS.filter((r) => r.verdict === verdict)) {
+      const model = CPU_MEMORY.flatMap((c) => c.models.map((m) => ({ m, g: c.generation }))).find((c) => c.g === row.generation && biosSupport(row.chipsets[0], c.m) === verdict);
+      if (model) return { chipset: row.chipsets[0], cpuName: model.m };
+    }
+    return undefined;
+  };
+  const run = (p: { chipset: string; cpuName: string }, mf: Record<string, unknown> = {}) =>
+    ruleResult(evaluate([cpu({}, p.cpuName), mobo({ chipset: p.chipset, ...mf })], { bios: biosSupport }), 13)!;
+
+  it('ok pair → pass', () => { const p = pair('ok')!; expect(p).toBeDefined(); expect(run(p).status).toBe('pass'); });
+  it('update pair → warning, Flashback wording when the board has it', () => {
+    const p = pair('update')!; expect(p).toBeDefined();
+    expect(run(p).status).toBe('warning');
+    expect(run(p, { biosFlashback: false }).message.en).not.toMatch(/Flashback/);
+    expect(run(p, { biosFlashback: true }).message.en).toMatch(/Flashback/);
+  });
+  // The table has no 'unsupported' row today (AMD's lists say they are not exhaustive); the verdict is covered by the injected lookup above.
+  it('no unsupported row exists today', () => expect(pair('unsupported')).toBeUndefined());
+  it('a pair with no official statement → unknown with the new wording', () => {
+    const f = run({ chipset: 'B650', cpuName: 'Ryzen 5 7600' });
+    expect(f.status).toBe('unknown');
+    expect(f.message.en).toMatch(/no official statement for this chipset and CPU generation/);
+    expect(f.message.en).not.toMatch(/no .*table yet/);
+  });
+  it('an unknown CPU name → unknown', () => expect(run({ chipset: 'X870', cpuName: 'Ryzen 99 0000X' }).status).toBe('unknown'));
 });
 
 describe("rule 14: PSU vs the maker figure and the whole-build estimate (owner's rule)", () => {

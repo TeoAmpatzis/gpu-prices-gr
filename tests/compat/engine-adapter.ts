@@ -1,14 +1,14 @@
 // Runs a compatibility scenario through the v2 engine (src/engine) and reads off one level per rule.
 // Comparison: levels must be equal. An "unknown" never matches a scenario's "note" here; the expectations
 // where the scenario's note means "data missing" are listed in engine-scenarios.test.ts (EXPECTED_UNKNOWN).
-import { evaluate, type Build, type Context, type Finding, type Part, type RuleId } from '../../src/engine';
+import { biosSupport, evaluate, type Build, type Context, type Finding, type Part, type RuleId } from '../../src/engine';
 import type { Level, Scenario } from './scenario';
 
 export function toBuild(s: Scenario): Build {
   return s.parts.map((p, i): Part => ({ category: p.category, key: `${p.category}#${i}:${p.key}`, name: p.name, quantity: p.quantity, fields: p.fields }));
 }
 
-export const toContext = (s: Scenario): Context => ({ chipLengths: s.context?.chipLengths });
+export const toContext = (s: Scenario): Context => ({ chipLengths: s.context?.chipLengths, bios: biosSupport });
 
 const SEVERITY = { error: 4, warning: 3, note: 2, unknown: 1, pass: 0 } as const;
 
