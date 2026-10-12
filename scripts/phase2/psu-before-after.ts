@@ -6,7 +6,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import type { Category, CpuListing, Latest } from '../../src/types';
-import { validateLatest } from '../../src/data/validate';
+import { validateLatest, type Rejection } from '../../src/data/validate';
+import { minPsuFloor } from '../../src/data/validate/ranges';
 import { builderFile } from '../../src/lib/derive';
 import { fromColumns } from '../../src/lib/columns';
 import { powerEstimate, v1RecommendedPsu, type Part } from '../../src/engine';
@@ -26,9 +27,12 @@ const signed = (n: number | null) => (n === null ? '—' : n > 0 ? `+${n}` : `${
 // Validated data, the same as the site uses (enforce mode).
 const all: Partial<Record<Category, Latest>> = {};
 const updated: string[] = [];
+let rejectedMinPsu: Rejection[] = [];
 for (const cat of ['gpu', 'cpu'] as const) {
   const latest = JSON.parse(readFileSync(join(process.cwd(), 'public', 'data', cat, 'latest.json'), 'utf8')) as Latest;
-  all[cat] = validateLatest(cat, latest, 'enforce').latest;
+  const v = validateLatest(cat, latest, 'enforce');
+  all[cat] = v.latest;
+  if (cat === 'gpu') rejectedMinPsu = v.rejections.filter((r) => r.check === 'gpu-minpsu-plausible');
   updated.push(`${cat}: ${latest.updatedAt}`);
 }
 const { file } = builderFile(all, BUILT_AT);
@@ -134,6 +138,15 @@ const big = rows.filter((r) => r.change !== null).sort((a, b) => Math.abs(b.chan
 const header = ['| Chip | Card | Card minPsu | Chip maker W | v1 W | Maker W | Formula W (Intel ref.) | Recommended (Intel ref.) | Change vs v1 |', '| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |'];
 const line = (r: Out) => `| ${cell(r.chip)} | ${cell(cut(r.title, 70))} | ${w(r.card)} | ${w(r.chipW)} | ${w(r.v1)} | ${w(r.maker)} | ${w(r.formula)} | ${w(r.rec)} | ${signed(r.change)} |`;
 L.push(`## The ${TOP} largest changes (Intel reference)`, '', ...header, ...big.map(line), '');
+L.push(
+  '## Card minPsu values the validation rejected', '',
+  "A card's own `minPsu` is treated as not stated when the chip has a row in the GPU power table and the value is under the chip's board power + 100 W or more than 100 W under the chip maker's system figure (check `gpu-minpsu-plausible`). The cards above were computed without these values.", '',
+  `${rejectedMinPsu.length} listing(s) rejected.`, '',
+  '| Chip | Listing | Stated minPsu | Lowest accepted |', '| --- | --- | ---: | ---: |',
+  ...[...rejectedMinPsu].sort((a, b) => cmp(a.chip, b.chip) || cmp(a.title, b.title) || cmp(a.id, b.id))
+    .map((r) => `| ${cell(r.chip)} | ${cell(cut(r.title, 70))} | ${r.value} | ${minPsuFloor({ chip: r.chip })} |`),
+  '',
+);
 L.push('## All cards', '', 'Sorted by chip, then card name.', '', ...header, ...rows.map(line), '');
 
 mkdirSync(dirname(OUT), { recursive: true });

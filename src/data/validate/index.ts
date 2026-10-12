@@ -25,8 +25,10 @@ export function validateLatest<L extends BaseListing>(cat: Category, latest: Lat
       if (c.applies && !c.applies(rec)) continue;
       const v = rec[c.field];
       if (typeof v !== 'number' || !Number.isFinite(v)) continue;
+      const min = c.lowerBound ? c.lowerBound(rec) : c.min;
+      if (min === null) continue; // not checked (a chip without a row in the GPU power table)
       stated[c.id]++;
-      if (v >= c.min && v <= c.max) continue;
+      if (v >= min && v <= c.max) continue;
       rejections.push({ check: c.id, cat, id: l.id, title: l.title, chip: l.chip, field: c.field, value: v });
       if (!c.reportOnly) (copy ??= { ...rec })[c.field] = null;
     }

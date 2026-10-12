@@ -61,7 +61,7 @@ for (const c of RANGES) {
   const rej = rejections.filter((r) => r.check === c.id);
   const models = new Set(rej.map((r) => r.chip)).size;
   lines.push(
-    `| \`${c.id}\` | ${c.cat}.${c.field} | ${fmt(c.min)}–${fmt(c.max)} ${c.unit} | ${c.reportOnly || !enforced ? 'report only' : 'enforced'} | ` +
+    `| \`${c.id}\` | ${c.cat}.${c.field} | ${c.rangeText ?? `${fmt(c.min)}–${fmt(c.max)} ${c.unit}`} | ${c.reportOnly || !enforced ? 'report only' : 'enforced'} | ` +
       `${stated[c.id] ?? 0} | ${rej.length} | ${models} |`,
   );
 }
@@ -70,7 +70,7 @@ lines.push('');
 for (const c of RANGES) {
   const rej = rejections.filter((r) => r.check === c.id).sort((a, b) => cmp(a.chip, b.chip) || cmp(a.id, b.id));
   if (!rej.length) continue;
-  lines.push(`## \`${c.id}\`: ${c.cat}.${c.field} outside ${fmt(c.min)}–${fmt(c.max)} ${c.unit}`, '');
+  lines.push(`## \`${c.id}\`: ${c.cat}.${c.field} ${c.rangeText ? `needs ${c.rangeText}` : `outside ${fmt(c.min)}–${fmt(c.max)} ${c.unit}`}`, '');
   lines.push(`${rej.length} value(s), ${new Set(rej.map((r) => r.chip)).size} model(s). Showing ${Math.min(EXAMPLES, rej.length)}.`, '');
   lines.push('| Model | Value | Title | Listing id |', '| --- | ---: | --- | --- |');
   for (const r of rej.slice(0, EXAMPLES)) {
