@@ -88,7 +88,9 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
 
   const t0 = time(data[0].d);
   const t1 = Math.max(time(data[data.length - 1].d), t0 + DAY);
-  const prices = data.map((p) => p.min);
+  // The range follows the line only; dip markers are clamped to the bottom edge (tooltip keeps the real price).
+  const line = data.filter((q) => !dips.has(q));
+  const prices = line.map((p) => p.min);
   const yTicks = niceTicks(Math.min(...prices), Math.max(...prices));
   const yLo = yTicks[0];
   const yHi = yTicks[yTicks.length - 1];
@@ -96,9 +98,9 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
   const plotH = HEIGHT - PAD.top - PAD.bottom;
   const x = (t: number) => PAD.left + ((t - t0) / (t1 - t0)) * plotW;
   const y = (v: number) => PAD.top + (1 - (v - yLo) / (yHi - yLo || 1)) * plotH;
+  const yClamped = (v: number) => Math.min(y(v), PAD.top + plotH);
 
   // Step after: the price holds until the next day with a different low.
-  const line = data.filter((q) => !dips.has(q));
   let path = `M${x(time(line[0].d))},${y(line[0].min)}`;
   for (let i = 1; i < line.length; i++) path += `H${x(time(line[i].d))}V${y(line[i].min)}`;
 
@@ -164,7 +166,7 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
             <path d={path} fill="none" strokeWidth={2} strokeLinejoin="round" className="stroke-accent" />
             {data.map((q) =>
               dips.has(q) ? (
-                <circle key={q.d} cx={x(time(q.d))} cy={y(q.min)} r={3.5} strokeWidth={1.5} className="fill-panel stroke-warn" />
+                <circle key={q.d} cx={x(time(q.d))} cy={yClamped(q.min)} r={3.5} strokeWidth={1.5} className="fill-panel stroke-warn" />
               ) : null,
             )}
             {p && (
@@ -172,7 +174,7 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
                 <line x1={px} x2={px} y1={PAD.top} y2={PAD.top + plotH} strokeDasharray="3 3" className="stroke-faint" />
                 <circle
                   cx={px}
-                  cy={y(p.min)}
+                  cy={yClamped(p.min)}
                   r={4}
                   strokeWidth={2}
                   className={dips.has(p) ? 'fill-panel stroke-warn' : 'fill-accent stroke-panel'}

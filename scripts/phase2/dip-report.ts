@@ -21,6 +21,7 @@ function before(points: DailyLow[] | undefined, imp: Imported[string] | undefine
   return lows.length > 0 && price <= Math.min(...lows) + 0.005;
 }
 const samples: string[] = [];
+const newBadges: string[] = [];
 let tp = 0, tm = 0, tb = 0, ta = 0, total = 0, own = 0;
 for (const cat of CATEGORY_IDS) {
   const dir = `public/data/${cat}`;
@@ -35,17 +36,20 @@ for (const cat of CATEGORY_IDS) {
     total += h.length;
     const dips = implausibleDips(h);
     if (dips.size) { models++; pts += dips.size; for (const p of dips) if (!(p as { i?: number }).i) own++; }
-    if (dips.size && samples.length < 15 && [...dips][0] && Math.random() < 0.05) {
+    if (dips.size) {
       const sorted = [...h].sort((x, y) => (x.d < y.d ? -1 : 1));
       const p = [...dips].sort((x, y) => (x.d < y.d ? -1 : 1))[0];
       const i = sorted.indexOf(p);
       samples.push(`${cat} | ${k} | ${p.d} | ${p.min} | before-median ${median(sorted.slice(Math.max(0, i - 30), i).map((q) => q.min)).toFixed(1)} | after-median ${median(sorted.slice(i + 1, i + 31).map((q) => q.min)).toFixed(1)}`);
     }
     const price = cheapest.get(k);
-    if (price != null) { if (before(h, imported[k], price)) b++; if (allTimeLow(h, imported[k], price)) a++; }
+    if (price != null) { if (before(h, imported[k], price)) b++; const was = before(h, imported[k], price); const is = !!allTimeLow(h, imported[k], price); if (is) a++; if (is && !was) newBadges.push(`${cat} | ${k} | ${price}`); }
   }
   console.log(`${cat}: excluded ${pts} points in ${models} models; all-time-low badges ${b} -> ${a}`);
   tp += pts; tm += models; tb += b; ta += a;
 }
 console.log(`TOTAL: ${tp} of ${total} points (${own} own scrapes) in ${tm} models; badges ${tb} -> ${ta}`);
-console.log(samples.join('\n'));
+const step = Math.max(1, Math.floor(samples.length / 15)); // deterministic: evenly spaced in file order
+console.log(samples.filter((_, i) => i % step === 0).slice(0, 15).join(String.fromCharCode(10)));
+console.log(`NEW BADGES (${newBadges.length}):`);
+console.log(newBadges.join(String.fromCharCode(10)));
