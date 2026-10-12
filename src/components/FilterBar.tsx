@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Check, RotateCcw, Search } from 'lucide-react';
 import type { BaseListing } from '../types';
-import { defaultFilters, type Filters, type SortKey } from '../lib/data';
+import { clearedFilters, type Filters, type SortKey } from '../lib/data';
 import type { FacetCounts } from '../lib/facets';
 import { groupName, segmentOptions, type CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Text } from '../lib/i18n';
@@ -116,7 +116,7 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
           <span className="text-sm font-semibold">{t(T.filters)}</span>
           <button
             type="button"
-            onClick={() => onChange({ ...defaultFilters(cfg.groups, f.pick), per: f.per })}
+            onClick={() => onChange(clearedFilters(f, cfg.groups, false))}
             className="tap inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-medium text-muted edge transition hover:bg-hover hover:text-fg dark:ring-0"
             title={t(T.resetTitle)}
           >

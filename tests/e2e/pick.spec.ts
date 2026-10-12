@@ -163,6 +163,76 @@ test('a saved key the data no longer has is shown as no longer available and the
   expect(errors).toEqual([]);
 });
 
+test('no usable model ever shows "not offered" while the candidates are being built', async ({ page }) => {
+  const errors = trackErrors(page);
+  // Every row name that showed the "not offered" text at any moment (checked on every DOM change).
+  await page.addInitScript(() => {
+    const seen = new Set<string>();
+    (window as unknown as { __notOffered: Set<string> }).__notOffered = seen;
+    new MutationObserver(() => {
+      for (const tr of document.querySelectorAll('main tbody tr')) {
+        if (tr.textContent?.includes('Not offered in the PC Builder')) seen.add(tr.querySelector('button[aria-expanded] span.font-semibold')?.textContent ?? '');
+      }
+    }).observe(document, { subtree: true, childList: true, characterData: true });
+  });
+  await page.goto('/about');
+  await withBuild(page, await am5Build(page), '/mobo?pick=1&q=b650');
+  await waitChecked(page);
+  await expect(addButtons(page).first()).toBeVisible();
+  const flashed = await page.evaluate(() => [...(window as unknown as { __notOffered: Set<string> }).__notOffered]);
+  const withButton = await page
+    .locator('main tbody tr:visible')
+    .filter({ has: page.getByRole('button', { name: /^Add to build$/ }) })
+    .locator('button[aria-expanded] span.font-semibold')
+    .allInnerTexts();
+  expect(flashed.filter((n) => withButton.includes(n))).toEqual([]);
+  expect(errors).toEqual([]);
+});
+
+test('a compat chunk that fails: one request, the stored fields are used, no retry loop', async ({ page }) => {
+  const errors = trackErrors(page);
+  const compat: string[] = [];
+  await page.route('**/data/compat/**', (route) => {
+    compat.push(new URL(route.request().url()).pathname);
+    return route.fulfill({ status: 503, body: 'down' });
+  });
+  // Saved from older data: a refresh is due, the chunk fails, the stored AM5 fields still hide the B550 boards.
+  await withBuild(page, { cpu: AM5_CPU, compat: { cpu: { fields: AM5_FIELDS, builtAt: '2026-01-01T00:00:00Z' } } }, '/mobo?pick=1&sock=am4&q=b550');
+  await waitChecked(page);
+  await expect(rows(page)).toHaveCount(0);
+  await page.waitForTimeout(3000);
+  expect(compat).toHaveLength(1);
+
+  // Keys only and the chunk fails: the part is left out, and the bar says so.
+  compat.length = 0;
+  await withBuild(page, { cpu: AM5_CPU }, '/mobo?pick=1&sock=am4&q=b550');
+  await waitChecked(page);
+  const bar = page.locator('main [data-pick=bar]:visible');
+  await expect(bar).toContainText("Couldn't check");
+  await expect(bar).toContainText('Ryzen 7 7700');
+  await expect(bar.locator('[role=status]')).toHaveText(/Your build is empty/);
+  await page.waitForTimeout(3000);
+  expect(compat).toHaveLength(1);
+  expect(errors).toEqual([]);
+});
+
+test('everything hidden: the empty state says how many and turns "Only compatible" off', async ({ page }) => {
+  const errors = trackErrors(page);
+  await page.goto('/about');
+  await withBuild(page, await am5Build(page), '/mobo?pick=1&sock=am4&q=b550');
+  await waitChecked(page);
+  const empty = page.locator('main .card:visible').filter({ hasText: /hidden by "Only compatible"/ });
+  await expect(empty).toContainText(/\d[\d,]*\u00a0hidden by "Only compatible"/);
+  await empty.getByRole('button', { name: 'Turn off "Only compatible"' }).click();
+  await expect.poll(() => new URL(page.url()).searchParams.get('compat')).toBe('0');
+  await expect(rows(page).first()).toBeVisible();
+
+  // Clearing the filters leaves the mode alone: still pick mode, still "Only compatible" off.
+  await page.locator('main aside').getByRole('button', { name: /Clear filters/ }).first().click();
+  await expect.poll(() => new URL(page.url()).search).toBe('?pick=1&compat=0');
+  expect(errors).toEqual([]);
+});
+
 test('/builder, kept open in the background, shows the part a pick page added (with compat in pcBuild)', async ({ page }) => {
   const errors = trackErrors(page);
   await withBuild(page, { cpu: AM5_CPU }, '/builder?mode=quick');

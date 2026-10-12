@@ -5,11 +5,24 @@ import { describe, expect, it } from 'vitest';
 import { biosSupport, type Part } from '../../src/engine';
 import type { StoredBuild } from '../../src/lib/buildStore';
 import { checkAll } from '../../src/lib/pick';
-import { applyRefresh, isPlainValue, isStale, partOf, planBuild, runSliced, validStored, type Schedule } from '../../src/lib/pickBuild';
+import {
+  fetchOutcomes, isPlainValue, isStale, outcomeKey, outcomeOf, partOf, planBuild, resolvePlan, runSliced, shownOffer, validStored,
+  type BuildPlan, type Outcome, type Schedule,
+} from '../../src/lib/pickBuild';
 
 const OLD = '2026-10-10T05:51:00.000Z';
 const NOW = '2026-10-12T15:02:34.392Z';
 const am5Board = { chip: 'X', chipset: 'B650', socket: 'AM5', formFactor: 'ATX', memory: 'DDR5', ramSlots: 4 };
+type Rows = Record<string, { fields: Record<string, unknown> }>;
+
+/** The plan answered with these loadCompat results per slot (undefined = that chunk failed to load). */
+function answer(plan: BuildPlan, results: Partial<Record<string, Rows | undefined>>) {
+  const outcomes: Record<string, Outcome> = {};
+  for (const [s, key] of Object.entries(plan.refresh)) outcomes[outcomeKey(NOW, s as never, key!)] = outcomeOf(s as never, key!, results[s]);
+  const r = resolvePlan(plan, outcomes, NOW);
+  expect(r.toFetch).toEqual([]);
+  return r.result!;
+}
 
 describe('stored fields are validated (carried requirement 1)', () => {
   it('plain JSON values pass, nested lists of objects too (case fanMounts)', () => {
@@ -62,18 +75,19 @@ describe('refresh decision (A7)', () => {
     expect(plan.fallback).toEqual({ ram: { type: 'DDR5' } });
   });
 
-  it('fresh chunk fields replace the stored ones and are written back with the page date', () => {
+  it('fresh chunk fields replace the stored ones; unanswered parts are listed to fetch, nothing checked yet', () => {
     const plan = planBuild({ parts: { cpu: { key: 'c|true', fields: { socket: 'AM4' }, builtAt: OLD } } }, 'mobo', NOW);
-    const r = applyRefresh(plan, { cpu: { 'c|true': { fields: { chip: 'Ryzen 5 7600', socket: 'AM5' } } } }, NOW);
+    expect(resolvePlan(plan, {}, NOW)).toEqual({ result: null, toFetch: [{ slot: 'cpu', key: 'c|true' }] });
+    const r = answer(plan, { cpu: { 'c|true': { fields: { chip: 'Ryzen 5 7600', socket: 'AM5' } } } });
     expect(r.parts).toEqual([{ category: 'cpu', key: 'c|true', name: 'Ryzen 5 7600', quantity: 1, fields: { chip: 'Ryzen 5 7600', socket: 'AM5' } }]);
-    expect(r.writes).toEqual([{ slot: 'cpu', part: { key: 'c|true', fields: { chip: 'Ryzen 5 7600', socket: 'AM5' }, builtAt: NOW } }]);
     expect(r.missing).toEqual([]);
+    expect(r.unchecked).toEqual([]);
   });
 
   it('a saved part whose data changed is checked with the new values (real engine)', () => {
     // Saved as an AM4 board two days ago; today's data says AM5.
     const plan = planBuild({ parts: { mobo: { key: 'board', fields: { ...am5Board, socket: 'AM4' }, builtAt: OLD } } }, 'cpu', NOW);
-    const r = applyRefresh(plan, { mobo: { board: { fields: am5Board } } }, NOW);
+    const r = answer(plan, { mobo: { board: { fields: am5Board } } });
     const cpu = (key: string, socket: string): Part => ({ category: 'cpu', key, name: key, quantity: 1, fields: { chip: key, socket, igpu: true, coolerIncluded: true } });
     const res = checkAll(r.parts, 'cpu', [cpu('Ryzen 5 7600', 'AM5'), cpu('Ryzen 5 5600', 'AM4')], { bios: biosSupport });
     expect(res.get('Ryzen 5 7600')!.hide).toBe(false);
@@ -103,18 +117,90 @@ describe('refresh decision (A7)', () => {
 
   it('a key the data no longer has is missing (A9) and left out; nothing breaks', () => {
     const plan = planBuild({ parts: { cpu: { key: 'gone|true' }, ram: { key: 'kit' } } }, 'mobo', NOW);
-    const r = applyRefresh(plan, { cpu: {}, ram: { kit: { fields: { type: 'DDR5' } } } }, NOW);
+    const r = answer(plan, { cpu: {}, ram: { kit: { fields: { type: 'DDR5' } } } });
     expect(r.missing).toEqual([{ slot: 'cpu', key: 'gone|true' }]);
     expect(r.parts.map((p) => p.key)).toEqual(['kit']);
-    expect(r.writes.map((w) => w.slot)).toEqual(['ram']);
   });
 
-  it('a chunk that failed to load: old valid fields are used, nothing marked missing or saved', () => {
+  it('a chunk that failed to load: old valid fields are used; without them the part is listed as unchecked', () => {
     const plan = planBuild({ parts: { cpu: { key: 'c|?', fields: { socket: 'AM5' }, builtAt: OLD }, ram: { key: 'kit' } } }, 'mobo', NOW);
-    const r = applyRefresh(plan, { cpu: undefined, ram: undefined }, NOW);
+    const r = answer(plan, { cpu: undefined, ram: undefined });
     expect(r.parts.map((p) => [p.key, p.name])).toEqual([['c|?', 'c']]);
     expect(r.missing).toEqual([]);
-    expect(r.writes).toEqual([]);
+    expect(r.unchecked).toEqual([{ slot: 'ram', key: 'kit' }]);
+  });
+});
+
+describe('no refetch loop (fix round 1)', () => {
+  /**
+   * usePick's cycle without React: resolve the plan, fetch what is unanswered, merge the answers, save fresh
+   * fields back (write), and again, until nothing is left to fetch. Returns the result and the request count.
+   */
+  async function cycle(read: () => StoredBuild, load: (slot: string, keys: string[]) => Promise<Rows>, write: (slot: string, fields: Record<string, unknown>) => void = () => {}) {
+    let outcomes: Record<string, Outcome> = {};
+    let requests = 0;
+    for (let round = 0; round < 10; round++) {
+      const { result, toFetch } = resolvePlan(planBuild(read(), 'mobo', NOW), outcomes, NOW);
+      if (!toFetch.length) return { result: result!, requests };
+      const got = await fetchOutcomes(toFetch, NOW, (s, keys) => {
+        requests++;
+        return load(s, keys);
+      });
+      outcomes = { ...outcomes, ...got };
+      for (const p of toFetch) {
+        const o = got[outcomeKey(NOW, p.slot, p.key)];
+        if (typeof o === 'object') write(p.slot, o.fields);
+      }
+    }
+    throw new Error('refetch loop');
+  }
+  const failing = () => Promise.reject(new Error('HTTP 503'));
+
+  it('a failing chunk is asked for once; the stored (older) fields are used', async () => {
+    const stored: StoredBuild = { parts: { cpu: { key: 'c|true', fields: { chip: 'Ryzen 5 7600', socket: 'AM5' }, builtAt: OLD } } };
+    const { result, requests } = await cycle(() => stored, failing);
+    expect(requests).toBe(1);
+    expect(result.parts.map((p) => p.fields.socket)).toEqual(['AM5']);
+  });
+
+  it('a failing chunk and no stored fields: asked once, the part is left out and listed as unchecked', async () => {
+    const { result, requests } = await cycle(() => ({ parts: { cpu: { key: 'c|true' } } }), failing);
+    expect(requests).toBe(1);
+    expect(result.parts).toEqual([]);
+    expect(result.unchecked).toEqual([{ slot: 'cpu', key: 'c|true' }]);
+  });
+
+  it('a write-back that fails (full storage) never fetches again; the fresh fields are still used', async () => {
+    const stored: StoredBuild = { parts: { cpu: { key: 'c|true' } } }; // never changes: the save failed
+    const ok = async () => ({ 'c|true': { fields: { chip: 'Ryzen 5 7600', socket: 'AM5' } } });
+    const { result, requests } = await cycle(() => stored, ok, () => {});
+    expect(requests).toBe(1);
+    expect(result.parts.map((p) => p.fields.socket)).toEqual(['AM5']);
+  });
+
+  it('a write-back that works: the next plan needs no chunk', async () => {
+    let stored: StoredBuild = { parts: { cpu: { key: 'c|true' } } };
+    const ok = async () => ({ 'c|true': { fields: { chip: 'Ryzen 5 7600', socket: 'AM5' } } });
+    const { requests } = await cycle(() => stored, ok, (s, fields) => (stored = { parts: { [s]: { key: 'c|true', fields, builtAt: NOW } } }));
+    expect(requests).toBe(1);
+    expect(planBuild(stored, 'mobo', NOW).refresh).toEqual({});
+  });
+
+  it('toFetch is in a stable order (its JSON is the effect key)', () => {
+    const plan = planBuild({ parts: { storage: { key: 's' }, cpu: { key: 'c' }, ram: { key: 'r' } } }, 'mobo', NOW);
+    expect(JSON.stringify(resolvePlan(plan, {}, NOW).toFetch)).toBe(JSON.stringify(resolvePlan({ ...plan }, {}, NOW).toFetch));
+    expect(resolvePlan(plan, {}, NOW).toFetch.map((p) => p.slot)).toEqual(['cpu', 'ram', 'storage']);
+  });
+});
+
+describe('the offer a row adds (fix round 1, CPU Box/Tray)', () => {
+  const offers = [{ id: 'tray' }, { id: 'box' }]; // cheapest first
+  it('the cheapest offer that is not hidden', () => {
+    expect(shownOffer(offers, (id) => id === 'tray').id).toBe('box');
+    expect(shownOffer(offers, () => false).id).toBe('tray');
+  });
+  it('every offer hidden: the cheapest (its reasons are shown)', () => {
+    expect(shownOffer(offers, () => true).id).toBe('tray');
   });
 });
 

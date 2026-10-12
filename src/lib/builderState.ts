@@ -7,7 +7,7 @@ import { fromColumns } from './columns';
 import { loadBuilder, loadBuilderExtra, loadBuilderSlot, type Model } from './data';
 import { LAZY_SLOTS, SLOTS, fitContext, slotModels, type Build, type Slot, type SlotListing } from './builder';
 import { afterLargestPaint } from './paint';
-import { onBuildChange, readBuild, writeBuild, type StoredBuild } from './buildStore';
+import { onBuildChange, readBuild, writeBuild, type BuildChangeSource, type StoredBuild } from './buildStore';
 
 export type Models = { [S in Slot]: Model<SlotListing[S]>[] };
 export type AnyModel = Model<BaseListing>;
@@ -40,6 +40,17 @@ function readSaved(): Saved {
 
 /** Saved parts of lazy slots whose file hasn't arrived yet: kept when the build is saved meanwhile. */
 const pendingLazy: Partial<Record<Slot, string>> = {};
+
+/**
+ * Does the builder show a saved build that changed while it is open? Not its own saves; not a change of compat
+ * fields only (a page saving fresh engine fields for the same parts); and a shared link on screen stays as it is
+ * when another tab changes the saved build. A part added in this tab (a category page's "Add to build") applies,
+ * shared link or not: that is the user's own edit.
+ */
+export function followSavedBuild(c: { ownWrite: boolean; changed: boolean; shared: boolean; source: BuildChangeSource }): boolean {
+  if (c.ownWrite || !c.changed) return false;
+  return !(c.shared && c.source === 'other-tab');
+}
 
 /** True while the builder writes its own build (its change listener ignores that write). */
 let ownWrite = false;
@@ -204,18 +215,16 @@ export function useBuilderState() {
   }, [sharedAtStart]);
 
   // The builder stays mounted while other pages are open: when the saved build changes there (a category
-  // page's "Add to build", v2 step 3) or in another tab, show that build. Its own saves are ignored.
+  // page's "Add to build", v2 step 3) or in another tab, show that build (rules: `followSavedBuild`).
   useEffect(() => {
     if (!models) return;
-    // Only a change of parts, use or budget counts: a page saving fresh engine fields for the same parts
-    // (compat) changes nothing here, and a shared build on screen stays.
     let last = JSON.stringify(readSaved());
-    return onBuildChange(() => {
+    return onBuildChange((source) => {
       const saved = readSaved();
       const now = JSON.stringify(saved);
       const changed = now !== last;
       last = now;
-      if (ownWrite || !changed) return;
+      if (!followSavedBuild({ ownWrite, changed, shared, source })) return;
       const next: Build = {};
       for (const s of SLOTS) {
         const key = saved.parts[s];
@@ -232,7 +241,7 @@ export function useBuilderState() {
       setPrefsState(saved.prefs);
       setShared(false);
     });
-  }, [models]);
+  }, [models, shared]);
 
   /** The first change to a shared build makes it the user's own: saved, and the link parameters go. */
   const own = () => {

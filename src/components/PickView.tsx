@@ -8,6 +8,7 @@ import { shownLevel, type Finding, type Part } from '../engine';
 import { applyFilters, type CategoryData } from '../lib/data';
 import { tr, useLang, type Lang } from '../lib/i18n';
 import { SLOT_OF, hides } from '../lib/pick';
+import { shownOffer } from '../lib/pickBuild';
 import { usePick, type PickState } from '../lib/usePick';
 import type { BaseListing } from '../types';
 import { CATS } from '../shell/nav';
@@ -73,7 +74,13 @@ function Candidate({
   return (
     <div onClick={stop} className="mt-2 flex flex-col items-start gap-2 whitespace-normal">
       <Findings list={findings} lang={lang} />
-      {!part ? (
+      {!pick.candidatesReady ? (
+        // Until the candidates exist nobody knows what is offered: a busy button of the same size, so nothing
+        // says "not offered" by mistake and nothing moves when the real button arrives (fix round 1).
+        <Button variant="primary" size="sm" icon={Plus} className="tap" disabled loading>
+          {label}
+        </Button>
+      ) : !part ? (
         <p className="text-sm text-muted">{tr(lang, PICK.notOffered)}</p>
       ) : (
         !dim && (
@@ -137,8 +144,30 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
           ))}
         </ul>
       )}
+      {pick.unchecked.length > 0 && (
+        <ul className="flex flex-col gap-1">
+          {pick.unchecked.map((m) => (
+            <li key={m.slot} className="text-fg-soft [overflow-wrap:anywhere]">
+              {t(PICK.couldNotCheck)} {t(CATS[m.slot].one ?? CATS[m.slot].name)}: {m.name}
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   );
+
+  // Nothing left because of "Only compatible": say so, and offer to turn it off (besides "Clear filters").
+  const empty: ReactNode =
+    on && hiddenCount > 0 ? (
+      <div className="flex flex-col items-center gap-2">
+        <p className="text-sm text-muted">
+          {plural(lang, hiddenCount, PICK.hiddenForms)} {t(PICK.hiddenByCompat)}
+        </p>
+        <Button variant="secondary" size="sm" className="tap" onClick={() => setFilters({ ...filters, compat: false })}>
+          {t(PICK.turnOffCompat)}
+        </Button>
+      </div>
+    ) : null;
 
   const toggle: ReactNode = (
     <div className="border-b border-line pb-3">
@@ -176,8 +205,9 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
         },
       };
     }
-    // A CPU: the version (Box or Tray) of the cheapest offer that passes the filters.
-    return { dim, extra: <Candidate pick={pick} candidate={pick.keyOf(m.cheapest)} dim={dim} lang={lang} label={t(PICK.add)} /> };
+    // A CPU: the version (Box or Tray) of the cheapest offer that passes the filters and isn't hidden.
+    const offer = shownOffer(m.listings, hiddenId);
+    return { dim, extra: <Candidate pick={pick} candidate={pick.keyOf(offer)} dim={dim} lang={lang} label={t(PICK.add)} /> };
   };
 
   return (
@@ -187,7 +217,7 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
       filters={filters}
       setFilters={setFilters}
       listings={listings}
-      pick={{ bar, toggle, row }}
+      pick={{ bar, toggle, row, empty }}
     />
   );
 }

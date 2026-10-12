@@ -5,7 +5,7 @@ vi.hoisted(() => {
   (globalThis as { window?: unknown }).window = { addEventListener: () => {}, removeEventListener: () => {} };
 });
 import { onBuildChange, readBuild, resolveKey, setPart, writeBuild } from '../../src/lib/buildStore';
-import { writeSaved } from '../../src/lib/builderState';
+import { followSavedBuild, writeSaved } from '../../src/lib/builderState';
 
 function stubStorage(initial: Record<string, string> = {}) {
   const data = { ...initial };
@@ -63,6 +63,7 @@ describe('setPart / onBuildChange', () => {
     const off = onBuildChange(fn);
     setPart('gpu', { key: 'g', builtAt: 'T' });
     expect(fn).toHaveBeenCalledTimes(1);
+    expect(fn).toHaveBeenCalledWith('tab');
     expect(readBuild()).toEqual({ parts: { cpu: { key: 'a' }, gpu: { key: 'g', builtAt: 'T' } }, use: 'gaming' });
     setPart('cpu', null);
     expect(readBuild().parts.cpu).toBeUndefined();
@@ -84,6 +85,7 @@ describe('setPart / onBuildChange', () => {
     handler({ key: 'pcBuild' });
     handler({ key: null }); // storage.clear()
     expect(fn).toHaveBeenCalledTimes(2);
+    expect(fn.mock.calls).toEqual([['other-tab'], ['other-tab']]);
     off();
     expect(remove).toHaveBeenCalledWith('storage', handler);
   });
@@ -121,5 +123,22 @@ describe('resolveKey', () => {
   it('missing when no alias, or the alias points nowhere', () => {
     expect(resolveKey('cpu', 'old', known)).toEqual({ key: 'old', status: 'missing' });
     expect(resolveKey('cpu', 'old', known, { old: 'also-gone' })).toEqual({ key: 'old', status: 'missing' });
+  });
+});
+
+describe('builderState.followSavedBuild (the open builder and outside changes)', () => {
+  const base = { ownWrite: false, changed: true, shared: false, source: 'tab' as const };
+  it('follows a part added in this tab (a pick page), also over a shared link on screen', () => {
+    expect(followSavedBuild(base)).toBe(true);
+    expect(followSavedBuild({ ...base, shared: true })).toBe(true);
+  });
+  it('follows another tab, except while a shared link is on screen (kept until the user edits it)', () => {
+    expect(followSavedBuild({ ...base, source: 'other-tab' })).toBe(true);
+    expect(followSavedBuild({ ...base, source: 'other-tab', shared: true })).toBe(false);
+  });
+  it('ignores its own saves and changes of compat fields only', () => {
+    expect(followSavedBuild({ ...base, ownWrite: true })).toBe(false);
+    expect(followSavedBuild({ ...base, changed: false })).toBe(false);
+    expect(followSavedBuild({ ...base, changed: false, source: 'other-tab' })).toBe(false);
   });
 });

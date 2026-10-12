@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { RotateCcw, SearchX } from 'lucide-react';
 import type { BaseListing, DailyLow } from '../types';
 import type { Model } from '../lib/data';
@@ -18,9 +18,11 @@ interface Props<L extends BaseListing> {
   onReset: () => void;
   /** Pick mode: what each row adds (from the lazy pick code). */
   pick?: RowPick<L>;
+  /** Shown in the empty state above "Clear filters" (pick mode: hidden by "Only compatible"). */
+  emptyExtra?: ReactNode;
 }
 
-export default function ModelTable<L extends BaseListing>({ cfg, models, history, img, onReset, pick }: Props<L>) {
+export default function ModelTable<L extends BaseListing>({ cfg, models, history, img, onReset, pick, emptyExtra }: Props<L>) {
   const lang = useLang();
   const [openKey, setOpenKey] = useState<string | null>(null);
   // The table needs a desktop-wide column (≥ 1024px); phones and tablets get cards.
@@ -36,6 +38,7 @@ export default function ModelTable<L extends BaseListing>({ cfg, models, history
           <p className="font-semibold">{tr(lang, cfg.empty)}</p>
           <p className="mt-1 text-sm text-muted">{tr(lang, T.emptyHint)}</p>
         </div>
+        {emptyExtra}
         <button
           type="button"
           onClick={onReset}

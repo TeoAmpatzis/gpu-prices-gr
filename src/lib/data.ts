@@ -278,6 +278,14 @@ export function defaultFilters(groups: string[], pick = false): Filters {
   };
 }
 
+/**
+ * Every filter back to its default ("Clear filters", "Clear all", the empty state): the results per page,
+ * pick mode and "Only compatible" stay (a mode, not a filter: it has no chip), and the sort with `keepSort`.
+ */
+export function clearedFilters(f: Filters, groups: string[], keepSort: boolean): Filters {
+  return { ...defaultFilters(groups, f.pick), per: f.per, compat: f.compat, ...(keepSort && { sort: f.sort }) };
+}
+
 /** How many filters differ from the defaults (shown on the phone/tablet "Filters" button). */
 export function activeFilterCount(f: Filters, groups: string[]): number {
   const d = defaultFilters(groups);
