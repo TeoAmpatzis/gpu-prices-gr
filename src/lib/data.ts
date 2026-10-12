@@ -156,7 +156,9 @@ export function allTimeLow(
   price: number,
 ): AllTimeLow | null {
   const today = new Date().toISOString().slice(0, 10);
-  const dips = implausibleDips(points ?? []); // C6: not the chart's hollow dots either
+  // C6: the build already removed dips from the reduced history; this re-check is conservative (sparse
+  // points mean fewer than 7 neighbours, so nothing is flagged), not exactly idempotent. Full history: exact.
+  const dips = implausibleDips(points ?? []);
   const past = (points ?? []).filter((p) => p.d < today && !dips.has(p));
   let importedLow = typeof imp === 'object' ? imp : undefined;
   if (importedLow?.low != null && isDipPrice(importedLow.low, dips)) importedLow = { ...importedLow, low: undefined };

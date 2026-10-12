@@ -9,6 +9,8 @@ import type { DailyLow } from '../types';
 export const DIP_RATIO = 0.65;
 /** How far before and after the point the median looks. */
 export const DIP_WINDOW_DAYS = 30;
+/** A dip is short: a run of consecutive flagged days spanning more than this many days is real clearance. */
+export const DIP_MAX_RUN_DAYS = 7;
 /** Points each side needs; fewer on the "after" side (recent days) means the point is never flagged. */
 export const DIP_MIN_POINTS = 7;
 
@@ -26,6 +28,7 @@ function median(values: number[]): number {
  */
 export function implausibleDips<T extends DailyLow>(points: readonly T[]): Set<T> {
   const out = new Set<T>();
+  const flagged: number[] = [];
   if (points.length < 2 * DIP_MIN_POINTS + 1) return out;
   const sorted = [...points].sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0));
   const days = sorted.map((p) => dayNumber(p.d));
@@ -49,7 +52,14 @@ export function implausibleDips<T extends DailyLow>(points: readonly T[]): Set<T
     for (let j = i + 1; j < hi; j++) if (sorted[j].min > max) max = sorted[j].min;
     if (max <= limit) continue;
     const am = median(sorted.slice(i + 1, hi).map((p) => p.min));
-    if (am > limit) out.add(sorted[i]);
+    if (am > limit) flagged.push(i);
+  }
+  // Runs of flagged points with no plausible point between them (gaps in the data don't break a run).
+  for (let a = 0; a < flagged.length; ) {
+    let b = a;
+    while (b + 1 < flagged.length && flagged[b + 1] === flagged[b] + 1) b++;
+    if (days[flagged[b]] - days[flagged[a]] + 1 <= DIP_MAX_RUN_DAYS) for (let k = a; k <= b; k++) out.add(sorted[flagged[k]]);
+    a = b + 1;
   }
   return out;
 }
