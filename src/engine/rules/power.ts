@@ -30,7 +30,7 @@ export interface PowerEstimate {
   totalW: number | null;
   /** ⌈totalW × headroom / roundToW⌉ × roundToW. */
   formulaW: number | null;
-  /** With no CPU chosen yet: the formula with the CPU term 0, a lower bound of any build with this card; else null. */
+  /** When the CPU's power is the only unknown (no CPU chosen, or a CPU without a power-limit row): the formula with the CPU term 0, a lower bound for the build; else null. */
   formulaWithoutCpuW: number | null;
   /** The larger of the card's own stated minimum PSU and the chip maker's system-power figure. */
   makerW: number | null;
@@ -48,6 +48,7 @@ export interface PowerEstimate {
 export function powerEstimate(b: Build): PowerEstimate {
   const parts: PowerPart[] = [], missing: Msg[] = [];
   const gpu = one(b, 'gpu'), cpu = one(b, 'cpu');
+  let cpuUnknown = false;
 
   const chip = gpu ? str(gpu, 'chip') : null;
   const chipRow = chip ? gpuPowerRow(chip) : undefined;
@@ -59,7 +60,7 @@ export function powerEstimate(b: Build): PowerEstimate {
   if (cpu) {
     const row = cpuPowerRow(cpu.name);
     if (row) parts.push({ key: 'cpu', label: msg(`Επεξεργαστής (${row.kind})`, `CPU (${row.kind})`), watts: row.watts });
-    else missing.push(msg(`το όριο ισχύος του επεξεργαστή (${cpu.name}: καμία επίσημη σελίδα στις πηγές μας)`, `the CPU's power limit (${cpu.name}: no official page in our tables)`));
+    else { cpuUnknown = true; missing.push(msg(`το όριο ισχύος του επεξεργαστή (${cpu.name}: καμία επίσημη σελίδα στις πηγές μας)`, `the CPU's power limit (${cpu.name}: no official page in our tables)`)); }
   } else missing.push(msg('ο επεξεργαστής δεν έχει επιλεγεί', 'no CPU is chosen'));
 
   parts.push({ key: 'board', label: msg('Μητρική και υπόλοιπα', 'Motherboard and the rest'), watts: POWER.boardW });
@@ -83,8 +84,8 @@ export function powerEstimate(b: Build): PowerEstimate {
   const totalW = missing.length ? null : parts.reduce((s, p) => s + p.watts, 0);
   const roundUp = (x: number) => Math.ceil((x * POWER.headroom) / POWER.roundToW) * POWER.roundToW;
   const formulaW = totalW === null ? null : roundUp(totalW);
-  // No CPU yet and nothing else unknown: the build needs at least this much whatever CPU is added.
-  const formulaWithoutCpuW = !cpu && missing.length === 1 ? roundUp(parts.reduce((s, p) => s + p.watts, 0)) : null;
+  // The CPU's power is the only unknown: the build needs at least this much whatever the CPU draws.
+  const formulaWithoutCpuW = (!cpu || cpuUnknown) && missing.length === 1 ? roundUp(parts.reduce((s, p) => s + p.watts, 0)) : null;
 
   const cardW = gpu ? num(gpu, 'minPsu') : null, chipW = chipRow?.makerPsuW ?? null;
   const makerW = cardW === null && chipW === null ? null : Math.max(cardW ?? 0, chipW ?? 0);
@@ -107,8 +108,8 @@ export function rule14(b: Build): Finding[] {
   const ps = keys(psu, gpu, e.parts.some((p) => p.key === 'cpu') ? cpu : undefined);
   const lower = e.formulaWithoutCpuW;
   if (watts !== null && makerW === null && formulaW === null && lower !== null && watts < lower) return [finding(14, 'error', 'estimate', ps,
-    msg(`Τροφοδοτικό ${watts} W· ακόμα και χωρίς τον επεξεργαστή η εκτίμηση για το build είναι ${lower} W.`,
-      `${watts} W power supply; even without the CPU the estimate for the build is ${lower} W.`),
+    msg(`Τροφοδοτικό ${watts} W· ακόμα και χωρίς την ισχύ του επεξεργαστή η εκτίμηση για το build είναι ${lower} W.`,
+      `${watts} W power supply; even without the CPU's power the estimate for the build is ${lower} W.`),
     msg(`Διάλεξε τροφοδοτικό τουλάχιστον ${lower} W.`, `Choose a power supply of at least ${lower} W.`))];
   if (watts === null || (makerW === null && formulaW === null)) return [unknown(14, ps, msg(
     'αν φτάνει το τροφοδοτικό: δεν υπάρχει προτεινόμενη ισχύς για αυτό το build (χωρίς κάρτα, ή κάρτα και επεξεργαστής χωρίς επίσημα στοιχεία).',
