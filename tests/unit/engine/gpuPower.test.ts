@@ -22,9 +22,9 @@ describe('GPU power table integrity', () => {
 describe('gpuPowerRow', () => {
   it('finds a chip ignoring case and spacing', () => expect(gpuPowerRow('rtx  5070')?.chips).toContain('RTX 5070'));
   it('is exact: RTX 5070 and RTX 5070 Ti are different chips', () => {
-    expect(gpuPowerRow('RTX 5070')?.chips).not.toContain('RTX 5070 Ti');
-    expect(gpuPowerRow('RTX 5070 Ti')?.chips).not.toContain('RTX 5070');
-    expect(gpuPowerRow('RTX 5070 Ti')?.chips).toContain('RTX 5070 Ti');
+    expect(gpuPowerRow('RTX 5070')?.chips).toEqual(['RTX 5070']);
+    expect(gpuPowerRow('RTX 5070 Ti')?.chips).toEqual(['RTX 5070 Ti']);
+    expect(gpuPowerRow('RTX 5070')).not.toBe(gpuPowerRow('RTX 5070 Ti'));
   });
   it('unknown chip', () => expect(gpuPowerRow('RTX 9999')).toBeUndefined());
 });
