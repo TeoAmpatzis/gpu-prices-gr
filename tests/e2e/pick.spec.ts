@@ -378,6 +378,21 @@ test('/case?pick=1 without Worker support: the main-thread fallback hides the sa
   expect(errors).toEqual([]);
 });
 
+test('a compat chunk that never answers: after the deadline the rows show, nothing hidden, and the bar says so', async ({ page }) => {
+  const errors = trackErrors(page);
+  await page.route('**/data/compat/**', () => {}); // never fulfilled: a stalled connection
+  await withBuild(page, { gpu: 'bestprice:999000001' }, '/case?pick=1'); // keys only: its fields must come from a chunk
+  const status = page.locator('main [data-pick=bar] [role=status]:visible');
+  await expect(status).toHaveText(/Checking compatibility/, { timeout: 20_000 });
+  await expect(rows(page)).toHaveCount(0); // placeholders while waiting
+  await expect(status).toHaveText("The compatibility check didn't finish: nothing is hidden.", { timeout: 20_000 });
+  await expect(rows(page).first()).toBeVisible();
+  await expect(addButtons(page).first()).toBeVisible();
+  await expect(page.locator('main tbody tr:visible button[aria-expanded].opacity-50')).toHaveCount(0);
+  await expect(onlyCompatible(page)).toContainText("The check didn't finish");
+  expect(errors).toEqual([]);
+});
+
 test('a normal category page loads no pick code, no compat chunk and no builder.json', async ({ page }) => {
   const errors = trackErrors(page);
   const requests = trackRequests(page);
