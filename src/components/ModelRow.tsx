@@ -8,7 +8,7 @@ import { SOURCES } from '../lib/sources';
 import SourceBadge from './SourceBadge';
 import { isExamplePhoto } from '../lib/examplePhoto';
 import ProductPhoto from './ProductPhoto';
-import { shortTitles } from '../lib/titles';
+import { GPU_SPEC, GPU_WORDS, shortTitles } from '../lib/titles';
 import type { ProductImage } from '../lib/images';
 
 // The chart is only needed once a row is expanded.
@@ -79,22 +79,25 @@ function PriceBadges<L extends BaseListing>({ m, lang }: { m: Model<L>; lang: La
 }
 
 /** "↓ €5  ·  €212 incl. shipping" under the price, when either is known. */
-function PriceExtras<L extends BaseListing>({ m, delta, lang }: { m: Model<L>; delta: number | null; lang: Lang }) {
+function PriceExtras<L extends BaseListing>({ m, delta, lang, short }: { m: Model<L>; delta: number | null; lang: Lang; short?: boolean }) {
   const price = (n: number) => formatPrice(n, lang);
   const moved = delta != null && Math.abs(delta) >= 1;
   if (!m.bestTotal && !moved) return null;
+  const sign = delta != null && delta < 0 ? '−' : '+';
+  const full = moved ? `${sign}${price(Math.abs(delta!))} ${tr(lang, T.in7days)}` : '';
   return (
     <>
       {moved && (
         <span
-          className={`inline-flex items-center gap-1 ${delta! < 0 ? 'text-success-fg' : 'text-up'}`}
-          title={tr(lang, T.weekChange)}
+          className={`inline-flex items-center gap-0.5 ${delta! < 0 ? 'text-success-fg' : 'text-up'}`}
+          title={`${full}. ${tr(lang, T.weekChange)}`}
         >
-          {delta! < 0 ? <TrendingDown className="h-3.5 w-3.5" /> : <TrendingUp className="h-3.5 w-3.5" />}
-          <span className="whitespace-nowrap">
-            {delta! < 0 ? '−' : '+'}
-            {price(Math.abs(delta!))} {tr(lang, T.in7days)}
+          {delta! < 0 ? <TrendingDown className="h-3 w-3 shrink-0" aria-hidden="true" /> : <TrendingUp className="h-3 w-3 shrink-0" aria-hidden="true" />}
+          <span className="whitespace-nowrap" aria-hidden={short ? true : undefined}>
+            {sign}
+            {price(Math.abs(delta!))}{short ? `/${tr(lang, T.in7daysShort)}` : ` ${tr(lang, T.in7days)}`}
           </span>
+          {short && <span className="sr-only">{full}</span>}
         </span>
       )}
       {m.bestTotal && (
@@ -141,7 +144,7 @@ function ModelDetails<L extends BaseListing>({
 }) {
   const price = (n: number) => formatPrice(n, lang);
   const details = useDetails(cat);
-  const shorts = shortTitles(m.listings.map((l) => l.title), m.chip);
+  const shorts = shortTitles(m.listings.map((l) => l.title), m.chip, cat === 'gpu' ? { known: GPU_WORDS, spec: GPU_SPEC } : {});
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_22rem]">
       <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-xl bg-panel ring-1 ring-edge">
@@ -255,8 +258,8 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
             <PriceBadges m={m} lang={lang} />
             <span className="ml-0.5 whitespace-nowrap text-[15px] font-semibold text-fg">{price(m.cheapest.price)}</span>
           </div>
-          <div className="mt-0.5 flex flex-wrap items-center justify-end gap-x-2 text-xs text-muted">
-            <PriceExtras m={m} delta={delta} lang={lang} />
+          <div className="mt-0.5 flex flex-wrap items-center justify-end gap-x-1 text-xs text-muted">
+            <PriceExtras m={m} delta={delta} lang={lang} short />
           </div>
         </td>
         {cfg.after.map(td)}

@@ -112,12 +112,13 @@ function StaleDetails({ staleIn }: { staleIn: { source: SourceName; category: Te
   const id = useId();
   // Per source: how many categories are late and the oldest update among them.
   const groups = new Map<SourceName, { cats: number; oldest: string }>();
+  const ms = (iso: string) => Date.parse(iso);
   for (const x of staleIn) {
     const g = groups.get(x.source);
     if (!g) groups.set(x.source, { cats: 1, oldest: x.updatedAt });
     else {
       g.cats += 1;
-      if (x.updatedAt < g.oldest) g.oldest = x.updatedAt;
+      if (ms(x.updatedAt) < ms(g.oldest)) g.oldest = x.updatedAt;
     }
   }
   return (

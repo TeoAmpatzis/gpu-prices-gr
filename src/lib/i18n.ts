@@ -57,6 +57,7 @@ export const T = {
   upTo: { el: 'έως', en: 'up to' },
   weekChange: { el: 'Αλλαγή της χαμηλότερης τιμής από πριν από 7 ημέρες', en: 'Change in the lowest price since 7 days ago' },
   in7days: { el: 'σε 7 ημέρες', en: 'in 7 days' },
+  in7daysShort: { el: '7ημ.', en: '7d' },
   shops: { el: 'καταστ.', en: 'shops' },
   withShipping: { el: 'με μεταφορικά', en: 'incl. shipping' },
   shipping: { el: 'μεταφορικά', en: 'shipping' },
