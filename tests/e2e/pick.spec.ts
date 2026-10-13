@@ -385,7 +385,7 @@ test('a compat chunk that never answers: after the deadline the rows show, nothi
   const status = page.locator('main [data-pick=bar] [role=status]:visible');
   await expect(status).toHaveText(/Checking compatibility/, { timeout: 20_000 });
   await expect(rows(page)).toHaveCount(0); // placeholders while waiting
-  await expect(status).toHaveText("The compatibility check didn't finish: nothing is hidden.", { timeout: 20_000 });
+  await expect(status).toHaveText("The compatibility check didn't finish: nothing is hidden.", { timeout: 30_000 }); // PENDING_DEADLINE 15 s
   await expect(rows(page).first()).toBeVisible();
   await expect(addButtons(page).first()).toBeVisible();
   await expect(page.locator('main tbody tr:visible button[aria-expanded].opacity-50')).toHaveCount(0);

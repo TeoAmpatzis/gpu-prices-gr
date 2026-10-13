@@ -3,7 +3,8 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { Part, PartCategory } from '../../src/engine';
 import { answer, checkAll, PICK_CTX } from '../../src/lib/pickCheck';
-import { checkSliced, createChecker, type WorkerLike } from '../../src/lib/pickChecker';
+import { checkSliced, createChecker, WORKER_TIMEOUT, type WorkerLike } from '../../src/lib/pickChecker';
+import { PENDING_DEADLINE } from '../../src/lib/usePick';
 import { shownFinding, toResults, toVerdicts, type CheckAnswer, type CheckRequest, type Verdict } from '../../src/lib/pickProtocol';
 import type { Schedule } from '../../src/lib/pickBuild';
 
@@ -250,5 +251,25 @@ describe('checker', () => {
     expect(make).toHaveBeenCalledTimes(1);
     expect(a.mock.calls[0][0]).toEqual(expected());
     expect([...(b.mock.calls[0][0] as Map<string, Verdict>).keys()]).toEqual(['am5']);
+  });
+  it("a hung worker: the fallback's verdicts arrive well before the page's deadline (PENDING_DEADLINE)", async () => {
+    expect(PENDING_DEADLINE).toBeGreaterThan(WORKER_TIMEOUT);
+    vi.useFakeTimers();
+    try {
+      const done = vi.fn();
+      // The real timeout and the real idle schedule (a timer here: no requestIdleCallback in Node).
+      createChecker(() => fakeWorker(() => 'silent')).run('mobo', build, boards, done);
+      let t = 0;
+      while (!done.mock.calls.length && t < PENDING_DEADLINE) {
+        await vi.advanceTimersByTimeAsync(100);
+        t += 100;
+      }
+      expect(done).toHaveBeenCalledTimes(1);
+      expect(t).toBeGreaterThanOrEqual(WORKER_TIMEOUT); // the worker was given up first
+      expect(t).toBeLessThan(PENDING_DEADLINE - 2000); // and the fallback finished with time to spare
+      expect(done.mock.calls[0][0]).toEqual(expected());
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

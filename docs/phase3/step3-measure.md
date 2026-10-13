@@ -131,7 +131,7 @@ was mostly the page's own filter + count pass running twice, not the engine.
 - **Bytes:** the engine's rules and tables left the page's `PickView` chunk (23.0 → 7.3 KiB gzip; only small helpers
   such as `shownLevel` stay there); they are in the worker chunk (17.4 KiB) and in a fallback-only chunk (`pickCheck`,
   17.3 KiB, fetched only without Worker support).
-- **Fix round 1:** the rows never wait without limit: 10 s after a saved build starts waiting (a compat chunk or the
+- **Fix round 1:** the rows never wait without limit: 15 s (more than the worker's 10 s timeout plus the fallback) after a saved build starts waiting (a compat chunk or the
   worker that never answers) the rows show with nothing hidden and the bar says "The compatibility check didn't
   finish: nothing is hidden." (final for that build and data). A newer run while the worker still computes a
   cancelled one starts a fresh worker; an unreadable answer (`messageerror`) falls back to the main thread.
