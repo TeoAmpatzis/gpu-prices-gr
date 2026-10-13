@@ -1,6 +1,6 @@
 // "Pick" mode of the category pages (v2 step 3): the compatibility engine's parts built from a category
 // page's own models, with the same field values the builder rows carry (derive.ts `slotFields`).
-import { candidateErrors, evaluate, type Build, type Context, type Finding, type Part, type PartCategory, type RuleId } from '../engine';
+import type { Part } from '../engine';
 import type { Category } from '../types';
 import { usable as builderUsable, type Slot, type SlotListing } from './builder';
 import type { Model } from './data';
@@ -73,59 +73,8 @@ export const NOT_IN_DATA: Record<Slot, string[]> = {
   psu: ['native12v2x6', 'atx3'],
 };
 
-/**
- * "Only compatible" hides a candidate only for an error of these rules (step2-plan section 4): 1 CPU socket, 2 RAM
- * type, 3 RAM sticks, 5 board in case, 6 card in case, 8 air cooler height, 10 cooler sockets, 16 PSU in case,
- * and 14 (PSU wattage) only when its basis is `stated`. Everything else is shown on the row, never hides.
- */
-export const HIDE_RULES: ReadonlySet<RuleId> = new Set<RuleId>([1, 2, 3, 5, 6, 8, 10, 14, 16]);
-
-/** Rules 11 (CPU needs a cooler) and 12 (CPU needs a card): never hide while this other part is not in the build. */
-export const NEVER_HIDE_WHEN_MISSING: Readonly<Record<11 | 12, PartCategory>> = { 11: 'cooler', 12: 'gpu' };
-
-/** The own-clash filter of `candidateErrors`, from two evaluations (so `checkAll` evaluates the base build once). */
-function ownErrors(beforeErrors: Finding[], after: Finding[], key: string): Finding[] {
-  return after.filter((f) => f.status === 'error' && f.parts.includes(key)).filter((f) => {
-    const others = f.parts.filter((k) => k !== key);
-    return !beforeErrors.some((e) => e.rule === f.rule && others.every((k) => e.parts.includes(k)));
-  });
-}
-
-/** Does this error of the candidate hide it? Exported for the rule-set tests. */
-export function hides(f: Finding, build: Build): boolean {
-  if (f.status !== 'error') return false;
-  const need = NEVER_HIDE_WHEN_MISSING[f.rule as 11 | 12]; // undefined for every other rule
-  if (need && !build.some((p) => p.category === need)) return false;
-  if (!HIDE_RULES.has(f.rule)) return false;
-  return f.rule !== 14 || f.basis === 'stated';
-}
-
-/** The errors that hide `candidate` in this build (`build` = without the part it would replace). */
-export function hidingErrors(build: Part[], candidate: Part, ctx: Context): Finding[] {
-  return candidateErrors(build, candidate, ctx).filter((f) => hides(f, build));
-}
-
-/**
- * Check a whole page's candidates for one slot. Unlike `hidingErrors` (whose `build` the caller has already
- * stripped), `checkAll` drops the slot itself: it replaces the candidate's WHOLE category in `build` (one part per
- * category, like today's builder; multi-part slots are Phase 4). Then each candidate is added in turn.
- * `findings` = what the engine says about the candidate for its row: its own errors (clashes the build did not
- * already have, same filter as `candidateErrors`) plus every warning, note and unknown that names it. A clash that
- * existed without it (v1 C-01: a PSU too small for the card) is not shown as the candidate's own.
- * `hide` = at least one of its own errors is a hiding one (`hidingErrors`' rule).
- */
-export function checkAll(build: Part[], slot: Slot, candidates: Part[], ctx: Context): Map<string, { hide: boolean; findings: Finding[] }> {
-  const base = build.filter((p) => p.category !== slot);
-  const before = evaluate(base, ctx).filter((f) => f.status === 'error');
-  const out = new Map<string, { hide: boolean; findings: Finding[] }>();
-  for (const c of candidates) {
-    const after = evaluate([...base, c], ctx);
-    const ownErr = new Set(ownErrors(before, after, c.key));
-    const findings = after.filter((f) => f.parts.includes(c.key) && (f.status !== 'error' || ownErr.has(f)));
-    out.set(c.key, { hide: [...ownErr].some((f) => hides(f, base)), findings });
-  }
-  return out;
-}
+// The candidate check (hide rules, checkAll) lives in pickCheck.ts, which the pick worker imports on its own.
+export { checkAll, hides, hidingErrors, HIDE_RULES, NEVER_HIDE_WHEN_MISSING, type Verdict } from './pickCheck';
 
 /**
  * Which other slots' parts the rules of each category page need (step2-plan section 2, "Ποιες θέσεις αφορούν οι

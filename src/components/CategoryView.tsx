@@ -27,6 +27,11 @@ export interface PickSlots<L extends BaseListing> {
   row: RowPick<L>;
   /** In the empty state, when "Only compatible" hid everything: how many, and a button to turn it off. */
   empty?: ReactNode;
+  /**
+   * While the check against a saved build runs (task 6b): placeholders shown instead of the filter sidebar and the
+   * rows. The page skips its filtering and counts until then and paints the final rows once, so nothing shifts.
+   */
+  pending?: { filters: ReactNode; results: ReactNode };
 }
 
 export interface LayoutProps<L extends BaseListing> {
@@ -106,9 +111,11 @@ export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setF
   const closeSheet = useCallback(() => setSheetOpen(false), []);
   const top = useRef<HTMLDivElement>(null); // the results column (pager scrolls back to it)
 
+  const pending = pick?.pending;
+  const waiting = pending !== undefined;
   const models = useMemo(
-    () => applyFilters(listings, filters, cfg, data.history, data.imported),
-    [listings, data, filters, cfg],
+    () => (waiting ? [] : applyFilters(listings, filters, cfg, data.history, data.imported)),
+    [waiting, listings, data, filters, cfg],
   );
   const options = useMemo(
     () => Object.fromEntries(cfg.extraFilters.map((x) => [x.key, x.options(data.latest.listings)])),
@@ -117,8 +124,8 @@ export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setF
   // Counts are a few extra filter runs; deferred so typing in the search box stays smooth.
   const deferred = useDeferredValue(filters);
   const counts = useMemo(
-    () => facetCounts(listings, deferred, cfg, data.history, data.imported, options),
-    [listings, data, deferred, cfg, options],
+    () => (waiting ? undefined : facetCounts(listings, deferred, cfg, data.history, data.imported, options)),
+    [waiting, listings, data, deferred, cfg, options],
   );
 
   const active = activeFilterCount(filters, cfg.groups);
@@ -141,7 +148,7 @@ export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setF
         {active > 0 && <span className="tabular-nums">({active})</span>}
       </button>
       <aside className="hidden flex-col gap-2 lg:sticky lg:top-4 lg:flex lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto scrollbar-none">
-        <FilterBar cfg={cfg} filters={filters} onChange={setFilters} options={options} counts={counts} top={pick?.toggle} />
+        {pending ? pending.filters : <FilterBar cfg={cfg} filters={filters} onChange={setFilters} options={options} counts={counts} top={pick?.toggle} />}
       </aside>
       <BottomSheet
         open={sheetOpen}
@@ -174,22 +181,26 @@ export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setF
         {pick?.bar}
         <div className="flex flex-wrap items-center justify-between gap-2 px-1 text-sm text-muted">
           <span>
-            <span className="font-semibold text-fg">{models.length}</span> {tr(lang, T.models)}
+            <span className="font-semibold text-fg">{pending ? '…' : models.length}</span> {tr(lang, T.models)}
           </span>
           {/* Every source with its own last update; older than 24 hours is marked (UX-04, backlog #9). */}
           <StatusLine sources={data.latest.sources as SourceTimes} />
         </div>
         <ActiveFilters cfg={cfg} filters={filters} onChange={setFilters} options={options} />
         {/* Filters, counts and sorting run on every model; only the rows of one page are rendered. */}
-        <ModelTable
-          cfg={cfg}
-          models={models.slice((page - 1) * filters.per, page * filters.per)}
-          history={data.history}
-          img={data.img}
-          onReset={reset}
-          pick={pick?.row}
-          emptyExtra={pick?.empty}
-        />
+        {pending ? (
+          pending.results
+        ) : (
+          <ModelTable
+            cfg={cfg}
+            models={models.slice((page - 1) * filters.per, page * filters.per)}
+            history={data.history}
+            img={data.img}
+            onReset={reset}
+            pick={pick?.row}
+            emptyExtra={pick?.empty}
+          />
+        )}
         {models.length > PER_PAGE[0] && (
           <Pagination
             page={page}

@@ -9,6 +9,7 @@ import { applyFilters, type CategoryData } from '../lib/data';
 import { tr, useLang, type Lang } from '../lib/i18n';
 import { SLOT_OF, hides } from '../lib/pick';
 import { shownOffer } from '../lib/pickBuild';
+import { useMedia } from '../lib/useMedia';
 import { usePick, type PickState } from '../lib/usePick';
 import type { BaseListing } from '../types';
 import { CATS } from '../shell/nav';
@@ -16,9 +17,11 @@ import { Badge, CompatBadge } from '../ui/Badge';
 import { Button, LinkButton } from '../ui/Button';
 import { Toggle } from '../ui/filters';
 import { PICK } from '../ui/pickStrings';
+import { SkeletonCards } from '../ui/states';
 import { plural, UI } from '../ui/strings';
 import { CategoryLayout, type LayoutProps, type PickSlots } from './CategoryView';
 import type { RowExtra } from './ModelRow';
+import { SkeletonFilters, SkeletonTable } from './Skeleton';
 
 /** Findings shown on a row: at most this many, then "+N more". */
 const SHOWN = 2;
@@ -99,6 +102,7 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
   const slot = SLOT_OF[cfg.id];
   const pick = usePick(slot, data as unknown as CategoryData);
   const ready = pick.status === 'ready';
+  const wide = useMedia('(min-width: 1024px)');
   const all = data.latest.listings;
 
   // "Only compatible" removes the hidden listings before every other filter, so the counts are right.
@@ -180,6 +184,15 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
     </div>
   );
 
+  // With a saved build, the rows wait for the check (in the worker): placeholders of the page's shapes until then,
+  // so no row is hidden, greyed or changed after it was painted (task 6b, CLS).
+  const pending = pick.pending
+    ? {
+        filters: <SkeletonFilters top={toggle} />,
+        results: <div aria-busy="true">{wide ? <SkeletonTable /> : <SkeletonCards cards={4} />}</div>,
+      }
+    : undefined;
+
   const hiddenId = (id: string) => ready && pick.hidden.has(id);
   const row = (m: Parameters<PickSlots<L>['row']>[0]): RowExtra<L> => {
     const dim = m.listings.every((l) => hiddenId(l.id));
@@ -217,7 +230,7 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
       filters={filters}
       setFilters={setFilters}
       listings={listings}
-      pick={{ bar, toggle, row, empty }}
+      pick={{ bar, toggle, row, empty, pending }}
     />
   );
 }
