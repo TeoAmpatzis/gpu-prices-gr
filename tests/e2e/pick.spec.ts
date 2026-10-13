@@ -307,6 +307,17 @@ async function trackShifts(page: Page) {
   return () => page.evaluate(() => (window as unknown as { __cls: number; __shifts: string[] }).__cls);
 }
 
+/** C3 (task 9): the short week-change label must not move rows when the check finishes, at a mid width too. */
+test('/case?pick=1 with a saved build at 1100 px: nothing shifts', async ({ page }) => {
+  await page.setViewportSize({ width: 1100, height: 900 });
+  const cls = await trackShifts(page);
+  await page.goto('/about');
+  await withBuild(page, await caseBuild(page), '/case?pick=1');
+  await waitChecked(page);
+  await page.waitForTimeout(1000);
+  expect(await cls()).toBeLessThan(0.1);
+});
+
 for (const vp of [
   { name: 'desktop', width: 1366, height: 900 },
   { name: 'phone', width: 360, height: 740 },
