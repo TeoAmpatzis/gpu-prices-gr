@@ -6,23 +6,29 @@
 //  1. The build: parts with current, valid stored fields are used as they are; the others are fetched from
 //     the compat chunks of their slot (only the slots the page's rules read), saved back with the page's data
 //     date, or listed as "no longer available" when the data no longer has them.
-//  2. The candidates (the builder's keys: a card per listing, a CPU per chip + cooler-in-box) and the engine
-//     check, in slices after the first paint. Until both are done nothing is hidden.
+//  2. The candidates (the builder's keys: a card per listing, a CPU per chip + cooler-in-box), built after the
+//     first paint, and the engine check in the pick worker (pickChecker.ts; idle slices on the main thread when
+//     no worker can run). Until both are done nothing is hidden, and with a saved build the page shows its rows
+//     only then (`pending`), so nothing moves when the check finishes (task 6b).
 import { useEffect, useMemo, useState } from 'react';
-import { biosSupport, type Context, type Finding, type Part } from '../engine';
+import type { Part } from '../engine';
 import type { BaseListing } from '../types';
 import { onBuildChange, readBuild, setPart } from './buildStore';
 import { slotModels, type Slot } from './builder';
 import { loadCompat } from './compatChunks';
 import type { CategoryData } from './data';
-import { checkAll, toPart, usable } from './pick';
-import { fetchOutcomes, idle, outcomeKey, partOf, planBuild, resolvePlan, runSliced, SLICE, validStored, type Outcome } from './pickBuild';
+import { toPart, usable, type Verdict } from './pick';
+import { fetchOutcomes, idle, outcomeKey, partOf, planBuild, resolvePlan, validStored, type Outcome } from './pickBuild';
+import { createChecker, type WorkerLike } from './pickChecker';
 import { navigate } from './router';
 
-/** Pick mode's engine context: the BIOS table only (no chip length estimates: they need every card's data). */
-const CTX: Context = { bios: biosSupport };
+export type { Verdict };
 
-export type Verdict = { hide: boolean; findings: Finding[] };
+/** The pick worker (a lazy chunk of its own); null where the browser has no Worker (main-thread fallback). */
+const makeWorker =
+  typeof Worker === 'undefined'
+    ? null
+    : () => new Worker(new URL('./pick.worker.ts', import.meta.url), { type: 'module' }) as unknown as WorkerLike;
 
 interface Candidates {
   data: CategoryData;
@@ -50,6 +56,11 @@ function candidatesOf(slot: Slot, data: CategoryData): Candidates {
 export interface PickState {
   /** 'loading': chunks of saved parts are on their way; 'checking': the engine is running; 'ready'. */
   status: 'loading' | 'checking' | 'ready';
+  /**
+   * True while a saved build is being checked (status not 'ready' and the build has parts for this page): the
+   * page shows placeholders instead of rows and counts, then the final rows once, so nothing shifts.
+   */
+  pending: boolean;
   /** The build parts the page checks against (other slots only). */
   build: Part[];
   missing: { slot: Slot; key: string; name: string }[];
@@ -105,18 +116,17 @@ export function usePick(slot: Slot, data: CategoryData): PickState {
   const engineParts = useMemo(() => (engineJson === null ? null : (JSON.parse(engineJson) as Part[])), [engineJson]);
   const runKey = current && engineJson !== null ? `${data.builtAt}\n${engineJson}` : null;
   const [result, setResult] = useState<{ key: string; map: Map<string, Verdict> } | null>(null);
+  const [checker] = useState(() => createChecker(makeWorker));
+  useEffect(() => () => checker.dispose(), [checker]);
+  const hasParts = plan.ready.length > 0 || Object.keys(plan.refresh).length > 0;
+  // The worker's chunk downloads while the candidates are being built.
+  useEffect(() => {
+    if (hasParts) checker.warm();
+  }, [checker, hasParts]);
   useEffect(() => {
     if (!current || !engineParts || runKey === null) return;
-    const map = new Map<string, Verdict>();
-    return runSliced(
-      [...current.parts.values()],
-      SLICE,
-      (slice) => {
-        for (const [k, v] of checkAll(engineParts, slot, slice, CTX)) map.set(k, v);
-      },
-      () => setResult({ key: runKey, map }),
-    );
-  }, [current, engineParts, runKey, slot]);
+    return checker.run(slot, engineParts, [...current.parts.values()], (map) => setResult({ key: runKey, map }));
+  }, [checker, current, engineParts, runKey, slot]);
   const verdicts = result && result.key === runKey ? result.map : null;
 
   const hidden = useMemo(() => {
@@ -138,8 +148,10 @@ export function usePick(slot: Slot, data: CategoryData): PickState {
     [engine, stored],
   );
 
+  const status = !engine ? 'loading' : !verdicts ? 'checking' : 'ready';
   return {
-    status: !engine ? 'loading' : !verdicts ? 'checking' : 'ready',
+    status,
+    pending: status !== 'ready' && hasParts,
     build: engineParts ?? [],
     missing: missing.missing,
     unchecked: missing.unchecked,

@@ -283,13 +283,106 @@ test('a phone at 360 px: no sideways scroll, the buttons are at least 44 px tall
   expect(errors).toEqual([]);
 });
 
+// Task 6b: /case?pick=1 with a saved build. A long card (360 mm) hides every case that states a shorter maximum.
+const LONG_CARD = { chip: 'RTX 5090', lengthMm: 360, minPsu: 1000, powerConnector: null, slots: null };
+const caseBuild = async (page: Page) => {
+  const builtAt = await listBuiltAt(page, 'case');
+  return { gpu: 'bestprice:999000001', compat: { gpu: { fields: LONG_CARD, builtAt } } };
+};
+
+/** Sums the page's layout shifts (none with recent input) from the first paint on, like CLS. */
+async function trackShifts(page: Page) {
+  await page.addInitScript(() => {
+    const w = window as unknown as { __cls: number; __shifts: string[] };
+    w.__cls = 0;
+    w.__shifts = [];
+    new PerformanceObserver((list) => {
+      for (const e of list.getEntries() as (PerformanceEntry & { value: number; hadRecentInput: boolean; sources?: { node?: Node }[] })[]) {
+        if (e.hadRecentInput) continue;
+        w.__cls += e.value;
+        w.__shifts.push(`${e.value.toFixed(4)} ${(e.sources ?? []).map((s) => (s.node as Element | undefined)?.tagName ?? '?').join(',')}`);
+      }
+    }).observe({ type: 'layout-shift', buffered: true });
+  });
+  return () => page.evaluate(() => (window as unknown as { __cls: number; __shifts: string[] }).__cls);
+}
+
+for (const vp of [
+  { name: 'desktop', width: 1366, height: 900 },
+  { name: 'phone', width: 360, height: 740 },
+]) {
+  test(`/case?pick=1 with a saved build (${vp.name}): the check runs in the worker and nothing shifts when it finishes`, async ({ page }) => {
+    const errors = trackErrors(page);
+    const requests = trackRequests(page);
+    await page.setViewportSize({ width: vp.width, height: vp.height });
+    const cls = await trackShifts(page);
+    await page.goto('/about');
+    await withBuild(page, await caseBuild(page), '/case?pick=1');
+    await waitChecked(page);
+    await page.waitForTimeout(1000);
+    expect(await cls()).toBeLessThan(0.1);
+    expect(requests.some((p) => /\/assets\/pick\.worker-[\w-]+\.js$/.test(p))).toBe(true);
+    if (vp.name === 'phone') {
+      await expect(page.locator('main li.card:visible').first()).toBeVisible();
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(360);
+      expect(errors).toEqual([]);
+      return;
+    }
+    // "Only compatible" on: something is hidden, and no visible row is greyed.
+    await expect(onlyCompatible(page)).toContainText(/Only compatible \(\d[\d,]*\u00a0hidden\)/);
+    await expect(rows(page).first()).toBeVisible();
+    await expect(page.locator('main tbody tr:visible button[aria-expanded].opacity-50')).toHaveCount(0);
+    // Off: the hidden cases come back greyed, with the reason (the card is longer than the case allows).
+    await onlyCompatible(page).click();
+    await expect.poll(() => new URL(page.url()).searchParams.get('compat')).toBe('0');
+    await page.locator('main aside input[aria-label]').first().fill('mini');
+    const greyed = page.locator('main tbody tr:visible').filter({ has: page.locator('button[aria-expanded].opacity-50') });
+    await expect(greyed.first()).toBeVisible();
+    await expect(greyed.first()).toContainText('Incompatible');
+    await expect(greyed.first().locator('button').filter({ hasText: /^Add to build$/ })).toHaveCount(0);
+    // "Add to build" on a case that fits.
+    await onlyCompatible(page).click();
+    const row = page.locator('main tbody tr:visible').filter({ has: page.getByRole('button', { name: /^Add to build$/ }) }).first();
+    await row.locator('button').filter({ hasText: /^Add to build$/ }).click();
+    await expect.poll(() => new URL(page.url()).pathname).toBe('/builder');
+    const saved = await savedBuild(page);
+    expect(typeof saved.case).toBe('string');
+    const fields = (saved.compat as Record<string, { fields: Record<string, unknown> }>).case.fields;
+    expect(fields.gpuMaxMm == null || (fields.gpuMaxMm as number) >= 360).toBe(true);
+    expect(errors).toEqual([]);
+  });
+}
+
+test('/case?pick=1 without Worker support: the main-thread fallback hides the same cases', async ({ page }) => {
+  const errors = trackErrors(page);
+  const requests = trackRequests(page);
+  const hiddenCount = async () => Number(((await onlyCompatible(page).innerText()).match(/\((\d[\d,]*)/)?.[1] ?? 'NaN').replace(/,/g, ''));
+  await page.goto('/about');
+  const build = await caseBuild(page);
+  await withBuild(page, build, '/case?pick=1&q=mini');
+  await waitChecked(page);
+  const withWorker = await hiddenCount();
+  expect(withWorker).toBeGreaterThan(0);
+
+  await page.addInitScript(() => {
+    (window as unknown as { Worker?: unknown }).Worker = undefined;
+  });
+  requests.length = 0;
+  await page.reload();
+  await waitChecked(page);
+  expect(requests.some((p) => /pick\.worker/.test(p))).toBe(false);
+  expect(await hiddenCount()).toBe(withWorker);
+  await expect(page.locator('main tbody tr:visible button[aria-expanded].opacity-50')).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
+
 test('a normal category page loads no pick code, no compat chunk and no builder.json', async ({ page }) => {
   const errors = trackErrors(page);
   const requests = trackRequests(page);
   await withBuild(page, { cpu: AM5_CPU }, '/gpu');
   await expect(rows(page).first()).toBeVisible({ timeout: 20_000 });
   await page.waitForLoadState('networkidle');
-  expect(requests.filter((p) => p.startsWith('/data/compat/') || p === '/data/builder.json' || /\/assets\/PickView-/.test(p))).toEqual([]);
+  expect(requests.filter((p) => p.startsWith('/data/compat/') || p === '/data/builder.json' || /\/assets\/(PickView|pick\.worker)-/.test(p))).toEqual([]);
   await expect(page.locator('main [data-pick=bar] [role=status]')).toHaveCount(0);
   await expect(page.locator('main [role=switch]')).toHaveCount(0);
   await expect(addButtons(page)).toHaveCount(0);
