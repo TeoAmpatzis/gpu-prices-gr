@@ -29,7 +29,8 @@ export type { Verdict };
  * that never answers. Then the rows show with nothing hidden and the bar says the check didn't finish
  * (status 'timeout', final for this build and data, so nothing is hidden later either).
  */
-export const PENDING_DEADLINE = 10_000;
+// Must exceed the worker's timeout (pickChecker.WORKER_TIMEOUT, 10 s) plus the main-thread fallback after it.
+export const PENDING_DEADLINE = 15_000;
 
 /** The pick worker (a lazy chunk of its own); null where the browser has no Worker (main-thread fallback). */
 const makeWorker =
