@@ -1,5 +1,5 @@
 import { ChevronRight, TriangleAlert } from 'lucide-react';
-import { Fragment } from 'react';
+import { Fragment, useId, useState } from 'react';
 import { tr, useLang, type Text } from '../lib/i18n';
 import { shortAgo } from '../lib/format';
 import { SOURCES } from '../lib/sources';
@@ -100,21 +100,60 @@ export function StatusLine({
           );
         })}
       </p>
-      {staleIn && staleIn.length > 0 && (
-        <p className="flex flex-wrap items-center gap-1.5 text-warning-fg">
-          <TriangleAlert className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-          <span>
-            {tr(lang, UI.olderThan24)}:{' '}
-            {staleIn.map((x, i) => (
-              <Fragment key={i}>
-                {i > 0 && ', '}
-                <span className="whitespace-nowrap">
-                  {SOURCES[x.source].label} · {tr(lang, x.category)} <span className="ui-num">{shortAgo(x.updatedAt, lang)}</span>
-                </span>
-              </Fragment>
-            ))}
-          </span>
-        </p>
+      {staleIn && staleIn.length > 0 && <StaleDetails staleIn={staleIn} />}
+    </div>
+  );
+}
+
+/** Site-wide stale data (C1): one calm line, the source × category pairs grouped by source behind "Details". */
+function StaleDetails({ staleIn }: { staleIn: { source: SourceName; category: Text; updatedAt: string }[] }) {
+  const lang = useLang();
+  const [open, setOpen] = useState(false);
+  const id = useId();
+  // Per source: how many categories are late and the oldest update among them.
+  const groups = new Map<SourceName, { cats: number; oldest: string }>();
+  for (const x of staleIn) {
+    const g = groups.get(x.source);
+    if (!g) groups.set(x.source, { cats: 1, oldest: x.updatedAt });
+    else {
+      g.cats += 1;
+      if (x.updatedAt < g.oldest) g.oldest = x.updatedAt;
+    }
+  }
+  return (
+    <div
+      className="flex flex-col gap-1 text-warning-fg"
+      onKeyDown={(e) => {
+        if (e.key === 'Escape' && open) {
+          e.stopPropagation();
+          setOpen(false);
+        }
+      }}
+    >
+      <p className="flex flex-wrap items-center gap-x-2">
+        <span className="inline-flex items-start gap-1.5">
+          <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+          {tr(lang, UI.someStale)}
+        </span>
+        <button
+          type="button"
+          aria-expanded={open}
+          aria-controls={id}
+          onClick={() => setOpen(!open)}
+          className="tap inline-flex items-center rounded font-medium underline underline-offset-2 hover:text-fg"
+        >
+          {tr(lang, UI.staleDetails)}
+        </button>
+      </p>
+      {open && (
+        <ul id={id} className="ml-5 flex flex-col gap-0.5">
+          {[...groups].map(([s, g]) => (
+            <li key={s}>
+              {SOURCES[s].label}: {g.cats} {tr(lang, g.cats === 1 ? UI.categoryOne : UI.categoryMany)},{' '}
+              <span className="ui-num">{shortAgo(g.oldest, lang)}</span>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
