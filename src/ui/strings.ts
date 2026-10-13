@@ -96,6 +96,10 @@ export const UI = {
   sources: { el: 'Πηγές', en: 'Sources' },
   updatedAgo: { el: 'ενημέρωση', en: 'updated' },
   olderThan24: { el: 'παλαιότερη από 24 ώρες', en: 'older than 24 hours' },
+  someStale: { el: 'Κάποιες τιμές είναι παλαιότερες από 24 ώρες', en: 'Some prices are older than 24 hours' },
+  staleDetails: { el: 'Λεπτομέρειες', en: 'Details' },
+  categoryOne: { el: 'κατηγορία', en: 'category' },
+  categoryMany: { el: 'κατηγορίες', en: 'categories' },
 
   // Search
   search: { el: 'Αναζήτηση', en: 'Search' },

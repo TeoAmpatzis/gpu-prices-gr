@@ -8,6 +8,7 @@ import { SOURCES } from '../lib/sources';
 import SourceBadge from './SourceBadge';
 import { isExamplePhoto } from '../lib/examplePhoto';
 import ProductPhoto from './ProductPhoto';
+import { shortTitles } from '../lib/titles';
 import type { ProductImage } from '../lib/images';
 
 // The chart is only needed once a row is expanded.
@@ -86,11 +87,14 @@ function PriceExtras<L extends BaseListing>({ m, delta, lang }: { m: Model<L>; d
     <>
       {moved && (
         <span
-          className={`inline-flex items-center gap-0.5 ${delta! < 0 ? 'text-success-fg' : 'text-up'}`}
+          className={`inline-flex items-center gap-1 ${delta! < 0 ? 'text-success-fg' : 'text-up'}`}
           title={tr(lang, T.weekChange)}
         >
           {delta! < 0 ? <TrendingDown className="h-3.5 w-3.5" /> : <TrendingUp className="h-3.5 w-3.5" />}
-          {price(Math.abs(delta!))}
+          <span className="whitespace-nowrap">
+            {delta! < 0 ? '−' : '+'}
+            {price(Math.abs(delta!))} {tr(lang, T.in7days)}
+          </span>
         </span>
       )}
       {m.bestTotal && (
@@ -137,10 +141,11 @@ function ModelDetails<L extends BaseListing>({
 }) {
   const price = (n: number) => formatPrice(n, lang);
   const details = useDetails(cat);
+  const shorts = shortTitles(m.listings.map((l) => l.title), m.chip);
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_22rem]">
       <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-xl bg-panel ring-1 ring-edge">
-        {m.listings.map((l) => {
+        {m.listings.map((l, i) => {
           const x = listingExtra?.(l);
           return (
           <li key={l.id}>
@@ -160,7 +165,7 @@ function ModelDetails<L extends BaseListing>({
                   <SourceBadge source={l.source} />
                 </span>
                 <span className="line-clamp-2 min-w-0 text-fg-soft [overflow-wrap:anywhere] xl:line-clamp-1 xl:flex-1" title={l.title}>
-                  {l.title}
+                  {shorts[i]}
                 </span>
                 {(l.total != null || l.shopCount != null) && (
                   <span className="flex flex-wrap gap-x-3 text-xs xl:shrink-0">

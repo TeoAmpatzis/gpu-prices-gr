@@ -60,7 +60,7 @@ export interface CategoryConfig<L extends BaseListing> {
   /** URL parameter for the pills (e.g. "type" → #ram?type=ddr5,ddr4). */
   groupParam: string;
   group: (l: L) => string;
-  groupDot: Record<string, string>; // Tailwind bg class per group
+  groupDot: Record<string, string>; // Tailwind bg class per group: neutral on purpose (green/red mean "fits / price down" and "error / price up")
   /** Default true: the "Recommended" sort goes group by group before `tierScore`. */
   sortByGroup?: boolean;
   /**
@@ -240,7 +240,7 @@ export const GPU: CategoryConfig<GpuListing> = {
   groupLabel: VENDOR,
   groupParam: 'brand',
   group: (l) => l.brand,
-  groupDot: { NVIDIA: 'bg-green-500', AMD: 'bg-red-500', Intel: 'bg-sky-500' },
+  groupDot: { NVIDIA: 'bg-idle', AMD: 'bg-idle', Intel: 'bg-idle' },
   segments: { main: 'Gaming', pro: 'Workstation' },
   modelKey: (l) => `${l.chip} ${l.vram}GB`,
   variant: (l) => `${l.vram}GB`,
@@ -305,7 +305,7 @@ export const CPU: CategoryConfig<CpuListing> = {
   groupLabel: VENDOR,
   groupParam: 'brand',
   group: (l) => l.brand,
-  groupDot: { AMD: 'bg-red-500', Intel: 'bg-sky-500' },
+  groupDot: { AMD: 'bg-idle', Intel: 'bg-idle' },
   segments: { main: 'Desktop', pro: 'Server / HEDT' },
   modelKey: (l) => l.chip,
   isPro: (l) => /^(EPYC|Threadripper|Xeon)/.test(l.chip),
@@ -358,7 +358,7 @@ export const MOBO: CategoryConfig<MoboListing> = {
   groupParam: 'sock',
   group: (l) => (l.socket && MOBO_SOCKETS.includes(l.socket) ? l.socket : OTHER),
   groupDot: {
-    AM5: 'bg-red-500', AM4: 'bg-orange-400', LGA1851: 'bg-sky-500', LGA1700: 'bg-indigo-400', [OTHER]: 'bg-zinc-400',
+    AM5: 'bg-idle', AM4: 'bg-idle', LGA1851: 'bg-idle', LGA1700: 'bg-idle', [OTHER]: 'bg-idle',
   },
   // Most-offered boards first rather than socket by socket.
   sortByGroup: false,
@@ -415,7 +415,7 @@ export const RAM: CategoryConfig<RamListing> = {
   groupLabel: { el: 'Τύπος μνήμης', en: 'Memory type' },
   groupParam: 'type',
   group: (l) => l.type,
-  groupDot: { DDR5: 'bg-violet-500', DDR4: 'bg-sky-500', DDR3: 'bg-amber-500', DDR2: 'bg-zinc-400' },
+  groupDot: { DDR5: 'bg-idle', DDR4: 'bg-idle', DDR3: 'bg-idle', DDR2: 'bg-idle' },
   segments: { main: { el: 'Επιτραπέζιοι', en: 'Desktop' }, pro: { el: 'Φορητοί / Διακομιστές', en: 'Laptop / Server' } },
   modelKey: (l) => `${l.chip} ${l.formFactor}`,
   isPro: (l) => l.formFactor !== 'Desktop',
@@ -468,8 +468,8 @@ export const PSU: CategoryConfig<PsuListing> = {
   groupParam: 'eff',
   group: (l) => l.efficiency ?? NO_RATING,
   groupDot: {
-    Diamond: 'bg-cyan-400', Titanium: 'bg-slate-300', Platinum: 'bg-indigo-300', Gold: 'bg-yellow-500',
-    Silver: 'bg-zinc-400', Bronze: 'bg-amber-700', Standard: 'bg-zinc-500', [NO_RATING]: 'bg-zinc-600',
+    Diamond: 'bg-idle', Titanium: 'bg-idle', Platinum: 'bg-idle', Gold: 'bg-idle',
+    Silver: 'bg-idle', Bronze: 'bg-idle', Standard: 'bg-idle', [NO_RATING]: 'bg-idle',
   },
   // Most-offered specs first (850W Gold, 650W Bronze…) rather than rare Titanium units.
   sortByGroup: false,
@@ -517,8 +517,8 @@ export const CASE: CategoryConfig<CaseListing> = {
   groupParam: 'size',
   group: (l) => l.size,
   groupDot: {
-    'Full Tower': 'bg-violet-500', 'Midi Tower': 'bg-sky-500', 'Mini Tower': 'bg-teal-500',
-    'SFF / Cube': 'bg-amber-500', [OTHER]: 'bg-zinc-400',
+    'Full Tower': 'bg-idle', 'Midi Tower': 'bg-idle', 'Mini Tower': 'bg-idle',
+    'SFF / Cube': 'bg-idle', [OTHER]: 'bg-idle',
   },
   // Most-offered cases first (on both sites, several colours) rather than by size.
   sortByGroup: false,
@@ -563,8 +563,8 @@ export const FAN: CategoryConfig<FanListing> = {
   groupParam: 'size',
   group: (l) => fanGroup(l.size),
   groupDot: {
-    '120mm': 'bg-sky-500', '140mm': 'bg-violet-500', '80–92mm': 'bg-teal-500', '180mm+': 'bg-amber-500',
-    [OTHER]: 'bg-zinc-400',
+    '120mm': 'bg-idle', '140mm': 'bg-idle', '80–92mm': 'bg-idle', '180mm+': 'bg-idle',
+    [OTHER]: 'bg-idle',
   },
   // Most-offered fans first; a pack is its own model ("… 120mm ×3") so it never competes with singles.
   sortByGroup: false,
@@ -611,7 +611,7 @@ export const COOLER: CategoryConfig<CoolerListing> = {
   groupLabel: TYPE,
   groupParam: 'type',
   group: coolerGroup,
-  groupDot: { [AIR]: 'bg-sky-500', 'AIO 120–140': 'bg-teal-500', 'AIO 240–280': 'bg-violet-500', 'AIO 360–420': 'bg-fuchsia-500' },
+  groupDot: { [AIR]: 'bg-idle', 'AIO 120–140': 'bg-idle', 'AIO 240–280': 'bg-idle', 'AIO 360–420': 'bg-idle' },
   sortByGroup: false,
   modelKey: (l) => productKey(l.chip),
   isPro: () => false,
@@ -701,7 +701,7 @@ export const STORAGE: CategoryConfig<StorageListing> = {
   groupLabel: TYPE,
   groupParam: 'type',
   group: storageType,
-  groupDot: { NVMe: 'bg-violet-500', 'SATA SSD': 'bg-sky-500', 'SAS SSD': 'bg-amber-500', HDD: 'bg-zinc-400' },
+  groupDot: { NVMe: 'bg-idle', 'SATA SSD': 'bg-idle', 'SAS SSD': 'bg-idle', HDD: 'bg-idle' },
   // Most-offered drives first rather than type by type.
   sortByGroup: false,
   segments: { main: { el: 'Οικιακοί', en: 'Consumer' }, middle: [{ value: 'nas', label: 'NAS' }], pro: 'Server' },
