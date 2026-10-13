@@ -1,9 +1,10 @@
 // The pick worker's messages (v2 step 3, task 6b): the page sends the candidates' engine parts and the build's
-// parts, the worker answers with each candidate's verdict. Pure functions, shared by the worker
-// (pick.worker.ts), the main-thread fallback (pickChecker.ts) and the tests. Imports only the check itself
-// (pickCheck.ts → engine), so the worker's chunk holds the engine and nothing of the page.
+// parts, the worker answers with each candidate's verdict. Pure functions and types only (no engine code), shared
+// by the worker (pick.worker.ts → pickCheck.answer), the checker (pickChecker.ts) and the tests.
 import type { Finding, Part, PartCategory } from '../engine';
-import { checkAll, PICK_CTX, type Verdict } from './pickCheck';
+
+/** The engine's verdict on one candidate: hidden by "Only compatible" or not, and its findings for the row. */
+export type Verdict = { hide: boolean; findings: Finding[] };
 
 export interface CheckRequest {
   /** Matches the answer to its request (a newer request replaces an older one). */
@@ -36,13 +37,4 @@ export function toResults(map: Map<string, Verdict>): CheckResult[] {
 export function toVerdicts(results: CheckResult[], into = new Map<string, Verdict>()): Map<string, Verdict> {
   for (const [key, hide, findings] of results) into.set(key, { hide, findings });
   return into;
-}
-
-/** The worker's whole job: one request → one answer (an engine error is an answer too, never a dead worker). */
-export function answer(req: CheckRequest): CheckAnswer {
-  try {
-    return { id: req.id, ok: true, results: toResults(checkAll(req.build, req.slot, req.candidates, PICK_CTX)) };
-  } catch (e) {
-    return { id: req.id, ok: false, error: e instanceof Error ? e.message : String(e) };
-  }
 }

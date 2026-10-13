@@ -1,10 +1,10 @@
 // Runs pick mode's candidate check (v2 step 3, task 6b): in the pick worker when the browser can start one, else
 // (no Worker, the worker failed to start, crashed, answered with an error or not at all) on the main thread in
-// idle slices, as before the worker. The page only applies the verdicts.
+// idle slices, as before the worker. The page only applies the verdicts. The engine is not in the page's chunk:
+// the worker bundles it, and the fallback loads it (pickCheck.ts) when it runs.
 import type { Part, PartCategory } from '../engine';
-import { checkAll, PICK_CTX, type Verdict } from './pickCheck';
 import { idle, runSliced, SLICE, type Schedule } from './pickBuild';
-import { toResults, toVerdicts, type CheckAnswer, type CheckRequest } from './pickProtocol';
+import { toResults, toVerdicts, type CheckAnswer, type CheckRequest, type Verdict } from './pickProtocol';
 
 /** What the checker needs of a Worker (a fake one in the tests). */
 export interface WorkerLike {
@@ -26,16 +26,40 @@ export interface Checker {
   dispose(): void;
 }
 
-/** The main-thread check in idle slices (the fallback), with the same trimmed verdicts as the worker's. */
+/** The engine side of the main-thread fallback, loaded when the fallback first runs. */
+const loadCheck = () => import('./pickCheck');
+
+/**
+ * The main-thread check in idle slices (the fallback), with the same trimmed verdicts as the worker's. If the
+ * engine's chunk can't be loaded (twice), `done` gets no verdicts: the rows show, nothing hidden, never a page
+ * stuck on its placeholders.
+ */
 export function checkSliced(
   slot: PartCategory,
   build: Part[],
   candidates: Part[],
   done: (verdicts: Map<string, Verdict>) => void,
   schedule: Schedule = idle,
+  load: typeof loadCheck = loadCheck,
 ): () => void {
-  const map = new Map<string, Verdict>();
-  return runSliced(candidates, SLICE, (slice) => toVerdicts(toResults(checkAll(build, slot, slice, PICK_CTX)), map), () => done(map), schedule);
+  let cancelled = false;
+  let cancelRun = () => {};
+  void load()
+    .catch(() => load())
+    .then(
+      ({ checkAll, PICK_CTX }) => {
+        if (cancelled) return;
+        const map = new Map<string, Verdict>();
+        cancelRun = runSliced(candidates, SLICE, (slice) => toVerdicts(toResults(checkAll(build, slot, slice, PICK_CTX)), map), () => done(map), schedule);
+      },
+      () => {
+        if (!cancelled) done(new Map());
+      },
+    );
+  return () => {
+    cancelled = true;
+    cancelRun();
+  };
 }
 
 export function createChecker(

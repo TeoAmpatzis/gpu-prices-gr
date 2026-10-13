@@ -3,8 +3,9 @@ import { describe, expect, it } from 'vitest';
 import { biosSupport, evaluate, type Context, type Finding, type Part, type PartCategory } from '../../src/engine';
 import { SLOTS, slotModels, type Slot } from '../../src/lib/builder';
 import {
-  CATEGORY_RULE_SLOTS, HIDE_RULES, hides, NEVER_HIDE_WHEN_MISSING, NOT_IN_DATA, PART_FIELDS, checkAll, hidingErrors, toPart, usable,
+  CATEGORY_RULE_SLOTS, HIDE_RULES, hides, NEVER_HIDE_WHEN_MISSING, NOT_IN_DATA, PART_FIELDS, toPart, usable,
 } from '../../src/lib/pick';
+import { checkAll, hidingErrors } from '../../src/lib/pickCheck';
 import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
 import { CATEGORY_IDS } from '../../src/lib/categories';
 import type { Category, Latest } from '../../src/types';

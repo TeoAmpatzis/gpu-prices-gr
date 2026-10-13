@@ -1,20 +1,16 @@
-// The candidate check of pick mode (v2 step 3): which engine errors hide a candidate, and one slot's whole page
-// checked against the build. Imports the engine only, so the pick worker (pick.worker.ts) bundles nothing else;
-// pick.ts re-exports all of it for the page code and the tests.
-import { biosSupport, candidateErrors, evaluate, type Build, type Context, type Finding, type Part, type PartCategory, type RuleId } from '../engine';
+// The candidate check of pick mode (v2 step 3): one slot's whole page checked against the build, and the pick
+// worker's answer to a request. The only pick module with engine code: the worker (pick.worker.ts) bundles it,
+// and the page loads it only for the main-thread fallback (pickChecker.ts, a dynamic import), so the page's own
+// chunk carries no engine.
+import { biosSupport, candidateErrors, evaluate, type Context, type Finding, type Part, type PartCategory } from '../engine';
+import { hides } from './pickHide';
+import { toResults, type CheckAnswer, type CheckRequest, type Verdict } from './pickProtocol';
+
+export { hides, HIDE_RULES, NEVER_HIDE_WHEN_MISSING } from './pickHide';
+export type { Verdict };
 
 /** Pick mode's engine context: the BIOS table only (no chip length estimates: they need every card's data). */
 export const PICK_CTX: Context = { bios: biosSupport };
-
-/**
- * "Only compatible" hides a candidate only for an error of these rules (step2-plan section 4): 1 CPU socket, 2 RAM
- * type, 3 RAM sticks, 5 board in case, 6 card in case, 8 air cooler height, 10 cooler sockets, 16 PSU in case,
- * and 14 (PSU wattage) only when its basis is `stated`. Everything else is shown on the row, never hides.
- */
-export const HIDE_RULES: ReadonlySet<RuleId> = new Set<RuleId>([1, 2, 3, 5, 6, 8, 10, 14, 16]);
-
-/** Rules 11 (CPU needs a cooler) and 12 (CPU needs a card): never hide while this other part is not in the build. */
-export const NEVER_HIDE_WHEN_MISSING: Readonly<Record<11 | 12, PartCategory>> = { 11: 'cooler', 12: 'gpu' };
 
 /** The own-clash filter of `candidateErrors`, from two evaluations (so `checkAll` evaluates the base build once). */
 function ownErrors(beforeErrors: Finding[], after: Finding[], key: string): Finding[] {
@@ -24,22 +20,10 @@ function ownErrors(beforeErrors: Finding[], after: Finding[], key: string): Find
   });
 }
 
-/** Does this error of the candidate hide it? Exported for the rule-set tests. */
-export function hides(f: Finding, build: Build): boolean {
-  if (f.status !== 'error') return false;
-  const need = NEVER_HIDE_WHEN_MISSING[f.rule as 11 | 12]; // undefined for every other rule
-  if (need && !build.some((p) => p.category === need)) return false;
-  if (!HIDE_RULES.has(f.rule)) return false;
-  return f.rule !== 14 || f.basis === 'stated';
-}
-
 /** The errors that hide `candidate` in this build (`build` = without the part it would replace). */
 export function hidingErrors(build: Part[], candidate: Part, ctx: Context): Finding[] {
   return candidateErrors(build, candidate, ctx).filter((f) => hides(f, build));
 }
-
-/** The engine's verdict on one candidate: hidden by "Only compatible" or not, and its findings for the row. */
-export type Verdict = { hide: boolean; findings: Finding[] };
 
 /**
  * Check a whole page's candidates for one slot. Unlike `hidingErrors` (whose `build` the caller has already
@@ -61,4 +45,13 @@ export function checkAll(build: Part[], slot: PartCategory, candidates: Part[], 
     out.set(c.key, { hide: [...ownErr].some((f) => hides(f, base)), findings });
   }
   return out;
+}
+
+/** The worker's whole job: one request → one answer (an engine error is an answer too, never a dead worker). */
+export function answer(req: CheckRequest): CheckAnswer {
+  try {
+    return { id: req.id, ok: true, results: toResults(checkAll(req.build, req.slot, req.candidates, PICK_CTX)) };
+  } catch (e) {
+    return { id: req.id, ok: false, error: e instanceof Error ? e.message : String(e) };
+  }
 }

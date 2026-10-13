@@ -4,7 +4,8 @@
 // the address has `pick=1`, so the normal page's code and downloads stay as they were.
 import { useMemo, type MouseEvent, type ReactNode } from 'react';
 import { ArrowLeft, Plus } from 'lucide-react';
-import { shownLevel, type Finding, type Part } from '../engine';
+import type { Finding, Part } from '../engine';
+import { shownLevel } from '../engine/util';
 import { applyFilters, type CategoryData } from '../lib/data';
 import { tr, useLang, type Lang } from '../lib/i18n';
 import { SLOT_OF, hides } from '../lib/pick';

@@ -4,7 +4,7 @@
 import { describe, expect, it } from 'vitest';
 import { biosSupport, type Part } from '../../src/engine';
 import type { StoredBuild } from '../../src/lib/buildStore';
-import { checkAll } from '../../src/lib/pick';
+import { checkAll } from '../../src/lib/pickCheck';
 import {
   fetchOutcomes, isPlainValue, isStale, outcomeKey, outcomeOf, partOf, planBuild, resolvePlan, runSliced, shownOffer, validStored,
   type BuildPlan, type Outcome, type Schedule,

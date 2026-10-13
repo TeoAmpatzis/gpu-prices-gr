@@ -73,8 +73,10 @@ export const NOT_IN_DATA: Record<Slot, string[]> = {
   psu: ['native12v2x6', 'atx3'],
 };
 
-// The candidate check (hide rules, checkAll) lives in pickCheck.ts, which the pick worker imports on its own.
-export { checkAll, hides, hidingErrors, HIDE_RULES, NEVER_HIDE_WHEN_MISSING, type Verdict } from './pickCheck';
+// The hide rules live in pickHide.ts (no engine code); the check itself (checkAll, hidingErrors) in pickCheck.ts,
+// which only the pick worker and the main-thread fallback load.
+export { hides, HIDE_RULES, NEVER_HIDE_WHEN_MISSING } from './pickHide';
+export type { Verdict } from './pickProtocol';
 
 /**
  * Which other slots' parts the rules of each category page need (step2-plan section 2, "Ποιες θέσεις αφορούν οι

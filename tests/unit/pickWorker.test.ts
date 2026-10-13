@@ -2,9 +2,9 @@
 // that can't work, on the main thread in idle slices (pickChecker.ts).
 import { describe, expect, it, vi } from 'vitest';
 import type { Part, PartCategory } from '../../src/engine';
-import { checkAll, PICK_CTX, type Verdict } from '../../src/lib/pickCheck';
+import { answer, checkAll, PICK_CTX } from '../../src/lib/pickCheck';
 import { checkSliced, createChecker, type WorkerLike } from '../../src/lib/pickChecker';
-import { answer, shownFinding, toResults, toVerdicts, type CheckAnswer, type CheckRequest } from '../../src/lib/pickProtocol';
+import { shownFinding, toResults, toVerdicts, type CheckAnswer, type CheckRequest, type Verdict } from '../../src/lib/pickProtocol';
 import type { Schedule } from '../../src/lib/pickBuild';
 
 let n = 0;
@@ -54,6 +54,8 @@ function fakeWorker(reply: (r: CheckRequest) => CheckAnswer | 'crash' | 'silent'
   return w;
 }
 const flush = () => new Promise((r) => setTimeout(r, 0));
+/** Waits for the fallback (its engine chunk is a dynamic import) to call back. */
+const called = (fn: ReturnType<typeof vi.fn>) => vi.waitFor(() => expect(fn).toHaveBeenCalled());
 
 describe('protocol', () => {
   it('answer = checkAll, trimmed to errors and warnings, through structured clone', () => {
@@ -79,6 +81,21 @@ describe('protocol', () => {
 });
 
 describe('checker', () => {
+  it("the fallback's engine chunk fails to load twice: no verdicts, never a page left waiting", async () => {
+    const done = vi.fn();
+    const load = vi.fn(() => Promise.reject(new Error('offline')));
+    checkSliced('mobo', build, boards, done, now, load as never);
+    await called(done);
+    expect(load).toHaveBeenCalledTimes(2);
+    expect((done.mock.calls[0][0] as Map<string, Verdict>).size).toBe(0);
+  });
+  it('a cancelled fallback never calls back', async () => {
+    const done = vi.fn();
+    checkSliced('mobo', build, boards, done, now)();
+    await flush();
+    await flush();
+    expect(done).not.toHaveBeenCalled();
+  });
   it('worker: posts the parts once and hands over the same verdicts as the main thread', async () => {
     const w = fakeWorker();
     const c = createChecker(() => w, now);
@@ -91,13 +108,14 @@ describe('checker', () => {
     expect(done).toHaveBeenCalledTimes(1);
     expect(done.mock.calls[0][0]).toEqual(expected());
   });
-  it('no Worker in the browser: the main-thread fallback (idle slices) gives the same verdicts', () => {
+  it('no Worker in the browser: the main-thread fallback (idle slices) gives the same verdicts', async () => {
     const done = vi.fn();
     createChecker(null, now).run('mobo', build, boards, done);
+    await called(done);
     expect(done).toHaveBeenCalledTimes(1);
     expect(done.mock.calls[0][0]).toEqual(expected());
   });
-  it('the fallback runs in slices on the schedule given', () => {
+  it('the fallback runs in slices on the schedule given', async () => {
     const queued: (() => void)[] = [];
     const later: Schedule = (fn) => {
       queued.push(fn);
@@ -106,16 +124,17 @@ describe('checker', () => {
     const done = vi.fn();
     const many = Array.from({ length: 650 }, (_, i) => ({ ...boards[i % 3], key: `b${i}` }));
     checkSliced('mobo', build, many, done, later);
-    expect(queued).toHaveLength(1);
+    await vi.waitFor(() => expect(queued).toHaveLength(1));
     while (queued.length) queued.shift()!();
     expect(done).toHaveBeenCalledTimes(1);
     expect((done.mock.calls[0][0] as Map<string, Verdict>).size).toBe(650);
   });
-  it('a worker that cannot start: fallback', () => {
+  it('a worker that cannot start: fallback', async () => {
     const done = vi.fn();
     createChecker(() => {
       throw new Error('blocked by CSP');
     }, now).run('mobo', build, boards, done);
+    await called(done);
     expect(done.mock.calls[0][0]).toEqual(expected());
   });
   it('a worker that crashes: fallback now, and later runs skip the worker', async () => {
@@ -124,18 +143,19 @@ describe('checker', () => {
     const c = createChecker(make, now);
     const done = vi.fn();
     c.run('mobo', build, boards, done);
-    await flush();
+    await called(done);
     expect(w.terminated).toBe(true);
     expect(done.mock.calls[0][0]).toEqual(expected());
     const again = vi.fn();
     c.run('mobo', build, boards, again);
-    expect(again).toHaveBeenCalledTimes(1); // synchronous `now` schedule: no worker involved
+    await called(again);
+    expect(again).toHaveBeenCalledTimes(1);
     expect(make).toHaveBeenCalledTimes(1);
   });
   it('an engine error in the worker (ok: false): fallback', async () => {
     const done = vi.fn();
     createChecker(() => fakeWorker((r) => ({ id: r.id, ok: false, error: 'boom' })), now).run('mobo', build, boards, done);
-    await flush();
+    await called(done);
     expect(done.mock.calls[0][0]).toEqual(expected());
   });
   it('a worker that never answers: fallback after the timeout', async () => {
@@ -148,6 +168,8 @@ describe('checker', () => {
       expect(done).not.toHaveBeenCalled();
       await vi.advanceTimersByTimeAsync(1);
       expect(w.terminated).toBe(true);
+      vi.useRealTimers();
+      await called(done);
       expect(done.mock.calls[0][0]).toEqual(expected());
     } finally {
       vi.useRealTimers();
