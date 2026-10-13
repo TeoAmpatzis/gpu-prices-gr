@@ -322,6 +322,7 @@ for (const vp of [
     await page.waitForTimeout(1000);
     expect(await cls()).toBeLessThan(0.1);
     expect(requests.some((p) => /\/assets\/pick\.worker-[\w-]+\.js$/.test(p))).toBe(true);
+    expect(requests.some((p) => /\/assets\/pickCheck-/.test(p))).toBe(false); // the engine only in the worker
     if (vp.name === 'phone') {
       await expect(page.locator('main li.card:visible').first()).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(360);
@@ -371,6 +372,7 @@ test('/case?pick=1 without Worker support: the main-thread fallback hides the sa
   await page.reload();
   await waitChecked(page);
   expect(requests.some((p) => /pick\.worker/.test(p))).toBe(false);
+  expect(requests.some((p) => /\/assets\/pickCheck-/.test(p))).toBe(true); // the engine, loaded for the fallback
   expect(await hiddenCount()).toBe(withWorker);
   await expect(page.locator('main tbody tr:visible button[aria-expanded].opacity-50')).toHaveCount(0);
   expect(errors).toEqual([]);
