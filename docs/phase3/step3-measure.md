@@ -89,3 +89,78 @@ Reading:
 - `scripts/phase3/measure-pick.mjs` (new; the `bytes` and `lighthouse` modes above); `scripts/audit/lighthouse-baseline.mjs` unchanged.
 - `docs/phase3/perf/lighthouse.json`, `docs/phase3/perf/bytes.json`.
 - `docs/PROJECT-STATE.md`: rule 11, the byte-budget definition.
+
+## Task 6b: `/case?pick=1` with a saved build (owner's option A, 12/10)
+
+2026-10-13 · commits `90b0b32`, `d1c7bb4` · same method as above (`measure-pick.mjs`, 3 runs, median, local
+preview). "Before" = the current HEAD before 6b (`f198493`, after Tasks 7 and 8), built and measured the same way
+in a separate worktree, so Task 6's numbers are not reused. Raw: `docs/phase3/perf/6b-before/`, `6b-after/`
+(`lighthouse.json`, `bytes.json`, `trace-*.json`).
+
+Budget reading (owner, 12/10, recorded in PROJECT-STATE rule 11): the first-load budget is the first paint's JS;
+the pick chunks load after it.
+
+### Trace first (`measure-pick.mjs trace`, Chromium with the CPU slowed 4×, unminified build)
+
+| `/case?pick=1` | Long tasks (ms) | Where the time went | Layout shifts |
+| --- | --- | --- | --- |
+| b phone, before | 852, 648 (+ 2 near 50) | two full passes of the page's filtering + facet counts: `facetCounts` 1,312 ms, `applyFilters` 564 ms in all; the **second pass runs because the listings change when the check finishes** (hidden ones removed). `checkAll` itself: 90 ms in all, in slices under 50 ms | 0.073: a card moves into view when the cards above it are hidden |
+| c phone, before | 841, 674 | same; `checkAll` 126 ms | 0.050: a card and an "Add to build" button move up |
+| b desktop, before | 174, 131 | same two passes | 0.229: table rows move up 210 px (two hidden rows collapse) + the filter sidebar 4 px (switch label/hint) |
+| b phone, after | 701 (+ 50, 68) | one pass (`facetCounts` 545, `applyFilters` 257); candidates 62; no engine on the main thread | 0.000 |
+| c phone, after | 674 (+ 51, 67, 78) | one pass; no engine | 0.000 |
+| b desktop, after | 145 | one pass | 0.000 |
+
+So the attribution of Task 6 was half right: the shift is the rows changing after the check; but the blocking time
+was mostly the page's own filter + count pass running twice, not the engine.
+
+### What changed
+
+- **No shift:** with a saved build that has parts for the page, the rows and the filter sidebar wait for the check:
+  placeholders of the same shapes (the table / cards skeleton; the switch above a sidebar skeleton), then the final
+  rows are painted once. The page skips its filtering and facet counts until then, so the pass runs once. An empty
+  build (a) and normal pages behave as before.
+- **Worker:** `checkAll` runs in a module Web Worker (`src/lib/pick.worker.ts`, Vite-native). Protocol
+  `src/lib/pickProtocol.ts` (pure: request = slot + build parts + candidate parts; answer = key, hide, findings
+  trimmed to errors and warnings, the only ones a row shows). `src/lib/pickChecker.ts` runs it; fallback to the
+  previous idle-slice main-thread check when there is no Worker, the worker can't start, crashes, answers with an
+  error or not within 10 s. The engine stays one shared source (`src/engine`); `pickCheck.ts` holds `checkAll`,
+  `pickHide.ts` the hide rules (no engine code).
+- **Bytes:** the engine left the page's `PickView` chunk (23.0 → 7.3 KiB gzip); it is in the worker chunk (17.4 KiB)
+  and in a fallback-only chunk (`pickCheck`, 17.3 KiB, fetched only without Worker support).
+- Facet counts were **not** moved (not needed for ≥ 90).
+
+### Lighthouse (median of 3: score / TBT / CLS)
+
+| Page | Build | Phone before | Phone after | Desktop before | Desktop after |
+| --- | --- | --- | --- | --- | --- |
+| `/case?pick=1` | a | 92 / 317 ms / 0 | 93 / 292 ms / 0 | 100 / 58 ms / 0.001 | 100 / 57 ms / 0.001 |
+| | b | **84** / 543 ms / 0.073 | **93** / 275 ms / 0 | **86** / 138 ms / 0.234 | **100** / 47 ms / 0 |
+| | c | **84** / 564 ms / 0.050 | **94** / 250 ms / 0 | **91** / 122 ms / 0.159 | **100** / 44 ms / 0 |
+| `/gpu?pick=1` | b | 99 / 13 ms / 0 | 99 / 21 ms / 0 | 100 / 0 ms / 0.001 | 100 / 0 ms / 0 |
+| `/case` | | 90 / 333 ms / 0 | 91 / 338 ms / 0 | 98 / 66 ms / 0 | 99 / 63 ms / 0 |
+| `/gpu` | | 97 / 30 ms / 0 | 99 / 30 ms / 0 | 100 / 0 ms / 0 | 100 / 0 ms / 0 |
+
+Runs after: `/case?pick=1` b phone 95, 93, 93; c phone 93, 94, 95; desktop 100 × 3 each. `/case` and `/gpu` (no
+code change in their path) moved within run-to-run noise. The "before" b runs were measured with the HEAD build's
+own data date (a first try used the other build's date, which made build b refresh its parts through the compat
+chunks like build c: 83 / 87).
+
+Lighthouse's JS column does not count the worker's script (its request is logged with 0.3 KB): exact bytes are below.
+
+### Bytes (gzip of the response bodies, KiB, until the check finished)
+
+| | Before | After |
+| --- | ---: | ---: |
+| First paint JS, every category page (`index` + `CategoryPage` + `data` + `images`) | 86.4 | 86.5 (+80 bytes: the placeholder branch) |
+| Pick pages' JS until checked (`/mobo`, `/cpu`, `/case` `?pick=1`, builds a/b/c) | 116.0 | 117.8 (`PickView` 7.3 + `buildStore` 6.6 + worker 17.4) |
+| Data, `/case?pick=1` a / b / c | 268.2 / 268.2 / 271.3 | same |
+
+(86.4 is the current HEAD; Task 6's 85.4 was before Tasks 7–8.)
+
+### Stop rule
+
+Not triggered: `/case?pick=1` (b) and (c) phone 93 / 94 (≥ 90), CLS 0 on phone and desktop.
+
+Remaining long task on the phone: the single filter + facet pass after the check (~700 ms with the CPU slowed 4×;
+Lighthouse TBT ≈ 250–275 ms), the same work plain `/case` does at its first paint (the known facet-count cost).

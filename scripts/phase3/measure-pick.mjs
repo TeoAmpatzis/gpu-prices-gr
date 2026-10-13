@@ -1,5 +1,5 @@
 /* global document */
-// Step 3 (pick mode) measurements, roadmap task 6 / A8. Two modes:
+// Step 3 (pick mode) measurements, roadmap task 6 / A8 (+ 6b). Three modes:
 //
 //   node scripts/phase3/measure-pick.mjs bytes <baseUrl> <outFile>
 //     Playwright: first-load bytes (gzip of every response body, level 6) of /mobo, /cpu, /case ?pick=1 for
@@ -14,6 +14,10 @@
 //     through Playwright, then `lighthouse --port=<that Chromium> --disable-storage-reset`. Raw JS/data KB in
 //     the Lighthouse JSON are compressed transfer sizes (response headers included): compare them with
 //     Phase 2's the same way; exact gzip body bytes come from the `bytes` mode.
+//
+//   node scripts/phase3/measure-pick.mjs trace <baseUrl> <outFile> [path] [build] [mobile|desktop]
+//     Task 6b: long tasks (with the functions behind them, from a V8 CPU profile) and layout shifts (with the
+//     shifted nodes) of one page and build; see the mode's comment below.
 //
 // The builds use real keys from dist/data/compat (run `npm run build` first). Lighthouse needs `npx`.
 
@@ -179,7 +183,79 @@ if (MODE === 'bytes') {
       writeFileSync(join(OUT, 'lighthouse.json'), `${JSON.stringify(results, null, 2)}\n`);
     }
   }
+} else if (MODE === 'trace') {
+  // node scripts/phase3/measure-pick.mjs trace <baseUrl> <outFile> [path=/case?pick=1] [build=b] [form=mobile]
+  // Task 6b: where the blocking time and the layout shifts of a pick page come from. Playwright Chromium with
+  // the CPU slowed 4× on `mobile` (Lighthouse's phone factor), a V8 CPU profile from navigation until the check
+  // finished + 2 s, and the page's own `longtask` / `layout-shift` entries (with the shifted nodes). Busy periods
+  // ≥ 50 ms in the profile (consecutive non-idle samples) are listed with the functions that took most of them
+  // (inclusive time); read it on a build made with `vite build --minify false` so the names are the source's.
+  const OUT = A3, PATH = A4 ?? '/case?pick=1', BUILD = A5 ?? 'b', FORM = A6 ?? 'mobile';
+  const browser = await chromium.launch();
+  const ctx = await browser.newContext(FORM === 'mobile' ? { viewport: { width: 412, height: 823 }, deviceScaleFactor: 1.75, isMobile: true, hasTouch: true } : { viewport: { width: 1350, height: 940 } });
+  const setup = await withStorage(ctx, BUILDS[BUILD] ?? null);
+  await setup.close();
+  const page = await ctx.newPage();
+  await page.addInitScript(() => {
+    const w = /** @type {any} */ (globalThis);
+    w.__lt = []; w.__ls = [];
+    const name = (n) => (n && n.nodeType === 1 ? `${n.tagName.toLowerCase()}${n.className && typeof n.className === 'string' ? `.${n.className.trim().split(/\s+/).slice(0, 4).join('.')}` : ''} "${(n.textContent ?? '').trim().slice(0, 60)}"` : String(n?.nodeName));
+    new PerformanceObserver((l) => { for (const e of l.getEntries()) w.__lt.push({ start: Math.round(e.startTime), ms: Math.round(e.duration) }); }).observe({ type: 'longtask', buffered: true });
+    new PerformanceObserver((l) => {
+      for (const e of l.getEntries()) w.__ls.push({ t: Math.round(e.startTime), value: e.value, input: e.hadRecentInput, sources: (e.sources ?? []).map((s) => ({ node: name(s.node), from: s.previousRect && [s.previousRect.y, s.previousRect.height], to: s.currentRect && [s.currentRect.y, s.currentRect.height] })) });
+    }).observe({ type: 'layout-shift', buffered: true });
+  });
+  const cdp = await ctx.newCDPSession(page);
+  if (FORM === 'mobile') await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+  await cdp.send('Profiler.enable');
+  await cdp.send('Profiler.setSamplingInterval', { interval: 200 });
+  await cdp.send('Profiler.start');
+  await page.goto(`${BASE}${PATH}`);
+  if (PATH.includes('pick=1')) {
+    await page.locator('main [data-pick=bar] [role=status]:visible').waitFor({ timeout: 60000 });
+    await page.waitForFunction(() => !/Checking compatibility/.test(document.querySelector('main [data-pick=bar] [role=status]')?.textContent ?? ''), null, { timeout: 60000 });
+  } else await page.locator('main tbody tr:visible, main li.card:visible').first().waitFor({ timeout: 60000 });
+  await page.waitForTimeout(2000);
+  const { profile } = await cdp.send('Profiler.stop');
+  const { longtasks, shifts } = await page.evaluate(() => ({ longtasks: /** @type {any} */ (globalThis).__lt, shifts: /** @type {any} */ (globalThis).__ls }));
+  await browser.close();
+  // Busy periods from the samples.
+  const byId = new Map(profile.nodes.map((n) => [n.id, n]));
+  const parent = new Map();
+  for (const n of profile.nodes) for (const c of n.children ?? []) parent.set(c, n.id);
+  const IDLE = new Set(['(idle)', '(program)', '(root)']);
+  const stackOf = (id) => { const s = []; for (let x = id; x !== undefined; x = parent.get(x)) s.push(byId.get(x).callFrame); return s; };
+  const label = (f) => `${f.functionName || '(anonymous)'} ${f.url.split('/').pop()}:${f.lineNumber + 1}`;
+  let t = profile.startTime;
+  const periods = [];
+  const totals = new Map();
+  let cur = null;
+  for (let i = 0; i < profile.samples.length; i++) {
+    t += profile.timeDeltas[i];
+    const leaf = byId.get(profile.samples[i]).callFrame.functionName;
+    const dt = (profile.timeDeltas[i + 1] ?? 0) / 1000;
+    if (IDLE.has(leaf)) { if (cur) { periods.push(cur); cur = null; } continue; }
+    if (!cur) cur = { startMs: (t - profile.startTime) / 1000, ms: 0, fns: new Map() };
+    cur.ms += dt;
+    for (const f of new Set(stackOf(profile.samples[i]).map(label))) {
+      cur.fns.set(f, (cur.fns.get(f) ?? 0) + dt);
+      totals.set(f, (totals.get(f) ?? 0) + dt);
+    }
+  }
+  if (cur) periods.push(cur);
+  const busy = periods.filter((p) => p.ms >= 50).map((p) => ({
+    startMs: Math.round(p.startMs), ms: Math.round(p.ms),
+    top: [...p.fns].filter(([f]) => !/^\(/.test(f)).sort((a, b) => b[1] - a[1]).slice(0, 14).map(([f, ms]) => `${Math.round(ms)} ms ${f}`),
+  }));
+  const cls = shifts.filter((s) => !s.input).reduce((x, s) => x + s.value, 0);
+  // Whole-run main-thread time per app function (inclusive; React's minified internals left out).
+  const app = [...totals].filter(([f]) => !/^\(/.test(f) && !/^(\S{1,3}|react\S*|useMemo|useState|useEffect) index-/.test(f))
+    .sort((a, b) => b[1] - a[1]).slice(0, 30).map(([f, ms]) => `${Math.round(ms)} ms ${f}`);
+  const out = { path: PATH, build: BUILD, form: FORM, cpuSlowdown: FORM === 'mobile' ? 4 : 1, longtasks, tbtMs: longtasks.reduce((x, l) => x + Math.max(0, l.ms - 50), 0), cls, shifts, busy, app };
+  writeFileSync(OUT, `${JSON.stringify(out, null, 2)}\n`);
+  console.log(`${PATH} ${BUILD} ${FORM}: long tasks ${longtasks.map((l) => l.ms).join(', ')} ms (TBT ${out.tbtMs}), CLS ${cls.toFixed(3)} over ${shifts.length} shifts`);
+  for (const b of busy) console.log(`  busy ${b.ms} ms at ${b.startMs}:\n    ${b.top.slice(0, 8).join('\n    ')}`);
 } else {
-  console.error('usage: measure-pick.mjs bytes|lighthouse ...');
+  console.error('usage: measure-pick.mjs bytes|lighthouse|trace ...');
   process.exit(1);
 }

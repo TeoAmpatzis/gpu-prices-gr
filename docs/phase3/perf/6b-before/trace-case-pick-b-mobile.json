@@ -1,0 +1,196 @@
+{
+  "path": "/case?pick=1",
+  "build": "b",
+  "form": "mobile",
+  "cpuSlowdown": 4,
+  "longtasks": [
+    {
+      "start": 439,
+      "ms": 852
+    },
+    {
+      "start": 1581,
+      "ms": 51
+    },
+    {
+      "start": 1862,
+      "ms": 648
+    }
+  ],
+  "tbtMs": 1401,
+  "cls": 0.07275341820592356,
+  "shifts": [
+    {
+      "t": 2535,
+      "value": 0.07275341820592356,
+      "input": false,
+      "sources": [
+        {
+          "node": "li.card.overflow-hidden \"Serioux Classic 01€17.90Midi Tower · ATXBestPrice3 listingsA\"",
+          "from": [
+            0,
+            0
+          ],
+          "to": [
+            694,
+            129
+          ]
+        }
+      ]
+    }
+  ],
+  "busy": [
+    {
+      "startMs": 435,
+      "ms": 568,
+      "top": [
+        "553 ms Vk index-heN_2X_j.js:6321",
+        "553 ms Uk index-heN_2X_j.js:6029",
+        "553 ms Lk index-heN_2X_j.js:6026",
+        "553 ms Gk index-heN_2X_j.js:5647",
+        "553 ms J2 index-heN_2X_j.js:407",
+        "553 ms R2 index-heN_2X_j.js:441",
+        "552 ms Nh index-heN_2X_j.js:3386",
+        "550 ms useMemo index-heN_2X_j.js:3724",
+        "550 ms react_production_min.useMemo index-heN_2X_j.js:284",
+        "548 ms CategoryLayout CategoryPage-CvDzKeqa.js:1052",
+        "488 ms facetCounts CategoryPage-CvDzKeqa.js:64",
+        "322 ms applyFilters data-C8QQLs2S.js:337",
+        "270 ms run CategoryPage-CvDzKeqa.js:67",
+        "214 ms countModels CategoryPage-CvDzKeqa.js:69"
+      ]
+    },
+    {
+      "startMs": 1003,
+      "ms": 284,
+      "top": [
+        "281 ms CategoryLayout CategoryPage-CvDzKeqa.js:1052",
+        "281 ms Nh index-heN_2X_j.js:3386",
+        "281 ms Vk index-heN_2X_j.js:6321",
+        "281 ms Uk index-heN_2X_j.js:6029",
+        "281 ms Lk index-heN_2X_j.js:6026",
+        "281 ms Gk index-heN_2X_j.js:5647",
+        "281 ms J2 index-heN_2X_j.js:407",
+        "281 ms R2 index-heN_2X_j.js:441",
+        "281 ms facetCounts CategoryPage-CvDzKeqa.js:64",
+        "281 ms useMemo index-heN_2X_j.js:3724",
+        "281 ms react_production_min.useMemo index-heN_2X_j.js:284",
+        "279 ms countModels CategoryPage-CvDzKeqa.js:69",
+        "203 ms test images-Cm1ct-ro.js:186",
+        "162 ms slug images-Cm1ct-ro.js:41"
+      ]
+    },
+    {
+      "startMs": 1852,
+      "ms": 224,
+      "top": [
+        "215 ms Nh index-heN_2X_j.js:3386",
+        "215 ms cj index-heN_2X_j.js:4043",
+        "215 ms Vk index-heN_2X_j.js:6321",
+        "215 ms Uk index-heN_2X_j.js:6029",
+        "215 ms Tk index-heN_2X_j.js:6023",
+        "215 ms Ik index-heN_2X_j.js:6002",
+        "215 ms Gk index-heN_2X_j.js:5647",
+        "215 ms J2 index-heN_2X_j.js:407",
+        "215 ms R2 index-heN_2X_j.js:441",
+        "213 ms ti index-heN_2X_j.js:3629",
+        "213 ms react_production_min.useMemo index-heN_2X_j.js:284",
+        "185 ms applyFilters data-C8QQLs2S.js:337",
+        "178 ms CategoryLayout CategoryPage-CvDzKeqa.js:1052",
+        "151 ms facetCounts CategoryPage-CvDzKeqa.js:64"
+      ]
+    },
+    {
+      "startMs": 2076,
+      "ms": 247,
+      "top": [
+        "243 ms facetCounts CategoryPage-CvDzKeqa.js:64",
+        "243 ms ti index-heN_2X_j.js:3629",
+        "243 ms react_production_min.useMemo index-heN_2X_j.js:284",
+        "243 ms CategoryLayout CategoryPage-CvDzKeqa.js:1052",
+        "243 ms Nh index-heN_2X_j.js:3386",
+        "243 ms cj index-heN_2X_j.js:4043",
+        "243 ms Vk index-heN_2X_j.js:6321",
+        "243 ms Uk index-heN_2X_j.js:6029",
+        "243 ms Tk index-heN_2X_j.js:6023",
+        "243 ms Ik index-heN_2X_j.js:6002",
+        "243 ms Gk index-heN_2X_j.js:5647",
+        "243 ms J2 index-heN_2X_j.js:407",
+        "243 ms R2 index-heN_2X_j.js:441",
+        "186 ms countModels CategoryPage-CvDzKeqa.js:69"
+      ]
+    },
+    {
+      "startMs": 2324,
+      "ms": 77,
+      "top": [
+        "76 ms countModels CategoryPage-CvDzKeqa.js:69",
+        "76 ms facetCounts CategoryPage-CvDzKeqa.js:64",
+        "76 ms ti index-heN_2X_j.js:3629",
+        "76 ms react_production_min.useMemo index-heN_2X_j.js:284",
+        "76 ms CategoryLayout CategoryPage-CvDzKeqa.js:1052",
+        "76 ms Nh index-heN_2X_j.js:3386",
+        "76 ms cj index-heN_2X_j.js:4043",
+        "76 ms Vk index-heN_2X_j.js:6321",
+        "76 ms Uk index-heN_2X_j.js:6029",
+        "76 ms Tk index-heN_2X_j.js:6023",
+        "76 ms Ik index-heN_2X_j.js:6002",
+        "76 ms Gk index-heN_2X_j.js:5647",
+        "76 ms J2 index-heN_2X_j.js:407",
+        "76 ms R2 index-heN_2X_j.js:441"
+      ]
+    },
+    {
+      "startMs": 2401,
+      "ms": 99,
+      "top": [
+        "98 ms Gk index-heN_2X_j.js:5647",
+        "98 ms J2 index-heN_2X_j.js:407",
+        "98 ms R2 index-heN_2X_j.js:441",
+        "97 ms Uk index-heN_2X_j.js:6029",
+        "97 ms Tk index-heN_2X_j.js:6023",
+        "97 ms Ik index-heN_2X_j.js:6002",
+        "83 ms Vk index-heN_2X_j.js:6321",
+        "81 ms Nh index-heN_2X_j.js:3386",
+        "77 ms cj index-heN_2X_j.js:4043",
+        "72 ms facetCounts CategoryPage-CvDzKeqa.js:64",
+        "72 ms ti index-heN_2X_j.js:3629",
+        "72 ms react_production_min.useMemo index-heN_2X_j.js:284",
+        "72 ms CategoryLayout CategoryPage-CvDzKeqa.js:1052",
+        "71 ms countModels CategoryPage-CvDzKeqa.js:69"
+      ]
+    }
+  ],
+  "app": [
+    "1399 ms CategoryLayout CategoryPage-CvDzKeqa.js:1052",
+    "1312 ms facetCounts CategoryPage-CvDzKeqa.js:64",
+    "846 ms countModels CategoryPage-CvDzKeqa.js:69",
+    "573 ms test images-Cm1ct-ro.js:186",
+    "564 ms applyFilters data-C8QQLs2S.js:337",
+    "458 ms run CategoryPage-CvDzKeqa.js:67",
+    "456 ms slug images-Cm1ct-ro.js:41",
+    "237 ms allTimeLow data-C8QQLs2S.js:244",
+    "206 ms groupModels data-C8QQLs2S.js:262",
+    "92 ms setResult.key PickView-Shs4354Z.js:2230",
+    "90 ms checkAll PickView-Shs4354Z.js:2031",
+    "84 ms evaluate PickView-Shs4354Z.js:1919",
+    "78 ms modelKey images-Cm1ct-ro.js:528",
+    "73 ms productKey images-Cm1ct-ro.js:497",
+    "49 ms candidatesOf PickView-Shs4354Z.js:2185",
+    "48 ms RegExp: [^\\p{L}\\p{N}.+×]+ :0",
+    "42 ms PickView PickView-Shs4354Z.js:2388",
+    "32 ms test images-Cm1ct-ro.js:537",
+    "24 ms rule14 PickView-Shs4354Z.js:1586",
+    "23 ms RegExp: ^-+|-+$ :0",
+    "21 ms toPart PickView-Shs4354Z.js:2006",
+    "19 ms evaluate :305",
+    "18 ms RegExp: [^a-z0-9] :0",
+    "17 ms fromColumns data-C8QQLs2S.js:178",
+    "17 ms powerEstimate PickView-Shs4354Z.js:1544",
+    "17 ms slotFields PickView-Shs4354Z.js:1924",
+    "15 ms saleOf data-C8QQLs2S.js:234",
+    "13 ms queryAll :7079",
+    "13 ms _queryEngineAll :7058",
+    "13 ms querySelectorAll :7010"
+  ]
+}

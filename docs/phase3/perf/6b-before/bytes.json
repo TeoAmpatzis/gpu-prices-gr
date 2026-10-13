@@ -1,0 +1,234 @@
+{
+  "builds": {
+    "typical": [
+      "compat",
+      "cpu",
+      "mobo",
+      "ram",
+      "gpu",
+      "psu"
+    ],
+    "worst": [
+      "cpu",
+      "mobo",
+      "ram",
+      "gpu",
+      "cooler",
+      "storage",
+      "case",
+      "fan",
+      "psu"
+    ],
+    "parts": {
+      "cpu": "Ryzen 7 7700|?",
+      "mobo": "asrockchallengerb850wifiwhite",
+      "ram": "DDR5 32GB (2×16GB) 6800MHz Desktop",
+      "gpu": "bestprice:2160830031",
+      "cooler": "1stplayercryocy12l",
+      "storage": "adataspectrixs65g1tbssd",
+      "case": "aerocoolaeroone",
+      "fan": "akasasohoar120mm3",
+      "psu": "750W Gold ATX"
+    }
+  },
+  "rows": [
+    {
+      "page": "/mobo?pick=1",
+      "build": "a",
+      "checked": true,
+      "jsKB": 115.9541015625,
+      "dataKB": 117.58984375,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-BHwZIBs4.js 63.8",
+        "data-BroyPKwK.js 4.0",
+        "CategoryPage-Bq_ZSJFl.js 10.6",
+        "images-qwe2EclI.js 8.0",
+        "buildStore-2WgHmvkZ.js 6.6",
+        "PickView-BwqMh4x7.js 23.0"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "mobo/list.json 117.0"
+      ]
+    },
+    {
+      "page": "/mobo?pick=1",
+      "build": "b",
+      "checked": true,
+      "jsKB": 115.9541015625,
+      "dataKB": 117.58984375,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-BHwZIBs4.js 63.8",
+        "data-BroyPKwK.js 4.0",
+        "CategoryPage-Bq_ZSJFl.js 10.6",
+        "images-qwe2EclI.js 8.0",
+        "buildStore-2WgHmvkZ.js 6.6",
+        "PickView-BwqMh4x7.js 23.0"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "mobo/list.json 117.0"
+      ]
+    },
+    {
+      "page": "/mobo?pick=1",
+      "build": "c",
+      "checked": true,
+      "jsKB": 115.9541015625,
+      "dataKB": 119.8291015625,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-BHwZIBs4.js 63.8",
+        "data-BroyPKwK.js 4.0",
+        "CategoryPage-Bq_ZSJFl.js 10.6",
+        "images-qwe2EclI.js 8.0",
+        "buildStore-2WgHmvkZ.js 6.6",
+        "PickView-BwqMh4x7.js 23.0"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "mobo/list.json 117.0",
+        "compat/ram-06.json 0.2",
+        "compat/cpu-15.json 0.2",
+        "compat/case-00.json 1.0",
+        "compat/fan-00.json 0.5",
+        "compat/storage-00.json 0.3"
+      ]
+    },
+    {
+      "page": "/cpu?pick=1",
+      "build": "a",
+      "checked": true,
+      "jsKB": 115.9541015625,
+      "dataKB": 55.185546875,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-BHwZIBs4.js 63.8",
+        "data-BroyPKwK.js 4.0",
+        "CategoryPage-Bq_ZSJFl.js 10.6",
+        "images-qwe2EclI.js 8.0",
+        "buildStore-2WgHmvkZ.js 6.6",
+        "PickView-BwqMh4x7.js 23.0"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "cpu/list.json 54.6"
+      ]
+    },
+    {
+      "page": "/cpu?pick=1",
+      "build": "b",
+      "checked": true,
+      "jsKB": 115.9541015625,
+      "dataKB": 55.185546875,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-BHwZIBs4.js 63.8",
+        "data-BroyPKwK.js 4.0",
+        "CategoryPage-Bq_ZSJFl.js 10.6",
+        "images-qwe2EclI.js 8.0",
+        "buildStore-2WgHmvkZ.js 6.6",
+        "PickView-BwqMh4x7.js 23.0"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "cpu/list.json 54.6"
+      ]
+    },
+    {
+      "page": "/cpu?pick=1",
+      "build": "c",
+      "checked": true,
+      "jsKB": 115.9541015625,
+      "dataKB": 58.490234375,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-BHwZIBs4.js 63.8",
+        "data-BroyPKwK.js 4.0",
+        "CategoryPage-Bq_ZSJFl.js 10.6",
+        "images-qwe2EclI.js 8.0",
+        "buildStore-2WgHmvkZ.js 6.6",
+        "PickView-BwqMh4x7.js 23.0"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "cpu/list.json 54.6",
+        "compat/ram-06.json 0.2",
+        "compat/cooler-00.json 1.0",
+        "compat/fan-00.json 0.5",
+        "compat/psu-01.json 0.1",
+        "compat/gpu-00.json 0.5",
+        "compat/mobo-00.json 0.7",
+        "compat/storage-00.json 0.3"
+      ]
+    },
+    {
+      "page": "/case?pick=1",
+      "build": "a",
+      "checked": true,
+      "jsKB": 115.9541015625,
+      "dataKB": 268.220703125,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-BHwZIBs4.js 63.8",
+        "data-BroyPKwK.js 4.0",
+        "CategoryPage-Bq_ZSJFl.js 10.6",
+        "images-qwe2EclI.js 8.0",
+        "buildStore-2WgHmvkZ.js 6.6",
+        "PickView-BwqMh4x7.js 23.0"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "case/list.json 267.6"
+      ]
+    },
+    {
+      "page": "/case?pick=1",
+      "build": "b",
+      "checked": true,
+      "jsKB": 115.9541015625,
+      "dataKB": 268.220703125,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-BHwZIBs4.js 63.8",
+        "CategoryPage-Bq_ZSJFl.js 10.6",
+        "data-BroyPKwK.js 4.0",
+        "images-qwe2EclI.js 8.0",
+        "buildStore-2WgHmvkZ.js 6.6",
+        "PickView-BwqMh4x7.js 23.0"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "case/list.json 267.6"
+      ]
+    },
+    {
+      "page": "/case?pick=1",
+      "build": "c",
+      "checked": true,
+      "jsKB": 115.9541015625,
+      "dataKB": 271.3369140625,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-BHwZIBs4.js 63.8",
+        "data-BroyPKwK.js 4.0",
+        "CategoryPage-Bq_ZSJFl.js 10.6",
+        "images-qwe2EclI.js 8.0",
+        "buildStore-2WgHmvkZ.js 6.6",
+        "PickView-BwqMh4x7.js 23.0"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "case/list.json 267.6",
+        "compat/cooler-00.json 1.0",
+        "compat/psu-01.json 0.1",
+        "compat/fan-00.json 0.5",
+        "compat/gpu-00.json 0.5",
+        "compat/storage-00.json 0.3",
+        "compat/mobo-00.json 0.7"
+      ]
+    }
+  ]
+}

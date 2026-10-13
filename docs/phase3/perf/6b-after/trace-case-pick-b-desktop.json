@@ -1,0 +1,88 @@
+{
+  "path": "/case?pick=1",
+  "build": "b",
+  "form": "desktop",
+  "cpuSlowdown": 1,
+  "longtasks": [
+    {
+      "start": 168,
+      "ms": 145
+    }
+  ],
+  "tbtMs": 95,
+  "cls": 0.00001628961999824884,
+  "shifts": [
+    {
+      "t": 331,
+      "value": 0.00001628961999824884,
+      "input": false,
+      "sources": [
+        {
+          "node": "#text",
+          "from": [
+            318,
+            17
+          ],
+          "to": [
+            318,
+            17
+          ]
+        }
+      ]
+    }
+  ],
+  "busy": [
+    {
+      "startMs": 164,
+      "ms": 146,
+      "top": [
+        "142 ms Gk index-DTQeo8lZ.js:5647",
+        "142 ms J2 index-DTQeo8lZ.js:407",
+        "142 ms R2 index-DTQeo8lZ.js:441",
+        "142 ms Uk index-DTQeo8lZ.js:6029",
+        "142 ms Tk index-DTQeo8lZ.js:6023",
+        "142 ms Ik index-DTQeo8lZ.js:6002",
+        "134 ms Vk index-DTQeo8lZ.js:6321",
+        "133 ms Nh index-DTQeo8lZ.js:3386",
+        "131 ms cj index-DTQeo8lZ.js:4043",
+        "131 ms ti index-DTQeo8lZ.js:3629",
+        "131 ms react_production_min.useMemo index-DTQeo8lZ.js:284",
+        "121 ms CategoryLayout CategoryPage-CEVrtqKt.js:1059",
+        "117 ms facetCounts CategoryPage-CEVrtqKt.js:64",
+        "77 ms countModels CategoryPage-CEVrtqKt.js:69"
+      ]
+    }
+  ],
+  "app": [
+    "123 ms CategoryLayout CategoryPage-CEVrtqKt.js:1059",
+    "117 ms facetCounts CategoryPage-CEVrtqKt.js:64",
+    "77 ms countModels CategoryPage-CEVrtqKt.js:69",
+    "55 ms test images-KvEcdw2V.js:186",
+    "53 ms slug images-KvEcdw2V.js:41",
+    "50 ms applyFilters data-4WbTw2Ub.js:337",
+    "38 ms run CategoryPage-CEVrtqKt.js:67",
+    "23 ms allTimeLow data-4WbTw2Ub.js:244",
+    "20 ms groupModels data-4WbTw2Ub.js:262",
+    "12 ms candidatesOf PickView-bzIwJl-K.js:424",
+    "10 ms PickView PickView-bzIwJl-K.js:627",
+    "9 ms modelKey images-KvEcdw2V.js:528",
+    "7 ms productKey images-KvEcdw2V.js:497",
+    "7 ms RegExp: [^\\p{L}\\p{N}.+×]+ :0",
+    "5 ms toPart PickView-bzIwJl-K.js:158",
+    "5 ms fromColumns data-4WbTw2Ub.js:178",
+    "4 ms slotModels buildStore-CksoFged.js:382",
+    "4 ms slotFields PickView-bzIwJl-K.js:67",
+    "4 ms attr buildStore-CksoFged.js:28",
+    "3 ms RegExp: ^-+|-+$ :0",
+    "3 ms evaluate :305",
+    "3 ms RegExp: [^a-z0-9] :0",
+    "3 ms expandHistory data-4WbTw2Ub.js:185",
+    "2 ms test images-KvEcdw2V.js:537",
+    "2 ms saleOf data-4WbTw2Ub.js:234",
+    "2 ms mostCommon data-4WbTw2Ub.js:298",
+    "2 ms querySelectorAll :7010",
+    "2 ms onLoad images-KvEcdw2V.js:792",
+    "2 ms run PickView-bzIwJl-K.js:372",
+    "2 ms appendChild :0"
+  ]
+}

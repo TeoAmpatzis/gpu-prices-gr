@@ -1,0 +1,156 @@
+{
+  "path": "/case?pick=1",
+  "build": "b",
+  "form": "mobile",
+  "cpuSlowdown": 4,
+  "longtasks": [
+    {
+      "start": 37,
+      "ms": 50
+    },
+    {
+      "start": 508,
+      "ms": 68
+    },
+    {
+      "start": 631,
+      "ms": 701
+    }
+  ],
+  "tbtMs": 669,
+  "cls": 0.00010000217767141226,
+  "shifts": [
+    {
+      "t": 1394,
+      "value": 0.00010000217767141226,
+      "input": false,
+      "sources": [
+        {
+          "node": "#text",
+          "from": [
+            422,
+            17
+          ],
+          "to": [
+            422,
+            17
+          ]
+        }
+      ]
+    }
+  ],
+  "busy": [
+    {
+      "startMs": 504,
+      "ms": 68,
+      "top": [
+        "62 ms candidatesOf PickView-bzIwJl-K.js:424",
+        "27 ms toPart PickView-bzIwJl-K.js:158",
+        "23 ms slotModels buildStore-CksoFged.js:382",
+        "22 ms slotFields PickView-bzIwJl-K.js:67",
+        "22 ms groupModels data-4WbTw2Ub.js:262",
+        "15 ms attr buildStore-CksoFged.js:28",
+        "8 ms mostCommon data-4WbTw2Ub.js:298",
+        "6 ms modelKey images-KvEcdw2V.js:528",
+        "5 ms productKey images-KvEcdw2V.js:497",
+        "5 ms firstOf buildStore-CksoFged.js:132",
+        "5 ms caseBoardStated buildStore-CksoFged.js:126",
+        "3 ms caseRadiators buildStore-CksoFged.js:131",
+        "3 ms caseGpuMax buildStore-CksoFged.js:128",
+        "3 ms caseFansIncluded buildStore-CksoFged.js:134"
+      ]
+    },
+    {
+      "startMs": 619,
+      "ms": 531,
+      "top": [
+        "513 ms Nh index-DTQeo8lZ.js:3386",
+        "513 ms cj index-DTQeo8lZ.js:4043",
+        "513 ms Vk index-DTQeo8lZ.js:6321",
+        "513 ms Uk index-DTQeo8lZ.js:6029",
+        "513 ms Tk index-DTQeo8lZ.js:6023",
+        "513 ms Ik index-DTQeo8lZ.js:6002",
+        "513 ms Gk index-DTQeo8lZ.js:5647",
+        "513 ms J2 index-DTQeo8lZ.js:407",
+        "513 ms R2 index-DTQeo8lZ.js:441",
+        "511 ms ti index-DTQeo8lZ.js:3629",
+        "511 ms react_production_min.useMemo index-DTQeo8lZ.js:284",
+        "464 ms CategoryLayout CategoryPage-CEVrtqKt.js:1059",
+        "436 ms facetCounts CategoryPage-CEVrtqKt.js:64",
+        "257 ms applyFilters data-4WbTw2Ub.js:337"
+      ]
+    },
+    {
+      "startMs": 1151,
+      "ms": 53,
+      "top": [
+        "53 ms countModels CategoryPage-CEVrtqKt.js:69",
+        "53 ms facetCounts CategoryPage-CEVrtqKt.js:64",
+        "53 ms ti index-DTQeo8lZ.js:3629",
+        "53 ms react_production_min.useMemo index-DTQeo8lZ.js:284",
+        "53 ms CategoryLayout CategoryPage-CEVrtqKt.js:1059",
+        "53 ms Nh index-DTQeo8lZ.js:3386",
+        "53 ms cj index-DTQeo8lZ.js:4043",
+        "53 ms Vk index-DTQeo8lZ.js:6321",
+        "53 ms Uk index-DTQeo8lZ.js:6029",
+        "53 ms Tk index-DTQeo8lZ.js:6023",
+        "53 ms Ik index-DTQeo8lZ.js:6002",
+        "53 ms Gk index-DTQeo8lZ.js:5647",
+        "53 ms J2 index-DTQeo8lZ.js:407",
+        "53 ms R2 index-DTQeo8lZ.js:441"
+      ]
+    },
+    {
+      "startMs": 1204,
+      "ms": 121,
+      "top": [
+        "120 ms R2 index-DTQeo8lZ.js:441",
+        "120 ms Gk index-DTQeo8lZ.js:5647",
+        "120 ms J2 index-DTQeo8lZ.js:407",
+        "118 ms Tk index-DTQeo8lZ.js:6023",
+        "118 ms Ik index-DTQeo8lZ.js:6002",
+        "117 ms Uk index-DTQeo8lZ.js:6029",
+        "87 ms Vk index-DTQeo8lZ.js:6321",
+        "81 ms Nh index-DTQeo8lZ.js:3386",
+        "57 ms cj index-DTQeo8lZ.js:4043",
+        "57 ms CategoryLayout CategoryPage-CEVrtqKt.js:1059",
+        "56 ms facetCounts CategoryPage-CEVrtqKt.js:64",
+        "56 ms ti index-DTQeo8lZ.js:3629",
+        "56 ms react_production_min.useMemo index-DTQeo8lZ.js:284",
+        "56 ms countModels CategoryPage-CEVrtqKt.js:69"
+      ]
+    }
+  ],
+  "app": [
+    "582 ms CategoryLayout CategoryPage-CEVrtqKt.js:1059",
+    "545 ms facetCounts CategoryPage-CEVrtqKt.js:64",
+    "349 ms countModels CategoryPage-CEVrtqKt.js:69",
+    "257 ms applyFilters data-4WbTw2Ub.js:337",
+    "241 ms test images-KvEcdw2V.js:186",
+    "208 ms slug images-KvEcdw2V.js:41",
+    "191 ms run CategoryPage-CEVrtqKt.js:67",
+    "109 ms allTimeLow data-4WbTw2Ub.js:244",
+    "109 ms groupModels data-4WbTw2Ub.js:262",
+    "62 ms candidatesOf PickView-bzIwJl-K.js:424",
+    "54 ms PickView PickView-bzIwJl-K.js:627",
+    "44 ms modelKey images-KvEcdw2V.js:528",
+    "40 ms productKey images-KvEcdw2V.js:497",
+    "27 ms toPart PickView-bzIwJl-K.js:158",
+    "23 ms RegExp: [^\\p{L}\\p{N}.+×]+ :0",
+    "23 ms slotModels buildStore-CksoFged.js:382",
+    "22 ms slotFields PickView-bzIwJl-K.js:67",
+    "18 ms fromColumns data-4WbTw2Ub.js:178",
+    "15 ms evaluate :305",
+    "15 ms attr buildStore-CksoFged.js:28",
+    "14 ms expandHistory data-4WbTw2Ub.js:185",
+    "13 ms test images-KvEcdw2V.js:537",
+    "12 ms RegExp: ^-+|-+$ :0",
+    "9 ms query :5534",
+    "9 ms queryAll :7079",
+    "9 ms _queryEngineAll :7058",
+    "9 ms querySelectorAll :7010",
+    "9 ms run PickView-bzIwJl-K.js:372",
+    "9 ms _cached :5500",
+    "9 ms _callQuery :5708"
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "path": "/case?pick=1",
+  "build": "c",
+  "form": "mobile",
+  "cpuSlowdown": 4,
+  "longtasks": [
+    {
+      "start": 338,
+      "ms": 51
+    },
+    {
+      "start": 552,
+      "ms": 67
+    },
+    {
+      "start": 669,
+      "ms": 674
+    },
+    {
+      "start": 1344,
+      "ms": 78
+    }
+  ],
+  "tbtMs": 670,
+  "cls": 0.00010032580931436184,
+  "shifts": [
+    {
+      "t": 1408,
+      "value": 0.00010032580931436184,
+      "input": false,
+      "sources": [
+        {
+          "node": "#text",
+          "from": [
+            422,
+            17
+          ],
+          "to": [
+            422,
+            17
+          ]
+        }
+      ]
+    }
+  ],
+  "busy": [
+    {
+      "startMs": 334,
+      "ms": 51,
+      "top": []
+    },
+    {
+      "startMs": 547,
+      "ms": 68,
+      "top": [
+        "62 ms candidatesOf PickView-bzIwJl-K.js:424",
+        "28 ms toPart PickView-bzIwJl-K.js:158",
+        "22 ms slotModels buildStore-CksoFged.js:382",
+        "22 ms groupModels data-4WbTw2Ub.js:262",
+        "22 ms slotFields PickView-bzIwJl-K.js:67",
+        "12 ms attr buildStore-CksoFged.js:28",
+        "7 ms modelKey images-KvEcdw2V.js:528",
+        "6 ms firstOf buildStore-CksoFged.js:132",
+        "6 ms mostCommon data-4WbTw2Ub.js:298",
+        "4 ms productKey images-KvEcdw2V.js:497",
+        "4 ms caseRadiators buildStore-CksoFged.js:131",
+        "4 ms caseBoardStated buildStore-CksoFged.js:126",
+        "3 ms caseFanMounts buildStore-CksoFged.js:133",
+        "2 ms caseRadiatorSizes buildStore-CksoFged.js:135"
+      ]
+    },
+    {
+      "startMs": 657,
+      "ms": 250,
+      "top": [
+        "237 ms Vk index-DTQeo8lZ.js:6321",
+        "237 ms Uk index-DTQeo8lZ.js:6029",
+        "237 ms Tk index-DTQeo8lZ.js:6023",
+        "237 ms Ik index-DTQeo8lZ.js:6002",
+        "237 ms Gk index-DTQeo8lZ.js:5647",
+        "237 ms J2 index-DTQeo8lZ.js:407",
+        "237 ms R2 index-DTQeo8lZ.js:441",
+        "236 ms Nh index-DTQeo8lZ.js:3386",
+        "236 ms cj index-DTQeo8lZ.js:4043",
+        "235 ms ti index-DTQeo8lZ.js:3629",
+        "235 ms react_production_min.useMemo index-DTQeo8lZ.js:284",
+        "200 ms applyFilters data-4WbTw2Ub.js:337",
+        "189 ms CategoryLayout CategoryPage-CEVrtqKt.js:1059",
+        "166 ms facetCounts CategoryPage-CEVrtqKt.js:64"
+      ]
+    },
+    {
+      "startMs": 908,
+      "ms": 429,
+      "top": [
+        "423 ms Gk index-DTQeo8lZ.js:5647",
+        "423 ms J2 index-DTQeo8lZ.js:407",
+        "423 ms R2 index-DTQeo8lZ.js:441",
+        "420 ms Ik index-DTQeo8lZ.js:6002",
+        "419 ms Uk index-DTQeo8lZ.js:6029",
+        "419 ms Tk index-DTQeo8lZ.js:6023",
+        "385 ms Vk index-DTQeo8lZ.js:6321",
+        "378 ms Nh index-DTQeo8lZ.js:3386",
+        "357 ms cj index-DTQeo8lZ.js:4043",
+        "356 ms facetCounts CategoryPage-CEVrtqKt.js:64",
+        "356 ms ti index-DTQeo8lZ.js:3629",
+        "356 ms react_production_min.useMemo index-DTQeo8lZ.js:284",
+        "356 ms CategoryLayout CategoryPage-CEVrtqKt.js:1059",
+        "314 ms countModels CategoryPage-CEVrtqKt.js:69"
+      ]
+    }
+  ],
+  "app": [
+    "554 ms CategoryLayout CategoryPage-CEVrtqKt.js:1059",
+    "522 ms facetCounts CategoryPage-CEVrtqKt.js:64",
+    "337 ms countModels CategoryPage-CEVrtqKt.js:69",
+    "241 ms applyFilters data-4WbTw2Ub.js:337",
+    "226 ms test images-KvEcdw2V.js:186",
+    "192 ms slug images-KvEcdw2V.js:41",
+    "181 ms run CategoryPage-CEVrtqKt.js:67",
+    "106 ms allTimeLow data-4WbTw2Ub.js:244",
+    "104 ms groupModels data-4WbTw2Ub.js:262",
+    "62 ms candidatesOf PickView-bzIwJl-K.js:424",
+    "55 ms PickView PickView-bzIwJl-K.js:627",
+    "43 ms modelKey images-KvEcdw2V.js:528",
+    "40 ms productKey images-KvEcdw2V.js:497",
+    "28 ms toPart PickView-bzIwJl-K.js:158",
+    "23 ms RegExp: [^\\p{L}\\p{N}.+×]+ :0",
+    "22 ms slotModels buildStore-CksoFged.js:382",
+    "22 ms slotFields PickView-bzIwJl-K.js:67",
+    "20 ms evaluate :305",
+    "17 ms fromColumns data-4WbTw2Ub.js:178",
+    "14 ms expandHistory data-4WbTw2Ub.js:185",
+    "13 ms RegExp: ^-+|-+$ :0",
+    "13 ms query :5534",
+    "13 ms queryAll :7079",
+    "13 ms _queryEngineAll :7058",
+    "13 ms querySelectorAll :7010",
+    "13 ms test images-KvEcdw2V.js:537",
+    "12 ms _cached :5500",
+    "12 ms query :5747",
+    "12 ms _callQuery :5708",
+    "12 ms _queryEngine :5696"
+  ]
+}
