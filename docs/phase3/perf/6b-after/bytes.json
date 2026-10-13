@@ -1,0 +1,243 @@
+{
+  "builds": {
+    "typical": [
+      "compat",
+      "cpu",
+      "mobo",
+      "ram",
+      "gpu",
+      "psu"
+    ],
+    "worst": [
+      "cpu",
+      "mobo",
+      "ram",
+      "gpu",
+      "cooler",
+      "storage",
+      "case",
+      "fan",
+      "psu"
+    ],
+    "parts": {
+      "cpu": "Ryzen 7 7700|?",
+      "mobo": "asrockchallengerb850wifiwhite",
+      "ram": "DDR5 32GB (2×16GB) 6800MHz Desktop",
+      "gpu": "bestprice:2160830031",
+      "cooler": "1stplayercryocy12l",
+      "storage": "adataspectrixs65g1tbssd",
+      "case": "aerocoolaeroone",
+      "fan": "akasasohoar120mm3",
+      "psu": "750W Gold ATX"
+    }
+  },
+  "rows": [
+    {
+      "page": "/mobo?pick=1",
+      "build": "a",
+      "checked": true,
+      "jsKB": 117.8203125,
+      "dataKB": 117.58984375,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-DJOsu0vs.js 63.8",
+        "data-yhBDK6WL.js 4.0",
+        "CategoryPage-D290vBpk.js 10.6",
+        "images-DeRHX6Cs.js 8.0",
+        "PickView-Dthmlzv9.js 7.3",
+        "buildStore-Dosh-ZRL.js 6.6",
+        "pick.worker-_YC6tEsI.js 17.4"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "mobo/list.json 117.0"
+      ]
+    },
+    {
+      "page": "/mobo?pick=1",
+      "build": "b",
+      "checked": true,
+      "jsKB": 117.8203125,
+      "dataKB": 117.58984375,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-DJOsu0vs.js 63.8",
+        "data-yhBDK6WL.js 4.0",
+        "CategoryPage-D290vBpk.js 10.6",
+        "images-DeRHX6Cs.js 8.0",
+        "buildStore-Dosh-ZRL.js 6.6",
+        "PickView-Dthmlzv9.js 7.3",
+        "pick.worker-_YC6tEsI.js 17.4"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "mobo/list.json 117.0"
+      ]
+    },
+    {
+      "page": "/mobo?pick=1",
+      "build": "c",
+      "checked": true,
+      "jsKB": 117.8203125,
+      "dataKB": 119.8310546875,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-DJOsu0vs.js 63.8",
+        "data-yhBDK6WL.js 4.0",
+        "CategoryPage-D290vBpk.js 10.6",
+        "images-DeRHX6Cs.js 8.0",
+        "PickView-Dthmlzv9.js 7.3",
+        "buildStore-Dosh-ZRL.js 6.6",
+        "pick.worker-_YC6tEsI.js 17.4"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "mobo/list.json 117.0",
+        "compat/cpu-15.json 0.2",
+        "compat/ram-06.json 0.2",
+        "compat/case-00.json 1.0",
+        "compat/fan-00.json 0.5",
+        "compat/storage-00.json 0.3"
+      ]
+    },
+    {
+      "page": "/cpu?pick=1",
+      "build": "a",
+      "checked": true,
+      "jsKB": 117.8203125,
+      "dataKB": 55.185546875,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-DJOsu0vs.js 63.8",
+        "data-yhBDK6WL.js 4.0",
+        "CategoryPage-D290vBpk.js 10.6",
+        "images-DeRHX6Cs.js 8.0",
+        "buildStore-Dosh-ZRL.js 6.6",
+        "PickView-Dthmlzv9.js 7.3",
+        "pick.worker-_YC6tEsI.js 17.4"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "cpu/list.json 54.6"
+      ]
+    },
+    {
+      "page": "/cpu?pick=1",
+      "build": "b",
+      "checked": true,
+      "jsKB": 117.8203125,
+      "dataKB": 55.185546875,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-DJOsu0vs.js 63.8",
+        "data-yhBDK6WL.js 4.0",
+        "CategoryPage-D290vBpk.js 10.6",
+        "images-DeRHX6Cs.js 8.0",
+        "buildStore-Dosh-ZRL.js 6.6",
+        "PickView-Dthmlzv9.js 7.3",
+        "pick.worker-_YC6tEsI.js 17.4"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "cpu/list.json 54.6"
+      ]
+    },
+    {
+      "page": "/cpu?pick=1",
+      "build": "c",
+      "checked": true,
+      "jsKB": 117.8203125,
+      "dataKB": 58.4912109375,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-DJOsu0vs.js 63.8",
+        "data-yhBDK6WL.js 4.0",
+        "CategoryPage-D290vBpk.js 10.6",
+        "images-DeRHX6Cs.js 8.0",
+        "PickView-Dthmlzv9.js 7.3",
+        "buildStore-Dosh-ZRL.js 6.6",
+        "pick.worker-_YC6tEsI.js 17.4"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "cpu/list.json 54.6",
+        "compat/ram-06.json 0.2",
+        "compat/fan-00.json 0.5",
+        "compat/cooler-00.json 1.0",
+        "compat/psu-01.json 0.1",
+        "compat/gpu-00.json 0.5",
+        "compat/mobo-00.json 0.7",
+        "compat/storage-00.json 0.3"
+      ]
+    },
+    {
+      "page": "/case?pick=1",
+      "build": "a",
+      "checked": true,
+      "jsKB": 117.8203125,
+      "dataKB": 268.2177734375,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-DJOsu0vs.js 63.8",
+        "data-yhBDK6WL.js 4.0",
+        "CategoryPage-D290vBpk.js 10.6",
+        "images-DeRHX6Cs.js 8.0",
+        "PickView-Dthmlzv9.js 7.3",
+        "buildStore-Dosh-ZRL.js 6.6",
+        "pick.worker-_YC6tEsI.js 17.4"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "case/list.json 267.6"
+      ]
+    },
+    {
+      "page": "/case?pick=1",
+      "build": "b",
+      "checked": true,
+      "jsKB": 117.8203125,
+      "dataKB": 268.2177734375,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-DJOsu0vs.js 63.8",
+        "data-yhBDK6WL.js 4.0",
+        "CategoryPage-D290vBpk.js 10.6",
+        "images-DeRHX6Cs.js 8.0",
+        "buildStore-Dosh-ZRL.js 6.6",
+        "PickView-Dthmlzv9.js 7.3",
+        "pick.worker-_YC6tEsI.js 17.4"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "case/list.json 267.6"
+      ]
+    },
+    {
+      "page": "/case?pick=1",
+      "build": "c",
+      "checked": true,
+      "jsKB": 117.8203125,
+      "dataKB": 271.3349609375,
+      "fontKB": 65.701171875,
+      "js": [
+        "index-DJOsu0vs.js 63.8",
+        "data-yhBDK6WL.js 4.0",
+        "CategoryPage-D290vBpk.js 10.6",
+        "images-DeRHX6Cs.js 8.0",
+        "buildStore-Dosh-ZRL.js 6.6",
+        "PickView-Dthmlzv9.js 7.3",
+        "pick.worker-_YC6tEsI.js 17.4"
+      ],
+      "data": [
+        "manifest.json 0.6",
+        "case/list.json 267.6",
+        "compat/cooler-00.json 1.0",
+        "compat/fan-00.json 0.5",
+        "compat/gpu-00.json 0.5",
+        "compat/mobo-00.json 0.7",
+        "compat/psu-01.json 0.1",
+        "compat/storage-00.json 0.3"
+      ]
+    }
+  ]
+}
