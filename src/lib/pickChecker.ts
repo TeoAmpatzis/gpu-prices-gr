@@ -12,6 +12,7 @@ export interface WorkerLike {
   terminate(): void;
   onmessage: ((e: { data: CheckAnswer }) => void) | null;
   onerror: ((e: unknown) => void) | null;
+  onmessageerror?: ((e: unknown) => void) | null;
 }
 
 /** No answer in this time: the worker is given up and the check runs on the main thread. */
@@ -70,13 +71,19 @@ export function createChecker(
   let worker: WorkerLike | null = null;
   let broken = makeWorker === null;
   let nextId = 0;
-  /** Request id → what to do with its answer (null: the worker failed). */
+  /** Request id → what to do with its answer (null: the worker failed). Cancelled requests are removed. */
   const waiting = new Map<number, (a: CheckAnswer | null) => void>();
+  /** Requests the worker is still computing, cancelled ones included (it can't be interrupted). */
+  const busy = new Set<number>();
 
-  const fail = () => {
-    broken = true;
+  const stop = () => {
     worker?.terminate();
     worker = null;
+    busy.clear();
+  };
+  const fail = () => {
+    broken = true;
+    stop();
     const calls = [...waiting.values()];
     waiting.clear();
     for (const c of calls) c(null);
@@ -87,12 +94,14 @@ export function createChecker(
       try {
         const w = makeWorker!();
         w.onmessage = (e) => {
+          busy.delete(e.data.id);
           const c = waiting.get(e.data.id);
           if (!c) return; // cancelled or replaced
           waiting.delete(e.data.id);
           c(e.data);
         };
         w.onerror = () => fail();
+        w.onmessageerror = () => fail(); // an answer that can't be read
         worker = w;
       } catch {
         broken = true;
@@ -104,6 +113,9 @@ export function createChecker(
 
   return {
     run(slot, build, candidates, done) {
+      // A newer run while the worker still computes only cancelled ones: start a fresh worker, so the old
+      // computation doesn't delay this one (nor eat its timeout).
+      if (busy.size > 0 && [...busy].every((id) => !waiting.has(id))) stop();
       let cancelled = false;
       let cancelFallback = () => {};
       const fallback = () => {
@@ -129,6 +141,7 @@ export function createChecker(
       });
       try {
         w.postMessage({ id, slot, build, candidates });
+        busy.add(id);
       } catch {
         fail(); // e.g. a value that can't be cloned: the main thread checks it
       }
@@ -144,8 +157,7 @@ export function createChecker(
     },
     dispose() {
       waiting.clear();
-      worker?.terminate();
-      worker = null;
+      stop();
     },
   };
 }

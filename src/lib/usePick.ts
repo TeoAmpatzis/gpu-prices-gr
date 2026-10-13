@@ -24,6 +24,13 @@ import { navigate } from './router';
 
 export type { Verdict };
 
+/**
+ * With a saved build the rows wait for the check (`pending`), never longer than this: a compat chunk or a worker
+ * that never answers. Then the rows show with nothing hidden and the bar says the check didn't finish
+ * (status 'timeout', final for this build and data, so nothing is hidden later either).
+ */
+export const PENDING_DEADLINE = 10_000;
+
 /** The pick worker (a lazy chunk of its own); null where the browser has no Worker (main-thread fallback). */
 const makeWorker =
   typeof Worker === 'undefined'
@@ -54,8 +61,11 @@ function candidatesOf(slot: Slot, data: CategoryData): Candidates {
 }
 
 export interface PickState {
-  /** 'loading': chunks of saved parts are on their way; 'checking': the engine is running; 'ready'. */
-  status: 'loading' | 'checking' | 'ready';
+  /**
+   * 'loading': chunks of saved parts are on their way; 'checking': the engine is running; 'ready'; 'timeout': not
+   * done within PENDING_DEADLINE, given up (rows shown, nothing hidden).
+   */
+  status: 'loading' | 'checking' | 'ready' | 'timeout';
   /**
    * True while a saved build is being checked (status not 'ready' and the build has parts for this page): the
    * page shows placeholders instead of rows and counts, then the final rows once, so nothing shifts.
@@ -127,7 +137,20 @@ export function usePick(slot: Slot, data: CategoryData): PickState {
     if (!current || !engineParts || runKey === null) return;
     return checker.run(slot, engineParts, [...current.parts.values()], (map) => setResult({ key: runKey, map }));
   }, [checker, current, engineParts, runKey, slot]);
-  const verdicts = result && result.key === runKey ? result.map : null;
+  // The deadline, per data date, page and saved keys (not their fields: saving fresh fields back doesn't restart it).
+  const deadlineKey = `${data.builtAt}
+${slot}
+${JSON.stringify([plan.ready.map((p) => p.key), plan.refresh])}`;
+  const [gaveUp, setGaveUp] = useState<string | null>(null);
+  const timedOut = gaveUp === deadlineKey;
+  const done = result !== null && result.key === runKey;
+  const waitingRows = hasParts && !done && !timedOut;
+  useEffect(() => {
+    if (!waitingRows) return;
+    const id = setTimeout(() => setGaveUp(deadlineKey), PENDING_DEADLINE);
+    return () => clearTimeout(id);
+  }, [waitingRows, deadlineKey]);
+  const verdicts = done && !timedOut ? result.map : null;
 
   const hidden = useMemo(() => {
     const out = new Set<string>();
@@ -148,10 +171,10 @@ export function usePick(slot: Slot, data: CategoryData): PickState {
     [engine, stored],
   );
 
-  const status = !engine ? 'loading' : !verdicts ? 'checking' : 'ready';
+  const status = timedOut ? 'timeout' : !engine ? 'loading' : !verdicts ? 'checking' : 'ready';
   return {
     status,
-    pending: status !== 'ready' && hasParts,
+    pending: waitingRows,
     build: engineParts ?? [],
     missing: missing.missing,
     unchecked: missing.unchecked,

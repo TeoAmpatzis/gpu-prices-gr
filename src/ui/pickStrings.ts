@@ -5,6 +5,11 @@ export const PICK = {
   choosing: { el: 'Επιλέγεις:', en: 'Picking:' },
   backToBuild: { el: 'Πίσω στο build', en: 'Back to the build' },
   checking: { el: 'Έλεγχος συμβατότητας…', en: 'Checking compatibility…' },
+  notFinished: {
+    el: 'Ο έλεγχος συμβατότητας δεν ολοκληρώθηκε: δεν κρύβεται τίποτα.',
+    en: "The compatibility check didn't finish: nothing is hidden.",
+  },
+  notFinishedShort: { el: 'Ο έλεγχος δεν ολοκληρώθηκε', en: "The check didn't finish" },
   emptyBuild: { el: 'Το build σου είναι άδειο: δεν κρύβεται τίποτα.', en: 'Your build is empty: nothing is hidden.' },
   checkedWith: { el: 'Έλεγχος με το build σου:', en: 'Checked against your build:' },
   noLongerAvailable: { el: 'δεν διατίθεται πια', en: 'no longer available' },

@@ -21,9 +21,9 @@ const build = [cpu, card, psu];
 const req: CheckRequest = { id: 7, slot: 'mobo', build, candidates: boards };
 
 /** checkAll's verdicts trimmed the way the protocol trims them. */
-const expected = () => {
+const expected = (candidates: Part[] = boards) => {
   const out = new Map<string, Verdict>();
-  for (const [k, v] of checkAll(build, 'mobo', boards, PICK_CTX)) out.set(k, { hide: v.hide, findings: v.findings.filter(shownFinding) });
+  for (const [k, v] of checkAll(build, 'mobo', candidates, PICK_CTX)) out.set(k, { hide: v.hide, findings: v.findings.filter(shownFinding) });
   return out;
 };
 const now: Schedule = (fn) => {
@@ -32,18 +32,20 @@ const now: Schedule = (fn) => {
 };
 
 /** A worker that answers like pick.worker.ts (structured clone both ways), after a microtask. */
-function fakeWorker(reply: (r: CheckRequest) => CheckAnswer | 'crash' | 'silent' = answer) {
+function fakeWorker(reply: (r: CheckRequest) => CheckAnswer | 'crash' | 'silent' | 'unreadable' = answer) {
   const w: WorkerLike & { posted: CheckRequest[]; terminated: boolean } = {
     posted: [],
     terminated: false,
     onmessage: null,
     onerror: null,
+    onmessageerror: null,
     postMessage(m) {
       const msg = structuredClone(m);
       w.posted.push(msg);
       queueMicrotask(() => {
         const a = reply(msg);
         if (a === 'crash') w.onerror?.(new Error('worker crashed'));
+        else if (a === 'unreadable') w.onmessageerror?.(new Error('messageerror'));
         else if (a !== 'silent') w.onmessage?.({ data: structuredClone(a) });
       });
     },
@@ -202,5 +204,51 @@ describe('checker', () => {
     await flush();
     expect(workers).toHaveLength(2);
     expect(done).toHaveBeenCalledTimes(1);
+  });
+  it('an answer the page cannot read (messageerror): fallback', async () => {
+    const w = fakeWorker(() => 'unreadable');
+    const done = vi.fn();
+    createChecker(() => w, now).run('mobo', build, boards, done);
+    await called(done);
+    expect(w.terminated).toBe(true);
+    expect(done.mock.calls[0][0]).toEqual(expected());
+  });
+  it('a value the browser cannot clone (DataCloneError): the main thread checks it', async () => {
+    const odd = [{ ...boards[0], key: 'fn', fields: { ...boards[0].fields, note: () => 'not data' } }];
+    const w = fakeWorker();
+    const done = vi.fn();
+    createChecker(() => w, now).run('mobo', build, odd, done);
+    expect(w.posted).toHaveLength(0); // structuredClone threw before anything was sent
+    expect(w.terminated).toBe(true);
+    await called(done);
+    expect(done.mock.calls[0][0]).toEqual(expected(odd));
+  });
+  it('a newer run while the worker still computes a cancelled one: a fresh worker, the old one stopped', async () => {
+    const workers = [fakeWorker(() => 'silent'), fakeWorker()];
+    const make = vi.fn(() => workers[make.mock.calls.length - 1]);
+    const c = createChecker(make, now, 1000);
+    const first = vi.fn();
+    c.run('mobo', build, boards, first)(); // replaced while the worker is busy with it
+    const second = vi.fn();
+    c.run('mobo', build, boards, second);
+    expect(workers[0].terminated).toBe(true);
+    expect(make).toHaveBeenCalledTimes(2);
+    await flush();
+    expect(second).toHaveBeenCalledTimes(1);
+    expect(second.mock.calls[0][0]).toEqual(expected());
+    expect(workers[1].terminated).toBe(false); // answered by the worker, no fallback
+    expect(first).not.toHaveBeenCalled();
+  });
+  it('a run still wanted is not dropped by a newer one (same worker, both answered)', async () => {
+    const make = vi.fn(() => fakeWorker());
+    const c = createChecker(make, now);
+    const a = vi.fn();
+    const b = vi.fn();
+    c.run('mobo', build, boards, a);
+    c.run('mobo', build, boards.slice(0, 1), b);
+    await flush();
+    expect(make).toHaveBeenCalledTimes(1);
+    expect(a.mock.calls[0][0]).toEqual(expected());
+    expect([...(b.mock.calls[0][0] as Map<string, Verdict>).keys()]).toEqual(['am5']);
   });
 });

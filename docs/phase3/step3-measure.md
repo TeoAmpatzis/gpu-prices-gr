@@ -98,7 +98,9 @@ in a separate worktree, so Task 6's numbers are not reused. Raw: `docs/phase3/pe
 (`lighthouse.json`, `bytes.json`, `trace-*.json`).
 
 Budget reading (owner, 12/10, recorded in PROJECT-STATE rule 11): the first-load budget is the first paint's JS;
-the pick chunks load after it.
+the pick chunks load after it. Rule 11 says the pick code is "≈ 29 KB" (Task 6's PickView + buildStore); after 6b
+it is **≈ 31 KiB gzip**: `PickView` 7.3 + `buildStore` 6.6 + the worker 17.4 (+ the fallback-only `pickCheck` 17.3,
+fetched only without Worker support).
 
 ### Trace first (`measure-pick.mjs trace`, Chromium with the CPU slowed 4×, unminified build)
 
@@ -126,8 +128,17 @@ was mostly the page's own filter + count pass running twice, not the engine.
   previous idle-slice main-thread check when there is no Worker, the worker can't start, crashes, answers with an
   error or not within 10 s. The engine stays one shared source (`src/engine`); `pickCheck.ts` holds `checkAll`,
   `pickHide.ts` the hide rules (no engine code).
-- **Bytes:** the engine left the page's `PickView` chunk (23.0 → 7.3 KiB gzip); it is in the worker chunk (17.4 KiB)
-  and in a fallback-only chunk (`pickCheck`, 17.3 KiB, fetched only without Worker support).
+- **Bytes:** the engine's rules and tables left the page's `PickView` chunk (23.0 → 7.3 KiB gzip; only small helpers
+  such as `shownLevel` stay there); they are in the worker chunk (17.4 KiB) and in a fallback-only chunk (`pickCheck`,
+  17.3 KiB, fetched only without Worker support).
+- **Fix round 1:** the rows never wait without limit: 10 s after a saved build starts waiting (a compat chunk or the
+  worker that never answers) the rows show with nothing hidden and the bar says "The compatibility check didn't
+  finish: nothing is hidden." (final for that build and data). A newer run while the worker still computes a
+  cancelled one starts a fresh worker; an unreadable answer (`messageerror`) falls back to the main thread.
+  Re-measured after it (`docs/phase3/perf/6b-fix1/`, phone median of 3): `/case?pick=1` b **92**, c **92**
+  (runs 92/93/92 and 88/93/92; TBT 302 / 326 ms), CLS 0; desktop 100 / 100. The machine was busier in that
+  session: plain `/case`, whose code path the fix doesn't touch, measured 87 (runs 87/87/89; TBT 425 against
+  338 ms earlier), so the pick pages kept their lead over plain `/case`.
 - Facet counts were **not** moved (not needed for ≥ 90).
 
 ### Lighthouse (median of 3: score / TBT / CLS)

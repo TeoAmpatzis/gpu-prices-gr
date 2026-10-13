@@ -118,11 +118,14 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
   }, [ready, pick.hidden, all, filters, cfg, data]);
 
   const one = CATS[cfg.id].one ?? CATS[cfg.id].name;
-  const status = !ready
-    ? t(PICK.checking)
-    : pick.build.length === 0
-      ? t(PICK.emptyBuild)
-      : `${t(PICK.checkedWith)} ${plural(lang, pick.build.length, UI.partForms)}.`;
+  const timeout = pick.status === 'timeout';
+  const status = timeout
+    ? t(PICK.notFinished)
+    : !ready
+      ? t(PICK.checking)
+      : pick.build.length === 0
+        ? t(PICK.emptyBuild)
+        : `${t(PICK.checkedWith)} ${plural(lang, pick.build.length, UI.partForms)}.`;
 
   const bar: ReactNode = (
     <section data-pick="bar" className="card flex flex-col gap-2 p-4 text-sm" aria-label={`${t(PICK.choosing)} ${t(one)}`}>
@@ -178,7 +181,7 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
     <div className="border-b border-line pb-3">
       <Toggle
         label={ready ? `${t(PICK.onlyCompatible)} (${plural(lang, hiddenCount, PICK.hiddenForms)})` : t(PICK.onlyCompatible)}
-        hint={ready ? undefined : t(PICK.checking)}
+        hint={ready ? undefined : t(timeout ? PICK.notFinishedShort : PICK.checking)}
         checked={filters.compat}
         onChange={(compat) => setFilters({ ...filters, compat })}
       />
@@ -190,7 +193,17 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
   const pending = pick.pending
     ? {
         filters: <SkeletonFilters top={toggle} />,
-        results: <div aria-busy="true">{wide ? <SkeletonTable /> : <SkeletonCards cards={4} />}</div>,
+        results: (
+          <div aria-busy="true">
+            {wide ? (
+              <div role="status" aria-label={t(UI.loading)}>
+                <SkeletonTable />
+              </div>
+            ) : (
+              <SkeletonCards cards={4} />
+            )}
+          </div>
+        ),
       }
     : undefined;
 

@@ -170,7 +170,7 @@ export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setF
               onClick={closeSheet}
               className="tap flex-1 rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-page transition-opacity duration-150 hover:opacity-90"
             >
-              {tr(lang, T.showResults)} <span className="tabular-nums">{models.length}</span> {tr(lang, T.results)}
+              {tr(lang, T.showResults)} <span className="tabular-nums">{pending ? '…' : models.length}</span> {tr(lang, T.results)}
             </button>
           </div>
         }
