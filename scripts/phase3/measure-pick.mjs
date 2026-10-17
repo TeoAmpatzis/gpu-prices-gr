@@ -53,7 +53,7 @@ const PARTS = {
   fan: pick('fan', (v) => v.size === 120),
   psu: pick('psu', (v) => v.watts === 750),
 };
-const builtAt = JSON.parse(readFileSync('dist/data/mobo/list.json', 'utf8')).builtAt;
+const builtAt = JSON.parse(readFileSync('dist/data/mobo/list.v2.json', 'utf8')).builtAt;
 const typical = { compat: {} };
 for (const s of ['cpu', 'mobo', 'ram', 'gpu', 'psu']) {
   typical[s] = PARTS[s].key;

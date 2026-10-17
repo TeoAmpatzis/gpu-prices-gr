@@ -4,6 +4,7 @@
 // focused or touched.
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { tr, useLang, type Text } from './lib/i18n';
+import { listUrl } from './lib/columns';
 import { afterFirstPaint } from './lib/paint';
 import { navigate, notifyUrl, useLinkNavigation, usePath } from './lib/router';
 import { CATEGORY_LIST, matchRoute, redirectLegacyLink } from './lib/routes';
@@ -57,7 +58,7 @@ function startFirstPage() {
     void loadBuilderView();
     return;
   }
-  const data = first.kind === 'category' || first.kind === 'model' ? `/data/${first.cat}/list.json` : null;
+  const data = first.kind === 'category' || first.kind === 'model' ? listUrl(first.cat) : null;
   if (data) {
     const l = document.createElement('link');
     l.rel = 'preload';

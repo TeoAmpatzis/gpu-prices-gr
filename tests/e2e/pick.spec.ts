@@ -35,7 +35,7 @@ async function withBuild(page: Page, build: object | null, url: string, lang: 'e
 }
 
 const listBuiltAt = async (page: Page, cat: string) =>
-  ((await (await page.request.get(`/data/${cat}/list.json`)).json()) as { builtAt: string }).builtAt;
+  ((await (await page.request.get(`/data/${cat}/list.v2.json`)).json()) as { builtAt: string }).builtAt;
 
 const savedBuild = (page: Page) => page.evaluate(() => JSON.parse(localStorage.getItem('pcBuild') ?? '{}') as Record<string, unknown>);
 

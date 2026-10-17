@@ -526,7 +526,7 @@ export function StatesSection({ notFound }: { notFound: ReactNode }) {
         </div>
         <div className="ui-card">
           <ErrorState
-            detail="/data/gpu/list.json: HTTP 500"
+            detail="/data/gpu/list.v2.json: HTTP 500"
             retrying={retrying}
             onRetry={() => {
               setRetrying(true);

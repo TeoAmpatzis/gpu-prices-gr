@@ -1,7 +1,7 @@
 // Smaller files for the site, derived at build time from the scraper's JSON (latest.json,
 // history.json, history_imported.json stay exactly as the scraper writes them).
 //
-// - /data/<cat>/list.json   the category page: every listing (filters and counts need all of them)
+// - /data/<cat>/list.v2.json   the category page: every listing (filters and counts need all of them)
 //   as columns, without shop URLs and scrape times, plus a few daily lows per model;
 // - /data/<cat>/detail.json listing id → shop URL, loaded when a product is opened (together with
 //   the full history.json for the chart);
@@ -173,7 +173,7 @@ export function listFile(cat: Category, input: CategoryInput, builtAt: string, i
   const withPhoto = new Set([...keys].filter((k) => image?.(cat, k)));
   const { hist, histBase } = encodeHist(reduced);
   return {
-    v: 1,
+    v: 2,
     builtAt,
     updatedAt: input.latest.updatedAt,
     sources: input.latest.sources,

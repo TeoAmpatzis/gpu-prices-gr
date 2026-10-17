@@ -1,7 +1,7 @@
 // Build step: derives the site's small data files from the scraper's JSON in public/data
 // (src/lib/derive.ts) and refuses to publish data that looks broken.
 //
-// - `vite build`: writes data/<cat>/list.json, data/<cat>/detail.json, data/builder(-extra).json,
+// - `vite build`: writes data/<cat>/list.v2.json, data/<cat>/detail.json, data/builder(-extra).json,
 //   data/builder-<slot>.json (builder.LAZY_SLOTS: storage) and data/manifest.json into dist after comparing the counts with the live site's manifest. If a
 //   category is empty or lost more than derive.MAX_DROP of its models/listings, the build fails and
 //   Vercel keeps serving the previous deployment. For a planned drop, tag the commit message with
@@ -65,7 +65,7 @@ async function imageLookup(): Promise<{ lookup: ImageLookup; count: number }> {
 }
 
 /** Every derived file, by its path under the site root. */
-function derive(builtAt: string, image?: ImageLookup): { files: Record<string, string>; manifest: Manifest } {
+export function derive(builtAt: string, image?: ImageLookup): { files: Record<string, string>; manifest: Manifest } {
   const inputs = readInputs();
   const files: Record<string, string> = {};
   const latest: Partial<Record<Category, Latest>> = {};
@@ -82,7 +82,7 @@ function derive(builtAt: string, image?: ImageLookup): { files: Record<string, s
     }
     latest[cat] = v.latest;
     history[cat] = input.history;
-    files[`data/${cat}/list.json`] = JSON.stringify(listFile(cat, { ...input, latest: v.latest }, builtAt, image));
+    files[`data/${cat}/list.v2.json`] = JSON.stringify(listFile(cat, { ...input, latest: v.latest }, builtAt, image));
     files[`data/${cat}/detail.json`] = JSON.stringify(detailFile(v.latest));
   }
   console.log(`[data] validation (${VALIDATION_MODE}): ${rejectedTotal ? `${rejectedTotal} value(s) out of range — ${rejected.join(', ')}` : 'none'}`);

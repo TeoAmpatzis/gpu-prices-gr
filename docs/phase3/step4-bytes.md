@@ -28,3 +28,13 @@ What changed: `img` (model key -> "<cat>/<id>") became `photos`, a base64 bitset
 price 15.3, total 9.0, merchant 6.1, radiatorMounts 4.8, shipping 4.0. Ideas: `title` and `id` per listing
 (76 KiB together) are only read in the expanded row and for search; `merchant`/`total`/`shipping` (19 KiB)
 only for the "incl. shipping" line. Moving them to a per-model chunk would cost a request on opening a row.
+
+## Equivalence check and the 84 old failures
+
+`scripts/checks/data-equivalence.test.mts` compares the old list file (dip-filtered reduction in the old shape) with the new one (`decodeHist` + photo bitset): allTimeLow, week change, sale, photo, on the build day and the next. Result: ALL EQUAL, 0 failures.
+
+The 84 "failures" that the script printed before this task came from another comparison: the scraper's FULL `history.json` against the list file's history, which has had the C6 implausible dips removed since commit f198493. They are differences by design (all-time low / week change without the dips), not regressions; the script now counts them apart ("C6 dip differences") and they never count as failures.
+
+## File names
+
+The new format is `/data/<cat>/list.v2.json` (field `v: 2`, checked by the decoder). The build never writes the new format as `list.json`; it writes no `list.json` at all. Code cached from before this change asks for `list.json` and gets a 404 (error state) instead of a file it cannot read.
