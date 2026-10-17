@@ -61,9 +61,9 @@ export function usable<S extends Slot>(slot: S, m: Model<SlotListing[S]>): boole
  */
 export const NOT_IN_DATA: Record<Slot, string[]> = {
   cpu: [],
-  // fanHeaders, usbCHeader: not on any spec page we read. m2Gen, m2Slots, sataPorts, maxMemoryGB, biosFlashback: main's
-  // scraper started filling them 2026-10-10; v2's data copy is from 2026-10-10 05:51 and has none.
-  mobo: ['fanHeaders', 'usbCHeader', 'm2Gen', 'm2Slots', 'sataPorts', 'maxMemoryGB', 'biosFlashback'],
+  // fanHeaders, usbCHeader: not on any spec page we read. m2Gen: main's scraper reads it since 2026-10-10, no value
+  // yet (data of 2026-10-17: m2Slots 92, sataPorts 79, maxMemoryGB 2393, biosFlashback 60 of 2938 listings).
+  mobo: ['fanHeaders', 'usbCHeader', 'm2Gen'],
   ram: [],
   gpu: ['powerConnector', 'slots'],
   cooler: [],
