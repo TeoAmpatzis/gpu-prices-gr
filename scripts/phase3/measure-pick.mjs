@@ -125,6 +125,7 @@ if (MODE === 'bytes') {
     { id: 'case-pick-a', path: '/case?pick=1', build: 'a' },
     { id: 'case-pick-b', path: '/case?pick=1', build: 'b' },
     { id: 'case-pick-c', path: '/case?pick=1', build: 'c' },
+    { id: 'storage', path: '/storage' },
     { id: 'builder-guided', path: '/builder' },
   ];
   const median = (xs) => {
