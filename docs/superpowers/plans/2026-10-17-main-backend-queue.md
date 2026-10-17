@@ -82,9 +82,13 @@ v2 id), `scraper/specs.py` (drop an out-of-range value per site before `SAFER` p
 point beats an imported one, lower price between two of the same kind; then removes the old key),
 `scraper/site_history.py` (`history_imported.json` entries follow the alias), `scraper/merge_history.py` (`check`
 treats a point moved to its alias target as present), `scripts/checks/test_aliases.py`.
-- Tests: fold is idempotent (running twice = once); a chain A→B, B→C resolves to C; `check` passes when points moved,
-  fails when a point really vanished; an alias to a key that does not exist yet still moves the history (the new key
-  appears on the next scrape).
+- Tests: fold is idempotent (running twice = once); a chain A→B, B→C resolves to C; a cycle (A→B, B→A, or longer)
+  is rejected at load with an error naming the keys; an alias to a key that already has history merges with the
+  same-day rule; `check` passes when points moved, fails when a point really vanished; an alias to a key that does
+  not exist yet still moves the history (the new key appears on the next scrape).
+- **Before the first push that renames anything (owner 17/10):** run the fold offline on a copy of main's current
+  `public/data/*/history.json` (+ `history_imported.json`) files: points before = points after (minus the 365-point
+  trim), and `merge_history.py check` against the copy passes. Report both numbers per category.
 - v2 side (step 4 plan, Task 5): the build reads `scraper/model_aliases.json` (after v2 merges main) into
   `MODEL_ALIASES`.
 
