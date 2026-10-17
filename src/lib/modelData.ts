@@ -4,6 +4,7 @@
 // data: no list.json and no slug index.
 import type { Category, HistoryPoint, ModelChunk, ModelEntry } from '../types';
 import { fnv1a } from './compatChunks';
+import { MODEL_ALIAS_SLUGS } from '../data/modelAliases';
 import { loadManifest } from './manifest';
 
 export const MODEL_CHUNKS = 256;
@@ -39,7 +40,40 @@ const loadChunk = (() => {
 export async function loadModel(cat: Category, slug: string): Promise<ModelEntry | null> {
   const { builtAt } = await loadManifest();
   const chunk = await loadChunk(`/${modelChunkPath(cat, modelChunkOf(slug))}?v=${builtAt}`);
-  return chunk.models[slug] ?? null;
+  return has(chunk.models, slug) ? chunk.models[slug] : null;
+}
+
+const has = (o: object, k: string) => Object.prototype.hasOwnProperty.call(o, k);
+
+export type ModelResolution = { kind: 'ok'; entry: ModelEntry } | { kind: 'moved'; slug: string } | { kind: 'gone' };
+
+/**
+ * What an address /<cat>/<slug> shows: an aliased old slug is `moved` to the new one (no request); otherwise the
+ * slug's chunk is fetched and the entry looked up: `ok`, or `gone` (delisted since the build, or never a model:
+ * the chunks can't tell the two apart). `aliases` = old slug -> new slug (data/modelAliases.ts).
+ */
+export async function resolveModel(cat: Category, slug: string, aliases: Record<string, string> = MODEL_ALIAS_SLUGS[cat]): Promise<ModelResolution> {
+  if (has(aliases, slug)) return { kind: 'moved', slug: aliases[slug] };
+  const entry = await loadModel(cat, slug);
+  return entry ? { kind: 'ok', entry } : { kind: 'gone' };
+}
+
+/**
+ * The page's guard against alias loops (validated tables have none, but a bad table must not hang the page):
+ * a `moved` to the same slug, or to a slug already left during this redirect chain, is `gone`. `visited` is the
+ * page's set of slugs left in the current chain; it is emptied when the chain ends.
+ */
+export function guardMoved(res: ModelResolution, slug: string, visited: Set<string>): ModelResolution {
+  if (res.kind !== 'moved') {
+    visited.clear();
+    return res;
+  }
+  if (res.slug === slug || visited.has(res.slug)) {
+    visited.clear();
+    return { kind: 'gone' };
+  }
+  visited.add(slug);
+  return res;
 }
 
 /** The expanded row's chart: the model's full history points (the same ones the category history.json held). */

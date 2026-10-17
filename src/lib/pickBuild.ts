@@ -3,6 +3,7 @@
 //  - Stored engine fields are used only when they are plain JSON values and carry their data date (A7).
 //  - A part with no usable fields, or fields from older data than the page's, is refreshed from the
 //    compat chunks; a key the chunks no longer have is "no longer available" and left out (A9).
+import { MODEL_ALIASES } from '../data/modelAliases';
 import type { Part } from '../engine';
 import { resolveKey, type StoredBuild, type StoredPart } from './buildStore';
 import type { Slot } from './builder';
@@ -83,7 +84,7 @@ export const outcomeKey = (builtAt: string, slot: Slot, key: string) => `${built
 /** One key's answer from a `loadCompat` result (`undefined` = the chunk failed to load). */
 export function outcomeOf(slot: Slot, key: string, rows: Record<string, { fields: Record<string, unknown> }> | undefined): Outcome {
   if (!rows) return 'failed';
-  const r = resolveKey(slot, key, new Set(Object.keys(rows)));
+  const r = resolveKey(slot, key, new Set(Object.keys(rows)), MODEL_ALIASES[slot]);
   return r.status === 'missing' ? 'missing' : { key: r.key, fields: rows[r.key].fields };
 }
 
