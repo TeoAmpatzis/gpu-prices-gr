@@ -55,7 +55,7 @@ export function priceInfo(d: PreviewData, cat: Category, m: AnyModel, l: BaseLis
   };
 }
 
-export const imageOf = (d: PreviewData, cat: Category, m: AnyModel): ProductImage | null => productImage(d.data[cat].img[m.key]);
+export const imageOf = (d: PreviewData, cat: Category, m: AnyModel): ProductImage | null => productImage(cat, m.key, d.data[cat].photos.has(m.key));
 export const sourcesOf = (m: AnyModel) => new Set(m.listings.map((l) => l.source)).size;
 
 export function usePreviewData(): PreviewData | null {

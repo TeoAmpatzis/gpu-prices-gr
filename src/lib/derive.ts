@@ -30,7 +30,7 @@ import type {
   MoboListing,
 } from '../types';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './categories';
-import { fromColumns } from './columns';
+import { fromColumns, modelKeys } from './columns';
 import { implausibleDips, isDipPrice } from './dips';
 import { groupModels, mostCommon, saleOf, type Model } from './data';
 import { POP_SCALE, popularityRaw } from './ranking';
@@ -108,6 +108,36 @@ export function reduceHistory(points: DailyLow[], day: string): [string, number]
   return sorted.filter((p) => keep.has(p)).map((p) => [p.d, p.min]);
 }
 
+/**
+ * `hist` in its compact form (decoded by columns.decodeHist): per model a flat list of numbers, [days from
+ * `histBase` of the first point, price in cents, then days since the previous point, price in cents, …].
+ */
+export function encodeHist(reduced: Record<string, [string, number][]>): Pick<ListFile, 'hist' | 'histBase'> {
+  const days = (d: string) => Math.round(Date.parse(`${d}T00:00:00Z`) / 864e5);
+  let first = Infinity;
+  for (const pts of Object.values(reduced)) for (const [d] of pts) first = Math.min(first, days(d));
+  const hist: ListFile['hist'] = {};
+  for (const [k, pts] of Object.entries(reduced)) {
+    const v: number[] = [];
+    let prev = first;
+    for (const [d, min] of pts) {
+      v.push(days(d) - prev, Math.round(min * 100));
+      prev = days(d);
+    }
+    hist[k] = v;
+  }
+  return { hist, histBase: new Date((Number.isFinite(first) ? first : 0) * 864e5).toISOString().slice(0, 10) };
+}
+
+/** Bit i of the base64 bitset (byte i>>3, bit i&7) = the i-th model key, sorted, has a photo. */
+function encodePhotos(keys: string[], has: Set<string>): string {
+  const bytes = new Uint8Array((keys.length + 7) >> 3);
+  keys.forEach((k, i) => {
+    if (has.has(k)) bytes[i >> 3] |= 1 << (i & 7);
+  });
+  return btoa(String.fromCharCode(...bytes));
+}
+
 const cfgOf = (cat: Category) => CATEGORIES[cat] as unknown as CategoryConfig<BaseListing>;
 
 export interface CategoryInput {
@@ -124,7 +154,9 @@ export function listFile(cat: Category, input: CategoryInput, builtAt: string, i
   const cfg = cfgOf(cat);
   // Only models that are listed now (history.json also keeps a year of delisted ones).
   const keys = new Set(input.latest.listings.map((l) => cfg.modelKey(l)));
-  const hist: ListFile['hist'] = {};
+  const reduced: Record<string, [string, number][]> = {};
+  // Every current model gets an entry (maybe empty): the photo bitset is over these keys.
+  for (const k of keys) reduced[k] = [];
   // C6: implausible short dips (src/lib/dips.ts) are left out before reducing, so the browser's all-time
   // low and week change (whose comparison points skip them too) never see them; an imported low that is
   // one of those dips is dropped from `imported` for the same reason.
@@ -132,17 +164,14 @@ export function listFile(cat: Category, input: CategoryInput, builtAt: string, i
   for (const [k, pts] of Object.entries(input.history)) {
     if (!keys.has(k)) continue;
     const dips = implausibleDips(pts as HistoryPoint[]);
-    hist[k] = reduceHistory(dips.size ? (pts as HistoryPoint[]).filter((p) => !dips.has(p)) : (pts as HistoryPoint[]), day);
+    reduced[k] = reduceHistory(dips.size ? (pts as HistoryPoint[]).filter((p) => !dips.has(p)) : (pts as HistoryPoint[]), day);
     const imp = imported[k];
     if (dips.size && typeof imp === 'object' && imp.low != null && isDipPrice(imp.low, dips)) {
       imported[k] = { ...imp, low: undefined };
     }
   }
-  const img: Record<string, string> = {};
-  for (const k of keys) {
-    const path = image?.(cat, k);
-    if (path) img[k] = path;
-  }
+  const withPhoto = new Set([...keys].filter((k) => image?.(cat, k)));
+  const { hist, histBase } = encodeHist(reduced);
   return {
     v: 1,
     builtAt,
@@ -150,8 +179,9 @@ export function listFile(cat: Category, input: CategoryInput, builtAt: string, i
     sources: input.latest.sources,
     ...toColumns(input.latest.listings, LIST_SKIP),
     hist,
+    histBase,
     imported,
-    img,
+    photos: encodePhotos(modelKeys({ hist }), withPhoto),
   };
 }
 

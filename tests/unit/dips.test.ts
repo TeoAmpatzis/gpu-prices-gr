@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { chartLine, implausibleDips, isDipPrice, withoutDips } from '../../src/lib/dips';
 import { allTimeLow } from '../../src/lib/data';
 import { listFile, reduceHistory } from '../../src/lib/derive';
+import { decodeHist } from '../../src/lib/columns';
 import { CATEGORIES } from '../../src/lib/categories';
 import type { BaseListing, DailyLow, History, Latest } from '../../src/types';
 
@@ -96,7 +97,7 @@ describe('build-time path (listFile)', () => {
       { latest: { ...latest, listings: [listing] }, history: { [key]: hist }, imported: { [key]: { d: dd(5), low: 40.2, since: dd(100) } } },
       `${today}T06:00:00Z`,
     );
-    expect(f.hist[key].some(([, v]) => v === 40)).toBe(false);
+    expect((decodeHist(f)[key] ?? []).some((p) => p.min === 40)).toBe(false);
     const imp = f.imported[key] as { low?: number; since?: string };
     expect(imp.low).toBeUndefined();
     expect(imp.since).toBe(dd(100));

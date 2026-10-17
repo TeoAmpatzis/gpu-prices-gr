@@ -16,7 +16,7 @@ import { SOURCE_NAMES } from './sources';
 import type { CategoryConfig } from './categories';
 import { recommendedScores } from './ranking';
 import { implausibleDips, isDipPrice } from './dips';
-import { expandHistory, fromColumns } from './columns';
+import { decodeHist, decodePhotos, fromColumns } from './columns';
 
 // The site reads files derived at build time (src/lib/derive.ts); browsers cache them for a few
 // minutes (vercel.json), so switching tabs back and forth or reopening the site doesn't refetch.
@@ -27,8 +27,8 @@ export interface CategoryData<L extends BaseListing = BaseListing> {
   history: Record<string, DailyLow[]>;
   imported: Imported; // Skroutz history import: all-time lows
   builtAt: string;
-  /** Model key → stored photo ("<cat>/<id>"); see src/lib/images.ts. */
-  img: Record<string, string>;
+  /** Keys of the models that have a stored photo; see src/lib/images.ts productImage. */
+  photos: Set<string>;
 }
 
 /** Shop links and the full price history (chart), loaded when a product is first opened. */
@@ -72,10 +72,10 @@ const loadList = memo(
   (cat: Category): Promise<CategoryData> =>
     getJson<ListFile>(`/data/${cat}/list.json`).then((f) => ({
       latest: { updatedAt: f.updatedAt, sources: f.sources, listings: fromColumns<BaseListing>(f).map(ownTotal) },
-      history: expandHistory(f.hist),
+      history: decodeHist(f),
       imported: f.imported,
       builtAt: f.builtAt,
-      img: f.img ?? {},
+      photos: decodePhotos(f),
     })),
 );
 

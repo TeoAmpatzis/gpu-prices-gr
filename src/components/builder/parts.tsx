@@ -25,7 +25,7 @@ import {
   type SlotListing,
 } from '../../lib/builder';
 import type { AnyModel } from '../../lib/builderState';
-import { productImage } from '../../lib/images';
+import { storedImage } from '../../lib/images';
 import { tr, type Lang, type Text } from '../../lib/i18n';
 
 export const S = {
@@ -167,4 +167,4 @@ export function specLine(slot: Slot, m: AnyModel, lang: Lang): string {
 }
 
 /** A builder part's photo: builder.json rows carry the stored photo (`img`). */
-export const partImage = (m: AnyModel) => productImage(m.cheapest.img);
+export const partImage = (m: AnyModel) => storedImage(m.cheapest.img);
