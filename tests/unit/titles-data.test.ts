@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from '../../src/lib/categories';
 import { groupModels } from '../../src/lib/data';
-import { GPU_SPEC, GPU_WORDS, shortTitles, titleKey } from '../../src/lib/titles';
+import { shortTitles, titleKey, titleOptions } from '../../src/lib/titles';
 import type { BaseListing, Latest } from '../../src/types';
 
 /**
@@ -20,7 +20,7 @@ export function collisions(): { cat: string; model: string; short: string; title
     const models = groupModels(latest.listings as BaseListing[], CATEGORIES[cat] as unknown as CategoryConfig<BaseListing>);
     for (const m of models) {
       const titles = m.listings.map((l) => l.title);
-      const opts = cat === 'gpu' ? { known: GPU_WORDS, spec: GPU_SPEC } : {};
+      const opts = titleOptions(cat);
       const shorts = shortTitles(titles, m.chip, opts);
       const by = new Map<string, Map<string, string>>();
       shorts.forEach((s, i) => by.set(s, (by.get(s) ?? new Map()).set(titleKey(titles[i], m.chip, opts), titles[i])));
@@ -37,5 +37,24 @@ describe('short titles over today\'s data', () => {
     console.log(`[titles] ${found.length} colliding short titles, ${offers} offers`);
     for (const c of found.slice(0, 12)) console.log(`  ${c.cat} ${c.model}: "${c.short}" <- ${c.titles.map((t) => `"${t}"`).join(' | ')}`);
     expect(found).toEqual([]);
+  });
+});
+
+describe('RAM short titles', () => {
+  it('no short title keeps a lone digit that is the "N Modules" count', () => {
+    const bad: string[] = [];
+    const latest = validateLatest('ram', JSON.parse(readFileSync('public/data/ram/latest.json', 'utf8')) as Latest, VALIDATION_MODE).latest;
+    for (const m of groupModels(latest.listings as BaseListing[], CATEGORIES.ram as unknown as CategoryConfig<BaseListing>)) {
+      if (m.listings.length < 2) continue; // a lone offer keeps its full title
+      const titles = m.listings.map((l) => l.title);
+      shortTitles(titles, m.chip, titleOptions('ram')).forEach((s, i) => {
+        // A lone digit word left in the short title that, in the full title, is the count in "N Modules".
+        const d = [...titles[i].matchAll(/(?<![\w×x])(\d)\s+modules?/gi)].map((x) => x[1]).find((x) => s.split(/\s+/).includes(x));
+        if (d) bad.push(`${s} <- ${titles[i]}`);
+      });
+    }
+    console.log(`[titles] RAM short titles keeping the Modules count: ${bad.length}`);
+    for (const b of bad.slice(0, 8)) console.log('  ' + b);
+    expect(bad).toEqual([]);
   });
 });

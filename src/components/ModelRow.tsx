@@ -8,7 +8,7 @@ import { SOURCES } from '../lib/sources';
 import SourceBadge from './SourceBadge';
 import { isExamplePhoto } from '../lib/examplePhoto';
 import ProductPhoto from './ProductPhoto';
-import { GPU_SPEC, GPU_WORDS, shortTitles } from '../lib/titles';
+import { shortTitles, titleOptions } from '../lib/titles';
 import type { ProductImage } from '../lib/images';
 
 // The chart is only needed once a row is expanded.
@@ -144,7 +144,7 @@ function ModelDetails<L extends BaseListing>({
 }) {
   const price = (n: number) => formatPrice(n, lang);
   const details = useDetails(cat);
-  const shorts = shortTitles(m.listings.map((l) => l.title), m.chip, cat === 'gpu' ? { known: GPU_WORDS, spec: GPU_SPEC } : {});
+  const shorts = shortTitles(m.listings.map((l) => l.title), m.chip, titleOptions(cat));
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_22rem]">
       <ul className="max-h-80 divide-y divide-line overflow-y-auto rounded-xl bg-panel ring-1 ring-edge">
