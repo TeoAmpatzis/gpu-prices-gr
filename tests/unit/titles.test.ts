@@ -13,7 +13,7 @@ describe('shortTitles', () => {
     ];
     expect(shortTitles(t, 'RTX 5060', gpu)).toEqual(['Asus Dual OC', 'PNY Single Fan', 'MSI Ventus 2X OC']);
   });
-  it('shared words in the middle go only with 4+ offers, and never the maker', () => {
+  it('shared words in the middle go only with 4+ offers, and never the maker nor a KEEP word (OC)', () => {
     const t = [
       'Asus RTX 5060 Dual OC Edition',
       'Asus RTX 5060 Prime OC Edition',
@@ -21,7 +21,7 @@ describe('shortTitles', () => {
       'Asus RTX 5060 Phoenix OC Edition',
       'MSI RTX 5060 Ventus OC Edition',
     ];
-    expect(shortTitles(t, 'RTX 5060', gpu)).toEqual(['Asus Dual', 'Asus Prime', 'Asus TUF', 'Asus Phoenix', 'MSI Ventus']);
+    expect(shortTitles(t, 'RTX 5060', gpu)).toEqual(['Asus Dual OC', 'Asus Prime OC', 'Asus TUF OC', 'Asus Phoenix OC', 'MSI Ventus OC']);
   });
   it('keeps what differs with 2-3 offers ("Asus Dual OC" + "Asus Dual")', () => {
     expect(shortTitles(['Asus GeForce RTX 5060 Dual OC', 'Asus GeForce RTX 5060 Dual'], 'RTX 5060', gpu)).toEqual(['Asus Dual OC', 'Asus Dual']);
@@ -39,6 +39,10 @@ describe('shortTitles', () => {
   it('RAM: "2×16GB" matches "2x16GB" and "2 x 16GB"', () => {
     const t = ['Corsair Vengeance 32GB (2x16GB) DDR5 6000MHz CL30', 'G.Skill Trident Z5 32GB 2 x 16GB DDR5 6000MHz', 'Kingston Fury Beast 32GB Kit 2×16GB DDR5 6000MHz'];
     expect(shortTitles(t, 'DDR5 32GB (2×16GB) 6000MHz')).toEqual(['Corsair Vengeance CL30', 'G.Skill Trident Z5', 'Kingston Fury Beast Kit']);
+  });
+  it('a two-word maker keeps both words; a title that would be only the maker keeps its shared words', () => {
+    const t = ['Be Quiet! Pure Base 500 Black', 'Be Quiet! Pure Base 500 RGB Black', 'Be Quiet! Pure Base 500 Black', 'Be Quiet! Pure Base 500 Window Black'];
+    expect(shortTitles(t, 'Be Quiet! Pure Base 500')).toEqual(['Be Quiet! Black', 'Be Quiet! RGB', 'Be Quiet! Black', 'Be Quiet! Window']);
   });
   it('PSU: the spec words of "850W Gold" go', () => {
     const t = ['Corsair RM850x 850W 80 Plus Gold', 'Seasonic Focus GX-850 850W Gold'];
