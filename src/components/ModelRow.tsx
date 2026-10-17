@@ -1,7 +1,9 @@
 import { Fragment, lazy, Suspense, useEffect, useState, type ReactNode } from 'react';
 import { ChevronDown, ExternalLink, TrendingDown, TrendingUp, type LucideIcon } from 'lucide-react';
-import type { BaseListing, Category, DailyLow } from '../types';
+import type { BaseListing, Category, DailyLow, HistoryPoint } from '../types';
 import { formatPrice, loadDetails, type CategoryDetails, type Model } from '../lib/data';
+import { chartHistory, loadModel } from '../lib/modelData';
+import { modelSlug } from '../lib/slug';
 import { groupName, type CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Lang } from '../lib/i18n';
 import { SOURCES } from '../lib/sources';
@@ -109,19 +111,35 @@ function PriceExtras<L extends BaseListing>({ m, delta, lang, short }: { m: Mode
   );
 }
 
-/** Shop links and full price history of a category, loaded the first time one of its products opens. */
+/** Shop links of a category, loaded the first time one of its products opens. */
 function useDetails(cat: Category): CategoryDetails | null {
   const [details, setDetails] = useState<CategoryDetails | null>(null);
   useEffect(() => {
     let live = true;
     loadDetails(cat)
       .then((d) => live && setDetails(d))
-      .catch(() => live && setDetails({ urls: {}, history: {} }));
+      .catch(() => live && setDetails({ urls: {} }));
     return () => {
       live = false;
     };
   }, [cat]);
   return details;
+}
+
+/** The model's price history for the chart (its model chunk); null while loading, undefined when there is none. */
+function useChartHistory(cat: Category, m: { key: string; chip: string; cheapest: object }): HistoryPoint[] | undefined | null {
+  const slug = modelSlug(cat, m);
+  const [state, setState] = useState<{ slug: string; points: HistoryPoint[] | undefined } | null>(null);
+  useEffect(() => {
+    let live = true;
+    loadModel(cat, slug)
+      .then((e) => live && setState({ slug, points: chartHistory(e) }))
+      .catch(() => live && setState({ slug, points: undefined }));
+    return () => {
+      live = false;
+    };
+  }, [cat, slug]);
+  return state?.slug === slug ? state.points : null;
 }
 
 /** Every offer of the model (links to the shops) and its price history chart. */
@@ -144,6 +162,7 @@ function ModelDetails<L extends BaseListing>({
 }) {
   const price = (n: number) => formatPrice(n, lang);
   const details = useDetails(cat);
+  const history = useChartHistory(cat, m);
   const shorts = shortTitles(m.listings.map((l) => l.title), m.chip, titleOptions(cat));
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_22rem]">
@@ -199,9 +218,9 @@ function ModelDetails<L extends BaseListing>({
         </div>
         <div>
           <div className="mb-1.5 text-xs text-faint">{tr(lang, T.dailyLow)}</div>
-          {details ? (
+          {history !== null ? (
             <Suspense fallback={<div className="h-48 rounded-xl bg-panel ring-1 ring-edge" />}>
-              <PriceChart points={details.history[m.key]} />
+              <PriceChart points={history} />
             </Suspense>
           ) : (
             <div className="skeleton h-48 rounded-xl" />

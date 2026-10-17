@@ -11,9 +11,9 @@
 //   are logged and the build publishes. DATA_CHECK_BASE overrides the live site address.
 // - `vite` (dev): serves the same files from memory, re-derived when the scraper's files change.
 
-import { readFileSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, rmSync, statSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import type { Plugin } from 'vite';
 import type { Category, History, Imported, Latest, Manifest, ModelChunk } from './src/types';
 import { CATEGORY_IDS } from './src/lib/categories';
@@ -118,10 +118,28 @@ async function liveManifest(): Promise<Manifest | null> {
   }
 }
 
+/**
+ * The category history.json files (scraper files, 1.5–17 MB each) are not part of the built site: the model
+ * chunks carry each model's history. Removes them from the build output only (never public/data); returns how many.
+ */
+export function dropRawHistory(outDir: string): number {
+  let n = 0;
+  for (const cat of CATEGORY_IDS) {
+    const f = join(outDir, 'data', cat, 'history.json');
+    if (existsSync(f)) {
+      rmSync(f);
+      n++;
+    }
+  }
+  return n;
+}
+
 const kb = (s: string) => `${(Buffer.byteLength(s) / 1024).toFixed(0)} KB`;
 
 export default function dataFiles(): Plugin {
   let cache: { key: string; files: Record<string, string> } | null = null;
+  let outDir = 'dist';
+  let building = false;
   let devImages: ImageLookup | undefined;
   // Dev: re-derive when any scraper file changed (its modification times are the cache key).
   const devFiles = () => {
@@ -138,6 +156,15 @@ export default function dataFiles(): Plugin {
 
   return {
     name: 'builddraft-data',
+    configResolved(c) {
+      outDir = resolve(c.root, c.build.outDir);
+      building = c.command === 'build';
+    },
+    // After the bundle is written (Vite has copied public/ whole): the raw category history.json stays out of dist.
+    closeBundle() {
+      if (!building || this.meta?.watchMode) return; // also called when dev/preview shut down
+      console.log(`[data] category history.json left out of the build: ${dropRawHistory(outDir)} files`);
+    },
     async configureServer(server) {
       devImages = (await imageLookup()).lookup;
       server.middlewares.use((req, res, next) => {

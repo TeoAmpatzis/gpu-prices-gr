@@ -2,7 +2,7 @@
 // data/<cat>/model/000.json … 255.json (src/lib/derive.ts modelChunks), keyed by the model's address slug
 // (src/lib/slug.ts modelSlug). The file of a slug is a hash of it, so a page needs only its address to find its
 // data: no list.json and no slug index.
-import type { Category, ModelChunk, ModelEntry } from '../types';
+import type { Category, HistoryPoint, ModelChunk, ModelEntry } from '../types';
 import { fnv1a } from './compatChunks';
 import { loadManifest } from './manifest';
 
@@ -41,3 +41,6 @@ export async function loadModel(cat: Category, slug: string): Promise<ModelEntry
   const chunk = await loadChunk(`/${modelChunkPath(cat, modelChunkOf(slug))}?v=${builtAt}`);
   return chunk.models[slug] ?? null;
 }
+
+/** The expanded row's chart: the model's full history points (the same ones the category history.json held). */
+export const chartHistory = (entry: ModelEntry | null): HistoryPoint[] | undefined => entry?.history;
