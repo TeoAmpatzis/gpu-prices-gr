@@ -1,13 +1,11 @@
 import { useSyncExternalStore } from 'react';
+import { NO, tr, YES, type Lang, type Text } from './text';
 
-export type Lang = 'el' | 'en';
-/** UI text in both languages; a plain string is the same in both (model names, units…). */
-export type Text = string | { el: string; en: string };
+export { tr };
+export type { Lang, Text };
 
 const KEY = 'lang'; // also read by the inline script in index.html
 const listeners = new Set<() => void>();
-
-export const tr = (lang: Lang, t: Text) => (typeof t === 'string' ? t : t[lang]);
 
 /** The inline script in index.html sets <html lang> before first paint (stored choice, else browser). */
 export const getLang = (): Lang => (document.documentElement.lang === 'en' ? 'en' : 'el');
@@ -76,8 +74,8 @@ export const T = {
   specsPrice: { el: 'Προδιαγραφές & τιμή', en: 'Specs & price' },
   filters: { el: 'Φίλτρα', en: 'Filters' },
   any: { el: 'Όλα', en: 'Any' },
-  yes: { el: 'Ναι', en: 'Yes' },
-  no: { el: 'Όχι', en: 'No' },
+  yes: YES,
+  no: NO,
   maxPrice: { el: 'Έως', en: 'Max' },
   maxPriceLabel: { el: 'Μέγιστη τιμή', en: 'Maximum price' },
   sortModel: { el: 'Προτεινόμενα', en: 'Recommended' },
