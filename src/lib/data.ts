@@ -6,7 +6,6 @@ import type {
   Category,
   DailyLow,
   DetailFile,
-  History,
   Imported,
   Latest,
   ListFile,
@@ -32,10 +31,9 @@ export interface CategoryData<L extends BaseListing = BaseListing> {
   photos: Set<string>;
 }
 
-/** Shop links and the full price history (chart), loaded when a product is first opened. */
+/** Shop links, loaded when a product is first opened (the chart's history comes from the model chunks). */
 export interface CategoryDetails {
   urls: DetailFile;
-  history: History;
 }
 
 const getJson = <T>(url: string): Promise<T> =>
@@ -89,10 +87,7 @@ export const loadData = <L extends BaseListing>(cat: Category) => loadList(cat) 
 export const loadDetails = memo(
   (cat: Category): Promise<CategoryDetails> =>
     loadList(cat).then(({ builtAt }) =>
-      Promise.all([
-        getJson<DetailFile>(`/data/${cat}/detail.json?v=${builtAt}`),
-        getJson<History>(`/data/${cat}/history.json?v=${builtAt}`).catch(() => ({}) as History),
-      ]).then(([urls, history]) => ({ urls, history })),
+      getJson<DetailFile>(`/data/${cat}/detail.json?v=${builtAt}`).then((urls) => ({ urls })),
     ),
 );
 

@@ -75,3 +75,14 @@ test('an unknown address shows the 404 page', async ({ page }) => {
   await expect(page.locator('main h1')).toHaveText(/Η σελίδα δεν βρέθηκε|Page not found/);
   await expect(page).toHaveTitle(/Η σελίδα δεν βρέθηκε|Page not found/);
 });
+
+test('the expanded row draws its chart from a model chunk, never the category history.json', async ({ page }) => {
+  const requests: string[] = [];
+  page.on('request', (r) => requests.push(new URL(r.url()).pathname));
+  await page.goto('/gpu');
+  await rows(page).first().waitFor({ timeout: 20_000 });
+  await page.locator('main tbody tr button[aria-expanded="false"]:visible').first().click();
+  await expect(page.locator('main tbody svg:visible').filter({ has: page.locator('path') }).last()).toBeVisible({ timeout: 10_000 });
+  await expect.poll(() => requests.some((p) => /^\/data\/gpu\/model\/\d{3}\.json$/.test(p))).toBe(true);
+  expect(requests.filter((p) => /\/data\/[a-z]+\/history\.json$/.test(p))).toEqual([]);
+});
