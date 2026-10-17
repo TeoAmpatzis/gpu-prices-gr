@@ -199,11 +199,20 @@ export interface ListFile extends Columns {
   builtAt: string; // ISO time of the build; also the version for detail/history requests
   updatedAt: string;
   sources: Latest['sources'];
-  /** Per model, the few daily lows that give the same week change and all-time low as the full history. */
-  hist: Record<string, [string, number][]>;
+  /**
+   * Per current model, the few daily lows that give the same week change and all-time low as the full history,
+   * compact: [days from `histBase` of the first point, cents, then days since the previous point, cents, …]
+   * (src/lib/columns.ts decodeHist); a model without history has [].
+   */
+  hist: Record<string, number[]>;
+  /** Day (YYYY-MM-DD) that the day offsets in `hist` count from. */
+  histBase: string;
   imported: Imported;
-  /** Model key → its stored photo ("<cat>/<id>", served as /img/<cat>/<id>-96|320.webp); none = no photo. */
-  img?: Record<string, string>;
+  /**
+   * Which models have a stored photo: base64 bitset over the sorted keys of `hist` (bit set = photo). The photo's
+   * path is /img/<cat>/<id>, id = images.photoId(cat, key) (served as -96|320.webp); none = category icon.
+   */
+  photos: string;
 }
 
 /** /data/<cat>/detail.json — listing id → shop URL (loaded when a product is opened). */

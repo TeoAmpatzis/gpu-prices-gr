@@ -195,7 +195,7 @@ export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setF
             cfg={cfg}
             models={models.slice((page - 1) * filters.per, page * filters.per)}
             history={data.history}
-            img={data.img}
+            photos={data.photos}
             onReset={reset}
             pick={pick?.row}
             emptyExtra={pick?.empty}

@@ -12,8 +12,8 @@ interface Props<L extends BaseListing> {
   cfg: CategoryConfig<L>;
   models: Model<L>[];
   history: Record<string, DailyLow[]>;
-  /** Model key → stored photo (list.json `img`). */
-  img: Record<string, string>;
+  /** Keys of the models that have a photo (list.json `photos`). */
+  photos: Set<string>;
   /** Resets every filter (the empty state's "Clear filters" button). */
   onReset: () => void;
   /** Pick mode: what each row adds (from the lazy pick code). */
@@ -22,7 +22,7 @@ interface Props<L extends BaseListing> {
   emptyExtra?: ReactNode;
 }
 
-export default function ModelTable<L extends BaseListing>({ cfg, models, history, img, onReset, pick, emptyExtra }: Props<L>) {
+export default function ModelTable<L extends BaseListing>({ cfg, models, history, photos, onReset, pick, emptyExtra }: Props<L>) {
   const lang = useLang();
   const [openKey, setOpenKey] = useState<string | null>(null);
   // The table needs a desktop-wide column (≥ 1024px); phones and tablets get cards.
@@ -59,7 +59,7 @@ export default function ModelTable<L extends BaseListing>({ cfg, models, history
             cfg={cfg}
             model={m}
             history={history[m.key]}
-            image={productImage(img[m.key])}
+            image={productImage(cfg.id, m.key, photos.has(m.key))}
             open={openKey === m.key}
             onToggle={() => setOpenKey(openKey === m.key ? null : m.key)}
             pick={pick?.(m)}
@@ -94,7 +94,7 @@ export default function ModelTable<L extends BaseListing>({ cfg, models, history
               cfg={cfg}
               model={m}
               history={history[m.key]}
-              image={productImage(img[m.key])}
+              image={productImage(cfg.id, m.key, photos.has(m.key))}
               open={openKey === m.key}
               onToggle={() => setOpenKey(openKey === m.key ? null : m.key)}
               pick={pick?.(m)}

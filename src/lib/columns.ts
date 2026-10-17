@@ -1,5 +1,6 @@
-// Reading the build-time data files (written by src/lib/derive.ts). No imports, so the site's main
-// bundle doesn't pull in the derivation (and through it the PC builder's rules).
+// Reading the build-time data files (written by src/lib/derive.ts). Pure functions with no imports besides
+// types, so the site's main bundle and the facet worker can decode list.json without the derivation (and
+// through it the PC builder's rules).
 
 import type { Columns, DailyLow, ListFile } from '../types';
 
@@ -12,5 +13,44 @@ export function fromColumns<L>({ cols, rows }: Columns): L[] {
   });
 }
 
-export const expandHistory = (hist: ListFile['hist']): Record<string, DailyLow[]> =>
-  Object.fromEntries(Object.entries(hist).map(([k, pts]) => [k, pts.map(([d, min]) => ({ d, min }))]));
+const DAY = 864e5;
+
+/**
+ * The daily lows per model from `hist` (derive.encodeHist): per model [first day offset from `histBase`,
+ * price in cents, then (days since the previous point, price in cents) pairs]. A model without points is
+ * left out, as it was before the compact form.
+ */
+export function decodeHist(file: Pick<ListFile, 'hist' | 'histBase'>): Record<string, DailyLow[]> {
+  const base = Date.parse(`${file.histBase}T00:00:00Z`);
+  const names = new Map<number, string>();
+  const dayName = (n: number) => {
+    let s = names.get(n);
+    if (s === undefined) names.set(n, (s = new Date(base + n * DAY).toISOString().slice(0, 10)));
+    return s;
+  };
+  const out: Record<string, DailyLow[]> = {};
+  for (const [k, v] of Object.entries(file.hist)) {
+    if (!v.length) continue;
+    const pts: DailyLow[] = [];
+    let day = 0;
+    for (let i = 0; i < v.length; i += 2) {
+      day += v[i];
+      pts.push({ d: dayName(day), min: v[i + 1] / 100 });
+    }
+    out[k] = pts;
+  }
+  return out;
+}
+
+/** The model keys of a list file, sorted: the order of the `photos` bitset (every current model has a `hist` entry). */
+export const modelKeys = (file: Pick<ListFile, 'hist'>): string[] => Object.keys(file.hist).sort();
+
+/** Model keys that have a photo (`photos` is a base64 bitset over `modelKeys`, bit i = byte i>>3, bit i&7). */
+export function decodePhotos(file: Pick<ListFile, 'hist' | 'photos'>): Set<string> {
+  const bits = atob(file.photos ?? '');
+  const out = new Set<string>();
+  modelKeys(file).forEach((k, i) => {
+    if ((bits.charCodeAt(i >> 3) >> (i & 7)) & 1) out.add(k);
+  });
+  return out;
+}
