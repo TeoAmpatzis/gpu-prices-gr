@@ -6,6 +6,8 @@
 // - /data/<cat>/detail.json listing id → shop URL, loaded when a product is opened (together with
 //   the full history.json for the chart);
 // - /data/builder.json      only the parts the PC builder can offer, grouped by the same code;
+// - /data/<cat>/model/<nnn>.json  the product pages: 256 files per category, each model (listings with links,
+//   full history, variants, alternatives…) in the file of its address slug (src/lib/modelData.ts);
 // - /data/manifest.json     counts, which the next build compares its data with (see checkData).
 //
 // Pure functions only: vite-plugin-data.ts does the file reading and writing.
@@ -20,6 +22,7 @@ import type {
   Columns,
   CoolerListing,
   DailyLow,
+  FanListing,
   GpuListing,
   History,
   HistoryPoint,
@@ -28,12 +31,21 @@ import type {
   ListFile,
   Manifest,
   MoboListing,
+  ModelChunk,
+  ModelEntry,
+  PsuListing,
+  RamListing,
+  StorageListing,
 } from '../types';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './categories';
+import { OTHER, storageType } from './categoryRules';
 import { fromColumns, modelKeys } from './columns';
 import { implausibleDips, isDipPrice } from './dips';
-import { groupModels, mostCommon, saleOf, type Model } from './data';
-import { POP_SCALE, popularityRaw } from './ranking';
+import { allTimeLow, groupModels, mostCommon, saleOf, type Model } from './data';
+import { MODEL_CHUNKS, modelChunkOf } from './modelData';
+import { SLOT_OF, toPart } from './pick';
+import { modelSlug } from './slug';
+import { POP_SCALE, popularityRaw, recommendedScores } from './ranking';
 import type { SearchIndexFile } from './search';
 import {
   LAZY_SLOTS,
@@ -165,10 +177,7 @@ export function listFile(cat: Category, input: CategoryInput, builtAt: string, i
     if (!keys.has(k)) continue;
     const dips = implausibleDips(pts as HistoryPoint[]);
     reduced[k] = reduceHistory(dips.size ? (pts as HistoryPoint[]).filter((p) => !dips.has(p)) : (pts as HistoryPoint[]), day);
-    const imp = imported[k];
-    if (dips.size && typeof imp === 'object' && imp.low != null && isDipPrice(imp.low, dips)) {
-      imported[k] = { ...imp, low: undefined };
-    }
+    if (imported[k] !== undefined) imported[k] = importedWithoutDip(imported[k], dips);
   }
   const withPhoto = new Set([...keys].filter((k) => image?.(cat, k)));
   const { hist, histBase } = encodeHist(reduced);
@@ -183,6 +192,11 @@ export function listFile(cat: Category, input: CategoryInput, builtAt: string, i
     imported,
     photos: encodePhotos(modelKeys({ hist }), withPhoto),
   };
+}
+
+/** C6: an imported all-time low that is one of the model's dips is left out (list files and model chunks alike). */
+function importedWithoutDip(imp: Imported[string], dips: Set<DailyLow>): Imported[string] {
+  return dips.size && typeof imp === 'object' && imp.low != null && isDipPrice(imp.low, dips) ? { ...imp, low: undefined } : imp;
 }
 
 export const detailFile = (latest: Latest): Record<string, string> =>
@@ -322,6 +336,246 @@ export function manifest(
   return { builtAt, cats, builder: offered };
 }
 
+// ---------- Product pages: model chunks ----------
+
+/**
+ * A model's family for its variants ("same product, other sizes") and the label of its size in it. Only these
+ * four categories have variants; a model whose family can't be told (RAM without a stated speed, PSU without a
+ * stated efficiency, a drive name without its capacity) has none.
+ */
+interface Family {
+  id: string;
+  label: string;
+  order: number; // variants are listed smallest first
+}
+
+/** Capacity in a drive's name ("Samsung 990 Pro 2TB", "Micron 7600 Pro 7.68TB"): the last one. */
+const CAPACITY_IN_NAME = /(?<![\w.])\d+(?:\.\d+)?\s?[GT]B(?!\w)/gi;
+
+const FAMILY: Partial<Record<Category, (l: BaseListing) => Family | null>> = {
+  // Same chip, other VRAM.
+  gpu: (l) => {
+    const g = l as GpuListing;
+    return { id: g.chip, label: `${g.vram}GB`, order: g.vram };
+  },
+  // Same vendor + series (the name without its capacity) and media, other capacity.
+  storage: (l) => {
+    const d = l as StorageListing;
+    const caps = [...d.chip.matchAll(CAPACITY_IN_NAME)];
+    const cap = caps[caps.length - 1];
+    if (!cap || cap.index == null) return null;
+    const series = `${d.chip.slice(0, cap.index)} ${d.chip.slice(cap.index + cap[0].length)}`.toLowerCase().replace(/[^a-z0-9]/g, '');
+    return { id: `${series} ${d.media}`, label: cap[0].replace(/\s/g, ''), order: d.capacity };
+  },
+  // Same type + speed + form factor, other kit.
+  ram: (l) => {
+    const r = l as RamListing;
+    if (r.speed == null) return null;
+    const kit = /\d+GB \(\d+×\d+GB\)/.exec(r.chip)?.[0] ?? `${r.capacity}GB`;
+    return { id: `${r.type} ${r.speed} ${r.formFactor}`, label: kit, order: r.capacity * 1000 + r.modules };
+  },
+  // Same efficiency (and form factor: an SFX unit is not an ATX one in another size), other wattage.
+  psu: (l) => {
+    const p = l as PsuListing;
+    if (p.efficiency == null) return null;
+    return { id: `${p.efficiency} ${p.formFactor}`, label: `${p.watts}W`, order: p.watts };
+  },
+};
+
+/**
+ * "Better value" alternatives must be able to replace the model: besides the same segment (consumer / NAS /
+ * server…), the same memory type and form factor, fan size, drive type, PSU form factor. Graphics cards of any
+ * maker or brand replace each other.
+ */
+const SAME_KIND: Partial<Record<Category, (l: BaseListing) => string>> = {
+  ram: (l) => `${(l as RamListing).type} ${(l as RamListing).formFactor}`,
+  fan: (l) => String((l as FanListing).size),
+  storage: (l) => storageType(l as StorageListing),
+  psu: (l) => (l as PsuListing).formFactor,
+};
+
+/**
+ * The "kind" a "same, cheaper" alternative must share with the model (owner's definition, Task 4 fix round 1);
+ * null = the model has no such list (socket or size unknown, a server CPU…):
+ * - CPU: same socket, desktop only (the category's pro split, server / HEDT, is left out on both sides);
+ * - board: same socket and board size;
+ * - case: same size group (the category's pill group, e.g. Midi Tower): the size most of its listings state, so one
+ *   shop's "Άλλο" doesn't move a Full Tower into "Άλλο" (the model's own `group` is its cheapest listing's);
+ * - cooler: same type (air; AIO with the same radiator size);
+ * - fan: same size.
+ * Graphics cards, RAM, drives and PSUs have none: their variants cover the other sizes (and a chip's cheaper cards
+ * are its offers).
+ */
+const CHEAPER_KIND: Partial<Record<Category, (m: Model<BaseListing>) => string | null>> = {
+  cpu: (m) => (m.pro ? null : cpuSocket(m as Model<never>)),
+  mobo: (m) => {
+    const socket = moboSocket(m as Model<never>);
+    const form = moboForm(m as Model<never>);
+    return socket && form ? `${socket} ${form}` : null;
+  },
+  case: (m) => mostCommon(m.listings.map((l) => (l as CaseListing).size).filter((s) => s !== OTHER)) ?? OTHER,
+  cooler: (m) => {
+    const c = m.cheapest as CoolerListing;
+    return c.type === 'Air' ? 'Air' : c.radiator ? `AIO ${c.radiator}` : null;
+  },
+  fan: (m) => String((m.cheapest as FanListing).size),
+};
+
+/** Whether `b` can be a "same, cheaper" alternative of `a` by kind (CHEAPER_KIND above; price not checked here). */
+export function sameKind(cat: Category, a: Model<BaseListing>, b: Model<BaseListing>): boolean {
+  const kind = CHEAPER_KIND[cat];
+  const k = kind?.(a) ?? null;
+  return k != null && k === kind!(b);
+}
+
+/** At most this many alternatives of each kind. */
+export const ALTERNATIVES = 3;
+/** "Same, cheaper" alternatives cost at least this share less than the model now. */
+export const CHEAPER_BY = 0.05;
+/** "Better value" alternatives cost within this share of the model's price. */
+export const VALUE_BAND = 0.1;
+
+/**
+ * The product pages' data of a category (plan step 4, task 4): every current model in the chunk of its slug
+ * (modelData.modelChunkOf), with all its listings (links included), its full history (the chart; the implausible
+ * dips' dates so it can mark them), the imported Skroutz entry, its engine parts (fit with the saved build),
+ * variants and alternatives. 256 chunks, empty ones included, so every address has a file.
+ */
+export function modelChunks(cat: Category, input: CategoryInput, builtAt: string, image?: ImageLookup): ModelChunk[] {
+  const cfg = cfgOf(cat);
+  const family = FAMILY[cat];
+  const kind = SAME_KIND[cat];
+  const cheaperKind = CHEAPER_KIND[cat];
+  const slot = (SLOT_OF as Partial<Record<Category, Slot>>)[cat];
+  const day = builtAt.slice(0, 10);
+  // As the category page has them for its Recommended sort (data.filterModels): the site's sale and the all-time low,
+  // the low from what the page gets (listFile: the reduced history without the dips, `imported` without a dip low).
+  const models = groupModels(input.latest.listings, cfg).map((m) => {
+    const history = (input.history[m.key] ?? []) as HistoryPoint[];
+    const dips = implausibleDips(history);
+    const imp = input.imported[m.key];
+    const imported = imp === undefined ? null : importedWithoutDip(imp, dips);
+    const reduced = reduceHistory(dips.size ? history.filter((p) => !dips.has(p)) : history, day).map(([d, min]) => ({ d, min }));
+    return {
+      ...m,
+      sale: saleOf(m.listings, m.cheapest),
+      low: allTimeLow(reduced, imported ?? undefined, m.cheapest.price),
+      history,
+      dips,
+      imported,
+    };
+  });
+  // The Recommended score (src/lib/ranking.ts), over all of the category's models (the page scores the models it
+  // shows, so its numbers differ by filter; the order among models of one kind is what matters here).
+  const recommended = recommendedScores(models, cat, cfg.value);
+  const items = models.map((m) => {
+    const fam = family?.(m.cheapest) ?? null;
+    const same = cheaperKind?.(m) ?? null;
+    return {
+      m,
+      slug: modelSlug(cat, m),
+      fam,
+      price: m.cheapest.price,
+      value: cfg.value?.(m) ?? null,
+      rec: recommended.get(m.key) ?? 0,
+      cheaperBucket: same, // models in one bucket are the same kind (sameKind)
+      valueBucket: `${m.segment}\0${kind?.(m.cheapest) ?? ''}`,
+    };
+  });
+  type Item = (typeof items)[number];
+  const bucketsOf = (key: (it: Item) => string | null) => {
+    const out = new Map<string, Item[]>();
+    for (const it of items) {
+      const k = key(it);
+      if (k == null) continue;
+      const arr = out.get(k);
+      if (arr) arr.push(it);
+      else out.set(k, [it]);
+    }
+    return out;
+  };
+  const byKey = (a: Item, b: Item) => (a.m.key < b.m.key ? -1 : a.m.key > b.m.key ? 1 : 0);
+  const families = bucketsOf((it) => it.fam?.id ?? null);
+  for (const arr of families.values()) arr.sort((a, b) => a.fam!.order - b.fam!.order || a.price - b.price || byKey(a, b));
+  const cheaperBuckets = bucketsOf((it) => it.cheaperBucket);
+  for (const arr of cheaperBuckets.values()) arr.sort((a, b) => b.rec - a.rec || a.price - b.price || byKey(a, b));
+  const valueBuckets = bucketsOf((it) => (it.value == null ? null : it.valueBucket));
+  for (const arr of valueBuckets.values()) arr.sort((a, b) => b.value! - a.value! || a.price - b.price || byKey(a, b));
+
+  const alternative = (kind: 'cheaper' | 'value', o: Item): ModelEntry['alternatives'][number] => ({
+    kind,
+    key: o.m.key,
+    slug: o.slug,
+    chip: o.m.chip,
+    price: o.price,
+    img: image?.(cat, o.m.key) != null,
+  });
+
+  const chunks: ModelChunk[] = Array.from({ length: MODEL_CHUNKS }, () => ({ v: 1, builtAt, sources: input.latest.sources, models: {} }));
+  for (const it of items) {
+    const { m } = it;
+    // The best Recommended ones of the same kind that cost at least 5% less (the bucket is sorted by that score).
+    const cheaper =
+      it.cheaperBucket == null
+        ? []
+        : cheaperBuckets
+            .get(it.cheaperBucket)!
+            .filter((o) => o.price <= it.price * (1 - CHEAPER_BY))
+            .slice(0, ALTERNATIVES);
+    const better =
+      it.value == null
+        ? []
+        : (valueBuckets.get(it.valueBucket) ?? [])
+            .filter((o) => o !== it && o.value! > it.value! && Math.abs(o.price - it.price) <= it.price * VALUE_BAND)
+            .slice(0, ALTERNATIVES);
+    const entry: ModelEntry = {
+      key: m.key,
+      chip: m.chip,
+      slug: it.slug,
+      listings: m.listings,
+      history: m.history,
+      dips: [...m.dips].map((p) => p.d).sort(),
+      imported: m.imported,
+      // By the builder's key (builder.slotModels): a graphics card per listing, a CPU per chip + cooler in the box,
+      // other parts the model itself; each with its own engine fields.
+      parts: slot
+        ? Object.fromEntries(slotModels(slot, m.listings as never[]).map((p) => [p.key, toPart(slot, p as never).fields]))
+        : null,
+      variants: it.fam
+        ? families
+            .get(it.fam.id)!
+            .filter((o) => o !== it)
+            .map((o) => ({ key: o.m.key, slug: o.slug, label: o.fam!.label, price: o.price }))
+        : [],
+      alternatives: [...cheaper.map((o) => alternative('cheaper', o)), ...better.map((o) => alternative('value', o))],
+    };
+    chunks[modelChunkOf(it.slug)].models[it.slug] = entry;
+  }
+  return chunks;
+}
+
+/**
+ * Publishing check of the model chunks: all 256 files, each entry in the file of its slug, and every current
+ * model (the manifest's count, grouped by the same code) exactly once.
+ */
+function modelChunkProblems(cat: Category, models: number, chunks: ModelChunk[] | undefined): string[] {
+  if (!chunks || chunks.length !== MODEL_CHUNKS) return [`${cat}: ${chunks?.length ?? 0} model chunk files, expected ${MODEL_CHUNKS}`];
+  const seen = new Map<string, number>();
+  let misplaced = 0;
+  chunks.forEach((c, n) => {
+    for (const [slug, e] of Object.entries(c.models)) {
+      if (modelChunkOf(slug) !== n || e.slug !== slug) misplaced++;
+      seen.set(e.key, (seen.get(e.key) ?? 0) + 1);
+    }
+  });
+  const problems: string[] = [];
+  if (misplaced) problems.push(`${cat}: ${misplaced} model chunk entries not in the file of their slug`);
+  const twice = [...seen.values()].filter((n) => n > 1).length;
+  if (twice) problems.push(`${cat}: ${twice} models in more than one model chunk entry`);
+  if (seen.size !== models) problems.push(`${cat}: ${seen.size} models in the model chunks, ${models} current models`);
+  return problems;
+}
+
 // ---------- Publishing check ----------
 
 /**
@@ -350,8 +604,11 @@ export const MIN_MODELS: Record<Category, number> = {
   storage: 1115, // of 2231 (first storage scrape 2026-10-03, re-normalized without OEM laptop M.2 drives)
 };
 
-/** Every problem found; an empty list means the data can be published. */
-export function checkData(next: Manifest, live: Manifest | null): string[] {
+/**
+ * Every problem found; an empty list means the data can be published. With `models` (the build's model chunks),
+ * also every current model of each category must be in exactly one chunk entry, in the file of its slug.
+ */
+export function checkData(next: Manifest, live: Manifest | null, models?: Partial<Record<Category, ModelChunk[]>>): string[] {
   const problems: string[] = [];
   for (const cat of CATEGORY_IDS) {
     const n = next.cats[cat];
@@ -359,6 +616,7 @@ export function checkData(next: Manifest, live: Manifest | null): string[] {
       problems.push(`${cat}: no listings`);
       continue;
     }
+    if (models) problems.push(...modelChunkProblems(cat, n.models, models[cat]));
     const was = live?.cats[cat];
     if (was) {
       for (const field of ['models', 'listings', 'historyPoints'] as const) {

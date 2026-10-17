@@ -259,3 +259,42 @@ export interface Manifest {
   >;
   builder: Record<string, number>; // models offered per builder slot
 }
+
+/**
+ * One model's product page (src/lib/derive.ts modelChunks), in /data/<cat>/model/<nnn>.json: the chunk of its slug
+ * (src/lib/modelData.ts modelChunkOf).
+ */
+export interface ModelEntry {
+  key: string; // model key (history.json, list files)
+  chip: string; // shown name, as on the category page
+  slug: string; // address segment (src/lib/slug.ts modelSlug)
+  listings: BaseListing[]; // every listing with all its fields (url, scrapedAt…), cheapest first
+  /** The model's full history.json points, as the scraper wrote them (with `source`, and `i` for imported ones). */
+  history: HistoryPoint[];
+  dips: string[]; // dates of the implausible dips (src/lib/dips.ts), which the chart marks
+  /** history_imported.json entry (an imported low that is one of the dips left out, as on the category page). */
+  imported: Imported[string] | null;
+  /**
+   * Engine fields (src/lib/pick.ts toPart) by the builder's key (src/lib/builder.ts slotModels): a graphics card per
+   * listing id, a CPU per "<chip>|<cooler in the box>" (Box and Tray apart), any other part one entry under the model
+   * key. null when the category is not a builder slot.
+   */
+  parts: Record<string, Record<string, unknown>> | null;
+  /** Same product, other sizes (GPU VRAM, drive capacity, RAM kit, PSU watts), smallest first; never the model itself. */
+  variants: { key: string; slug: string; label: string; price: number }[];
+  /**
+   * "cheaper": up to 3 parts of the same kind (derive.sameKind: desktop CPU same socket, board same socket + size,
+   * case same size group, cooler same type + radiator, fan same size) at least 5% cheaper, best Recommended score
+   * first (none for GPU, RAM, drives, PSUs: their variants); then "value": up to 3 of better value (src/lib/value.ts)
+   * within ±10% of the price.
+   */
+  alternatives: { kind: 'cheaper' | 'value'; key: string; slug: string; chip: string; price: number; img: boolean }[];
+}
+
+/** /data/<cat>/model/<nnn>.json (256 per category) — the product pages' models, by slug. */
+export interface ModelChunk {
+  v: 1;
+  builtAt: string;
+  sources: Latest['sources'];
+  models: Record<string, ModelEntry>;
+}

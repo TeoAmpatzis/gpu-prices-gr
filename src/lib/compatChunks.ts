@@ -13,12 +13,15 @@ export interface CompatChunk {
 
 const encoder = new TextEncoder();
 
-/** FNV-1a 32-bit over the key's UTF-8 bytes, mod CHUNKS. */
-export function chunkOf(key: string): number {
+/** FNV-1a 32-bit over the text's UTF-8 bytes (also the model chunks' hash, src/lib/modelData.ts). */
+export function fnv1a(text: string): number {
   let h = 2166136261;
-  for (const b of encoder.encode(key)) h = Math.imul(h ^ b, 16777619) >>> 0;
-  return h % CHUNKS;
+  for (const b of encoder.encode(text)) h = Math.imul(h ^ b, 16777619) >>> 0;
+  return h;
 }
+
+/** FNV-1a 32-bit over the key's UTF-8 bytes, mod CHUNKS. */
+export const chunkOf = (key: string): number => fnv1a(key) % CHUNKS;
 
 export const chunkPath = (slot: Slot, n: number) => `data/compat/${slot}-${String(n).padStart(2, '0')}.json`;
 
