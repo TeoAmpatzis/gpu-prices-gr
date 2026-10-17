@@ -23,7 +23,25 @@ function toggle<T>(arr: T[], v: T): T[] {
   return arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v];
 }
 
-/** Multi-select chip with its faceted count; a chip that would show nothing is greyed out and inert. */
+/**
+ * A faceted count as wide as four digits from the start (an invisible "0000" under it), so nothing moves when the
+ * counts arrive after the first paint (CLS 0); no category has 10,000 models. Empty until then.
+ */
+function Count({ n, className = '' }: { n?: number; className?: string }) {
+  return (
+    <span className={`grid text-xs tabular-nums text-faint ${className}`}>
+      <span aria-hidden="true" className="invisible col-start-1 row-start-1">
+        0000
+      </span>
+      <span className="col-start-1 row-start-1">{n}</span>
+    </span>
+  );
+}
+
+/**
+ * Multi-select chip with its faceted count; a chip that would show nothing is greyed out and inert. While the
+ * counts are missing (not yet arrived for the current filters) nothing is greyed.
+ */
 function Chip({
   active,
   dot,
@@ -52,7 +70,7 @@ function Chip({
     >
       {active ? <Check className="h-3.5 w-3.5" /> : dot && <span className={`h-2 w-2 rounded-full ${dot}`} />}
       {children}
-      {count != null && <span className="text-xs tabular-nums text-faint">{count}</span>}
+      <Count n={count} />
     </button>
   );
 }
@@ -72,7 +90,7 @@ interface Props<L extends BaseListing> {
   onChange: (f: Filters) => void;
   /** Options of each extra filter (computed once per data load). */
   options: Record<string, { value: string; label: Text }[]>;
-  /** Faceted counts; missing while they are being computed. */
+  /** Faceted counts for the current filters; missing until they arrive (no numbers, nothing greyed). */
   counts?: FacetCounts;
   /** Inside the phone bottom sheet: no card frame and no own title row. */
   bare?: boolean;
@@ -185,7 +203,7 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
                   }`}
                 >
                   <span className="max-w-full [overflow-wrap:anywhere]">{t(c.label)}</span>
-                  {n != null && <span className="text-xs tabular-nums text-faint">{n}</span>}
+                  <Count n={n} className="justify-items-center" />
                 </button>
               );
             })}

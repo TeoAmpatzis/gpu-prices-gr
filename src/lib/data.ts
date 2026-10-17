@@ -14,6 +14,7 @@ import type {
 } from '../types';
 import { SOURCE_NAMES } from './sources';
 import type { CategoryConfig } from './categories';
+import type { CategoryRules } from './categoryRules';
 import { recommendedScores } from './ranking';
 import { implausibleDips, isDipPrice } from './dips';
 import { assertListFormat, decodeHist, decodePhotos, fromColumns, listUrl } from './columns';
@@ -68,19 +69,19 @@ export function ownTotal<L extends BaseListing>(l: L): L {
   return { ...l, shipping: null, total: null, merchant: null };
 }
 
-const loadList = memo(
-  (cat: Category): Promise<CategoryData> =>
-    getJson<ListFile>(listUrl(cat)).then((f) => {
-      assertListFormat(f);
-      return {
-        latest: { updatedAt: f.updatedAt, sources: f.sources, listings: fromColumns<BaseListing>(f).map(ownTotal) },
-        history: decodeHist(f),
-        imported: f.imported,
-        builtAt: f.builtAt,
-        photos: decodePhotos(f),
-      };
-    }),
-);
+/** A list file as the page uses it; the facet worker decodes its own copy with this too (no second decoder). */
+export function decodeList(f: ListFile): CategoryData {
+  assertListFormat(f);
+  return {
+    latest: { updatedAt: f.updatedAt, sources: f.sources, listings: fromColumns<BaseListing>(f).map(ownTotal) },
+    history: decodeHist(f),
+    imported: f.imported,
+    builtAt: f.builtAt,
+    photos: decodePhotos(f),
+  };
+}
+
+const loadList = memo((cat: Category): Promise<CategoryData> => getJson<ListFile>(listUrl(cat)).then(decodeList));
 
 export const loadData = <L extends BaseListing>(cat: Category) => loadList(cat) as Promise<CategoryData<L>>;
 
@@ -186,7 +187,7 @@ function bestTotal<L extends BaseListing>(ls: L[]): L | null {
  * `listings` are grouped into models; `all` (the unfiltered list) decides which names need their
  * variant (GPU: VRAM) so "RX 9060 XT 8GB" and "RX 9060 XT 16GB" read differently whatever the filters.
  */
-export function groupModels<L extends BaseListing>(listings: L[], cfg: CategoryConfig<L>, all: L[] = listings): Model<L>[] {
+export function groupModels<L extends BaseListing>(listings: L[], cfg: CategoryRules<L>, all: L[] = listings): Model<L>[] {
   const several = new Set<string>();
   if (cfg.variant) {
     const seen = new Map<string, string>();
@@ -309,14 +310,20 @@ export function activeFilterCount(f: Filters, groups: string[]): number {
   );
 }
 
-export function applyFilters<L extends BaseListing>(
+/**
+ * All-time lows already worked out by an earlier pass of the same facet count (facets.ts), by model key and
+ * cheapest price: `allTimeLow` depends on nothing else (and today's date), so the passes share them.
+ */
+export type LowMemo = Map<string, AllTimeLow | null>;
+
+/** The models the filters let through, unsorted (what the page sorts, and what the facet counts count). */
+export function filterModels<L extends BaseListing>(
   all: L[],
   f: Filters,
-  cfg: CategoryConfig<L>,
+  cfg: CategoryRules<L>,
   history: Record<string, DailyLow[]> = {},
   imported: Imported = {},
-  /** Facet counting only needs the matching models, not their order. */
-  opts: { sort?: boolean } = {},
+  lows?: LowMemo,
 ): Model<L>[] {
   const q = f.query.trim().toLowerCase();
   const listings = all.filter(
@@ -327,18 +334,37 @@ export function applyFilters<L extends BaseListing>(
       // Per listing, so a model's price is that of a listing that matches (e.g. the CL30 kit).
       cfg.extraFilters.every((x) => !f.extra[x.key] || x.test(l, f.extra[x.key])),
   );
+  const lowOf = (m: Model<L>) => {
+    if (!lows) return allTimeLow(history[m.key], imported[m.key], m.cheapest.price);
+    const k = `${m.key}\n${m.cheapest.price}`;
+    let low = lows.get(k);
+    if (low === undefined) lows.set(k, (low = allTimeLow(history[m.key], imported[m.key], m.cheapest.price)));
+    return low;
+  };
   const grouped = groupModels(listings, cfg, all).map((m) => ({
     ...m,
     sale: saleOf(m.listings, m.cheapest),
-    low: allTimeLow(history[m.key], imported[m.key], m.cheapest.price),
+    low: lowOf(m),
   }));
-  const models = grouped.filter(
+  return grouped.filter(
     (m) =>
       (!cfg.segments || f.segment === 'all' || f.segment === m.segment) &&
       (f.maxPrice == null || m.cheapest.price <= f.maxPrice) &&
       (!f.saleOnly || m.sale != null) &&
       (!f.lowOnly || m.low != null),
   );
+}
+
+export function applyFilters<L extends BaseListing>(
+  all: L[],
+  f: Filters,
+  cfg: CategoryConfig<L>,
+  history: Record<string, DailyLow[]> = {},
+  imported: Imported = {},
+  /** Without sorting: only the matching models, not their order. */
+  opts: { sort?: boolean } = {},
+): Model<L>[] {
+  const models = filterModels(all, f, cfg, history, imported);
   // "Recommended": popularity, modern platform, sensible price and value for money, weighted per
   // category in src/lib/ranking.ts. Workstation/server models always come after the rest.
   if (opts.sort === false) return models;

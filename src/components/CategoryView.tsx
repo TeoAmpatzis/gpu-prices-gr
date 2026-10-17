@@ -1,9 +1,10 @@
-import { lazy, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ComponentType, type ReactNode } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type ComponentType, type ReactNode } from 'react';
 import { SlidersHorizontal } from 'lucide-react';
 import type { BaseListing } from '../types';
-import { PER_PAGE, activeFilterCount, applyFilters, clearedFilters, loadData, type CategoryData, type Filters } from '../lib/data';
+import { DEFAULT_PER, PER_PAGE, activeFilterCount, applyFilters, clearedFilters, loadData, type CategoryData, type Filters } from '../lib/data';
 import type { CategoryConfig } from '../lib/categories';
-import { facetCounts } from '../lib/facets';
+import type { FacetCounts } from '../lib/facets';
+import { facetsClient } from '../lib/facetsClient';
 import { T, tr, useLang } from '../lib/i18n';
 import { useFilterState } from '../lib/useFilterState';
 import ActiveFilters from './ActiveFilters';
@@ -14,6 +15,7 @@ import type { RowPick } from './ModelRow';
 import Pagination from './Pagination';
 import Skeleton from './Skeleton';
 import { useMedia } from '../lib/useMedia';
+import { afterFirstPaint } from '../lib/paint';
 import { StatusLine, type SourceTimes } from '../ui/nav';
 import { ErrorState, SkeletonCards } from '../ui/states';
 
@@ -121,12 +123,34 @@ export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setF
     () => Object.fromEntries(cfg.extraFilters.map((x) => [x.key, x.options(data.latest.listings)])),
     [data, cfg],
   );
-  // Counts are a few extra filter runs; deferred so typing in the search box stays smooth.
-  const deferred = useDeferredValue(filters);
-  const counts = useMemo(
-    () => (waiting ? undefined : facetCounts(listings, deferred, cfg, data.history, data.imported, options)),
-    [waiting, listings, data, deferred, cfg, options],
-  );
+  // Facet counts (step 4 task 3): a dozen filter runs over every listing, so the facet worker does them after the
+  // first paint (facetsClient.ts; the main thread in idle slices only without a worker). They depend on the filters
+  // but not on the page, results per page or sort: those changes ask for nothing. Pick mode counts without the
+  // hidden listings (their ids go to the worker). Until the counts for the current filters arrive (the first ones,
+  // or newer ones after a change) the options show no numbers and nothing is greyed: older counts are never shown.
+  // FilterBar's counts keep their width empty, so nothing moves when the numbers fill in.
+  const countKey = JSON.stringify({ ...filters, page: 1, per: DEFAULT_PER, sort: 'model' });
+  const countFilters = useMemo(() => JSON.parse(countKey) as Filters, [countKey]);
+  const hidden = useMemo(() => {
+    if (listings === data.latest.listings) return null;
+    const shown = new Set(listings.map((l) => l.id));
+    return data.latest.listings.filter((l) => !shown.has(l.id)).map((l) => l.id);
+  }, [listings, data]);
+  const [facets, setFacets] = useState<{ filters: Filters; hidden: string[] | null; data: CategoryData<L>; counts: FacetCounts } | null>(null);
+  useEffect(() => {
+    if (waiting) return;
+    let live = true;
+    const cancel = afterFirstPaint(() => {
+      void facetsClient.request(cfg.id, countFilters, data.builtAt, hidden).then((counts) => {
+        if (live && counts) setFacets({ filters: countFilters, hidden, data, counts });
+      });
+    });
+    return () => {
+      live = false;
+      cancel();
+    };
+  }, [waiting, cfg.id, countFilters, data, hidden]);
+  const counts = facets && facets.filters === countFilters && facets.hidden === hidden && facets.data === data ? facets.counts : undefined;
 
   const active = activeFilterCount(filters, cfg.groups);
   // A page number from an old link may be past the end now: show the last page instead.
