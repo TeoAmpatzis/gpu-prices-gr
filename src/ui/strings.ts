@@ -88,6 +88,12 @@ export const UI = {
     el: 'Ο σύνδεσμος μπορεί να είναι παλιός ή λάθος. Ψάξε ένα προϊόν ή διάλεξε κατηγορία.',
     en: 'The link may be old or wrong. Search for a product or pick a category.',
   },
+  goneTitle: { el: 'Αυτό το προϊόν δεν είναι πια διαθέσιμο', en: 'This product is no longer available' },
+  goneText: {
+    el: 'Δεν το βρίσκουμε πια στα καταστήματα που παρακολουθούμε, ή ο σύνδεσμος είναι λάθος.',
+    en: 'We no longer find it in the shops we follow, or the link is wrong.',
+  },
+  goneAction: { el: 'Δες την κατηγορία', en: 'See the category' },
   home: { el: 'Αρχική', en: 'Home' },
   breadcrumb: { el: 'Διαδρομή', en: 'Breadcrumb' },
   loading: { el: 'Φόρτωση…', en: 'Loading…' },

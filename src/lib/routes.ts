@@ -11,7 +11,7 @@ export type InfoPage = (typeof INFO_PAGES)[number];
 export type Route =
   | { kind: 'home' }
   | { kind: 'category'; cat: Category }
-  /** /gpu/rtx-5070-12gb — model pages come in Phase 3; until then it opens the category searched by name. */
+  /** /gpu/rtx-5070-12gb — a model's page (components/product/ModelPage): shown, moved (alias) or "no longer available". */
   | { kind: 'model'; cat: Category; slug: string }
   | { kind: 'builder' }
   | { kind: 'parts' }

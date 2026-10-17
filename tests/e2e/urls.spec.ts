@@ -108,9 +108,9 @@ test('in-site navigation keeps back and forward', async ({ page }) => {
   await expect(page).toHaveURL(/\/ram$/);
 });
 
-test('a model address opens its category searched (until Phase 3)', async ({ page }) => {
+test('a model address opens the model page', async ({ page }) => {
   await open(page, '/gpu/rtx-5070-12gb');
-  await expect.poll(() => new URL(page.url()).searchParams.get('q'), { timeout: 20_000 }).toBe('RTX 5070 12GB');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(/RTX 5070 12GB/, { timeout: 20_000 });
 });
 
 test('the skip link is the first Tab stop and moves focus to the content', async ({ page }) => {

@@ -31,14 +31,16 @@ const loadCategoryPage = () => import('./shell/CategoryPage');
 const loadBuilderView = () => import('./components/Builder');
 const loadInfoView = () => import('./components/InfoPage');
 const CategoryPage = lazy(loadCategoryPage);
-const ModelRedirect = lazy(() => loadCategoryPage().then((m) => ({ default: m.ModelRedirect })));
+const loadModelPage = () => import('./components/product/ModelPage');
+const ModelPage = lazy(loadModelPage);
 const Builder = lazy(loadBuilderView);
 const InfoPage = lazy(loadInfoView);
 
 /** Start loading a page's code and data before it opens (link hover, focus or touch; and the first page). */
 function prefetchPath(path: string) {
   const r = matchRoute(new URL(path, location.origin).pathname);
-  if (r.kind === 'category' || r.kind === 'model') void loadCategoryPage().then((m) => m.prefetch(r.cat));
+  if (r.kind === 'model') void loadModelPage();
+  else if (r.kind === 'category') void loadCategoryPage().then((m) => m.prefetch(r.cat));
   else if (r.kind === 'builder') {
     void loadBuilderView();
     void import('./lib/data').then((m) => m.prefetch('builder'));
@@ -160,7 +162,7 @@ export default function App() {
                 {later(<CategoryPage cat={c} />)}
               </div>
             ))}
-            {route.kind === 'model' && later(<ModelRedirect cat={route.cat} slug={route.slug} notFound={notFound} />)}
+            {route.kind === 'model' && later(<ModelPage cat={route.cat} slug={route.slug} />)}
             {builderSeen && (
               <div hidden={route.kind !== 'builder'}>
                 <PageTitle crumbs={crumbs(PAGE.builder.title)} title={PAGE.builder.title} subtitle={PAGE.builder.subtitle} />

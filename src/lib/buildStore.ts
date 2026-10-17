@@ -98,7 +98,7 @@ export function resolveKey(
   aliases?: Record<string, string>,
 ): { key: string; status: 'ok' | 'renamed' | 'missing' } {
   if (known.has(key)) return { key, status: 'ok' };
-  const to = aliases?.[key];
+  const to = aliases && Object.prototype.hasOwnProperty.call(aliases, key) ? aliases[key] : undefined;
   if (to !== undefined && known.has(to)) return { key: to, status: 'renamed' };
   return { key, status: 'missing' };
 }
