@@ -20,6 +20,16 @@ export interface TitleOptions {
   known?: string[];
   /** Cut any word that matches (spec tokens that belong to the model). */
   spec?: RegExp;
+  /** Global pattern removed from each title before it is split into words. */
+  phrases?: RegExp;
+}
+
+/** RAM: "με 2 Modules" says how many sticks, and its lone digit would read as a series number (C5). No \b before Greek: JS \b knows ASCII only. */
+export const RAM_TITLE: TitleOptions = { phrases: /(?:με\s+)?\b\d+\s+modules?\b|\bmodules?\b/giu };
+
+/** The title options ModelRow uses for a category (the data test builds the same ones). */
+export function titleOptions(cat: string): TitleOptions {
+  return cat === 'gpu' ? { known: GPU_WORDS, spec: GPU_SPEC } : cat === 'ram' ? RAM_TITLE : {};
 }
 
 /**
@@ -48,7 +58,7 @@ export const KEEP = /^(oc|tray|box|rgb|argb|a-rgb|tempered|glass|gen\.?\d+(x\d+)
 
 /** The title without the model's words and spec words (the maker always stays). */
 function baseWords(title: string, drop: Set<string>, opts: TitleOptions): string[] {
-  const ws = words(title);
+  const ws = words(opts.phrases ? title.replace(opts.phrases, ' ') : title);
   const maker = makerWords(ws);
   const model = new Set(drop);
   return ws.filter((w, i) => {

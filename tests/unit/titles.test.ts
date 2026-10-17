@@ -1,6 +1,6 @@
 // C5: shortTitles keeps the maker and the part that tells offers apart.
 import { describe, expect, it } from 'vitest';
-import { GPU_SPEC, GPU_WORDS, shortTitles } from '../../src/lib/titles';
+import { GPU_SPEC, GPU_WORDS, RAM_TITLE, shortTitles, titleKey, titleOptions } from '../../src/lib/titles';
 
 const gpu = { known: GPU_WORDS, spec: GPU_SPEC };
 
@@ -47,5 +47,28 @@ describe('shortTitles', () => {
   it('PSU: the spec words of "850W Gold" go', () => {
     const t = ['Corsair RM850x 850W 80 Plus Gold', 'Seasonic Focus GX-850 850W Gold'];
     expect(shortTitles(t, '850W Gold')).toEqual(['Corsair RM850x 80 Plus', 'Seasonic Focus GX-850']);
+  });
+
+  describe('RAM titles', () => {
+    const kf = 'Kingston Fury Beast 32GB DDR4 με 2 Modules 2x16GB & Ταχύτητα 3200 για Desktop';
+    it('drops "με N Modules" so no lone 2 is left', () => {
+      const out = shortTitles([kf, 'Kingston Fury Beast Black 32GB DDR4 2x16GB 3200'], 'DDR4 32GB (2×16GB) 3200MHz', RAM_TITLE);
+      expect(out.some((s) => /\s2$/.test(s))).toBe(false);
+      expect(out[0]).not.toMatch(/modules/i);
+    });
+    it('keeps a digit that is part of the series name', () => {
+      const out = shortTitles(['Patriot Viper Elite 5 16GB DDR5', 'Patriot Viper Elite 5 RGB 16GB DDR5'], 'DDR5 16GB 6000MHz', RAM_TITLE);
+      expect(out[0]).toContain('Elite 5');
+    });
+    it('titleKey ignores "με N Modules"', () => {
+      const a = 'Kingston Fury Beast 32GB DDR4 3200';
+      expect(titleKey(kf.replace(/ με 2 Modules/, ''), 'x', RAM_TITLE)).toBe(titleKey(kf, 'x', RAM_TITLE));
+      expect(titleKey(a + ' με 2 Modules', 'x', RAM_TITLE)).toBe(titleKey(a, 'x', RAM_TITLE));
+    });
+    it('titleOptions picks the options per category', () => {
+      expect(titleOptions('ram')).toBe(RAM_TITLE);
+      expect(titleOptions('gpu').known).toBe(GPU_WORDS);
+      expect(titleOptions('cpu')).toEqual({});
+    });
   });
 });
