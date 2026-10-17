@@ -59,7 +59,7 @@ check(newest > 0 && ageH <= MAX_AGE_H, `newest data under ${MAX_AGE_H} h old`, n
 // Per source (backlog #8): a source that keeps failing keeps its old listings, so its prices age while
 // the newest data above looks fresh (2026-10-04: Skroutz storage 35 h old, the check above green).
 const lists = Object.fromEntries(await Promise.all(CATS.map(async (cat) => {
-  const r = await fetch(`${BASE}/data/${cat}/list.json`);
+  const r = await fetch(`${BASE}/data/${cat}/list.v2.json`);
   return [cat, r.ok ? await r.json() : null];
 })));
 const ages = sourceAges(lists);
@@ -67,8 +67,8 @@ for (const r of ages.filter((r) => r.level === 'warn')) console.log(`WARN ${r.ca
 const old = ages.filter((r) => r.level === 'fail');
 check(ages.length > 0 && old.length === 0, `every source's data under ${FAIL_H} h old`,
   old.length ? old.map((r) => `${r.cat}/${r.source} ${r.ageH ?? 'never'} h`).join(', ') : `${ages.length} category × source pairs, oldest ${Math.max(...ages.map((r) => r.ageH))} h`);
-const list = await head('/data/gpu/list.json');
-check(list.ok && /max-age=300/.test(list.cache), 'list.json cached 5 min', list.cache);
+const list = await head('/data/gpu/list.v2.json');
+check(list.ok && /max-age=300/.test(list.cache), 'list.json cached 5 min (list.v2.json)', list.cache);
 
 // ---- every tab
 let samplePhoto = null;

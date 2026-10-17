@@ -16,7 +16,7 @@ import { SOURCE_NAMES } from './sources';
 import type { CategoryConfig } from './categories';
 import { recommendedScores } from './ranking';
 import { implausibleDips, isDipPrice } from './dips';
-import { decodeHist, decodePhotos, fromColumns } from './columns';
+import { assertListFormat, decodeHist, decodePhotos, fromColumns, listUrl } from './columns';
 
 // The site reads files derived at build time (src/lib/derive.ts); browsers cache them for a few
 // minutes (vercel.json), so switching tabs back and forth or reopening the site doesn't refetch.
@@ -70,13 +70,16 @@ export function ownTotal<L extends BaseListing>(l: L): L {
 
 const loadList = memo(
   (cat: Category): Promise<CategoryData> =>
-    getJson<ListFile>(`/data/${cat}/list.json`).then((f) => ({
-      latest: { updatedAt: f.updatedAt, sources: f.sources, listings: fromColumns<BaseListing>(f).map(ownTotal) },
-      history: decodeHist(f),
-      imported: f.imported,
-      builtAt: f.builtAt,
-      photos: decodePhotos(f),
-    })),
+    getJson<ListFile>(listUrl(cat)).then((f) => {
+      assertListFormat(f);
+      return {
+        latest: { updatedAt: f.updatedAt, sources: f.sources, listings: fromColumns<BaseListing>(f).map(ownTotal) },
+        history: decodeHist(f),
+        imported: f.imported,
+        builtAt: f.builtAt,
+        photos: decodePhotos(f),
+      };
+    }),
 );
 
 export const loadData = <L extends BaseListing>(cat: Category) => loadList(cat) as Promise<CategoryData<L>>;

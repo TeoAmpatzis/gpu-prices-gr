@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { CATEGORIES, CATEGORY_IDS } from '../../src/lib/categories';
-import { decodeHist, decodePhotos } from '../../src/lib/columns';
+import { assertListFormat, decodeHist, decodePhotos, listUrl } from '../../src/lib/columns';
 import { encodeHist, listFile, reduceHistory } from '../../src/lib/derive';
 import { implausibleDips } from '../../src/lib/dips';
 import { photoId, productImage } from '../../src/lib/images';
@@ -75,7 +75,7 @@ describe('compact history', () => {
       c: [['2026-10-17', 1234.5]],
     };
     const enc = encodeHist(x);
-    const dec = decodeHist({ hist: enc.hist, histBase: enc.histBase });
+    const dec = decodeHist({ v: 2, hist: enc.hist, histBase: enc.histBase });
     expect(dec).toEqual(Object.fromEntries(Object.entries(x).map(([k, p]) => [k, p.map(([d, min]) => ({ d, min }))])));
   });
 
@@ -99,7 +99,36 @@ describe('compact history', () => {
       // every current model is a key of hist (the photo bitset is over them)
       expect(Object.keys(f.hist).sort()).toEqual([...keys].sort());
       const re = encodeHist(Object.fromEntries(Object.entries(expected).map(([k, p]) => [k, p.map((q) => [q.d, q.min] as [string, number])])));
-      expect(decodeHist(re)).toEqual(expected);
+      expect(decodeHist({ v: 2, ...re })).toEqual(expected);
     });
   }
+});
+
+describe('list format version', () => {
+  it('new files are v2 and the address carries the format', () => {
+    const latest = read<Latest | null>('gpu', 'latest.json', null);
+    expect(listFile('gpu', { latest: latest as Latest, history: {}, imported: {} }, BUILT).v).toBe(2);
+    expect(listUrl('gpu')).toBe('/data/gpu/list.v2.json');
+  });
+
+  it('a v1-shaped file (tuple hist, img map, no histBase) is refused with a clear error, not a RangeError', () => {
+    const v1 = { v: 1, hist: { a: [['2026-10-01', 12.5]] }, img: { a: 'gpu/abc' } } as never;
+    expect(() => decodeHist(v1)).toThrow(/format 1, expected 2/);
+    expect(() => decodePhotos(v1)).toThrow(/format 1, expected 2/);
+    expect(() => assertListFormat({})).toThrow(/expected 2/);
+  });
+});
+
+describe('build output names', () => {
+  it('writes the new format as list.v2.json and never as list.json', async () => {
+    const { derive } = await import('../../vite-plugin-data');
+    const { files } = derive(BUILT);
+    const paths = Object.keys(files);
+    expect(paths.filter((p) => /\/list\.json$/.test(p))).toEqual([]);
+    for (const cat of CATEGORY_IDS) {
+      const f = files[`data/${cat}/list.v2.json`];
+      if (f) expect((JSON.parse(f) as { v: number }).v).toBe(2);
+    }
+    expect(paths.some((p) => p.endsWith('/list.v2.json'))).toBe(true);
+  });
 });

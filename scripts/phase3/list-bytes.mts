@@ -1,4 +1,4 @@
-// Where the bytes of /data/<cat>/list.json go: gzip size of each part alone (and the whole file), from dist/data.
+// Where the bytes of /data/<cat>/list.v2.json go: gzip size of each part alone (and the whole file), from dist/data.
 // Run after `npm run build`:  npx tsx scripts/phase3/list-bytes.mts <cat|all>
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -12,7 +12,7 @@ const f1 = (n: number) => n.toFixed(1);
 
 let total = 0;
 for (const cat of cats) {
-  const raw = readFileSync(join(process.cwd(), 'dist/data', cat, 'list.json'));
+  const raw = readFileSync(join(process.cwd(), 'dist/data', cat, 'list.v2.json'));
   const file = JSON.parse(raw.toString('utf8')) as Record<string, unknown> & { cols: string[]; rows: unknown[][] };
   const whole = gzipSync(raw).length / 1024;
   total += whole;

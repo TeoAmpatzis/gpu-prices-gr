@@ -309,7 +309,7 @@ await scenario('loading state', async () => {
   R.loading = {};
   for (const width of [1366, 360]) {
     const { context, page } = await open(browser, { width });
-    await page.route('**/data/gpu/list.json*', async (route) => {
+    await page.route('**/data/gpu/list.v2.json*', async (route) => {
       await sleep(6000);
       await route.continue();
     });
@@ -332,7 +332,7 @@ await scenario('error state', async () => {
     [360, 'offline'],
   ]) {
     const { context, page } = await open(browser, { width });
-    await page.route('**/data/gpu/list.json*', (route) => (mode === 'http500' ? route.fulfill({ status: 500, body: 'error' }) : route.abort('internetdisconnected')));
+    await page.route('**/data/gpu/list.v2.json*', (route) => (mode === 'http500' ? route.fulfill({ status: 500, body: 'error' }) : route.abort('internetdisconnected')));
     await page.goto(`${BASE}/#gpu`);
     await sleep(2500);
     await shot(page, `${OUT}/ux-error-${mode}-${width}-el-light-gpu.jpg`);

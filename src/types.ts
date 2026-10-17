@@ -193,9 +193,9 @@ export interface Columns {
   rows: unknown[][];
 }
 
-/** /data/<cat>/list.json — everything a category page needs, without links and full history. */
+/** /data/<cat>/list.v2.json — everything a category page needs, without links and full history. */
 export interface ListFile extends Columns {
-  v: 1;
+  v: 2; // 2 = compact hist + photos bitset; the browser asks for list.v2.json and refuses any other version
   builtAt: string; // ISO time of the build; also the version for detail/history requests
   updatedAt: string;
   sources: Latest['sources'];

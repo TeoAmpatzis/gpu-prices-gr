@@ -13,6 +13,15 @@ export function fromColumns<L>({ cols, rows }: Columns): L[] {
   });
 }
 
+/** Current list file format: it has its own file name (list.v2.json), so cached older code and files never meet. */
+export const LIST_FORMAT = 2;
+export const listUrl = (cat: string) => `/data/${cat}/list.v2.json`;
+
+/** Throws a clear error for a list file of another format (instead of failing later while decoding). */
+export function assertListFormat(file: { v?: unknown }): void {
+  if (file.v !== LIST_FORMAT) throw new Error(`list.json: format ${String(file.v)}, expected ${LIST_FORMAT}`);
+}
+
 const DAY = 864e5;
 
 /**
@@ -20,7 +29,8 @@ const DAY = 864e5;
  * price in cents, then (days since the previous point, price in cents) pairs]. A model without points is
  * left out, as it was before the compact form.
  */
-export function decodeHist(file: Pick<ListFile, 'hist' | 'histBase'>): Record<string, DailyLow[]> {
+export function decodeHist(file: Pick<ListFile, 'v' | 'hist' | 'histBase'>): Record<string, DailyLow[]> {
+  assertListFormat(file);
   const base = Date.parse(`${file.histBase}T00:00:00Z`);
   const names = new Map<number, string>();
   const dayName = (n: number) => {
@@ -46,7 +56,8 @@ export function decodeHist(file: Pick<ListFile, 'hist' | 'histBase'>): Record<st
 export const modelKeys = (file: Pick<ListFile, 'hist'>): string[] => Object.keys(file.hist).sort();
 
 /** Model keys that have a photo (`photos` is a base64 bitset over `modelKeys`, bit i = byte i>>3, bit i&7). */
-export function decodePhotos(file: Pick<ListFile, 'hist' | 'photos'>): Set<string> {
+export function decodePhotos(file: Pick<ListFile, 'v' | 'hist' | 'photos'>): Set<string> {
+  assertListFormat(file);
   const bits = atob(file.photos ?? '');
   const out = new Set<string>();
   modelKeys(file).forEach((k, i) => {
