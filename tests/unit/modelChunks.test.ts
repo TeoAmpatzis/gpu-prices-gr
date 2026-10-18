@@ -163,6 +163,13 @@ describe('model chunks over today\'s data', () => {
       expect(entries.some((e) => e.listings.every((l) => typeof l.url === 'string' && typeof l.scrapedAt === 'string'))).toBe(true);
     });
 
+    it(`${cat}: photo flag = the list file's photo bitset (product pages request no photo a model hasn't)`, () => {
+      const { photos } = decodeList(listFile(cat, input, BUILT, image));
+      for (const e of entries) expect(e.photo).toBe(photos.has(e.key));
+      expect(entries.some((e) => e.photo)).toBe(true);
+      expect(entries.some((e) => !e.photo)).toBe(true);
+    });
+
     it(`${cat}: engine parts by the builder's key (slotModels + toPart)`, () => {
       const slot = SLOT_OF[cat];
       const step = Math.max(1, Math.floor(entries.length / 30));

@@ -532,6 +532,7 @@ export function modelChunks(cat: Category, input: CategoryInput, builtAt: string
       key: m.key,
       chip: m.chip,
       slug: it.slug,
+      photo: !!image?.(cat, m.key), // as listFile's photo bitset
       listings: m.listings,
       history: m.history,
       dips: [...m.dips].map((p) => p.d).sort(),

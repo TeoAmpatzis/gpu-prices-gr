@@ -48,6 +48,8 @@ export interface Column<L extends BaseListing> {
   maker?: (l: L) => string | null;
   /** Phone cards have no headers: this label goes before the value. */
   cardLabel?: Text;
+  /** Worked out from a price (€/TB, per fan): not a spec, so the product page's key specs leave it out. */
+  fromPrice?: boolean;
 }
 
 export type { CategoryRules, ExtraFilter } from './categoryRules';
@@ -326,6 +328,7 @@ export const FAN: CategoryConfig<FanListing> = {
       header: { el: 'Ανά τεμάχιο', en: 'Per fan' },
       className: 'hidden sm:table-cell',
       numeric: true,
+      fromPrice: true,
       cell: (m, lang) => (m.cheapest.pack > 1 ? formatPrice(m.cheapest.price / m.cheapest.pack, lang) : '—'),
     },
   ],
@@ -421,6 +424,7 @@ export const STORAGE: CategoryConfig<StorageListing> = {
       header: '€/TB',
       className: 'hidden sm:table-cell',
       numeric: true,
+      fromPrice: true,
       cell: (m, lang) => (m.cheapest.capacity ? `${formatPrice(m.cheapest.price / (m.cheapest.capacity / 1000), lang)}/TB` : '—'),
     },
     // Cards only (the table shows these under the type).
