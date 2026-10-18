@@ -18,7 +18,7 @@ const focused = (page) =>
     const outline = cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) >= 2;
     const ring = cs.boxShadow !== 'none' && /rgb/.test(cs.boxShadow);
     const name = (el.getAttribute('aria-label') || el.textContent || el.getAttribute('placeholder') || el.tagName).trim().replace(/\s+/g, ' ').slice(0, 40);
-    const product = !!el.closest('tbody') && el.matches('button[aria-expanded]');
+    const product = !!el.closest('tbody') && el.matches('a[data-product-link]');
     const where = el.closest('header') ? 'header' : el.closest('footer') ? 'footer' : el.closest('main') ? 'main' : 'other';
     return { name, tag: el.tagName.toLowerCase(), href: el.getAttribute('href'), where, visible: outline || ring, product };
   });
@@ -54,25 +54,43 @@ for (const path of ['/', '/gpu', '/builder']) {
   await ctx.close();
 }
 
-// /gpu with the skip link: Tab (skip link), Enter, then Tab until the first product.
+// /gpu with the skip links: Tab, Enter (the page's skip link to the content), then Tab until the filter panel's
+// "Skip to results" link, Enter on it, then Tab until the first product if focus is not on it yet. Reports the
+// presses to reach the first product in all, and the presses after the panel's skip link (task 10: ≤ 5).
 {
   const { ctx, page } = await open('/gpu');
   await page.keyboard.press('Tab');
   await page.keyboard.press('Enter');
   let presses = 2;
-  for (let i = 0; i < 60; i++) {
+  let found = false;
+  for (let i = 0; i < 60 && !found; i++) {
     await page.keyboard.press('Tab');
     presses++;
     const f = await focused(page);
-    if (f?.product) break;
+    if (f?.product) break; // no panel skip link: the first product by plain Tabs (the earlier measure)
+    found = !!f && /Μετάβαση στα αποτελέσματα|Skip to results/.test(f.name);
+  }
+  let after = null;
+  if (found) {
+    await page.keyboard.press('Enter');
+    presses++;
+    after = 0;
+    let f = await focused(page);
+    while (!f?.product && after < 60) {
+      await page.keyboard.press('Tab');
+      presses++;
+      after++;
+      f = await focused(page);
+    }
   }
   report['/gpu'].firstProductWithSkipLink = presses;
+  report['/gpu'].afterPanelSkipLink = after;
   await ctx.close();
 }
 await browser.close();
 
 for (const [path, r] of Object.entries(report)) {
-  console.log(`${path}: ${r.stops} stops walked, without visible focus: ${r.withoutOutline.length ? r.withoutOutline.join(', ') : 'none'}${r.firstProductAt ? `, first product at Tab ${r.firstProductAt}` : ''}${r.firstProductWithSkipLink ? ` (${r.firstProductWithSkipLink} key presses with the skip link)` : ''}`);
+  console.log(`${path}: ${r.stops} stops walked, without visible focus: ${r.withoutOutline.length ? r.withoutOutline.join(', ') : 'none'}${r.firstProductAt ? `, first product at Tab ${r.firstProductAt}` : ''}${r.firstProductWithSkipLink ? ` (${r.firstProductWithSkipLink} key presses with the skip link${r.afterPanelSkipLink != null ? `, ${r.afterPanelSkipLink} after the panel's skip link` : ''})` : ''}`);
   console.log(`   ${r.order.slice(0, 12).join(' → ')}${r.order.length > 12 ? ' → …' : ''}`);
 }
 if (OUT) writeFileSync(OUT, `${JSON.stringify(report, null, 2)}\n`);

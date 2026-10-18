@@ -19,6 +19,7 @@ import { UI, plural } from '../ui/strings';
 import { compatExamples, imageOf, priceExamples, priceInfo, sourcesOf, type AnyModel, type PreviewData } from './data';
 import { Section, Spec } from './kit';
 import { P } from './strings';
+import { modelSlug } from '../lib/slug';
 
 const STATES = [
   { label: P.stDefault, force: undefined },
@@ -330,7 +331,7 @@ export function FiltersSection({ d }: { d: PreviewData }) {
 export function listItem(d: PreviewData, c: Category, m: AnyModel, lang: 'el' | 'en', size: 'sm' | 'md' = 'sm'): ListItem {
   return {
     name: m.chip,
-    href: href.model(c, m.chip),
+    href: href.model(c, modelSlug(c, m)),
     photo: <Photo image={imageOf(d, c, m)} size={size} icon={CATS[c].icon} alt={m.chip} />,
     specs: specsOf(c, m.listings, lang),
     price: priceInfo(d, c, m),

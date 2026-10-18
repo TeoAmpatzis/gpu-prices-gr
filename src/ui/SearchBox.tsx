@@ -12,7 +12,7 @@ export interface SearchSetup {
   sections: { id: Category | 'builder'; name: Text; icon: LucideIcon; words: string[] }[];
   href: {
     section: (id: Category | 'builder') => string;
-    model: (cat: Category, name: string) => string;
+    model: (cat: Category, slug: string) => string;
     all: (cat: Category, q: string) => string;
     maker: (cat: Category, maker: string) => string;
   };
@@ -97,7 +97,7 @@ export function SearchBox({
         ...g.makers.map((m) => ({ id: `k-${g.cat}-${m}`, href: setup.href.maker(g.cat, m), kind: 'maker' as const, label: m, meta: tr(lang, UI.maker) })),
         ...g.hits.map((h, i) => ({
           id: `m-${g.cat}-${i}`,
-          href: setup.href.model(g.cat, h.name),
+          href: setup.href.model(g.cat, h.slug),
           kind: 'model' as const,
           label: h.name,
           meta: `${tr(lang, UI.from)} ${formatPrice(h.price, lang)}`,

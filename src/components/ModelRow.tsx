@@ -4,6 +4,7 @@ import type { BaseListing, Category, DailyLow, HistoryPoint } from '../types';
 import { formatPrice, loadDetails, type CategoryDetails, type Model } from '../lib/data';
 import { chartHistory, loadModel } from '../lib/modelData';
 import { modelSlug } from '../lib/slug';
+import { href } from '../shell/nav';
 import { groupName, type CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Lang } from '../lib/i18n';
 import { SOURCES } from '../lib/sources';
@@ -251,23 +252,41 @@ export default function ModelRow<L extends BaseListing>({ cfg, model: m, history
   return (
     <>
       <tr
-        onClick={onToggle}
+        onClick={(e) => {
+          // The row opens from a click anywhere on it; the name's link and the details button act on their own.
+          if (!(e.target as Element).closest('a, button')) onToggle();
+        }}
         className={`cursor-pointer border-t border-line transition-colors duration-150 first:border-t-0 hover:bg-hover/60 ${open ? 'bg-hover/60' : ''}`}
       >
-        <td className="py-3 pl-4 pr-2">
-          {/* A real button so the row opens from the keyboard too (Tab, Enter); the click reaches the row. */}
-          <button type="button" aria-expanded={open} className={`tap flex items-center gap-2 rounded-md text-left ${dim}`}>
-            <ChevronDown
-              className={`h-4 w-4 shrink-0 text-faint transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
-            />
-            <ProductPhoto image={image} size="sm" icon={cfg.icon} alt="" hint={example ? tr(lang, T.examplePhoto) : undefined} />
-            <span
-              className={`h-2 w-2 shrink-0 rounded-full ${cfg.groupDot[m.group] ?? 'bg-idle'}`}
-              title={groupName(m.group, lang)}
-            />
-            <span className="font-semibold tracking-tight">{m.chip}</span>
-          </button>
-          {pick?.extra}
+        <td className="py-3 pl-2 pr-2">
+          <div className="flex items-center gap-1">
+            {/* The details button opens the quick view under the row (Tab, Enter / Space); the name is the link. */}
+            <button
+              type="button"
+              aria-expanded={open}
+              aria-label={`${tr(lang, T.showOffers)}: ${m.chip}`}
+              onClick={onToggle}
+              className={`tap tap-square grid h-8 w-8 shrink-0 place-items-center rounded-md ${dim}`}
+            >
+              <ChevronDown
+                className={`h-4 w-4 text-faint transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
+              />
+            </button>
+            {/* The product page: a real link (new tab, copy address); the router opens it without a reload. */}
+            <a
+              href={href.model(cfg.id, modelSlug(cfg.id, m))}
+              data-product-link=""
+              className={`tap flex min-w-0 items-center gap-2 rounded-md text-left hover:underline ${dim}`}
+            >
+              <ProductPhoto image={image} size="sm" icon={cfg.icon} alt="" hint={example ? tr(lang, T.examplePhoto) : undefined} />
+              <span
+                className={`h-2 w-2 shrink-0 rounded-full ${cfg.groupDot[m.group] ?? 'bg-idle'}`}
+                title={groupName(m.group, lang)}
+              />
+              <span className="font-semibold tracking-tight">{m.chip}</span>
+            </a>
+          </div>
+          <div className="pl-9">{pick?.extra}</div>
         </td>
         {cfg.before.map(td)}
         <td className={`px-2 text-right ${dim}`}>
@@ -313,11 +332,12 @@ export function ModelCard<L extends BaseListing>({ cfg, model: m, history, image
     .map(({ v, label }) => (label ? <>{tr(lang, label)} {v}</> : v));
   return (
     <li className="card overflow-hidden">
-      <button
-        type="button"
-        aria-expanded={open}
-        onClick={onToggle}
-        className={`flex w-full items-start gap-3 p-4 text-left transition-colors duration-150 active:bg-hover ${pick?.dim ? DIM : ''}`}
+      {/* A tap anywhere on the card opens the offers; the name (link) and the offers button act on their own. */}
+      <div
+        onClick={(e) => {
+          if (!(e.target as Element).closest('a, button')) onToggle();
+        }}
+        className={`flex items-start gap-3 p-4 ${pick?.dim ? DIM : ''}`}
       >
         <ProductPhoto image={image} size="md" icon={cfg.icon} alt="" hint={example ? tr(lang, T.examplePhoto) : undefined} caption={example ? tr(lang, T.examplePhotoShort) : undefined} />
         <div className="flex min-w-0 flex-1 flex-col gap-2">
@@ -326,7 +346,13 @@ export function ModelCard<L extends BaseListing>({ cfg, model: m, history, image
             className={`mt-2 h-2 w-2 shrink-0 rounded-full ${cfg.groupDot[m.group] ?? 'bg-idle'}`}
             title={groupName(m.group, lang)}
           />
-          <span className="min-w-0 flex-1 font-semibold leading-snug tracking-tight">{m.chip}</span>
+          <a
+            href={href.model(cfg.id, modelSlug(cfg.id, m))}
+            data-product-link=""
+            className="tap flex min-w-0 flex-1 items-center rounded-md font-semibold leading-snug tracking-tight hover:underline"
+          >
+            {m.chip}
+          </a>
           <span className="whitespace-nowrap text-lg font-semibold tabular-nums text-fg">
             {formatPrice(m.cheapest.price, lang)}
           </span>
@@ -343,16 +369,22 @@ export function ModelCard<L extends BaseListing>({ cfg, model: m, history, image
         )}
         <div className="flex w-full flex-wrap items-center gap-1.5 pl-5">
           <PriceBadges m={m} lang={lang} />
-          <span className="ml-auto flex items-center gap-1 text-sm text-muted">
+          <button
+            type="button"
+            aria-expanded={open}
+            aria-label={`${m.listings.length} ${tr(lang, T.listingsShort)}: ${m.chip}`}
+            onClick={onToggle}
+            className="tap ml-auto flex items-center gap-1 rounded-md pl-2 text-sm text-muted"
+          >
             {m.listings.length} {tr(lang, T.listingsShort)}
             <ChevronDown className={`h-4 w-4 transition-transform duration-150 ${open ? 'rotate-180' : ''}`} />
-          </span>
+          </button>
         </div>
         <div className="flex flex-wrap items-center gap-x-2 pl-5 text-sm tabular-nums text-muted empty:hidden">
           <PriceExtras m={m} delta={delta} lang={lang} />
         </div>
         </div>
-      </button>
+      </div>
       {pick?.extra && <div className="-mt-1 px-4 pb-4">{pick.extra}</div>}
       {open && (
         <div className="border-t border-line bg-sunken p-3">

@@ -40,7 +40,8 @@ export const href = {
   parts: '/parts',
   builder: '/builder',
   category: (c: Category) => `/${c}`,
-  model: (c: Category, name: string) => `/${c}?q=${encodeURIComponent(name)}`,
+  /** A model's page: /<category>/<slug> (the slug comes with the search hit / lib/slug.modelSlug). */
+  model: (c: Category, slug: string) => `/${c}/${slug}`,
   search: (c: Category, q: string) => `/${c}?q=${encodeURIComponent(q.trim())}`,
   maker: (c: Category, maker: string) =>
     `/${c}?${c === 'gpu' ? 'partner' : 'brand'}=${encodeURIComponent(maker.toLowerCase().replace(/[^\p{L}\p{N}.+×]+/gu, '-'))}`,
