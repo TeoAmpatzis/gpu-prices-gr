@@ -60,7 +60,10 @@ function startFirstPage() {
     void loadBuilderView();
     return;
   }
-  const data = first.kind === 'category' || first.kind === 'model' ? listUrl(first.cat) : null;
+  // A category page needs its list. A product page never loads it: ModelPage requests only the manifest and its
+  // model chunk (the photo comes from the chunk), and the list would share a phone's slow link with them and with
+  // the photo, the page's LCP element (step 4 gate: /case/<model> phone 87, 254 KB of data).
+  const data = first.kind === 'category' ? listUrl(first.cat) : null;
   if (data) {
     const l = document.createElement('link');
     l.rel = 'preload';

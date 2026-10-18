@@ -106,11 +106,12 @@ function BuildFitSection({ fit, slot, add }: { fit: ModelFit; slot: Slot; add: F
     body = (
       <>
         {fit.status === 'ready' && fit.build.length > 0 && (
-          <ul data-fit-counts className="flex flex-wrap gap-x-4 gap-y-2">
+          <ul data-fit-counts className="flex max-w-full flex-wrap gap-x-4 gap-y-2">
             {order
               .filter((s) => counts.get(s))
               .map((s) => (
-                <li key={s} className="flex items-center gap-1.5 text-sm text-fg-soft">
+                // Wraps: a long Greek verdict + "141 προσφορές τιμής" is wider than the card at 360 px (step 4 gate).
+                <li key={s} className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-0.5 text-sm text-fg-soft">
                   <CompatBadge level={WORD[s].level} word={WORD[s].word} />
                   <span className="ui-num">{plural(lang, counts.get(s)!, UI.offerForms)}</span>
                 </li>
