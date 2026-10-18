@@ -15,7 +15,12 @@ export const slug = (s: string) =>
 export function modelSlug(cat: string, m: { key: string; chip: string; cheapest: object }): string {
   const media = (m.cheapest as { media?: string }).media ?? '';
   const base = cat === 'gpu' || cat === 'cpu' || cat === 'ram' || cat === 'psu' ? m.key : cat === 'storage' ? `${m.chip} ${media}` : m.chip;
-  return base
+  return nameSlug(base);
+}
+
+/** A name as an address segment: lower case, every other run of characters one "-" ("Micro ATX" → "micro-atx"). */
+export function nameSlug(name: string): string {
+  return name
     .toLowerCase()
     .replace(/×/g, 'x')
     .replace(/[^a-z0-9]+/g, '-')

@@ -63,7 +63,7 @@ test('Εξαρτήματα menu: ↓ opens it on the first link, Esc closes it b
   await expect(btn).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('search combobox: typing lists suggestions, ↓ moves, Enter opens, Esc closes', async ({ page }) => {
+test('search combobox: typing lists suggestions, ↓ moves, Enter opens the model page, Esc closes', async ({ page }) => {
   await page.goto('/');
   await page.locator('main h1').waitFor();
   // The header's search box for desktop widths (the tablet one sits in a row hidden here).
@@ -83,7 +83,7 @@ test('search combobox: typing lists suggestions, ↓ moves, Enter opens, Esc clo
   await page.keyboard.press('ArrowDown');
   await expect(options.first()).toBeVisible();
   await page.keyboard.press('Enter');
-  await expect(page).toHaveURL(/\/(gpu|cpu)\?q=/);
+  await expect(page).toHaveURL(/\/(gpu|cpu)\/[a-z0-9-]+$/);
 });
 
 test.describe('reduced motion', () => {

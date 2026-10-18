@@ -157,6 +157,16 @@ export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setF
   const pages = Math.max(1, Math.ceil(models.length / filters.per));
   const page = Math.min(filters.page, pages);
   const reset = () => setFilters(clearedFilters(filters, cfg.groups, true));
+  // The sidebar's skip link: focus goes to the first product's name (else the results area itself).
+  const skipToResults = () => {
+    const box = top.current;
+    const first = box?.querySelector<HTMLElement>('a[data-product-link]');
+    if (first) first.focus();
+    else if (box) {
+      box.tabIndex = -1;
+      box.focus();
+    }
+  };
   return (
     // Filters in a left sidebar (sticky) on wide screens; below lg they open in a bottom sheet.
     <div className="grid items-start gap-4 lg:grid-cols-[17rem_minmax(0,1fr)]">
@@ -172,7 +182,7 @@ export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setF
         {active > 0 && <span className="tabular-nums">({active})</span>}
       </button>
       <aside className="hidden flex-col gap-2 lg:sticky lg:top-4 lg:flex lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto scrollbar-none">
-        {pending ? pending.filters : <FilterBar cfg={cfg} filters={filters} onChange={setFilters} options={options} counts={counts} top={pick?.toggle} />}
+        {pending ? pending.filters : <FilterBar cfg={cfg} filters={filters} onChange={setFilters} options={options} counts={counts} top={pick?.toggle} onSkip={skipToResults} />}
       </aside>
       <BottomSheet
         open={sheetOpen}

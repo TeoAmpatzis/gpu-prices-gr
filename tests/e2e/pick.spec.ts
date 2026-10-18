@@ -91,7 +91,7 @@ test('"Add to build" saves the board with its fields and opens the builder; Back
   await waitChecked(page);
   const row = page.locator('main tbody tr:visible').filter({ has: page.getByRole('button', { name: /^(Add to build|Πρόσθεσε στο build)$/ }) }).first();
   await expect(row).toBeVisible();
-  const name = (await row.locator('button[aria-expanded] span.font-semibold').innerText()).trim();
+  const name = (await row.locator('a[data-product-link]').innerText()).trim();
   await row.locator('button').filter({ hasText: /^Add to build$/ }).click();
   await expect.poll(() => new URL(page.url()).pathname).toBe('/builder');
   await expect(page.locator('main').getByText(name, { exact: false }).filter({ visible: true }).first()).toBeVisible({ timeout: 20_000 });
@@ -171,7 +171,7 @@ test('no usable model ever shows "not offered" while the candidates are being bu
     (window as unknown as { __notOffered: Set<string> }).__notOffered = seen;
     new MutationObserver(() => {
       for (const tr of document.querySelectorAll('main tbody tr')) {
-        if (tr.textContent?.includes('Not offered in the PC Builder')) seen.add(tr.querySelector('button[aria-expanded] span.font-semibold')?.textContent ?? '');
+        if (tr.textContent?.includes('Not offered in the PC Builder')) seen.add(tr.querySelector('a[data-product-link]')?.textContent ?? '');
       }
     }).observe(document, { subtree: true, childList: true, characterData: true });
   });
@@ -183,7 +183,7 @@ test('no usable model ever shows "not offered" while the candidates are being bu
   const withButton = await page
     .locator('main tbody tr:visible')
     .filter({ has: page.getByRole('button', { name: /^Add to build$/ }) })
-    .locator('button[aria-expanded] span.font-semibold')
+    .locator('a[data-product-link]')
     .allInnerTexts();
   expect(flashed.filter((n) => withButton.includes(n))).toEqual([]);
   expect(errors).toEqual([]);
@@ -247,7 +247,7 @@ test('/builder, kept open in the background, shows the part a pick page added (w
   });
   await waitChecked(page);
   const row = page.locator('main tbody tr:visible').filter({ has: page.getByRole('button', { name: /^(Add to build|Πρόσθεσε στο build)$/ }) }).first();
-  const name = (await row.locator('button[aria-expanded] span.font-semibold').innerText()).trim();
+  const name = (await row.locator('a[data-product-link]').innerText()).trim();
   await row.locator('button').filter({ hasText: /^Add to build$/ }).click();
   await expect.poll(() => new URL(page.url()).pathname).toBe('/builder');
   await expect(page.locator('main').getByText(name, { exact: false }).filter({ visible: true }).first()).toBeVisible();

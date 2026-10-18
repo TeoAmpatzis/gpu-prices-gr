@@ -96,10 +96,12 @@ interface Props<L extends BaseListing> {
   bare?: boolean;
   /** Shown first, above the search (pick mode: "Μόνο συμβατά"). */
   top?: ReactNode;
+  /** The sidebar's "Skip to results" link (first Tab stop of the panel): moves focus to the first product. */
+  onSkip?: () => void;
 }
 
 /** Filters: search + sort, group pills, segment, sales, sources, category-specific specs, max price. */
-export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onChange, options, counts, bare, top }: Props<L>) {
+export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onChange, options, counts, bare, top, onSkip }: Props<L>) {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
   const set = <K extends keyof Filters>(k: K, v: Filters[K]) => onChange({ ...f, [k]: v });
@@ -128,7 +130,20 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
   const sorts = cfg.capacityTb ? [...SORTS, { value: 'per-tb' as const, label: T.sortPerTb }] : SORTS;
 
   return (
-    <div className={bare ? 'flex flex-col gap-3' : 'card flex flex-col gap-3 p-4'}>
+    <div className={bare ? 'flex flex-col gap-3' : 'card relative flex flex-col gap-3 p-4'}>
+      {!bare && onSkip && (
+        // Visible only while it has focus, drawn over the panel's title row (nothing moves).
+        <a
+          href="#results"
+          onClick={(e) => {
+            e.preventDefault();
+            onSkip();
+          }}
+          className="ui-btn ui-btn--primary sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-10"
+        >
+          {t(T.skipToResults)}
+        </a>
+      )}
       {!bare && (
         <div className="flex items-center justify-between">
           <span className="text-sm font-semibold">{t(T.filters)}</span>

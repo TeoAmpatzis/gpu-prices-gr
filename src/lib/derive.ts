@@ -52,9 +52,9 @@ import {
 import { allTimeLow, groupModels, mostCommon, saleOf, type Model } from './data';
 import { MODEL_CHUNKS, modelChunkOf } from './modelData';
 import { SLOT_OF, toPart } from './pick';
-import { modelSlug } from './slug';
+import { modelSlug, nameSlug } from './slug';
 import { POP_SCALE, popularityRaw, recommendedScores } from './ranking';
-import type { SearchIndexFile } from './search';
+import type { SearchIndexFile, SearchModel } from './search';
 import {
   LAZY_SLOTS,
   SLOTS,
@@ -711,7 +711,12 @@ export function searchFile(all: Partial<Record<Category, Latest>>, builtAt: stri
       .sort((a, b) => b.pop - a.pop || a.m.chip.localeCompare(b.m.chip));
     const maker = (l: BaseListing) => (cat === 'gpu' ? (l as BaseListing & { partner?: string }).partner : l.brand);
     cats[cat] = {
-      m: models.map(({ m }) => [m.chip, m.cheapest.price]),
+      // The slug only where it differs from the name's own (graphics cards, processors, memory, power supplies,
+      // drives): the search opens the model's page, /<category>/<slug>.
+      m: models.map(({ m }): SearchModel => {
+        const slug = modelSlug(cat, m);
+        return slug === nameSlug(m.chip) ? [m.chip, m.cheapest.price] : [m.chip, m.cheapest.price, slug];
+      }),
       mk: [...new Set(latest.listings.map(maker).filter((x): x is string => !!x))].sort((a, b) => a.localeCompare(b)),
     };
   }

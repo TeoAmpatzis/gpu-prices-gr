@@ -1,11 +1,18 @@
 // Global search over every category's models (plan A1): the build writes one index file; the browser
 // loads it only when the search box is used, prepares it once, and matches on every keystroke.
 import type { Category } from '../types';
+import { nameSlug } from './slug';
 
-/** The index file: per category, models as [name, cheapest price] in popularity order, and makers. */
+/**
+ * A model of the index: [name, cheapest price] or, when its address isn't just the name as a slug (graphics
+ * cards, processors, memory, power supplies and drives: their address is the model key), [name, price, slug].
+ */
+export type SearchModel = [string, number] | [string, number, string];
+
+/** The index file: per category, models in popularity order, and makers. */
 export interface SearchIndexFile {
   builtAt?: string;
-  cats: Partial<Record<Category, { m: [string, number][]; mk: string[] }>>;
+  cats: Partial<Record<Category, { m: SearchModel[]; mk: string[] }>>;
 }
 
 /** Lower-case, accents removed: "Μητρικές" → "μητρικες", "Ryzen 7 9800X3D" → "ryzen 7 9800x3d". */
@@ -19,6 +26,7 @@ const words = (s: string) => fold(s).split(/[^\p{L}\p{N}]+/u).filter(Boolean);
 interface Entry {
   name: string;
   price: number;
+  slug: string; // the model's address segment: /<category>/<slug>
   rank: number;
   words: string[];
   compact: string; // letters and digits only, for "990pro" / "rtx5070"
@@ -29,10 +37,10 @@ export interface PreparedIndex {
 
 export function prepare(file: SearchIndexFile): PreparedIndex {
   return {
-    cats: (Object.entries(file.cats) as [Category, { m: [string, number][]; mk: string[] }][]).map(([cat, c]) => ({
+    cats: (Object.entries(file.cats) as [Category, { m: SearchModel[]; mk: string[] }][]).map(([cat, c]) => ({
       cat,
       makers: c.mk,
-      entries: c.m.map(([name, price], rank) => ({ name, price, rank, words: words(name), compact: words(name).join('') })),
+      entries: c.m.map(([name, price, slug], rank) => ({ name, price, slug: slug ?? nameSlug(name), rank, words: words(name), compact: words(name).join('') })),
     })),
   };
 }
@@ -40,6 +48,8 @@ export function prepare(file: SearchIndexFile): PreparedIndex {
 export interface Hit {
   name: string;
   price: number;
+  /** The address segment of the model's page. */
+  slug: string;
 }
 export interface Group {
   cat: Category;
@@ -79,7 +89,7 @@ export function search(index: PreparedIndex, query: string, perCat = 5): Group[]
     groups.push({
       cat: c.cat,
       total: scored.length,
-      hits: scored.slice(0, perCat).map(({ e }) => ({ name: e.name, price: e.price })),
+      hits: scored.slice(0, perCat).map(({ e }) => ({ name: e.name, price: e.price, slug: e.slug })),
       makers,
       best: Math.max(scored[0]?.s ?? 0, makers.length ? tokens.length * 3 : 0),
     });

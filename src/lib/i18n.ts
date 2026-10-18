@@ -34,6 +34,8 @@ export const T = {
   loading: { el: 'Φόρτωση…', en: 'Loading…' },
   listingsShort: { el: 'προϊόντα', en: 'listings' },
   clearFilters: { el: 'Καθαρισμός φίλτρων', en: 'Clear filters' },
+  skipToResults: { el: 'Μετάβαση στα αποτελέσματα', en: 'Skip to results' },
+  showOffers: { el: 'Δες τις προσφορές', en: 'Show offers' },
   showResults: { el: 'Εμφάνιση', en: 'Show' },
   results: { el: 'αποτελεσμάτων', en: 'results' },
   activeFilters: { el: 'Ενεργά φίλτρα', en: 'Active filters' },
