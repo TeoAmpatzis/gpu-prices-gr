@@ -71,7 +71,9 @@ import {
   coolerSockets,
   cpuHasIgpu,
   cpuSocket,
+  fitContext,
   gpuLength,
+  gpuWaterCooled,
   moboForm,
   moboMemory,
   moboSocket,
@@ -513,6 +515,15 @@ export function modelChunks(cat: Category, input: CategoryInput, builtAt: string
   // The Recommended score (src/lib/ranking.ts), over all of the category's models (the page scores the models it
   // shows, so its numbers differ by filter; the order among models of one kind is what matters here).
   const recommended = recommendedScores(models, cat, cfg.value);
+  // Graphics cards: the builder's chip length range (builder.fitContext, its ESTIMATE rule, over the same rows as
+  // builder.json: candidates()) for a card with no measured
+  // length of its own; none for a water-cooled card (its length is not the chip's).
+  const chipLengths = cat === 'gpu' ? fitContext(candidates('gpu', slotModels('gpu', input.latest.listings as GpuListing[]), {})).chips : null;
+  const lengthRange = (m: Model<BaseListing>): { min: number; max: number } | null => {
+    const c = chipLengths?.get(m.cheapest.chip);
+    if (!c || m.listings.some((l) => (l as GpuListing).lengthMm != null) || gpuWaterCooled(m.cheapest as GpuListing)) return null;
+    return { min: c.min, max: c.max };
+  };
   const items = models.map((m) => {
     const fam = family?.(m.cheapest) ?? null;
     const same = cheaperKind?.(m) ?? null;
@@ -587,12 +598,15 @@ export function modelChunks(cat: Category, input: CategoryInput, builtAt: string
       parts: slot
         ? Object.fromEntries(slotModels(slot, m.listings as never[]).map((p) => [p.key, toPart(slot, p as never).fields]))
         : null,
+      variantLabel: it.fam?.label ?? null,
+      variantOrder: it.fam?.order ?? null,
       variants: it.fam
         ? families
             .get(it.fam.id)!
             .filter((o) => o !== it)
-            .map((o) => ({ key: o.m.key, slug: o.slug, label: o.fam!.label, price: o.price }))
+            .map((o) => ({ key: o.m.key, slug: o.slug, label: o.fam!.label, order: o.fam!.order, price: o.price }))
         : [],
+      ...(lengthRange(m) ? { lengthEstimate: lengthRange(m)! } : {}),
       alternatives: [...cheaper.map((o) => alternative('cheaper', o)), ...better.map((o) => alternative('value', o))],
     };
     chunks[modelChunkOf(it.slug)].models[it.slug] = entry;
