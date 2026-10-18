@@ -3,7 +3,7 @@
 // only) is still valid; `compat` holds, per part, the engine fields and the data date they came from.
 // Per-browser convenience only (listed on the privacy page).
 
-import { SLOTS, type Slot } from './builder';
+import { SLOTS, type Slot } from './slots';
 
 export interface StoredPart {
   key: string;

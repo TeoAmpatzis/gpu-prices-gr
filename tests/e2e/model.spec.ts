@@ -3,6 +3,8 @@
 // table entry, which the static build doesn't have: covered in tests/unit/modelAddress.test.ts.)
 // Product page (task 6): header (lowest price, shop link, photo) and the shops table (first 20, "Show all N", ⚠ on
 // prices older than 24 h).
+// Fit with the saved build (task 8): no build, no section; a verdict against a preset build; add / replace without
+// leaving the page, then /builder restores the part; graphics cards per offer; a stale saved part refreshed first.
 import { expect, test, type Page } from '@playwright/test';
 
 interface Listing {
@@ -66,6 +68,76 @@ const cents = (text: string) => {
   const m = digits.match(/^(.*)[.,](\d{2})$/);
   return m ? Number(`${m[1].replace(/[.,]/g, '')}.${m[2]}`) : Number(digits.replace(/[.,]/g, ''));
 };
+
+// ---- Task 8: fit with the saved build -------------------------------------------------------------------------------
+type Fields = Record<string, unknown>;
+interface PartEntry extends Entry {
+  key: string;
+  parts: Record<string, Fields> | null;
+  listings: (Listing & { id: string; title: string })[];
+}
+const manifestBuiltAt = async (page: Page) => ((await (await page.request.get('/data/manifest.json')).json()) as { builtAt: string }).builtAt;
+const found = new Map<string, unknown>();
+/** The first model entry of `cat` (scanning its 256 chunks) that `wanted` accepts; remembered per name. */
+async function anEntry(page: Page, cat: string, name: string, wanted: (m: PartEntry) => boolean): Promise<PartEntry> {
+  if (found.has(name)) return found.get(name) as PartEntry;
+  const builtAt = await manifestBuiltAt(page);
+  for (let n = 0; n < 256; n++) {
+    const r = await page.request.get(`/data/${cat}/model/${String(n).padStart(3, '0')}.json?v=${builtAt}`);
+    const hit = Object.values((await r.json()).models as Record<string, PartEntry>).find(wanted);
+    if (hit) {
+      found.set(name, hit);
+      return hit;
+    }
+  }
+  throw new Error(`no such ${cat} model`);
+}
+/** Every compat row of a slot (the builder's usable parts with their engine fields). */
+async function compatRows(page: Page, slot: string): Promise<Record<string, Fields>> {
+  const key = `compat:${slot}`;
+  if (found.has(key)) return found.get(key) as Record<string, Fields>;
+  const builtAt = await manifestBuiltAt(page);
+  const rows: Record<string, Fields> = {};
+  for (let n = 0; n < 64; n++) {
+    const r = await page.request.get(`/data/compat/${slot}-${String(n).padStart(2, '0')}.json?v=${builtAt}`);
+    Object.assign(rows, (await r.json()).rows);
+  }
+  found.set(key, rows);
+  return rows;
+}
+/** Opens a light page, stores the build (and the language), then opens `url` in a fresh document (as pick.spec). */
+async function withBuild(page: Page, build: object | null, url: string, lang: 'el' | 'en' = 'en') {
+  await page.goto('/about');
+  await page.evaluate(
+    ([b, l]) => {
+      localStorage.clear();
+      localStorage.setItem('lang', l as string);
+      if (b) localStorage.setItem('pcBuild', JSON.stringify(b));
+    },
+    [build, lang] as const,
+  );
+  await page.goto(url);
+}
+const savedBuild = (page: Page) => page.evaluate(() => JSON.parse(localStorage.getItem('pcBuild') ?? '{}') as Record<string, unknown>);
+const mmText = (v: number) => `${Number.isInteger(v) ? v : v.toFixed(1)} mm`;
+const AM5_CPU = 'Ryzen 7 7700|true';
+const AM5_FIELDS = { chip: 'Ryzen 7 7700', socket: 'AM5', igpu: true, coolerIncluded: true };
+/** A case with a stated card limit (in the compat rows: one the builder offers) and a card longer than it. */
+async function caseAndLongCard(page: Page) {
+  const cases = await compatRows(page, 'case');
+  const pc = await anEntry(page, 'case', 'case-with-limit', (m) => {
+    const f = m.parts?.[m.key];
+    return !!f && typeof f.gpuMaxMm === 'number' && (f.gpuMaxMm as number) < 330 && m.key in cases;
+  });
+  const max = pc.parts![pc.key].gpuMaxMm as number;
+  const [cardKey, card] = Object.entries(await compatRows(page, 'gpu')).find(([, f]) => typeof f.lengthMm === 'number' && (f.lengthMm as number) > max + 5)!;
+  return { pc, max, cardKey, card };
+}
+/** A graphics chip with 3 to 20 offers, every one a card the builder offers. */
+async function offeredChip(page: Page) {
+  const gpus = await compatRows(page, 'gpu');
+  return anEntry(page, 'gpu', 'gpu-3-offered', (m) => m.listings.length >= 3 && m.listings.length <= 20 && m.listings.every((l) => l.id in gpus));
+}
 
 for (const [name, size] of [['360', { width: 360, height: 740 }], ['1366', { width: 1366, height: 800 }]] as const) {
   test.describe(`at ${name} px`, () => {
@@ -257,6 +329,179 @@ for (const [name, size] of [['360', { width: 360, height: 740 }], ['1366', { wid
       await expect(page.getByText('404', { exact: true })).toBeVisible();
       await page.goto('/nonsense/page');
       await expect(page.getByText('404', { exact: true })).toBeVisible();
+    });
+
+    test('fit: no saved build, no section and no check; "Add to build" adds at once and stays on the page', async ({ page }) => {
+      const errors: string[] = [];
+      page.on('pageerror', (e) => errors.push(e.message));
+      const requests: string[] = [];
+      page.on('request', (r) => requests.push(new URL(r.url()).pathname));
+      const { pc } = await caseAndLongCard(page);
+      await withBuild(page, null, `/case/${pc.slug}`);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(pc.chip, { timeout: 20_000 });
+      const add = page.locator('[data-product-header] [data-fit-header=add]');
+      await expect(add).toHaveText('Add to build');
+      await expect.poll(() => requests.some((p) => /\/assets\/BuildFit-/.test(p))).toBe(true); // after the first paint
+      await expect(page.locator('[data-build-fit]')).toHaveCount(0);
+      expect(requests.filter((p) => p.startsWith('/data/compat/') || /pick\.worker|pickCheck/.test(p))).toEqual([]);
+      if (size.width < 1024) expect((await add.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+
+      await add.click();
+      await expect(page).toHaveURL(new RegExp(`/case/${pc.slug}$`)); // stays
+      await expect(page.locator('[data-build-fit] [data-in-build]')).toContainText('Added to your build.');
+      await expect(page.locator('[data-product-header] [data-fit-header=in-build]')).toHaveText("It's in your build");
+      // The focus moves to what replaced the clicked button, and screen readers hear which part was added.
+      await expect(page.locator('[data-product-header] [data-fit-header=in-build]')).toBeFocused();
+      await expect(page.locator('[data-product-header] [role=status]')).toHaveText(`Added to your build: ${pc.chip}.`);
+      const saved = await savedBuild(page);
+      expect(saved.case).toBe(pc.key);
+      expect((saved.compat as Record<string, unknown>).case).toEqual({ fields: pc.parts![pc.key], builtAt: await manifestBuiltAt(page) });
+      expect(await noOverflow(page)).toBe(true);
+      expect(errors).toEqual([]);
+    });
+
+    test("fit: a case page with a longer card in the build says it doesn't fit, with both lengths, and offers no add", async ({ page }) => {
+      const errors: string[] = [];
+      page.on('pageerror', (e) => errors.push(e.message));
+      const { pc, max, cardKey, card } = await caseAndLongCard(page);
+      const builtAt = await manifestBuiltAt(page);
+      await withBuild(page, { gpu: cardKey, compat: { gpu: { fields: card, builtAt } } }, `/case/${pc.slug}`);
+      const section = page.locator('[data-build-fit]');
+      await expect(section.locator('[data-fit=blocked]')).toBeVisible({ timeout: 20_000 });
+      await expect(section.locator('[data-fit-status]')).toHaveText(/Checked against your build: 1\spart/);
+      await expect(section).toContainText("Doesn't fit");
+      await expect(section.locator('[data-finding="6"]').first()).toContainText(
+        `The card is ${mmText(card.lengthMm as number)}; the case takes up to ${mmText(max)}.`,
+      );
+      await expect(section.locator('[data-fit-action]')).toBeDisabled();
+      // The header goes to the section (there is a build to check against), it doesn't add.
+      await page.locator('[data-product-header] [data-fit-header=add]').click();
+      await expect(page.locator('#build-fit-title')).toBeFocused();
+      expect((await savedBuild(page)).case).toBeUndefined();
+      expect(await noOverflow(page)).toBe(true);
+      expect(errors).toEqual([]);
+    });
+
+    test('fit: Add on the section saves the part as pick mode does, then /builder restores it', async ({ page }) => {
+      const errors: string[] = [];
+      page.on('pageerror', (e) => errors.push(e.message));
+      const { pc } = await caseAndLongCard(page);
+      const builtAt = await manifestBuiltAt(page);
+      await withBuild(page, { cpu: AM5_CPU, compat: { cpu: { fields: AM5_FIELDS, builtAt } } }, `/case/${pc.slug}`);
+      const section = page.locator('[data-build-fit]');
+      // A CPU alone: nothing the case's rules check against.
+      await expect(section.locator('[data-fit-status]')).toHaveText('Nothing in your build is checked against it.', { timeout: 20_000 });
+      await section.locator('[data-fit-action=add]').click();
+      await expect(section.locator('[data-in-build]')).toContainText('Added to your build.');
+      await expect(section.getByRole('link', { name: 'Open the build' })).toBeFocused();
+      const saved = await savedBuild(page);
+      expect(saved.cpu).toBe(AM5_CPU);
+      expect(saved.case).toBe(pc.key);
+      await section.getByRole('link', { name: 'Open the build' }).click();
+      await expect(page).toHaveURL(/\/builder/);
+      // The builder lists the parts beside the steps from 1024 px (phones: a summary bar, closed).
+      if (size.width >= 1024) {
+        await expect(page.locator('main').getByText(pc.chip, { exact: false }).filter({ visible: true }).first()).toBeVisible({ timeout: 20_000 });
+        await page.reload();
+        await expect(page.locator('main').getByText(pc.chip, { exact: false }).filter({ visible: true }).first()).toBeVisible({ timeout: 20_000 });
+        await expect(page.locator('main').getByText('Ryzen 7 7700').filter({ visible: true }).first()).toBeVisible();
+      }
+      expect(Object.keys((await savedBuild(page)).compat as object).sort()).toEqual(['case', 'cpu']);
+      expect(errors).toEqual([]);
+    });
+
+    test('fit: a graphics card page checks and adds per offer (the card key), replacing the saved card', async ({ page }) => {
+      const errors: string[] = [];
+      page.on('pageerror', (e) => errors.push(e.message));
+      const { pc } = await caseAndLongCard(page);
+      const gpus = await compatRows(page, 'gpu');
+      const chip = await offeredChip(page);
+      const other = Object.keys(gpus).find((k) => !chip.listings.some((l) => l.id === k))!;
+      const builtAt = await manifestBuiltAt(page);
+      const build = {
+        case: pc.key,
+        gpu: other,
+        compat: { case: { fields: pc.parts![pc.key], builtAt }, gpu: { fields: gpus[other], builtAt } },
+      };
+      await withBuild(page, build, `/gpu/${chip.slug}`);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(chip.chip, { timeout: 20_000 });
+      await expect(page.locator('[data-offer]:visible [data-offer-fit]')).toHaveCount(chip.listings.length);
+      await expect(page.locator('[data-offer]:visible [data-offer-fit=checking]')).toHaveCount(0, { timeout: 20_000 });
+      // The header points to the offers.
+      await page.locator('[data-product-header] [data-fit-header=cards]').click();
+      await expect(page.locator('#offers-title')).toBeFocused();
+      // The first offer with a working "Replace" (pinned by position: after the click it has none).
+      const offers = page.locator('[data-offer]:visible');
+      let at = -1;
+      for (let i = 0; i < (await offers.count()) && at < 0; i++) if (await offers.nth(i).locator('[data-fit-action=replace]:enabled').count()) at = i;
+      expect(at).toBeGreaterThanOrEqual(0);
+      const row = offers.nth(at);
+      const replace = row.locator('[data-fit-action=replace]');
+      if (size.width < 1024) expect((await replace.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+      await replace.click();
+      await expect(row.locator('[data-fit-action]')).toHaveCount(0);
+      // The focus stays in the row: its "In build" (table) / "Open the build" (phone card) link.
+      await expect(row.locator('a[href="/builder"]')).toBeFocused();
+      const saved = await savedBuild(page);
+      expect(saved.gpu).toMatch(/^[a-z]+:/); // a listing id: one card, not the chip
+      expect(chip.listings.map((l) => l.id)).toContain(saved.gpu);
+      expect(saved.case).toBe(pc.key);
+      await expect(page.locator('[data-build-fit] [data-in-build]')).toContainText('It took the previous one’s place in your build.');
+      expect(await noOverflow(page)).toBe(true);
+      expect(errors).toEqual([]);
+    });
+
+    test('fit: a saved part from older data is refreshed from its compat chunk first (A7) and saved back', async ({ page }) => {
+      const requests: string[] = [];
+      page.on('request', (r) => requests.push(new URL(r.url()).pathname));
+      const { pc, max } = await caseAndLongCard(page);
+      const chip = await offeredChip(page);
+      const stale = { ...pc.parts![pc.key], gpuMaxMm: 999 };
+      await withBuild(page, { case: pc.key, compat: { case: { fields: stale, builtAt: '2020-01-01T00:00:00.000Z' } } }, `/gpu/${chip.slug}`);
+      await expect(page.locator('[data-build-fit] [data-fit-status]')).toHaveText(/Checked against your build: 1\spart/, { timeout: 20_000 });
+      expect(requests.some((p) => p.startsWith('/data/compat/case-'))).toBe(true);
+      const compat = (await savedBuild(page)).compat as Record<string, { fields: Fields; builtAt: string }>;
+      expect(compat.case.builtAt).toBe(await manifestBuiltAt(page));
+      expect(compat.case.fields.gpuMaxMm).toBe(max);
+    });
+
+    test('fit: a saved part the data no longer has is never checked as "fits": rows and section say so', async ({ page }) => {
+      const chip = await offeredChip(page);
+      await withBuild(page, { case: 'nosuchcase12345' }, `/gpu/${chip.slug}`);
+      const section = page.locator('[data-build-fit]');
+      await expect(section.locator('[data-fit-status]')).toHaveText("None of your build's parts could be checked against it.", { timeout: 20_000 });
+      await expect(section).toContainText('no longer available');
+      await expect(page.locator('[data-offer]:visible [data-offer-fit=unchecked]')).toHaveCount(chip.listings.length);
+      await expect(page.locator('[data-offer]:visible [data-offer-fit=fits], [data-offer]:visible [data-offer-fit=alone]')).toHaveCount(0);
+    });
+
+    test('fit: a CPU page adds the Box/Tray key of its cheapest offer', async ({ page }) => {
+      const cpu = await anEntry(page, 'cpu', 'cpu-desktop', (m) => !!m.parts && Object.keys(m.parts).some((k) => /\|(true|false)$/.test(k)) && /Ryzen|Core/.test(m.chip));
+      await withBuild(page, null, `/cpu/${cpu.slug}`);
+      const add = page.locator('[data-product-header] [data-fit-header=add]');
+      await expect(add).toBeVisible({ timeout: 20_000 });
+      await add.click();
+      await expect(page.locator('[data-build-fit] [data-in-build]')).toContainText('Added to your build.');
+      await expect(page.locator('[data-product-header] [data-fit-header=in-build]')).toBeFocused();
+      const saved = await savedBuild(page);
+      expect(Object.keys(cpu.parts!)).toContain(saved.cpu);
+      expect(saved.cpu).toMatch(/\|(true|false|\?)$/);
+    });
+
+    test('fit: a CPU saved as either version of the same chip is "in your build", not "replace it with itself"', async ({ page }) => {
+      const both = await anEntry(page, 'cpu', 'cpu-box-and-tray', (m) => {
+        const keys = Object.keys(m.parts ?? {});
+        return keys.some((k) => k.endsWith('|true')) && keys.some((k) => k.endsWith('|false')) && /Ryzen|Core/.test(m.chip);
+      });
+      const builtAt = await manifestBuiltAt(page);
+      for (const key of Object.keys(both.parts!).filter((k) => /\|(true|false)$/.test(k))) {
+        await withBuild(page, { cpu: key, compat: { cpu: { fields: both.parts![key], builtAt } } }, `/cpu/${both.slug}`);
+        await expect(page.locator('[data-product-header] [data-fit-header=in-build]')).toHaveText("It's in your build", { timeout: 20_000 });
+        const section = page.locator('[data-build-fit]');
+        await expect(section.locator('[data-in-build]')).toContainText("It's in your build");
+        await expect(section.locator('[data-fit-action]')).toHaveCount(0);
+        await expect(section).toContainText(key.endsWith('|true') ? 'Box version (cooler in the box)' : 'Tray version (no cooler)');
+      }
     });
   });
 }

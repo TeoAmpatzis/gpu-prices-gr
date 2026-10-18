@@ -28,7 +28,7 @@ describe('resolveModel', () => {
   it("a current slug is ok with its entry and the chunk's source update times", async () => {
     const entry = { key: 'RTX 5070 12GB', slug: 'rtx-5070-12gb' };
     const { md } = await setup({ 'rtx-5070-12gb': entry }, 'rtx-5070-12gb');
-    expect(await md.resolveModel('gpu', 'rtx-5070-12gb')).toEqual({ kind: 'ok', entry, sources: SOURCES });
+    expect(await md.resolveModel('gpu', 'rtx-5070-12gb')).toEqual({ kind: 'ok', entry, sources: SOURCES, builtAt: BUILT });
   });
 
   it('an aliased old slug is moved to the new one, with no request', async () => {

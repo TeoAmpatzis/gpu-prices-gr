@@ -18,9 +18,20 @@ export interface WorkerLike {
 /** No answer in this time: the worker is given up and the check runs on the main thread. */
 export const WORKER_TIMEOUT = 10_000;
 
+/** `full`: keep notes and unknowns in the verdicts (pickProtocol.keptFinding), not only errors and warnings. */
+export interface RunOptions {
+  full?: boolean;
+}
+
 export interface Checker {
   /** Checks every candidate; `done` is called once with all verdicts, never after the returned cancel. */
-  run(slot: PartCategory, build: Part[], candidates: Part[], done: (verdicts: Map<string, Verdict>) => void): () => void;
+  run(
+    slot: PartCategory,
+    build: Part[],
+    candidates: Part[],
+    done: (verdicts: Map<string, Verdict>) => void,
+    opts?: RunOptions,
+  ): () => void;
   /** Starts the worker early (its chunk downloads while the page prepares the candidates). */
   warm(): void;
   /** Stops the worker; a later `run` starts a new one. */
@@ -42,6 +53,7 @@ export function checkSliced(
   done: (verdicts: Map<string, Verdict>) => void,
   schedule: Schedule = idle,
   load: typeof loadCheck = loadCheck,
+  full = false,
 ): () => void {
   let cancelled = false;
   let cancelRun = () => {};
@@ -51,7 +63,7 @@ export function checkSliced(
       ({ checkAll, PICK_CTX }) => {
         if (cancelled) return;
         const map = new Map<string, Verdict>();
-        cancelRun = runSliced(candidates, SLICE, (slice) => toVerdicts(toResults(checkAll(build, slot, slice, PICK_CTX)), map), () => done(map), schedule);
+        cancelRun = runSliced(candidates, SLICE, (slice) => toVerdicts(toResults(checkAll(build, slot, slice, PICK_CTX), full), map), () => done(map), schedule);
       },
       () => {
         if (!cancelled) done(new Map());
@@ -112,14 +124,15 @@ export function createChecker(
   };
 
   return {
-    run(slot, build, candidates, done) {
+    run(slot, build, candidates, done, opts = {}) {
+      const full = opts.full === true;
       // A newer run while the worker still computes only cancelled ones: start a fresh worker, so the old
       // computation doesn't delay this one (nor eat its timeout).
       if (busy.size > 0 && [...busy].every((id) => !waiting.has(id))) stop();
       let cancelled = false;
       let cancelFallback = () => {};
       const fallback = () => {
-        if (!cancelled) cancelFallback = checkSliced(slot, build, candidates, (v) => !cancelled && done(v), schedule);
+        if (!cancelled) cancelFallback = checkSliced(slot, build, candidates, (v) => !cancelled && done(v), schedule, loadCheck, full);
       };
       const w = get();
       if (!w) {
@@ -140,7 +153,7 @@ export function createChecker(
         else fallback(); // the worker failed, or the engine threw there
       });
       try {
-        w.postMessage({ id, slot, build, candidates });
+        w.postMessage(full ? { id, slot, build, candidates, full } : { id, slot, build, candidates });
         busy.add(id);
       } catch {
         fail(); // e.g. a value that can't be cloned: the main thread checks it

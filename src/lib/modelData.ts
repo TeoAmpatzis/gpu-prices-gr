@@ -41,17 +41,24 @@ export async function loadModel(cat: Category, slug: string): Promise<ModelEntry
   return (await loadModelWithSources(cat, slug))?.entry ?? null;
 }
 
-/** loadModel plus its chunk's `sources` (each source's last update: the product page's "checked" column). */
-async function loadModelWithSources(cat: Category, slug: string): Promise<{ entry: ModelEntry; sources: ModelChunk['sources'] } | null> {
+/**
+ * loadModel plus its chunk's `sources` (each source's last update: the product page's "checked" column) and the
+ * build's data date (the manifest's `builtAt`, the same in every file of a build: what "Add to build" saves with the
+ * part's fields, as pick mode saves its list's).
+ */
+async function loadModelWithSources(
+  cat: Category,
+  slug: string,
+): Promise<{ entry: ModelEntry; sources: ModelChunk['sources']; builtAt: string } | null> {
   const { builtAt } = await loadManifest();
   const chunk = await loadChunk(`/${modelChunkPath(cat, modelChunkOf(slug))}?v=${builtAt}`);
-  return has(chunk.models, slug) ? { entry: chunk.models[slug], sources: chunk.sources } : null;
+  return has(chunk.models, slug) ? { entry: chunk.models[slug], sources: chunk.sources, builtAt } : null;
 }
 
 const has = (o: object, k: string) => Object.prototype.hasOwnProperty.call(o, k);
 
 export type ModelResolution =
-  | { kind: 'ok'; entry: ModelEntry; sources: ModelChunk['sources'] }
+  | { kind: 'ok'; entry: ModelEntry; sources: ModelChunk['sources']; builtAt: string }
   | { kind: 'moved'; slug: string }
   | { kind: 'gone' };
 

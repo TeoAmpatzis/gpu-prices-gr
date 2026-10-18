@@ -6,8 +6,7 @@
 import { MODEL_ALIASES } from '../data/modelAliases';
 import type { Part } from '../engine';
 import { resolveKey, type StoredBuild, type StoredPart } from './buildStore';
-import type { Slot } from './builder';
-import { CATEGORY_RULE_SLOTS } from './pick';
+import { CATEGORY_RULE_SLOTS, type Slot } from './slots';
 
 const MAX_DEPTH = 4;
 
@@ -49,7 +48,7 @@ export interface BuildPlan {
   fallback: Partial<Record<Slot, Record<string, unknown>>>;
 }
 
-/** What the page `pageSlot` needs from the build: only the slots its rules read (pick.CATEGORY_RULE_SLOTS). */
+/** What the page `pageSlot` needs from the build: only the slots its rules read (slots.CATEGORY_RULE_SLOTS). */
 export function planBuild(stored: StoredBuild, pageSlot: Slot, pageBuiltAt: string): BuildPlan {
   const plan: BuildPlan = { ready: [], refresh: {}, fallback: {} };
   for (const s of CATEGORY_RULE_SLOTS[pageSlot]) {
