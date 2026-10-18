@@ -294,7 +294,15 @@ export interface ModelEntry {
    */
   parts: Record<string, Record<string, unknown>> | null;
   /** Same product, other sizes (GPU VRAM, drive capacity, RAM kit, PSU watts), smallest first; never the model itself. */
-  variants: { key: string; slug: string; label: string; price: number }[];
+  variants: { key: string; slug: string; label: string; order: number; price: number }[];
+  /** This model's own label in its variants family ("16GB", "2TB", "32GB (2×16GB)", "850W") and its sort order there; null when it has no family. */
+  variantLabel: string | null;
+  variantOrder: number | null;
+  /**
+   * Graphics cards with no measured length of their own: the length range (mm) of the chip's measured air-cooled cards
+   * (builder.fitContext, the builder's ESTIMATE rule), shown as an estimate. Absent when the chip has too few cards.
+   */
+  lengthEstimate?: { min: number; max: number };
   /**
    * "cheaper": up to 3 parts of the same kind (derive.sameKind: desktop CPU same socket, board same socket + size,
    * case same size group, cooler same type + radiator, fan same size) at least 5% cheaper, best Recommended score

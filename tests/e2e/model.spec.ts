@@ -524,5 +524,57 @@ for (const [name, size] of [['360', { width: 360, height: 740 }], ['1366', { wid
         await expect(section).toContainText(key.endsWith('|true') ? 'Box version (cooler in the box)' : 'Tray version (no cooler)');
       }
     });
+
+    // ---- Task 9: variants, alternatives, full specs, report a mistake
+    type WithMore = PartEntry & { variants: { slug: string; label: string }[]; alternatives: { kind: string; slug: string; chip: string }[] };
+
+    test('variants: one line, the current version selected, another one opens its own page', async ({ page }) => {
+      const errors: string[] = [];
+      page.on('pageerror', (e) => errors.push(e.message));
+      const m = (await anEntry(page, 'gpu', 'gpu-with-variants', (x) => ((x as WithMore).variants?.length ?? 0) > 0)) as WithMore;
+      await withBuild(page, null, `/gpu/${m.slug}`);
+      const line = page.locator('[data-variants]');
+      await expect(line).toBeVisible({ timeout: 20_000 });
+      await expect(line.locator('[data-variant-current]')).toHaveCount(1);
+      await expect(line.locator('[data-variant]')).toHaveCount(m.variants.length);
+      const first = line.locator('[data-variant]').first();
+      if (size.width < 1024) expect(await first.evaluate((a) => a.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44); // .tap applies on touch widths
+      expect(await noOverflow(page)).toBe(true);
+      const target = await first.getAttribute('href');
+      await first.click();
+      await expect(page).toHaveURL(new RegExp(`${target}$`));
+      await expect(page.getByRole('heading', { level: 1 })).not.toHaveText(m.chip, { timeout: 20_000 });
+      expect(errors).toEqual([]);
+    });
+
+    test('specs and alternatives: a case page has grouped specs and alternative links', async ({ page }) => {
+      const m = (await anEntry(page, 'case', 'case-with-alternatives', (x) => ((x as WithMore).alternatives?.length ?? 0) > 0)) as WithMore;
+      await withBuild(page, null, `/case/${m.slug}`);
+      const alts = page.locator('[data-alternatives]');
+      await expect(alts).toBeVisible({ timeout: 20_000 });
+      const first = alts.locator('[data-alt]').first();
+      await expect(first).toHaveAttribute('href', /^\/case\/.+/);
+      if (size.width < 1024) expect(await first.evaluate((a) => a.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44); // .tap applies on touch widths
+      await expect(alts.locator('[data-alt]')).toHaveCount(m.alternatives.length);
+      const specs = page.locator('[data-spec-groups]');
+      await expect(specs.locator('[data-spec-group]').first()).toBeVisible();
+      await expect(specs).not.toContainText('—');
+      expect(await noOverflow(page)).toBe(true);
+      await first.click();
+      await expect(page).toHaveURL(/\/case\/.+/);
+      await expect(page.getByRole('heading', { level: 1 })).not.toHaveText(m.chip, { timeout: 20_000 });
+    });
+
+    test('report a mistake: a mailto link to the site mailbox with the model and address in the subject', async ({ page }) => {
+      const m = await aModel(page);
+      await withBuild(page, null, `/gpu/${m.slug}`);
+      const link = page.locator('[data-report-error]');
+      await expect(link).toBeVisible({ timeout: 20_000 });
+      await expect(link).toHaveText('Found a mistake?');
+      if (size.width < 1024) expect(await link.evaluate((a) => a.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44); // .tap applies on touch widths
+      const href = (await link.getAttribute('href'))!;
+      expect(href.startsWith('mailto:builddraftgr@gmail.com?subject=')).toBe(true);
+      expect(decodeURIComponent(href.split('subject=')[1])).toBe(`${m.chip} — ${page.url()}`);
+    });
   });
 }

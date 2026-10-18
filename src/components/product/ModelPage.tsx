@@ -17,10 +17,14 @@ import { LinkButton } from '../../ui/Button';
 import type { Crumb } from '../../ui/nav';
 import { ErrorState, SkeletonRows } from '../../ui/states';
 import { UI } from '../../ui/strings';
+import { Alternatives } from './Alternatives';
 import { HeaderFit, OfferFitAction, OfferFitLine, useProductFit, type ProductFit } from './fitUi';
 import { OffersTable } from './OffersTable';
 import { PriceHistory } from './PriceHistory';
 import { ProductHeader } from './ProductHeader';
+import { ReportError } from './ReportError';
+import { SpecGroups } from './SpecGroups';
+import { Variants } from './Variants';
 
 type State = { for: string; res: ModelResolution } | { for: string; error: string } | null;
 
@@ -136,6 +140,10 @@ function Product({ cat, entry, sources, crumbs, fit }: ProductProps & { fit: Pro
         <PriceHistory entry={entry} />
         {/* The check and the section (only with a saved build): a chunk loaded after the first paint. */}
         {fit?.runner}
+        <Variants cat={cat} entry={entry} />
+        <SpecGroups cat={cat} listings={entry.listings} estimate={entry.lengthEstimate} />
+        <Alternatives cat={cat} icon={cfg.icon} alternatives={entry.alternatives} />
+        <ReportError name={entry.chip} />
       </div>
     </>
   );

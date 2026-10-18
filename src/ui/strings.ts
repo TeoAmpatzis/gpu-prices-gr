@@ -113,6 +113,17 @@ export const UI = {
   keySpecs: { el: 'Βασικά χαρακτηριστικά', en: 'Key specs' },
   specYes: { el: 'Ναι', en: 'Yes' },
   noRgb: { el: 'χωρίς RGB', en: 'no RGB' }, // as the fan spec line (ui/specs.ts)
+  // Product page: variants, alternatives, full specs, report a mistake
+  variantsTitle: { el: 'Άλλες εκδοχές', en: 'Other versions' },
+  alternativesTitle: { el: 'Εναλλακτικές', en: 'Alternatives' },
+  altCheaper: { el: 'Ίδιο, φθηνότερα', en: 'Same, cheaper' },
+  altValue: { el: 'Καλύτερη αξία', en: 'Better value' },
+  specsTitle: { el: 'Πλήρη χαρακτηριστικά', en: 'Full specs' },
+  specGeneral: { el: 'Γενικά', en: 'General' },
+  specDimensions: { el: 'Διαστάσεις', en: 'Dimensions' },
+  specPower: { el: 'Ισχύς', en: 'Power' },
+  specConnections: { el: 'Συνδέσεις', en: 'Connections' },
+  reportError: { el: 'Βρήκες λάθος;', en: 'Found a mistake?' },
   openShop: { el: 'Άνοιγμα στο κατάστημα', en: 'Open at the shop' },
   newTab: { el: 'ανοίγει σε νέα καρτέλα', en: 'opens in a new tab' },
   agoForm: { el: 'πριν από {t}', en: '{t} ago' },
