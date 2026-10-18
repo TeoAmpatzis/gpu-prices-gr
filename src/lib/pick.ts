@@ -78,21 +78,6 @@ export const NOT_IN_DATA: Record<Slot, string[]> = {
 export { hides, HIDE_RULES, NEVER_HIDE_WHEN_MISSING } from './pickHide';
 export type { Verdict } from './pickProtocol';
 
-/**
- * Which other slots' parts the rules of each category page need (step2-plan section 2, "Ποιες θέσεις αφορούν οι
- * κανόνες"): the page loads these from the build. Differs from step2-plan section 2 on
- * purpose: rule 14's formula (`powerEstimate`) also reads ram, storage, fan and cooler, so the pages whose rules
- * include 14 (cpu, gpu, psu) list them too (controller ruling 2026-10-12; extra chunks about 2.5 KB at most).
- * Asserted against the slots the rule files (and the helpers they call) read together.
- */
-export const CATEGORY_RULE_SLOTS: Record<Slot, Slot[]> = {
-  cpu: ['mobo', 'ram', 'gpu', 'cooler', 'psu', 'storage', 'fan'],
-  mobo: ['cpu', 'ram', 'storage', 'case', 'fan'],
-  ram: ['cpu', 'mobo', 'cooler'],
-  gpu: ['case', 'psu', 'cpu', 'ram', 'storage', 'fan', 'cooler'],
-  cooler: ['cpu', 'case', 'ram'],
-  storage: ['mobo', 'case'],
-  case: ['mobo', 'gpu', 'cooler', 'fan', 'psu', 'storage'],
-  fan: ['case', 'mobo'],
-  psu: ['gpu', 'cpu', 'case', 'ram', 'storage', 'fan', 'cooler'],
-};
+// Which other slots' parts each page's rules read: slots.ts (no code imports, so the product page's first paint can
+// use it without the builder).
+export { CATEGORY_RULE_SLOTS } from './slots';

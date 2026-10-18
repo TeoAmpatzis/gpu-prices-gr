@@ -10,33 +10,20 @@
 //     first paint, and the engine check in the pick worker (pickChecker.ts; idle slices on the main thread when
 //     no worker can run). Until both are done nothing is hidden, and with a saved build the page shows its rows
 //     only then (`pending`), so nothing moves when the check finishes (task 6b).
+// Steps 1 and the check are useBuildCheck.ts (shared with the product page); this file adds the page's candidates.
 import { useEffect, useMemo, useState } from 'react';
 import type { Part } from '../engine';
 import type { BaseListing } from '../types';
-import { onBuildChange, readBuild, setPart } from './buildStore';
+import { setPart } from './buildStore';
 import { slotModels, type Slot } from './builder';
-import { loadCompat } from './compatChunks';
 import type { CategoryData } from './data';
 import { toPart, usable, type Verdict } from './pick';
-import { fetchOutcomes, idle, outcomeKey, partOf, planBuild, resolvePlan, validStored, type Outcome } from './pickBuild';
-import { createChecker, type WorkerLike } from './pickChecker';
+import { idle } from './pickBuild';
 import { navigate } from './router';
+import { useBuildCheck, type BuildCheck } from './useBuildCheck';
 
 export type { Verdict };
-
-/**
- * With a saved build the rows wait for the check (`pending`), never longer than this: a compat chunk or a worker
- * that never answers. Then the rows show with nothing hidden and the bar says the check didn't finish
- * (status 'timeout', final for this build and data, so nothing is hidden later either).
- */
-// Must exceed the worker's timeout (pickChecker.WORKER_TIMEOUT, 10 s) plus the main-thread fallback after it.
-export const PENDING_DEADLINE = 15_000;
-
-/** The pick worker (a lazy chunk of its own); null where the browser has no Worker (main-thread fallback). */
-const makeWorker =
-  typeof Worker === 'undefined'
-    ? null
-    : () => new Worker(new URL('./pick.worker.ts', import.meta.url), { type: 'module' }) as unknown as WorkerLike;
+export { PENDING_DEADLINE } from './useBuildCheck';
 
 interface Candidates {
   data: CategoryData;
@@ -61,24 +48,12 @@ function candidatesOf(slot: Slot, data: CategoryData): Candidates {
   return { data, keyOf, parts, offered };
 }
 
-export interface PickState {
-  /**
-   * 'loading': chunks of saved parts are on their way; 'checking': the engine is running; 'ready'; 'timeout': not
-   * done within PENDING_DEADLINE, given up (rows shown, nothing hidden).
-   */
-  status: 'loading' | 'checking' | 'ready' | 'timeout';
+export interface PickState extends BuildCheck {
   /**
    * True while a saved build is being checked (status not 'ready' and the build has parts for this page): the
    * page shows placeholders instead of rows and counts, then the final rows once, so nothing shifts.
    */
   pending: boolean;
-  /** The build parts the page checks against (other slots only). */
-  build: Part[];
-  missing: { slot: Slot; key: string; name: string }[];
-  /** Saved parts whose chunk failed to load and that have no usable stored fields: not checked. */
-  unchecked: { slot: Slot; key: string; name: string }[];
-  /** Candidate key → the engine's verdict; null until the check is done. */
-  verdicts: Map<string, Verdict> | null;
   /** Listing ids hidden by "Only compatible" (empty until the check is done). */
   hidden: Set<string>;
   /** False until the candidates are built (keyOf / part answer undefined meanwhile: not "not offered"). */
@@ -92,66 +67,14 @@ export interface PickState {
 }
 
 export function usePick(slot: Slot, data: CategoryData): PickState {
-  const [stored, setStored] = useState(readBuild);
-  useEffect(() => onBuildChange(() => setStored(readBuild())), []);
-
-  // 1. The build. The chunks' answers are kept per part (and data date): each part is asked for once, whatever
-  // the answer, so a failing chunk or a write-back that can't be saved never loops (fix round 1).
-  const plan = useMemo(() => planBuild(stored, slot, data.builtAt), [stored, slot, data.builtAt]);
-  const [outcomes, setOutcomes] = useState<Record<string, Outcome>>({});
-  const { result: engine, toFetch } = useMemo(() => resolvePlan(plan, outcomes, data.builtAt), [plan, outcomes, data.builtAt]);
-  const fetchKey = JSON.stringify(toFetch);
-  useEffect(() => {
-    const parts = JSON.parse(fetchKey) as { slot: Slot; key: string }[];
-    if (!parts.length) return;
-    const builtAt = data.builtAt;
-    void fetchOutcomes(parts, builtAt, loadCompat).then((got) => {
-      setOutcomes((prev) => ({ ...prev, ...got }));
-      // Saved back once, so the next visit (and the builder) has them; only if that part is still the one saved.
-      for (const p of parts) {
-        const o = got[outcomeKey(builtAt, p.slot, p.key)];
-        if (typeof o === 'object' && readBuild().parts[p.slot]?.key === p.key) setPart(p.slot, { key: o.key, fields: o.fields, builtAt });
-      }
-    });
-  }, [fetchKey, data.builtAt]);
-
-  // 2. The candidates, built after the first paint (slotModels + toPart of a few thousand models).
+  // The candidates, built after the first paint (slotModels + toPart of a few thousand models).
   const [cands, setCands] = useState<Candidates | null>(null);
   useEffect(() => idle(() => setCands(candidatesOf(slot, data))), [slot, data]);
   const current = cands?.data === data ? cands : null;
+  const list = useMemo(() => (current ? [...current.parts.values()] : null), [current]);
 
-  // 3. The check, in slices; a new build or new data cancels a run that is still going.
-  // The build's parts by value (sorted by slot): the same parts again — stored vs. just fetched, a save of
-  // fresh fields — neither re-run the check nor change what is hidden (no re-filtering of the page).
-  const engineJson = engine ? JSON.stringify([...engine.parts].sort((a, b) => a.category.localeCompare(b.category))) : null;
-  const engineParts = useMemo(() => (engineJson === null ? null : (JSON.parse(engineJson) as Part[])), [engineJson]);
-  const runKey = current && engineJson !== null ? `${data.builtAt}\n${engineJson}` : null;
-  const [result, setResult] = useState<{ key: string; map: Map<string, Verdict> } | null>(null);
-  const [checker] = useState(() => createChecker(makeWorker));
-  useEffect(() => () => checker.dispose(), [checker]);
-  const hasParts = plan.ready.length > 0 || Object.keys(plan.refresh).length > 0;
-  // The worker's chunk downloads while the candidates are being built.
-  useEffect(() => {
-    if (hasParts) checker.warm();
-  }, [checker, hasParts]);
-  useEffect(() => {
-    if (!current || !engineParts || runKey === null) return;
-    return checker.run(slot, engineParts, [...current.parts.values()], (map) => setResult({ key: runKey, map }));
-  }, [checker, current, engineParts, runKey, slot]);
-  // The deadline, per data date, page and saved keys (not their fields: saving fresh fields back doesn't restart it).
-  const deadlineKey = `${data.builtAt}
-${slot}
-${JSON.stringify([plan.ready.map((p) => p.key), plan.refresh])}`;
-  const [gaveUp, setGaveUp] = useState<string | null>(null);
-  const timedOut = gaveUp === deadlineKey;
-  const done = result !== null && result.key === runKey;
-  const waitingRows = hasParts && !done && !timedOut;
-  useEffect(() => {
-    if (!waitingRows) return;
-    const id = setTimeout(() => setGaveUp(deadlineKey), PENDING_DEADLINE);
-    return () => clearTimeout(id);
-  }, [waitingRows, deadlineKey]);
-  const verdicts = done && !timedOut ? result.map : null;
+  const check = useBuildCheck(slot, data.builtAt, list);
+  const { verdicts } = check;
 
   const hidden = useMemo(() => {
     const out = new Set<string>();
@@ -159,27 +82,8 @@ ${JSON.stringify([plan.ready.map((p) => p.key), plan.refresh])}`;
     return out;
   }, [verdicts, current]);
 
-  const missing = useMemo(
-    () => {
-      const named = (list: { slot: Slot; key: string }[]) =>
-        list.map(({ slot: s, key }) => {
-          const p = stored.parts[s];
-          const fields = (p && validStored(p)?.fields) ?? {};
-          return { slot: s, key, name: partOf(s, key, fields).name };
-        });
-      return { missing: named(engine?.missing ?? []), unchecked: named(engine?.unchecked ?? []) };
-    },
-    [engine, stored],
-  );
-
-  const status = timedOut ? 'timeout' : !engine ? 'loading' : !verdicts ? 'checking' : 'ready';
   return {
-    status,
-    pending: waitingRows,
-    build: engineParts ?? [],
-    missing: missing.missing,
-    unchecked: missing.unchecked,
-    verdicts,
+    ...check,
     hidden,
     candidatesReady: current !== null,
     keyOf: (l) => current?.keyOf.get(l.id),

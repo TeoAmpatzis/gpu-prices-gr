@@ -27,10 +27,9 @@ import type {
 import { BOARD_BY_CASE_SIZE, CATEGORIES, storageType, type CategoryConfig } from './categories';
 import { groupModels, mostCommon, type Model } from './data';
 import { tr, type Text } from './i18n';
-
-/** In the order the guide walks through them. */
-export type Slot = 'cpu' | 'mobo' | 'ram' | 'gpu' | 'cooler' | 'storage' | 'case' | 'fan' | 'psu';
-export const SLOTS: Slot[] = ['cpu', 'mobo', 'ram', 'gpu', 'cooler', 'storage', 'case', 'fan', 'psu'];
+import { SLOTS, type Slot } from './slots';
+// SLOTS: in the order the guide walks through them (slots.ts, so the build store loads without this file).
+export { SLOTS, type Slot } from './slots';
 /** Parts a build can be finished without (the GPU needs an iGPU, the cooler a boxed one; see notes). */
 export const OPTIONAL: Slot[] = ['gpu', 'cooler', 'fan'];
 /**

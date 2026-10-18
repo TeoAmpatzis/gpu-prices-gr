@@ -74,12 +74,18 @@ export function OffersTable({
   chip,
   offers,
   sources,
+  fitLine,
+  fitAction,
 }: {
   cat: Category;
   chip: string;
   /** Already in the table's order (lib/offers.sortOffers). */
   offers: BaseListing[];
   sources: Latest['sources'];
+  /** Graphics cards (task 8): each offer is a card the builder can take — its verdict line under the shop… */
+  fitLine?: (l: BaseListing) => ReactNode;
+  /** …and its add / replace button (`short`: the table's one-word label). */
+  fitAction?: (l: BaseListing, short: boolean) => ReactNode;
 }) {
   const lang = useLang();
   const wide = useMedia('(min-width: 1024px)');
@@ -118,7 +124,8 @@ export function OffersTable({
   return (
     <section aria-labelledby="offers-title" className="flex flex-col gap-3">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h2 id="offers-title" className="text-lg font-semibold tracking-tight">
+        {/* tabIndex −1: a graphics card's "Pick a card from the shops" (header) moves the focus here. */}
+        <h2 id="offers-title" tabIndex={-1} className="text-lg font-semibold tracking-tight outline-none">
           {tr(lang, UI.shopsTitle)}
         </h2>
         <span className="ui-num text-sm text-muted">{plural(lang, offers.length, UI.offerForms)}</span>
@@ -159,6 +166,7 @@ export function OffersTable({
                 <tr key={l.id} data-offer {...reveal(i)} className="border-t border-line align-middle hover:bg-hover">
                   <td className="px-4 py-2.5">
                     <Seller l={l} short={shorts[i]} clamp="line-clamp-1" />
+                    {fitLine?.(l)}
                   </td>
                   <td data-cell="price" className="whitespace-nowrap px-3 py-2.5 text-right text-fg">{price(l.price)}</td>
                   <td data-cell="shipping" className="whitespace-nowrap px-3 py-2.5 text-right text-muted">{shipping(l)}</td>
@@ -168,7 +176,10 @@ export function OffersTable({
                     <Checked iso={iso(l)} lang={lang} />
                   </td>
                   <td className="whitespace-nowrap px-4 py-2.5 text-right">
-                    <ShopLink l={l} lang={lang} />
+                    <div className="flex items-center justify-end gap-2">
+                      <ShopLink l={l} lang={lang} />
+                      {fitAction?.(l, true)}
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -186,7 +197,10 @@ export function OffersTable({
             const a = availabilityOf(l);
             return (
               <li key={l.id} data-offer {...reveal(i)} className="ui-card flex flex-col gap-3 p-3">
-                <Seller l={l} short={shorts[i]} clamp="line-clamp-2" />
+                <div>
+                  <Seller l={l} short={shorts[i]} clamp="line-clamp-2" />
+                  {fitLine?.(l)}
+                </div>
                 <dl className="grid grid-cols-3 gap-2 text-sm tabular-nums">
                   {cells.map(([cell, label, value, cls]) => (
                     <div key={cell} className="min-w-0">
@@ -206,6 +220,7 @@ export function OffersTable({
                   </span>
                   <ShopLink l={l} lang={lang} />
                 </div>
+                {fitAction && <div className="empty:hidden">{fitAction(l, false)}</div>}
               </li>
             );
           })}

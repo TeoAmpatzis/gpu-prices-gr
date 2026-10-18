@@ -50,7 +50,7 @@ export function checkAll(build: Part[], slot: PartCategory, candidates: Part[], 
 /** The worker's whole job: one request → one answer (an engine error is an answer too, never a dead worker). */
 export function answer(req: CheckRequest): CheckAnswer {
   try {
-    return { id: req.id, ok: true, results: toResults(checkAll(req.build, req.slot, req.candidates, PICK_CTX)) };
+    return { id: req.id, ok: true, results: toResults(checkAll(req.build, req.slot, req.candidates, PICK_CTX), req.full) };
   } catch (e) {
     return { id: req.id, ok: false, error: e instanceof Error ? e.message : String(e) };
   }

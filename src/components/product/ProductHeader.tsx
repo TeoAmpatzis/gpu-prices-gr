@@ -1,8 +1,9 @@
 // A product page's header (step 4, task 6; docs/redesign-v2.md "Σελίδα προϊόντος" part 1): photo, the key specs
 // (./keySpecs: the category table's spec columns, in the table's order, filled from the spec line when fewer than
 // four, storage from its spec line alone; never a price), the lowest price and the cheapest offer's shop link. The name is the page's <h1> (ModelPage).
-// "Add to build" comes with its behaviour (task 8); "Compare" is v2.1 (backlog #12).
+// "Add to build" (task 8) is the page's (BuildFit.HeaderFit), passed in as `action`; "Compare" is v2.1 (backlog #12).
 import { ExternalLink } from 'lucide-react';
+import type { ReactNode } from 'react';
 import type { CategoryConfig } from '../../lib/categories';
 import { formatPrice, saleOf, type Model } from '../../lib/data';
 import { isExamplePhoto } from '../../lib/examplePhoto';
@@ -26,6 +27,7 @@ export function ProductHeader({
   model,
   photo,
   cheapest,
+  action,
 }: {
   cfg: CategoryConfig<BaseListing>;
   model: Model<BaseListing>;
@@ -33,6 +35,8 @@ export function ProductHeader({
   photo: boolean;
   /** The first offer of the shops table (lowest total, else price: lib/offers.sortOffers). */
   cheapest: BaseListing;
+  /** "Add to build" (task 8, BuildFit.HeaderFit), next to the shop link; none for a category that is no builder slot. */
+  action?: ReactNode;
 }) {
   const lang = useLang();
   const specs = keySpecs(cfg, model, lang);
@@ -87,17 +91,13 @@ export function ProductHeader({
             <SourceBadge source={cheapest.source} />
             <span className="[overflow-wrap:anywhere]">{seller}</span>
           </span>
-          <LinkButton
-            variant="primary"
-            icon={ExternalLink}
-            href={cheapest.url}
-            target="_blank"
-            rel={SHOP_REL}
-            className="tap mt-2"
-          >
-            {tr(lang, UI.toShop)}
-            <span className="sr-only">{` (${seller}, ${tr(lang, UI.newTab)})`}</span>
-          </LinkButton>
+          <div className="mt-2 flex flex-wrap items-center gap-2 lg:justify-end">
+            <LinkButton variant="primary" icon={ExternalLink} href={cheapest.url} target="_blank" rel={SHOP_REL} className="tap">
+              {tr(lang, UI.toShop)}
+              <span className="sr-only">{` (${seller}, ${tr(lang, UI.newTab)})`}</span>
+            </LinkButton>
+            {action}
+          </div>
         </div>
       </div>
     </section>

@@ -12,6 +12,8 @@ const pathOf = (page) => (page === 'home' ? '/' : page === '404' ? '/no-such-pag
 const WIDTHS = (process.argv[5] || '1920,1366,768,360').split(',').map(Number);
 const LANGS = ['el', 'en'];
 const SHOTS = process.env.SHOTS === '1';
+// PCBUILD='<pcBuild JSON>' audits the pages with that saved build (product pages' fit section, pick pages); else none.
+const PCBUILD = process.env.PCBUILD ?? null;
 mkdirSync(OUT, { recursive: true });
 
 const chromePath = ['C:/Program Files/Google/Chrome/Application/chrome.exe', `${process.env.LOCALAPPDATA}/Google/Chrome/Application/chrome.exe`].find(existsSync);
@@ -104,7 +106,7 @@ const screenshot = async (label) => {
 for (const width of WIDTHS) {
   await send('Emulation.setDeviceMetricsOverride', { width, height: width <= 400 ? 780 : width < 1024 ? 1024 : 900, deviceScaleFactor: 1, mobile: width < 1024 });
   for (const lang of LANGS) {
-    await evaluate(`localStorage.setItem('lang', '${lang}'); localStorage.removeItem('pcBuild'); true`);
+    await evaluate(`localStorage.setItem('lang', '${lang}'); ${PCBUILD ? `localStorage.setItem('pcBuild', ${JSON.stringify(PCBUILD)})` : "localStorage.removeItem('pcBuild')"}; true`);
     for (const page of PAGES) {
       await send('Page.navigate', { url: BASE + pathOf(page) });
       if (!(await waitReady())) { record(`${width} ${lang} ${page}`, [{ kind: 'PAGE did not load', el: page, px: 0 }]); continue; }

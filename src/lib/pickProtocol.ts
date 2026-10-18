@@ -14,6 +14,8 @@ export interface CheckRequest {
   build: Part[];
   /** Every model of the page as an engine part (`pick.toPart`). */
   candidates: Part[];
+  /** Keep every finding but passes (notes and unknowns too): the product page's fit section (`keptFinding`). */
+  full?: boolean;
 }
 
 /** One candidate: key, hidden by "Only compatible", the findings its row can show. */
@@ -28,9 +30,16 @@ export type CheckAnswer = { id: number; ok: true; results: CheckResult[] } | { i
  */
 export const shownFinding = (f: Finding): boolean => f.status === 'error' || f.status === 'warning';
 
-/** `checkAll`'s result as the answer's rows (findings trimmed to `shownFinding`). */
-export function toResults(map: Map<string, Verdict>): CheckResult[] {
-  return [...map].map(([key, v]) => [key, v.hide, v.findings.filter(shownFinding)]);
+/**
+ * The product page's fit section (step 4) also needs the notes and unknowns: it says "Fits" only when nothing was
+ * left unchecked (redesign principle 1: never "compatible" when we don't know). Passes are still left out.
+ */
+export const keptFinding = (f: Finding): boolean => f.status !== 'pass';
+
+/** `checkAll`'s result as the answer's rows (findings trimmed to `shownFinding`, or to `keptFinding` when `full`). */
+export function toResults(map: Map<string, Verdict>, full = false): CheckResult[] {
+  const keep = full ? keptFinding : shownFinding;
+  return [...map].map(([key, v]) => [key, v.hide, v.findings.filter(keep)]);
 }
 
 /** The answer's rows as the page's verdicts. */
