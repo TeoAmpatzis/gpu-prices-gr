@@ -578,3 +578,31 @@ for (const [name, size] of [['360', { width: 360, height: 740 }], ['1366', { wid
     });
   });
 }
+
+// Step 4 gate fix (task 12): a product page loads only the manifest, its model chunk and lazy code; never its category's
+// list.v2.json while it loads (it shared the phone's link with the photo, the page's LCP: /case/<model> phone 87).
+test.describe('product page data', () => {
+  test.use({ viewport: { width: 360, height: 740 } });
+  // A 1×1 PNG for every photo, so the photo check doesn't depend on the images site being reachable.
+  const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=', 'base64');
+  for (const cat of ['case', 'storage']) {
+    test(`a ${cat} page requests no category list during load, and its photo appears`, async ({ page }) => {
+      const m = await anEntry(page, cat, `${cat}-with-photo`, (x) => x.photo && x.listings.length >= 2);
+      await page.route('**/img/**', (r) => r.fulfill({ status: 200, contentType: 'image/png', body: PNG }));
+      const data: string[] = [];
+      page.on('request', (r) => {
+        const p = new URL(r.url()).pathname;
+        if (p.startsWith('/data/')) data.push(p);
+      });
+      await withBuild(page, null, `/${cat}/${m.slug}`);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(m.chip, { timeout: 20_000 });
+      const photo = page.locator('[data-product-header] img');
+      await expect(photo).toHaveAttribute('src', /^\/img\//);
+      await expect.poll(() => photo.evaluate((i: HTMLImageElement) => i.complete && i.naturalWidth > 0)).toBe(true);
+      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(1500); // idle-time work (the fit check's code) has started by now
+      expect(data.filter((p) => /\/list(\.v\d+)?\.json$/.test(p))).toEqual([]);
+      expect(data.some((p) => p.startsWith(`/data/${cat}/model/`))).toBe(true); // its model chunk
+    });
+  }
+});
