@@ -11,7 +11,7 @@ import { modelChunks, type CategoryInput } from '../../src/lib/derive';
 import { implausibleDips } from '../../src/lib/dips';
 import { chartHistory, modelChunkPath } from '../../src/lib/modelData';
 import { modelSlug } from '../../src/lib/slug';
-import { dropRawHistory } from '../../vite-plugin-data';
+import { pruneRawData } from '../../vite-plugin-data';
 import type { BaseListing, Category, History, Imported, Latest, ModelChunk } from '../../src/types';
 
 const BUILT = '2026-10-17T14:00:00.000Z';
@@ -61,22 +61,34 @@ describe('chart data from the model chunks', () => {
   });
 });
 
-describe('dist leaves the category history.json out', () => {
-  it('removes data/<cat>/history.json from the output only', () => {
+describe('dist leaves the raw scraper files out (allow-list of generated files)', () => {
+  const RAW = ['latest.json', 'offers.json', 'specs.json', 'image_urls.json', 'history.json', 'history_imported.json'];
+  const GENERATED = ['data/manifest.json', 'data/builder.json', 'data/search.json', 'data/gpu/list.v2.json', 'data/gpu/detail.json', 'data/gpu/model/000.json', 'data/compat/cpu-00.json'];
+  function fakeDist() {
     const out = mkdtempSync(join(tmpdir(), 'dist-'));
-    for (const cat of ['gpu', 'cpu']) {
-      mkdirSync(join(out, 'data', cat), { recursive: true });
-      writeFileSync(join(out, 'data', cat, 'history.json'), '{}');
-      writeFileSync(join(out, 'data', cat, 'history_imported.json'), '{}');
-    }
-    expect(dropRawHistory(out)).toBe(2);
-    for (const cat of ['gpu', 'cpu']) {
-      expect(existsSync(join(out, 'data', cat, 'history.json'))).toBe(false);
-      expect(existsSync(join(out, 'data', cat, 'history_imported.json'))).toBe(true);
-    }
+    const put = (p: string) => {
+      mkdirSync(join(out, p, '..'), { recursive: true });
+      writeFileSync(join(out, p), '{}');
+    };
+    for (const cat of ['gpu', 'cpu']) for (const f of RAW) put(`data/${cat}/${f}`);
+    put('data/makers/msi.json');
+    put('data/gpu/brand-new-scraper-file.json');
+    for (const g of GENERATED) put(g);
+    put('assets/index.js');
+    return out;
+  }
+  it('removes every raw file (and makers/, new scraper files), keeps every generated file and the rest of dist', () => {
+    const out = fakeDist();
+    const removed = pruneRawData(out, new Set(GENERATED));
+    expect(removed).toBe(2 * RAW.length + 2);
+    for (const cat of ['gpu', 'cpu']) for (const f of RAW) expect(existsSync(join(out, 'data', cat, f))).toBe(false);
+    expect(existsSync(join(out, 'data', 'makers'))).toBe(false);
+    expect(existsSync(join(out, 'data/gpu/brand-new-scraper-file.json'))).toBe(false);
+    for (const g of GENERATED) expect(existsSync(join(out, g)), g).toBe(true);
+    expect(existsSync(join(out, 'assets/index.js'))).toBe(true);
   });
   it('the repo files stay', () => {
     expect(existsSync('public/data/gpu/history.json')).toBe(true);
+    expect(existsSync('public/data/gpu/latest.json')).toBe(true);
   });
 });
-
