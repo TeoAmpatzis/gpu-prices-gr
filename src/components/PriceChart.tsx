@@ -3,7 +3,7 @@ import type { HistoryPoint } from '../types';
 import { formatPrice } from '../lib/data';
 import { SOURCES } from '../lib/sources';
 import { T, tr, useLang } from '../lib/i18n';
-import { chartLine, implausibleDips } from '../lib/dips';
+import { chartLine, untrustedPoints } from '../lib/dips';
 import { rangeStart, type HistoryRange } from '../lib/priceSummary';
 
 // Price history as a small hand-drawn SVG step chart (replaced recharts, ~100 KB gzipped). Colours
@@ -70,10 +70,11 @@ export default function PriceChart({ points, range, low }: { points: HistoryPoin
   }, [(points?.length ?? 0) < 2]); // the box only exists once there is something to draw
 
   const all = useMemo(() => [...(points ?? [])].sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0)), [points]);
-  // C6: implausible short dips are not part of the line: hollow markers with a warning in the tooltip.
+  // C6: implausible short dips (and the build's marked import glitches, task 7b) are not part of the line: hollow
+  // markers with a warning in the tooltip.
   // The arrow keys and taps still reach them (they are real data, only not trusted). Found on the whole history,
   // so a range never flags differently from All.
-  const dips = useMemo(() => implausibleDips(all), [all]);
+  const dips = useMemo(() => untrustedPoints(all), [all]);
   const data = useMemo(() => {
     if (!range) return all;
     const from = rangeStart(all, range);

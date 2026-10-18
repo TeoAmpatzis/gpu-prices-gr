@@ -40,7 +40,15 @@ import type {
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './categories';
 import { OTHER, storageType } from './categoryRules';
 import { fromColumns, modelKeys } from './columns';
-import { implausibleDips, isDipPrice } from './dips';
+import {
+  importGlitches,
+  isDipPrice,
+  sharedImportedDays,
+  sharedImportedLows,
+  untrustedPoints,
+  withoutSharedLow,
+  type SharedDays,
+} from './dips';
 import { allTimeLow, groupModels, mostCommon, saleOf, type Model } from './data';
 import { MODEL_CHUNKS, modelChunkOf } from './modelData';
 import { SLOT_OF, toPart } from './pick';
@@ -169,15 +177,21 @@ export function listFile(cat: Category, input: CategoryInput, builtAt: string, i
   const reduced: Record<string, [string, number][]> = {};
   // Every current model gets an entry (maybe empty): the photo bitset is over these keys.
   for (const k of keys) reduced[k] = [];
-  // C6: implausible short dips (src/lib/dips.ts) are left out before reducing, so the browser's all-time
-  // low and week change (whose comparison points skip them too) never see them; an imported low that is
-  // one of those dips is dropped from `imported` for the same reason.
-  const imported = Object.fromEntries(Object.entries(input.imported).filter(([k]) => keys.has(k)));
+  // C6 dips and task 7b import glitches (src/lib/dips.ts; decided once, in trustedHistory) are left out before
+  // reducing, so the browser's all-time low and week change (whose comparison points skip them too) never see
+  // them; a shared (glitch) imported low, or one that is one of those dips, is dropped from `imported` too.
+  const bad = sharedImportedLows(input.imported);
+  const days = sharedDaysOf(input.history);
+  const imported = Object.fromEntries(
+    Object.entries(input.imported)
+      .filter(([k]) => keys.has(k))
+      .map(([k, imp]) => [k, withoutSharedLow(imp, bad)]),
+  );
   for (const [k, pts] of Object.entries(input.history)) {
     if (!keys.has(k)) continue;
-    const dips = implausibleDips(pts as HistoryPoint[]);
-    reduced[k] = reduceHistory(dips.size ? (pts as HistoryPoint[]).filter((p) => !dips.has(p)) : (pts as HistoryPoint[]), day);
-    if (imported[k] !== undefined) imported[k] = importedWithoutDip(imported[k], dips);
+    const t = trustedHistory(pts as HistoryPoint[], imported[k], bad, days);
+    reduced[k] = reduceHistory(t.untrusted.size ? t.points.filter((p) => !t.untrusted.has(p)) : t.points, day);
+    if (t.imported !== undefined) imported[k] = t.imported;
   }
   const withPhoto = new Set([...keys].filter((k) => image?.(cat, k)));
   const { hist, histBase } = encodeHist(reduced);
@@ -197,6 +211,34 @@ export function listFile(cat: Category, input: CategoryInput, builtAt: string, i
 /** C6: an imported all-time low that is one of the model's dips is left out (list files and model chunks alike). */
 function importedWithoutDip(imp: Imported[string], dips: Set<DailyLow>): Imported[string] {
   return dips.size && typeof imp === 'object' && imp.low != null && isDipPrice(imp.low, dips) ? { ...imp, low: undefined } : imp;
+}
+
+/** dips.sharedImportedDays of a category's history, once per build (listFile and modelChunks both need it). */
+const sharedDaysMemo = new WeakMap<History, SharedDays>();
+function sharedDaysOf(history: History): SharedDays {
+  let days = sharedDaysMemo.get(history);
+  if (!days) sharedDaysMemo.set(history, (days = sharedImportedDays(history)));
+  return days;
+}
+
+/**
+ * The one place that decides which of a model's points and which imported low the site trusts (list files and model
+ * chunks alike). `bad` = dips.sharedImportedLows over the whole category's history_imported.json, `days` =
+ * dips.sharedImportedDays over its whole history.json. `points`: the history with its import glitches (task 7b,
+ * dips.importGlitches) marked `g: 1`; `untrusted`: those plus the C6 dips; `imported`: the entry without a shared low
+ * or a dip low.
+ */
+function trustedHistory(
+  raw: HistoryPoint[],
+  imp: Imported[string] | undefined,
+  bad: ReadonlySet<number>,
+  days: SharedDays,
+) {
+  const glitches = importGlitches(raw, days, bad);
+  const points = glitches.size ? raw.map((p) => (glitches.has(p) ? { ...p, g: 1 as const } : p)) : raw;
+  const untrusted = untrustedPoints(points);
+  const imported = imp === undefined ? undefined : importedWithoutDip(withoutSharedLow(imp, bad), untrusted);
+  return { points, untrusted, imported };
 }
 
 export const detailFile = (latest: Latest): Record<string, string> =>
@@ -450,12 +492,14 @@ export function modelChunks(cat: Category, input: CategoryInput, builtAt: string
   const slot = (SLOT_OF as Partial<Record<Category, Slot>>)[cat];
   const day = builtAt.slice(0, 10);
   // As the category page has them for its Recommended sort (data.filterModels): the site's sale and the all-time low,
-  // the low from what the page gets (listFile: the reduced history without the dips, `imported` without a dip low).
+  // the low from what the page gets (listFile: the reduced history without the dips and import glitches, `imported`
+  // without a shared or dip low; both from trustedHistory).
+  const bad = sharedImportedLows(input.imported);
+  const days = sharedDaysOf(input.history);
   const models = groupModels(input.latest.listings, cfg).map((m) => {
-    const history = (input.history[m.key] ?? []) as HistoryPoint[];
-    const dips = implausibleDips(history);
-    const imp = input.imported[m.key];
-    const imported = imp === undefined ? null : importedWithoutDip(imp, dips);
+    const t = trustedHistory((input.history[m.key] ?? []) as HistoryPoint[], input.imported[m.key], bad, days);
+    const { points: history, untrusted: dips } = t;
+    const imported = t.imported ?? null;
     const reduced = reduceHistory(dips.size ? history.filter((p) => !dips.has(p)) : history, day).map(([d, min]) => ({ d, min }));
     return {
       ...m,

@@ -8,7 +8,7 @@ import { chunkOf } from '../../src/lib/compatChunks';
 import { slotModels } from '../../src/lib/builder';
 import { allTimeLow, decodeList, groupModels, saleOf } from '../../src/lib/data';
 import { checkData, listFile, manifest, modelChunks, sameKind, type CategoryInput } from '../../src/lib/derive';
-import { implausibleDips } from '../../src/lib/dips';
+import { importGlitches, sharedImportedDays, sharedImportedLows, untrustedPoints } from '../../src/lib/dips';
 import { photoId } from '../../src/lib/images';
 import { MODEL_CHUNKS, loadModel, modelChunkOf, modelChunkPath } from '../../src/lib/modelData';
 import { SLOT_OF, toPart } from '../../src/lib/pick';
@@ -124,6 +124,8 @@ describe('model chunks over today\'s data', () => {
     const models = groupModels(input.latest.listings, cfgOf(cat));
     const byKey = new Map(models.map((m) => [m.key, m]));
     const entries = cs.flatMap((c) => Object.values(c.models));
+    const bad = sharedImportedLows(input.imported);
+    const days = sharedImportedDays(input.history);
 
     it(`${cat}: 256 chunks, each model in the chunk of its slug, every current model exactly once`, () => {
       expect(cs.length).toBe(256);
@@ -150,15 +152,21 @@ describe('model chunks over today\'s data', () => {
       for (const e of entries) {
         const m = byKey.get(e.key)!;
         expect(e.listings).toEqual(m.listings);
-        expect(e.history).toEqual(input.history[e.key] ?? []);
-        const dips = [...implausibleDips(e.history)].map((p) => p.d).sort();
+        // The full history; task 7b import glitches marked g: 1 (and nothing else changed).
+        const raw = input.history[e.key] ?? [];
+        const glitches = importGlitches(raw, days, bad);
+        expect(e.history).toEqual(raw.map((p) => (glitches.has(p) ? { ...p, g: 1 } : p)));
+        const dips = [...untrustedPoints(e.history)].map((p) => p.d).sort();
         expect(e.dips).toEqual(dips);
+        for (const p of glitches) expect(e.dips).toContain(p.d);
         const imp = input.imported[e.key] ?? null;
-        // As on the category page (derive.listFile): an imported low that is one of the dips is left out.
+        // As on the category page (derive.listFile): an imported low that 3+ models share (task 7b), or that is one of
+        // the dips, is left out.
         if (imp && typeof imp === 'object' && imp.low != null && e.imported && typeof e.imported === 'object' && e.imported.low == null) {
-          expect(dips.length).toBeGreaterThan(0);
+          expect(bad.has(imp.low) || dips.length > 0).toBe(true);
           expect(e.imported).toEqual({ ...imp, low: undefined });
         } else expect(e.imported).toEqual(imp);
+        if (imp && typeof imp === 'object' && imp.low != null && bad.has(imp.low)) expect((e.imported as { low?: number }).low).toBeUndefined();
       }
       expect(entries.some((e) => e.listings.every((l) => typeof l.url === 'string' && typeof l.scrapedAt === 'string'))).toBe(true);
     });

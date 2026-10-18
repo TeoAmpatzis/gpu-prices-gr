@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { CATEGORIES, CATEGORY_IDS } from '../../src/lib/categories';
 import { assertListFormat, decodeHist, decodePhotos, listUrl } from '../../src/lib/columns';
 import { encodeHist, listFile, reduceHistory } from '../../src/lib/derive';
-import { implausibleDips } from '../../src/lib/dips';
+import { importGlitches, sharedImportedDays, sharedImportedLows, untrustedPoints } from '../../src/lib/dips';
 import { photoId, productImage } from '../../src/lib/images';
 import { sha1Hex } from '../../src/lib/sha1';
 import type { BaseListing, Category, DailyLow, History, HistoryPoint, Imported, Latest } from '../../src/types';
@@ -88,10 +88,16 @@ describe('compact history', () => {
       const keys = new Set(latest.listings.map((l) => keyOf(cat, l)));
       const day = BUILT.slice(0, 10);
       const expected: Record<string, DailyLow[]> = {};
+      // C6 dips and the task 7b import glitches (imported days 3+ models share, or at a shared imported low; short runs
+      // ≥ 5% under their neighbours) left out
+      const days = sharedImportedDays(history);
+      const bad = sharedImportedLows(imported);
       for (const [k, pts] of Object.entries(history)) {
         if (!keys.has(k)) continue;
-        const dips = implausibleDips(pts as HistoryPoint[]);
-        const red = reduceHistory(dips.size ? (pts as HistoryPoint[]).filter((p) => !dips.has(p)) : (pts as HistoryPoint[]), day);
+        const glitches = importGlitches(pts as HistoryPoint[], days, bad);
+        const marked = (pts as HistoryPoint[]).map((p) => (glitches.has(p) ? { ...p, g: 1 as const } : p));
+        const dips = untrustedPoints(marked);
+        const red = reduceHistory(marked.filter((p) => !dips.has(p)), day);
         if (red.length) expected[k] = red.map(([d, min]) => ({ d, min }));
       }
       const f = listFile(cat, { latest, history, imported }, BUILT);
@@ -120,7 +126,8 @@ describe('list format version', () => {
 });
 
 describe('build output names', () => {
-  it('writes the new format as list.v2.json and never as list.json', async () => {
+  // The whole build's data step (~3.4 s here): its own timeout, so a slower machine can't make it flake.
+  it('writes the new format as list.v2.json and never as list.json', { timeout: 20_000 }, async () => {
     const { derive } = await import('../../vite-plugin-data');
     const { files } = derive(BUILT);
     const paths = Object.keys(files);

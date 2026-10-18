@@ -15,7 +15,7 @@ import { SOURCE_NAMES } from './sources';
 import type { CategoryConfig } from './categories';
 import type { CategoryRules } from './categoryRules';
 import { recommendedScores } from './ranking';
-import { implausibleDips, isDipPrice } from './dips';
+import { isDipPrice, untrustedPoints } from './dips';
 import { assertListFormat, decodeHist, decodePhotos, fromColumns, listUrl } from './columns';
 
 // The site reads files derived at build time (src/lib/derive.ts); browsers cache them for a few
@@ -163,14 +163,15 @@ export function allTimeLow(
  * rules as `allTimeLow` (dips ignored, the imported Skroutz low included, 60 days needed), but today's own point
  * counts too: the page marks where the low is, the category page asks whether today is at it.
  */
-export function historyLow(points: DailyLow[] | undefined, imp: Imported[string] | undefined): HistoryLow | null {
+export function historyLow(points: LowPoint[] | undefined, imp: Imported[string] | undefined): HistoryLow | null {
   return lowBase(points, imp, true);
 }
 
 /**
- * `date`: the day of the low when it is one of our own points (null when it is Skroutz's imported low: the import
- * stores no date for it). `source`: 'own' (our daily lows, the 5 shops) or 'skroutz' (only Skroutz's own history,
- * strictly lower than every point of ours).
+ * `date`: the day of the low when it is one of the daily points (null when it is Skroutz's imported all-time low: the
+ * import stores no date for it). `source`: 'own' (a point we scraped, the 5 shops) or 'skroutz' (only Skroutz's own
+ * history: its imported all-time low, strictly lower than every point, or an imported "i": 1 daily point, with its day).
+ * On a tie between points, a scraped one wins.
  */
 export interface HistoryLow {
   price: number;
@@ -179,25 +180,30 @@ export interface HistoryLow {
   source: 'own' | 'skroutz';
 }
 
+/** A daily low, with the history.json marks when it has them (`i`: imported from Skroutz; `g`: import glitch). */
+type LowPoint = DailyLow & { i?: 1; g?: 1 };
+
 function lowBase(
-  points: DailyLow[] | undefined,
+  points: LowPoint[] | undefined,
   imp: Imported[string] | undefined,
   includeToday: boolean,
 ): HistoryLow | null {
   const today = new Date().toISOString().slice(0, 10);
   // C6: the build already removed dips from the reduced history; this re-check is conservative (sparse
   // points mean fewer than 7 neighbours, so nothing is flagged), not exactly idempotent. Full history: exact.
-  const dips = implausibleDips(points ?? []);
+  // Task 7b: import glitches are gone from the reduced history and marked g: 1 in a model chunk's full history.
+  const dips = untrustedPoints(points ?? []);
   const past = (points ?? []).filter((p) => (includeToday || p.d < today) && !dips.has(p));
   let importedLow = typeof imp === 'object' ? imp : undefined;
   if (importedLow?.low != null && isDipPrice(importedLow.low, dips)) importedLow = { ...importedLow, low: undefined };
   const firstDays = [past[0]?.d, importedLow?.since].filter((d): d is string => !!d).sort();
   const since = firstDays[0];
   if (!since || Date.now() - new Date(since).getTime() < LOW_MIN_DAYS * 864e5) return null;
-  const ownLow = past.reduce<DailyLow | null>((m, p) => (!m || p.min < m.min ? p : m), null);
+  const ownLow = past.reduce<LowPoint | null>((m, p) => (!m || p.min < m.min || (p.min === m.min && m.i === 1 && p.i !== 1) ? p : m), null);
   const impLow = importedLow?.low;
   if (impLow != null && (!ownLow || impLow < ownLow.min)) return { price: impLow, since, date: null, source: 'skroutz' };
-  return ownLow ? { price: ownLow.min, since, date: ownLow.d, source: 'own' } : null;
+  // The owner (18/10): a low that is an imported Skroutz day is said to be Skroutz's, not "from our 5 shops".
+  return ownLow ? { price: ownLow.min, since, date: ownLow.d, source: ownLow.i === 1 ? 'skroutz' : 'own' } : null;
 }
 
 /**

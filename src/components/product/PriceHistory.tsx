@@ -20,8 +20,9 @@ export function PriceHistory({ entry }: { entry: ModelEntry }) {
   const low = useMemo(() => historyLow(entry.history, entry.imported ?? undefined), [entry]);
   const summary = useMemo(() => medianSummary(entry.history), [entry]);
 
-  // Where the record comes from; an own low older than the drawn range says so, so text and chart never contradict.
-  const lowText = low && lowSentence(lang, low, low.source === 'own' && low.date! < rangeStart(entry.history, range));
+  // Where the record comes from; a dated low (ours or a Skroutz day) older than the drawn range says so, so text and
+  // chart never contradict.
+  const lowText = low && lowSentence(lang, low, low.date != null && low.date < rangeStart(entry.history, range));
 
   const sentence =
     summary.kind === 'few'

@@ -136,6 +136,11 @@ export const UI = {
     el: 'Χαμηλότερη τιμή: {p} στο Skroutz, πριν ξεκινήσουμε την καταγραφή',
     en: 'Lowest price: {p} on Skroutz, before our own tracking began',
   },
+  // An imported Skroutz daily point ("i": 1) as the low: Skroutz's too, but with its day (owner, 18/10).
+  historyLowSkroutzDay: {
+    el: 'Χαμηλότερη τιμή: {p} στο Skroutz, στις {d}',
+    en: 'Lowest price: {p} on Skroutz on {d}',
+  },
   historyLowOutside: { el: ' · πριν από αυτό το διάγραμμα', en: ' · before this chart' },
 
   // Status line (sources, not shops: UX-04)
