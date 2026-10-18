@@ -75,6 +75,31 @@ v2 id), `scraper/specs.py` (drop an out-of-range value per site before `SAFER` p
   smaller: 3.502); a cooler 25 mm "height" (fan thickness) → dropped below the 30 mm rule.
 - v2 keeps its own check (`enforce`); a later v2 test compares the two tables once v2 merges main.
 
+### Q4b: Wrong imported Skroutz lows (owner 18/10 — own plan + owner OK before push)
+
+Owner: "find which Skroutz product gives 115.43 and why it lands in these models (site_history.py, spec-grouped
+models take the 3 cheapest Skroutz products). Add the fix to the main backend queue after the SAFER item, with its
+own plan and my OK before push."
+
+Findings so far (controller, 18/10, read-only on main's data):
+- The same imported `low` is shared by 3+ models in every category: 378 models in all (gpu 6, cpu 13, mobo 37,
+  ram 20, storage 49, psu 9, case 50, fan 127, cooler 67). Values repeat ACROSS categories (369.59 € in cpu ×10,
+  mobo ×13, storage ×14; 24 € in fan ×30, storage ×24, cooler ×12, case ×9, psu ×9; 47.55 € in ram ×13 and case
+  ×11; 37.05 € in fan and cooler), so it is not one product of a spec group: it hits single-product categories too.
+- Where the point is still inside the 365 days of `history.json`, many sit on the same day: 369.59 € on
+  2025-09-10 for 9 CPU models, 115.43 € and 47.55 € on 2025-09-10 too. Lead: Skroutz's `price_graph` series
+  carries bogus values on some dates (a Skroutz-side glitch), and `enrich` takes `min(past)` over the whole series
+  without any plausibility check.
+- Next: fetch the `price_graph` of 2–3 affected products (existing request type, within the daily history budget;
+  no new Skroutz page kinds) and confirm the bogus points; then the fix = drop implausible imported points before
+  `min(past)` (the C6 dip rule, `dips.ts` logic ported to Python, plus a cross-model check) and re-import the
+  affected models' `low` once (`history.yml` input or a one-off reset of their `history_imported.json` entries —
+  ask before any workflow run). v2 already ignores a low shared by 3+ models in a category (step 4, owner 18/10).
+- Owner 18/10: the fix also removes the bad imported daily points (`"i": 1`) from `history.json`, so the push
+  needs a scrape/history run with `allow_history_shrink`. Plan it with an **offline before/after on a copy of main's
+  history files: points removed per category** (and models whose imported `low` changes), and **ask the owner
+  before the push and before the run**.
+
 ### Q5: Key aliases and history fold (needed by every B9 batch)
 
 **Files:** `scraper/model_aliases.json` (new, code-owned like `overrides.json`: `{cat: {oldKey: newKey}}`),
