@@ -14,11 +14,12 @@ interface Listing {
   total?: number | null;
 }
 interface Entry {
+  key: string;
   slug: string;
   chip: string;
   photo: boolean;
   listings: Listing[];
-  history: { d: string; min: number }[];
+  history: { d: string; min: number; i?: 1 }[];
   dips: string[];
   imported: { low?: number } | string | null;
 }
@@ -55,10 +56,14 @@ const in90 = (h: Entry['history']) => {
 };
 const spanDays = (h: Entry['history']) => (Date.parse(h[h.length - 1].d) - Date.parse(h[0].d)) / 864e5;
 /** The model's all-time low as the page works it out: lowest non-dip daily low, or a strictly lower Skroutz import. */
-const lowOf = (m: Entry) => {
-  const own = m.history.filter((p) => !m.dips.includes(p.d)).reduce((a, p) => (!a || p.min < a.min ? p : a), null as Entry['history'][number] | null);
+/** As data.historyLow: Skroutz's undated imported low, else the lowest day (a scraped one wins a tie), Skroutz's when imported. */
+const lowOf = (m: Entry): { source: 'own' | 'skroutz'; date: string | null } => {
+  const own = m.history
+    .filter((p) => !m.dips.includes(p.d))
+    .reduce((a, p) => (!a || p.min < a.min || (p.min === a.min && a.i === 1 && p.i !== 1) ? p : a), null as Entry['history'][number] | null);
   const imp = typeof m.imported === 'object' && m.imported ? m.imported.low : undefined;
-  return imp != null && (!own || imp < own.min) ? ({ source: 'skroutz' } as const) : { source: 'own', date: own?.d ?? '' };
+  if (imp != null && (!own || imp < own.min)) return { source: 'skroutz', date: null };
+  return { source: own?.i === 1 ? 'skroutz' : 'own', date: own?.d ?? '' };
 };
 const euro = (lang: string, n: number) => new Intl.NumberFormat(lang === 'el' ? 'el-GR' : 'en-IE', { style: 'currency', currency: 'EUR' }).format(n);
 const SHOW_ALL = /^(Δες και τις|Show all) /;
@@ -285,7 +290,7 @@ for (const [name, size] of [['360', { width: 360, height: 740 }], ['1366', { wid
     });
 
     test('price history: the low line says where the record comes from; a low outside the drawn range says so', async ({ page }) => {
-      const sk = await aModel(page, (x) => spanDays(x.history) > 200 && lowOf(x).source === 'skroutz');
+      const sk = await aModel(page, (x) => spanDays(x.history) > 200 && lowOf(x).source === 'skroutz' && lowOf(x).date === null);
       await page.goto(`/gpu/${sk.slug}`);
       const note = page.locator('[data-price-history] [data-all-time-low]');
       await expect(note).toHaveAttribute('data-all-time-low', 'skroutz', { timeout: 20_000 });
@@ -296,13 +301,29 @@ for (const [name, size] of [['360', { width: 360, height: 740 }], ['1366', { wid
         const l = lowOf(x);
         const last = x.history.reduce((m, p) => (p.d > m ? p.d : m), '');
         const from = new Date(Date.parse(`${last}T00:00:00Z`) - 29 * 864e5).toISOString().slice(0, 10);
-        return l.source === 'own' && l.date! < from;
+        // A dated low (ours, or an imported Skroutz day: in v2's data every graphics card's own scrape is younger than 30
+        // days, so this is a Skroutz day) older than the 30-day range.
+        return l.date !== null && l.date < from;
       });
       await page.goto(`/gpu/${old.slug}`);
       const note2 = page.locator('[data-price-history] [data-all-time-low]');
-      await expect(note2).toHaveAttribute('data-all-time-low', 'own', { timeout: 20_000 });
+      await expect(note2).toHaveAttribute('data-all-time-low', lowOf(old).source, { timeout: 20_000 });
       await page.locator('[data-price-history] [data-range="30"]').click();
       await expect(note2).toHaveText(/before this chart|πριν από αυτό το διάγραμμα/);
+    });
+
+    test('price history: a Skroutz low that 3+ models share (import glitch, task 7b) is not shown; an imported low day says Skroutz', async ({ page }) => {
+      const m = await aModel(page, (x) => x.key === 'RTX 3050 6GB'); // Skroutz's 115.43, shared by six cards
+      const low = lowOf(m);
+      await page.goto(`/gpu/${m.slug}`);
+      const note = page.locator('[data-price-history] [data-all-time-low]');
+      // Its lowest day is an imported Skroutz point (owner, 18/10): Skroutz's, with the day, never "from our 5 shops".
+      expect(low).toMatchObject({ source: 'skroutz' });
+      expect(low.date).not.toBeNull();
+      await expect(note).toHaveAttribute('data-all-time-low', 'skroutz', { timeout: 20_000 });
+      const date = low.date!.split('-').reverse().join('/');
+      await expect(note).toHaveText(new RegExp(`(στο Skroutz, στις|on Skroutz on) ${date}`));
+      await expect(note).not.toHaveText(/115[,.]43|5 (πηγές|shops)/);
     });
 
     test('price history: a model with little history says so, no sentence', async ({ page }) => {

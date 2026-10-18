@@ -8,7 +8,7 @@ import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
 import { groupModels } from '../../src/lib/data';
 import { CATEGORIES, type CategoryConfig } from '../../src/lib/categories';
 import { modelChunks, type CategoryInput } from '../../src/lib/derive';
-import { implausibleDips } from '../../src/lib/dips';
+import { importGlitches, sharedImportedDays, sharedImportedLows, untrustedPoints } from '../../src/lib/dips';
 import { chartHistory, modelChunkPath } from '../../src/lib/modelData';
 import { modelSlug } from '../../src/lib/slug';
 import { pruneRawData } from '../../vite-plugin-data';
@@ -49,8 +49,10 @@ describe('chart data from the model chunks', () => {
       for (const m of sample) {
         const entry = await md.loadModel(cat, modelSlug(cat, m));
         const points = chartHistory(entry);
-        expect(points).toEqual(input.history[m.key]); // same points, same order
-        const dips = implausibleDips(points!);
+        // same points, same order (task 7b: import glitches marked g: 1)
+        const glitches = importGlitches(input.history[m.key], sharedImportedDays(input.history), sharedImportedLows(input.imported));
+        expect(points).toEqual(input.history[m.key].map((p) => (glitches.has(p) ? { ...p, g: 1 } : p)));
+        const dips = untrustedPoints(points!);
         expect([...dips].map((p) => p.d).sort()).toEqual([...entry!.dips].sort()); // same dips
       }
     });

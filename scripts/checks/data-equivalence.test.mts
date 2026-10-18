@@ -9,7 +9,7 @@ const src = (p: string) => pathToFileURL(join(ROOT, 'src', p)).href;
 const { CATEGORIES, CATEGORY_IDS } = await import(src('lib/categories.tsx'));
 const { applyFilters, defaultFilters, allTimeLow, saleOf } = await import(src('lib/data.ts'));
 const { listFile, builderFile, reduceHistory } = await import(src('lib/derive.ts'));
-const { implausibleDips, isDipPrice } = await import(src('lib/dips.ts'));
+const { implausibleDips, isDipPrice, sharedImportedDays, sharedImportedLows, importGlitches, untrustedPoints, withoutSharedLow } = await import(src('lib/dips.ts'));
 const { fromColumns, decodeHist, decodePhotos } = await import(src('lib/columns.ts'));
 const { productImage } = await import(src('lib/images.ts'));
 const { createHash } = await import('node:crypto');
@@ -55,6 +55,12 @@ const fail = (msg: string) => {
 // Differences between the scraper's FULL history and the list file's dip-stripped history (C6, src/lib/dips.ts).
 // Expected by design, so they are counted apart and never mixed with regressions.
 let c6Diffs = 0;
+// Task 7b (expected by design, counted apart): models whose all-time low or week change differ between the C6-only
+// rules and the list file, because an imported low that 3+ models of the category share is ignored and an imported
+// day whose value 3+ models share on that day, or that equals such a shared low (in a run of ≤ 3 days, ≥ 5% under its
+// neighbours), is left out like a dip. Every one of them must be a model 7b touches (else: FAIL).
+const t7bDiffs: Record<string, Set<string>> = {};
+const t7bTouched: Record<string, number> = {};
 
 const built = new RealDate().toISOString();
 const allLatest: Record<string, unknown> = {};
@@ -84,6 +90,31 @@ for (const cat of CATEGORY_IDS) {
     const imp = oldImported[k] as { low?: number } | undefined;
     if (dips.size && typeof imp === 'object' && imp.low != null && isDipPrice(imp.low, dips)) oldImported[k] = { ...imp, low: undefined };
   }
+  // The same from the full files with task 7b on top (src/lib/dips.ts, reproduced here from the raw files, not via
+  // listFile): what the list file must give exactly. `touched` = the models 7b may change.
+  const bad = sharedImportedLows(imported);
+  const sharedDays = sharedImportedDays(history);
+  const newHist: Record<string, { d: string; min: number }[]> = {};
+  const newImported: Record<string, { low?: number } | number | string> = {};
+  const touched = new Set<string>();
+  for (const [k, imp] of Object.entries(imported) as [string, { d: string; low?: number } | string][]) {
+    if (!curKeys.has(k)) continue;
+    newImported[k] = withoutSharedLow(imp, bad);
+    if (newImported[k] !== imp) touched.add(k);
+  }
+  for (const [k, pts] of Object.entries(history) as [string, { d: string; min: number; i?: 1 }[]][]) {
+    if (!curKeys.has(k)) continue;
+    const glitches = importGlitches(pts, sharedDays, bad);
+    if (glitches.size) touched.add(k);
+    const marked = pts.map((p) => (glitches.has(p) ? { ...p, g: 1 } : p));
+    const dips = untrustedPoints(marked);
+    const red = reduceHistory(marked.filter((p) => !dips.has(p)), day0);
+    if (red.length) newHist[k] = red.map(([d, min]: [string, number]) => ({ d, min }));
+    const imp = newImported[k] as { low?: number } | undefined;
+    if (dips.size && typeof imp === 'object' && imp.low != null && isDipPrice(imp.low, dips)) newImported[k] = { ...imp, low: undefined };
+  }
+  t7bTouched[cat] = touched.size;
+  t7bDiffs[cat] ??= new Set();
   const listings = fromColumns(lf);
   const reduced = decodeHist(lf);
   const photos = decodePhotos(lf);
@@ -102,7 +133,8 @@ for (const cat of CATEGORY_IDS) {
   for (const day of [0, 1]) {
     freeze(RealDate.parse(built) + day * 864e5);
     for (const f of filterSets) {
-      const a = applyFilters(latest.listings, f, cfg, oldHist, oldImported);
+      const pre = applyFilters(latest.listings, f, cfg, oldHist, oldImported); // C6 only (before task 7b)
+      const a = applyFilters(latest.listings, f, cfg, newHist, newImported);
       const full = applyFilters(latest.listings, f, cfg, history, imported);
       const b = applyFilters(listings, f, cfg, reduced, lf.imported);
       if (a.length !== b.length) fail(`${cat} day+${day} ${JSON.stringify(f).slice(0, 60)}: ${a.length} vs ${b.length} models`);
@@ -118,20 +150,35 @@ for (const cat of CATEGORY_IDS) {
           JSON.stringify(x.sale) === JSON.stringify(y.sale) &&
           JSON.stringify(x.low) === JSON.stringify(y.low) &&
           JSON.stringify(x.bestTotal?.id) === JSON.stringify(y.bestTotal?.id) &&
-          weekChange(oldHist[x.key], x.cheapest.price) === weekChange(reduced[y.key], y.cheapest.price);
+          weekChange(newHist[x.key], x.cheapest.price) === weekChange(reduced[y.key], y.cheapest.price);
         if (!same) fail(`${cat} day+${day} #${i} ${x.key} / ${y.key}`);
         const oldPhoto = hasId(sha(x.key)) ? `/img/${cat}/${sha(x.key)}` : null;
         if ((productImage(cat, y.key, photos.has(y.key))?.src ?? null) !== oldPhoto) fail(`${cat} photo ${y.key}`);
         compared++;
       }
+      // Task 7b: C6-only vs 7b, per model (the order shifts with a changed low, so by key, not by position).
+      const preBy = new Map(pre.map((m: { key: string }) => [m.key, m]));
+      for (const m of a) {
+        const o = preBy.get(m.key);
+        const differs =
+          !o || JSON.stringify(o.low) !== JSON.stringify(m.low) || weekChange(oldHist[m.key], m.cheapest.price) !== weekChange(newHist[m.key], m.cheapest.price);
+        if (!differs) continue;
+        if (o && touched.has(m.key)) t7bDiffs[cat].add(m.key);
+        else if (!o && (f as { lowOnly?: boolean }).lowOnly && touched.has(m.key)) t7bDiffs[cat].add(m.key); // newly at its all-time low
+        else fail(`${cat} day+${day} ${m.key}: differs from the C6-only rules but task 7b does not touch it`);
+      }
+      for (const o of pre) if (!a.some((m: { key: string }) => m.key === o.key)) {
+        if ((f as { lowOnly?: boolean }).lowOnly && touched.has(o.key)) t7bDiffs[cat].add(o.key);
+        else fail(`${cat} day+${day} ${o.key}: missing vs the C6-only rules`);
+      }
       for (let i = 0; i < full.length; i++) {
-        const o = a.find((m: { key: string }) => m.key === full[i].key);
+        const o = pre.find((m: { key: string }) => m.key === full[i].key);
         if (!o || JSON.stringify(o.low) !== JSON.stringify(full[i].low) || weekChange(history[o.key], o.cheapest.price) !== weekChange(oldHist[o.key], o.cheapest.price)) c6Diffs++;
       }
       // all-time low at other prices too (just under / at / over the lowest)
       for (const m of a.slice(0, 200)) {
         for (const p of [m.cheapest.price - 50, m.cheapest.price, m.cheapest.price * 0.5]) {
-          const u = JSON.stringify(allTimeLow(oldHist[m.key], oldImported[m.key], p));
+          const u = JSON.stringify(allTimeLow(newHist[m.key], newImported[m.key], p));
           const v = JSON.stringify(allTimeLow(reduced[m.key], lf.imported[m.key], p));
           if (u !== v) fail(`${cat} allTimeLow ${m.key} @${p}: ${u} vs ${v}`);
         }
@@ -242,5 +289,11 @@ console.log(`builder labels in the sample builds: ${JSON.stringify(labels)}`);
 console.log(`coverage: ${JSON.stringify(bf.coverage)}`);
 console.log(`C6 dip differences, full history vs the list file (expected, not failures): ${c6Diffs} model rows`);
 console.log('  (the old 84 "failures" came from comparing the scraper FULL history.json with the list file history, which has the C6 implausible dips removed since commit f198493; that comparison is only counted here, the pass/fail comparison is old list file vs new list file)');
+const t7bTotal = Object.values(t7bDiffs).reduce((n, s) => n + s.size, 0);
+console.log(`Task 7b differences, C6-only rules vs the list file (expected, not failures): ${t7bTotal} models`);
+for (const [cat, keys] of Object.entries(t7bDiffs)) {
+  const list = [...keys].sort();
+  console.log(`  ${cat}: ${list.length} of ${t7bTouched[cat]} touched models${list.length ? ": " + list.slice(0, 12).join(", ") + (list.length > 12 ? `, … +${list.length - 12}` : "") : ""}`);
+}
 console.log(failures ? `\n${failures} FAILURES` : '\nALL EQUAL');
 process.exit(failures ? 1 : 0);

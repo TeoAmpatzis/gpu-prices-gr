@@ -1,7 +1,7 @@
 import type { DailyLow } from '../types';
 import { UI } from '../ui/strings';
 import type { HistoryLow } from './data';
-import { implausibleDips } from './dips';
+import { untrustedPoints } from './dips';
 import { formatPrice } from './format';
 import { tr, type Lang } from './i18n';
 import { SOURCE_NAMES } from './sources';
@@ -37,13 +37,14 @@ export type MedianSummary =
   | { kind: 'ok'; dir: 'below' | 'above' | 'equal'; pct: number; median: number; price: number };
 
 /**
- * Today's daily low against the median of the daily lows of the last 90 days, dips (src/lib/dips.ts) left out.
+ * Today's daily low against the median of the daily lows of the last 90 days, dips and marked import glitches
+ * (src/lib/dips.ts untrustedPoints) left out.
  * "Today" is the history's last non-dip point, the same series the chart draws, so the sentence and the chart agree
  * (not the header's lowest total, which includes shipping and may differ). Percent rounded to an integer; a
  * rounded 0 is "equal".
  */
 export function medianSummary(points: readonly DailyLow[]): MedianSummary {
-  const dips = implausibleDips(points);
+  const dips = untrustedPoints(points);
   const line = points.filter((p) => !dips.has(p)).sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0));
   if (!line.length) return { kind: 'few' };
   const price = line[line.length - 1];
@@ -63,6 +64,11 @@ const fullDate = (d: string) => d.split('-').reverse().join('/');
 /** The all-time low's sentence (exported for the unit tests). */
 export function lowSentence(lang: Lang, low: HistoryLow, outside: boolean): string {
   const price = formatPrice(low.price, lang);
+  if (low.source === 'skroutz' && low.date) {
+    // an imported Skroutz day ("i": 1): Skroutz's, with its day
+    const text = tr(lang, UI.historyLowSkroutzDay).replace('{p}', price).replace('{d}', fullDate(low.date));
+    return text + (outside ? tr(lang, UI.historyLowOutside) : '');
+  }
   if (low.source === 'skroutz') return tr(lang, UI.historyLowSkroutz).replace('{p}', price);
   return (
     tr(lang, UI.historyLowOwn)

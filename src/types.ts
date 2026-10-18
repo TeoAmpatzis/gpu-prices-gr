@@ -173,6 +173,11 @@ export interface HistoryPoint {
   min: number;
   source: SourceName;
   i?: 1; // imported from Skroutz's price history (Skroutz-only, so not used for sale detection)
+  /**
+   * Build-only, model chunks only (never in the scraper's history.json): an import glitch (task 7b, src/lib/dips.ts
+   * importGlitches), left out of the line, the low and the median like a C6 dip.
+   */
+  g?: 1;
 }
 
 /** history_imported.json: models whose Skroutz history was imported (older files: just the date). */
@@ -271,10 +276,16 @@ export interface ModelEntry {
   /** The model has a stored photo (the same images index as list files' `photos` bitset): no request for one that hasn't. */
   photo: boolean;
   listings: BaseListing[]; // every listing with all its fields (url, scrapedAt…), cheapest first
-  /** The model's full history.json points, as the scraper wrote them (with `source`, and `i` for imported ones). */
+  /**
+   * The model's full history.json points, as the scraper wrote them (with `source`, and `i` for imported ones); import
+   * glitches (task 7b) carry `g: 1`.
+   */
   history: HistoryPoint[];
-  dips: string[]; // dates of the implausible dips (src/lib/dips.ts), which the chart marks
-  /** history_imported.json entry (an imported low that is one of the dips left out, as on the category page). */
+  dips: string[]; // dates of the implausible dips and import glitches (src/lib/dips.ts untrustedPoints), which the chart marks
+  /**
+   * history_imported.json entry (a low that 3+ models of the category share, or that is one of the dips, left out, as on
+   * the category page).
+   */
   imported: Imported[string] | null;
   /**
    * Engine fields (src/lib/pick.ts toPart) by the builder's key (src/lib/builder.ts slotModels): a graphics card per
