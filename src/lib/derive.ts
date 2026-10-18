@@ -401,6 +401,7 @@ const SAME_KIND: Partial<Record<Category, (l: BaseListing) => string>> = {
  * - board: same socket and board size;
  * - case: same size group (the category's pill group, e.g. Midi Tower): the size most of its listings state, so one
  *   shop's "Άλλο" doesn't move a Full Tower into "Άλλο" (the model's own `group` is its cheapest listing's);
+ *   none states one = "Άλλο" = no list, and never an alternative (owner 17/10: size unknown, so "same kind" can't be checked);
  * - cooler: same type (air; AIO with the same radiator size);
  * - fan: same size.
  * Graphics cards, RAM, drives and PSUs have none: their variants cover the other sizes (and a chip's cheaper cards
@@ -413,7 +414,7 @@ const CHEAPER_KIND: Partial<Record<Category, (m: Model<BaseListing>) => string |
     const form = moboForm(m as Model<never>);
     return socket && form ? `${socket} ${form}` : null;
   },
-  case: (m) => mostCommon(m.listings.map((l) => (l as CaseListing).size).filter((s) => s !== OTHER)) ?? OTHER,
+  case: (m) => mostCommon(m.listings.map((l) => (l as CaseListing).size).filter((s) => s !== OTHER)),
   cooler: (m) => {
     const c = m.cheapest as CoolerListing;
     return c.type === 'Air' ? 'Air' : c.radiator ? `AIO ${c.radiator}` : null;

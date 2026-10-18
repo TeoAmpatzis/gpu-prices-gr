@@ -11,7 +11,7 @@
 //   are logged and the build publishes. DATA_CHECK_BASE overrides the live site address.
 // - `vite` (dev): serves the same files from memory, re-derived when the scraper's files change.
 
-import { existsSync, readFileSync, rmSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, rmdirSync, rmSync, statSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { join, resolve } from 'node:path';
 import type { Plugin } from 'vite';
@@ -119,18 +119,29 @@ async function liveManifest(): Promise<Manifest | null> {
 }
 
 /**
- * The category history.json files (scraper files, 1.5–17 MB each) are not part of the built site: the model
- * chunks carry each model's history. Removes them from the build output only (never public/data); returns how many.
+ * Vite copies public/ whole, raw scraper files included (per category latest.json, offers.json, specs.json,
+ * image_urls.json, history.json, history_imported.json, and makers/*: ~170 MB, 2,700 files that nothing fetches:
+ * the build derives everything the site reads). Removes from the build output every file under data/ that the
+ * build did not generate itself (`keep`: the emitted data/ paths, manifest.json among them), then empty folders.
+ * An allow-list of what the build emits, not a list of raw names: a new scraper file stays out without a change
+ * here, and a generated file can never be removed. Never touches public/data; returns how many files it removed.
  */
-export function dropRawHistory(outDir: string): number {
+export function pruneRawData(outDir: string, keep: ReadonlySet<string>): number {
   let n = 0;
-  for (const cat of CATEGORY_IDS) {
-    const f = join(outDir, 'data', cat, 'history.json');
-    if (existsSync(f)) {
-      rmSync(f);
-      n++;
+  const walk = (dir: string, rel: string): void => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const path = `${rel}/${e.name}`;
+      if (e.isDirectory()) {
+        walk(join(dir, e.name), path);
+        if (readdirSync(join(dir, e.name)).length === 0) rmdirSync(join(dir, e.name));
+      } else if (!keep.has(path)) {
+        rmSync(join(dir, e.name));
+        n++;
+      }
     }
-  }
+  };
+  const root = join(outDir, 'data');
+  if (existsSync(root)) walk(root, 'data');
   return n;
 }
 
@@ -140,6 +151,7 @@ export default function dataFiles(): Plugin {
   let cache: { key: string; files: Record<string, string> } | null = null;
   let outDir = 'dist';
   let building = false;
+  let generated = new Set<string>(); // the data/ paths this build emits (generateBundle)
   let devImages: ImageLookup | undefined;
   // Dev: re-derive when any scraper file changed (its modification times are the cache key).
   const devFiles = () => {
@@ -160,10 +172,10 @@ export default function dataFiles(): Plugin {
       outDir = resolve(c.root, c.build.outDir);
       building = c.command === 'build';
     },
-    // After the bundle is written (Vite has copied public/ whole): the raw category history.json stays out of dist.
+    // After the bundle is written (Vite has copied public/ whole): the raw scraper files stay out of dist.
     closeBundle() {
-      if (!building || this.meta?.watchMode) return; // also called when dev/preview shut down
-      console.log(`[data] category history.json left out of the build: ${dropRawHistory(outDir)} files`);
+      if (!building || this.meta?.watchMode || generated.size === 0) return; // also called when dev/preview shut down
+      console.log(`[data] raw scraper files left out of the build: ${pruneRawData(outDir, generated)} files`);
     },
     async configureServer(server) {
       devImages = (await imageLookup()).lookup;
@@ -197,6 +209,7 @@ export default function dataFiles(): Plugin {
       } else {
         this.info(live ? 'data check passed against the live manifest' : 'data check passed (no live manifest: minimum counts)');
       }
+      generated = new Set(Object.keys(files));
       for (const [fileName, source] of Object.entries(files)) this.emitFile({ type: 'asset', fileName, source });
       const sizes = Object.entries(files)
         .filter(([p]) => !p.endsWith('detail.json') && !p.startsWith('data/compat/') && !p.includes('/model/'))

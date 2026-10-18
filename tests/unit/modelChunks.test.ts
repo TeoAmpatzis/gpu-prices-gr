@@ -95,7 +95,7 @@ function mode<T>(vs: (T | null | undefined)[]): T | null {
 /**
  * The owner's "same kind" (Task 4 fix round 1), written out independently of derive.sameKind: CPU same socket and
  * not server/HEDT (pro), board same socket and board size, case same size group (pill group; the size most listings
- * state, "Άλλο" only when none states one), cooler same type (AIO: same radiator), fan same size.
+ * state; none states one = "Other" = no list), cooler same type (AIO: same radiator), fan same size.
  */
 const SAME_KIND_TEST: Partial<Record<Category, (m: { cheapest: BaseListing; listings: BaseListing[]; pro: boolean; group: string }) => string | null>> = {
   cpu: (m) => (m.pro ? null : mode((m.listings as CpuListing[]).map((l) => l.socket))),
@@ -105,7 +105,7 @@ const SAME_KIND_TEST: Partial<Record<Category, (m: { cheapest: BaseListing; list
     const form = mode(ls.map((l) => l.formFactor));
     return socket && form ? `${socket} ${form}` : null;
   },
-  case: (m) => mode(m.listings.map((l) => (l as BaseListing & { size: string }).size).filter((s) => s !== 'Άλλο')) ?? 'Άλλο',
+  case: (m) => mode(m.listings.map((l) => (l as BaseListing & { size: string }).size).filter((s) => s !== 'Άλλο')),
   cooler: (m) => {
     const c = m.cheapest as CoolerListing;
     return c.type === 'Air' ? 'Air' : c.radiator ? `AIO ${c.radiator}` : null;
@@ -255,6 +255,21 @@ describe('model chunks over today\'s data', () => {
       expect(max).toBeLessThanOrEqual(MAX_GZIP);
     });
   }
+});
+
+describe('"Other" cases (owner, 17/10)', () => {
+  // Owner: "'Other' cases: no cheaper list (size unknown, so 'same kind' can't be checked)."
+  const cases = chunks.case!.flatMap((c) => Object.values(c.models));
+  const stated = (e: (typeof cases)[number]) => e.listings.some((l) => (l as BaseListing & { size: string }).size !== 'Άλλο');
+  it('a case whose listings state no size has no cheaper list', () => {
+    const other = cases.filter((e) => !stated(e));
+    expect(other.length).toBeGreaterThan(0);
+    for (const e of other) expect(e.alternatives.filter((a) => a.kind === 'cheaper')).toEqual([]);
+  });
+  it('no case is offered as a cheaper alternative from an "Other" model', () => {
+    const byKey = new Map(cases.map((e) => [e.key, e]));
+    for (const e of cases) for (const a of e.alternatives) if (a.kind === 'cheaper') expect(stated(byKey.get(a.key)!)).toBe(true);
+  });
 });
 
 describe('reviewer examples (fix round 1)', () => {
