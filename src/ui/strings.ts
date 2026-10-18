@@ -116,6 +116,27 @@ export const UI = {
   openShop: { el: 'Άνοιγμα στο κατάστημα', en: 'Open at the shop' },
   newTab: { el: 'ανοίγει σε νέα καρτέλα', en: 'opens in a new tab' },
   agoForm: { el: 'πριν από {t}', en: '{t} ago' },
+  // Price history (product page)
+  historyTitle: { el: 'Ιστορικό τιμής', en: 'Price history' },
+  historyRanges: { el: 'Περίοδος', en: 'Period' },
+  range30: { el: '30 ημέρες', en: '30 days' },
+  range90: { el: '90 ημέρες', en: '90 days' },
+  range365: { el: '1 έτος', en: '1 year' },
+  rangeAll: { el: 'Όλο', en: 'All' },
+  medianBelow: { el: 'Η τιμή είναι {n}% κάτω από τη διάμεσο 90 ημερών', en: 'The price is {n}% below the 90-day median' },
+  medianAbove: { el: 'Η τιμή είναι {n}% πάνω από τη διάμεσο 90 ημερών', en: 'The price is {n}% above the 90-day median' },
+  medianEqual: { el: 'Η τιμή είναι ίση με τη διάμεσο 90 ημερών', en: 'The price is equal to the 90-day median' },
+  medianFew: { el: 'Δεν υπάρχει ακόμα αρκετό ιστορικό', en: 'Not enough history yet' },
+  // The low's origin: our own record (5 shops) or only Skroutz's own history (its import has no date for the low).
+  historyLowOwn: {
+    el: 'Χαμηλότερη τιμή που έχουμε καταγράψει: {p} ({d}) · από τις {n} πηγές μας, από {s}',
+    en: "Lowest price we've recorded: {p} ({d}) · from our {n} shops since {s}",
+  },
+  historyLowSkroutz: {
+    el: 'Χαμηλότερη τιμή: {p} στο Skroutz, πριν ξεκινήσουμε την καταγραφή',
+    en: 'Lowest price: {p} on Skroutz, before our own tracking began',
+  },
+  historyLowOutside: { el: ' · πριν από αυτό το διάγραμμα', en: ' · before this chart' },
 
   // Status line (sources, not shops: UX-04)
   sources: { el: 'Πηγές', en: 'Sources' },

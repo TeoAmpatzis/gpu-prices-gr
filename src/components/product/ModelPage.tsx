@@ -1,5 +1,5 @@
 // A model's page, /<cat>/<slug> (step 4): the address handling (task 5: title, breadcrumbs, the moved /
-// no-longer-available / loading states), then the header and the shops table (task 6).
+// no-longer-available / loading states), then the header and the shops table (task 6), price history (task 7).
 import { PackageX } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { CATEGORIES, type CategoryConfig } from '../../lib/categories';
@@ -16,6 +16,7 @@ import type { Crumb } from '../../ui/nav';
 import { ErrorState, SkeletonRows } from '../../ui/states';
 import { UI } from '../../ui/strings';
 import { OffersTable } from './OffersTable';
+import { PriceHistory } from './PriceHistory';
 import { ProductHeader } from './ProductHeader';
 
 type State = { for: string; res: ModelResolution } | { for: string; error: string } | null;
@@ -102,6 +103,7 @@ function Product({ cat, entry, sources, crumbs }: { cat: Category; entry: ModelE
       <div className="flex flex-col gap-8">
         <ProductHeader cfg={cfg} model={{ ...model, chip: entry.chip }} photo={entry.photo} cheapest={offers[0]} />
         <OffersTable key={entry.key} cat={cat} chip={entry.chip} offers={offers} sources={sources} />
+        <PriceHistory entry={entry} />
       </div>
     </>
   );

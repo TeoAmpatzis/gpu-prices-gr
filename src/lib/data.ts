@@ -154,19 +154,50 @@ export function allTimeLow(
   imp: Imported[string] | undefined,
   price: number,
 ): AllTimeLow | null {
+  const base = lowBase(points, imp, false);
+  return base && price <= base.price + 0.005 ? { since: base.since } : null;
+}
+
+/**
+ * The lowest price in all the history we have, for marking on the product page's chart: the same sources and
+ * rules as `allTimeLow` (dips ignored, the imported Skroutz low included, 60 days needed), but today's own point
+ * counts too: the page marks where the low is, the category page asks whether today is at it.
+ */
+export function historyLow(points: DailyLow[] | undefined, imp: Imported[string] | undefined): HistoryLow | null {
+  return lowBase(points, imp, true);
+}
+
+/**
+ * `date`: the day of the low when it is one of our own points (null when it is Skroutz's imported low: the import
+ * stores no date for it). `source`: 'own' (our daily lows, the 5 shops) or 'skroutz' (only Skroutz's own history,
+ * strictly lower than every point of ours).
+ */
+export interface HistoryLow {
+  price: number;
+  since: string;
+  date: string | null;
+  source: 'own' | 'skroutz';
+}
+
+function lowBase(
+  points: DailyLow[] | undefined,
+  imp: Imported[string] | undefined,
+  includeToday: boolean,
+): HistoryLow | null {
   const today = new Date().toISOString().slice(0, 10);
   // C6: the build already removed dips from the reduced history; this re-check is conservative (sparse
   // points mean fewer than 7 neighbours, so nothing is flagged), not exactly idempotent. Full history: exact.
   const dips = implausibleDips(points ?? []);
-  const past = (points ?? []).filter((p) => p.d < today && !dips.has(p));
+  const past = (points ?? []).filter((p) => (includeToday || p.d < today) && !dips.has(p));
   let importedLow = typeof imp === 'object' ? imp : undefined;
   if (importedLow?.low != null && isDipPrice(importedLow.low, dips)) importedLow = { ...importedLow, low: undefined };
   const firstDays = [past[0]?.d, importedLow?.since].filter((d): d is string => !!d).sort();
   const since = firstDays[0];
   if (!since || Date.now() - new Date(since).getTime() < LOW_MIN_DAYS * 864e5) return null;
-  const lows = past.map((p) => p.min);
-  if (importedLow?.low != null) lows.push(importedLow.low);
-  return lows.length && price <= Math.min(...lows) + 0.005 ? { since } : null;
+  const ownLow = past.reduce<DailyLow | null>((m, p) => (!m || p.min < m.min ? p : m), null);
+  const impLow = importedLow?.low;
+  if (impLow != null && (!ownLow || impLow < ownLow.min)) return { price: impLow, since, date: null, source: 'skroutz' };
+  return ownLow ? { price: ownLow.min, since, date: ownLow.d, source: 'own' } : null;
 }
 
 /**

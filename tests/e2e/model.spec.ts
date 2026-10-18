@@ -16,6 +16,9 @@ interface Entry {
   chip: string;
   photo: boolean;
   listings: Listing[];
+  history: { d: string; min: number }[];
+  dips: string[];
+  imported: { low?: number } | string | null;
 }
 
 /** The shops table shows this many offers before "Show all N" (lib/offers.FIRST_OFFERS). */
@@ -42,6 +45,19 @@ const lowest = (ls: Listing[]) =>
       l.total != null && l.shipping != null && Math.abs(l.total - l.shipping - l.price) <= 0.02 * l.price ? l.price + l.shipping : l.price,
     ),
   );
+/** Daily points in the 90 days up to the series' last day, and the days the whole history spans. */
+const in90 = (h: Entry['history']) => {
+  const last = h.reduce((m, p) => (p.d > m ? p.d : m), '');
+  const from = new Date(Date.parse(`${last}T00:00:00Z`) - 89 * 864e5).toISOString().slice(0, 10);
+  return h.filter((p) => p.d >= from).length;
+};
+const spanDays = (h: Entry['history']) => (Date.parse(h[h.length - 1].d) - Date.parse(h[0].d)) / 864e5;
+/** The model's all-time low as the page works it out: lowest non-dip daily low, or a strictly lower Skroutz import. */
+const lowOf = (m: Entry) => {
+  const own = m.history.filter((p) => !m.dips.includes(p.d)).reduce((a, p) => (!a || p.min < a.min ? p : a), null as Entry['history'][number] | null);
+  const imp = typeof m.imported === 'object' && m.imported ? m.imported.low : undefined;
+  return imp != null && (!own || imp < own.min) ? ({ source: 'skroutz' } as const) : { source: 'own', date: own?.d ?? '' };
+};
 const euro = (lang: string, n: number) => new Intl.NumberFormat(lang === 'el' ? 'el-GR' : 'en-IE', { style: 'currency', currency: 'EUR' }).format(n);
 const SHOW_ALL = /^(Δες και τις|Show all) /;
 /** "1.234,56 €" (el) / "€1,234.56" (en) → 1234.56: the last "," or "." before two digits is the decimal mark. */
@@ -165,6 +181,63 @@ for (const [name, size] of [['360', { width: 360, height: 740 }], ['1366', { wid
       await expect(page.locator('[data-offer] [data-checked="stale"]')).toHaveCount(m.listings.length);
       await expect(rows.first().locator('[data-checked="stale"]')).toContainText(/μπορεί να έχει αλλάξει|may have changed/);
       await expect(rows.first().locator('[data-checked="stale"] svg')).toBeVisible();
+      expect(await noOverflow(page)).toBe(true);
+    });
+
+    test('price history: the median sentence, and the range buttons change the chart x-axis', async ({ page }) => {
+      const errors: string[] = [];
+      page.on('pageerror', (e) => errors.push(e.message));
+      const m = await aModel(page, (x) => in90(x.history) >= 30 && spanDays(x.history) > 200);
+      await page.goto(`/gpu/${m.slug}`);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(m.chip, { timeout: 20_000 });
+      const section = page.locator('[data-price-history]');
+      await expect(section.locator('[data-median]')).toHaveText(/(κάτω από|πάνω από|ίση με) τη διάμεσο 90 ημερών|(below|above|equal to) the 90-day median/);
+      const ranges = section.locator('[data-range]');
+      await expect(ranges).toHaveCount(4);
+      await expect(section.locator('[data-range="90"]')).toHaveAttribute('aria-pressed', 'true'); // default
+      if (size.width < 1024) for (const r of await ranges.all()) expect((await r.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+      // The chart's date labels: first one (left edge) per range.
+      const firstLabel = async () => section.locator('svg text').filter({ hasText: /^\d\d\/\d\d(\/\d\d)?$/ }).first().textContent();
+      await expect(section.locator('svg')).toBeVisible();
+      const l90 = await firstLabel();
+      await section.locator('[data-range="30"]').click();
+      await expect(section.locator('[data-range="30"]')).toHaveAttribute('aria-pressed', 'true');
+      await expect.poll(firstLabel).not.toBe(l90);
+      const l30 = await firstLabel();
+      await section.locator('[data-range="all"]').focus();
+      await page.keyboard.press('Enter'); // keyboard works
+      await expect(section.locator('[data-range="all"]')).toHaveAttribute('aria-pressed', 'true');
+      await expect.poll(firstLabel).not.toBe(l30);
+      expect(await noOverflow(page)).toBe(true);
+      expect(errors).toEqual([]);
+    });
+
+    test('price history: the low line says where the record comes from; a low outside the drawn range says so', async ({ page }) => {
+      const sk = await aModel(page, (x) => spanDays(x.history) > 200 && lowOf(x).source === 'skroutz');
+      await page.goto(`/gpu/${sk.slug}`);
+      const note = page.locator('[data-price-history] [data-all-time-low]');
+      await expect(note).toHaveAttribute('data-all-time-low', 'skroutz', { timeout: 20_000 });
+      await expect(note).toHaveText(/στο Skroutz, πριν ξεκινήσουμε την καταγραφή|on Skroutz, before our own tracking began/);
+      await page.locator('[data-price-history] [data-range="all"]').click();
+      await expect(note).toHaveText(/Skroutz/); // still said under All, whether or not the line is drawn
+      const old = await aModel(page, (x) => {
+        const l = lowOf(x);
+        const last = x.history.reduce((m, p) => (p.d > m ? p.d : m), '');
+        const from = new Date(Date.parse(`${last}T00:00:00Z`) - 29 * 864e5).toISOString().slice(0, 10);
+        return l.source === 'own' && l.date! < from;
+      });
+      await page.goto(`/gpu/${old.slug}`);
+      const note2 = page.locator('[data-price-history] [data-all-time-low]');
+      await expect(note2).toHaveAttribute('data-all-time-low', 'own', { timeout: 20_000 });
+      await page.locator('[data-price-history] [data-range="30"]').click();
+      await expect(note2).toHaveText(/before this chart|πριν από αυτό το διάγραμμα/);
+    });
+
+    test('price history: a model with little history says so, no sentence', async ({ page }) => {
+      const m = await aModel(page, (x) => in90(x.history) < 30);
+      await page.goto(`/gpu/${m.slug}`);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(m.chip, { timeout: 20_000 });
+      await expect(page.locator('[data-price-history] [data-median]')).toHaveText(/Δεν υπάρχει ακόμα αρκετό ιστορικό|Not enough history yet/);
       expect(await noOverflow(page)).toBe(true);
     });
 
