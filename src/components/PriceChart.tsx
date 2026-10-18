@@ -4,6 +4,7 @@ import { formatPrice } from '../lib/data';
 import { SOURCES } from '../lib/sources';
 import { T, tr, useLang } from '../lib/i18n';
 import { chartLine, implausibleDips } from '../lib/dips';
+import { rangeStart, type HistoryRange } from '../lib/priceSummary';
 
 // Price history as a small hand-drawn SVG step chart (replaced recharts, ~100 KB gzipped). Colours
 // are Tailwind classes on the design tokens (stroke-accent, fill-muted…), so they follow light/dark
@@ -48,7 +49,12 @@ function dateTicks(t0: number, t1: number, width: number): { t: number; label: s
   });
 }
 
-export default function PriceChart({ points }: { points: HistoryPoint[] | undefined }) {
+/**
+ * `range` (product page): only the days from `rangeStart` (counted back from the last point) on are drawn; without
+ * it, every point (the category page's expanded row). `low` (product page): the all-time low, drawn as a dashed line
+ * with its label when it is within reach of the visible prices (else the page states it in words).
+ */
+export default function PriceChart({ points, range, low }: { points: HistoryPoint[] | undefined; range?: HistoryRange; low?: number | null }) {
   const lang = useLang();
   const box = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
@@ -63,10 +69,16 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
     return () => ro.disconnect();
   }, [(points?.length ?? 0) < 2]); // the box only exists once there is something to draw
 
-  const data = useMemo(() => [...(points ?? [])].sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0)), [points]);
+  const all = useMemo(() => [...(points ?? [])].sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0)), [points]);
   // C6: implausible short dips are not part of the line: hollow markers with a warning in the tooltip.
-  // The arrow keys and taps still reach them (they are real data, only not trusted).
-  const dips = useMemo(() => implausibleDips(data), [data]);
+  // The arrow keys and taps still reach them (they are real data, only not trusted). Found on the whole history,
+  // so a range never flags differently from All.
+  const dips = useMemo(() => implausibleDips(all), [all]);
+  const data = useMemo(() => {
+    if (!range) return all;
+    const from = rangeStart(all, range);
+    return all.filter((q) => q.d >= from);
+  }, [all, range]);
 
   // A tap elsewhere closes a tooltip opened by touch.
   useEffect(() => {
@@ -91,7 +103,10 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
   // The range follows the line only; dip markers are clamped to the bottom edge (tooltip keeps the real price).
   const line = chartLine(data, dips);
   const prices = line.map((p) => p.min);
-  const yTicks = niceTicks(Math.min(...prices), Math.max(...prices));
+  const visibleLow = Math.min(...prices);
+  // The all-time low is drawn when it is the visible low or (within 15%) just under it, which stretches the axis.
+  const showLow = low != null && low <= visibleLow + 0.005 && low >= visibleLow * 0.85;
+  const yTicks = niceTicks(showLow ? Math.min(visibleLow, low) : visibleLow, Math.max(...prices));
   const yLo = yTicks[0];
   const yHi = yTicks[yTicks.length - 1];
   const plotW = Math.max(1, width - PAD.left - PAD.right);
@@ -151,18 +166,26 @@ export default function PriceChart({ points }: { points: HistoryPoint[] | undefi
             ))}
             <line x1={PAD.left} x2={PAD.left} y1={PAD.top} y2={PAD.top + plotH} className="stroke-line-strong" />
             <line x1={PAD.left} x2={PAD.left + plotW} y1={PAD.top + plotH} y2={PAD.top + plotH} className="stroke-line-strong" />
-            {dateTicks(t0, t1, plotW).map(({ t, label }, i, all) => (
+            {dateTicks(t0, t1, plotW).map(({ t, label }, i, ticks) => (
               <text
                 key={t}
                 x={x(t)}
                 y={HEIGHT - 6}
                 fontSize={11}
-                textAnchor={i === 0 ? 'start' : i === all.length - 1 ? 'end' : 'middle'}
+                textAnchor={i === 0 ? 'start' : i === ticks.length - 1 ? 'end' : 'middle'}
                 className="fill-muted"
               >
                 {label}
               </text>
             ))}
+            {showLow && (
+              <g data-low-line>
+                <line x1={PAD.left} x2={PAD.left + plotW} y1={y(low)} y2={y(low)} strokeDasharray="4 3" className="stroke-ok" />
+                <text x={PAD.left + plotW} y={y(low) - 4} fontSize={11} textAnchor="end" className="fill-ok">
+                  {tr(lang, T.allTimeLow)} {Math.round(low)}€
+                </text>
+              </g>
+            )}
             <path d={path} fill="none" strokeWidth={2} strokeLinejoin="round" className="stroke-accent" />
             {data.map((q) =>
               dips.has(q) ? (
