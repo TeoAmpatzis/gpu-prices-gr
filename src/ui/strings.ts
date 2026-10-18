@@ -1,6 +1,7 @@
 // Text of the v2 design system and site shell, Greek and English (docs/phase1/glossary.md decides the
 // words). Category names live in src/shell/nav.ts.
 import type { Lang } from '../lib/i18n';
+import { shortAgo } from '../lib/format';
 
 /** No-break space: a number never wraps away from its unit or word. */
 export const NBSP = String.fromCharCode(0xa0);
@@ -98,6 +99,24 @@ export const UI = {
   breadcrumb: { el: 'Διαδρομή', en: 'Breadcrumb' },
   loading: { el: 'Φόρτωση…', en: 'Loading…' },
 
+  // Product page (step 4): header and the shops table
+  toShop: { el: 'Στο κατάστημα', en: 'To the shop' },
+  shopsTitle: { el: 'Τιμές στα καταστήματα', en: 'Prices at the shops' },
+  offerShop: { el: 'Κατάστημα', en: 'Shop' },
+  offerShipping: { el: 'Μεταφορικά', en: 'Shipping' },
+  offerTotal: { el: 'Σύνολο', en: 'Total' },
+  offerAvailability: { el: 'Διαθεσιμότητα', en: 'Availability' },
+  offerChecked: { el: 'Ελέγχθηκε', en: 'Checked' },
+  showAllOffers: { el: 'Δες και τις {n}', en: 'Show all {n}' },
+  lowestTotal: { el: 'Χαμηλότερη τιμή', en: 'Lowest price' },
+  withShipping: { el: 'με μεταφορικά', en: 'incl. shipping' },
+  keySpecs: { el: 'Βασικά χαρακτηριστικά', en: 'Key specs' },
+  specYes: { el: 'Ναι', en: 'Yes' },
+  noRgb: { el: 'χωρίς RGB', en: 'no RGB' }, // as the fan spec line (ui/specs.ts)
+  openShop: { el: 'Άνοιγμα στο κατάστημα', en: 'Open at the shop' },
+  newTab: { el: 'ανοίγει σε νέα καρτέλα', en: 'opens in a new tab' },
+  agoForm: { el: 'πριν από {t}', en: '{t} ago' },
+
   // Status line (sources, not shops: UX-04)
   sources: { el: 'Πηγές', en: 'Sources' },
   updatedAgo: { el: 'ενημέρωση', en: 'updated' },
@@ -147,4 +166,9 @@ export function plural(lang: Lang, n: number, forms: { el: [string, string]; en:
   const rule = new Intl.PluralRules(lang === 'el' ? 'el' : 'en').select(n);
   const [one, other] = forms[lang];
   return `${num(lang, n)}${NBSP}${rule === 'one' ? one : other}`;
+}
+
+/** "πριν από 3 ώρ." / "3 h ago" (format.shortAgo inside the language's phrase); "—" when unknown. */
+export function ago(lang: Lang, iso: string | null | undefined): string {
+  return iso ? UI.agoForm[lang].replace('{t}', shortAgo(iso, lang)) : '—';
 }

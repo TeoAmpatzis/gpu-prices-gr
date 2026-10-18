@@ -268,6 +268,8 @@ export interface ModelEntry {
   key: string; // model key (history.json, list files)
   chip: string; // shown name, as on the category page
   slug: string; // address segment (src/lib/slug.ts modelSlug)
+  /** The model has a stored photo (the same images index as list files' `photos` bitset): no request for one that hasn't. */
+  photo: boolean;
   listings: BaseListing[]; // every listing with all its fields (url, scrapedAt…), cheapest first
   /** The model's full history.json points, as the scraper wrote them (with `source`, and `i` for imported ones). */
   history: HistoryPoint[];

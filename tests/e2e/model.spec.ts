@@ -1,18 +1,55 @@
 // Model addresses (step 4, task 5): /<cat>/<slug> shows the model, an unknown slug says "no longer available" with a
 // link to the category, a path that isn't /<cat>/<slug> is still the 404 page. (The "moved" alias case needs an alias
 // table entry, which the static build doesn't have: covered in tests/unit/modelAddress.test.ts.)
+// Product page (task 6): header (lowest price, shop link, photo) and the shops table (first 20, "Show all N", ⚠ on
+// prices older than 24 h).
 import { expect, test, type Page } from '@playwright/test';
 
-/** A real model of the build: the first entry of the first non-empty gpu chunk. */
-async function aModel(page: Page): Promise<{ slug: string; chip: string }> {
+interface Listing {
+  url: string;
+  price: number;
+  shipping?: number | null;
+  total?: number | null;
+}
+interface Entry {
+  slug: string;
+  chip: string;
+  photo: boolean;
+  listings: Listing[];
+}
+
+/** The shops table shows this many offers before "Show all N" (lib/offers.FIRST_OFFERS). */
+const FIRST = 20;
+
+/** A real model of the build: the first entry (of the first gpu chunk that has one) that `wanted` accepts. */
+async function aModel(page: Page, wanted: (m: Entry) => boolean = () => true): Promise<Entry> {
   const { builtAt } = await (await page.request.get('/data/manifest.json')).json();
   for (let n = 0; n < 256; n++) {
     const r = await page.request.get(`/data/gpu/model/${String(n).padStart(3, '0')}.json?v=${builtAt}`);
-    const models = Object.values((await r.json()).models as Record<string, { slug: string; chip: string }>);
-    if (models.length) return models[0];
+    const found = Object.values((await r.json()).models as Record<string, Entry>).find(wanted);
+    if (found) return found;
   }
-  throw new Error('no gpu model in any chunk');
+  throw new Error('no such gpu model in any chunk');
 }
+
+/**
+ * The lowest amount the page should show, worked out here from the chunk: price + shipping when the offer's own total
+ * is known (data.ownTotal: a total within 2% of price + shipping), else the price.
+ */
+const lowest = (ls: Listing[]) =>
+  Math.min(
+    ...ls.map((l) =>
+      l.total != null && l.shipping != null && Math.abs(l.total - l.shipping - l.price) <= 0.02 * l.price ? l.price + l.shipping : l.price,
+    ),
+  );
+const euro = (lang: string, n: number) => new Intl.NumberFormat(lang === 'el' ? 'el-GR' : 'en-IE', { style: 'currency', currency: 'EUR' }).format(n);
+const SHOW_ALL = /^(Δες και τις|Show all) /;
+/** "1.234,56 €" (el) / "€1,234.56" (en) → 1234.56: the last "," or "." before two digits is the decimal mark. */
+const cents = (text: string) => {
+  const digits = text.replace(/[^\d.,]/g, '');
+  const m = digits.match(/^(.*)[.,](\d{2})$/);
+  return m ? Number(`${m[1].replace(/[.,]/g, '')}.${m[2]}`) : Number(digits.replace(/[.,]/g, ''));
+};
 
 for (const [name, size] of [['360', { width: 360, height: 740 }], ['1366', { width: 1366, height: 800 }]] as const) {
   test.describe(`at ${name} px`, () => {
@@ -28,6 +65,107 @@ for (const [name, size] of [['360', { width: 360, height: 740 }], ['1366', { wid
       await expect(page.locator('nav[aria-label] a[href="/gpu"]').first()).toBeAttached();
       expect(await noOverflow(page)).toBe(true);
       expect(errors).toEqual([]);
+    });
+
+    test('the header shows the lowest price and links the cheapest offer; the table lists the offers', async ({ page }) => {
+      const errors: string[] = [];
+      page.on('pageerror', (e) => errors.push(e.message));
+      const m = await aModel(page, (x) => x.listings.length >= 3);
+      await page.goto(`/gpu/${m.slug}`);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(m.chip, { timeout: 20_000 });
+      await expect(page).toHaveTitle(`${m.chip} — BuildDraft.gr`);
+      const lang = await page.evaluate(() => document.documentElement.lang);
+      const header = page.locator('[data-product-header]');
+      await expect(header.locator('[data-lowest]')).toHaveText(euro(lang, lowest(m.listings)));
+      const shop = header.getByRole('link', { name: /^(Στο κατάστημα|To the shop)/ });
+      const rel = (await shop.getAttribute('rel')) ?? '';
+      expect(rel.split(' ')).toEqual(expect.arrayContaining(['noopener', 'nofollow']));
+      expect(await shop.getAttribute('target')).toBe('_blank');
+      expect(m.listings.map((l) => l.url)).toContain(await shop.getAttribute('href'));
+      const shown = Math.min(m.listings.length, FIRST);
+      await expect(page.locator('[data-offer]')).toHaveCount(shown);
+      // The first offer is the header's one: same link.
+      expect(await page.locator('[data-offer]').first().getByRole('link').getAttribute('href')).toBe(await shop.getAttribute('href'));
+      // Every row adds up: price + shipping = total (to the cent), and a row with unknown shipping has no total.
+      const rows = await page.locator('[data-offer]').evaluateAll((els) =>
+        els.map((e) => ['price', 'shipping', 'total'].map((c) => e.querySelector(`[data-cell="${c}"]`)!.textContent ?? '')),
+      );
+      for (const [p, s, t] of rows) {
+        if (s.includes('—')) expect(t).toContain('—');
+        else expect(Math.round((cents(p) + cents(s)) * 100) / 100).toBe(cents(t));
+      }
+      expect(rows[0][2].includes('—') ? rows[0][0] : rows[0][2]).toBe(await header.locator('[data-lowest]').textContent());
+      if (m.photo) expect(await header.locator('img').getAttribute('loading')).toBe('eager'); // the LCP element
+      if (size.width < 1024) {
+        await expect(page.locator('table [data-offer]')).toHaveCount(0); // cards on phones
+        expect((await shop.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+      } else await expect(page.locator('table [data-offer]')).toHaveCount(shown);
+      expect(await noOverflow(page)).toBe(true);
+      expect(errors).toEqual([]);
+    });
+
+    test('a long offer list shows 20, then "Show all N" shows every offer and moves focus to the first new one', async ({ page }) => {
+      const m = await aModel(page, (x) => x.listings.length > FIRST);
+      await page.goto(`/gpu/${m.slug}`);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(m.chip, { timeout: 20_000 });
+      await expect(page.locator('[data-offer]')).toHaveCount(FIRST);
+      const more = page.getByRole('button', { name: SHOW_ALL });
+      await expect(more).toHaveCount(1);
+      await expect(more).toHaveText(new RegExp(`${m.listings.length}$`));
+      if (size.width < 1024) expect((await more.boundingBox())!.height).toBeGreaterThanOrEqual(44); // `tap` on touch sizes
+      await more.focus();
+      await page.keyboard.press('Enter');
+      await expect(page.locator('[data-offer]')).toHaveCount(m.listings.length);
+      await expect(more).toHaveCount(0);
+      await expect(page.locator('[data-offer]').nth(FIRST)).toBeFocused();
+      expect(await noOverflow(page)).toBe(true);
+    });
+
+    test('a one-listing model: one offer, no "Show all"; no photo request when the model has none', async ({ page }) => {
+      const img: string[] = [];
+      page.on('request', (r) => {
+        if (new URL(r.url()).pathname.startsWith('/img/')) img.push(r.url());
+      });
+      const m = await aModel(page, (x) => x.listings.length === 1 && !x.photo);
+      await page.goto(`/gpu/${m.slug}`);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(m.chip, { timeout: 20_000 });
+      const header = page.locator('[data-product-header]');
+      await expect(header.locator('img')).toHaveCount(0);
+      await expect(header.locator('span[aria-hidden="true"] svg').first()).toBeVisible();
+      await expect(page.locator('[data-offer]')).toHaveCount(1);
+      await expect(page.getByRole('button', { name: SHOW_ALL })).toHaveCount(0);
+      expect(img).toEqual([]);
+      expect(await noOverflow(page)).toBe(true);
+    });
+
+    test('a photo that fails to load shows the category icon', async ({ page }) => {
+      await page.route('**/img/**', (r) => r.abort());
+      const m = await aModel(page, (x) => x.photo);
+      await page.goto(`/gpu/${m.slug}`);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(m.chip, { timeout: 20_000 });
+      const header = page.locator('[data-product-header]');
+      await expect(header.locator('img')).toHaveCount(0);
+      await expect(header.locator('span[aria-hidden="true"] svg').first()).toBeVisible();
+    });
+
+    test('prices read more than 24 h ago are marked', async ({ page }) => {
+      const m = await aModel(page, (x) => x.listings.length >= 2 && x.listings.length <= FIRST);
+      // The chunk as built, with every source last read three days ago.
+      const old = new Date(Date.now() - 3 * 86_400_000).toISOString();
+      await page.route('**/data/gpu/model/*.json*', async (route) => {
+        const response = await route.fetch();
+        const json = await response.json();
+        for (const s of Object.values(json.sources as Record<string, { updatedAt: string | null }>)) s.updatedAt = old;
+        await route.fulfill({ response, json });
+      });
+      await page.goto(`/gpu/${m.slug}`);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(m.chip, { timeout: 20_000 });
+      const rows = page.locator('[data-offer]');
+      await expect(rows).toHaveCount(m.listings.length);
+      await expect(page.locator('[data-offer] [data-checked="stale"]')).toHaveCount(m.listings.length);
+      await expect(rows.first().locator('[data-checked="stale"]')).toContainText(/μπορεί να έχει αλλάξει|may have changed/);
+      await expect(rows.first().locator('[data-checked="stale"] svg')).toBeVisible();
+      expect(await noOverflow(page)).toBe(true);
     });
 
     test('an unknown slug says no longer available, with a link to the category', async ({ page }) => {

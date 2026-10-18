@@ -131,6 +131,7 @@ export default function App() {
           ? PAGE.home.title
           : PAGE[route.kind].title;
   useEffect(() => {
+    if (route.kind === 'model') return; // the model page names the model (components/product/ModelPage)
     document.title = route.kind === 'home' ? `BuildDraft.gr — ${tr(lang, title)}` : `${tr(lang, title)} — BuildDraft.gr`;
   }, [route, title, lang]);
 

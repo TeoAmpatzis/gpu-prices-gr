@@ -38,24 +38,32 @@ const loadChunk = (() => {
  * builds; each chunk is fetched once per build.
  */
 export async function loadModel(cat: Category, slug: string): Promise<ModelEntry | null> {
+  return (await loadModelWithSources(cat, slug))?.entry ?? null;
+}
+
+/** loadModel plus its chunk's `sources` (each source's last update: the product page's "checked" column). */
+async function loadModelWithSources(cat: Category, slug: string): Promise<{ entry: ModelEntry; sources: ModelChunk['sources'] } | null> {
   const { builtAt } = await loadManifest();
   const chunk = await loadChunk(`/${modelChunkPath(cat, modelChunkOf(slug))}?v=${builtAt}`);
-  return has(chunk.models, slug) ? chunk.models[slug] : null;
+  return has(chunk.models, slug) ? { entry: chunk.models[slug], sources: chunk.sources } : null;
 }
 
 const has = (o: object, k: string) => Object.prototype.hasOwnProperty.call(o, k);
 
-export type ModelResolution = { kind: 'ok'; entry: ModelEntry } | { kind: 'moved'; slug: string } | { kind: 'gone' };
+export type ModelResolution =
+  | { kind: 'ok'; entry: ModelEntry; sources: ModelChunk['sources'] }
+  | { kind: 'moved'; slug: string }
+  | { kind: 'gone' };
 
 /**
  * What an address /<cat>/<slug> shows: an aliased old slug is `moved` to the new one (no request); otherwise the
- * slug's chunk is fetched and the entry looked up: `ok`, or `gone` (delisted since the build, or never a model:
+ * slug's chunk is fetched and the entry looked up: `ok` (with the chunk's per-source update times), or `gone` (delisted since the build, or never a model:
  * the chunks can't tell the two apart). `aliases` = old slug -> new slug (data/modelAliases.ts).
  */
 export async function resolveModel(cat: Category, slug: string, aliases: Record<string, string> = MODEL_ALIAS_SLUGS[cat]): Promise<ModelResolution> {
   if (has(aliases, slug)) return { kind: 'moved', slug: aliases[slug] };
-  const entry = await loadModel(cat, slug);
-  return entry ? { kind: 'ok', entry } : { kind: 'gone' };
+  const found = await loadModelWithSources(cat, slug);
+  return found ? { kind: 'ok', ...found } : { kind: 'gone' };
 }
 
 /**

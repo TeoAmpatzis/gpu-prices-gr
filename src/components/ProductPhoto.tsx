@@ -18,6 +18,7 @@ export default function ProductPhoto({
   hideOnPhone = false,
   hint,
   caption,
+  eager = false,
 }: {
   image: ProductImage | null;
   size: keyof typeof PX;
@@ -28,6 +29,8 @@ export default function ProductPhoto({
   hint?: string;
   /** Short visible text on the tile's bottom edge (does not change the tile's size). */
   caption?: string;
+  /** The page's main photo (product page header, its LCP element): loaded at once with high priority. Lists stay lazy. */
+  eager?: boolean;
 }) {
   const [failed, setFailed] = useState<string | null>(null);
   const [loaded, setLoaded] = useState<string | null>(null);
@@ -49,8 +52,10 @@ export default function ProductPhoto({
       src={`${image.src}-${px <= 48 ? 96 : 320}.webp`}
       width={px}
       height={px}
-      loading="lazy"
-      decoding="async"
+      loading={eager ? 'eager' : 'lazy'}
+      // React 18 passes the lowercase attribute through (its camelCase `fetchPriority` arrives in React 19).
+      {...(eager ? { fetchpriority: 'high' } : {})}
+      decoding={eager ? 'auto' : 'async'}
       alt={alt}
       title={hint}
       onLoad={() => setLoaded(image.src)}

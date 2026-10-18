@@ -6,12 +6,13 @@ import { guardMoved, modelChunkOf, modelChunkPath, type ModelResolution } from '
 import { CATEGORY_LIST } from '../../src/lib/routes';
 
 const BUILT = '2026-10-17T14:00:00.000Z';
+const SOURCES = { skroutz: { count: 1, ok: true, updatedAt: '2026-10-17T11:00:00+00:00' } };
 
 async function setup(models: Record<string, unknown>, slug: string) {
   const requests: string[] = [];
   const files: Record<string, unknown> = {
     '/data/manifest.json': { builtAt: BUILT },
-    [`/${modelChunkPath('gpu', modelChunkOf(slug))}?v=${BUILT}`]: { models },
+    [`/${modelChunkPath('gpu', modelChunkOf(slug))}?v=${BUILT}`]: { models, sources: SOURCES },
   };
   vi.stubGlobal('fetch', async (url: string) => {
     requests.push(url);
@@ -24,10 +25,10 @@ async function setup(models: Record<string, unknown>, slug: string) {
 afterEach(() => vi.unstubAllGlobals());
 
 describe('resolveModel', () => {
-  it('a current slug is ok with its entry', async () => {
+  it("a current slug is ok with its entry and the chunk's source update times", async () => {
     const entry = { key: 'RTX 5070 12GB', slug: 'rtx-5070-12gb' };
     const { md } = await setup({ 'rtx-5070-12gb': entry }, 'rtx-5070-12gb');
-    expect(await md.resolveModel('gpu', 'rtx-5070-12gb')).toEqual({ kind: 'ok', entry });
+    expect(await md.resolveModel('gpu', 'rtx-5070-12gb')).toEqual({ kind: 'ok', entry, sources: SOURCES });
   });
 
   it('an aliased old slug is moved to the new one, with no request', async () => {
