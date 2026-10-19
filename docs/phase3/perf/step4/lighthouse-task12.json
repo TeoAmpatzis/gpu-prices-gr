@@ -1,0 +1,452 @@
+{
+  "p-gpu/mobile": {
+    "median": {
+      "performance": 96,
+      "accessibility": 100,
+      "fcpMs": 1203.7343,
+      "lcpMs": 2782.244199999999,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 1203.7343,
+      "totalKB": 221.076171875,
+      "jsKB": 116.4873046875,
+      "dataKB": 10.087890625,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 96,
+        "accessibility": 100,
+        "fcpMs": 1204.3873,
+        "lcpMs": 2774.7746000000006,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1204.3873,
+        "totalKB": 221.078125,
+        "jsKB": 116.4873046875,
+        "dataKB": 10.087890625,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 96,
+        "accessibility": 100,
+        "fcpMs": 1203.6221,
+        "lcpMs": 2782.244199999999,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1203.6221,
+        "totalKB": 221.076171875,
+        "jsKB": 116.4873046875,
+        "dataKB": 10.087890625,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 96,
+        "accessibility": 100,
+        "fcpMs": 1203.7343,
+        "lcpMs": 2788.4686,
+        "tbtMs": 8,
+        "cls": 0,
+        "siMs": 1203.7343,
+        "totalKB": 221.076171875,
+        "jsKB": 116.4873046875,
+        "dataKB": 10.087890625,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-OB0rAX6R.js 66.5",
+      "ModelPage-CRzwWrkg.js 13.9",
+      "images-N4UyTWze.js 8.7",
+      "data-DUyOI8WD.js 4.5",
+      "titles-HT27sqUl.js 2.8",
+      "buildStore-Zxjh3SSu.js 1.6",
+      "pickStrings-BeHClJe8.js 1.8",
+      "priceSummary-DqT4Kjas.js 1.1",
+      "site-ou-5z3uj.js 0.5",
+      "PriceChart-BZI0fe7-.js 2.8",
+      "BuildFit-Cq1lAHso.js 3.1",
+      "builder-BXmpnQRn.js 6.1",
+      "useBuildCheck-CHsCJked.js 3.0"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "gpu/model/199.json 9.1"
+    ]
+  },
+  "p-gpu/desktop": {
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "fcpMs": 323.7449,
+      "lcpMs": 608.615,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 323.7449,
+      "totalKB": 221.076171875,
+      "jsKB": 116.4873046875,
+      "dataKB": 10.087890625,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 324.1373,
+        "lcpMs": 610.2746000000001,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 324.1373,
+        "totalKB": 221.076171875,
+        "jsKB": 116.4873046875,
+        "dataKB": 10.087890625,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 323.7449,
+        "lcpMs": 608.4898,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 323.7449,
+        "totalKB": 221.076171875,
+        "jsKB": 116.4873046875,
+        "dataKB": 10.087890625,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 323.3075,
+        "lcpMs": 608.615,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 323.3075,
+        "totalKB": 221.076171875,
+        "jsKB": 116.4873046875,
+        "dataKB": 10.087890625,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-OB0rAX6R.js 66.5",
+      "ModelPage-CRzwWrkg.js 13.9",
+      "images-N4UyTWze.js 8.7",
+      "data-DUyOI8WD.js 4.5",
+      "titles-HT27sqUl.js 2.8",
+      "buildStore-Zxjh3SSu.js 1.6",
+      "pickStrings-BeHClJe8.js 1.8",
+      "priceSummary-DqT4Kjas.js 1.1",
+      "site-ou-5z3uj.js 0.5",
+      "PriceChart-BZI0fe7-.js 2.8",
+      "BuildFit-Cq1lAHso.js 3.1",
+      "builder-BXmpnQRn.js 6.1",
+      "useBuildCheck-CHsCJked.js 3.0"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "gpu/model/199.json 9.1"
+    ]
+  },
+  "p-case/mobile": {
+    "median": {
+      "performance": 96,
+      "accessibility": 100,
+      "fcpMs": 1203.7767,
+      "lcpMs": 2724.5534000000007,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 1203.7767,
+      "totalKB": 211.1494140625,
+      "jsKB": 116.4873046875,
+      "dataKB": 10.212890625,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 96,
+        "accessibility": 100,
+        "fcpMs": 1203.7575,
+        "lcpMs": 2765.5149999999994,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1203.7575,
+        "totalKB": 211.1494140625,
+        "jsKB": 116.4873046875,
+        "dataKB": 10.212890625,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 96,
+        "accessibility": 100,
+        "fcpMs": 1204.2653,
+        "lcpMs": 2722.5306,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1204.2653,
+        "totalKB": 211.1494140625,
+        "jsKB": 116.4873046875,
+        "dataKB": 10.212890625,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 96,
+        "accessibility": 100,
+        "fcpMs": 1203.7767,
+        "lcpMs": 2724.5534000000007,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1203.7767,
+        "totalKB": 211.1494140625,
+        "jsKB": 116.4873046875,
+        "dataKB": 10.212890625,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-OB0rAX6R.js 66.5",
+      "ModelPage-CRzwWrkg.js 13.9",
+      "images-N4UyTWze.js 8.7",
+      "data-DUyOI8WD.js 4.5",
+      "titles-HT27sqUl.js 2.8",
+      "buildStore-Zxjh3SSu.js 1.6",
+      "pickStrings-BeHClJe8.js 1.8",
+      "priceSummary-DqT4Kjas.js 1.1",
+      "site-ou-5z3uj.js 0.5",
+      "PriceChart-BZI0fe7-.js 2.8",
+      "BuildFit-Cq1lAHso.js 3.1",
+      "builder-BXmpnQRn.js 6.1",
+      "useBuildCheck-CHsCJked.js 3.0"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "case/model/113.json 9.3"
+    ]
+  },
+  "p-case/desktop": {
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "fcpMs": 323.2705,
+      "lcpMs": 608.541,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 323.2705,
+      "totalKB": 248.193359375,
+      "jsKB": 116.4873046875,
+      "dataKB": 10.212890625,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 323.2705,
+        "lcpMs": 608.541,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 323.2705,
+        "totalKB": 248.193359375,
+        "jsKB": 116.4873046875,
+        "dataKB": 10.212890625,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 324.3178,
+        "lcpMs": 609.6356000000001,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 324.3178,
+        "totalKB": 248.193359375,
+        "jsKB": 116.4873046875,
+        "dataKB": 10.212890625,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 322.5801,
+        "lcpMs": 606.1601999999999,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 322.5801,
+        "totalKB": 248.1923828125,
+        "jsKB": 116.4873046875,
+        "dataKB": 10.212890625,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-OB0rAX6R.js 66.5",
+      "ModelPage-CRzwWrkg.js 13.9",
+      "images-N4UyTWze.js 8.7",
+      "data-DUyOI8WD.js 4.5",
+      "titles-HT27sqUl.js 2.8",
+      "buildStore-Zxjh3SSu.js 1.6",
+      "pickStrings-BeHClJe8.js 1.8",
+      "priceSummary-DqT4Kjas.js 1.1",
+      "site-ou-5z3uj.js 0.5",
+      "PriceChart-BZI0fe7-.js 2.8",
+      "BuildFit-Cq1lAHso.js 3.1",
+      "builder-BXmpnQRn.js 6.1",
+      "useBuildCheck-CHsCJked.js 3.0"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "case/model/113.json 9.3"
+    ]
+  },
+  "p-storage/mobile": {
+    "median": {
+      "performance": 96,
+      "accessibility": 100,
+      "fcpMs": 1203.4734,
+      "lcpMs": 2720.9468,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 1203.4734,
+      "totalKB": 208.755859375,
+      "jsKB": 116.4873046875,
+      "dataKB": 8.5048828125,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 96,
+        "accessibility": 100,
+        "fcpMs": 1204.3986,
+        "lcpMs": 2723.7972,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1204.3986,
+        "totalKB": 208.7568359375,
+        "jsKB": 116.4873046875,
+        "dataKB": 8.5048828125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 96,
+        "accessibility": 100,
+        "fcpMs": 1203.4734,
+        "lcpMs": 2720.9468,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1203.4734,
+        "totalKB": 208.755859375,
+        "jsKB": 116.4873046875,
+        "dataKB": 8.5048828125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 96,
+        "accessibility": 100,
+        "fcpMs": 1203.1734,
+        "lcpMs": 2720.3467999999993,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1203.1734,
+        "totalKB": 208.755859375,
+        "jsKB": 116.4873046875,
+        "dataKB": 8.5048828125,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-OB0rAX6R.js 66.5",
+      "ModelPage-CRzwWrkg.js 13.9",
+      "images-N4UyTWze.js 8.7",
+      "data-DUyOI8WD.js 4.5",
+      "titles-HT27sqUl.js 2.8",
+      "buildStore-Zxjh3SSu.js 1.6",
+      "pickStrings-BeHClJe8.js 1.8",
+      "priceSummary-DqT4Kjas.js 1.1",
+      "site-ou-5z3uj.js 0.5",
+      "PriceChart-BZI0fe7-.js 2.8",
+      "BuildFit-Cq1lAHso.js 3.1",
+      "builder-BXmpnQRn.js 6.1",
+      "useBuildCheck-CHsCJked.js 3.0"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "storage/model/166.json 7.6"
+    ]
+  },
+  "p-storage/desktop": {
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "fcpMs": 323.3245,
+      "lcpMs": 608.649,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 323.3245,
+      "totalKB": 234.2421875,
+      "jsKB": 116.4873046875,
+      "dataKB": 8.5048828125,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 323.7103,
+        "lcpMs": 609.4206,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 323.7103,
+        "totalKB": 234.244140625,
+        "jsKB": 116.4873046875,
+        "dataKB": 8.5048828125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 323.3245,
+        "lcpMs": 608.649,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 323.3245,
+        "totalKB": 234.2421875,
+        "jsKB": 116.4873046875,
+        "dataKB": 8.5048828125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 323.2315,
+        "lcpMs": 608.463,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 323.2315,
+        "totalKB": 234.2412109375,
+        "jsKB": 116.4873046875,
+        "dataKB": 8.5048828125,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-OB0rAX6R.js 66.5",
+      "ModelPage-CRzwWrkg.js 13.9",
+      "images-N4UyTWze.js 8.7",
+      "data-DUyOI8WD.js 4.5",
+      "titles-HT27sqUl.js 2.8",
+      "buildStore-Zxjh3SSu.js 1.6",
+      "pickStrings-BeHClJe8.js 1.8",
+      "priceSummary-DqT4Kjas.js 1.1",
+      "site-ou-5z3uj.js 0.5",
+      "PriceChart-BZI0fe7-.js 2.8",
+      "BuildFit-Cq1lAHso.js 3.1",
+      "builder-BXmpnQRn.js 6.1",
+      "useBuildCheck-CHsCJked.js 3.0"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "storage/model/166.json 7.6"
+    ]
+  }
+}

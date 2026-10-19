@@ -111,6 +111,36 @@ if (MODE === 'bytes') {
       await browser.close();
     }
   }
+  // Step 4: plain pages (no build): category pages, the builder and product pages, until the network is idle
+  // (product pages: and the offers table is shown).
+  for (const path of ['/gpu', '/case', '/storage', '/builder', '/gpu/rtx-5060-8gb', '/case/corsair-3500x', '/storage/crucial-p310-1tb-ssd']) {
+    const browser = await chromium.launch();
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const setup = await withStorage(ctx, null);
+    await setup.close();
+    const page = await ctx.newPage();
+    const files = [];
+    const pending = [];
+    page.on('response', (r) => {
+      pending.push(
+        r.body().then((b) => files.push({ url: new URL(r.url()).pathname, type: r.request().resourceType(), raw: b.length, gz: gzipSync(b, { level: 6 }).length })).catch(() => {}),
+      );
+    });
+    await page.goto(`${BASE}${path}`, { waitUntil: 'networkidle' });
+    await page.waitForTimeout(1500);
+    await page.waitForLoadState('networkidle');
+    await Promise.all(pending);
+    const sum = (pred) => files.filter(pred).reduce((t, f) => t + f.gz, 0) / 1024;
+    const isData = (f) => /^\/data\/.+\.json$/.test(f.url);
+    rows.push({
+      page: path, build: '-', checked: true,
+      jsKB: sum((f) => f.type === 'script'), dataKB: sum(isData), fontKB: sum((f) => f.type === 'font'),
+      js: files.filter((f) => f.type === 'script').map((f) => `${f.url.split('/').pop()} ${(f.gz / 1024).toFixed(1)}`),
+      data: files.filter(isData).map((f) => `${f.url.replace('/data/', '')} ${(f.gz / 1024).toFixed(1)}`),
+    });
+    console.log(path, 'js', rows.at(-1).jsKB.toFixed(1), 'data', rows.at(-1).dataKB.toFixed(1), 'font', rows.at(-1).fontKB.toFixed(1), rows.at(-1).data.join(' | '));
+    await browser.close();
+  }
   writeFileSync(A3, `${JSON.stringify({ builds: { typical: Object.keys(typical), worst: Object.keys(worst), parts: Object.fromEntries(Object.entries(PARTS).map(([s, p]) => [s, p.key])) }, rows }, null, 2)}\n`);
 } else if (MODE === 'lighthouse') {
   const OUT = A3, RAW = A4, RUNS = Number(A5 ?? 3), ONLY = A6;
@@ -127,6 +157,10 @@ if (MODE === 'bytes') {
     { id: 'case-pick-c', path: '/case?pick=1', build: 'c' },
     { id: 'storage', path: '/storage' },
     { id: 'builder-guided', path: '/builder' },
+    // Step 4 product pages: models listed by all five shops, then by most listings (from list.v2.json).
+    { id: 'p-gpu', path: '/gpu/rtx-5060-8gb' },
+    { id: 'p-case', path: '/case/corsair-3500x' },
+    { id: 'p-storage', path: '/storage/crucial-p310-1tb-ssd' },
   ];
   const median = (xs) => {
     const s = xs.filter((x) => x != null).sort((a, b) => a - b);
