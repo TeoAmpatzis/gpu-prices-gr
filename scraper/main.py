@@ -15,6 +15,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
+import aliases  # noqa: E402
 import http_client  # noqa: E402
 import makers  # noqa: E402
 import overrides  # noqa: E402
@@ -131,8 +132,10 @@ def write_image_urls(out_dir: Path, listings: list[dict], model_key) -> None:
     path.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
 
-def update_history(history: dict, listings: list[dict], day: str, model_key) -> dict:
-    """One point per model per day: the lowest price seen that day across runs."""
+def update_history(history: dict, listings: list[dict], day: str, model_key, model_aliases: dict | None = None) -> dict:
+    """One point per model per day: the lowest price seen that day across runs. Renamed models
+    (scraper/model_aliases.json) first move their points to the new key (aliases.fold_history, idempotent)."""
+    aliases.fold_history(history, model_aliases or {})
     cheapest: dict[str, dict] = {}
     for l in listings:
         key = model_key(l)
@@ -149,6 +152,21 @@ def update_history(history: dict, listings: list[dict], day: str, model_key) -> 
             points.append({"d": day, "min": l["price"], "source": l["source"]})
         del points[:-HISTORY_DAYS]
     return dict(sorted(history.items()))
+
+
+def write_history(cat: str, model_key, out_dir: Path, listings: list[dict], fresh: list[dict], day: str,
+                  model_aliases: dict | None = None) -> dict:
+    """history.json (+ history_imported.json markers) for one scrape: renamed models are folded first,
+    except an old key that has listings again (taken from ALL listings, also the kept ones of a failed
+    source); then today's points from the fresh listings."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    history_path = out_dir / "history.json"
+    live = {model_key(l) for l in listings}
+    folding = aliases.active(cat, aliases.for_cat(cat) if model_aliases is None else model_aliases, live)
+    history = update_history(load_json(history_path, {}), fresh, day, model_key, folding)
+    site_history.follow_aliases(out_dir, folding)
+    history_path.write_text(json.dumps(history, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    return history
 
 
 def finish(cat: Category, out_dir: Path, listings: list[dict]) -> None:
@@ -252,8 +270,7 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
         encoding="utf-8",
     )
     fresh = [l for l in listings if sources_meta.get(l["source"], {}).get("ok")]
-    history = update_history(load_json(history_path, {}), fresh, run_at[:10], cat.model_key)
-    history_path.write_text(json.dumps(history, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    history = write_history(cat.name, cat.model_key, out_dir, listings, fresh, run_at[:10])
     print(f"[{cat.name}] wrote {len(listings)} listings, {len(history)} models in history")
     print(http_client.summary(f"{cat.name} sources", seconds))
     return any(m["ok"] for m in sources_meta.values())

@@ -129,30 +129,50 @@ def _git_json(ref: str, rel: str) -> dict:
     return json.loads(r.stdout.decode("utf-8"))
 
 
-def removed_points(old: dict, new: dict) -> list[tuple[str, str]]:
-    """(model, day) points of `old` missing from `new`, except the oldest ones dropped by the KEEP limit."""
+def removed_points(old: dict, new: dict, aliases: dict[str, str] | None = None) -> list[tuple[str, str]]:
+    """(model, day) points of `old` missing from `new`, except the oldest ones dropped by the KEEP limit.
+    A point of a renamed model (scraper/model_aliases.json) counts as present when its alias target has a
+    point that day (the fold moved it; on a shared day only one point is kept), or when the target's own
+    KEEP trim dropped that day."""
+    aliases = aliases or {}
     gone = []
     for model, points in old.items():
         now = new.get(model, [])
         have = {p["d"] for p in now}
         oldest_kept = now[0]["d"] if len(now) >= KEEP else ""
+        target = new.get(aliases[model], []) if model in aliases else []
+        target_have = {p["d"] for p in target}
+        target_oldest = target[0]["d"] if len(target) >= KEEP else ""
         for p in points:
-            if p["d"] not in have and not (oldest_kept and p["d"] < oldest_kept):
-                gone.append((model, p["d"]))
+            d = p["d"]
+            if d in have or (oldest_kept and d < oldest_kept):
+                continue
+            if d in target_have or (target_oldest and d < target_oldest):
+                continue
+            gone.append((model, d))
     return gone
 
 
+def lost_markers(old_imp: dict, new_imp: dict, aliases: dict[str, str] | None = None) -> list[str]:
+    """Import markers of `old_imp` missing from `new_imp` (a renamed model's marker may sit on its target)."""
+    aliases = aliases or {}
+    return sorted(m for m in set(old_imp) - set(new_imp) if aliases.get(m) not in new_imp)
+
+
 def check(ref: str, allow_shrink: bool) -> int:
+    import aliases as model_aliases  # here: aliases imports this module
+
     problems = 0
     for cat in CATEGORIES:
         rel = f"public/data/{cat}/history.json"
         old, new = _git_json(ref, rel), _load(DATA_DIR / cat / "history.json", missing_ok=True)
-        gone = removed_points(old, new)
+        al = model_aliases.for_cat(cat)
+        gone = removed_points(old, new, al)
         models = sorted({m for m, _ in gone})
         old_imp, new_imp = _git_json(ref, f"public/data/{cat}/history_imported.json"), _load(
             DATA_DIR / cat / "history_imported.json", missing_ok=True
         )
-        lost_marks = sorted(set(old_imp) - set(new_imp))
+        lost_marks = lost_markers(old_imp, new_imp, al)
         if not gone and not lost_marks:
             continue
         problems += 1

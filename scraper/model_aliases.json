@@ -1,0 +1,32 @@
+{
+ "ram": {
+  "DDR2 1GB (1×1GB) Server": "DDR2 1GB (1×1GB) 400MHz Server",
+  "DDR2 2GB (1×2GB) Laptop": "DDR2 2GB (1×2GB) 800MHz Laptop",
+  "DDR2 8GB (1×8GB) Desktop": "DDR2 8GB (1×8GB) 667MHz Desktop",
+  "DDR2 8GB (2×4GB) Server": "DDR2 8GB (2×4GB) 667MHz Server",
+  "DDR3 16GB (2×8GB) Desktop": "DDR3 16GB (2×8GB) 1600MHz Desktop",
+  "DDR3 2GB (1×2GB) 667MHz Laptop": "DDR3 2GB (1×2GB) Laptop",
+  "DDR3 32GB (1×32GB) Desktop": "DDR3 32GB (1×32GB) 1866MHz Desktop",
+  "DDR3 32GB (4×8GB) Desktop": "DDR3 32GB (4×8GB) 1600MHz Desktop",
+  "DDR3 4GB (2×2GB) Desktop": "DDR3 4GB (2×2GB) 1600MHz Desktop",
+  "DDR3 6GB (3×2GB) Server": "DDR3 6GB (3×2GB) 1333MHz Server",
+  "DDR4 128GB (1×128GB) Desktop": "DDR4 128GB (1×128GB) 3200MHz Desktop",
+  "DDR4 128GB (1×128GB) Server": "DDR4 128GB (1×128GB) 3200MHz Server",
+  "DDR4 128GB (4×32GB) Desktop": "DDR4 128GB (4×32GB) 3600MHz Desktop",
+  "DDR4 8GB (2×4GB) Desktop": "DDR4 8GB (2×4GB) 4266MHz Desktop",
+  "DDR5 128GB (1×128GB) Server": "DDR5 128GB (1×128GB) 6400MHz Server",
+  "DDR5 128GB (4×32GB) Desktop": "DDR5 128GB (4×32GB) 5600MHz Desktop",
+  "DDR5 16GB (1×16GB) 48000MHz Desktop": "DDR5 16GB (1×16GB) 4800MHz Desktop",
+  "DDR5 24GB (1×24GB) 2800MHz Laptop": "DDR5 24GB (1×24GB) 5600MHz Laptop",
+  "DDR5 32GB (1×32GB) 2400MHz Desktop": "DDR5 32GB (1×32GB) 4800MHz Desktop",
+  "DDR5 32GB (1×32GB) 2400MHz Laptop": "DDR5 32GB (1×32GB) 4800MHz Laptop",
+  "DDR5 32GB (1×32GB) 2400MHz Server": "DDR5 32GB (1×32GB) 4800MHz Server",
+  "DDR5 32GB (1×32GB) 2800MHz Laptop": "DDR5 32GB (1×32GB) 5600MHz Laptop",
+  "DDR5 48GB (1×48GB) Laptop": "DDR5 48GB (1×48GB) 5600MHz Laptop",
+  "DDR5 48GB (1×48GB) Server": "DDR5 48GB (1×48GB) 5600MHz Server",
+  "DDR5 64GB (2×32GB) 60000MHz Desktop": "DDR5 64GB (2×32GB) 6000MHz Desktop",
+  "DDR5 64GB (2×32GB) Laptop": "DDR5 64GB (2×32GB) 5600MHz Laptop",
+  "DDR5 8GB (1×8GB) Server": "DDR5 8GB (1×8GB) 5600MHz Server",
+  "DDR5 96GB (4×24GB) Desktop": "DDR5 96GB (4×24GB) 5600MHz Desktop"
+ }
+}

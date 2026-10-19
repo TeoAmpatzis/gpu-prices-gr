@@ -22,6 +22,7 @@ import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import aliases
 import http_client as http
 from normalize import now_iso
 
@@ -66,7 +67,20 @@ def merge(points: list[dict], imported: dict[str, float], today: str) -> list[di
     return [by_day[d] for d in days]
 
 
-def enrich(cat: str, out_dir: Path, listings: list[dict], model_key, budget: int = BUDGET) -> None:
+def follow_aliases(out_dir: Path, model_aliases: dict[str, str]) -> None:
+    """history_imported.json markers of renamed models move to the new key (aliases.fold_imported);
+    the file is rewritten only when something moved."""
+    done_path = out_dir / "history_imported.json"
+    if not model_aliases or not done_path.exists():
+        return
+    done = json.loads(done_path.read_text(encoding="utf-8"))
+    if any(k in done for k in model_aliases):
+        aliases.fold_imported(done, model_aliases)
+        done_path.write_text(json.dumps(done, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+
+
+def enrich(cat: str, out_dir: Path, listings: list[dict], model_key, budget: int = BUDGET,
+           model_aliases: dict[str, str] | None = None) -> None:
     history_path, done_path = out_dir / "history.json", out_dir / "history_imported.json"
     try:
         history = json.loads(history_path.read_text(encoding="utf-8"))
@@ -76,6 +90,13 @@ def enrich(cat: str, out_dir: Path, listings: list[dict], model_key, budget: int
         done = json.loads(done_path.read_text(encoding="utf-8"))
     except (FileNotFoundError, json.JSONDecodeError):
         done = {}
+    # Renamed models (scraper/model_aliases.json): their history and import marker follow the new key
+    # first, so a renamed model isn't fetched again; an old key that has listings again is a model of its
+    # own and keeps both (aliases.active).
+    folding = aliases.active(cat, aliases.for_cat(cat) if model_aliases is None else model_aliases,
+                             {model_key(l) for l in listings})
+    aliases.fold_history(history, folding)
+    aliases.fold_imported(done, folding)
 
     models: dict[str, list[dict]] = {}
     for l in listings:
