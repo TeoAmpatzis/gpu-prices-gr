@@ -1,0 +1,1170 @@
+{
+  "gpu/mobile": {
+    "median": {
+      "performance": 99,
+      "accessibility": 100,
+      "fcpMs": 1369.7023,
+      "lcpMs": 2119.7023,
+      "tbtMs": 16,
+      "cls": 0,
+      "siMs": 1369.7023,
+      "totalKB": 435.30078125,
+      "jsKB": 96.337890625,
+      "dataKB": 42.9892578125,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 98,
+        "accessibility": 100,
+        "fcpMs": 1407.5918,
+        "lcpMs": 2157.5917999999997,
+        "tbtMs": 30.5,
+        "cls": 0,
+        "siMs": 1407.5918,
+        "totalKB": 435.3125,
+        "jsKB": 96.337890625,
+        "dataKB": 42.9892578125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 99,
+        "accessibility": 100,
+        "fcpMs": 1366.5301,
+        "lcpMs": 2116.5301,
+        "tbtMs": 9,
+        "cls": 0,
+        "siMs": 1366.5301,
+        "totalKB": 435.2998046875,
+        "jsKB": 96.337890625,
+        "dataKB": 42.9892578125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 99,
+        "accessibility": 100,
+        "fcpMs": 1369.7023,
+        "lcpMs": 2119.7023,
+        "tbtMs": 16,
+        "cls": 0,
+        "siMs": 1369.7023,
+        "totalKB": 435.30078125,
+        "jsKB": 96.337890625,
+        "dataKB": 42.9892578125,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-N9WkoTrU.js 66.5",
+      "CategoryPage-1sSt_sLD.js 12.6",
+      "data-BC4qAD83.js 4.5",
+      "images-D0cSokyZ.js 8.7",
+      "titles-DmWhMGcr.js 2.8",
+      "circle-help-CoD38poJ.js 0.9",
+      "facets.worker-C8COQ2Cv.js 0.3"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "gpu/list.v2.json 41.9",
+      "gpu/list.v2.json 0.1"
+    ]
+  },
+  "gpu/desktop": {
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "fcpMs": 501.3664,
+      "lcpMs": 621.3664000000001,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 501.3664,
+      "totalKB": 354.9228515625,
+      "jsKB": 96.337890625,
+      "dataKB": 42.9892578125,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 501.3664,
+        "lcpMs": 621.3664000000001,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 501.3664,
+        "totalKB": 354.9228515625,
+        "jsKB": 96.337890625,
+        "dataKB": 42.9892578125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 502.00440000000003,
+        "lcpMs": 622.0044,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 502.00440000000003,
+        "totalKB": 354.9248046875,
+        "jsKB": 96.337890625,
+        "dataKB": 42.9892578125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 496.00160000000005,
+        "lcpMs": 616.0016,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 496.00160000000005,
+        "totalKB": 354.919921875,
+        "jsKB": 96.337890625,
+        "dataKB": 42.9892578125,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-N9WkoTrU.js 66.5",
+      "CategoryPage-1sSt_sLD.js 12.6",
+      "data-BC4qAD83.js 4.5",
+      "images-D0cSokyZ.js 8.7",
+      "titles-DmWhMGcr.js 2.8",
+      "circle-help-CoD38poJ.js 0.9",
+      "facets.worker-C8COQ2Cv.js 0.3"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "gpu/list.v2.json 41.9",
+      "gpu/list.v2.json 0.1"
+    ]
+  },
+  "case/mobile": {
+    "median": {
+      "performance": 99,
+      "accessibility": 100,
+      "fcpMs": 1376.0121,
+      "lcpMs": 2126.0121,
+      "tbtMs": 52.99999999999977,
+      "cls": 0,
+      "siMs": 1376.0121,
+      "totalKB": 590.9228515625,
+      "jsKB": 96.337890625,
+      "dataKB": 246.1142578125,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 98,
+        "accessibility": 100,
+        "fcpMs": 1418.0734,
+        "lcpMs": 2168.0733999999998,
+        "tbtMs": 56,
+        "cls": 0,
+        "siMs": 1418.0734,
+        "totalKB": 590.935546875,
+        "jsKB": 96.337890625,
+        "dataKB": 246.1142578125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 99,
+        "accessibility": 100,
+        "fcpMs": 1364.4646,
+        "lcpMs": 2114.4646,
+        "tbtMs": 41.50000000000023,
+        "cls": 0,
+        "siMs": 1364.4646,
+        "totalKB": 590.9150390625,
+        "jsKB": 96.337890625,
+        "dataKB": 246.1142578125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 99,
+        "accessibility": 100,
+        "fcpMs": 1376.0121,
+        "lcpMs": 2126.0121,
+        "tbtMs": 52.99999999999977,
+        "cls": 0,
+        "siMs": 1376.0121,
+        "totalKB": 590.9228515625,
+        "jsKB": 96.337890625,
+        "dataKB": 246.1142578125,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-N9WkoTrU.js 66.5",
+      "CategoryPage-1sSt_sLD.js 12.6",
+      "data-BC4qAD83.js 4.5",
+      "images-D0cSokyZ.js 8.7",
+      "titles-DmWhMGcr.js 2.8",
+      "circle-help-CoD38poJ.js 0.9",
+      "facets.worker-C8COQ2Cv.js 0.3"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "case/list.v2.json 245.0",
+      "case/list.v2.json 0.1"
+    ]
+  },
+  "case/desktop": {
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "fcpMs": 505.1385,
+      "lcpMs": 625.1385,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 505.1385,
+      "totalKB": 520.4755859375,
+      "jsKB": 96.337890625,
+      "dataKB": 246.1142578125,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 505.1385,
+        "lcpMs": 625.1385,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 505.1385,
+        "totalKB": 520.50390625,
+        "jsKB": 96.337890625,
+        "dataKB": 246.1142578125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 511.0512,
+        "lcpMs": 631.0512000000001,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 511.0512,
+        "totalKB": 520.4755859375,
+        "jsKB": 96.337890625,
+        "dataKB": 246.1142578125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 497.28,
+        "lcpMs": 617.28,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 497.28,
+        "totalKB": 520.4287109375,
+        "jsKB": 96.337890625,
+        "dataKB": 246.1142578125,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-N9WkoTrU.js 66.5",
+      "CategoryPage-1sSt_sLD.js 12.6",
+      "data-BC4qAD83.js 4.5",
+      "images-D0cSokyZ.js 8.7",
+      "titles-DmWhMGcr.js 2.8",
+      "circle-help-CoD38poJ.js 0.9",
+      "facets.worker-C8COQ2Cv.js 0.3"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "case/list.v2.json 245.0",
+      "case/list.v2.json 0.1"
+    ]
+  },
+  "case-pick-b/mobile": {
+    "median": {
+      "performance": 99,
+      "accessibility": 100,
+      "fcpMs": 1204.1135,
+      "lcpMs": 1954.1135,
+      "tbtMs": 36.5,
+      "cls": 0.00009927400647477578,
+      "siMs": 1204.1135,
+      "totalKB": 498.615234375,
+      "jsKB": 113.646484375,
+      "dataKB": 246.1142578125,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 99,
+        "accessibility": 100,
+        "fcpMs": 1204.49,
+        "lcpMs": 1954.4900000000002,
+        "tbtMs": 38,
+        "cls": 0.00009927400647477578,
+        "siMs": 1204.49,
+        "totalKB": 498.6171875,
+        "jsKB": 113.646484375,
+        "dataKB": 246.1142578125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 99,
+        "accessibility": 100,
+        "fcpMs": 1204.1135,
+        "lcpMs": 1954.1135,
+        "tbtMs": 36.5,
+        "cls": 0.00009927400647477578,
+        "siMs": 1204.1135,
+        "totalKB": 498.599609375,
+        "jsKB": 113.646484375,
+        "dataKB": 246.1142578125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 99,
+        "accessibility": 100,
+        "fcpMs": 1203.7847,
+        "lcpMs": 1953.7846999999997,
+        "tbtMs": 34,
+        "cls": 0.00009927400647477578,
+        "siMs": 1203.7847,
+        "totalKB": 498.615234375,
+        "jsKB": 113.646484375,
+        "dataKB": 246.1142578125,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-N9WkoTrU.js 66.5",
+      "CategoryPage-1sSt_sLD.js 12.6",
+      "data-BC4qAD83.js 4.5",
+      "images-D0cSokyZ.js 8.7",
+      "titles-DmWhMGcr.js 2.8",
+      "circle-help-CoD38poJ.js 0.9",
+      "PickView-abB4Pe9v.js 3.6",
+      "util-72djhCDY.js 0.9",
+      "builder-DZxvX5SG.js 6.1",
+      "buildStore-Cmeqi1tV.js 1.6",
+      "useBuildCheck-DVGIz4-8.js 3.0",
+      "pickStrings-CbnGwurR.js 1.8",
+      "pick.worker-Bd7dA2VL.js 0.3",
+      "facets.worker-C8COQ2Cv.js 0.3"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "case/list.v2.json 245.0",
+      "case/list.v2.json 0.1"
+    ]
+  },
+  "case-pick-b/desktop": {
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "fcpMs": 497.6161,
+      "lcpMs": 617.6161,
+      "tbtMs": 0,
+      "cls": 0.00001634189482845224,
+      "siMs": 497.6161,
+      "totalKB": 483.5205078125,
+      "jsKB": 113.646484375,
+      "dataKB": 246.1142578125,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 99,
+        "accessibility": 100,
+        "fcpMs": 623.2585,
+        "lcpMs": 743.2585000000001,
+        "tbtMs": 0,
+        "cls": 0.00001634189482845224,
+        "siMs": 623.2585,
+        "totalKB": 483.55859375,
+        "jsKB": 113.646484375,
+        "dataKB": 246.1142578125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 493.51009999999997,
+        "lcpMs": 613.5101,
+        "tbtMs": 0,
+        "cls": 0.00001634189482845224,
+        "siMs": 493.51009999999997,
+        "totalKB": 483.5205078125,
+        "jsKB": 113.646484375,
+        "dataKB": 246.1142578125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 497.6161,
+        "lcpMs": 617.6161,
+        "tbtMs": 0,
+        "cls": 0.00001634189482845224,
+        "siMs": 497.6161,
+        "totalKB": 483.3984375,
+        "jsKB": 113.646484375,
+        "dataKB": 246.1142578125,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-N9WkoTrU.js 66.5",
+      "CategoryPage-1sSt_sLD.js 12.6",
+      "data-BC4qAD83.js 4.5",
+      "images-D0cSokyZ.js 8.7",
+      "titles-DmWhMGcr.js 2.8",
+      "circle-help-CoD38poJ.js 0.9",
+      "PickView-abB4Pe9v.js 3.6",
+      "util-72djhCDY.js 0.9",
+      "builder-DZxvX5SG.js 6.1",
+      "buildStore-Cmeqi1tV.js 1.6",
+      "useBuildCheck-DVGIz4-8.js 3.0",
+      "pickStrings-CbnGwurR.js 1.8",
+      "pick.worker-Bd7dA2VL.js 0.3",
+      "facets.worker-C8COQ2Cv.js 0.3"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "case/list.v2.json 245.0",
+      "case/list.v2.json 0.1"
+    ]
+  },
+  "storage/mobile": {
+    "median": {
+      "performance": 99,
+      "accessibility": 100,
+      "fcpMs": 1317.0914,
+      "lcpMs": 2067.0914,
+      "tbtMs": 40.5,
+      "cls": 0,
+      "siMs": 1317.0914,
+      "totalKB": 464.03515625,
+      "jsKB": 96.337890625,
+      "dataKB": 196.4189453125,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 98,
+        "accessibility": 100,
+        "fcpMs": 1407.3726000000001,
+        "lcpMs": 2157.3726,
+        "tbtMs": 41,
+        "cls": 0,
+        "siMs": 1407.3726000000001,
+        "totalKB": 464.0546875,
+        "jsKB": 96.337890625,
+        "dataKB": 196.4189453125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 99,
+        "accessibility": 100,
+        "fcpMs": 1296.5004,
+        "lcpMs": 2046.5004,
+        "tbtMs": 40.5,
+        "cls": 0,
+        "siMs": 1296.5004,
+        "totalKB": 464.03515625,
+        "jsKB": 96.337890625,
+        "dataKB": 196.4189453125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 99,
+        "accessibility": 100,
+        "fcpMs": 1317.0914,
+        "lcpMs": 2067.0914,
+        "tbtMs": 34,
+        "cls": 0,
+        "siMs": 1317.0914,
+        "totalKB": 464.001953125,
+        "jsKB": 96.337890625,
+        "dataKB": 196.4189453125,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-N9WkoTrU.js 66.5",
+      "CategoryPage-1sSt_sLD.js 12.6",
+      "data-BC4qAD83.js 4.5",
+      "images-D0cSokyZ.js 8.7",
+      "titles-DmWhMGcr.js 2.8",
+      "circle-help-CoD38poJ.js 0.9",
+      "facets.worker-C8COQ2Cv.js 0.3"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "storage/list.v2.json 195.4",
+      "storage/list.v2.json 0.1"
+    ]
+  },
+  "storage/desktop": {
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "fcpMs": 603.5728,
+      "lcpMs": 723.5728000000001,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 603.5728,
+      "totalKB": 460.4921875,
+      "jsKB": 96.337890625,
+      "dataKB": 196.4189453125,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 99,
+        "accessibility": 100,
+        "fcpMs": 634.2299,
+        "lcpMs": 754.2299,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 634.2299,
+        "totalKB": 460.49609375,
+        "jsKB": 96.337890625,
+        "dataKB": 196.4189453125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 544.8179,
+        "lcpMs": 664.8179,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 544.8179,
+        "totalKB": 460.482421875,
+        "jsKB": 96.337890625,
+        "dataKB": 196.4189453125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 603.5728,
+        "lcpMs": 723.5728000000001,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 603.5728,
+        "totalKB": 460.4921875,
+        "jsKB": 96.337890625,
+        "dataKB": 196.4189453125,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-N9WkoTrU.js 66.5",
+      "CategoryPage-1sSt_sLD.js 12.6",
+      "data-BC4qAD83.js 4.5",
+      "images-D0cSokyZ.js 8.7",
+      "titles-DmWhMGcr.js 2.8",
+      "circle-help-CoD38poJ.js 0.9",
+      "facets.worker-C8COQ2Cv.js 0.3"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "storage/list.v2.json 195.4",
+      "storage/list.v2.json 0.1"
+    ]
+  },
+  "builder-guided/mobile": {
+    "median": {
+      "performance": 97,
+      "accessibility": 100,
+      "fcpMs": 1203.3992,
+      "lcpMs": 2558.8829,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 1203.3992,
+      "totalKB": 470.65625,
+      "jsKB": 110.111328125,
+      "dataKB": 280.4814453125,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 97,
+        "accessibility": 100,
+        "fcpMs": 1203.657,
+        "lcpMs": 2559.4855,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1203.657,
+        "totalKB": 470.65625,
+        "jsKB": 110.111328125,
+        "dataKB": 280.4814453125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 97,
+        "accessibility": 100,
+        "fcpMs": 1202.5886,
+        "lcpMs": 2558.8829,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1202.5886,
+        "totalKB": 470.65625,
+        "jsKB": 110.111328125,
+        "dataKB": 280.4814453125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 98,
+        "accessibility": 100,
+        "fcpMs": 1203.3992,
+        "lcpMs": 2410.0988,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1203.3992,
+        "totalKB": 470.65625,
+        "jsKB": 110.111328125,
+        "dataKB": 280.4814453125,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-N9WkoTrU.js 66.5",
+      "Builder-C-lc-s2d.js 21.7",
+      "data-BC4qAD83.js 4.5",
+      "builder-DZxvX5SG.js 6.1",
+      "images-D0cSokyZ.js 8.7",
+      "buildStore-Cmeqi1tV.js 1.6",
+      "circle-help-CoD38poJ.js 0.9"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "builder.json 279.5"
+    ]
+  },
+  "builder-guided/desktop": {
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "fcpMs": 323.1593,
+      "lcpMs": 565.7389499999999,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 323.1593,
+      "totalKB": 470.65625,
+      "jsKB": 110.111328125,
+      "dataKB": 280.4814453125,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 323.0021,
+        "lcpMs": 565.50315,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 323.0021,
+        "totalKB": 470.65625,
+        "jsKB": 110.111328125,
+        "dataKB": 280.4814453125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 323.1593,
+        "lcpMs": 565.7389499999999,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 323.1593,
+        "totalKB": 470.65625,
+        "jsKB": 110.111328125,
+        "dataKB": 280.4814453125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 323.2334,
+        "lcpMs": 565.8501,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 323.2334,
+        "totalKB": 470.65625,
+        "jsKB": 110.111328125,
+        "dataKB": 280.4814453125,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-N9WkoTrU.js 66.5",
+      "Builder-C-lc-s2d.js 21.7",
+      "data-BC4qAD83.js 4.5",
+      "builder-DZxvX5SG.js 6.1",
+      "images-D0cSokyZ.js 8.7",
+      "buildStore-Cmeqi1tV.js 1.6",
+      "circle-help-CoD38poJ.js 0.9"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "builder.json 279.5"
+    ]
+  },
+  "p-gpu/mobile": {
+    "median": {
+      "performance": 94,
+      "accessibility": 100,
+      "fcpMs": 1203.012,
+      "lcpMs": 3004.517999999999,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 1203.012,
+      "totalKB": 262.994140625,
+      "jsKB": 116.484375,
+      "dataKB": 52.0078125,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 94,
+        "accessibility": 100,
+        "fcpMs": 1203.431,
+        "lcpMs": 3005.1465,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1203.431,
+        "totalKB": 262.9951171875,
+        "jsKB": 116.484375,
+        "dataKB": 52.0078125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 94,
+        "accessibility": 100,
+        "fcpMs": 1203.012,
+        "lcpMs": 3004.517999999999,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1203.012,
+        "totalKB": 262.994140625,
+        "jsKB": 116.484375,
+        "dataKB": 52.0078125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 94,
+        "accessibility": 100,
+        "fcpMs": 1202.8848,
+        "lcpMs": 3004.3271999999997,
+        "tbtMs": 11,
+        "cls": 0,
+        "siMs": 1202.8848,
+        "totalKB": 262.994140625,
+        "jsKB": 116.484375,
+        "dataKB": 52.0078125,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-N9WkoTrU.js 66.5",
+      "ModelPage-M8FIwmOS.js 13.9",
+      "images-D0cSokyZ.js 8.7",
+      "data-BC4qAD83.js 4.5",
+      "titles-DmWhMGcr.js 2.8",
+      "buildStore-Cmeqi1tV.js 1.6",
+      "pickStrings-CbnGwurR.js 1.8",
+      "priceSummary-Du6QZktm.js 1.1",
+      "site-ou-5z3uj.js 0.5",
+      "PriceChart-B4guICv4.js 2.8",
+      "BuildFit-F2sTPICL.js 3.1",
+      "builder-DZxvX5SG.js 6.1",
+      "useBuildCheck-DVGIz4-8.js 3.0"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "gpu/list.v2.json 41.9",
+      "gpu/model/199.json 9.1"
+    ]
+  },
+  "p-gpu/desktop": {
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "fcpMs": 323.2825,
+      "lcpMs": 609.8475000000001,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 323.2825,
+      "totalKB": 262.994140625,
+      "jsKB": 116.484375,
+      "dataKB": 52.0078125,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 323.1847,
+        "lcpMs": 609.5541000000001,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 323.1847,
+        "totalKB": 262.994140625,
+        "jsKB": 116.484375,
+        "dataKB": 52.0078125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 324.1079,
+        "lcpMs": 611.2697499999999,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 324.1079,
+        "totalKB": 262.994140625,
+        "jsKB": 116.484375,
+        "dataKB": 52.0078125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 323.2825,
+        "lcpMs": 609.8475000000001,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 323.2825,
+        "totalKB": 262.994140625,
+        "jsKB": 116.484375,
+        "dataKB": 52.0078125,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-N9WkoTrU.js 66.5",
+      "ModelPage-M8FIwmOS.js 13.9",
+      "images-D0cSokyZ.js 8.7",
+      "data-BC4qAD83.js 4.5",
+      "titles-DmWhMGcr.js 2.8",
+      "buildStore-Cmeqi1tV.js 1.6",
+      "pickStrings-CbnGwurR.js 1.8",
+      "priceSummary-Du6QZktm.js 1.1",
+      "site-ou-5z3uj.js 0.5",
+      "PriceChart-B4guICv4.js 2.8",
+      "BuildFit-F2sTPICL.js 3.1",
+      "builder-DZxvX5SG.js 6.1",
+      "useBuildCheck-DVGIz4-8.js 3.0"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "gpu/list.v2.json 41.9",
+      "gpu/model/199.json 9.1"
+    ]
+  },
+  "p-case/mobile": {
+    "median": {
+      "performance": 87,
+      "accessibility": 100,
+      "fcpMs": 1203.3925,
+      "lcpMs": 4055.08875,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 1203.3925,
+      "totalKB": 456.1923828125,
+      "jsKB": 116.484375,
+      "dataKB": 255.2578125,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 87,
+        "accessibility": 100,
+        "fcpMs": 1203.3925,
+        "lcpMs": 4055.08875,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1203.3925,
+        "totalKB": 456.1923828125,
+        "jsKB": 116.484375,
+        "dataKB": 255.2578125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 87,
+        "accessibility": 100,
+        "fcpMs": 1203.5047,
+        "lcpMs": 4055.25705,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1203.5047,
+        "totalKB": 456.1923828125,
+        "jsKB": 116.484375,
+        "dataKB": 255.2578125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 87,
+        "accessibility": 100,
+        "fcpMs": 1202.7228,
+        "lcpMs": 4054.0842000000002,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1202.7228,
+        "totalKB": 456.1923828125,
+        "jsKB": 116.484375,
+        "dataKB": 255.2578125,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-N9WkoTrU.js 66.5",
+      "ModelPage-M8FIwmOS.js 13.9",
+      "images-D0cSokyZ.js 8.7",
+      "data-BC4qAD83.js 4.5",
+      "titles-DmWhMGcr.js 2.8",
+      "buildStore-Cmeqi1tV.js 1.6",
+      "pickStrings-CbnGwurR.js 1.8",
+      "priceSummary-Du6QZktm.js 1.1",
+      "site-ou-5z3uj.js 0.5",
+      "PriceChart-B4guICv4.js 2.8",
+      "BuildFit-F2sTPICL.js 3.1",
+      "builder-DZxvX5SG.js 6.1",
+      "useBuildCheck-DVGIz4-8.js 3.0"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "case/list.v2.json 245.0",
+      "case/model/113.json 9.3"
+    ]
+  },
+  "p-case/desktop": {
+    "median": {
+      "performance": 99,
+      "accessibility": 100,
+      "fcpMs": 323.8746,
+      "lcpMs": 845.8118999999998,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 323.8746,
+      "totalKB": 493.232421875,
+      "jsKB": 116.484375,
+      "dataKB": 255.2578125,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 99,
+        "accessibility": 100,
+        "fcpMs": 324.5903,
+        "lcpMs": 846.88545,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 324.5903,
+        "totalKB": 493.232421875,
+        "jsKB": 116.484375,
+        "dataKB": 255.2578125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 99,
+        "accessibility": 100,
+        "fcpMs": 323.8746,
+        "lcpMs": 845.8118999999998,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 323.8746,
+        "totalKB": 493.2333984375,
+        "jsKB": 116.484375,
+        "dataKB": 255.2578125,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 99,
+        "accessibility": 100,
+        "fcpMs": 323.6942,
+        "lcpMs": 845.5413,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 323.6942,
+        "totalKB": 493.2314453125,
+        "jsKB": 116.484375,
+        "dataKB": 255.2578125,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-N9WkoTrU.js 66.5",
+      "ModelPage-M8FIwmOS.js 13.9",
+      "images-D0cSokyZ.js 8.7",
+      "data-BC4qAD83.js 4.5",
+      "titles-DmWhMGcr.js 2.8",
+      "buildStore-Cmeqi1tV.js 1.6",
+      "pickStrings-CbnGwurR.js 1.8",
+      "priceSummary-Du6QZktm.js 1.1",
+      "site-ou-5z3uj.js 0.5",
+      "PriceChart-B4guICv4.js 2.8",
+      "BuildFit-F2sTPICL.js 3.1",
+      "builder-DZxvX5SG.js 6.1",
+      "useBuildCheck-DVGIz4-8.js 3.0"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "case/list.v2.json 245.0",
+      "case/model/113.json 9.3"
+    ]
+  },
+  "p-storage/mobile": {
+    "median": {
+      "performance": 88,
+      "accessibility": 100,
+      "fcpMs": 1202.9541,
+      "lcpMs": 3904.43115,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 1202.9541,
+      "totalKB": 404.103515625,
+      "jsKB": 116.484375,
+      "dataKB": 203.8544921875,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 88,
+        "accessibility": 100,
+        "fcpMs": 1202.9541,
+        "lcpMs": 3904.43115,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1202.9541,
+        "totalKB": 404.103515625,
+        "jsKB": 116.484375,
+        "dataKB": 203.8544921875,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 88,
+        "accessibility": 100,
+        "fcpMs": 1202.8351,
+        "lcpMs": 3904.2526499999994,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1202.8351,
+        "totalKB": 404.103515625,
+        "jsKB": 116.484375,
+        "dataKB": 203.8544921875,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 88,
+        "accessibility": 100,
+        "fcpMs": 1203.2032,
+        "lcpMs": 3904.8048,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 1203.2032,
+        "totalKB": 404.103515625,
+        "jsKB": 116.484375,
+        "dataKB": 203.8544921875,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-N9WkoTrU.js 66.5",
+      "ModelPage-M8FIwmOS.js 13.9",
+      "images-D0cSokyZ.js 8.7",
+      "data-BC4qAD83.js 4.5",
+      "titles-DmWhMGcr.js 2.8",
+      "buildStore-Cmeqi1tV.js 1.6",
+      "pickStrings-CbnGwurR.js 1.8",
+      "priceSummary-Du6QZktm.js 1.1",
+      "site-ou-5z3uj.js 0.5",
+      "PriceChart-B4guICv4.js 2.8",
+      "BuildFit-F2sTPICL.js 3.1",
+      "builder-DZxvX5SG.js 6.1",
+      "useBuildCheck-DVGIz4-8.js 3.0"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "storage/list.v2.json 195.4",
+      "storage/model/166.json 7.6"
+    ]
+  },
+  "p-storage/desktop": {
+    "median": {
+      "performance": 100,
+      "accessibility": 100,
+      "fcpMs": 323.0937,
+      "lcpMs": 804.6405500000002,
+      "tbtMs": 0,
+      "cls": 0,
+      "siMs": 323.0937,
+      "totalKB": 429.6142578125,
+      "jsKB": 116.484375,
+      "dataKB": 203.8544921875,
+      "fontKB": 66.30078125
+    },
+    "runs": [
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 323.0937,
+        "lcpMs": 804.6405500000002,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 323.0937,
+        "totalKB": 429.6142578125,
+        "jsKB": 116.484375,
+        "dataKB": 203.8544921875,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 323.5765,
+        "lcpMs": 805.36475,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 323.5765,
+        "totalKB": 429.6142578125,
+        "jsKB": 116.484375,
+        "dataKB": 203.8544921875,
+        "fontKB": 66.30078125
+      },
+      {
+        "performance": 100,
+        "accessibility": 100,
+        "fcpMs": 322.7372,
+        "lcpMs": 804.1058,
+        "tbtMs": 0,
+        "cls": 0,
+        "siMs": 322.7372,
+        "totalKB": 429.6142578125,
+        "jsKB": 116.484375,
+        "dataKB": 203.8544921875,
+        "fontKB": 66.30078125
+      }
+    ],
+    "scripts": [
+      "index-N9WkoTrU.js 66.5",
+      "ModelPage-M8FIwmOS.js 13.9",
+      "images-D0cSokyZ.js 8.7",
+      "data-BC4qAD83.js 4.5",
+      "titles-DmWhMGcr.js 2.8",
+      "buildStore-Cmeqi1tV.js 1.6",
+      "pickStrings-CbnGwurR.js 1.8",
+      "priceSummary-Du6QZktm.js 1.1",
+      "site-ou-5z3uj.js 0.5",
+      "PriceChart-B4guICv4.js 2.8",
+      "BuildFit-F2sTPICL.js 3.1",
+      "builder-DZxvX5SG.js 6.1",
+      "useBuildCheck-DVGIz4-8.js 3.0"
+    ],
+    "data": [
+      "manifest.json 0.9",
+      "storage/list.v2.json 195.4",
+      "storage/model/166.json 7.6"
+    ]
+  }
+}

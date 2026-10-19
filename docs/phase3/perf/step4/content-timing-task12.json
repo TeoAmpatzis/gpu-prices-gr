@@ -1,0 +1,147 @@
+{
+  "note": "Task 12: scripts/phase1/content-timing.mjs with its v1 slot = v2 at 97ae8d2 (before step 4, :4175) and its v2 slot = v2 HEAD f9681ec + the Task 12 fix (:4173); same public/data in both",
+  "gpu/before-step4-97ae8d2": {
+    "fcp": 1260,
+    "content": 2004,
+    "runs": [
+      {
+        "fcp": 1260,
+        "content": 2004
+      },
+      {
+        "fcp": 1236,
+        "content": 1984
+      },
+      {
+        "fcp": 1272,
+        "content": 2024
+      }
+    ]
+  },
+  "gpu/now": {
+    "fcp": 1272,
+    "content": 1999,
+    "runs": [
+      {
+        "fcp": 1272,
+        "content": 1983
+      },
+      {
+        "fcp": 1260,
+        "content": 1999
+      },
+      {
+        "fcp": 1276,
+        "content": 2005
+      }
+    ]
+  },
+  "ram/before-step4-97ae8d2": {
+    "fcp": 1260,
+    "content": 2954,
+    "runs": [
+      {
+        "fcp": 1272,
+        "content": 2984
+      },
+      {
+        "fcp": 1260,
+        "content": 2954
+      },
+      {
+        "fcp": 1252,
+        "content": 2900
+      }
+    ]
+  },
+  "ram/now": {
+    "fcp": 1256,
+    "content": 2685,
+    "runs": [
+      {
+        "fcp": 1260,
+        "content": 2698
+      },
+      {
+        "fcp": 1248,
+        "content": 2685
+      },
+      {
+        "fcp": 1256,
+        "content": 2675
+      }
+    ]
+  },
+  "case/before-step4-97ae8d2": {
+    "fcp": 1232,
+    "content": 4013,
+    "runs": [
+      {
+        "fcp": 1232,
+        "content": 4013
+      },
+      {
+        "fcp": 1244,
+        "content": 4030
+      },
+      {
+        "fcp": 1232,
+        "content": 3962
+      }
+    ]
+  },
+  "case/now": {
+    "fcp": 1260,
+    "content": 3129,
+    "runs": [
+      {
+        "fcp": 1260,
+        "content": 3120
+      },
+      {
+        "fcp": 1268,
+        "content": 3133
+      },
+      {
+        "fcp": 1256,
+        "content": 3129
+      }
+    ]
+  },
+  "builder/before-step4-97ae8d2": {
+    "fcp": 1244,
+    "content": 3429,
+    "runs": [
+      {
+        "fcp": 1240,
+        "content": 3429
+      },
+      {
+        "fcp": 1256,
+        "content": 3439
+      },
+      {
+        "fcp": 1244,
+        "content": 3414
+      }
+    ]
+  },
+  "builder/now": {
+    "fcp": 1268,
+    "content": 3475,
+    "runs": [
+      {
+        "fcp": 1268,
+        "content": 3495
+      },
+      {
+        "fcp": 1268,
+        "content": 3475
+      },
+      {
+        "fcp": 1256,
+        "content": 3463
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+[BODY wider than viewport] body  (+3px, 3 views)
+    e.g. 360 el gpu/rtx-5060-8gb ; 360 el gpu/rtx-5060-8gb details ; 360 el gpu/rtx-5060-8gb filter-sheet
+[content sticks out of box] div "Μετάβαση στο περιεχόμενο BuildDraftgr Αν"  (+3px, 3 views)
+    e.g. 360 el gpu/rtx-5060-8gb ; 360 el gpu/rtx-5060-8gb details ; 360 el gpu/rtx-5060-8gb filter-sheet
+[content sticks out of box] main.mx-auto.min-h-screen.max-w-7xl.px-4.py-6 "Αρχική … RTX 5060 RTX 5060 Ενδεικτική φω"  (+3px, 3 views)
+    e.g. 360 el gpu/rtx-5060-8gb ; 360 el gpu/rtx-5060-8gb details ; 360 el gpu/rtx-5060-8gb filter-sheet
+[content sticks out of box] div.flex.flex-col.gap-8 "Ενδεικτική φωτογραφία: το μοντέλο έχει π"  (+19px, 3 views)
+    e.g. 360 el gpu/rtx-5060-8gb ; 360 el gpu/rtx-5060-8gb details ; 360 el gpu/rtx-5060-8gb filter-sheet
+[content sticks out of box] section.flex.flex-col.gap-3 "Ταιριάζει στο build σου; Έλεγχος με το b"  (+19px, 3 views)
+    e.g. 360 el gpu/rtx-5060-8gb ; 360 el gpu/rtx-5060-8gb details ; 360 el gpu/rtx-5060-8gb filter-sheet
+[content sticks out of box] div.ui-card.flex.flex-col.items-start.gap-3 "Έλεγχος με το build σου: 3 εξαρτήματα. Τ"  (+20px, 3 views)
+    e.g. 360 el gpu/rtx-5060-8gb ; 360 el gpu/rtx-5060-8gb details ; 360 el gpu/rtx-5060-8gb filter-sheet
+[outside viewport] ul.flex.flex-wrap.gap-x-4.gap-y-2 "Ταιριάζει σε ό,τι ελέγξαμε 141 προσφορές"  (+3px, 3 views)
+    e.g. 360 el gpu/rtx-5060-8gb ; 360 el gpu/rtx-5060-8gb details ; 360 el gpu/rtx-5060-8gb filter-sheet
+[outside viewport] li.flex.items-center.gap-1.5.text-sm.text-fg-soft "Ταιριάζει σε ό,τι ελέγξαμε 141 προσφορές"  (+3px, 3 views)
+    e.g. 360 el gpu/rtx-5060-8gb ; 360 el gpu/rtx-5060-8gb details ; 360 el gpu/rtx-5060-8gb filter-sheet
+[outside viewport] span.ui-num "141 προσφορές τιμής"  (+3px, 3 views)
+    e.g. 360 el gpu/rtx-5060-8gb ; 360 el gpu/rtx-5060-8gb details ; 360 el gpu/rtx-5060-8gb filter-sheet
+[PAGE scrolls sideways] html  (+3px, 3 views)
+    e.g. 360 el gpu/rtx-5060-8gb ; 360 el gpu/rtx-5060-8gb details ; 360 el gpu/rtx-5060-8gb filter-sheet
