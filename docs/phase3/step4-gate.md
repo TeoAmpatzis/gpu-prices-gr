@@ -21,7 +21,7 @@ The Task 11 numbers are kept below as "before". The Task 12 numbers are in the s
 | CLS 0 | **Pass**, every page, phone and desktop |
 | Accessibility 100 | **Pass**, every page |
 | Rule 11 bytes (first-paint JS <= 110 KB, data <= 300 KB gzip) | **Pass** on every page. Product page data target <= 60 KB: **pass** after Task 12: gpu 50.9 → **9.5**, case 254.1 → **9.6**, storage 202.6 → **7.9** (the category `list.v2.json` is no longer requested) |
-| Time to first product vs v1 | GPU **miss, not caused by step 4**: 1.97 s vs gate 1.84 s (v1 measured now 1.75 s). v2 before step 4 (`97ae8d2`) took 2.00 s and now takes 2.00 s (2,004 vs 1,999 ms), so this is a Phase 1/3 paint-order matter for the owner. Cases **pass** (3.12 s vs gate 3.93 s; v1 now 3.90 s) |
+| Time to first product vs v1 | GPU **accepted miss (owner 19/10): 1.97 s vs 1.84 s**, cause: the page code (29 KB gzip) and the list (42 KB) both download after the first paint on the same phone link; no small change gets under 1.84 s without starting them before the paint, which costs Lighthouse (Task 14, below). Not caused by step 4: v2 before step 4 (`97ae8d2`) took 2.00 s and now takes 2.00 s (2,004 vs 1,999 ms). Cases **pass** (3.12 s vs gate 3.93 s; v1 now 3.90 s) |
 | Keyboard walk <= 5 | **Pass**: first product after 5 key presses with the skip link (Phase 1: 26; v1: 37), no stop without a visible focus |
 | Build time / dist | 7.4 s → 11.2-12.6 s; dist 141.6 → 140.4 MiB; files 691 → 2,948 (model chunks). See "Build stats" |
 | Layout audit 0 issues | **Pass.** Without a saved build: 12 pages incl. 3 product pages x 1920/1366/768/360 x el/en (Task 11); 4 product pages again after Task 12. With a saved build after Task 12: gpu/case/cpu/storage product pages x 1366/360 x el/en, **0 issues**. In Task 11 there was 1 issue: `/gpu/rtx-5060-8gb` at 360 px, Greek, +3 px sideways; it is fixed |
@@ -172,8 +172,7 @@ Raw: `docs/phase3/perf/step4/content-timing.json`.
 | Builder (CPU step) | 1,276 / 3,186 ms | 1,256 / 3,457 ms | (not a gate) 0.27 s later |
 
 GPU: Phase 1 had 2.03 s (the owner's decision 16 kept the paint order); step 4's smaller list gets 1.97 s but not the
-1.84 s. Not analysed further here; candidates: start the page chunk and list request at the first render, or inline a small first page of rows;
-not done here.
+1.84 s. Analysed and tried in Task 14 (below): accepted miss.
 
 **Task 12: did step 4 cause the GPU miss? No.** Same script and settings, with its v1 slot = v2 at `97ae8d2` (before
 step 4, temporary worktree, preview :4175) and its v2 slot = v2 now (`f9681ec` + the Task 12 fix, preview :4173).
@@ -190,6 +189,69 @@ step 4, temporary worktree, preview :4175) and its v2 slot = v2 now (`f9681ec` +
 /gpu 1.97 s vs 1.84 s: **not caused by step 4** (v2 before step 4: 2.00 s; now 2.00 s). This is a Phase 1/3
 paint-order matter for the owner: page code and list start after the first contentful paint, `src/lib/paint.ts`.
 Step 4 made RAM 0.27 s and cases 0.88 s faster.
+
+### Task 14: what loads before the first GPU product (owner 19/10)
+
+`node scripts/phase3/first-product-waterfall.mjs <urls> --out …` (new; same phone profile as `content-timing.mjs`: 412 px,
+CPU 4x, 150 ms, 1.6 Mbit/s, fresh context, Greek, median of 3; prints every request with start/end in ms from navigation,
+transfer size, before/after FCP, and the long tasks). v1 = `origin/main` (`ac84dfb`, `DATA_CHECK=off`) in a temporary
+worktree on :4191; v2 = `9ddea24` on :4190; one session, pages interleaved. This machine ran 40-80 ms slower than in
+Task 11 (v2 FCP 1.30 s vs 1.26 s), so compare within the table. Raw: `docs/phase3/perf/step4/waterfall-task14.json`.
+
+Waterfall of `/gpu` (median run; product photos left out: they start after the products):
+
+| Request (gzip) | v1 start → end | v2 start → end | Before / after FCP |
+| --- | --- | --- | --- |
+| HTML 1.6 KB | 0 → 176 | 0 → 181 | before |
+| Fonts latin 47.4 + greek 18.8 KB (preload) | 193 → 942 / 677 | 196 → 975 / 680 | before |
+| CSS 8.7 / 11.1 KB | 194 → 521 | 197 → 586 | before |
+| Main script 73.6 / 66.5 KB | 194 → 1,083 | 197 → 1,069 | before |
+| **First contentful paint** | **1,308** | **1,304** | |
+| `manifest.json` 0.9 KB | - | 1,315 → 1,489 | after |
+| List: v1 `list.json` 42.4 KB / v2 `list.v2.json` 41.8 KB | 1,204 → 1,566 (**before** its FCP) | 1,317 → **1,866** | v1 before, v2 after |
+| `CategoryPage` 12.5 + `images` 8.7 + `data` 4.5 + `titles` 2.8 + icons 0.9 KB | - (in the main script) | 1,319 → 1,710 | after |
+| Long task after the list (parse, decode, filter, render 50 cards, layout) | 1,586 + 229 ms | 1,886 + 194 ms | |
+| **Products visible** | **1,816** | **2,081** | |
+| Facet worker 7.3 KB | - | 2,712 → 2,734 | after |
+
+Critical path on v2: the first contentful paint → `afterFirstPaint` fires 11 ms later → `startFirstPage` starts the
+list preload, the `CategoryPage` chunk with its four imports (Vite already requests them in parallel with the chunk) and
+the manifest at the same moment → 72 KB share the 1.6 Mbit/s link, the list ends last (1,866 ms; v1's ends 1,566) →
+one 194 ms task (v1: 229 ms) → products. v2's main-thread work is already shorter than v1's; the gap is the network:
+v1 starts its list at React's first commit (about 100 ms before its paint entry) and has no page code to download
+after it, v2 starts at the paint entry and downloads 30 KB more next to the list (about 150 ms on this link). Fonts end
+before the main script and are not on the path after FCP; the manifest is 0.9 KB.
+
+What was tried (each built separately, then reverted; no code change is staged):
+
+| Variant | GPU products (runs) | Cases | RAM |
+| --- | --- | --- | --- |
+| v1 | 1,816 (1894/1816/1809) | 4,819 | 2,876 |
+| v2 `9ddea24` | 2,081 (2095/2081/2081) | 3,249 | 2,806 |
+| A. Render only the first 6 rows, the rest after that paint; no hidden filter sidebar below lg | 1,979 (1985/1979/1957) | 3,195 | 2,689 |
+| B. Start code + list at React's first commit (as v1), the page still renders after the paint | 1,944 (2040/1923/1944) vs v2 2,041 in the same run | - | - |
+| A + B | **1,833** (1835/1833/1829) vs v2 2,053, v1 1,827 in the same run | - | - |
+
+A alone saves about 100 ms (the long task 194 → 93 ms) and B alone about 100 ms: neither gets under 1.84 s. Only both
+together do (1.833 s, 7 ms under), and B starts the code and the list before the first paint, which `paint.ts` allows only
+when Lighthouse proves it free. Lighthouse (`measure-pick.mjs lighthouse … gpu,case,p-gpu`, median of 3, same session;
+raw `lighthouse-task14-{head,experiment}.json`):
+
+| Page | v2 `9ddea24` phone (LCP) | A + B phone (LCP) | v2 desktop (CLS) | A + B desktop (CLS) |
+| --- | --- | --- | --- | --- |
+| `/gpu` | 98 (2.17 s) | **95** (94/95/99; **2.73 s**) | 98 (0) | **87** (**0.24**) |
+| `/case` | 98 (2.18 s) | **97** (95/99/97; **2.43 s**) | 98 (0) | **93** (**0.15**) |
+| `/gpu/rtx-5060-8gb` | 96 (2.80 s) | **95** (2.96 s) | 100 (0) | 100 (0) |
+
+B makes the phone LCP later (the downloads that end before Lighthouse's observed paint count toward it, as in Phase 1's
+97 → 92), and A's later rows push the pager on desktop (CLS 0.24). Both break the task's rules (phone score -1 at most,
+LCP not later, CLS 0), so nothing is kept. (v2's desktop 98 here vs 100 in Task 11 is this session's noise: runs
+98/100/98, LCP 0.66-1.0 s.)
+
+**Verdict: accepted miss (owner 19/10): 1.97 s vs 1.84 s** (1.97 s in Task 11's session; 2.04-2.08 s in this slower one,
+v1 1.82-1.83 s). Cause: the page code and the list both download after the first paint (the Phase 1 paint order,
+owner decision 16), so on a 1.6 Mbit/s link the list arrives about 0.3 s later than v1's, which starts before its paint
+and has no page code to fetch. Getting under 1.84 s needs that order changed, which costs Lighthouse (above).
 
 ## Keyboard walk (`scripts/phase1/keyboard-walk.mjs`, 1366 px, Greek)
 
@@ -246,8 +308,8 @@ Misses at this gate (owner decides):
 1. ~~Product pages phone: case 87, storage 88 (gate 90); GPU 94.~~ Fixed in Task 12 (`7c079e7`): 96 / 96 / 96, data
    7.9-9.6 KB.
 2. ~~`/case/corsair-3500x` desktop 99.~~ Fixed in Task 12: 100.
-3. GPU time to first product 1.97 s vs 1.84 s: **not caused by step 4** (v2 before step 4: 2.00 s; now 2.00 s). It is a
-   Phase 1/3 paint-order matter for the owner.
+3. ~~GPU time to first product 1.97 s vs 1.84 s~~: **accepted miss (owner 19/10)**, see "Task 14" under "Time to first
+   product vs v1" (paint order; no small change fixes it without costing Lighthouse).
 4. ~~3 px sideways scroll on `/gpu/<model>` at 360 px in Greek with a saved build.~~ Fixed in Task 12.
 5. Waiting for B9 (aliases; `MODEL_ALIASES` empty).
 
@@ -278,3 +340,7 @@ Task 12 added these files (the Task 11 ones are unchanged):
 
 Servers started (preview 4173 and 4175; e2e 4174) are stopped, and the temporary worktree `%TEMP%\bd-t12-before` is
 removed.
+
+Task 14 added `scripts/phase3/first-product-waterfall.mjs` and
+`docs/phase3/perf/step4/{waterfall-task14,waterfall-task14-experiment,lighthouse-task14-head,lighthouse-task14-experiment}.json`.
+No app code changed. Servers 4190-4194 are stopped; the worktree `%TEMP%\bd-t14-v1` and the experiment builds are removed.
