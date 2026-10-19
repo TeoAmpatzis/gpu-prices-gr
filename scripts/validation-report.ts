@@ -48,7 +48,7 @@ lines.push(
   'Measured values (lengths, heights, speeds, wattages) that fall outside the plausible range for their field. ' +
     'These are almost always scraping mistakes (for example a case "up to 3.502 mm"), not real measurements. ' +
     (enforced
-      ? 'The site runs in enforce mode: each listed value is treated as "not stated" in the site\'s data files (list.json, builder.json), ' +
+      ? 'The site runs in enforce mode: each listed value is treated as "not stated" in the site\'s data files (list.v2.json, builder.json, the compatibility and product page files), ' +
         'so the compatibility checks say "unknown" instead of using it. The scraper\'s own files are not changed. ' +
         '`psu-watts` is report only (a wattage cannot be "not stated").'
       : 'The site runs in report mode: nothing is changed on the site; the owner approves the ranges before `VALIDATION_MODE` becomes `\'enforce\'`, ' +

@@ -68,7 +68,7 @@ const old = ages.filter((r) => r.level === 'fail');
 check(ages.length > 0 && old.length === 0, `every source's data under ${FAIL_H} h old`,
   old.length ? old.map((r) => `${r.cat}/${r.source} ${r.ageH ?? 'never'} h`).join(', ') : `${ages.length} category × source pairs, oldest ${Math.max(...ages.map((r) => r.ageH))} h`);
 const list = await head('/data/gpu/list.v2.json');
-check(list.ok && /max-age=300/.test(list.cache), 'list.json cached 5 min (list.v2.json)', list.cache);
+check(list.ok && /max-age=300/.test(list.cache), 'list.v2.json cached 5 min', list.cache);
 
 // ---- every tab
 let samplePhoto = null;

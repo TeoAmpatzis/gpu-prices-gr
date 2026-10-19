@@ -1,5 +1,5 @@
 // Reading the build-time data files (written by src/lib/derive.ts). Pure functions with no imports besides
-// types, so the site's main bundle and the facet worker can decode list.json without the derivation (and
+// types, so the site's main bundle and the facet worker can decode list.v2.json without the derivation (and
 // through it the PC builder's rules).
 
 import type { Columns, DailyLow, ListFile } from '../types';
@@ -19,7 +19,7 @@ export const listUrl = (cat: string) => `/data/${cat}/list.v2.json`;
 
 /** Throws a clear error for a list file of another format (instead of failing later while decoding). */
 export function assertListFormat(file: { v?: unknown }): void {
-  if (file.v !== LIST_FORMAT) throw new Error(`list.json: format ${String(file.v)}, expected ${LIST_FORMAT}`);
+  if (file.v !== LIST_FORMAT) throw new Error(`list.v2.json: format ${String(file.v)}, expected ${LIST_FORMAT}`);
 }
 
 const DAY = 864e5;

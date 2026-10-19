@@ -41,7 +41,8 @@ export default function ModelPage({ cat, slug }: { cat: Category; slug: string }
       (found) => {
         if (!live) return;
         const res = guardMoved(found, slug, left.current);
-        // An old address: the new one replaces it (no history entry), query string and hash kept.
+        // An old address, or another spelling / letter case of the model's (task 13): the canonical one replaces it
+        // (no history entry), query string and hash kept.
         if (res.kind === 'moved') navigate(`/${cat}/${res.slug}${location.search}${location.hash}`, { replace: true });
         else setState({ for: id, res });
       },

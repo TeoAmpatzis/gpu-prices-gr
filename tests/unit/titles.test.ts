@@ -56,6 +56,31 @@ describe('shortTitles', () => {
       expect(out.some((s) => /\s2$/.test(s))).toBe(false);
       expect(out[0]).not.toMatch(/modules/i);
     });
+    // Task 13 (final review): "με Module" without a count (368 of 6,531 RAM listings, 2026-10-19) left a lone "με".
+    it('drops "με Module" with no count too, leaving no lone "με"', () => {
+      const out = shortTitles(
+        ['Kingston DDR2 με Module 1x2GB & Ταχύτητα 800 για Desktop', 'Major DDR2 με Module 1x2GB & Ταχύτητα 800 για Laptop', 'Kingston ValueRAM 2GB DDR2 800MHz'],
+        'DDR2 2GB (1×2GB)',
+        RAM_TITLE,
+      );
+      expect(out).toEqual(['Kingston & Ταχύτητα 800 για Desktop', 'Major & Ταχύτητα 800 για Laptop', 'Kingston ValueRAM 800MHz']);
+      for (const s of out) expect(s).not.toMatch(/(^|\s)με(\s|$)/u);
+    });
+    it('drops "με" everywhere, so titles without "Module" keep losing it in the shared-word step', () => {
+      const t = [
+        'CoreParts 16GB DDR3 με Ταχύτητα 1600 για Desktop',
+        'Kingston 16GB DDR3 με Ταχύτητα 1600 για Desktop',
+        'Major 16GB DDR3 με Ταχύτητα 1600 για Desktop',
+        'CoreParts DDR3 με Module 1x16GB & Ταχύτητα 1600 για Desktop',
+        'Kingston DDR3 με Module 1x16GB & Ταχύτητα 1600 για Desktop',
+      ];
+      const out = shortTitles(t, 'DDR3 16GB (1×16GB) 1600MHz', RAM_TITLE);
+      for (const s of out) expect(s).not.toMatch(/(^|\s)με(\s|$)/u);
+    });
+    it('titles with a count or no "Module" read as before', () => {
+      const out = shortTitles([kf, 'Kingston Fury Beast Black 32GB DDR4 2x16GB 3200', 'Corsair Vengeance 32GB (2x16GB) DDR5 6000MHz CL30'], 'DDR4 32GB (2×16GB) 3200MHz', RAM_TITLE);
+      expect(out).toEqual(['Kingston Fury Beast & Ταχύτητα 3200 για Desktop', 'Kingston Fury Beast Black 3200', 'Corsair Vengeance DDR5 6000MHz CL30']);
+    });
     it('keeps a digit that is part of the series name', () => {
       const out = shortTitles(['Patriot Viper Elite 5 16GB DDR5', 'Patriot Viper Elite 5 RGB 16GB DDR5'], 'DDR5 16GB 6000MHz', RAM_TITLE);
       expect(out[0]).toContain('Elite 5');

@@ -127,8 +127,12 @@ function useDetails(cat: Category): CategoryDetails | null {
   return details;
 }
 
-/** The model's price history for the chart (its model chunk); null while loading, undefined when there is none. */
-function useChartHistory(cat: Category, m: { key: string; chip: string; cheapest: object }): HistoryPoint[] | undefined | null {
+/**
+ * The model's price history for the chart (its model chunk); null while loading, undefined when there is none. The
+ * model may be shown through some of its listings (a source filter), so its slug may be another shop's spelling: the
+ * chunk lookup (slug.slugLookup) finds it all the same.
+ */
+function useChartHistory(cat: Category, m: { key: string; chip: string; cheapest: object; listings: readonly object[] }): HistoryPoint[] | undefined | null {
   const slug = modelSlug(cat, m);
   const [state, setState] = useState<{ slug: string; points: HistoryPoint[] | undefined } | null>(null);
   useEffect(() => {

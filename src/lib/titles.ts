@@ -24,8 +24,15 @@ export interface TitleOptions {
   phrases?: RegExp;
 }
 
-/** RAM: "με 2 Modules" says how many sticks, and its lone digit would read as a series number (C5). No \b before Greek: JS \b knows ASCII only. */
-export const RAM_TITLE: TitleOptions = { phrases: /(?:με\s+)?\b\d+\s+modules?\b|\bmodules?\b/giu };
+/**
+ * RAM: "με 2 Modules" says how many sticks, and its lone digit would read as a series number (C5). The word "με"
+ * ("with") goes wherever it stands (task 13): "με Module 1x2GB" left a lone "με", and dropping it only there made
+ * the other titles of a model keep theirs (the 70% shared-word step no longer saw it in every title): short titles
+ * still saying "με" over today's RAM data, 147 before, 522 with that narrower fix, 22 with this one (all models with
+ * one offer, whose title is never shortened).
+ * No \b before Greek (JS \b knows ASCII only) and no lookbehind (older Safari).
+ */
+export const RAM_TITLE: TitleOptions = { phrases: /(?:με\s+)?\b\d+\s+modules?\b|\bmodules?\b|(?:^|\s)με(?=\s|$)/giu };
 
 /** The title options ModelRow uses for a category (the data test builds the same ones). */
 export function titleOptions(cat: string): TitleOptions {

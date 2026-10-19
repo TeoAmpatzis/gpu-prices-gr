@@ -1,15 +1,20 @@
 // Product pages' data (v2 step 4): the build writes each category's models into 256 files,
-// data/<cat>/model/000.json … 255.json (src/lib/derive.ts modelChunks), keyed by the model's address slug
-// (src/lib/slug.ts modelSlug). The file of a slug is a hash of it, so a page needs only its address to find its
-// data: no list.json and no slug index.
+// data/<cat>/model/000.json … 255.json (src/lib/derive.ts modelChunks), keyed by the lookup form of the model's
+// address slug (src/lib/slug.ts slugLookup of modelSlug: every spelling and letter case of a model shares it). The
+// file of an address is a hash of that form, so a page needs only its address to find its data: no list file and
+// no slug index.
 import type { Category, HistoryPoint, ModelChunk, ModelEntry } from '../types';
 import { fnv1a } from './compatChunks';
 import { MODEL_ALIAS_SLUGS } from '../data/modelAliases';
 import { loadManifest } from './manifest';
+import { slugLookup } from './slug';
 
 export const MODEL_CHUNKS = 256;
 
-/** The chunk of a model's slug: FNV-1a (the compat chunks' hash, compatChunks.fnv1a) mod 256. */
+/**
+ * The chunk of a model's slug in its lookup form (slug.slugLookup): FNV-1a (the compat chunks' hash,
+ * compatChunks.fnv1a) mod 256.
+ */
 export const modelChunkOf = (slug: string): number => fnv1a(slug) % MODEL_CHUNKS;
 
 /** Three-digit file names: data/gpu/model/000.json … 255.json. */
@@ -51,8 +56,9 @@ async function loadModelWithSources(
   slug: string,
 ): Promise<{ entry: ModelEntry; sources: ModelChunk['sources']; builtAt: string } | null> {
   const { builtAt } = await loadManifest();
-  const chunk = await loadChunk(`/${modelChunkPath(cat, modelChunkOf(slug))}?v=${builtAt}`);
-  return has(chunk.models, slug) ? { entry: chunk.models[slug], sources: chunk.sources, builtAt } : null;
+  const k = slugLookup(cat, slug);
+  const chunk = await loadChunk(`/${modelChunkPath(cat, modelChunkOf(k))}?v=${builtAt}`);
+  return has(chunk.models, k) ? { entry: chunk.models[k], sources: chunk.sources, builtAt } : null;
 }
 
 const has = (o: object, k: string) => Object.prototype.hasOwnProperty.call(o, k);
@@ -63,14 +69,19 @@ export type ModelResolution =
   | { kind: 'gone' };
 
 /**
- * What an address /<cat>/<slug> shows: an aliased old slug is `moved` to the new one (no request); otherwise the
- * slug's chunk is fetched and the entry looked up: `ok` (with the chunk's per-source update times), or `gone` (delisted since the build, or never a model:
- * the chunks can't tell the two apart). `aliases` = old slug -> new slug (data/modelAliases.ts).
+ * What an address /<cat>/<slug> shows: an aliased old slug (in any spelling) is `moved` to the new one (no request);
+ * otherwise the slug's chunk is fetched and the entry looked up: `ok` (with the chunk's per-source update times) at
+ * the canonical address, `moved` to it from another spelling or letter case of the model (task 13), or `gone`
+ * (delisted since the build, or never a model: the chunks can't tell the two apart). `aliases` = old slug -> new slug
+ * (data/modelAliases.ts).
  */
 export async function resolveModel(cat: Category, slug: string, aliases: Record<string, string> = MODEL_ALIAS_SLUGS[cat]): Promise<ModelResolution> {
-  if (has(aliases, slug)) return { kind: 'moved', slug: aliases[slug] };
+  const k = slugLookup(cat, slug);
+  const old = has(aliases, slug) ? slug : Object.keys(aliases).find((o) => slugLookup(cat, o) === k);
+  if (old !== undefined) return { kind: 'moved', slug: aliases[old] };
   const found = await loadModelWithSources(cat, slug);
-  return found ? { kind: 'ok', ...found } : { kind: 'gone' };
+  if (!found) return { kind: 'gone' };
+  return found.entry.slug === slug ? { kind: 'ok', ...found } : { kind: 'moved', slug: found.entry.slug };
 }
 
 /**
