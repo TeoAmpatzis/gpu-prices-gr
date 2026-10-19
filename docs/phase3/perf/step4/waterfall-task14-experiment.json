@@ -1,0 +1,630 @@
+{
+  "http://localhost:4191/#gpu": {
+    "fcp": 1312,
+    "content": 1827,
+    "contentRuns": [
+      1853,
+      1827,
+      1824
+    ],
+    "median": {
+      "fcp": 1312,
+      "content": 1827,
+      "res": [
+        {
+          "name": "/#gpu",
+          "type": "navigation",
+          "start": 0,
+          "reqStart": 1,
+          "end": 174,
+          "kb": 1.6,
+          "beforeFcp": true
+        },
+        {
+          "name": "/fonts/inter-latin.woff2",
+          "type": "link",
+          "start": 190,
+          "reqStart": 190,
+          "end": 937,
+          "kb": 47.4,
+          "beforeFcp": true
+        },
+        {
+          "name": "/fonts/inter-greek.woff2",
+          "type": "link",
+          "start": 190,
+          "reqStart": 194,
+          "end": 671,
+          "kb": 18.8,
+          "beforeFcp": true
+        },
+        {
+          "name": "/assets/index-CYubtz3N.js",
+          "type": "script",
+          "start": 190,
+          "reqStart": 194,
+          "end": 1092,
+          "kb": 73.6,
+          "beforeFcp": true
+        },
+        {
+          "name": "/assets/index-BMSLjQlN.css",
+          "type": "link",
+          "start": 191,
+          "reqStart": 194,
+          "end": 515,
+          "kb": 8.7,
+          "beforeFcp": true
+        },
+        {
+          "name": "/data/gpu/list.json",
+          "type": "fetch",
+          "start": 1211,
+          "reqStart": 1212,
+          "end": 1591,
+          "kb": 42.4,
+          "beforeFcp": true
+        },
+        {
+          "name": "/img/gpu/7714df9c5e39-320.webp",
+          "type": "img",
+          "start": 1852,
+          "reqStart": 1853,
+          "end": 2423,
+          "kb": 14,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/27d5f9be9493-320.webp",
+          "type": "img",
+          "start": 1852,
+          "reqStart": 1853,
+          "end": 2447,
+          "kb": 13.4,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/a7341ed749fc-320.webp",
+          "type": "img",
+          "start": 1853,
+          "reqStart": 1853,
+          "end": 2353,
+          "kb": 12.8,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/2afb2f0d4f2d-320.webp",
+          "type": "img",
+          "start": 1853,
+          "reqStart": 1853,
+          "end": 2415,
+          "kb": 8.8,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/08d9f9671920-320.webp",
+          "type": "img",
+          "start": 1853,
+          "reqStart": 1854,
+          "end": 2431,
+          "kb": 13.9,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/7c413cb396f5-320.webp",
+          "type": "img",
+          "start": 1853,
+          "reqStart": 1855,
+          "end": 2400,
+          "kb": 11.5,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/5ed98d450f20-320.webp",
+          "type": "img",
+          "start": 1853,
+          "reqStart": 2353,
+          "end": 2664,
+          "kb": 15.4,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/ee95b2b1df7c-320.webp",
+          "type": "img",
+          "start": 1853,
+          "reqStart": 2400,
+          "end": 2803,
+          "kb": 12.6,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/b09d218fe31c-320.webp",
+          "type": "img",
+          "start": 1853,
+          "reqStart": 2416,
+          "end": 2819,
+          "kb": 14.2,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/c085845e8290-320.webp",
+          "type": "img",
+          "start": 1854,
+          "reqStart": 2432,
+          "end": 2772,
+          "kb": 7,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/993288d5fe06-320.webp",
+          "type": "img",
+          "start": 1854,
+          "reqStart": 2423,
+          "end": 2803,
+          "kb": 10.2,
+          "beforeFcp": false
+        }
+      ],
+      "long": [
+        [
+          1097,
+          53
+        ],
+        [
+          1609,
+          217
+        ]
+      ]
+    }
+  },
+  "http://localhost:4190/gpu": {
+    "fcp": 1308,
+    "content": 2053,
+    "contentRuns": [
+      2040,
+      2053,
+      2067
+    ],
+    "median": {
+      "fcp": 1308,
+      "content": 2053,
+      "res": [
+        {
+          "name": "/gpu",
+          "type": "navigation",
+          "start": 0,
+          "reqStart": 1,
+          "end": 179,
+          "kb": 1.6,
+          "beforeFcp": true
+        },
+        {
+          "name": "/fonts/inter-latin.woff2",
+          "type": "link",
+          "start": 195,
+          "reqStart": 195,
+          "end": 976,
+          "kb": 47.4,
+          "beforeFcp": true
+        },
+        {
+          "name": "/fonts/inter-greek.woff2",
+          "type": "link",
+          "start": 195,
+          "reqStart": 199,
+          "end": 679,
+          "kb": 18.8,
+          "beforeFcp": true
+        },
+        {
+          "name": "/assets/index-BCtwoI-q.js",
+          "type": "script",
+          "start": 195,
+          "reqStart": 199,
+          "end": 1086,
+          "kb": 66.5,
+          "beforeFcp": true
+        },
+        {
+          "name": "/assets/index-Ce5B2JqF.css",
+          "type": "link",
+          "start": 196,
+          "reqStart": 199,
+          "end": 585,
+          "kb": 11.1,
+          "beforeFcp": true
+        },
+        {
+          "name": "/data/manifest.json",
+          "type": "fetch",
+          "start": 1322,
+          "reqStart": 1322,
+          "end": 1490,
+          "kb": 0.9,
+          "beforeFcp": false
+        },
+        {
+          "name": "/data/gpu/list.v2.json",
+          "type": "link",
+          "start": 1324,
+          "reqStart": 1324,
+          "end": 1848,
+          "kb": 41.8,
+          "beforeFcp": false
+        },
+        {
+          "name": "/assets/CategoryPage-C2DeSvMj.js",
+          "type": "script",
+          "start": 1326,
+          "reqStart": 1326,
+          "end": 1709,
+          "kb": 12.5,
+          "beforeFcp": false
+        },
+        {
+          "name": "/assets/data-q2f9HGQk.js",
+          "type": "script",
+          "start": 1326,
+          "reqStart": 1327,
+          "end": 1600,
+          "kb": 4.5,
+          "beforeFcp": false
+        },
+        {
+          "name": "/assets/images-Bieesxcr.js",
+          "type": "script",
+          "start": 1327,
+          "reqStart": 1327,
+          "end": 1677,
+          "kb": 8.7,
+          "beforeFcp": false
+        },
+        {
+          "name": "/assets/titles-BrCh4Ss5.js",
+          "type": "script",
+          "start": 1327,
+          "reqStart": 1328,
+          "end": 1553,
+          "kb": 2.8,
+          "beforeFcp": false
+        },
+        {
+          "name": "/assets/circle-help-CZ8G_EOp.js",
+          "type": "script",
+          "start": 1327,
+          "reqStart": 1491,
+          "end": 1662,
+          "kb": 0.9,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/7714df9c5e39-320.webp",
+          "type": "img",
+          "start": 2079,
+          "reqStart": 2080,
+          "end": 2629,
+          "kb": 14,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/27d5f9be9493-320.webp",
+          "type": "img",
+          "start": 2080,
+          "reqStart": 2080,
+          "end": 2629,
+          "kb": 13.4,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/2afb2f0d4f2d-320.webp",
+          "type": "img",
+          "start": 2080,
+          "reqStart": 2080,
+          "end": 2535,
+          "kb": 8.8,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/a7341ed749fc-320.webp",
+          "type": "img",
+          "start": 2080,
+          "reqStart": 2080,
+          "end": 2613,
+          "kb": 12.8,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/7c413cb396f5-320.webp",
+          "type": "img",
+          "start": 2080,
+          "reqStart": 2081,
+          "end": 2598,
+          "kb": 11.5,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/5ed98d450f20-320.webp",
+          "type": "img",
+          "start": 2080,
+          "reqStart": 2081,
+          "end": 2644,
+          "kb": 15.4,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/ee95b2b1df7c-320.webp",
+          "type": "img",
+          "start": 2080,
+          "reqStart": 2598,
+          "end": 2924,
+          "kb": 12.6,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/08d9f9671920-320.webp",
+          "type": "img",
+          "start": 2080,
+          "reqStart": 2614,
+          "end": 2960,
+          "kb": 13.9,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/b09d218fe31c-320.webp",
+          "type": "img",
+          "start": 2081,
+          "reqStart": 2630,
+          "end": 2971,
+          "kb": 14.2,
+          "beforeFcp": false
+        },
+        {
+          "name": "/assets/facets.worker-D-69R3rq.js",
+          "type": "other",
+          "start": 2709,
+          "reqStart": 2709,
+          "end": 2729,
+          "kb": 7.3,
+          "beforeFcp": false
+        }
+      ],
+      "long": [
+        [
+          1091,
+          52
+        ],
+        [
+          1867,
+          184
+        ]
+      ]
+    }
+  },
+  "http://localhost:4194/gpu": {
+    "fcp": 1304,
+    "content": 1833,
+    "contentRuns": [
+      1835,
+      1833,
+      1829
+    ],
+    "median": {
+      "fcp": 1304,
+      "content": 1833,
+      "res": [
+        {
+          "name": "/gpu",
+          "type": "navigation",
+          "start": 0,
+          "reqStart": 1,
+          "end": 179,
+          "kb": 1.6,
+          "beforeFcp": true
+        },
+        {
+          "name": "/fonts/inter-latin.woff2",
+          "type": "link",
+          "start": 194,
+          "reqStart": 195,
+          "end": 973,
+          "kb": 47.4,
+          "beforeFcp": true
+        },
+        {
+          "name": "/fonts/inter-greek.woff2",
+          "type": "link",
+          "start": 195,
+          "reqStart": 199,
+          "end": 692,
+          "kb": 18.8,
+          "beforeFcp": true
+        },
+        {
+          "name": "/assets/index-BsdUDp3-.js",
+          "type": "script",
+          "start": 196,
+          "reqStart": 199,
+          "end": 1067,
+          "kb": 66.5,
+          "beforeFcp": true
+        },
+        {
+          "name": "/assets/index-Ce5B2JqF.css",
+          "type": "link",
+          "start": 196,
+          "reqStart": 199,
+          "end": 584,
+          "kb": 11.1,
+          "beforeFcp": true
+        },
+        {
+          "name": "/data/gpu/list.v2.json",
+          "type": "link",
+          "start": 1191,
+          "reqStart": 1191,
+          "end": 1720,
+          "kb": 41.9,
+          "beforeFcp": true
+        },
+        {
+          "name": "/assets/CategoryPage-FUfkfw6z.js",
+          "type": "script",
+          "start": 1193,
+          "reqStart": 1193,
+          "end": 1581,
+          "kb": 12.6,
+          "beforeFcp": true
+        },
+        {
+          "name": "/assets/data-DyHRua7J.js",
+          "type": "script",
+          "start": 1193,
+          "reqStart": 1194,
+          "end": 1470,
+          "kb": 4.5,
+          "beforeFcp": true
+        },
+        {
+          "name": "/assets/images-RhIGjtlf.js",
+          "type": "script",
+          "start": 1194,
+          "reqStart": 1194,
+          "end": 1534,
+          "kb": 8.7,
+          "beforeFcp": true
+        },
+        {
+          "name": "/assets/titles-CUFdOX8R.js",
+          "type": "script",
+          "start": 1195,
+          "reqStart": 1196,
+          "end": 1424,
+          "kb": 2.8,
+          "beforeFcp": true
+        },
+        {
+          "name": "/assets/circle-help-CGaiIxew.js",
+          "type": "script",
+          "start": 1195,
+          "reqStart": 1196,
+          "end": 1393,
+          "kb": 0.9,
+          "beforeFcp": true
+        },
+        {
+          "name": "/data/manifest.json",
+          "type": "fetch",
+          "start": 1313,
+          "reqStart": 1394,
+          "end": 1565,
+          "kb": 0.9,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/7714df9c5e39-320.webp",
+          "type": "img",
+          "start": 1841,
+          "reqStart": 1842,
+          "end": 2377,
+          "kb": 14,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/27d5f9be9493-320.webp",
+          "type": "img",
+          "start": 1842,
+          "reqStart": 1842,
+          "end": 2393,
+          "kb": 13.4,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/a7341ed749fc-320.webp",
+          "type": "img",
+          "start": 1842,
+          "reqStart": 1843,
+          "end": 2362,
+          "kb": 12.8,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/2afb2f0d4f2d-320.webp",
+          "type": "img",
+          "start": 1843,
+          "reqStart": 1843,
+          "end": 2266,
+          "kb": 8.8,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/7c413cb396f5-320.webp",
+          "type": "img",
+          "start": 1843,
+          "reqStart": 1843,
+          "end": 2346,
+          "kb": 11.5,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/5ed98d450f20-320.webp",
+          "type": "img",
+          "start": 1843,
+          "reqStart": 1844,
+          "end": 2409,
+          "kb": 15.4,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/ee95b2b1df7c-320.webp",
+          "type": "img",
+          "start": 1964,
+          "reqStart": 2346,
+          "end": 2673,
+          "kb": 12.6,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/08d9f9671920-320.webp",
+          "type": "img",
+          "start": 1964,
+          "reqStart": 2362,
+          "end": 2704,
+          "kb": 13.9,
+          "beforeFcp": false
+        },
+        {
+          "name": "/img/gpu/b09d218fe31c-320.webp",
+          "type": "img",
+          "start": 1965,
+          "reqStart": 2378,
+          "end": 2719,
+          "kb": 14.2,
+          "beforeFcp": false
+        },
+        {
+          "name": "/assets/facets.worker-D-69R3rq.js",
+          "type": "other",
+          "start": 2443,
+          "reqStart": 2443,
+          "end": 2470,
+          "kb": 7.3,
+          "beforeFcp": false
+        }
+      ],
+      "long": [
+        [
+          1072,
+          52
+        ],
+        [
+          1741,
+          91
+        ],
+        [
+          1849,
+          92
+        ]
+      ]
+    }
+  }
+}
