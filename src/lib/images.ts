@@ -1,5 +1,5 @@
 // Product photos: the shop's own photo of each model (scraper/images.py stores them in the images repo;
-// Vercel serves them under /img/, vercel.json). The build tells list.json which models have one (`photos`, a
+// Vercel serves them under /img/, vercel.json). The build tells list.v2.json which models have one (`photos`, a
 // bitset over the file's model keys, src/lib/columns.ts decodePhotos); the photo's id is derived from the
 // category and model key, so the file doesn't carry it. A model without a photo shows its category icon.
 

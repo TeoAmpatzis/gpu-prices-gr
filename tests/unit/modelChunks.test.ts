@@ -1,4 +1,5 @@
-// Model chunk files (step 4, task 4): data/<cat>/model/<nnn>.json, 256 per category, keyed by the model's slug.
+// Model chunk files (step 4, task 4): data/<cat>/model/<nnn>.json, 256 per category, keyed by the lookup form of the
+// model's slug (task 13: slug.slugLookup).
 import { readFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -7,13 +8,13 @@ import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from '../../src/lib/cat
 import { chunkOf } from '../../src/lib/compatChunks';
 import { slotModels } from '../../src/lib/builder';
 import { allTimeLow, decodeList, groupModels, saleOf } from '../../src/lib/data';
-import { checkData, listFile, manifest, modelChunks, sameKind, type CategoryInput } from '../../src/lib/derive';
+import { checkData, listFile, manifest, modelChunks, sameKind, searchFile, type CategoryInput } from '../../src/lib/derive';
 import { importGlitches, sharedImportedDays, sharedImportedLows, untrustedPoints } from '../../src/lib/dips';
 import { photoId } from '../../src/lib/images';
 import { MODEL_CHUNKS, loadModel, modelChunkOf, modelChunkPath } from '../../src/lib/modelData';
 import { SLOT_OF, toPart } from '../../src/lib/pick';
 import { recommendedScores } from '../../src/lib/ranking';
-import { modelSlug } from '../../src/lib/slug';
+import { modelSlug, nameSlug, slugLookup } from '../../src/lib/slug';
 import type {
   BaseListing,
   BuilderFile,
@@ -133,20 +134,47 @@ describe('model chunks over today\'s data', () => {
         expect(c.v).toBe(1);
         expect(c.builtAt).toBe(BUILT);
         expect(c.sources).toEqual(input.latest.sources);
-        for (const [slug, e] of Object.entries(c.models)) {
-          expect(e.slug).toBe(slug);
-          expect(modelChunkOf(slug)).toBe(n);
+        // Filed under the lookup form of its canonical slug (task 13).
+        for (const [k, e] of Object.entries(c.models)) {
+          expect(slugLookup(cat, e.slug)).toBe(k);
+          expect(modelChunkOf(k)).toBe(n);
         }
       });
       expect(entries.length).toBe(models.length);
       expect(new Set(entries.map((e) => e.key)).size).toBe(models.length);
       for (const m of models) {
-        const slug = modelSlug(cat, m);
-        const e = cs[modelChunkOf(slug)].models[slug];
+        const k = slugLookup(cat, modelSlug(cat, m));
+        const e = cs[modelChunkOf(k)].models[k];
         expect(e?.key).toBe(m.key);
         expect(e.chip).toBe(m.chip);
+        expect(e.slug).toBe(modelSlug(cat, m));
       }
     });
+
+    // Task 13 (final review I1): a source filter shows a model through some of its listings, so the category page's row
+    // link and chart lookup use that listing's spelling; every spelling, in any letter case, reaches the model's entry,
+    // whose slug is the canonical one.
+    it(`${cat}: every listing's spelling (and its upper case) finds the model's entry`, () => {
+      let misses = 0;
+      for (const m of models) {
+        let miss = false;
+        for (const l of m.listings) {
+          const one = groupModels([l], cfgOf(cat), input.latest.listings)[0];
+          for (const s of [modelSlug(cat, one), modelSlug(cat, one).toUpperCase()]) {
+            const k = slugLookup(cat, s);
+            const e = cs[modelChunkOf(k)].models[k];
+            if (e?.key !== m.key || e.slug !== modelSlug(cat, m)) miss = true;
+          }
+        }
+        if (miss) misses++;
+      }
+      expect(misses).toBe(0);
+    });
+    if (cat === 'gpu' || cat === 'cpu' || cat === 'ram' || cat === 'psu') {
+      it(`${cat}: slugs are still the key's (unchanged by task 13)`, () => {
+        for (const e of entries) expect(e.slug).toBe(nameSlug(e.key));
+      });
+    }
 
     it(`${cat}: full listings (url, scrapedAt), full history, dips and imported entry`, () => {
       for (const e of entries) {
@@ -348,11 +376,40 @@ describe('publishing check: every current model in exactly one chunk', () => {
     expect(modelProblems(cs).length).toBeGreaterThan(0);
     expect(modelProblems(cs).join()).toContain('psu');
   });
+  it('fails when an entry is filed under its hyphenated slug instead of the lookup form', () => {
+    const [cs, cases] = clone('case');
+    const n = cases.findIndex((c) => Object.values(c.models).some((e) => e.slug.includes('-')));
+    const [k, e] = Object.entries(cases[n].models).find(([, x]) => x.slug.includes('-'))!;
+    delete cases[n].models[k];
+    cases[modelChunkOf(e.slug)].models[e.slug] = e;
+    expect(modelProblems(cs)).toEqual([expect.stringContaining('case: 1 model chunk entries not in the file')]);
+  });
+  it('fails when an entry is filed under another model\'s spelling', () => {
+    const [cs, cases] = clone('case');
+    const n = cases.findIndex((c) => Object.keys(c.models).length);
+    const [k, e] = Object.entries(cases[n].models)[0];
+    cases[n].models[k] = { ...e, slug: `${e.slug}-x` };
+    expect(modelProblems(cs).join()).toContain('case: 1 model chunk entries not in the file');
+  });
   it('fails when a category has no chunks', () => {
     const cs: Partial<Record<Category, ModelChunk[]>> = { ...chunks };
     delete cs.cpu;
     expect(modelProblems(cs)).toEqual([expect.stringContaining('cpu')]);
   });
+});
+
+describe('the search index opens canonical addresses (task 13)', () => {
+  const all = Object.fromEntries(CATEGORY_IDS.filter((c) => inputs[c]).map((c) => [c, inputs[c]!.latest])) as Partial<Record<Category, Latest>>;
+  const index = searchFile(all, BUILT);
+  for (const cat of CATEGORY_IDS) {
+    if (!inputs[cat]) continue;
+    it(cat, () => {
+      const slugs = new Set(chunks[cat]!.flatMap((c) => Object.values(c.models).map((e) => e.slug)));
+      const hits = index.cats[cat]!.m.map(([name, , slug]) => slug ?? nameSlug(name));
+      expect(hits.length).toBe(slugs.size);
+      for (const s of hits) expect(slugs.has(s)).toBe(true);
+    });
+  }
 });
 
 describe('loadModel', () => {

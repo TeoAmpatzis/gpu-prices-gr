@@ -4,15 +4,17 @@ import { deriveAliases, MODEL_ALIASES, MODEL_ALIAS_SLUGS, validateAliases, type 
 import { resolveKey } from '../../src/lib/buildStore';
 import { guardMoved, modelChunkOf, modelChunkPath, type ModelResolution } from '../../src/lib/modelData';
 import { CATEGORY_LIST } from '../../src/lib/routes';
+import { slugLookup } from '../../src/lib/slug';
 
 const BUILT = '2026-10-17T14:00:00.000Z';
 const SOURCES = { skroutz: { count: 1, ok: true, updatedAt: '2026-10-17T11:00:00+00:00' } };
 
-async function setup(models: Record<string, unknown>, slug: string) {
+/** A chunk file at `slug`'s address (its lookup form, slug.slugLookup) holding `models`. */
+async function setup(models: Record<string, unknown>, slug: string, cat = 'gpu') {
   const requests: string[] = [];
   const files: Record<string, unknown> = {
     '/data/manifest.json': { builtAt: BUILT },
-    [`/${modelChunkPath('gpu', modelChunkOf(slug))}?v=${BUILT}`]: { models, sources: SOURCES },
+    [`/${modelChunkPath(cat, modelChunkOf(slugLookup(cat, slug)))}?v=${BUILT}`]: { models, sources: SOURCES },
   };
   vi.stubGlobal('fetch', async (url: string) => {
     requests.push(url);
@@ -46,6 +48,28 @@ describe('resolveModel', () => {
   it('an inherited property name is not a model', async () => {
     const { md } = await setup({}, 'constructor');
     expect(await md.resolveModel('gpu', 'constructor', {})).toEqual({ kind: 'gone' });
+  });
+
+  // Task 13: chunks are keyed by the lookup form, so every spelling of a model finds it; any address other than the
+  // canonical one (entry.slug) is moved there.
+  it('the address in another letter case is moved to the canonical one', async () => {
+    const entry = { key: 'RTX 5070 12GB', slug: 'rtx-5070-12gb' };
+    const { md } = await setup({ 'rtx-5070-12gb': entry }, 'rtx-5070-12gb');
+    expect(await md.resolveModel('gpu', 'RTX-5070-12GB', {})).toEqual({ kind: 'moved', slug: 'rtx-5070-12gb' });
+    expect(await md.loadModel('gpu', 'RTX-5070-12GB')).toEqual(entry);
+  });
+  it("another shop's spelling of a case is moved to the canonical address, which is ok", async () => {
+    const entry = { key: 'aerocoolcs111', slug: 'aerocool-cs-111' };
+    const { md } = await setup({ aerocoolcs111: entry }, 'aerocool-cs-111', 'case');
+    expect(await md.resolveModel('case', 'aerocool-cs111', {})).toEqual({ kind: 'moved', slug: 'aerocool-cs-111' });
+    expect(await md.resolveModel('case', 'aerocool-cs-111', {})).toEqual({ kind: 'ok', entry, sources: SOURCES, builtAt: BUILT });
+    // The category page's chart finds it under any spelling.
+    expect(await md.loadModel('case', 'Aerocool-CS111')).toEqual(entry);
+  });
+  it('an aliased old slug is moved in any spelling', async () => {
+    const { md, requests } = await setup({}, 'old-case', 'case');
+    expect(await md.resolveModel('case', 'Old-Case', { 'old-case': 'new-case' })).toEqual({ kind: 'moved', slug: 'new-case' });
+    expect(requests).toEqual([]);
   });
 });
 

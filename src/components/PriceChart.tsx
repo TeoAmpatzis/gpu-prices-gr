@@ -183,7 +183,7 @@ export default function PriceChart({ points, range, low }: { points: HistoryPoin
               <g data-low-line>
                 <line x1={PAD.left} x2={PAD.left + plotW} y1={y(low)} y2={y(low)} strokeDasharray="4 3" className="stroke-ok" />
                 <text x={PAD.left + plotW} y={y(low) - 4} fontSize={11} textAnchor="end" className="fill-ok">
-                  {tr(lang, T.allTimeLow)} {Math.round(low)}€
+                  {tr(lang, T.allTimeLow)} {formatPrice(low, lang)}
                 </text>
               </g>
             )}

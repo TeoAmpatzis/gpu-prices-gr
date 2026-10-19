@@ -12,7 +12,7 @@ interface Props<L extends BaseListing> {
   cfg: CategoryConfig<L>;
   models: Model<L>[];
   history: Record<string, DailyLow[]>;
-  /** Keys of the models that have a photo (list.json `photos`). */
+  /** Keys of the models that have a photo (list.v2.json `photos`). */
   photos: Set<string>;
   /** Resets every filter (the empty state's "Clear filters" button). */
   onReset: () => void;

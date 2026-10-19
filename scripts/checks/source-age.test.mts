@@ -1,4 +1,4 @@
-// Per-source data age (backlog #8): each category's list.json names when every source last succeeded.
+// Per-source data age (backlog #8): each category's list.v2.json names when every source last succeeded.
 // A source older than 12 h warns, older than 24 h (or never updated) fails site-check.mjs.
 // Run from the repo root: npx tsx scripts/checks/source-age.test.mts
 import { join } from 'node:path';

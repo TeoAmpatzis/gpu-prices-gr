@@ -1,4 +1,4 @@
-// Real data for the component catalogue: today's list.json of every category (served by the data plugin
+// Real data for the component catalogue: today's list.v2.json of every category (served by the data plugin
 // in development), grouped into models exactly as the site does, plus the examples each state needs.
 // Where today's data can't show a state (availability isn't collected yet), the example is marked as a
 // sample in the catalogue.

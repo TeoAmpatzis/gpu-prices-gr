@@ -312,6 +312,15 @@ for (const [name, size] of [['360', { width: 360, height: 740 }], ['1366', { wid
       await expect(note2).toHaveText(/before this chart|πριν από αυτό το διάγραμμα/);
     });
 
+    test('price history: the low line\'s label is a price as the rest of the page writes it (task 13)', async ({ page }) => {
+      const m = await aModel(page, (x) => spanDays(x.history) > 200 && lowOf(x).date !== null);
+      await page.goto(`/gpu/${m.slug}`);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(m.chip, { timeout: 20_000 });
+      await page.locator('[data-price-history] [data-range="all"]').click();
+      // formatPrice: "1.234,56 €" (el) / "€1,234.56" (en), never a rounded "1235€".
+      await expect(page.locator('[data-price-history] [data-low-line] text')).toHaveText(/(\d,\d{2}\s€|€[\d,]+\.\d{2})$/);
+    });
+
     test('price history: a Skroutz low that 3+ models share (import glitch, task 7b) is not shown; an imported low day says Skroutz', async ({ page }) => {
       const m = await aModel(page, (x) => x.key === 'RTX 3050 6GB'); // Skroutz's 115.43, shared by six cards
       const low = lowOf(m);
@@ -605,4 +614,34 @@ test.describe('product page data', () => {
       expect(data.some((p) => p.startsWith(`/data/${cat}/model/`))).toBe(true); // its model chunk
     });
   }
+});
+
+// Task 13 (final review I1): shops spell one model differently; the address in any shop's spelling, or in another letter
+// case, shows the model and is replaced (no history entry) by the canonical one, query string kept.
+test.describe('stable model addresses', () => {
+  /** As lib/slug.nameSlug. */
+  const nameSlug = (s: string) =>
+    s
+      .toLowerCase()
+      .replace(/×/g, 'x')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  const spellings = (m: PartEntry) => [...new Set(m.listings.map((l) => nameSlug((l as unknown as { chip: string }).chip)))];
+
+  test("/case/<another shop's spelling> lands on the canonical address with the case shown", async ({ page }) => {
+    const m = await anEntry(page, 'case', 'case-two-spellings', (x) => spellings(x).some((s) => s !== x.slug));
+    const other = spellings(m).find((s) => s !== m.slug)!;
+    await withBuild(page, null, `/case/${other}?from=test`);
+    await expect(page).toHaveURL(new RegExp(`/case/${m.slug}\\?from=test$`), { timeout: 20_000 });
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(m.chip, { timeout: 20_000 });
+    await page.goBack(); // the other spelling left no history entry: back is the page before it
+    await expect(page).toHaveURL(/\/about$/);
+  });
+
+  test('/gpu/<SLUG IN UPPER CASE> lands on the canonical address', async ({ page }) => {
+    const m = await aModel(page);
+    await withBuild(page, null, `/gpu/${m.slug.toUpperCase()}`);
+    await expect(page).toHaveURL(new RegExp(`/gpu/${m.slug}$`), { timeout: 20_000 });
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(m.chip, { timeout: 20_000 });
+  });
 });

@@ -1,4 +1,4 @@
-// Equivalence test: the site's results from the derived files (list.json / builder.json) must equal
+// Equivalence test: the site's results from the derived files (list.v2.json / builder.json) must equal
 // its results from the scraper's full files. Run from the repo root: npx tsx scripts/checks/data-equivalence.test.mts
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';

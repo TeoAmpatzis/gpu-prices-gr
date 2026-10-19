@@ -52,7 +52,7 @@ import {
 import { allTimeLow, groupModels, mostCommon, saleOf, type Model } from './data';
 import { MODEL_CHUNKS, modelChunkOf } from './modelData';
 import { SLOT_OF, toPart } from './pick';
-import { modelSlug, nameSlug } from './slug';
+import { modelSlug, nameSlug, slugLookup } from './slug';
 import { POP_SCALE, popularityRaw, recommendedScores } from './ranking';
 import type { SearchIndexFile, SearchModel } from './search';
 import {
@@ -84,7 +84,7 @@ import {
 
 /** Only needed when a product is opened (URL) or never shown (scrape time). */
 const DETAIL_ONLY = new Set(['url', 'scrapedAt']);
-/** Not in list.json either: only the builder reads them (builder.json keeps them). */
+/** Not in list.v2.json either: only the builder reads them (builder.json keeps them). */
 // Board fields for v2's rules (Phase 2): collected now, not shown or checked by v1.
 const V2_ONLY = ['m2Slots', 'm2Gen', 'sataPorts', 'maxMemoryGB', 'biosFlashback'];
 const LIST_SKIP = new Set([...DETAIL_ONLY, 'fanMounts', 'fansIncluded', 'radiators', 'airflowCfm', 'pressureMm', ...V2_ONLY]);
@@ -481,10 +481,11 @@ export const CHEAPER_BY = 0.05;
 export const VALUE_BAND = 0.1;
 
 /**
- * The product pages' data of a category (plan step 4, task 4): every current model in the chunk of its slug
- * (modelData.modelChunkOf), with all its listings (links included), its full history (the chart; the implausible
- * dips' dates so it can mark them), the imported Skroutz entry, its engine parts (fit with the saved build),
- * variants and alternatives. 256 chunks, empty ones included, so every address has a file.
+ * The product pages' data of a category (plan step 4, task 4): every current model in the chunk of its slug's lookup
+ * form (slug.slugLookup, modelData.modelChunkOf; the slug is the canonical one, from all its listings: task 13),
+ * with all its listings (links included), its full history (the chart; the implausible dips' dates so it can mark
+ * them), the imported Skroutz entry, its engine parts (fit with the saved build), variants and alternatives.
+ * 256 chunks, empty ones included, so every address has a file.
  */
 export function modelChunks(cat: Category, input: CategoryInput, builtAt: string, image?: ImageLookup): ModelChunk[] {
   const cfg = cfgOf(cat);
@@ -609,22 +610,24 @@ export function modelChunks(cat: Category, input: CategoryInput, builtAt: string
       ...(lengthRange(m) ? { lengthEstimate: lengthRange(m)! } : {}),
       alternatives: [...cheaper.map((o) => alternative('cheaper', o)), ...better.map((o) => alternative('value', o))],
     };
-    chunks[modelChunkOf(it.slug)].models[it.slug] = entry;
+    const k = slugLookup(cat, it.slug); // every spelling of the model finds it (modelData.loadModel)
+    chunks[modelChunkOf(k)].models[k] = entry;
   }
   return chunks;
 }
 
 /**
- * Publishing check of the model chunks: all 256 files, each entry in the file of its slug, and every current
- * model (the manifest's count, grouped by the same code) exactly once.
+ * Publishing check of the model chunks: all 256 files, each entry filed under the lookup form of its slug and in that
+ * form's file, and every current model (the manifest's count, grouped by the same code) exactly once (two models
+ * sharing a lookup form would leave one out: fewer models than the manifest's).
  */
 function modelChunkProblems(cat: Category, models: number, chunks: ModelChunk[] | undefined): string[] {
   if (!chunks || chunks.length !== MODEL_CHUNKS) return [`${cat}: ${chunks?.length ?? 0} model chunk files, expected ${MODEL_CHUNKS}`];
   const seen = new Map<string, number>();
   let misplaced = 0;
   chunks.forEach((c, n) => {
-    for (const [slug, e] of Object.entries(c.models)) {
-      if (modelChunkOf(slug) !== n || e.slug !== slug) misplaced++;
+    for (const [k, e] of Object.entries(c.models)) {
+      if (modelChunkOf(k) !== n || slugLookup(cat, e.slug) !== k) misplaced++;
       seen.set(e.key, (seen.get(e.key) ?? 0) + 1);
     }
   });

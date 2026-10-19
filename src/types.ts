@@ -55,7 +55,7 @@ export interface MoboListing extends BaseListing {
   memory: 'DDR4' | 'DDR5' | null; // null = unknown (LGA1700 boards come in both)
   wifi: boolean;
   ramSlots?: number | null;
-  // From product pages (scraper/specs.py parse_mobo); not used by v1, so list.json leaves them out.
+  // From product pages (scraper/specs.py parse_mobo); not used by v1, so list.v2.json leaves them out.
   m2Slots?: number | null;
   m2Gen?: number | null; // highest PCIe generation of its M.2 slots
   sataPorts?: number | null;
@@ -266,13 +266,13 @@ export interface Manifest {
 }
 
 /**
- * One model's product page (src/lib/derive.ts modelChunks), in /data/<cat>/model/<nnn>.json: the chunk of its slug
- * (src/lib/modelData.ts modelChunkOf).
+ * One model's product page (src/lib/derive.ts modelChunks), in /data/<cat>/model/<nnn>.json: filed under its slug's
+ * lookup form (src/lib/slug.ts slugLookup), in that form's chunk (src/lib/modelData.ts modelChunkOf).
  */
 export interface ModelEntry {
   key: string; // model key (history.json, list files)
   chip: string; // shown name, as on the category page
-  slug: string; // address segment (src/lib/slug.ts modelSlug)
+  slug: string; // canonical address segment (src/lib/slug.ts modelSlug over all its listings)
   /** The model has a stored photo (the same images index as list files' `photos` bitset): no request for one that hasn't. */
   photo: boolean;
   listings: BaseListing[]; // every listing with all its fields (url, scrapedAt…), cheapest first

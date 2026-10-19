@@ -47,7 +47,7 @@ export interface LayoutProps<L extends BaseListing> {
 }
 
 // The pick code (engine, builder rules, compat chunks) is its own chunk, requested only when `pick=1`: from the
-// moment the page mounts (after the first paint), alongside its list.json.
+// moment the page mounts (after the first paint), alongside its list.v2.json.
 const loadPick = () => import('./PickView');
 const PickView = lazy(loadPick) as unknown as ComponentType<LayoutProps<BaseListing>>;
 
