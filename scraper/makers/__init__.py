@@ -26,11 +26,13 @@ import json
 import random
 import threading
 import time
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, timedelta
 from pathlib import Path
 
 import http_client as http
+import ranges
 import specs
 from normalize import now_iso
 
@@ -134,9 +136,10 @@ def collect(listings: dict[str, list[dict]], budget: int = BUDGET) -> None:
         list(pool.map(work, MAKERS))
 
 
-def apply(cat: str, listings: list[dict]) -> None:
+def apply(cat: str, listings: list[dict]) -> Counter:
     """Fill the listings' missing fields (and join measurements, the safer value winning) from the
-    makers' products they match."""
+    makers' products they match. Returns the out-of-range maker values dropped, per field."""
+    dropped: Counter = Counter()
     for maker in MAKERS:
         brands = maker.BRANDS.get(cat)
         if not brands:
@@ -169,7 +172,15 @@ def apply(cat: str, listings: list[dict]) -> None:
             if not found:
                 found = by_key.get(maker.listing_key(cat, l) or "", [])
             for f in {f for e in found for f in e} - {"cat", "name", "parts", "key"}:
-                values = [e[f] for e in found if e.get(f) is not None]
+                values = []
+                for e in found:
+                    if e.get(f) is None:
+                        continue
+                    if rid := ranges.check(cat, f, e[f]):  # a scraping error must not join SAFER
+                        ranges.drop_log(cat, f, e[f], maker.NAME, rid)
+                        dropped[f] += 1
+                        continue
+                    values.append(e[f])
                 if not values:
                     continue
                 safer = specs.SAFER.get(f)
@@ -178,3 +189,4 @@ def apply(cat: str, listings: list[dict]) -> None:
                     l[f] = value
                 elif safer:
                     l[f] = safer([l[f], value])
+    return dropped

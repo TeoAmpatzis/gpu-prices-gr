@@ -19,6 +19,7 @@ import aliases  # noqa: E402
 import http_client  # noqa: E402
 import makers  # noqa: E402
 import overrides  # noqa: E402
+import ranges  # noqa: E402
 import shipping  # noqa: E402
 import site_history  # noqa: E402
 import specs  # noqa: E402
@@ -172,13 +173,16 @@ def write_history(cat: str, model_key, out_dir: Path, listings: list[dict], fres
 def finish(cat: Category, out_dir: Path, listings: list[dict]) -> None:
     """Cached product-page specs (shops, then makers), then fields shared across a model's listings."""
     specs.apply(cat.name, out_dir, listings)
-    makers.apply(cat.name, listings)
+    dropped = ranges.clean(cat.name, listings, None)  # scraping errors out, before SAFER joins values
+    dropped.update(makers.apply(cat.name, listings))  # maker values are checked inside; counted here too
     disagreements.clear()
     share_fields(listings, cat.shared, cat.model_key)
     for fields, key in cat.shared_by:
         share_fields(listings, fields, key)
     if disagreements:
         print(f"[{cat.name}] sites disagree by >5 (safer value kept): {dict(disagreements)}")
+    if dropped:
+        print(f"[{cat.name}] range: values dropped as implausible: {dict(dropped)}")
     overrides.apply(cat.name, listings, cat.model_key)  # manual fixes win over everything above
 
 
