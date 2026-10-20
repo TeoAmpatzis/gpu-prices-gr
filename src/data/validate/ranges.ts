@@ -33,7 +33,8 @@ export const RANGES: RangeCheck[] = [
   // under 30 mm is unknown: shop pages also give a fan's 25 mm thickness as the tower height (owner 2026-10-11)
   { id: 'cooler-height', cat: 'cooler', field: 'heightMm', min: 30, max: 200, unit: 'mm' },
   { id: 'case-gpu-max', cat: 'case', field: 'gpuMaxMm', min: 100, max: 700, unit: 'mm' },
-  { id: 'case-cooler-max', cat: 'case', field: 'coolerMaxMm', min: 25, max: 250, unit: 'mm' },
+  // max 300: real clearances of big towers are 260-275 mm (owner 2026-10-20; was 250)
+  { id: 'case-cooler-max', cat: 'case', field: 'coolerMaxMm', min: 25, max: 300, unit: 'mm' },
   { id: 'gpu-length', cat: 'gpu', field: 'lengthMm', min: 100, max: 400, unit: 'mm' },
   { id: 'gpu-minpsu-plausible', cat: 'gpu', field: 'minPsu', min: 0, max: 100000, unit: 'W', lowerBound: minPsuFloor,
     rangeText: 'at least the chip board power + 100 W (chips with a board power in the GPU power table)' },
