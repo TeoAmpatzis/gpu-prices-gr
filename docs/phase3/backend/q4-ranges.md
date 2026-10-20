@@ -53,3 +53,16 @@ builder.json rows are identical for every slot except 1 case row (Spire U20M). C
 - You raised the case cooler clearance limit to 300 mm on 20/10; no real tower value is lost now.
 - Watch number for the next scrape: 120 `range: ... dropped (` lines (60 values, each twice, because the scrape finishes its data twice) and 6 summary lines; 0 for graphics cards, CPUs and RAM. A big jump means a parser started producing bad values.
 - Nothing else changes: counts equal, history untouched.
+
+## Live result (2026-10-20)
+
+Pushed as `acfb84c` (owner OK, with case cooler clearance up to 300 mm). First scrape **39463822093** (17:11 UTC,
+data commit `7c8bab9`): green; history check "nothing lost"; Vercel success for both commits.
+
+- `range: … dropped` lines: **127** (expected ≈ 120). Pass 1 = 60 exactly (cooler heightMm 58, case gpuMaxMm 1,
+  mobo maxMemoryGB 1); pass 2 = 67 (cooler 65: product pages fetched between the two passes added 7 more bad cooler
+  heights). By site: cooler skroutz 102, bestprice 21; case bestprice 2; mobo bestprice 2. GPU, CPU, RAM: 0.
+- Model / listing counts (latest.json chips): gpu 78 → 79, cpu 405 → 407, mobo 1,597 → 1,586, ram 283 → 283,
+  storage 2,557 → 2,561, psu 140 → 140, case 2,927 → 2,942, fan 2,230 → 2,236, cooler 2,338 → 2,349 — the usual
+  run-to-run drift (listings ±1 %), no drop.
+- Same run: Skroutz failed in ram, psu, fan (throttling as usual; previous listings kept).
