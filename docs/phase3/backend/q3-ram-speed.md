@@ -47,3 +47,30 @@ Speed changes: 1,193 none → speed (≈1,154 via "Ταχύτητα"); 2800 → 
    aliased old key's point by the full alias list.
 
 v2 side: after v2 merges main, the build reads `scraper/model_aliases.json` into `MODEL_ALIASES` (step 4 Task 5).
+
+## Live result (2026-10-20)
+
+Pushed as `ac84dfb`. The first scrape (19/10) had Skroutz 403s and a Shopflix RAM error, so 23 of 28 aliases were
+skipped. Scrape **39372024820** (data commit `f77aac0`, 20/10 06:00 UTC) had 5/5 sources ok:
+
+| | Offline (19/10) | Live (20/10) |
+| --- | ---: | ---: |
+| RAM models | 430 | 426 |
+| Shopflix listings with speed null | not counted (1,193 listings of all sites gained a speed) | 1,216 → 51 |
+| Alias old keys left in `ram/history.json` | 0 | 0 (all 23 aliases that apply folded) |
+| RAM history points | 114,704 → 113,173 | 114,653 → 113,363 |
+| `merge_history check` | passes without `--allow-shrink` | passed without `allow_history_shrink` |
+
+**The 51 Shopflix listings still without a speed** (live data at `09cdb17`):
+
+- **48 are expected**: the title states no speed at all. Shopflix's template leaves the value blank ("Kingston 32GB DDR4
+  με Ταχύτητα για Server", "G.Skill Trident Z5 RGB 32GB DDR5 Mhz 2x16GB") or has no speed field ("Lenovo DDR4 με
+  Module 1x16GB για Laptop", "G.Skill Trident Z5 Neo RGB DDR5 128GB RAM με Modules για Desktop", "Synology
+  D4EU02-8G Μνήμη RAM 8GB DDR4 για Laptop"). Synology/Lenovo/HP/Dell codes are not in the part-number table, and
+  guessing a speed for them would be wrong.
+- **3 are missed patterns** (small, for a later batch):
+  - "Φορητού DDR4 8GB G.Skill 3200 CL22 8GRS": bare speed before `CL`, no "MHz".
+  - "1-0044 DDR3 2GB 1333 AMD Desktop DIMM για Desktop": bare JEDEC number after the size.
+  - "Kingston KTH-PL426/16G 16GB DDR4": Kingston's HP-compatible code (`KTH-PL4` + `26` = 2666), not in the KF/KVR/KSM
+    list.
+  A bare JEDEC number next to the DDR type or before `CL` would catch the first two. Effect: 3 listings.
