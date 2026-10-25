@@ -725,3 +725,34 @@ Recommendation after each arrow.
   Thermaltake). Schema + scraper change through the backend queue; coverage only for those makers (maker fields reach
   ~3% of case models today), days of scrapes.
 - **D: keep today's estimate** (a Mini Tower passes ATX). Contradicts answer 8; listed for completeness.
+
+## Owner decisions 25/10 (binding; they override the task text above)
+
+The plan is **APPROVED** (rule 4: one approval for step 5). Answers to the open questions:
+
+1. No complaints beyond the test drive; the plan stands.
+2. **Option A + B.** Task 5 adds `src/engine/data/casePsu.ts`: each row (ATX / SFX / SFX-L taken) is read from the
+   maker's page the task downloads, with its source URL and date per row (~25 most-listed small cases).
+3. G1–G4 enforced in v2 at build time (Task 2).
+4. Q-B1 overrides: yes, values from the makers' pages with source URLs. It joins the main backend queue **after Q6
+   and Q7**, one push at a time, owner OK per push.
+5. Intel: only an intel.com page that names the boxed cooler counts; otherwise "not stated", and the list goes to
+   the owner (Task 3 report).
+6. Gaming by resolution with the redesign's minimums: yes.
+7. **Tiers (Task 4): at least two independent sources must agree, or the chip gets no tier** (listed for the owner).
+   Credit the sources on the site (a line where tiers are used and on the About page, el + en). Tiers are our own
+   grouping; no site's table or text is copied. **No TechPowerUp.** Values only from pages actually downloaded.
+8. Real PSU products from titles: yes.
+9. GPU twins merged in v2: yes; **the Task 7 reviewer opens the pages of 10 merged pairs** and confirms each.
+10. Two storage lines, one RAM kit: yes. 11. One automatic build per budget: yes. 12. Deleting the old builder files
+    in v2: yes (git keeps the history). 13. TFX/Flex out: yes.
+
+Additions:
+- **Budget range (Task 10): 400 € up to at least 10,000 €** (build c costs 8,575 € today). Above the top of the
+  range: no automatic build, with a plain message (el + en).
+- **Per-step files (Tasks 6, 11, 16):** preload the next step's file while the buyer is on the current one; measure
+  the step change on a throttled phone (time until the products show) and report it at the gate.
+- **Task 15** items go into the same main queue (rule 1): Q6 → Q7 → Q-B1 overrides → the rest. **Q-B3 (the GPU
+  `card` schema field) needs its own separate owner OK** when it is reached.
+- Execution: subagent-driven to the gate (builder + separate reviewer per task, reviewer OK before each commit).
+  Stop only for push, workflow runs, schema/scraper changes, deletions outside v2, or owner-only decisions.
