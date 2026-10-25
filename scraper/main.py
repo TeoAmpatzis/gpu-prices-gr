@@ -15,9 +15,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
+import aliases  # noqa: E402
 import http_client  # noqa: E402
 import makers  # noqa: E402
 import overrides  # noqa: E402
+import ranges  # noqa: E402
 import shipping  # noqa: E402
 import site_history  # noqa: E402
 import specs  # noqa: E402
@@ -131,8 +133,10 @@ def write_image_urls(out_dir: Path, listings: list[dict], model_key) -> None:
     path.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
 
-def update_history(history: dict, listings: list[dict], day: str, model_key) -> dict:
-    """One point per model per day: the lowest price seen that day across runs."""
+def update_history(history: dict, listings: list[dict], day: str, model_key, model_aliases: dict | None = None) -> dict:
+    """One point per model per day: the lowest price seen that day across runs. Renamed models
+    (scraper/model_aliases.json) first move their points to the new key (aliases.fold_history, idempotent)."""
+    aliases.fold_history(history, model_aliases or {})
     cheapest: dict[str, dict] = {}
     for l in listings:
         key = model_key(l)
@@ -151,16 +155,34 @@ def update_history(history: dict, listings: list[dict], day: str, model_key) -> 
     return dict(sorted(history.items()))
 
 
+def write_history(cat: str, model_key, out_dir: Path, listings: list[dict], fresh: list[dict], day: str,
+                  model_aliases: dict | None = None) -> dict:
+    """history.json (+ history_imported.json markers) for one scrape: renamed models are folded first,
+    except an old key that has listings again (taken from ALL listings, also the kept ones of a failed
+    source); then today's points from the fresh listings."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    history_path = out_dir / "history.json"
+    live = {model_key(l) for l in listings}
+    folding = aliases.active(cat, aliases.for_cat(cat) if model_aliases is None else model_aliases, live)
+    history = update_history(load_json(history_path, {}), fresh, day, model_key, folding)
+    site_history.follow_aliases(out_dir, folding)
+    history_path.write_text(json.dumps(history, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    return history
+
+
 def finish(cat: Category, out_dir: Path, listings: list[dict]) -> None:
     """Cached product-page specs (shops, then makers), then fields shared across a model's listings."""
     specs.apply(cat.name, out_dir, listings)
-    makers.apply(cat.name, listings)
+    dropped = ranges.clean(cat.name, listings, None)  # scraping errors out, before SAFER joins values
+    dropped.update(makers.apply(cat.name, listings))  # maker values are checked inside; counted here too
     disagreements.clear()
     share_fields(listings, cat.shared, cat.model_key)
     for fields, key in cat.shared_by:
         share_fields(listings, fields, key)
     if disagreements:
         print(f"[{cat.name}] sites disagree by >5 (safer value kept): {dict(disagreements)}")
+    if dropped:
+        print(f"[{cat.name}] range: values dropped as implausible: {dict(dropped)}")
     overrides.apply(cat.name, listings, cat.model_key)  # manual fixes win over everything above
 
 
@@ -198,13 +220,19 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
     sources_meta: dict[str, dict] = {}
     listings: list[dict] = []
 
+    seconds: dict[str, float] = {}  # per source, for the [timing] line (measurement only)
+
     def run(name: str) -> list[dict]:
         print(f"[{cat.name}/{name}] fetching…")
+        http_client.set_label(f"{cat.name}/{name}")
+        start = time.monotonic()
         try:
             return [l.to_dict() for l in SOURCES[name](cat)]
         except Exception:
             traceback.print_exc()
             return []
+        finally:
+            seconds[f"{cat.name}/{name}"] = time.monotonic() - start
 
     # Sources are different sites, so they run in parallel; each stays polite to its own host.
     wanted = [name for name in SOURCES if not only or name in only]
@@ -236,15 +264,19 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
     listings.sort(key=lambda l: (l["chip"], l["price"]))
     if with_shipping:
         print(f"[{cat.name}] best totals (price + shipping)…")
+        http_client.set_label(f"{cat.name}/shipping")
+        start = time.monotonic()
         shipping.enrich(out_dir, listings, cat.model_key)
+        print(http_client.summary(f"{cat.name} shipping", {f"{cat.name}/shipping": time.monotonic() - start}))
+        http_client.set_label(None)
     latest_path.write_text(
         json.dumps({"updatedAt": run_at, "sources": sources_meta, "listings": listings}, ensure_ascii=False, indent=1),
         encoding="utf-8",
     )
     fresh = [l for l in listings if sources_meta.get(l["source"], {}).get("ok")]
-    history = update_history(load_json(history_path, {}), fresh, run_at[:10], cat.model_key)
-    history_path.write_text(json.dumps(history, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    history = write_history(cat.name, cat.model_key, out_dir, listings, fresh, run_at[:10])
     print(f"[{cat.name}] wrote {len(listings)} listings, {len(history)} models in history")
+    print(http_client.summary(f"{cat.name} sources", seconds))
     return any(m["ok"] for m in sources_meta.values())
 
 
@@ -279,8 +311,15 @@ def main() -> int:
         return 0
     cats = run_order(cats)
     print("order: " + ", ".join(cat.name for cat in cats))
+    start = time.monotonic()
     ok = [scrape_category(cat, args.only) for cat in cats]
+    lists = time.monotonic() - start
     collect_specs(cats, budget, args.makers_budget)
+    rest = time.monotonic() - start - lists
+    print(f"[timing] run: lists {lists:.0f}s, specs + makers {rest:.0f}s, total {lists + rest:.0f}s")
+    other = http_client.stats().get("other")
+    if other:
+        print(f"[timing] requests without a label: {other}")
     return 0 if any(ok) else 1
 
 

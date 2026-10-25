@@ -90,8 +90,9 @@ describe('key specs', () => {
   });
 
   it('coolers: an AIO shows its radiator once (in Type); air coolers keep their height; every cooler has RGB', () => {
-    const latest = read('cooler');
-    if (!latest) return;
+    // Frozen cooler listings (main data of 2026-10-17, commit 1173da7): the Thermalright Turbo Right 240 C has an Air
+    // listing next to two AIO ones, and which is the cheapest changes with the prices (a mixed model breaks the check).
+    const latest = validateLatest('cooler', JSON.parse(readFileSync('tests/fixtures/preclean/cooler-keyspecs.json', 'utf8')), VALIDATION_MODE).latest;
     const cfg = cfgOf('cooler');
     const models = groupModels(latest.listings.map(ownTotal), cfg);
     let aio = 0;

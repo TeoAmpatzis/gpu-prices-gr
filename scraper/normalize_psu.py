@@ -30,6 +30,9 @@ FORM = [
     (re.compile(r"\bTFX\b", re.I), "TFX"),
     (re.compile(r"\bFlex\b", re.I), "Flex"),
 ]
+# ATX 3.x with its minor version ("ATX 3.1", "ATX3.0", URL "atx 3 0" / BestPrice's "atch 3 1"); the
+# version digit is required so "ATX 300W" never matches.
+ATX3 = re.compile(r"\bAT(?:X|CH)\s?3[.\s]\d\b", re.I)
 EXCLUDE = re.compile(r"καλώδι|\bcable|extension|adapter|αντάπτορ|tester|bracket|βάση|sleeved", re.I)
 MIN_WATTS, MAX_WATTS = 150, 3000
 
@@ -82,6 +85,9 @@ def make_listing(
     efficiency = "Standard" if tier == "White" else tier  # None = no certification
     modular = next((v for pattern, v in MODULAR if pattern.search(text)), None)
     form = next((v for pattern, v in FORM if pattern.search(text)), "ATX")
+    # "ATX 3.1" / "ATX3.0" in a title, "…-atx-3-0-…" / "…-atch-3-1-…" in a BestPrice URL (its own Form
+    # Factor field). Plain "ATX" says nothing about the version: None, never False.
+    atx3 = True if ATX3.search(text) else None
 
     # BestPrice appends the category name ("Τροφοδοτικό Υπολογιστή ATX 3.1 80 PLUS Gold").
     title = re.sub(r"\s*Τροφοδοτικό Υπολογιστή.*$", "", title, flags=re.I)
@@ -99,4 +105,5 @@ def make_listing(
         modular=modular,
         formFactor=form,
         scrapedAt=scraped_at,
+        atx3=atx3,
     )

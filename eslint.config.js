@@ -22,6 +22,7 @@ export default defineConfig([
     'scraper/',
     'docs/',
     '.vercel/',
+    '.superpowers/**',
     'test-results/',
     'playwright-report/',
   ]),
