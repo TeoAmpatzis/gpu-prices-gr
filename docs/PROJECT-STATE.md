@@ -24,12 +24,12 @@
 1. Το v2 χτίζεται και ελέγχεται ολόκληρο τοπικά: frontend και backend (scraper, δεδομένα, έλεγχοι).
 2. Μέχρι τότε το v1 μένει όπως είναι στο GitHub και στο Vercel.
 3. **Τρόπος (απόφαση A1, 11/10):** όταν το v2 είναι έτοιμο και λειτουργικό, το v2 **αντικαθιστά το main μέσα στο ίδιο repo** (`TeoAmpatzis/gpu-prices-gr`), με ένα merge του v2 στο main. Το repo, τα workflows του scraper, το ιστορικό τιμών (`public/data/*/history.json`), οι caches και το project του Vercel μένουν, ώστε τα δεδομένα να συνεχίσουν χωρίς κενό. **Το τελευταίο deployment του v1 μένει στο Vercel για επαναφορά (Instant Rollback).** Κάθε βήμα της κυκλοφορίας με επιβεβαίωση του Teo. Τώρα καμία ενέργεια· μόνο καταγραφή.
-4. Το v1 μένει τοπικά στον υπολογιστή του Teo (`Desktop/PROJECTS/Gpu price comparison`)· στο GitHub μένει μόνο στα παλιά commits του main.
+4. Το v1 μένει τοπικά στον υπολογιστή του Teo (`Desktop/PROJECTS/builddraft-v1-live`)· στο GitHub μένει μόνο στα παλιά commits του main.
 5. Η διεύθυνση του site (B5: `gpu-prices-gr.vercel.app`, `builddraft.vercel.app` ή domain) αποφασίζεται πριν από την κυκλοφορία.
 
 ## Αντίγραφα ασφαλείας (απόφαση A2, 11/10)
-- Μόνο τοπικά, σε αυτόν τον υπολογιστή: `C:\Users\Teo\Backups\buildcraft-v2\<ημερομηνία_ώρα>\` (bundle όλων των branches, τα untracked αρχεία και των δύο worktrees, `manifest.txt`· κρατιούνται τα 5 νεότερα). Προστατεύει από διαγραφές και λάθη του git, όχι από βλάβη του δίσκου.
-- Στο τέλος κάθε session: `powershell -ExecutionPolicy Bypass -File "C:\Users\Teo\Desktop\PROJECTS\buildcraft-v2\scripts\backup-v2.ps1"`. Προειδοποιεί όταν ένα worktree έχει αλλαγές χωρίς commit.
+- Μόνο τοπικά, σε αυτόν τον υπολογιστή: `C:\Users\Teo\Backups\builddraft-v2\<ημερομηνία_ώρα>\` (bundle όλων των branches, τα untracked αρχεία και των δύο worktrees, `manifest.txt`· κρατιούνται τα 5 νεότερα). Προστατεύει από διαγραφές και λάθη του git, όχι από βλάβη του δίσκου.
+- Στο τέλος κάθε session: `powershell -ExecutionPolicy Bypass -File "C:\Users\Teo\Desktop\PROJECTS\builddraft-v2\scripts\backup-v2.ps1"`. Προειδοποιεί όταν ένα worktree έχει αλλαγές χωρίς commit.
 - Επαναφορά: `git clone <φάκελος>\repo.bundle <νέος φάκελος>` (δοκιμάστηκε 11/10: 9/9 τοπικά branches ίδια, `git fsck` χωρίς σφάλματα).
 
 ## Κατάσταση branches
@@ -79,6 +79,7 @@
 - Δεδομένα: 5 καταχωρίσεις μητρικών με `maxMemoryGB` 3 (το σφάλμα «3.072GB» διορθώθηκε στο main με το `2bdc58f`, οι αποθηκευμένες σελίδες δεν έχουν ξαναδιαβαστεί)· ο έλεγχος δεδομένων (4–16.384) τις κάνει ήδη «άγνωστο».
 
 ## Ιστορικό αποφάσεων
+- 25/10 (Teo): οι φάκελοι μετονομάστηκαν ώστε το όνομα να λέει τη χρήση: `Gpu price comparison` → `builddraft-v1-live` (v1, το live site, κρατά το `.git`), `buildcraft-v2` → `builddraft-v2` (το νέο site), `buildcraft-a3` → `builddraft-scraper-fixes` (branch `a3-queue`, η ουρά backend του main), `buildcraft-q6` → `builddraft-product-merge` (οι παρτίδες συγχώνευσης προϊόντων B9). Τα backups είναι πλέον στο `C:\Users\Teo\Backups\builddraft-v2\`. Τα παλιά docs κρατούν τα παλιά ονόματα ως ιστορικό.
 - 17/10 (Teo): νέος τρόπος δουλειάς (κανόνας 4: μία έγκριση ανά βήμα, στάσεις μόνο για push, workflows, δομή δεδομένων/scraper, διαγραφές και αποφάσεις του Teo)· σειρά βήμα 4 → 5 → 6· ουρά backend του main επεκτάθηκε (κανόνας 1) με RAM, `SAFER` (πρόταση), B9 1–5, B8· το B9 πρέπει να τελειώσει πριν από την πύλη του βήματος 4· για το βήμα 5 ερώτηση πρώτα για τα προβλήματα του τωρινού builder· το A3 #2 εγκρίθηκε για push μόνο του `fb95c6b` (μετά το rebase `e09763b`, ίδιο diff, 8/8 τεστ, compile OK), με ερώτηση πριν από το push.
 - 17/10: βήμα 3 έκλεισε τοπικά (`docs/phase3/gate.md`). C5: δύο προσφορές του ίδιου μοντέλου δεν διαβάζονται πια ίδια (166 ζεύγη σε 36.819 τίτλους, 0 νέα)· `TWO_WORD_MAKERS` χωρίς Thermalright/DeepCool/SilverStone/ID-Cooling/Inter-Tech/Golden Field (0 τίτλοι ξεκινούν έτσι). Το origin/main της 17/10 ενώθηκε στο v2 (`93752f0`)· τα πεδία μητρικών `m2Slots`, `sataPorts`, `maxMemoryGB`, `biosFlashback` έχουν πλέον τιμές (`399e311`).
 - 12/10: αποφάσεις 1–4 του Teo υλοποιήθηκαν και ελέγχθηκαν (AMD TDP 76/76 ίδια με τον πίνακα της AMD· AM4 σημείωση/προειδοποίηση· B650/B650E × Ryzen 7000 ok από 5 σελίδες της AMD· AM5 600/800 series: καμία σελίδα δεν ονομάζει τα chipsets → S03/S04 μένουν· minPsu μόνο «ισχύς κάρτας + 100 W», 12 απορρίψεις). Πύλη Φάσης 2: `docs/phase2/gate.md` (σενάρια 50/4/10/0· `/case` κινητό 89, κάτω από 90, ίδιος κώδικας με τη Φάση 1). Πρόταση για B9: ουρά backend στο main μετά το A3 και πριν από τη σελίδα προϊόντος (βήμα 4).

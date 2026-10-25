@@ -6,9 +6,9 @@
 # Keeps the newest $Keep backups. Warns (does not stop) when a worktree has uncommitted changes.
 # Restore: git clone <dir>\repo.bundle <new folder>   (then copy untracked\... back if needed)
 #
-#   powershell -ExecutionPolicy Bypass -File scripts/backup-v2.ps1 [-BackupRoot C:\Users\Teo\Backups\buildcraft-v2] [-Keep 5]
+#   powershell -ExecutionPolicy Bypass -File scripts/backup-v2.ps1 [-BackupRoot C:\Users\Teo\Backups\builddraft-v2] [-Keep 5]
 param(
-  [string]$BackupRoot = (Join-Path $env:USERPROFILE 'Backups\buildcraft-v2'),
+  [string]$BackupRoot = (Join-Path $env:USERPROFILE 'Backups\builddraft-v2'),
   [int]$Keep = 5
 )
 # Windows PowerShell 5.1 turns git's progress lines on stderr into errors under 'Stop', so native
