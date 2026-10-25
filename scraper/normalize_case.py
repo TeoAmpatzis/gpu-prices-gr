@@ -18,15 +18,45 @@ from models import CaseListing
 SIZE_PHRASE = r"(?:Mid|Midi|Mini|Micro|Full|Ultra|Super|Big)[\s-]?Tower"
 CUT = re.compile(
     rf"\s(?:{SIZE_PHRASE}|Κουτί|ΘΗΚΗ|Θήκη|με|with|Mesh\s+Tower|(?:Computer|PC)\s+Case|Case|Chass?is|"
+    # Greek descriptors of e-shop/Shopflix ("… ATX ΠΕΡΙΠΤΩΣΗ ΥΠΟΛΟΓΙΣΤΗ ΧΩΡΙΣ ΑΝΕΜΙΣΤΗΡΕΣ", "… ΓΙΑ 2 ΣΥΣΚΕΥΕΣ") and
+    # e-shop's "… EVO RGB BLACK COLUMNLESS TOWER".
+    rf"Περίπτωση|ΠΕΡΙΠΤΩΣΗ|Χωρίς|ΧΩΡΙΣ|για|Columnless|"
     rf"\d+\s+(?:A?RGB\s+)?Fans)\b.*$|\s\+.*$",
     re.I,
 )
 # e-shop.gr sometimes puts descriptors right after the vendor: "BE QUIET MIDI TOWER SHADOW BASE 800",
-# "ARMAGGEDDON GAMING PC CASE TEARAXX APEX 13", "DARKFLASH COMPUTER CASE TH285 4 FANS". Those are
-# removed instead of cut at (cutting would leave no name).
+# "ARMAGGEDDON GAMING PC CASE TEARAXX APEX 13", "DARKFLASH COMPUTER CASE TH285 4 FANS",
+# "DARKFLASH ΚΟΥΤΙ ΥΠΟΛΟΓΙΣΤΗ C285". Those are removed instead of cut at (cutting would leave no name).
 LEADING = re.compile(
-    rf"^\s*(?:{SIZE_PHRASE}|(?:Gaming\s+)?(?:(?:Computer|PC)\s+)?Case(?:\s+with\s+PSU)?|Gaming)\s+", re.I
+    rf"^\s*(?:{SIZE_PHRASE}|(?:Gaming\s+)?(?:(?:Computer|PC)\s+)?Case(?:\s+with\s+PSU)?|Gaming|"
+    rf"ΚΟΥΤΙ\s+ΥΠΟΛΟΓΙΣΤΗ|Κουτί\s+Υπολογιστή)\s+",
+    re.I,
 )
+# Greek words that name the product's own panel version, as the other sites write it in English:
+# e-shop "DARKFLASH DK431 ΓΥΑΛΙΝΗ" = Shopflix "Darkflash DK431 Glass", "AQUARIUS ΑΚΡΥΛΙΚΗ" = BestPrice
+# "Aquarius Acrylic". (Panel options in English stay noise below: TG, Solid, Clear Tint…)
+TRANSLATE = [
+    (re.compile(r"(?<![\w-])(?:ΓΥΑΛΙΝΗ|Γυάλινη)(?![\w-])", re.I), "Glass"),
+    (re.compile(r"(?<![\w-])(?:ΑΚΡΥΛΙΚΗ|Ακρυλική)(?![\w-])", re.I), "Acrylic"),
+]
+# Makers' own names where shops differ: Thermaltake's "The Tower 300" (one BestPrice title says "Tower 300"),
+# Lian Li's "O11D" = "O11 Dynamic" (Skroutz/Shopflix/e-shop write "O11D EVO RGB", BestPrice/Snif "O11 Dynamic
+# Evo RGB"). The O11 Dynamic EVO RGB is its own case (455.7 mm GPU vs the plain EVO's 426, Lian Li's pages),
+# so RGB stays in that one name although NOISE removes it everywhere else.
+O11D = re.compile(r"\bO11D(?=\s|$)", re.I)
+EVO_RGB = re.compile(r"\bEVO\s+RGB\b", re.I)
+
+
+def maker_name(vendor: str, name: str, title: str) -> str:
+    if vendor == "Thermaltake":
+        name = re.sub(r"^Tower(?=\s+\d)", "The Tower", name, flags=re.I)
+    if vendor == "Lian Li":
+        name = O11D.sub("O11 Dynamic", name)
+        if EVO_RGB.search(title):
+            name = re.sub(r"\b(O11 Dynamic EVO)\b(?!\s+(?:RGB|XL)\b)", r"\1 RGB", name, flags=re.I)
+    return name
+
+
 # Side-panel options of the same case ("Define 7 Solid" / "Define 7 TG Clear Tint") and words only
 # one site uses; colours come from names.COLORS.
 NOISE = names.noise_regex([
@@ -94,12 +124,16 @@ def make_listing(
     # Snif starts every case title with "Desktop" ("Desktop Aerocool Cylon Midi-Tower - Μαύρο"), which
     # would otherwise be taken for the vendor.
     title = re.sub(r"^Desktop\s+", "", re.sub(r"\s+", " ", title).strip(), flags=re.I)
-    text = f"{title} {url.replace('-', ' ')} {specs}"
+    parsed = names.prepare(title)  # "Antec ΑΧ61" -> AX61, "Towerμε" -> "Tower με"; the stored title stays
+    text = f"{parsed} {url.replace('-', ' ')} {specs}"
     if price <= 0 or not IS_CASE.search(text):
         return None
-    vendor, rest = names.split_vendor(title)
+    vendor, rest = names.split_vendor(parsed)
     rest = LEADING.sub("", LEADING.sub("", rest))  # "GAMING PC CASE …": two passes
-    name = names.clean_name(CUT.sub("", " " + rest), NOISE)
+    rest = CUT.sub("", " " + rest)
+    for pattern, english in TRANSLATE:
+        rest = pattern.sub(english, rest)
+    name = maker_name(vendor, names.clean_name(rest, NOISE), parsed)
     # Accessories are checked on the model name only: a case "… WITH 3X ARGB FAN" is still a case.
     if not name or not names.valid_vendor(vendor) or EXCLUDE.search(name):
         return None

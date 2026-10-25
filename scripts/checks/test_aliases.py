@@ -61,6 +61,13 @@ with tempfile.TemporaryDirectory() as d:
     raises("load() rejects a cycle in the file", lambda: aliases.load(p), "ram", "A", "B")
     expect("missing file = no aliases", aliases.load(Path(d) / "none.json"), {})
 expect("the committed scraper/model_aliases.json loads", isinstance(aliases.load(), dict), True)
+# Q6 (B9 batch 1): case/fan/cooler entries, the hand-picked O11D EVO alias, no old key that is also a target.
+committed = aliases.load()
+expect("Q6: case, fan and cooler aliases are committed", all(committed.get(c) for c in ("case", "fan", "cooler")), True)
+expect("Q6: hand alias lianlio11devo -> lianlio11dynamicevorgb", committed.get("case", {}).get("lianlio11devo"),
+       "lianlio11dynamicevorgb")
+expect("Q6: no committed target is itself an old key (chains resolved)",
+       [(c, n) for c, m in committed.items() for n in m.values() if n in m], [])
 
 # --- fold: same-day rule, idempotent, target without history
 AL = {"old": "new"}

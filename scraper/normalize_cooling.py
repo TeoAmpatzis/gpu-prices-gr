@@ -27,8 +27,23 @@ FAN_CUT = re.compile(
     re.I,
 )
 # "Fan" is dropped everywhere (not only e-shop's "... PWM FAN 40MM"), so "Lian Li Uni Fan SL"
-# becomes "Lian Li Uni SL" on every site and still matches.
-FAN_NOISE = names.noise_regex(["RGB", "ARGB", "A-RGB", "LED", "Kit", "Set", "Bundle", "Fans", "Fan", "Gaming"])
+# becomes "Lian Li Uni SL" on every site and still matches. "Σετ" = Set (Shopflix).
+FAN_NOISE = names.noise_regex(["RGB", "ARGB", "A-RGB", "LED", "Kit", "Set", "Σετ", "Bundle", "Fans", "Fan", "Gaming"])
+# Shopflix puts a Greek category phrase before the vendor: "Kit LED ανεμιστήρων Aerocool MIRAGE-12PRO 120mm RGB".
+FAN_PREFIX = re.compile(r"^(?:Kit\s+(?:LED\s+)?|Σετ\s+)?ανεμιστήρων\s+", re.I)
+# Greek words that are part of the product name, as the other sites write them (Shopflix "Lian Li Unifan SL
+# Reverse Ασύρματο LCD Οθόνη 120mm" = BestPrice "Lian Li Unifan SL Wireless LCD Reverse 120mm"): Lian Li's
+# wireless fans are their own products, so the word is translated, not dropped; the order follows BestPrice.
+FAN_TRANSLATE = [
+    (re.compile(r"\bReverse\s+Ασύρματ[οαη]\s+LCD\s+Οθόνη\b", re.I), "Wireless LCD Reverse"),
+    (re.compile(r"\bReverse\s+Ασύρματ[οαη]\b", re.I), "Wireless Reverse"),
+    (re.compile(r"(?<![\w-])Ασύρματ(?:ο|α|η|ος)(?![\w-])", re.I), "Wireless"),
+    (re.compile(r"\bLCD\s+Οθόνη\b|(?<![\w-])Οθόνη\s+LCD\b", re.I), "LCD"),
+]
+# e-shop writes the size with Greek capitals in the middle of the name: "THERMALTAKE SWAFAN EX12 120ΜΜ ARGB SYNC PC
+# COOLING FAN TT PREMIUM EDITION". Made Latin, FAN_CUT would cut the name there and merge this Sync edition into
+# the plain Swafan EX12, so only the Greek unit goes (the size itself is read elsewhere); the key stays the same.
+GREEK_MM = re.compile(r"(?<=\d)ΜΜ(?![\w-])")
 FAN_SIZE = re.compile(r"(?<!\d)(\d{2,3})\s*mm\b", re.I)
 FAN_SIZE_CM = re.compile(r"(?<!\d)(\d{1,2})\s*cm\b", re.I)  # e-shop: "12CM"
 # Fallback: the size in the model name ("NZXT F140Q", "Corsair RS140", "Endorfy Zephyr 120").
@@ -97,7 +112,10 @@ def make_fan_listing(
     pack_m = PACK.search(title) or PACK.search(slug)
     words_m = PACK_WORDS.search(title)
     pack = int(pack_m.group(1)) if pack_m else PACK_WORD[words_m.group(1).lower()] if words_m else 1
-    vendor, rest = names.split_vendor(title)
+    # The name is read from the title with look-alike capitals made Latin ("Uni Ιnfinity", "Duο", "120ΜΜ").
+    vendor, rest = names.split_vendor(FAN_PREFIX.sub("", names.prepare(GREEK_MM.sub("", title))))
+    for pattern, english in FAN_TRANSLATE:
+        rest = pattern.sub(english, rest)
     name = names.clean_name(FAN_CUT.sub("", " " + FAN_LEADING.sub("", rest)), FAN_NOISE)
     # Checked on the model name only: "... PWM W. SPLITTER" is still a fan, "FAN HUB" is not.
     if not name or not names.valid_vendor(vendor) or FAN_EXCLUDE.search(name):
@@ -125,13 +143,37 @@ def make_fan_listing(
 # ---------- coolers ----------
 
 WATER = re.compile(r"Υδρόψυξη|ΥΔΡΟΨΥΞΗ|Ydropsyxi|\bAIO\b|Liquid|Water|Hydro", re.I)
+# Shopflix and Snif write "Υδρόψυξη Επεξεργαστή" only at the start of their AIO titles (cut off by
+# sources.snif.PREFIX), so the marks left are the URL, transliterated three ways ("/p/SF-…/udropsuxe-epexergaste-…",
+# "ydropsuxi-epexergasth-", Snif "/showproduct/…/ydropsuxi-epexergasti-…"), and Shopflix's fan count with a size
+# ("… Διπλού Ανεμιστήρα 120mm"; its air towers say "Deepcool AK620 Διπλού Ανεμιστήρα" without a size).
+URL_WATER = re.compile(r"(?<![a-z])[uy]drops(?:ux|yk|yx)", re.I)
+# The air-cooler category in the URL ("Ψύκτρα": Shopflix "/p/SF-…/psuktra-epexergaste-…", Skroutz "…-PSyktra-
+# Epexergasti-…", e-shop "psyktra-epexergasti-…"): there the Greek fan count describes an air tower's fans, so it
+# never makes the listing an AIO ("Peerless Assassin 120 SE Διπλού Ανεμιστήρα 120mm" is not a 240 AIO).
+URL_AIR = re.compile(r"(?<![a-z])ps[uy]k?tra", re.I)
+# An AIO name that still ends in its fan size (Snif "Corsair Nautilus 240 RS 120mm - Μαύρο", Shopflix "Deepcool
+# LD240 120mm για Socket …"): the size goes, the radiator is added below when the name lacks it.
+AIO_FAN_SIZE = re.compile(r"\s(?:120|140)\s*mm$", re.I)
 COOLER_CUT = re.compile(
     r"\s(?:Socket|Υδρόψυξη|Ψύκτρα|για|με|with|CPU\s+(?:Air\s+)?Cooler|Cooler\s+CPU|Air\s+Cooler|"
     r"(?:\d{3}\s*mm\s+)?(?:AIO\s+)?Liquid\s+(?:CPU\s+)?Cooler|AIO|Low[\s-]Profile|Cooling\s+Fan)\b.*$",
     re.I,
 )
-# Descriptors right after the vendor (e-shop.gr): "FORCE CPU COOLER G6", "… CPU AIR COOLER …".
-COOLER_LEADING = re.compile(r"^\s*(?:CPU\s+)?(?:Air\s+)?Cooler\s+", re.I)
+# Shopflix descriptors after the model name: "Asus ROG Ryujin III 240 Διπλού Ανεμιστήρα 120mm …" (dual fan),
+# "Arctic Liquid Freezer II 420 A-RGB Επεξεργαστή 120mm", "Noctua NH-P1 Παθητική" (passive), "Noctua NH-U12S
+# Ενεργητική" (active). Never the first word: "SM Παθητική Ψύκτρα Επεξεργαστή" has no other name and keeps it.
+GREEK_CUT = re.compile(
+    r"(?<=\S)\s+(?:(?:Μονού|Διπλού|Τριπλού|Τετραπλού)\s+Ανεμιστήρα|Επεξεργαστή|Παθητική|Ενεργητική)(?![\w-]).*$",
+    re.I,
+)
+# The fans those words count, for an AIO whose name and URL give no radiator size: "Be Quiet Light Loop
+# Διπλού Ανεμιστήρα 120mm" = 2 × 120 = 240 (like Skroutz's "(2x120mm)" spec, FANS_SPEC).
+GREEK_FANS = re.compile(r"(Μονού|Διπλού|Τριπλού|Τετραπλού)\s+Ανεμιστήρα\s+(120|140)\s*mm", re.I)
+GREEK_COUNT = {"μονού": 1, "διπλού": 2, "τριπλού": 3, "τετραπλού": 4}
+# Descriptors right after the vendor (e-shop.gr): "FORCE CPU COOLER G6", "… CPU AIR COOLER …",
+# "DARKFLASH ΣΥΣΤΗΜΑ ΥΔΡΟΨΥΞΗΣ DN360".
+COOLER_LEADING = re.compile(r"^\s*(?:(?:CPU\s+)?(?:Air\s+)?Cooler|ΣΥΣΤΗΜΑ\s+ΥΔΡΟΨΥΞΗΣ)\s+", re.I)
 FAN_LEADING = re.compile(r"^\s*(?:PC\s+)?(?:Case\s+|Cooling\s+)?Fan\s+", re.I)
 COOLER_NOISE = names.noise_regex([
     "RGB", "ARGB", "A-RGB", "chromax.black", "chromax", "Chromax Black", "Edition", "Gaming",
@@ -158,25 +200,38 @@ def make_cooler_listing(
     text = f"{title} {slug} {specs}"
     if price <= 0:
         return None
-    vendor, rest = names.split_vendor(title)
-    name = names.clean_name(COOLER_CUT.sub("", " " + COOLER_LEADING.sub("", rest)), COOLER_NOISE)
+    parsed = names.prepare(title)  # "Hydroshift Ιι" -> II; the stored title stays
+    vendor, rest = names.split_vendor(parsed)
+    rest = GREEK_CUT.sub("", COOLER_LEADING.sub("", rest))
+    name = names.clean_name(COOLER_CUT.sub("", " " + rest), COOLER_NOISE)
     # Parts are checked on the model name only: "… AIO GPU LIQUID COOLER" is still a CPU AIO.
     if not name or not names.valid_vendor(vendor) or COOLER_EXCLUDE.search(name):
         return None
 
     radiator = None
-    if WATER.search(text):
+    water = WATER.search(text)
+    url_water = URL_WATER.search(url)
+    greek_m = None if URL_AIR.search(url) else GREEK_FANS.search(parsed)
+    if water or greek_m or url_water:
         fans_m = FANS_SPEC.search(specs)
         # The URL's last segment (not the numeric id) can have it: ".../be-quiet-light-loop-360.html".
         rad_m = RADIATOR.search(name) or RADIATOR.search(url.rsplit("/", 1)[-1].replace("-", " "))
         if fans_m:
             radiator = int(fans_m.group(1)) * int(fans_m.group(2))
-        elif rad_m:
+        elif rad_m and (water or url_water or rad_m.group(1)):
+            # A bare 120/140 counts only with a water mark: "Mars Gaming ML-ONE120" (water URL) is a
+            # 120 AIO, "Peerless Assassin 120" (air tower, Shopflix "Διπλού Ανεμιστήρα") is not.
             radiator = int(rad_m.group(1) or rad_m.group(2))
-        else:
+        elif greek_m:
+            radiator = GREEK_COUNT[greek_m.group(1).lower()] * int(greek_m.group(2))
+        elif water:
             return None  # water-cooling parts (blocks, pumps…) or an AIO we can't size
-        if str(radiator) not in name:  # "Silent Loop 3" comes in 240/280/360: keep them apart
-            name = f"{name} {radiator}"
+        # Only the URL says water and nothing gives a size: kept as before (air, no radiator) — that
+        # category also lists air towers ("MSI MAG CoreFrozr AA13 120mm").
+        if radiator:
+            name = AIO_FAN_SIZE.sub("", name)
+            if str(radiator) not in name:  # "Silent Loop 3" comes in 240/280/360: keep them apart
+                name = f"{name} {radiator}"
     return CoolerListing(
         id=f"{source}:{native_id}",
         source=source,

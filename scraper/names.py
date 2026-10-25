@@ -39,6 +39,48 @@ COLORS = [
 ]
 
 
+# Greek capitals typed for Latin ones in model names ("Antec ΑΧ61", "120ΜΜ", mobo "Χ870", "WiFi ΙΙ", "(ΜΤΧ)"): a
+# token of only such letters (+ Latin capitals/digits) is converted when it has a digit or Latin letter, or is a
+# roman numeral / size code (Greek words like "ΜΕ" or "ΜΑΥΡΟ" stay Greek).
+LOOKALIKE = str.maketrans("ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ", "ABEZHIKMNOPTYX")
+LOOKALIKE_TOKEN = re.compile(r"(?<![\w-])[ΑΒΕΖΗΙΚΜΝΟΡΤΥΧA-Z0-9-]*[ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ][ΑΒΕΖΗΙΚΜΝΟΡΤΥΧA-Z0-9-]*(?![\w-])")
+# A word mixing Latin and Greek letters is a typo ("Uni Ιnfinity", "NZXT F120 Duο"): its Greek look-alikes
+# (capital or small) become Latin when nothing Greek is left after that; otherwise it stays as it is
+# ("Towerμε" is two words glued, see GLUED).
+LOOKALIKE_SMALL = str.maketrans("ΑΒΕΖΗΙΚΜΝΟΡΤΥΧοιακντυρχ", "ABEZHIKMNOPTYXoiakvtupx")
+GREEK = re.compile(r"[\u0370-\u03ff\u1f00-\u1fff]")
+MIXED_WORD = re.compile(r"(?<![\w-])(?=[\w-]*[A-Za-z])(?=[\w-]*[\u0370-\u03ff])[\w-]+")
+ROMAN_GREEK = re.compile(r"(?<![\w-])(?=[Ιι]*Ι)[Ιι]{2,3}(?![\w-])")  # "Hydroshift Ιι" = II
+# A Latin letter glued to a Greek word: "Midi Towerμε Πλαϊνό" (Shopflix).
+GLUED = re.compile(r"(?<=[A-Za-z])(?=[\u0370-\u03ff\u1f00-\u1fff]{2})")
+
+
+def latin(title: str, mixed: bool = True) -> str:
+    """Greek look-alike capitals in Latin-looking tokens -> Latin. Shared by the board, case, fan and cooler
+    normalizers (moved from normalize_mobo in Q6). mixed=False runs only the capitals pass (boards: the
+    mixed-word pass would move one Snif board, "Asus Τuf B650E-PLUS", to another model; left for a board batch)."""
+    def fix(m: re.Match) -> str:
+        tok = m.group()
+        is_latin = re.search(r"[A-Z0-9]", tok) or re.fullmatch(r"Ι+|[ΜΑΙ]ΤΧ", tok)
+        return tok.translate(LOOKALIKE) if is_latin else tok
+
+    def fix_mixed(m: re.Match) -> str:
+        word = m.group().translate(LOOKALIKE_SMALL)
+        return m.group() if GREEK.search(word) else word
+
+    title = LOOKALIKE_TOKEN.sub(fix, title)
+    if not mixed:
+        return title
+    title = MIXED_WORD.sub(fix_mixed, title)
+    return ROMAN_GREEK.sub(lambda m: "I" * len(m.group()), title)
+
+
+def prepare(title: str) -> str:
+    """Case / fan / cooler titles before parsing: whitespace collapsed, look-alike capitals made Latin and a
+    Latin word glued to a Greek one split ("Towerμε" -> "Tower με")."""
+    return GLUED.sub(" ", latin(re.sub(r"\s+", " ", title).strip()))
+
+
 def noise_regex(extra: list[str]) -> re.Pattern:
     words = sorted((re.escape(w) for w in COLORS + extra), key=len, reverse=True)
     return re.compile(r"(?<![\w-])(?:" + "|".join(words) + r")(?![\w-])", re.I)
