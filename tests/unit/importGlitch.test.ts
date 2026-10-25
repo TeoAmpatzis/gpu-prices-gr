@@ -3,6 +3,8 @@
 // history. A low shared by 3+ models of a category is ignored; an imported point whose day and value 3+ models share,
 // in a short run (≤ 3 days) at least 5% under its neighbours, is treated like a dip. A low that is an imported Skroutz
 // day is said to be Skroutz's, with its day.
+// Real-data tests read tests/fixtures/preclean/<cat>/: main data of 2026-10-17 21:24 (commit 1173da7), before its Q4b glitch clean-up,
+// cut to the models these tests use plus the shared-day points/lows of the other models (main now ships cleaned data).
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
@@ -21,7 +23,7 @@ import type { Category, HistoryPoint, History, Imported, Latest, ModelEntry } fr
 
 const read = <T>(cat: string, f: string, fb: T): T => {
   try {
-    return JSON.parse(readFileSync(`public/data/${cat}/${f}`, 'utf8')) as T;
+    return JSON.parse(readFileSync(`tests/fixtures/preclean/${cat}/${f}`, 'utf8')) as T;
   } catch {
     return fb;
   }

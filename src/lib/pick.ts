@@ -28,10 +28,10 @@ export const PART_FIELDS: Record<Slot, string[]> = {
   storage: ['iface', 'pcie', 'formFactor'],
   case: [
     'size', 'maxBoard', 'gpuMaxMm', 'coolerMaxMm', 'fanSlots', 'radiatorMounts', 'fanMounts', 'fansIncluded', 'hasFans',
-    'radiators', 'expansionSlots', 'psuFormFactors', 'usbCFront',
+    'radiators', 'expansionSlots', 'psuFormFactors', 'usbCFront', 'bays35',
   ],
   fan: ['size', 'pack'],
-  psu: ['watts', 'formFactor'],
+  psu: ['watts', 'formFactor', 'atx3'],
 };
 
 /**
@@ -63,14 +63,15 @@ export const NOT_IN_DATA: Record<Slot, string[]> = {
   cpu: [],
   // fanHeaders, usbCHeader: not on any spec page we read. m2Gen: main's scraper reads it since 2026-10-10, no value
   // yet (data of 2026-10-17: m2Slots 92, sataPorts 79, maxMemoryGB 2393, biosFlashback 60 of 2938 listings).
+  // case usbCFront and bays35, psu atx3 left this list on 2026-10-25 (main's data now has values).
   mobo: ['fanHeaders', 'usbCHeader', 'm2Gen'],
   ram: [],
   gpu: ['powerConnector', 'slots'],
   cooler: [],
   storage: [],
-  case: ['expansionSlots', 'psuFormFactors', 'usbCFront', 'bays35'],
+  case: ['expansionSlots', 'psuFormFactors'],
   fan: [],
-  psu: ['native12v2x6', 'atx3'],
+  psu: ['native12v2x6'],
 };
 
 // The hide rules live in pickHide.ts (no engine code); the check itself (checkAll, hidingErrors) in pickCheck.ts,
