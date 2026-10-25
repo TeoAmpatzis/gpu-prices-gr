@@ -13,16 +13,21 @@ wattage) take the daily minimum over their few cheapest Skroutz products, so the
 higher than the real market minimum (which would make ordinary prices look like sales).
 Skroutz throttles quick bursts (see specs.py), so this runs slowly, from its own daily workflow:
 `main.py --history-only --history-budget N`.
+Skroutz's graphs carry bad days shared by unrelated products (Q4b, scraper/glitches.py): a fetched
+series loses those runs before it is merged and before its low is taken. A date-only entry (an old
+marker, or a bad low reset by `glitches.py clean`) is fetched again after the first imports.
 """
 
 import json
 import random
 import re
 import time
+from collections import Counter
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import aliases
+import glitches
 import http_client as http
 from normalize import now_iso
 
@@ -40,8 +45,13 @@ def price_graph(s, url: str) -> dict[str, float]:
     if not m:
         return {}
     r = http.get(s, f"{m.group(1)}/price_graph?currency=EUR&shipping_country=GR", headers={"Accept": "application/json"})
+    return parse_graph(r.json())
+
+
+def parse_graph(data: dict) -> dict[str, float]:
+    """A price_graph response -> {'YYYY-MM-DD': lowest price} (zero/missing values skipped)."""
     out: dict[str, float] = {}
-    for segment in (r.json().get("min_price") or {}).get("graphData", {}).values():
+    for segment in (data.get("min_price") or {}).get("graphData", {}).values():
         for v in segment.get("values", []):
             if not isinstance(v.get("value"), (int, float)) or v["value"] <= 0:
                 continue
@@ -101,20 +111,47 @@ def enrich(cat: str, out_dir: Path, listings: list[dict], model_key, budget: int
     models: dict[str, list[dict]] = {}
     for l in listings:
         models.setdefault(model_key(l), []).append(l)
-    todo = [
+    queue = [
         (key, sorted((l for l in ls if l["source"] == "skroutz"), key=lambda l: l["price"])[: SPEC_GROUPED.get(cat, 1)])
         for key, ls in sorted(models.items(), key=lambda kv: len(kv[1]), reverse=True)  # most-listed first
-        # Old entries (just a date) predate the all-time low: fetched once more to get it.
         if not isinstance(done.get(key), dict) and any(l["source"] == "skroutz" for l in ls)
     ]
+    # First imports (no entry) go first; date-only entries are fetched once more after them: old entries
+    # that predate the all-time low, and the bad lows reset by `glitches.py clean` (Q4b).
+    todo = [t for t in queue if t[0] not in done] + [t for t in queue if t[0] in done]
+    again = len(queue) - sum(1 for key, _ in queue if key not in done)
+
+    # Q4b import glitches (scraper/glitches.py): a fetched series loses its glitch runs before it is
+    # merged and before its low is taken. Shared days = the category's imported points in history.json
+    # (counted per day and value, kept up to date as models are imported) plus the series itself, plus
+    # the clean-up's evidence; bad lows = the category's shared imported lows plus the evidence's.
+    evidence = glitches.load_evidence(out_dir)
+    known_days = glitches.evidence_days(evidence)
+    bad_lows = glitches.shared_imported_lows(done) | set(evidence["lows"])
+    counts: Counter = Counter((p["d"], p["min"]) for pts in history.values() for p in pts if p.get("i") == 1)
+    evidence_changed = False
+
+    def without_glitches(key: str, daily: dict[str, float]) -> tuple[dict[str, float], list[dict]]:
+        own = {(p["d"], p["min"]) for p in history.get(key, []) if p.get("i") == 1}
+        points = [{"d": d, "min": round(v, 2), "i": 1} for d, v in sorted(daily.items())]
+        shared: dict[str, set] = {}
+        for p in points:
+            k = (p["d"], p["min"])
+            if counts[k] - (k in own) + 1 >= glitches.SHARED_LOW_MODELS or p["min"] in known_days.get(p["d"], ()):
+                shared.setdefault(p["d"], set()).add(p["min"])
+        found = glitches.import_glitches(points, shared, bad_lows)
+        drop = {p["d"] for p in found}
+        return {d: v for d, v in daily.items() if d not in drop}, found
 
     def save() -> None:
         history_path.write_text(json.dumps(dict(sorted(history.items())), ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         done_path.write_text(json.dumps(done, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        if evidence_changed:
+            glitches.save_evidence(out_dir, evidence)
 
     s = http.session()
     today = now_iso()[:10]
-    requests = failures = imported = 0
+    requests = failures = imported = skipped = 0
     for key, products in todo:
         # A model is only fetched when its whole product list fits in the remaining budget.
         if requests + len(products) > budget or failures >= MAX_FAILURES:
@@ -135,8 +172,19 @@ def enrich(cat: str, out_dir: Path, listings: list[dict], model_key, budget: int
                 print(f"  history {cat}: {type(e).__name__}: {str(e)[:120]}")
         if ok < len(products):
             continue  # retried next run
+        daily, found = without_glitches(key, daily)
+        if found:
+            skipped += len(found)
+            new_days: dict[str, set] = {}
+            for p in found:
+                new_days.setdefault(p["d"], set()).add(p["min"])
+                known_days.setdefault(p["d"], set()).add(p["min"])
+            evidence_changed = glitches.add_evidence(evidence, new_days) or evidence_changed
         if daily:
-            history[key] = merge(history.get(key, []), daily, today)
+            old = history.get(key, [])
+            history[key] = merge(old, daily, today)
+            counts.subtract((p["d"], p["min"]) for p in old if p.get("i") == 1)
+            counts.update((p["d"], p["min"]) for p in history[key] if p.get("i") == 1)
         # The whole Skroutz history (~2 years, longer than the 365 days kept in history.json): its
         # lowest price backs the "all-time low" badge on the site.
         past = [v for d, v in daily.items() if d < today]
@@ -148,4 +196,6 @@ def enrich(cat: str, out_dir: Path, listings: list[dict], model_key, budget: int
         print(f"  history {cat}: {failures} failures in a row, Skroutz is throttling; stopping for this run")
     save()
     left = sum(1 for key, _ in todo if not isinstance(done.get(key), dict))
-    print(f"  history {cat}: imported {imported} models ({requests} requests), {left} left")
+    again_left = sum(1 for key, _ in todo if isinstance(done.get(key), str))
+    print(f"  history {cat}: imported {imported} models ({requests} requests), {left} left"
+          f" ({again_left} of them re-imports, {again} queued at the start); {skipped} glitch points skipped")
