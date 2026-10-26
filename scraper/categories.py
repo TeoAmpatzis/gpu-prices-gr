@@ -40,6 +40,10 @@ class Category:
     # Like `shared`, but within a narrower group than the model: (fields, key function); a key of
     # None leaves that listing alone (e.g. a CPU's cooler is shared per chip + packaging).
     shared_by: tuple[tuple[tuple[str, ...], Callable[[dict], str | None]], ...] = ()
+    # A step over all of a scrape's listings (dicts) before any model key is used, for what one listing's own
+    # title can't decide (storage: a drive whose interface no word states takes SAS from a listing with the same
+    # part number; see normalize_storage.settle). Must be idempotent: it also sees kept listings of a failed source.
+    settle: Callable[[list[dict]], None] | None = None
 
 
 # BestPrice motherboard RAM-slot filter values: (url part, slots).
@@ -188,6 +192,7 @@ CATEGORIES = {
         make_listing=normalize_storage.make_listing,
         # The same name can be an SSD and an HDD ("Western Digital Blue 2TB"), so the type is in the key.
         model_key=lambda l: names.model_key(f"{l['chip']} {l['media']}"),
+        settle=normalize_storage.settle,
         eshop_categories=(("ypologistes-skliroi-diskoi-ssd-list", "ΣΚΛΗΡΟΣ ΔΙΣΚΟΣ"),),
         shared=("iface", "pcie", "formFactor", "dram", "readMBs", "writeMBs", "tbw", "heatsink", "rpm", "cacheMB", "tier"),
     ),
