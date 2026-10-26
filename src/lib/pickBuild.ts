@@ -3,9 +3,9 @@
 //  - Stored engine fields are used only when they are plain JSON values and carry their data date (A7).
 //  - A part with no usable fields, or fields from older data than the page's, is refreshed from the
 //    compat chunks; a key the chunks no longer have is "no longer available" and left out (A9).
-import { MODEL_ALIASES } from '../data/modelAliases';
+import { loadAliases, type Aliases } from './aliases';
 import type { Part } from '../engine';
-import { resolveKey, type StoredBuild, type StoredPart } from './buildStore';
+import { aliasOf, fallbackFor, fallbackKeys, resolveKey, type StoredBuild, type StoredPart } from './buildStore';
 import { CATEGORY_RULE_SLOTS, type Slot } from './slots';
 
 const MAX_DEPTH = 4;
@@ -80,10 +80,19 @@ export type Outcome = { key: string; fields: Record<string, unknown> } | 'missin
 
 export const outcomeKey = (builtAt: string, slot: Slot, key: string) => `${builtAt}\n${slot}\n${key}`;
 
-/** One key's answer from a `loadCompat` result (`undefined` = the chunk failed to load). */
-export function outcomeOf(slot: Slot, key: string, rows: Record<string, { fields: Record<string, unknown> }> | undefined): Outcome {
+/**
+ * One key's answer from a `loadCompat` result (`undefined` = the chunk failed to load). A key the rows don't have is
+ * renamed through `aliases` (old key -> final key) or `fallbackFor` (a CPU saved as `chip|?`) when the target is among
+ * the rows; the caller asks for those rows first (`fetchOutcomes`).
+ */
+export function outcomeOf(
+  slot: Slot,
+  key: string,
+  rows: Record<string, { fields: Record<string, unknown> }> | undefined,
+  aliases?: Record<string, string>,
+): Outcome {
   if (!rows) return 'failed';
-  const r = resolveKey(slot, key, new Set(Object.keys(rows)), MODEL_ALIASES[slot]);
+  const r = resolveKey(slot, key, new Set(Object.keys(rows)), aliases, fallbackFor(new Set(Object.keys(rows))));
   return r.status === 'missing' ? 'missing' : { key: r.key, fields: rows[r.key].fields };
 }
 
@@ -118,10 +127,36 @@ export function resolvePlan(
 
 type Load = (slot: Slot, keys: string[], builtAt: string) => Promise<Record<string, { fields: Record<string, unknown> }>>;
 
-/** Asks the chunks once for each part in `toFetch` (`load` = compatChunks.loadCompat); a failure is an answer too. */
-export async function fetchOutcomes(toFetch: { slot: Slot; key: string }[], builtAt: string, load: Load): Promise<Record<string, Outcome>> {
-  const rows = await Promise.all(toFetch.map((p) => load(p.slot, [p.key], builtAt).catch(() => undefined)));
-  return Object.fromEntries(toFetch.map((p, i) => [outcomeKey(builtAt, p.slot, p.key), outcomeOf(p.slot, p.key, rows[i])]));
+type Rows = Record<string, { fields: Record<string, unknown> }>;
+
+/**
+ * Asks the chunks once for each part in `toFetch` (`load` = compatChunks.loadCompat); a failure is an answer too.
+ * A key the data no longer has is looked for under its other names: the alias file's (`aliases` = aliases.loadAliases,
+ * fetched only now, so a build whose keys are all current never loads it) and the slot's fallback keys
+ * (buildStore.fallbackKeys). If the alias file does not load, the part is `missing` as before; if the renamed part's
+ * chunk does not load, it is `failed`.
+ */
+export async function fetchOutcomes(
+  toFetch: { slot: Slot; key: string }[],
+  builtAt: string,
+  load: Load,
+  aliases: (builtAt: string) => Promise<Aliases> = loadAliases,
+): Promise<Record<string, Outcome>> {
+  const answer = async (p: { slot: Slot; key: string }): Promise<Outcome> => {
+    const first = outcomeOf(p.slot, p.key, await load(p.slot, [p.key], builtAt).catch(() => undefined));
+    if (first !== 'missing') return first;
+    const table = await aliases(builtAt).then((a) => a.keys[p.slot] ?? {}, () => undefined);
+    const renamed = aliasOf(p.slot, table, p.key);
+    const candidates = [
+      ...(renamed === undefined ? [] : [renamed, ...fallbackKeys(p.slot, renamed)]),
+      ...fallbackKeys(p.slot, p.key),
+    ];
+    if (!candidates.length) return 'missing';
+    const rows: Rows | undefined = await load(p.slot, candidates, builtAt).catch(() => undefined);
+    return outcomeOf(p.slot, p.key, rows, table);
+  };
+  const out = await Promise.all(toFetch.map(answer));
+  return Object.fromEntries(toFetch.map((p, i) => [outcomeKey(builtAt, p.slot, p.key), out[i]]));
 }
 
 /**

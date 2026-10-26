@@ -21,6 +21,8 @@ import { VALIDATION_MODE, validateLatest } from './src/data/validate';
 import { compatFiles } from './src/lib/compatBuild';
 import { builderFile, checkData, detailFile, listFile, manifest, modelChunks, searchFile, type CategoryInput, type ImageLookup } from './src/lib/derive';
 import { photoId } from './src/lib/images';
+import { aliasFile, type AliasSource, type SlugOf } from './src/data/modelAliases';
+import { nameSlug } from './src/lib/slug';
 import { modelChunkPath } from './src/lib/modelData';
 
 const DATA_DIR = join(process.cwd(), 'public', 'data');
@@ -68,6 +70,25 @@ async function imageLookup(): Promise<{ lookup: ImageLookup; count: number }> {
   }
 }
 
+/** main's alias file (scraper/model_aliases.json, read only): { <cat>: { old key: new key } }; none = no aliases. */
+const ALIASES_PATH = join(process.cwd(), 'scraper', 'model_aliases.json');
+
+/**
+ * /data/aliases.json: the alias records with both address segments. A current model's slug is its own (the chunks';
+ * a non-readable key's slug is not derivable from the key); any other key's is the key's form, which the lookups
+ * (slug.slugLookup) match with every spelling of the address.
+ */
+export function aliasesJson(models: Partial<Record<Category, ModelChunk[]>>, builtAt: string, raw: AliasSource): string {
+  const slugs = new Map<string, string>();
+  for (const [cat, chunks] of Object.entries(models))
+    for (const chunk of chunks) for (const e of Object.values(chunk.models)) slugs.set(`${cat}\0${e.key}`, e.slug);
+  const slugOf: SlugOf = (cat, key, which) => {
+    if (cat === 'gpu' || cat === 'cpu' || cat === 'ram' || cat === 'psu') return nameSlug(key);
+    return (which === 'new' ? slugs.get(`${cat}\0${key}`) : undefined) ?? key.toLowerCase();
+  };
+  return JSON.stringify(aliasFile(raw, builtAt, slugOf));
+}
+
 /** Every derived file, by its path under the site root. */
 export function derive(
   builtAt: string,
@@ -102,6 +123,7 @@ export function derive(
   files['data/builder-extra.json'] = JSON.stringify(extra);
   for (const [slot, file] of Object.entries(lazy)) files[`data/builder-${slot}.json`] = JSON.stringify(file);
   for (const [path, chunk] of Object.entries(compatFiles(latest, builtAt))) files[path] = JSON.stringify(chunk);
+  files['data/aliases.json'] = aliasesJson(models, builtAt, readJson<AliasSource>(ALIASES_PATH, {}));
   files['data/search.json'] = JSON.stringify(searchFile(latest, builtAt));
   const m = manifest(latest, builder, builtAt, history, lazy);
   files['data/manifest.json'] = JSON.stringify(m);

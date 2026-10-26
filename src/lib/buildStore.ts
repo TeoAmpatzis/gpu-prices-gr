@@ -90,15 +90,59 @@ export function onBuildChange(fn: (source: BuildChangeSource) => void): () => vo
   };
 }
 
-/** A stored key against the keys the data has now: kept, renamed (alias list, from step 4) or gone. */
+/**
+ * What main's alias table (old key -> new key) says a stored key is now. Main keys CPUs by chip ("Core i5-14600KF")
+ * while the builder's CPU keys are `chip|<cooler in box>` (`chip|true`): a CPU key is looked up whole, then by its
+ * chip, and the answer keeps the `|suffix`.
+ */
+export function aliasOf(slot: Slot, aliases: Record<string, string> | undefined, key: string): string | undefined {
+  if (!aliases) return undefined;
+  const has = (k: string) => Object.prototype.hasOwnProperty.call(aliases, k);
+  if (has(key)) return aliases[key];
+  const bar = key.indexOf('|');
+  if (slot === 'cpu' && bar > 0) {
+    const chip = key.slice(0, bar);
+    if (has(chip)) return aliases[chip] + key.slice(bar);
+  }
+  return undefined;
+}
+
+/**
+ * A stored key against the keys the data has now: kept, renamed (main's alias file, src/lib/aliases.ts `keys[slot]`,
+ * or a slot-specific `fallback`) or gone. The fallback is asked only for a key that is unknown and has no alias; it
+ * names the current key an old kind of key stands for (the CPU's, `cpuFallback`) and counts only when the data has it.
+ */
 export function resolveKey(
-  _slot: Slot,
+  slot: Slot,
   key: string,
   known: Set<string>,
   aliases?: Record<string, string>,
+  fallback?: (slot: Slot, key: string) => string | null,
 ): { key: string; status: 'ok' | 'renamed' | 'missing' } {
   if (known.has(key)) return { key, status: 'ok' };
-  const to = aliases && Object.prototype.hasOwnProperty.call(aliases, key) ? aliases[key] : undefined;
+  const to = aliasOf(slot, aliases, key);
   if (to !== undefined && known.has(to)) return { key: to, status: 'renamed' };
+  const other = fallback?.(slot, to ?? key);
+  if (other && known.has(other)) return { key: other, status: 'renamed' };
   return { key, status: 'missing' };
 }
+
+/**
+ * Keys an old kind of key may stand for now, best first (the rows to look for in the data). A CPU saved before the
+ * box-cooler table is `<chip>|?`: it is `<chip>|true` (cooler in the box), else `<chip>|false`.
+ * HOOK for task 7: the PSU's old spec-group key ("650W Gold ATX") goes here (psuGroupFallback: the cheapest current
+ * product of that group), as another case that returns candidate keys.
+ */
+export function fallbackKeys(slot: Slot, key: string): string[] {
+  if (slot === 'cpu' && key.endsWith('|?')) {
+    const chip = key.slice(0, -2);
+    return [`${chip}|true`, `${chip}|false`];
+  }
+  return [];
+}
+
+/** `resolveKey`'s fallback over the rows the data has: the first of `fallbackKeys` that is there. */
+export const fallbackFor =
+  (known: Set<string>) =>
+  (slot: Slot, key: string): string | null =>
+    fallbackKeys(slot, key).find((k) => known.has(k)) ?? null;
