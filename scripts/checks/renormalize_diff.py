@@ -5,6 +5,7 @@ latest.json, so both sides run without it (the difference isolates the code chan
 
 Run from the repo root: venv/Scripts/python scripts/checks/renormalize_diff.py <cat> <module> [REF=HEAD]
 e.g. renormalize_diff.py ram ram   ·   renormalize_diff.py mobo mobo HEAD~1   ·   renormalize_diff.py cooler cooling
+Storage: renormalize_diff.py storage storage (its model key also holds the media: chip + " " + media).
 Fans and coolers share normalize_cooling (make_fan_listing / make_cooler_listing). Each side uses its own
 scraper/names.py (REF's for the old one), since the case/fan/cooler normalizers share it."""
 import importlib.util
@@ -19,7 +20,7 @@ sys.path.insert(0, "scraper")
 cat, module = sys.argv[1], sys.argv[2]
 ref = sys.argv[3] if len(sys.argv) > 3 else "HEAD"
 FIELDS = ["chip", "type", "capacity", "modules", "speed", "formFactor", "socket", "chipset", "memory",
-          "radiator", "size", "pack"]
+          "radiator", "size", "pack", "media", "iface", "tier"]  # media / iface / tier: storage
 MAKE = {"fan": "make_fan_listing", "cooler": "make_cooler_listing"}.get(cat, "make_listing")
 
 
