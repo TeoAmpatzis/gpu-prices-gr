@@ -62,6 +62,8 @@ export interface MoboListing extends BaseListing {
   sataPorts?: number | null;
   maxMemoryGB?: number | null;
   biosFlashback?: boolean | null; // true when stated; null = not stated
+  /** Build time (validate/conflicts G3): the shops disagree on the size, so formFactor is 'Άλλο' = unknown, not "other". */
+  formConflict?: boolean;
 }
 
 export interface RamListing extends BaseListing {
@@ -138,6 +140,8 @@ export interface CoolerListing extends BaseListing {
   rgb: boolean;
   sockets?: string | null; // supported sockets, comma-joined: "AM4,AM5,LGA1700,LGA1851"
   heightMm?: number | null; // air coolers
+  /** Build time (validate/conflicts G4): sockets a shop title names that `sockets` lacks, comma-joined ("AM4"); absent = none. */
+  socketsTitle?: string | null;
 }
 
 export type StorageTier = 'Consumer' | 'NAS' | 'Server';

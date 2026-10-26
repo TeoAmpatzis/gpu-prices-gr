@@ -9,6 +9,9 @@ import type { Category, Latest } from '../src/types';
 import { CATEGORY_IDS } from '../src/lib/categories';
 import { RANGES } from '../src/data/validate/ranges';
 import { VALIDATION_MODE, validateLatest, type Rejection } from '../src/data/validate';
+import { CONFLICT_CHECKS, conflicts, type Conflict } from '../src/data/validate/conflicts';
+import { CATEGORIES, type CategoryConfig } from '../src/lib/categories';
+import type { BaseListing } from '../src/types';
 import { builderFile } from '../src/lib/derive';
 import { fromColumns } from '../src/lib/columns';
 // Resolved from this file, not the working directory, so the script runs from anywhere.
@@ -139,6 +142,57 @@ lines.push('');
 const unmatched = Object.keys(before).reduce((n, slot) => n + [...before[slot].keys()].filter((id) => !after[slot]?.has(id)).length, 0);
 lines.push(`Rows only in one of the two builds: ${unmatched}.`, '');
 lines.push(...detail);
+
+// Conflicts (step 5, task 2): a value one page states against another page, the model's listings or its size class.
+{
+  const all: Conflict[] = [];
+  const stating: Record<string, number> = {}; // "<cat>.<field>" -> models that state the value (after the ranges)
+  for (const cat of CATEGORY_IDS) {
+    const latest = checked[cat];
+    if (!latest) continue;
+    const specsPath = join(ROOT, 'public', 'data', cat, 'specs.json');
+    const specs = existsSync(specsPath) ? (JSON.parse(readFileSync(specsPath, 'utf8')) as Record<string, Record<string, unknown>>) : {};
+    const cfg = CATEGORIES[cat] as unknown as CategoryConfig<BaseListing>;
+    for (const f of new Set(CONFLICT_CHECKS.filter((c) => c.cat === cat).map((c) => c.field))) {
+      const seen = new Set<string>();
+      for (const l of latest.listings) {
+        const v = (l as unknown as Record<string, unknown>)[f === 'socketsTitle' ? 'sockets' : f]; // G4: models that state sockets
+        if (v !== null && v !== undefined && v !== '' && v !== 'Άλλο') seen.add(cfg.modelKey(l as BaseListing));
+      }
+      stating[`${cat}.${f}`] = seen.size;
+    }
+    all.push(...conflicts(cat, latest, specs, 'enforce').conflicts);
+  }
+  const shown = (a: Conflict) => (a.action === 'title-socket' ? `title says ${a.values[0]}` : a.values.join(' / '));
+  lines.push('## Conflicts', '');
+  lines.push(
+    'Second pass after the ranges (`src/data/validate/conflicts.ts`), on whole models. ' +
+      '**G1** two product pages of a model state the same measurement and differ by more than the tolerance (case card length > 50 mm, case cooler clearance > 20 mm, cooler height > 20 mm): unknown. ' +
+      '**G2** a value outside its size class (card length under 230 mm in a Midi/Full Tower, ATX/E-ATX board in an SFF / Cube, E-ATX in a Mini Tower) that two agreeing pages do not confirm: unknown. ' +
+      '**G3** a model\'s listings disagree on the board size (case `maxBoard`, board `formFactor`): unknown, except a board whose name says ITX (not mATX): Mini ITX. ' +
+      '**G4** a shop title names a socket (AM4, AM5, 1200, 1700, 1851) that the cooler\'s `sockets` lacks: `socketsTitle`. ' +
+      `Mode: ${enforced ? 'enforced' : 'report only'}.`,
+    '',
+  );
+  lines.push('| Check | Field | Models affected | Models stating the value | Share |', '| --- | --- | ---: | ---: | ---: |');
+  for (const c of CONFLICT_CHECKS) {
+    const n = all.filter((a) => a.check === c.id && a.cat === c.cat && a.field === c.field).length;
+    const of = stating[`${c.cat}.${c.field}`] ?? 0;
+    lines.push(`| ${c.id} | ${c.cat}.${c.field} | ${n} | ${of} | ${of ? `${((100 * n) / of).toFixed(1)}%` : '-'} |`);
+  }
+  const perSocket: Record<string, number> = {};
+  for (const a of all.filter((x) => x.check === 'G4')) for (const s of String(a.values[0]).split(',')) perSocket[s] = (perSocket[s] ?? 0) + 1;
+  const corrected = all.filter((a) => a.action === 'corrected').length;
+  lines.push('', `Boards: ${corrected} corrected to Mini ITX by their name, ${all.filter((a) => a.check === 'G3' && a.cat === 'mobo').length - corrected} unknown.`);
+  lines.push(`Cooler sockets named by a title but missing from the spec: ${Object.entries(perSocket).sort().map(([s, n]) => `${s} ${n}`).join(', ')}.`);
+  lines.push('', `${all.length} conflict(s) in all. Every one:`, '');
+  lines.push('| Check | Category | Field | Model | Values | Action |', '| --- | --- | --- | --- | --- | --- |');
+  const order = (a: Conflict) => `${a.check}|${a.cat}|${a.field}|${a.model}`;
+  for (const a of [...all].sort((x, y) => cmp(order(x), order(y)))) {
+    lines.push(`| ${a.check} | ${a.cat} | ${a.field} | ${cell(a.model)} | ${cell(shown(a))} | ${a.action} |`);
+  }
+  lines.push('');
+}
 
 mkdirSync(dirname(OUT), { recursive: true });
 writeFileSync(OUT, lines.join('\n'));

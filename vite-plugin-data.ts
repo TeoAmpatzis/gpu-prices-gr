@@ -18,6 +18,7 @@ import type { Plugin } from 'vite';
 import type { Category, History, Imported, Latest, Manifest, ModelChunk } from './src/types';
 import { CATEGORY_IDS } from './src/lib/categories';
 import { VALIDATION_MODE, validateLatest } from './src/data/validate';
+import { conflicts } from './src/data/validate/conflicts';
 import { compatFiles } from './src/lib/compatBuild';
 import { builderFile, checkData, detailFile, listFile, manifest, modelChunks, searchFile, type CategoryInput, type ImageLookup } from './src/lib/derive';
 import { photoId } from './src/lib/images';
@@ -46,6 +47,7 @@ function readInputs(): Partial<Record<Category, CategoryInput>> {
       latest,
       history: readJson<History>(join(DATA_DIR, cat, 'history.json'), {}),
       imported: readJson<Imported>(join(DATA_DIR, cat, 'history_imported.json'), {}),
+      specs: readJson<Record<string, Record<string, unknown>>>(join(DATA_DIR, cat, 'specs.json'), {}), // build time only
     };
   }
   return out;
@@ -101,6 +103,8 @@ export function derive(
   const models: Partial<Record<Category, ModelChunk[]>> = {};
   const rejected: string[] = [];
   let rejectedTotal = 0;
+  const conflicted: string[] = [];
+  let conflictTotal = 0;
   for (const cat of CATEGORY_IDS) {
     const input = inputs[cat];
     if (!input) continue;
@@ -109,15 +113,21 @@ export function derive(
       rejectedTotal += v.rejections.length;
       rejected.push(`${cat} ${v.rejections.length}`);
     }
-    latest[cat] = v.latest;
+    // Second pass: values one page states against another page, the model's listings or its size class.
+    const c = conflicts(cat, v.latest, input.specs ?? {}, VALIDATION_MODE);
+    conflictTotal += c.conflicts.length;
+    if (c.conflicts.length) conflicted.push(`${cat} ${c.conflicts.length}`);
+    const checked = c.latest;
+    latest[cat] = checked;
     history[cat] = input.history;
-    files[`data/${cat}/list.v2.json`] = JSON.stringify(listFile(cat, { ...input, latest: v.latest }, builtAt, image));
-    files[`data/${cat}/detail.json`] = JSON.stringify(detailFile(v.latest));
-    const chunks = modelChunks(cat, { ...input, latest: v.latest }, builtAt, image);
+    files[`data/${cat}/list.v2.json`] = JSON.stringify(listFile(cat, { ...input, latest: checked }, builtAt, image));
+    files[`data/${cat}/detail.json`] = JSON.stringify(detailFile(checked));
+    const chunks = modelChunks(cat, { ...input, latest: checked }, builtAt, image);
     chunks.forEach((chunk, n) => (files[modelChunkPath(cat, n)] = JSON.stringify(chunk)));
     models[cat] = chunks;
   }
   console.log(`[data] validation (${VALIDATION_MODE}): ${rejectedTotal ? `${rejectedTotal} value(s) out of range — ${rejected.join(', ')}` : 'none'}`);
+  console.log(`[data] conflicts (${VALIDATION_MODE}): ${conflictTotal ? `${conflictTotal} value(s) unknown or corrected — ${conflicted.join(', ')}` : 'none'}`);
   const { file: builder, extra, lazy } = builderFile(latest, builtAt, image);
   files['data/builder.json'] = JSON.stringify(builder);
   files['data/builder-extra.json'] = JSON.stringify(extra);

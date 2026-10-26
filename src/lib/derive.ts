@@ -86,7 +86,8 @@ import {
 const DETAIL_ONLY = new Set(['url', 'scrapedAt']);
 /** Not in list.v2.json either: only the builder reads them (builder.json keeps them). */
 // Fields for v2's rules (Phase 2): collected now, not shown or checked by v1.
-const V2_ONLY = ['m2Slots', 'm2Gen', 'sataPorts', 'maxMemoryGB', 'biosFlashback', 'atx3', 'bays35', 'bays25', 'usbCFront'];
+const V2_ONLY = ['m2Slots', 'm2Gen', 'sataPorts', 'maxMemoryGB', 'biosFlashback', 'atx3', 'bays35', 'bays25', 'usbCFront', 'socketsTitle'];
+// 'formConflict' stays in list.v2.json on purpose: the pick view runs `usable` on those listings (a few dozen boards).
 const LIST_SKIP = new Set([...DETAIL_ONLY, 'fanMounts', 'fansIncluded', 'radiators', 'airflowCfm', 'pressureMm', ...V2_ONLY]);
 
 export function toColumns(listings: object[], skip: Set<string> = DETAIL_ONLY): Columns {
@@ -166,6 +167,8 @@ export interface CategoryInput {
   latest: Latest;
   history: History;
   imported: Imported;
+  /** The scraper's specs.json (listing id -> product page fields): read at build time for validate/conflicts, never shipped. */
+  specs?: Record<string, Record<string, unknown>>;
 }
 
 /** Stored photo of a model ("<cat>/<id>", from the images repo's index), if any. */
