@@ -365,7 +365,8 @@ function checks(b: Build, ctx: FitContext): Check[] {
   if (b.mobo && b.case) {
     const stated = caseBoardStated(b.case);
     const form = moboForm(b.mobo);
-    if (stated)
+    if (form === 'Άλλο') add(['mobo', 'case'], 'unverified', W.boardUnknown); // size unknown (the shops disagree)
+    else if (stated)
       either(['mobo', 'case'], boardFits(form, stated), {
         el: `Μητρική ${form}, το κουτί χωράει έως ${stated}.`,
         en: `${form} board; the case takes up to ${stated}.`,
@@ -482,7 +483,12 @@ export const usable: { [S in Slot]: (m: Model<SlotListing[S]>) => boolean } = {
   mobo: (m) => {
     const form = moboForm(m);
     return (
-      !m.pro && DESKTOP_SOCKET.test(moboSocket(m) ?? '') && moboMemory(m) != null && form != null && form !== 'Άλλο'
+      !m.pro &&
+      DESKTOP_SOCKET.test(moboSocket(m) ?? '') &&
+      moboMemory(m) != null &&
+      form != null &&
+      // 'Άλλο' from the scraper is not a desktop size; one the shops disagree on (formConflict) is only unknown
+      (form !== 'Άλλο' || m.listings.some((l) => l.formConflict))
     );
   },
   ram: (m) => m.cheapest.formFactor === 'Desktop' && (m.cheapest.type === 'DDR5' || m.cheapest.type === 'DDR4'),
