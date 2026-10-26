@@ -25,7 +25,7 @@ export const FIT = {
   addedNamed: { el: 'Προστέθηκε στο build σου: {name}.', en: 'Added to your build: {name}.' },
   replacedNamed: { el: 'Μπήκε στο build σου στη θέση του προηγούμενου: {name}.', en: 'It took the previous one’s place in your build: {name}.' },
   switchBox: { el: 'Άλλαξε στην έκδοση Box', en: 'Switch to the Box version' },
-  switchTray: { el: 'Άλλαξε στην έκδοση Tray', en: 'Switch to the Tray version' },
+  switchTray: { el: 'Άλλαξε στην έκδοση χωρίς ψύκτρα', en: 'Switch to the version without a cooler' },
   switchThis: { el: 'Άλλαξε σε αυτή την έκδοση', en: 'Switch to this version' },
   noneChecked: {
     el: 'Κανένα εξάρτημα του build σου δεν μπόρεσε να ελεγχθεί μαζί του.',
@@ -44,7 +44,7 @@ export const FIT = {
   replaceCardLabel: { el: 'Αντικατάστησε την κάρτα του build σου με αυτή', en: "Replace your build's card with this one" },
   inBuildLabel: { el: 'Στο build: άνοιξε το build σου', en: 'In build: open your build' },
   versionBox: { el: 'Έκδοση Box (με ψύκτρα στο κουτί)', en: 'Box version (cooler in the box)' },
-  versionTray: { el: 'Έκδοση Tray (χωρίς ψύκτρα)', en: 'Tray version (no cooler)' },
+  versionTray: { el: 'Χωρίς ψύκτρα στη συσκευασία', en: 'No cooler in the box' },
 } as const;
 
 /** "Replace your <part>" per slot (Greek needs the article and case of each word, so one phrase per slot). */

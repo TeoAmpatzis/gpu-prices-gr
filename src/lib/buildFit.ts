@@ -123,10 +123,10 @@ export type SlotAction =
   /** The build holds the other version (Box / Tray) of this same CPU: "Switch to the Box version". */
   | { kind: 'switch'; name: string; to: 'box' | 'tray' | null };
 
-/** " (Box)" / " (Tray)" after a CPU's name, from its key; nothing when the packaging isn't stated. */
+/** " (Box)" / " (no cooler)" after a CPU's name, from its key; nothing when the packaging isn't stated. */
 const versionSuffix = (key: string) => {
   const v = cpuVersion(key);
-  return v === 'box' ? ' (Box)' : v === 'tray' ? ' (Tray)' : '';
+  return v === 'box' ? ' (Box)' : v === 'tray' ? ' (no cooler)' : '';
 };
 
 /**

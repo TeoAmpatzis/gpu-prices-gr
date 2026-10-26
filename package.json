@@ -19,6 +19,7 @@
     "validation:report": "vite-node scripts/validation-report.ts",
     "psu:before-after": "vite-node scripts/phase2/psu-before-after.ts",
     "cpu-memory:coverage": "vite-node scripts/phase2/cpu-memory-coverage.ts",
+    "cpu-box:coverage": "vite-node scripts/phase4/cpu-box-coverage.ts",
     "bios:coverage": "vite-node scripts/phase2/bios-coverage.ts",
     "cpu-power:coverage": "vite-node scripts/phase2/cpu-power-coverage.ts",
     "gpu-power:coverage": "vite-node scripts/phase2/gpu-power-coverage.ts",

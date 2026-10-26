@@ -31,7 +31,7 @@ export function useModelFit(slot: Slot, entry: ModelEntry, builtAt: string): Mod
       const c = cands.find((x) => x.key === key);
       if (!c?.offered) return;
       const version = slot === 'cpu' ? cpuVersion(key) : null;
-      const name = c.part.name + (version === 'box' ? ' (Box)' : version === 'tray' ? ' (Tray)' : '');
+      const name = c.part.name + (version === 'box' ? ' (Box)' : version === 'tray' ? ' (no cooler)' : '');
       setAdded({ key, replaced: addToBuild(slot, c, builtAt) !== null, name });
     },
     [cands, slot, builtAt],

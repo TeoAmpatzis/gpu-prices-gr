@@ -35,7 +35,7 @@ export function candidateKey(slot: Slot, l: { id: string; chip: string; coolerIn
   return modelKey;
 }
 
-/** "Box" (cooler in the box), "Tray" or unknown, from a CPU candidate key `<chip>|<coolerIncluded>`. */
+/** "Box" (cooler in the box), "tray" = no cooler in the box (a Box CPU the maker says has none lands here too) or unknown, from a CPU candidate key `<chip>|<coolerIncluded>`. */
 export const cpuVersion = (key: string): 'box' | 'tray' | null => {
   const v = key.slice(key.lastIndexOf('|') + 1);
   return v === 'true' ? 'box' : v === 'false' ? 'tray' : null;
