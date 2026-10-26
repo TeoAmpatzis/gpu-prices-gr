@@ -32,6 +32,10 @@ export const ABOUT: InfoPageContent = {
           el: 'Περιλαμβάνει και εργαλείο συναρμολόγησης υπολογιστή, που ελέγχει τη συμβατότητα των εξαρτημάτων με βάση τα χαρακτηριστικά που δηλώνουν τα καταστήματα.',
           en: 'It also includes a PC builder that checks whether parts fit together, based on the specifications the shops list.',
         },
+        {
+          el: "Τα επίπεδα απόδοσης (1–10) επεξεργαστών και καρτών γραφικών είναι δική μας ομαδοποίηση, με βάση τις δημοσιευμένες κατατάξεις των Tom's Hardware ([επεξεργαστές](https://www.tomshardware.com/reviews/cpu-hierarchy,4312.html), [κάρτες γραφικών](https://www.tomshardware.com/reviews/gpu-hierarchy,4388.html)), PC Games Hardware ([επεξεργαστές](https://www.pcgameshardware.de/CPU-CPU-154106/Tests/Rangliste-Bestenliste-1143392/2/), [κάρτες γραφικών](https://www.pcgameshardware.de/Grafikkarten-Grafikkarte-97980/Specials/Rangliste-GPU-Grafikchip-Benchmark-1174201/)) και ComputerBase ([επεξεργαστές](https://www.computerbase.de/artikel/prozessoren/rangliste.89909/), [κάρτες γραφικών](https://www.computerbase.de/artikel/grafikkarten/rangliste.2487/)).",
+          en: "The performance tiers (1–10) of processors and graphics cards are our own grouping, based on the published rankings of Tom's Hardware ([processors](https://www.tomshardware.com/reviews/cpu-hierarchy,4312.html), [graphics cards](https://www.tomshardware.com/reviews/gpu-hierarchy,4388.html)), PC Games Hardware ([processors](https://www.pcgameshardware.de/CPU-CPU-154106/Tests/Rangliste-Bestenliste-1143392/2/), [graphics cards](https://www.pcgameshardware.de/Grafikkarten-Grafikkarte-97980/Specials/Rangliste-GPU-Grafikchip-Benchmark-1174201/)) and ComputerBase ([processors](https://www.computerbase.de/artikel/prozessoren/rangliste.89909/), [graphics cards](https://www.computerbase.de/artikel/grafikkarten/rangliste.2487/)).",
+        },
       ],
     },
     {
