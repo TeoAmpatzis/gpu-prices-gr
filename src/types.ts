@@ -1,4 +1,5 @@
 // Mirror of the JSON written by scraper/main.py (see scraper/models.py).
+import type { AliasRecord } from './data/modelAliases';
 
 export type Category = 'gpu' | 'cpu' | 'mobo' | 'ram' | 'storage' | 'psu' | 'case' | 'fan' | 'cooler';
 export type Brand = 'NVIDIA' | 'AMD' | 'Intel';
@@ -247,6 +248,13 @@ export interface BuilderSlotFile extends Columns {
 export interface BuilderExtra {
   urls: Record<string, string>;
   titles: Record<string, string>;
+}
+
+/** /data/aliases.json (build step: main's scraper/model_aliases.json, src/data/modelAliases.ts aliasFile). */
+export interface AliasFile {
+  v: 1;
+  builtAt: string;
+  cats: Record<Category, AliasRecord[]>;
 }
 
 /** /data/manifest.json — counts per category; the next build compares its data against them. */

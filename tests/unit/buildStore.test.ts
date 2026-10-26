@@ -124,6 +124,12 @@ describe('resolveKey', () => {
     expect(resolveKey('cpu', 'old', known)).toEqual({ key: 'old', status: 'missing' });
     expect(resolveKey('cpu', 'old', known, { old: 'also-gone' })).toEqual({ key: 'old', status: 'missing' });
   });
+  it('a slot fallback is asked only for an unknown key with no alias', () => {
+    const fb = (_s: unknown, k: string) => (k === 'chip|?' ? 'same' : null);
+    expect(resolveKey('cpu', 'chip|?', known, undefined, fb)).toEqual({ key: 'same', status: 'renamed' });
+    expect(resolveKey('cpu', 'other|?', known, undefined, fb)).toEqual({ key: 'other|?', status: 'missing' });
+    expect(resolveKey('cpu', 'same', known, undefined, () => 'new-key')).toEqual({ key: 'same', status: 'ok' });
+  });
 });
 
 describe('builderState.followSavedBuild (the open builder and outside changes)', () => {

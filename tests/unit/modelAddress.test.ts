@@ -1,6 +1,6 @@
 // Model addresses (step 4, task 5): current slug -> entry, aliased old slug -> moved (no request), no entry -> gone.
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { deriveAliases, MODEL_ALIASES, MODEL_ALIAS_SLUGS, validateAliases, type AliasRecord } from '../../src/data/modelAliases';
+import { deriveAliases, validateAliases, type AliasRecord } from '../../src/data/modelAliases';
 import { resolveKey } from '../../src/lib/buildStore';
 import { guardMoved, modelChunkOf, modelChunkPath, type ModelResolution } from '../../src/lib/modelData';
 import { CATEGORY_LIST } from '../../src/lib/routes';
@@ -70,15 +70,6 @@ describe('resolveModel', () => {
     const { md, requests } = await setup({}, 'old-case', 'case');
     expect(await md.resolveModel('case', 'Old-Case', { 'old-case': 'new-case' })).toEqual({ kind: 'moved', slug: 'new-case' });
     expect(requests).toEqual([]);
-  });
-});
-
-describe('the shipped alias tables', () => {
-  it('cover every category and are empty until the backend batches land', () => {
-    for (const cat of CATEGORY_LIST) {
-      expect(MODEL_ALIASES[cat]).toEqual({});
-      expect(MODEL_ALIAS_SLUGS[cat]).toEqual({});
-    }
   });
 });
 

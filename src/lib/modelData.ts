@@ -5,7 +5,7 @@
 // no slug index.
 import type { Category, HistoryPoint, ModelChunk, ModelEntry } from '../types';
 import { fnv1a } from './compatChunks';
-import { MODEL_ALIAS_SLUGS } from '../data/modelAliases';
+import { loadAliases } from './aliases';
 import { loadManifest } from './manifest';
 import { slugLookup } from './slug';
 
@@ -69,19 +69,32 @@ export type ModelResolution =
   | { kind: 'gone' };
 
 /**
- * What an address /<cat>/<slug> shows: an aliased old slug (in any spelling) is `moved` to the new one (no request);
- * otherwise the slug's chunk is fetched and the entry looked up: `ok` (with the chunk's per-source update times) at
- * the canonical address, `moved` to it from another spelling or letter case of the model (task 13), or `gone`
- * (delisted since the build, or never a model: the chunks can't tell the two apart). `aliases` = old slug -> new slug
- * (data/modelAliases.ts).
+ * What an address /<cat>/<slug> shows: the slug's chunk is fetched and the entry looked up: `ok` (with the chunk's
+ * per-source update times) at the canonical address, `moved` to it from another spelling or letter case of the model
+ * (task 13), or, when the model is not there, `moved` to its new address when /data/aliases.json (main's alias file,
+ * loaded only now: src/lib/aliases.ts) renamed it, else `gone` (delisted since the build, or never a model: the
+ * chunks can't tell the two apart). A table of old slug -> new slug passed as `aliases` is used instead of the file,
+ * and an aliased old slug (in any spelling) is then `moved` first, with no request.
  */
-export async function resolveModel(cat: Category, slug: string, aliases: Record<string, string> = MODEL_ALIAS_SLUGS[cat]): Promise<ModelResolution> {
+export async function resolveModel(cat: Category, slug: string, aliases?: Record<string, string>): Promise<ModelResolution> {
   const k = slugLookup(cat, slug);
-  const old = has(aliases, slug) ? slug : Object.keys(aliases).find((o) => slugLookup(cat, o) === k);
-  if (old !== undefined) return { kind: 'moved', slug: aliases[old] };
+  const movedTo = (table: Record<string, string>): ModelResolution | null => {
+    const old = has(table, slug) ? slug : Object.keys(table).find((o) => slugLookup(cat, o) === k);
+    return old === undefined ? null : { kind: 'moved', slug: table[old] };
+  };
+  if (aliases) {
+    const m = movedTo(aliases);
+    if (m) return m;
+  }
   const found = await loadModelWithSources(cat, slug);
-  if (!found) return { kind: 'gone' };
-  return found.entry.slug === slug ? { kind: 'ok', ...found } : { kind: 'moved', slug: found.entry.slug };
+  if (found) return found.entry.slug === slug ? { kind: 'ok', ...found } : { kind: 'moved', slug: found.entry.slug };
+  if (aliases) return { kind: 'gone' };
+  try {
+    const { builtAt } = await loadManifest();
+    return movedTo((await loadAliases(builtAt)).slugs[cat] ?? {}) ?? { kind: 'gone' };
+  } catch {
+    return { kind: 'gone' }; // the alias file did not load: as before aliases existed
+  }
 }
 
 /**
