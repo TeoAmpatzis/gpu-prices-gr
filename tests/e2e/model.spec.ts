@@ -530,7 +530,7 @@ for (const [name, size] of [['360', { width: 360, height: 740 }], ['1366', { wid
         const section = page.locator('[data-build-fit]');
         await expect(section.locator('[data-in-build]')).toContainText("It's in your build");
         await expect(section.locator('[data-fit-action]')).toHaveCount(0);
-        await expect(section).toContainText(key.endsWith('|true') ? 'Box version (cooler in the box)' : 'Tray version (no cooler)');
+        await expect(section).toContainText(key.endsWith('|true') ? 'Box version (cooler in the box)' : 'No cooler in the box');
       }
     });
 

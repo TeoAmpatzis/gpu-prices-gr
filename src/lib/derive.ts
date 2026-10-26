@@ -39,6 +39,7 @@ import type {
 } from '../types';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './categories';
 import { OTHER, storageType } from './categoryRules';
+import { boxCooler } from '../engine/data/cpuBox';
 import { fromColumns, modelKeys } from './columns';
 import {
   importGlitches,
@@ -244,6 +245,22 @@ function trustedHistory(
   const untrusted = untrustedPoints(points);
   const imported = imp === undefined ? undefined : importedWithoutDip(withoutSharedLow(imp, bad), untrusted);
   return { points, untrusted, imported };
+}
+
+/**
+ * Box CPU listings whose shops do not say whether a cooler is in the box get the maker's own answer
+ * (src/engine/data/cpuBox.ts). Tray, unknown packaging, chips without a row and a value a shop stated stay as they are.
+ */
+export function withBoxCoolers(latest: Latest): Latest {
+  return {
+    ...latest,
+    listings: latest.listings.map((l) => {
+      const c = l as unknown as { chip: string; packaging?: string | null; coolerIncluded?: boolean | null };
+      if (c.packaging !== 'Box' || (c.coolerIncluded ?? null) !== null) return l;
+      const b = boxCooler(c.chip);
+      return b ? { ...l, coolerIncluded: b.included } : l;
+    }),
+  } as Latest;
 }
 
 export const detailFile = (latest: Latest): Record<string, string> =>
