@@ -757,3 +757,41 @@ Additions:
   `card` schema field) needs its own separate owner OK** when it is reached.
 - Execution: subagent-driven to the gate (builder + separate reviewer per task, reviewer OK before each commit).
   Stop only for push, workflow runs, schema/scraper changes, deletions outside v2, or owner-only decisions.
+
+## Owner decisions 27/10 (audit `Desktop\BuildDraft-audit-2026-10-27.md`; binding, they add to the tasks above)
+
+Each audit fix goes into the task that already touches that code (no new task numbers), with failing tests first and
+the reviewer checking it like the rest of the task.
+
+- **Task 5, rule 16 (H4):** "takes ATX by estimate" only for Midi / Full Tower. A Mini Tower never passes an ATX PSU:
+  stated `maxBoard` Mini ITX → unknown (small case, as SFF); any other Mini Tower → note "probably fits (estimate)"
+  unless a `casePsu.ts` row says otherwise. Scenarios with real parts: Akasa Euler, Chieftec BT-02B-U3 (own PSU in the
+  box), Fractal Terra (listed as Mini Tower).
+- **Task 5, rule 5 (H5):** `BOARD_BY_CASE_SIZE` loses `Άλλο` (src/engine/tables.ts:30) → a case of unknown size gives
+  unknown board fit (301 cases today); no message ever shows the Greek group word in English text.
+- **Task 5, validation G5 (H6)** in `src/data/validate/conflicts.ts`, next to G1–G4: a chipset that names its socket
+  (H610 → LGA1700, B840 → AM5, from a table in the validation code) beats a title or shared socket; a listing whose
+  socket contradicts its chipset gets the chipset's socket and is reported (Asus PRIME H610M-A AM5 → LGA1700, Asus
+  Prime B840M-A-CSM AM4 → AM5). The source fix goes to the main queue (Task 15, Q-B5 below).
+- **Task 5, BIOS rows (H3):** Ryzen 9000 on AM5 from the board makers' official CPU support lists (Asus, MSI,
+  Gigabyte, ASRock), per chipset family (B650/B650E/X670/X670E/A620/B840/B850/X870/X870E), with the minimum BIOS
+  version, URL and date per row, pages saved under the task folder. A family gets a row only when the makers' lists
+  agree (all boards listed support it from a stated BIOS); otherwise no row (stays unknown) and the family goes on the
+  owner's list. Reviewer re-fetches ≥ 2 pages per maker.
+- **Task 5, tiers (M4):** `tierOf('gpu', …)` falls back to the nearest resolution when a card has no tier at the asked
+  one (1080p ← 1440p, 4K ← 1440p; 1440p ← the lower of its 1080p / 4K tiers), returned as `{ tier, borrowed: res }`;
+  rules 27–30 say "estimate" for a borrowed tier. Chips with no tier at any resolution stay untiered.
+- **Task 9 + Task 13 (M1):** findings of rules whose fields exist nowhere in the data (`pick.NOT_IN_DATA`, today rules
+  7 and 15 and the board fields listed there) become ONE line in the summary and Review: "Δεν ελέγχεται ακόμη: … /
+  Not checked yet: …". An unknown caused by one chosen part's missing value stays its own note. Labels unchanged
+  (still `unverified`, never hidden).
+- **Task 9 (L2):** pick mode, product pages and the builder pass the same context (`chipLengths` + `bios`); test: one
+  card of unknown length gets the same label in `/gpu?pick=1` and in the builder.
+- **Task 10 + category pages (H7):** an offer is "unusual" when its model has ≥ 4 offers and its price is under 0.6 ×
+  their median (`isUnusual`, moved from `src/preview/data.ts` to `src/lib/`); real pages mark it with price rule 4
+  ("Ασυνήθιστα χαμηλή, έλεγξε το κατάστημα" / "Unusually low, check the shop") through `PriceCell`; the automatic build
+  and Recommended never pick an unusual offer (they take the next one). Shown, never hidden.
+- **Task 15, Q-B5 (H6 at the source, after Q7 and Q-B1):** `normalize_mobo` takes the chipset's socket over a title's
+  socket; offline before/after on main's data, owner OK, push.
+- **M7 (backend queue, before Q-B1):** move `scrape.yml`'s cron minute away from the busy :17 slot; plan + owner OK +
+  push, then compare start delays over 3 days.
