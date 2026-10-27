@@ -70,6 +70,16 @@ SSD_WORDS = re.compile(
 )
 HDD_WORDS = re.compile(r"\bHDD\b|\d\s*rpm|\bSSHD\b|Σκληρ|Hard\s+(?:Disk|Drive)|Skliros", re.I)
 SAS = re.compile(r"\bSAS(?:[-\s]?\d(?:\.0)?)?\b", re.I)
+# SAS by the part number or the product line, beating a title's "SATA" (owner, 2026-10-26; shops copy "SATA III" onto
+# these): Seagate part numbers ending "SS" (Cheetah ST3600057SS, ST3300657SS); Seagate Enterprise Performance 10K /
+# 15K, SAS-only lines: Seagate's product manuals "Enterprise Performance 10K HDD v9" (100818015c, models incl.
+# ST600MM0099 / ST600MM0009 / ST1200MM0129: "Serial Attached SCSI") https://www.seagate.com/www-content/product-
+# content/enterprise-performance-savvio-fam/ent-perf-10k-hdd-v9-skybolt/en-us/docs/100818015c.pdf and "Enterprise
+# Performance 15K HDD v6" (100802255d, "SAS (Serial Attached SCSI)") https://www.seagate.com/content/dam/seagate/
+# migrated-assets/www-content/product-content/enterprise-performance-savvio-fam/enterprise-performance-15k-hdd/ent-
+# perf-15k-6/en-us/docs/100802255d.pdf, both read 2026-10-26. HP MSA drives (HP_MSA, HP / HPE only) are SAS too.
+SAS_PART_OR_LINE = re.compile(r"(?<![\w-])ST\d{4,}[A-Z0-9]*SS(?![\w-])|\bEnterp\w*\s+Performance\s+1[05]K\b", re.I)
+HP_MSA = re.compile(r"\bMSA\b", re.I)
 NVME = re.compile(r"NVMe|PCI\s*-?\s*Express|PCI-?e|PCle|\bU\.[23]\b", re.I)
 PCIE_GEN = re.compile(r"(?:PCI\s*-?\s*Express|PCI-?E|PCle|\bGen)\.?\s*(?:Gen\.?\s*)?([345])(?:[.\s]\d)?\b", re.I)
 M2_LENGTH = re.compile(r"(?<!\d)22(30|42|60|80|110)(?!\d)")
@@ -155,6 +165,12 @@ def _rpm(text: str) -> int | None:
     m = RPM.search(text)
     value = int(re.sub(r"[.,]", "", m.group(1))) if m else None
     return value if value and 4000 <= value <= 15000 else None
+
+
+def _sas_named(title: str, slug: str, vendor: str) -> bool:
+    """SAS by a word in the title or URL, or by the part number / product line in the title (beats "SATA")."""
+    return bool(SAS.search(f"{title} {slug}") or SAS_PART_OR_LINE.search(title)
+                or (vendor in ("HP", "HPE") and HP_MSA.search(title)))
 
 
 def _capacity(text: str) -> int | None:
@@ -336,8 +352,9 @@ def make_listing(
     if media == "HDD":
         # Owner's rule (2026-10-25): an interface no word states is unknown, not SATA. SATA only when the title
         # says it; a 10,000 / 15,000 rpm drive is SAS (those exist only as SAS); then Skroutz's URL ("...-SATA-III-
-        # ..."), which settle() may still overrule by part number; else None.
-        if SAS.search(text):
+        # ..."), which settle() may still overrule by part number; else None. A SAS part number / product line
+        # (SAS_PART_OR_LINE, HP MSA; owner 2026-10-26) counts as SAS stated.
+        if _sas_named(title, slug, vendor):
             iface = "SAS"
         elif re.search(r"SATA", title, re.I):
             iface = "SATA"
@@ -347,7 +364,7 @@ def make_listing(
             iface = "SATA"
         else:
             iface = None
-    elif SAS.search(text):
+    elif _sas_named(title, slug, vendor):
         iface = "SAS"
     elif NVME.search(text):
         iface = "NVMe"
@@ -477,11 +494,11 @@ def settle(listings: list[dict]) -> None:
             own[id(l)] = raw
 
     def kind(raw) -> str:
-        """u2 / nvme (NVMe, U.2 by its own title or not); sas (a word says SAS), sata (the title says SATA), fast (SAS
-        only from 10k/15k rpm), weak (no word)."""
+        """u2 / nvme (NVMe, U.2 by its own title or not); sas (a word, a SAS part number or product line says SAS),
+        sata (the title says SATA), fast (SAS only from 10k/15k rpm), weak (no word)."""
         if raw.iface == "NVMe":
             return "u2" if raw.formFactor == "U.2" else "nvme"
-        if SAS.search(f"{raw.title} {_slug(raw.url)}"):
+        if _sas_named(raw.title, _slug(raw.url), raw.brand):
             return "sas"
         if re.search(r"SATA", raw.title, re.I):
             return "sata"
