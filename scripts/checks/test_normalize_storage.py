@@ -267,7 +267,7 @@ SAME_PART = {
                             "https://www.skroutz.gr/s/67044225/hp-msa-1-2tb-hdd-skliros-diskos-2-5-sata-iii-10000rpm-gia-server-w127213608.html"),
                            ("shopflix", 'HP Msa 1.2TB HDD Σκληρός Δίσκος 2.5" SATA III 10000rpm για Server W127213608',
                             "https://shopflix.gr/p/SF-201540172/hp-msa-1-2tb-hdd-skleros-diskos-2-5-sata-iii-10000rpm-gia-server-w127213608")],
-                          ['HP Msa 1.2TB 2.5"'] * 2),
+                          ['HP Msa 1.2TB 2.5" SAS'] * 2),  # owner 2026-10-26: HP MSA drives are SAS
 }
 for name, (rows, want) in SAME_PART.items():
     got = settled(rows)
@@ -411,6 +411,68 @@ bcbc = dicts_of(FOURTEEN["Dell 161-BCBC 2TB"][0])
 if bcbc:
     normalize_storage.settle(bcbc)
     expect("I7: settled SAS listing is Server", bcbc[1]["tier"], "Server")
+
+# ---------- round 2 (owner 2026-10-26): SAS by part number / product line, beating a title's "SATA" ----------
+# Seagate part numbers ending "SS" are SAS: Cheetah ST3600057SS (Shopflix copies "SATA III") joins its SAS twin.
+CHEETAH = [("skroutz", 'Seagate Cheetah 600GB 3.5" 15000rpm ST3600057SS',
+            "https://www.skroutz.gr/s/290399/Seagate-Cheetah-600GB-HDD-Skliros-Diskos-3-5-SATA-III-15000rpm-me-16MB-Cache-gia-Server-ST3600057SS.html"),
+           ("shopflix", 'Seagate Cheetah 600GB HDD Σκληρός Δίσκος 3.5" SATA III 15000rpm με 16MB Cache για Server ST3600057SS',
+            "https://shopflix.gr/p/SF-202850050/seagate-cheetah-600gb-hdd-skleros-diskos-3-5-sata-iii-15000rpm-me-16mb-cache-gia-server-st3600057ss")]
+sf = make(*CHEETAH[1])
+expect("R2b: Seagate ST…SS beats the title's SATA", (get(sf, "chip"), get(sf, "iface"), get(sf, "tier")),
+       ("Seagate Cheetah 600GB SAS", "SAS", "Server"))
+expect("R2b: Cheetah ST3600057SS pair = one SAS model", settled(CHEETAH), [("Seagate Cheetah 600GB SAS", "SAS")] * 2)
+st3 = make("bestprice", 'Seagate ST3300657SS 300GB HDD Σκληρός Δίσκος 3.5" SATA 2 15000rpm',
+           "https://www.bestprice.gr/item/1/seagate-st3300657ss-300gb.html")
+expect("R2b: any Seagate ST…SS part is SAS", get(st3, "iface"), "SAS")
+# Not other Seagate parts: Exos 7E10 ST4000NM000B is the SATA one, Barracuda ST2000DM008 too.
+exos = make("bestprice", 'Seagate Exos 7E10 4TB HDD Σκληρός Δίσκος 3.5" Sata 3 7200rpm με 256MB Cache ST4000NM000B',
+            "https://www.bestprice.gr/item/2157538002/seagate-exos-7e10-4tb.html")
+expect("R2b: Seagate ST4000NM000B stays SATA", get(exos, "iface"), "SATA")
+bar = make("eshop", 'HDD SEAGATE ST2000DM008 BARRACUDA 2TB 3.5" SATA 3', "https://www.e-shop.gr/hdd-seagate-st2000dm008-p-PER.1")
+expect("R2b: Seagate ST2000DM008 stays SATA", get(bar, "iface"), "SATA")
+expect("R2b: a token ending SS that is no Seagate part number", get(make(
+    "shopflix", 'Kingston KC600 SSD 512GB 2.5" SATA III SKC600BOSS', "https://shopflix.gr/p/SF-1/kingston-kc600"), "iface"), "SATA")
+
+# HP MSA drives are SAS ("HP MSA 1.2TB" -> the SAS model), also when the title says SATA or nothing.
+msa = make("shopflix", "HP Enterprise MSA 600GB Hard Drive", "https://shopflix.gr/p/SF-106169422/hp-enterprise-msa-600gb-hard-drive")
+expect("R2b: HP MSA with no interface word is SAS", (get(msa, "chip"), get(msa, "iface"), get(msa, "tier")),
+       ("HP MSA 600GB SAS", "SAS", "Server"))
+expect("R2b: HP MSA 1.2TB pair = one SAS model", settled(SAME_PART["HP Msa W127213608"][0]),
+       [('HP Msa 1.2TB 2.5" SAS', "SAS")] * 2)
+hpbc = make("skroutz", 'HP Business Critical 8TB 3.5" 7200rpm SATA 819203-B21',
+            "https://www.skroutz.gr/s/38314124/HP-Business-Critical-8TB-HDD-Skliros-Diskos-3-5-SATA-III-7200rpm-819203-B21.html")
+expect("R2b: other HP drives are not SAS by the MSA rule", get(hpbc, "iface"), "SATA")
+expect("R2b: MSA is HP's word only", get(make("bestprice", 'Toshiba MSA 1TB HDD 3.5" SATA 3 7200rpm',
+                                               "https://www.bestprice.gr/item/1/toshiba-msa-1tb.html"), "iface"), "SATA")
+
+# CoreParts SA600005I404 / SA600005I833 stay as they are: one model each, named without SAS (owner 2026-10-26).
+CORE833 = [("skroutz", 'CoreParts 600GB 3.5" 15000rpm SA600005I833',
+            "https://www.skroutz.gr/s/49676716/CoreParts-600GB-HDD-Skliros-Diskos-3-5-SATA-III-15000rpm-gia-Server-SA600005I833.html"),
+           ("shopflix", 'CoreParts SA600005I833 600GB HDD Σκληρός Δίσκος 3.5" SATA III 15000rpm για Server',
+            "https://shopflix.gr/p/SF-200139191/coreparts-sa600005i833-600gb-hdd-skleros-diskos-3-5-sata-iii-15000rpm-gia-server")]
+expect("R2b: CoreParts SA600005I833 stays one model without SAS", chips(settled(CORE833)), ["CoreParts SA600005I833 600GB"] * 2)
+expect("R2b: CoreParts SA600005I404 stays one model without SAS", chips(settled(SAME_PART["CoreParts SA600005I404"][0])),
+       ["CoreParts SA600005I404 600GB"] * 2)
+
+# Seagate Enterprise Performance 10K / 15K are SAS-only lines (Seagate's product manuals): Shopflix's "SATA III" 10K
+# 600GB joins Skroutz's ST600MM0099 (SAS by rpm) in the SAS model.
+EP10K = [("skroutz", 'Seagate Enterprise Performance 10K 600GB 2.5" 10000rpm ST600MM0099',
+          "https://www.skroutz.gr/s/14954902/Seagate-Enterprise-Performance-10K-600GB-HDD-Skliros-Diskos-2-5-SATA-III-10000rpm-me-256MB.html"),
+         ("shopflix", 'HDD Σκληρός Δίσκος Seagate Enterprise Performance 10K 600GB 2.5" SATA III 10000rpm με 256MB Cache για NAS / Desktop / Laptop',
+          "https://shopflix.gr/p/SF-12332639/skliros-diskos-hdd-seagate-enterprise-performance-10k-600gb-25-sata-iii-10000rpm-me-256mb-")]
+ep = make(*EP10K[1])
+expect("R2b: Enterprise Performance 10K beats the title's SATA", (get(ep, "chip"), get(ep, "iface"), get(ep, "tier")),
+       ('Seagate 10K 600GB 2.5" SAS', "SAS", "Server"))
+expect("R2b: Enterprise Performance 10K 600GB = one SAS model", settled(EP10K), [('Seagate 10K 600GB 2.5" SAS', "SAS")] * 2)
+ep15 = make("shopflix", 'Seagate Enterprise Performance 15K 600GB HDD 2.5" SATA III 15000rpm',
+            "https://shopflix.gr/p/SF-2/seagate-enterprise-performance-15k-600gb")
+expect("R2b: Enterprise Performance 15K is SAS", get(ep15, "iface"), "SAS")
+expect("R2b: Seagate's 'Enterpise' typo too", get(make(
+    "skroutz", 'Seagate Enterpise Performance 10K 1.2TB 3.5" SATA 10000rpm ST1200MM0009',
+    "https://www.skroutz.gr/s/18548630/Seagate-Enterpise-Performance-10K-1-2TB-HDD-Skliros-Diskos-3-5-10000rpm.html"), "iface"), "SAS")
+expect("R2b: not Enterprise Performance 7200 drives", get(make(
+    "bestprice", 'Seagate Enterprise Performance 7200 2TB HDD 3.5" SATA 3', "https://www.bestprice.gr/item/1/x.html"), "iface"), "SATA")
 
 print(f"\n{ok} passed, {bad} failed")
 sys.exit(1 if bad else 0)
