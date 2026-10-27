@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
-  RESOLUTIONS, TIERS, TIER_DISAGREE, makeTierOf, pickTier, tierFromShare, tierOf,
-  type TierDisagreement, type TierRow,
+  CB_CPU, PCGH_CPU, RESOLUTIONS, TIERS, TIER_DISAGREE, TOMS_CPU, TOMS_GPU, makeTierOf, pickTier, tierFromShare, tierOf,
+  type CpuTierRow, type TierDisagreement, type TierRow,
 } from '../../../src/engine/data/tiers';
 
 const WORKSTATION_GPU = /^(RTX PRO |RTX A\d|T\d|RTX \d{4} (Ada|\(Pro\)))|Quadro|Radeon PRO|Arc Pro|Titan/;
@@ -164,5 +164,104 @@ describe('tierFromShare (the mapping method)', () => {
     expect(tierFromShare(0.4)).toBe(4);
     expect(tierFromShare(0.1)).toBe(1);
     expect(tierFromShare(0.03)).toBe(1);
+  });
+});
+
+const cpuRow = (chip: string) => TIERS.find((r): r is CpuTierRow => r.kind === 'cpu' && r.chips.includes(chip));
+const RANKINGS = [TOMS_CPU.url, PCGH_CPU.url, CB_CPU.url];
+
+describe('single-chip reviews (owner step 1, round 2)', () => {
+  it('a review-anchored row stores the review URL, the anchor chip and the date (Ryzen 5 7600: no ranking has it)', () => {
+    const r = cpuRow('Ryzen 5 7600')!;
+    expect(r).toBeDefined();
+    expect(tierOf('cpu', 'Ryzen 5 7600', '1080p')).toBe(r.tier);
+    expect(r.sources).toHaveLength(2);
+    for (const s of r.sources) {
+      expect(s.anchor).toBeTruthy();
+      expect(s.anchor).not.toBe('Ryzen 5 7600');
+      expect(RANKINGS).not.toContain(s.url);
+      expect(s.checked).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    }
+    expect(r.sources.map((s) => new URL(s.url).hostname).sort()).toEqual(['www.computerbase.de', 'www.pcgameshardware.de']);
+  });
+
+  it("a ranking and a review can pair (Core i5-14400: Tom's ranking + the PCGH review through an anchor)", () => {
+    const r = cpuRow('Core i5-14400')!;
+    expect(r.sources[0]).toEqual(TOMS_CPU);
+    expect(r.sources[1].url).toMatch(/^https:\/\/www\.pcgameshardware\.de\/.*-1444317\/$/);
+    expect(r.sources[1].anchor).toBeTruthy();
+  });
+
+  it('a site counts once per chip: no row has two sources from the same site', () => {
+    for (const r of TIERS) {
+      const hosts = r.sources.map((s) => new URL(s.url).hostname);
+      expect(new Set(hosts).size).toBe(hosts.length);
+    }
+  });
+
+  it("only review sources carry an anchor, and an anchor is never a Tom's Hardware page (its review charts are images)", () => {
+    for (const r of TIERS) {
+      for (const s of r.sources) {
+        if (RANKINGS.includes(s.url) || s.url === TOMS_GPU.url) expect(s.anchor).toBeUndefined();
+        if (s.anchor) {
+          expect(r.kind).toBe('cpu');
+          expect(new URL(s.url).hostname).not.toBe('www.tomshardware.com');
+          expect(r.chips).not.toContain(s.anchor);
+        }
+      }
+    }
+  });
+});
+
+describe('F/KF twins from Wikipedia (owner step 2, round 2)', () => {
+  it("a twin row takes the non-F chip's tier and sources and names the Wikipedia page (Core Ultra 5 245KF)", () => {
+    const kf = cpuRow('Core Ultra 5 245KF')!, k = cpuRow('Core Ultra 5 245K')!;
+    expect(kf.twin?.chip).toBe('Core Ultra 5 245K');
+    expect(kf.twin?.urls).toEqual(['https://en.wikipedia.org/wiki/Arrow_Lake_(microprocessor)']);
+    expect(kf.tier).toBe(k.tier);
+    expect(kf.sources).toEqual(k.sources);
+    expect(tierOf('cpu', 'Core Ultra 5 245KF', '1440p')).toBe(k.tier);
+  });
+
+  it('every twin row: the chip is its twin + F/KF, the twin has a tier of its own with the same tier and sources', () => {
+    const twins = TIERS.filter((r): r is CpuTierRow => r.kind === 'cpu' && !!r.twin);
+    expect(twins.length).toBeGreaterThan(0);
+    for (const r of twins) {
+      const t = r.twin!;
+      expect([`${t.chip}F`, t.chip.replace(/K$/, 'KF')]).toContain(r.chips[0]);
+      const base = cpuRow(t.chip)!;
+      expect(base.twin).toBeUndefined();
+      expect(r.tier).toBe(base.tier);
+      expect(r.sources).toEqual(base.sources);
+      for (const u of t.urls) expect(u).toMatch(/^https:\/\/en\.wikipedia\.org\/wiki\//);
+      expect(t.checked).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    }
+  });
+
+  it("not a twin: Ryzen 5 7500F does not take Ryzen 5 7600's tier (different clocks; owner)", () => {
+    expect(tierOf('cpu', 'Ryzen 5 7600', '1080p')).toBeDefined();
+    expect(tierOf('cpu', 'Ryzen 5 7500F', '1080p')).toBeUndefined();
+    expect(TIERS.some((r) => r.kind === 'cpu' && r.twin?.chip === 'Ryzen 5 7600')).toBe(false);
+  });
+
+  it('no twin when the Wikipedia table has no L2 column: Core i7-14700KF stays unknown although 14700K has a tier', () => {
+    expect(tierOf('cpu', 'Core i7-14700K', '1080p')).toBeDefined();
+    expect(tierOf('cpu', 'Core i7-14700KF', '1080p')).toBeUndefined();
+  });
+});
+
+describe('M-A: a source row without a memory size counts only for a chip with one size in the data', () => {
+  it("RTX 5070 (12 and 16 GB in the data): Tom's unsized row no longer gives the 12 GB card a 1080p tier", () => {
+    expect(tierOf('gpu', 'RTX 5070', '1080p', 12)).toBeUndefined();
+    expect(tierOf('gpu', 'RTX 5070', '1440p', 12)).toBe(6);
+    expect(tierOf('gpu', 'RX 9070', '1080p', 16)).toBeUndefined();
+    for (const chip of ['RTX 5070', 'RX 9070']) {
+      const r = TIERS.find((x) => x.kind === 'gpu' && x.chips.includes(chip))!;
+      expect(r.sources).not.toContainEqual(TOMS_GPU);
+    }
+  });
+
+  it('RTX 3050 (6 and 8 GB in the data) has no tier at either size', () => {
+    for (const vram of [6, 8]) for (const res of RESOLUTIONS) expect(tierOf('gpu', 'RTX 3050', res, vram)).toBeUndefined();
   });
 });

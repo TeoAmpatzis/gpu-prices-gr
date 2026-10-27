@@ -255,8 +255,9 @@ export function boxCooler(chip: string): { included: boolean; cooler: string | n
   answer 5 of 10/10: **Tom's Hardware 2026 CPU and GPU hierarchies plus one more independent source per chip family;
   where they disagree by more than one tier, the chip has no tier and goes on a list for the owner**). Only our tier
   is stored, never their tables or text.
-- Gate (B6): a tier for every desktop CPU chip and consumer GPU chip in the most-listed quarter (49 + 16 when B6 was
-  measured; recounted on merged data in the coverage report). Chips without a tier stay offered, never auto-picked.
+- Gate (B6): a tier for every desktop CPU chip and consumer GPU chip in the most-listed quarter where two sources
+  agree (49 + 16 when B6 was measured; recounted on merged data in the coverage report). Owner 2026-10-27: accepted
+  at CPU 27/52, GPU 8/15 (Task 4b). Chips without a tier stay offered, never auto-picked.
 
 **Interfaces:**
 ```ts
