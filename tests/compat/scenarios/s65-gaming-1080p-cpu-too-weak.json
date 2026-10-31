@@ -1,0 +1,75 @@
+{
+  "id": "S65",
+  "title": "Gaming 1080p: Ryzen 5 7600 + RTX 5090: rule 27 warning",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 5 7600|true",
+      "modelKey": "Ryzen 5 7600",
+      "name": "Ryzen 5 7600",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "eshop",
+        "id": "eshop:PER.607252",
+        "title": "AMD RYZEN 5 7600 5.20GHZ 6-CORE BOX",
+        "price": 174.9
+      },
+      "fields": {
+        "chip": "Ryzen 5 7600",
+        "socket": "AM5",
+        "igpu": true,
+        "coolerIncluded": true,
+        "boxCooler": "AMD Wraith Stealth",
+        "cores": 6
+      }
+    },
+    {
+      "category": "gpu",
+      "key": "bestprice:2160340916",
+      "modelKey": "RTX 5090 32GB",
+      "name": "Gigabyte GeForce RTX 5090 32GB GDDR7 Windforce OC",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160340916",
+        "title": "Gigabyte GeForce RTX 5090 32GB GDDR7 Windforce OC",
+        "price": 6599
+      },
+      "fields": {
+        "chip": "RTX 5090",
+        "vram": 32,
+        "lengthMm": 342,
+        "minPsu": 1000,
+        "powerConnector": null,
+        "slots": null
+      }
+    }
+  ],
+  "context": {
+    "use": {
+      "kind": "gaming",
+      "res": "1080p"
+    }
+  },
+  "expected": [
+    {
+      "rule": 27,
+      "level": "warning"
+    },
+    {
+      "rule": 28,
+      "level": "pass"
+    },
+    {
+      "rule": 29,
+      "level": "pass"
+    }
+  ],
+  "why": "Tiers (src/engine/data/tiers.ts): Ryzen 5 7600 = 7, RTX 5090 32 GB at 1080p = 10. At 1080p the CPU tier must be at least the card tier (10): 7 is below, so the CPU holds the card back (warning). 6 cores and 32 GB pass rules 28 and 29.",
+  "capturedFrom": {
+    "builtAt": "2026-10-27",
+    "files": "public/data/<cat>/latest.json as the build checks it (validated, conflicts G1–G4, makers' tables cpuBox/casePsu), engine fields = src/lib/pick.ts toPart"
+  }
+}

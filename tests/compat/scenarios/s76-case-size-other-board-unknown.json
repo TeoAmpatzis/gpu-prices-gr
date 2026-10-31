@@ -1,0 +1,77 @@
+{
+  "id": "S76",
+  "title": "Case of unknown size (Άλλο, no board size) + Micro ATX board: rule 5 note (unknown)",
+  "parts": [
+    {
+      "category": "mobo",
+      "key": "asrocka620mhdvm2",
+      "modelKey": "asrocka620mhdvm2",
+      "name": "ASRock A620M-HDV/M.2",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2158604880",
+        "title": "Asrock A620M-HDV/M.2",
+        "price": 109.59
+      },
+      "fields": {
+        "chip": "ASRock A620M-HDV/M.2",
+        "chipset": "A620",
+        "socket": "AM5",
+        "formFactor": "Micro ATX",
+        "memory": "DDR5",
+        "ramSlots": 2,
+        "maxMemoryGB": 64,
+        "sataPorts": null,
+        "m2Slots": null,
+        "m2Gen": null,
+        "biosFlashback": null,
+        "fanHeaders": null,
+        "usbCHeader": null
+      }
+    },
+    {
+      "category": "case",
+      "key": "1stcooldreamer",
+      "modelKey": "1stcooldreamer",
+      "name": "1stCOOL DREAMER",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:69404404",
+        "title": "1stCOOL DREAMER με Πλαϊνό Παράθυρο",
+        "price": 180.9
+      },
+      "fields": {
+        "size": "Άλλο",
+        "maxBoard": null,
+        "gpuMaxMm": 390,
+        "coolerMaxMm": 176,
+        "fanSlots": null,
+        "radiatorMounts": null,
+        "fanMounts": null,
+        "fansIncluded": null,
+        "hasFans": null,
+        "radiators": null,
+        "expansionSlots": null,
+        "psuFormFactors": null,
+        "psuIncluded": null,
+        "usbCFront": null,
+        "bays35": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 5,
+      "level": "note"
+    }
+  ],
+  "why": "Owner 27/10 H5: BOARD_BY_CASE_SIZE no longer guesses ATX for \"Άλλο\"; a case with no stated board size and no known size class gives an unknown board fit.",
+  "capturedFrom": {
+    "builtAt": "2026-10-27",
+    "files": "public/data/<cat>/latest.json as the build checks it (validated, conflicts G1–G4, makers' tables cpuBox/casePsu), engine fields = src/lib/pick.ts toPart"
+  }
+}

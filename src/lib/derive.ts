@@ -40,6 +40,7 @@ import type {
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './categories';
 import { OTHER, storageType } from './categoryRules';
 import { boxCooler } from '../engine/data/cpuBox';
+import { casePsu } from '../engine/data/casePsu';
 import { fromColumns, modelKeys } from './columns';
 import {
   importGlitches,
@@ -87,7 +88,11 @@ import {
 const DETAIL_ONLY = new Set(['url', 'scrapedAt']);
 /** Not in list.v2.json either: only the builder reads them (builder.json keeps them). */
 // Fields for v2's rules (Phase 2): collected now, not shown or checked by v1.
-const V2_ONLY = ['m2Slots', 'm2Gen', 'sataPorts', 'maxMemoryGB', 'biosFlashback', 'atx3', 'bays35', 'bays25', 'usbCFront', 'socketsTitle'];
+const V2_ONLY = [
+  'm2Slots', 'm2Gen', 'sataPorts', 'maxMemoryGB', 'biosFlashback', 'atx3', 'bays35', 'bays25', 'usbCFront', 'socketsTitle',
+  // Build-time engine fields from the makers' tables (task 5a): the boxed cooler's name, the case's PSU sizes and own power.
+  'boxCooler', 'psuFormFactors', 'psuIncluded',
+];
 // 'formConflict' stays in list.v2.json on purpose: the pick view runs `usable` on those listings (a few dozen boards).
 const LIST_SKIP = new Set([...DETAIL_ONLY, 'fanMounts', 'fansIncluded', 'radiators', 'airflowCfm', 'pressureMm', ...V2_ONLY]);
 
@@ -249,7 +254,8 @@ function trustedHistory(
 
 /**
  * Box CPU listings whose shops do not say whether a cooler is in the box get the maker's own answer
- * (src/engine/data/cpuBox.ts). Tray, unknown packaging, chips without a row and a value a shop stated stay as they are.
+ * (src/engine/data/cpuBox.ts), and `boxCooler` = the cooler the page names when it says one is included (rule 11
+ * names it). Tray, unknown packaging, chips without a row and a value a shop stated stay as they are.
  */
 export function withBoxCoolers(latest: Latest): Latest {
   return {
@@ -258,9 +264,34 @@ export function withBoxCoolers(latest: Latest): Latest {
       const c = l as unknown as { chip: string; packaging?: string | null; coolerIncluded?: boolean | null };
       if (c.packaging !== 'Box' || (c.coolerIncluded ?? null) !== null) return l;
       const b = boxCooler(c.chip);
-      return b ? { ...l, coolerIncluded: b.included } : l;
+      if (!b) return l;
+      return b.included && b.cooler ? { ...l, coolerIncluded: true, boxCooler: b.cooler } : { ...l, coolerIncluded: b.included };
     }),
   } as Latest;
+}
+
+/**
+ * Case listings of a model with a row in src/engine/data/casePsu.ts get the maker's PSU statement: `psuFormFactors`
+ * (the sizes the case takes) and, when the case brings its own power, `psuIncluded` ('external' or the unit).
+ * Rule 16 reads them as stated. Other cases stay as they are.
+ */
+export function withCasePsu(latest: Latest): Latest {
+  const key = cfgOf('case').modelKey;
+  return {
+    ...latest,
+    listings: latest.listings.map((l) => {
+      const row = casePsu(key(l));
+      if (!row) return l;
+      return { ...l, psuFormFactors: [...row.forms], ...(row.included ? { psuIncluded: row.included } : {}) };
+    }),
+  } as Latest;
+}
+
+/** The makers' tables applied at build time, per category (after validation and conflicts). */
+export function withMakerTables(cat: Category, latest: Latest): Latest {
+  if (cat === 'cpu') return withBoxCoolers(latest);
+  if (cat === 'case') return withCasePsu(latest);
+  return latest;
 }
 
 export const detailFile = (latest: Latest): Record<string, string> =>

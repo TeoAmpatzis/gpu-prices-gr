@@ -8,7 +8,7 @@ export function toBuild(s: Scenario): Build {
   return s.parts.map((p, i): Part => ({ category: p.category, key: `${p.category}#${i}:${p.key}`, name: p.name, quantity: p.quantity, fields: p.fields }));
 }
 
-export const toContext = (s: Scenario): Context => ({ chipLengths: s.context?.chipLengths, bios: biosSupport });
+export const toContext = (s: Scenario): Context => ({ chipLengths: s.context?.chipLengths, bios: biosSupport, use: s.context?.use });
 
 const SEVERITY = { error: 4, warning: 3, note: 2, unknown: 1, pass: 0 } as const;
 

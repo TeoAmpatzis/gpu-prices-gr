@@ -1,5 +1,5 @@
 // Compatibility scenarios (v2 Phase 0): an engine-independent format, one JSON file per scenario in
-// tests/compat/scenarios/. Expected results use the rule numbers (1–26) and levels of the plan's rules
+// tests/compat/scenarios/. Expected results use the rule numbers (1–30) and levels of the plan's rules
 // table (docs/redesign-v2.md, "Κανόνες συμβατότητας"). They become the v2 regression suite in Phase 2.
 
 import { readdirSync, readFileSync } from 'node:fs';
@@ -41,7 +41,11 @@ export interface Scenario {
   planExample?: string;
   parts: ScenarioPart[];
   /** v1's measured length range per graphics chip (used for "Likely fits" estimates), when it matters. */
-  context?: { chipLengths?: Record<string, { cards: number; makers: number; min: number; max: number }> };
+  context?: {
+    chipLengths?: Record<string, { cards: number; makers: number; min: number; max: number }>;
+    /** What the build is for (rules 27–30 speak only for gaming; gaming without `res` = 1080p). */
+    use?: { kind: 'gaming' | 'everyday' | 'creating' | 'unsure'; res?: '1080p' | '1440p' | '4k' };
+  };
   expected: Expectation[];
   why: string;
   capturedFrom: { builtAt: string; files: string };
@@ -75,7 +79,7 @@ export function validate(s: Scenario): string[] {
   }
   const seen = new Set<number>();
   for (const e of s.expected ?? []) {
-    if (!(Number.isInteger(e.rule) && e.rule >= 1 && e.rule <= 26)) out.push(`bad rule ${e.rule}`);
+    if (!(Number.isInteger(e.rule) && e.rule >= 1 && e.rule <= 30)) out.push(`bad rule ${e.rule}`);
     if (!LEVELS.includes(e.level)) out.push(`rule ${e.rule}: bad level ${e.level}`);
     if (seen.has(e.rule)) out.push(`rule ${e.rule} listed twice`);
     seen.add(e.rule);

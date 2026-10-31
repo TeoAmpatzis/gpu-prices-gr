@@ -102,8 +102,9 @@ export function powerEstimate(b: Build): PowerEstimate {
 
 /**
  * Rule 14, the owner's rule: below the maker's figure = error; no maker figure and below the formula = error;
- * at/above the maker's figure but below the formula = warning; otherwise within +10% of the larger figure =
- * warning (tight), else pass. Both figures missing = unknown.
+ * at/above the maker's figure but below the formula = warning; at/above the maker's figure with the formula at or
+ * below it (or unknown) = pass (owner answer 8); when the formula decides, within +10% of it = warning (tight), else
+ * pass. Both figures missing = unknown.
  */
 export function rule14(b: Build): Finding[] {
   const psu = one(b, 'psu');
@@ -161,6 +162,9 @@ export function rule14(b: Build): Finding[] {
     msg(`Για περιθώριο διάλεξε τροφοδοτικό τουλάχιστον ${formulaW} W.`, `For headroom choose a power supply of at least ${formulaW} W.`))];
 
   const basis: Basis = makerW !== null && (formulaW === null || makerW >= formulaW) ? 'stated' : 'estimate';
+  // Owner answer 8: reaching the maker's figure when the whole-build formula is at or below it (or missing) is a
+  // pass; the +10 % "tight" band applies only when the formula decides.
+  if (basis === 'stated') return [finding(14, 'pass', basis, ps, msg(`Τροφοδοτικό ${watts} W· ${f.el}.${why.el}`, `${watts} W power supply; ${f.en}.${why.en}`))];
   const limit = Math.floor(need * (1 + MARGIN.psuShare)) + 1; // the smallest wattage that passes
   if (watts <= need * (1 + MARGIN.psuShare)) return [finding(14, 'warning', basis, ps,
     msg(`Οριακό: τροφοδοτικό ${watts} W· ${f.el}.${why.el}`, `Tight: ${watts} W power supply; ${f.en}.${why.en}`),

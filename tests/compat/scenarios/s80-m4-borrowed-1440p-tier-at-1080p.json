@@ -1,0 +1,67 @@
+{
+  "id": "S80",
+  "title": "M4: RTX 5070 12 GB at 1080p borrows its 1440p tier; Core i5-12400F: rule 27 warning (estimate)",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Core i5-12400F|false",
+      "modelKey": "Core i5-12400F",
+      "name": "Core i5-12400F",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2157256226",
+        "title": "Intel Core i5-12400F Tray",
+        "price": 112.1
+      },
+      "fields": {
+        "chip": "Core i5-12400F",
+        "socket": "LGA1700",
+        "igpu": false,
+        "coolerIncluded": false,
+        "boxCooler": null,
+        "cores": 6
+      }
+    },
+    {
+      "category": "gpu",
+      "key": "eshop:PER.260148",
+      "modelKey": "RTX 5070 12GB",
+      "name": "INNO3D NVIDIA GEFORCE RTX 5070 TWIN X2 12GB GDDR7",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "eshop",
+        "id": "eshop:PER.260148",
+        "title": "INNO3D NVIDIA GEFORCE RTX 5070 TWIN X2 12GB GDDR7",
+        "price": 899
+      },
+      "fields": {
+        "chip": "RTX 5070",
+        "vram": 12,
+        "lengthMm": 250,
+        "minPsu": 650,
+        "powerConnector": null,
+        "slots": null
+      }
+    }
+  ],
+  "context": {
+    "use": {
+      "kind": "gaming",
+      "res": "1080p"
+    }
+  },
+  "expected": [
+    {
+      "rule": 27,
+      "level": "warning"
+    }
+  ],
+  "why": "The RTX 5070 12 GB has no 1080p tier of its own (fewer than two sources rank the 12 GB card at 1080p); M4 takes its 1440p tier 6. Core i5-12400F = 5 < 6, so a warning whose basis is estimate and whose message says so.",
+  "capturedFrom": {
+    "builtAt": "2026-10-27",
+    "files": "public/data/<cat>/latest.json as the build checks it (validated, conflicts G1–G4, makers' tables cpuBox/casePsu), engine fields = src/lib/pick.ts toPart"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "id": "S68",
+  "title": "Gaming 1080p: Ryzen 9 9950X3D + RTX 5060 8 GB: rule 30 note",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 9 9950X3D|false",
+      "modelKey": "Ryzen 9 9950X3D",
+      "name": "Ryzen 9 9950X3D",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160528670",
+        "title": "AMD Ryzen 9 9950X3D Tray",
+        "price": 585.15
+      },
+      "fields": {
+        "chip": "Ryzen 9 9950X3D",
+        "socket": "AM5",
+        "igpu": true,
+        "coolerIncluded": false,
+        "boxCooler": null,
+        "cores": 16
+      }
+    },
+    {
+      "category": "gpu",
+      "key": "bestprice:2160656381",
+      "modelKey": "RTX 5060 8GB",
+      "name": "MSI GeForce RTX 5060 8GB GDDR7 Ventus 2X OC",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160656381",
+        "title": "MSI GeForce RTX 5060 8GB GDDR7 Ventus 2X OC",
+        "price": 461.79
+      },
+      "fields": {
+        "chip": "RTX 5060",
+        "vram": 8,
+        "lengthMm": 197,
+        "minPsu": 550,
+        "powerConnector": null,
+        "slots": null
+      }
+    }
+  ],
+  "context": {
+    "use": {
+      "kind": "gaming",
+      "res": "1080p"
+    }
+  },
+  "expected": [
+    {
+      "rule": 30,
+      "level": "note"
+    },
+    {
+      "rule": 27,
+      "level": "pass"
+    }
+  ],
+  "why": "Tiers: Ryzen 9 9950X3D = 10, RTX 5060 8 GB at 1080p = 4. At 1080p the CPU may be up to card + 2 = 6; 10 is above, so the same money on the card gives more FPS (note). The CPU is not too weak (27 passes).",
+  "capturedFrom": {
+    "builtAt": "2026-10-27",
+    "files": "public/data/<cat>/latest.json as the build checks it (validated, conflicts G1–G4, makers' tables cpuBox/casePsu), engine fields = src/lib/pick.ts toPart"
+  }
+}

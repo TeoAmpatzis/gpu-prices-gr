@@ -20,7 +20,7 @@ import { CATEGORY_IDS } from './src/lib/categories';
 import { VALIDATION_MODE, validateLatest } from './src/data/validate';
 import { conflicts } from './src/data/validate/conflicts';
 import { compatFiles } from './src/lib/compatBuild';
-import { builderFile, checkData, detailFile, listFile, manifest, modelChunks, searchFile, withBoxCoolers, type CategoryInput, type ImageLookup } from './src/lib/derive';
+import { builderFile, checkData, detailFile, listFile, manifest, modelChunks, searchFile, withMakerTables, type CategoryInput, type ImageLookup } from './src/lib/derive';
 import { photoId } from './src/lib/images';
 import { aliasFile, type AliasSource, type SlugOf } from './src/data/modelAliases';
 import { nameSlug } from './src/lib/slug';
@@ -117,7 +117,7 @@ export function derive(
     const c = conflicts(cat, v.latest, input.specs ?? {}, VALIDATION_MODE);
     conflictTotal += c.conflicts.length;
     if (c.conflicts.length) conflicted.push(`${cat} ${c.conflicts.length}`);
-    const checked = cat === 'cpu' ? withBoxCoolers(c.latest) : c.latest;
+    const checked = withMakerTables(cat, c.latest);
     latest[cat] = checked;
     history[cat] = input.history;
     files[`data/${cat}/list.v2.json`] = JSON.stringify(listFile(cat, { ...input, latest: checked }, builtAt, image));

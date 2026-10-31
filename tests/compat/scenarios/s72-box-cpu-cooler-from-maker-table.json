@@ -1,0 +1,39 @@
+{
+  "id": "S72",
+  "title": "Ryzen 5 7600 Box without a cooler in the build: rule 11 pass (cooler named by AMD)",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 5 7600|true",
+      "modelKey": "Ryzen 5 7600",
+      "name": "Ryzen 5 7600",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "eshop",
+        "id": "eshop:PER.607252",
+        "title": "AMD RYZEN 5 7600 5.20GHZ 6-CORE BOX",
+        "price": 174.9
+      },
+      "fields": {
+        "chip": "Ryzen 5 7600",
+        "socket": "AM5",
+        "igpu": true,
+        "coolerIncluded": true,
+        "boxCooler": "AMD Wraith Stealth",
+        "cores": 6
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 11,
+      "level": "pass"
+    }
+  ],
+  "why": "The maker table (src/engine/data/cpuBox.ts, amd.com \"Thermal Solution (PIB)\") says the Box 7600 comes with an AMD Wraith Stealth; the finding is stated and names it. The plan named the 8600G, but cpuBox.ts has no 8600G row (task 3), so a real 8600G Box is still \"not stated\" (warning).",
+  "capturedFrom": {
+    "builtAt": "2026-10-27",
+    "files": "public/data/<cat>/latest.json as the build checks it (validated, conflicts G1–G4, makers' tables cpuBox/casePsu), engine fields = src/lib/pick.ts toPart"
+  }
+}

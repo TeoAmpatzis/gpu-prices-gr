@@ -69,6 +69,13 @@ describe('withBoxCoolers', () => {
     expect(by('a').coolerIncluded).toBe(true);
     expect(by('d').coolerIncluded).toBe(false);
   });
+  it("names the page's cooler on a listing it fills with true (rule 11 names it), nothing otherwise", () => {
+    const named = (id: string) => (out.listings.find((l) => l.id === id) as unknown as { boxCooler?: string }).boxCooler;
+    expect(named('a')).toBe('AMD Wraith Stealth');
+    expect(named('d')).toBeUndefined();
+    expect(named('e')).toBeUndefined();
+    expect(named('b')).toBeUndefined();
+  });
   it('never changes Tray, unknown packaging, or a value a shop stated', () => {
     expect(by('b').coolerIncluded).toBeNull();
     expect(by('c').coolerIncluded).toBeNull();

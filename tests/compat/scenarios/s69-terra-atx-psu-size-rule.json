@@ -1,0 +1,80 @@
+{
+  "id": "S69",
+  "title": "Fractal Terra (shop fields only, no maker row) + ATX power supply: rule 16 note (unknown)",
+  "parts": [
+    {
+      "category": "case",
+      "key": "fractaldesignterra",
+      "modelKey": "fractaldesignterra",
+      "name": "Fractal Design Terra",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:42781832",
+        "title": "Fractal Design Terra Mini Tower",
+        "price": 233.86
+      },
+      "fields": {
+        "size": "Mini Tower",
+        "maxBoard": "Mini ITX",
+        "gpuMaxMm": 322,
+        "coolerMaxMm": 48,
+        "fanSlots": null,
+        "radiatorMounts": null,
+        "fanMounts": [
+          {
+            "n": 1,
+            "pos": "bottom",
+            "size": 120
+          }
+        ],
+        "fansIncluded": null,
+        "hasFans": null,
+        "radiators": [
+          {
+            "pos": "side",
+            "sizes": [
+              120
+            ]
+          }
+        ],
+        "expansionSlots": null,
+        "psuFormFactors": null,
+        "psuIncluded": null,
+        "usbCFront": null,
+        "bays35": null
+      }
+    },
+    {
+      "category": "psu",
+      "key": "650W Gold ATX",
+      "modelKey": "650W Gold ATX",
+      "name": "650W Gold",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159355769",
+        "title": "Gigabyte P650G 650W",
+        "price": 47
+      },
+      "fields": {
+        "watts": 650,
+        "formFactor": "ATX",
+        "atx3": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 16,
+      "level": "note"
+    }
+  ],
+  "why": "Shop data: Mini Tower with a stated Mini ITX board size = a small case; without a PSU statement an ATX unit is unknown (owner 27/10 H4: a Mini Tower never passes ATX). With the maker row (casePsu.ts, SFX / SFX-L) the built data answers error, see S77.",
+  "capturedFrom": {
+    "builtAt": "2026-10-27",
+    "files": "public/data/<cat>/latest.json as the build checks it (validated, conflicts G1–G4, makers' tables cpuBox/casePsu), engine fields = src/lib/pick.ts toPart"
+  }
+}
