@@ -2,7 +2,7 @@
 // listings or by its size class becomes unknown. Fixtures are cut from main's data of 25/10 (tests/fixtures/conflicts).
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { conflicts } from '../../src/data/validate/conflicts';
+import { CHIPSET_SOCKET, conflicts } from '../../src/data/validate/conflicts';
 import { CATEGORIES } from '../../src/lib/categories';
 import { candidates, slotModels } from '../../src/lib/builder';
 import type { BaseListing, Category, Latest, MoboListing } from '../../src/types';
@@ -174,5 +174,60 @@ describe('conflicts: rules on small inputs', () => {
   it('G4: a cooler with no sockets field gets nothing', () => {
     const a = lat([{ id: 'c:1', title: 'Cooler X AM4', chip: 'Cooler X', sockets: null }]);
     expect(values(conflicts('cooler', a, {}).latest, 'cooler', 'coolerx', 'socketsTitle')).toEqual([undefined]);
+  });
+});
+
+describe('G5: a chipset that names its socket beats the listing socket (H6)', () => {
+  // Real listings of main's data of 31/10.
+  const real = lat([
+    { id: 'skroutz:65669573', title: 'Asus PRIME H610M-A', chip: 'Asus PRIME H610M-A', chipset: 'H610', socket: 'AM5', memory: 'DDR5' },
+    { id: 'shopflix:SF-200949516', title: 'Asus PRIME H610M-A Motherboard ATX με AMD AM5 Socket 90MB1MJ0-M0EAY0', chip: 'Asus PRIME H610M-A', chipset: 'H610', socket: 'AM5', memory: 'DDR5' },
+    { id: 'bestprice:2160272434', title: 'Asus Prime B840M-A-CSM', chip: 'Asus Prime B840M-A-CSM', chipset: 'B840', socket: 'AM4', memory: 'DDR4' },
+    { id: 'bestprice:2160458213', title: 'MSI Pro B760M-B DDR4', chip: 'MSI Pro B760M-B D4', chipset: 'B760', socket: 'LGA1170', memory: 'DDR4' },
+    { id: 'x:1', title: 'Acme B650M', chip: 'Acme B650M', chipset: 'B650', socket: 'AM5' },
+  ]);
+  const r = conflicts('mobo', real, {});
+  it('Asus PRIME H610M-A listed AM5 -> LGA1700', () => {
+    expect(values(r.latest, 'mobo', 'asusprimeh610ma', 'socket')).toEqual(['LGA1700']);
+    expect(r.conflicts.find((x) => x.model === 'asusprimeh610ma')).toMatchObject({ check: 'G5', field: 'socket', values: ['AM5 / H610 = LGA1700'], action: 'corrected' });
+  });
+  it('Asus Prime B840M-A-CSM listed AM4 -> AM5', () => {
+    expect(values(r.latest, 'mobo', 'asusprimeb840macsm', 'socket')).toEqual(['AM5']);
+    expect(r.conflicts.find((x) => x.model === 'asusprimeb840macsm')).toMatchObject({ check: 'G5', action: 'corrected' });
+  });
+  it('a misspelt socket (LGA1170 on a B760) is corrected too', () =>
+    expect(values(r.latest, 'mobo', 'msiprob760mbd4', 'socket')).toEqual(['LGA1700']));
+  it('a matching socket is no conflict', () => {
+    expect(values(r.latest, 'mobo', 'acmeb650m', 'socket')).toEqual(['AM5']);
+    expect(r.conflicts.filter((x) => x.check === 'G5')).toHaveLength(3);
+  });
+  it('a chipset not in the table, a missing chipset or a missing socket changes nothing', () => {
+    const a = lat([
+      { id: 'a:1', title: 't', chip: 'Asus Pro WS W890-Sage', chipset: 'W890', socket: 'LGA4710' },
+      { id: 'b:1', title: 't', chip: 'Acme Board', chipset: null, socket: 'AM5' },
+      { id: 'c:1', title: 't', chip: 'Acme H110', chipset: 'H110', socket: null },
+    ]);
+    const out = conflicts('mobo', a, {});
+    expect(out.conflicts.filter((x) => x.check === 'G5')).toEqual([]);
+    expect(values(out.latest, 'mobo', 'acmeh110', 'socket')).toEqual([null]);
+  });
+  it('report mode logs but keeps the listing', () => {
+    const out = conflicts('mobo', real, {}, 'report');
+    expect(values(out.latest, 'mobo', 'asusprimeh610ma', 'socket')).toEqual(['AM5']);
+    expect(out.conflicts.filter((x) => x.check === 'G5')).toHaveLength(3);
+  });
+  it('CHIPSET_SOCKET agrees with the data majority for every chipset it names', () => {
+    const d = JSON.parse(readFileSync('public/data/mobo/latest.json', 'utf8')) as Latest;
+    const count: Record<string, Record<string, number>> = {};
+    for (const l of d.listings as unknown as Row[]) {
+      const c = l['chipset'] as string | null, s = l['socket'] as string | null;
+      if (c && s) ((count[c] ??= {})[s] = (count[c][s] ?? 0) + 1);
+    }
+    for (const [c, socket] of Object.entries(CHIPSET_SOCKET)) {
+      const seen = count[c];
+      if (!seen) continue;
+      const top = Object.entries(seen).sort((a, b) => b[1] - a[1])[0][0];
+      expect([c, top]).toEqual([c, socket]);
+    }
   });
 });

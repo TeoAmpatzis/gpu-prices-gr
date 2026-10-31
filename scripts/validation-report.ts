@@ -171,6 +171,7 @@ lines.push(...detail);
       '**G2** a value outside its size class (card length under 230 mm in a Midi/Full Tower, ATX/E-ATX board in an SFF / Cube, E-ATX in a Mini Tower) that two agreeing pages do not confirm: unknown. ' +
       '**G3** a model\'s listings disagree on the board size (case `maxBoard`, board `formFactor`): unknown, except a board whose name says ITX (not mATX): Mini ITX. ' +
       '**G4** a shop title names a socket (AM4, AM5, 1200, 1700, 1851) that the cooler\'s `sockets` lacks: `socketsTitle`. ' +
+      '**G5** a board\'s chipset names its socket (H610 = LGA1700, B840 = AM5; table `CHIPSET_SOCKET`) and a listing says another socket: the chipset\'s socket. ' +
       `Mode: ${enforced ? 'enforced' : 'report only'}.`,
     '',
   );
@@ -182,8 +183,9 @@ lines.push(...detail);
   }
   const perSocket: Record<string, number> = {};
   for (const a of all.filter((x) => x.check === 'G4')) for (const s of String(a.values[0]).split(',')) perSocket[s] = (perSocket[s] ?? 0) + 1;
-  const corrected = all.filter((a) => a.action === 'corrected').length;
+  const corrected = all.filter((a) => a.check === 'G3' && a.action === 'corrected').length;
   lines.push('', `Boards: ${corrected} corrected to Mini ITX by their name, ${all.filter((a) => a.check === 'G3' && a.cat === 'mobo').length - corrected} unknown.`);
+  lines.push(`Boards whose socket was corrected by their chipset (G5): ${all.filter((a) => a.check === 'G5').length}.`);
   lines.push(`Cooler sockets named by a title but missing from the spec: ${Object.entries(perSocket).sort().map(([s, n]) => `${s} ${n}`).join(', ')}.`);
   lines.push('', `${all.length} conflict(s) in all. Every one:`, '');
   lines.push('| Check | Category | Field | Model | Values | Action |', '| --- | --- | --- | --- | --- | --- |');

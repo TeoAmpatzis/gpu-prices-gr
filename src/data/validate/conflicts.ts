@@ -6,6 +6,7 @@
 //   G2  a value outside its size class's typical range, not confirmed by two agreeing pages
 //   G3  the model's listings disagree on a non-shared fit value (case maxBoard, board formFactor)
 //   G4  a shop title names a socket the cooler's `sockets` field lacks -> `socketsTitle` (rule 10 asks the buyer)
+//   G5  a board's chipset names its socket (H610 -> LGA1700, B840 -> AM5) and the listing's socket differs -> the chipset's socket
 //
 // The scraper's files are not changed; specs.json is read at build time only (vite-plugin-data) and not shipped.
 import type { BaseListing, Category, Latest } from '../../types';
@@ -14,7 +15,7 @@ import { mostCommon } from '../../lib/data';
 import type { ValidationMode } from './index';
 import { RANGES } from './ranges';
 
-export type ConflictId = 'G1' | 'G2' | 'G3' | 'G4';
+export type ConflictId = 'G1' | 'G2' | 'G3' | 'G4' | 'G5';
 export interface ConflictCheck { id: ConflictId; cat: Category; field: string }
 export interface Conflict {
   check: ConflictId;
@@ -41,6 +42,24 @@ export const TOWER_MIN_GPU_MM = 230;
 const AGREE_MM = 5;
 const BOARD_RANK = ['Mini ITX', 'Micro ATX', 'ATX', 'E-ATX'];
 const UNKNOWN_BOARD = 'Άλλο';
+/** G5: chipsets that exist for one socket only, spelled as in the mobo data (`chipset`, `socket`). Only chipsets found in the
+ *  data of 31/10 plus the AM4 ones the plan names; a chipset whose listings split between two real sockets (W890: LGA1851 and
+ *  LGA4710) or that is no desktop chipset (X550) is left out. A test checks each entry against the data's majority socket. */
+const SOCKET_OF: Record<string, string[]> = {
+  AM4: ['A320', 'B350', 'B450', 'X370', 'X470', 'A520', 'B550', 'X570'],
+  AM5: ['A620', 'B650', 'B650E', 'X670', 'X670E', 'B840', 'B850', 'X870', 'X870E'],
+  LGA1700: ['H610', 'B660', 'H670', 'Q670', 'Q670E', 'W680', 'Z690', 'B760', 'H770', 'Z790', 'C262', 'C266'],
+  LGA1851: ['H810', 'B860', 'Z890', 'Q870', 'W880'],
+  LGA1200: ['H410', 'W480', 'Z590', 'C252', 'C256'],
+  LGA1151: ['H110', 'Q270'],
+  LGA2066: ['X299'],
+  LGA4677: ['W790'],
+  sTR5: ['TRX50', 'WRX90'],
+  TR4: ['X399'],
+};
+export const CHIPSET_SOCKET: Record<string, string> = Object.fromEntries(
+  Object.entries(SOCKET_OF).flatMap(([socket, chipsets]) => chipsets.map((c) => [c, socket])),
+);
 
 /** All the checks, for reports. */
 export const CONFLICT_CHECKS: ConflictCheck[] = [
@@ -50,6 +69,7 @@ export const CONFLICT_CHECKS: ConflictCheck[] = [
   { id: 'G3', cat: 'case', field: 'maxBoard' },
   { id: 'G3', cat: 'mobo', field: 'formFactor' },
   { id: 'G4', cat: 'cooler', field: 'socketsTitle' },
+  { id: 'G5', cat: 'mobo', field: 'socket' },
 ];
 
 const num = (v: unknown): number | null => (typeof v === 'number' && Number.isFinite(v) ? v : null);
@@ -158,6 +178,17 @@ export function conflicts(
         log('G3', model, 'formFactor', [...forms].sort(), itx ? 'corrected' : 'unknown');
         set(ls, 'formFactor', itx ? 'Mini ITX' : UNKNOWN_BOARD);
         if (!itx) set(ls, 'formConflict', true);
+      }
+      // G5: the chipset names the socket; a listing that says another socket (from its title or a shared value) is corrected.
+      const wrong = ls.filter((l) => {
+        const want = CHIPSET_SOCKET[str(l['chipset']) ?? ''], have = str(l['socket']);
+        return want !== undefined && have !== null && have !== want;
+      });
+      if (wrong.length) {
+        const chipsets = [...new Set(wrong.map((l) => String(l['chipset'])))].sort();
+        const was = [...new Set(wrong.map((l) => String(l['socket'])))].sort();
+        log('G5', model, 'socket', [`${was.join(', ')} / ${chipsets.map((c) => `${c} = ${CHIPSET_SOCKET[c]}`).join(', ')}`], 'corrected');
+        for (const l of wrong) l['socket'] = CHIPSET_SOCKET[String(l['chipset'])];
       }
     } else if (cat === 'cooler') {
       // G1: tower height (page values under 30 mm are fan widths and drop out through the range)
