@@ -40,7 +40,7 @@ import SourceBadge from '../SourceBadge';
 import { CaseFansLine, FanAdviceBox } from './FanAdvice';
 import Review from './Review';
 import Summary from './Summary';
-import { FitBadge, partImage, specLine } from './parts';
+import { FitBadge, ShipNote, partImage, specLine } from './parts';
 import { plural } from '../../ui/strings';
 
 const PAGE = 24; // cards per "Show more"
@@ -562,6 +562,7 @@ function PartCard({
       <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
         <span className="font-semibold tabular-nums">{formatPrice(m.cheapest.price, lang)}</span>
         <SourceBadge source={m.cheapest.source} />
+        <ShipNote m={m} lang={lang} />
         {chosen ? (
           <span className="ml-auto flex items-center gap-1">
             <span className="inline-flex items-center gap-1 text-sm font-semibold text-accent">

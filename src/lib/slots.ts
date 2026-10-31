@@ -1,6 +1,7 @@
-// The builder's nine slots and which other slots each slot's compatibility rules read. Plain data with no imports
-// (moved out of builder.ts and pick.ts, which re-export them), so the build store and the product page's first paint
-// can use them without downloading the builder's code (byte rule 11).
+// The builder's nine slots and which other slots each slot's compatibility rules read. Plain data whose only import is
+// psuProduct.ts (itself import-free; moved out of builder.ts and pick.ts, which re-export them), so the build store and
+// the product page's first paint can use them without downloading the builder's code (byte rule 11).
+import { psuProductKey, type PsuTitle } from './psuProduct';
 
 export type Slot = 'cpu' | 'mobo' | 'ram' | 'gpu' | 'cooler' | 'storage' | 'case' | 'fan' | 'psu';
 export const SLOTS: Slot[] = ['cpu', 'mobo', 'ram', 'gpu', 'cooler', 'storage', 'case', 'fan', 'psu'];
@@ -26,12 +27,14 @@ export const CATEGORY_RULE_SLOTS: Record<Slot, Slot[]> = {
 
 /**
  * The builder's key of a listing (builder.slotModels, which groups by it): a graphics card is its own listing, a CPU is
- * its chip plus whether the box has a cooler ("Ryzen 7 7700|true", Box and Tray apart), any other part is its model.
+ * its chip plus whether the box has a cooler ("Ryzen 7 7700|true", Box and Tray apart), a power supply its product
+ * (psuProduct.psuProductKey, task 7), any other part is its model.
  * Here without the builder's code, for the product page's first paint (tests/unit/buildFit.test.ts: same keys).
  */
 export function candidateKey(slot: Slot, l: { id: string; chip: string; coolerIncluded?: boolean | null }, modelKey: string): string {
   if (slot === 'gpu') return l.id;
   if (slot === 'cpu') return `${l.chip}|${l.coolerIncluded ?? '?'}`;
+  if (slot === 'psu') return psuProductKey(l as unknown as PsuTitle);
   return modelKey;
 }
 

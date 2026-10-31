@@ -11,7 +11,7 @@ import { T, tr, useLang, type Text } from '../../lib/i18n';
 import BuildGuide from '../BuildGuide';
 import ProductPhoto from '../ProductPhoto';
 import SourceBadge from '../SourceBadge';
-import { FitBadge, partImage, specLine } from './parts';
+import { FitBadge, ShipNote, partImage, specLine } from './parts';
 
 const PICKER_LIMIT = 60;
 
@@ -112,6 +112,7 @@ export default function QuickList({ state }: { state: BuilderState }) {
                   >
                     <span className="font-semibold tabular-nums text-accent">{formatPrice(m.cheapest.price, lang)}</span>
                     <SourceBadge source={m.cheapest.source} />
+                    <ShipNote m={m} lang={lang} />
                     <ExternalLink className="h-3.5 w-3.5 text-faint" />
                   </a>
                 )}
@@ -191,6 +192,7 @@ export default function QuickList({ state }: { state: BuilderState }) {
                             {sale && <span className="badge badge-sale">−{sale.pct}%</span>}
                             <span className="font-semibold tabular-nums">{formatPrice(o.cheapest.price, lang)}</span>
                             <SourceBadge source={o.cheapest.source} />
+                            <ShipNote m={o} lang={lang} />
                           </>
                         );
                         return (

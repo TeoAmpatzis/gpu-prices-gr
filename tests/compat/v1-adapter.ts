@@ -27,7 +27,8 @@ import {
   type FitContext,
   type Slot,
 } from '../../src/lib/builder';
-import type { Model } from '../../src/lib/data';
+import { CATEGORIES } from '../../src/lib/categories';
+import { groupModels, type Model } from '../../src/lib/data';
 import { tr } from '../../src/lib/i18n';
 import type { Level, Scenario, ScenarioPart } from './scenario';
 
@@ -97,7 +98,8 @@ function rowOf(p: ScenarioPart): BaseListing {
 
 /** The v1 model for a part, built exactly as the browser builds it from builder.json. */
 export function modelOf(p: ScenarioPart): Model<BaseListing> {
-  const models = slotModels(p.category as Slot, [rowOf(p)] as never) as Model<BaseListing>[];
+  // v1 grouped power supplies by spec ("650W Gold ATX"); v2's builder groups them by product (task 7).
+  const models = (p.category === 'psu' ? groupModels([rowOf(p)], CATEGORIES.psu as never) : slotModels(p.category as Slot, [rowOf(p)] as never)) as Model<BaseListing>[];
   if (models.length !== 1) throw new Error(`${p.key}: v1 grouped one row into ${models.length} models`);
   return models[0];
 }

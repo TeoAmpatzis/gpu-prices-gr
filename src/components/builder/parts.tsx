@@ -26,7 +26,7 @@ import {
 } from '../../lib/builder';
 import type { AnyModel } from '../../lib/builderState';
 import { storedImage } from '../../lib/images';
-import { tr, type Lang, type Text } from '../../lib/i18n';
+import { T, tr, type Lang, type Text } from '../../lib/i18n';
 
 export const S = {
   cores: { el: 'πυρήνες', en: 'cores' },
@@ -168,3 +168,14 @@ export function specLine(slot: Slot, m: AnyModel, lang: Lang): string {
 
 /** A builder part's photo: the builder step files' rows carry the stored photo (`img`). */
 export const partImage = (m: AnyModel) => storedImage(m.cheapest.img);
+
+/** "212,00 € incl. shipping" next to a builder price: the stored total of the row's own offer, only when known (task 7). */
+export function ShipNote({ m, lang }: { m: AnyModel; lang: Lang }) {
+  const { ship, total, price } = m.cheapest;
+  if (ship == null) return null;
+  return (
+    <span className="text-xs tabular-nums text-muted">
+      {formatPrice(total ?? price + ship, lang)} {tr(lang, T.withShipping)}
+    </span>
+  );
+}

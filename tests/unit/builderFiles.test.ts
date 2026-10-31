@@ -4,8 +4,8 @@ import { readFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { fromColumns } from '../../src/lib/columns';
-import { builderFiles, checkData, manifest } from '../../src/lib/derive';
-import { SLOTS, candidates, fitContext, slotModels, type Slot } from '../../src/lib/builder';
+import { builderFiles, checkData, manifest, mergeTwins } from '../../src/lib/derive';
+import { SLOTS, candidates, fitContext, rowListing, slotModels, type Slot } from '../../src/lib/builder';
 import { PART_FIELDS } from '../../src/lib/pick';
 import { loadExtra, loadIndex, loadSlot, prefetchSlot } from '../../src/lib/builderFiles';
 import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
@@ -19,7 +19,9 @@ for (const cat of CATEGORY_IDS) {
   validated[cat] = validateLatest(cat, raw, VALIDATION_MODE).latest;
 }
 const built = builderFiles(validated, BUILT);
-const full = (slot: Slot) => candidates(slot, slotModels(slot, (validated[slot as Category]?.listings ?? []) as never[]), {});
+const offered = (slot: Slot) => candidates(slot, slotModels(slot, (validated[slot as Category]?.listings ?? []) as never[]), {});
+// Task 7: a graphics card's twins on other sites are one row (derive.mergeTwins).
+const full = (slot: Slot) => (slot === 'gpu' ? mergeTwins(offered(slot) as never) : offered(slot));
 
 describe('builder files (one per step)', () => {
   for (const slot of SLOTS) {
@@ -41,7 +43,10 @@ describe('builder files (one per step)', () => {
       expect(got.map((m) => m.key)).toEqual(want.map((m) => m.key));
       want.forEach((m, i) => {
         const n = got[i];
-        expect([m.key, n.cheapest.id, n.cheapest.price, n.cheapest.url]).toEqual([m.key, m.cheapest.id, m.cheapest.price, m.cheapest.url]);
+        // The row is the cheapest listing incl. shipping where known (task 7, builderData.rowListing).
+        const own = rowListing(m.listings as BaseListing[]);
+        expect([m.key, m.chip, n.cheapest.id, n.cheapest.price, n.cheapest.url, n.cheapest.ship]).toEqual([m.key, n.chip, own.listing.id, own.listing.price, own.listing.url, own.ship]);
+        expect(n.chip).toBe(m.chip);
         expect(n.cheapest.title).toBe(slot === 'gpu' ? m.cheapest.title : [...new Set(m.listings.map((l) => l.title))].join(' | '));
       });
       // Every engine field the data has is a column (pick.PART_FIELDS: one source of truth with pick mode).
@@ -49,7 +54,7 @@ describe('builder files (one per step)', () => {
       for (const f of PART_FIELDS[slot]) {
         if (listings.some((l) => l[f] != null)) expect([slot, f, file.cols.includes(f)]).toEqual([slot, f, true]);
       }
-      for (const f of ['pop', 'img', 'drop', 'price', 'chip']) expect([slot, f, file.cols.includes(f)]).toEqual([slot, f, true]);
+      for (const f of ['pop', 'img', 'drop', 'price', 'chip', 'ship']) expect([slot, f, file.cols.includes(f)]).toEqual([slot, f, true]);
     });
   }
 
@@ -61,7 +66,7 @@ describe('builder files (one per step)', () => {
       expect(index.slots[slot].rows).toBe(built.slots[slot].rows.length);
       expect(index.slots[slot].bytes).toBe(Buffer.byteLength(JSON.stringify(built.slots[slot])));
     }
-    const ctx = fitContext(full('gpu') as never);
+    const ctx = fitContext(offered('gpu') as never); // every offered card, twins included
     expect(Object.keys(index.chipLengths).sort()).toEqual([...ctx.chips.keys()].sort());
     for (const [chip, c] of ctx.chips) expect(index.chipLengths[chip]).toEqual(c);
     expect(Object.keys(index.chipLengths).length).toBeGreaterThan(0);
@@ -71,7 +76,8 @@ describe('builder files (one per step)', () => {
 
   it('manifest: models offered per slot, counted from the slot files', () => {
     const m = manifest(validated, built.slots, BUILT);
-    for (const slot of SLOTS) expect([slot, m.builder[slot]]).toEqual([slot, full(slot).length]);
+    // Graphics cards: every offered card, twins included (the rows are fewer: task 7 merges twins).
+    for (const slot of SLOTS) expect([slot, m.builder[slot]]).toEqual([slot, (slot === 'gpu' ? offered : full)(slot).length]);
   });
 
   it('checkData: a slot with no rows fails; a slot file more than 30% below the live count fails', () => {

@@ -8,7 +8,7 @@ const ROOT = process.cwd();
 const src = (p: string) => pathToFileURL(join(ROOT, 'src', p)).href;
 const { CATEGORIES, CATEGORY_IDS } = await import(src('lib/categories.tsx'));
 const { applyFilters, defaultFilters, allTimeLow, saleOf } = await import(src('lib/data.ts'));
-const { listFile, builderFiles, reduceHistory } = await import(src('lib/derive.ts'));
+const { listFile, builderFiles, mergeTwins, reduceHistory } = await import(src('lib/derive.ts'));
 const { implausibleDips, isDipPrice, sharedImportedDays, sharedImportedLows, importGlitches, untrustedPoints, withoutSharedLow } = await import(src('lib/dips.ts'));
 const { fromColumns, decodeHist, decodePhotos } = await import(src('lib/columns.ts'));
 const { productImage } = await import(src('lib/images.ts'));
@@ -191,16 +191,30 @@ for (const cat of CATEGORY_IDS) {
 
 // ---------- Builder ----------
 const bf = builderFiles(allLatest, built);
-const spec = (slot: string, m: { cheapest: Record<string, unknown> } & Record<string, unknown>) =>
-  JSON.stringify({
+// Task 7: a row is its model's cheapest listing incl. shipping where known (builderData.rowListing), with its `ship`.
+const spec = (slot: string, m: { cheapest: Record<string, unknown> } & Record<string, unknown>) => {
+  // A step-file row (it has `ship`) is already the row listing; a full model's row is `rowListing` of its listings.
+  const isRow = m.cheapest.ship !== undefined;
+  const own = isRow ? { listing: m.cheapest, ship: m.cheapest.ship } : B.rowListing(m.listings);
+  const c = own.listing; // the row's own values (it can be another listing than the cheapest by price)
+  m = { ...m, cheapest: c };
+  return JSON.stringify({
     chip: m.chip,
-    price: m.cheapest.price,
-    url: m.cheapest.url,
-    source: m.cheapest.source,
+    price: own.listing.price,
+    url: own.listing.url,
+    source: own.listing.source,
+    // a row carries its own `ship` (its `shipping` is not in the step file)
+    ship: own.ship,
+    total: m.cheapest.total ?? null,
     rule: [
       slot === 'cpu' && [B.cpuSocket(m), B.cpuHasIgpu(m), B.cpuCooler(m), m.cheapest.cores],
       slot === 'mobo' && [B.moboSocket(m), B.moboMemory(m), B.moboForm(m), B.moboSlots(m), m.cheapest.chipset],
-      slot === 'gpu' && [B.gpuLength(m), B.gpuPsu(m.cheapest), m.cheapest.vram],
+      // a merged card keeps any twin's stated length and the largest stated minimum PSU (task 7 review I2)
+      slot === 'gpu' && [
+        Math.max(...m.listings.map((l: { lengthMm?: number | null }) => l.lengthMm ?? -1)),
+        B.gpuPsu({ ...m.cheapest, minPsu: Math.max(...m.listings.map((l: { minPsu?: number | null }) => l.minPsu ?? 0)) || null }),
+        m.cheapest.vram,
+      ],
       slot === 'case' && [
         B.caseBoard(m), B.caseBoardStated(m), B.caseGpuMax(m), B.caseCoolerMax(m), B.caseFanSlots(m), B.caseRadiators(m),
         B.caseFanMounts(m), B.caseFansIncluded(m), B.caseRadiatorSizes(m), m.listings.some((l: any) => l.hasFans),
@@ -211,20 +225,34 @@ const spec = (slot: string, m: { cheapest: Record<string, unknown> } & Record<st
         m.cheapest.dram, m.cheapest.readMBs, m.cheapest.tbw,
       ],
       slot === 'ram' && [m.cheapest.type, m.cheapest.modules, m.cheapest.formFactor, m.cheapest.cas, m.cheapest.brand],
-      slot === 'psu' && [m.cheapest.watts, m.cheapest.formFactor, m.cheapest.modular, m.cheapest.brand],
+      slot === 'psu' && [m.cheapest.watts, B.psuForm(m), m.cheapest.modular, m.cheapest.brand],
       slot === 'fan' && [
         m.cheapest.size, m.cheapest.pack, m.cheapest.pwm, m.cheapest.rgb,
         m.cheapest.connector, m.cheapest.airflowCfm, m.cheapest.pressureMm, m.cheapest.fanType,
       ],
       // Not m.group: the builder never reads it, and a one-row model takes it from its cheapest listing,
       // which can disagree with the most common value (one board listed as AM4 and AM5 by shops).
-      m.pro, JSON.stringify(saleOf(m.listings, m.cheapest)?.pct ?? null),
+      m.pro, JSON.stringify(saleOf(m.listings, own.listing)?.pct ?? null),
     ],
   });
+};
 const oldModels: Record<string, any[]> = {};
+let offeredCards: unknown[] = [];
 const newModels: Record<string, any[]> = {};
 for (const slot of B.SLOTS) {
-  const full = B.candidates(slot, B.slotModels(slot, (allLatest[slot] as { listings: unknown[] }).listings), {});
+  let full = B.candidates(slot, B.slotModels(slot, (allLatest[slot] as { listings: unknown[] }).listings), {});
+  // Task 7: a graphics card's twins on other sites are one row (derive.mergeTwins); chip lengths count every card.
+  if (slot === 'gpu') [offeredCards, full] = [full, mergeTwins(full)];
+  // Each model as its row shows it: the row's listing (incl. shipping where known), as the slim side has it.
+  full = full.map((m: { listings: unknown[] }) => ({ ...m, cheapest: B.rowListing(m.listings).listing }));
+  // A merged card's row keeps any twin's stated length and the largest stated minimum PSU (task 7 review I2).
+  const most = (vs: (number | null | undefined)[]) => (vs.some((v) => v != null) ? Math.max(...vs.filter((v): v is number => v != null)) : null);
+  if (slot === 'gpu') {
+    full = full.map((m: { cheapest: object; listings: { lengthMm?: number | null; minPsu?: number | null }[] }) => ({
+      ...m,
+      cheapest: { ...m.cheapest, lengthMm: most(m.listings.map((l) => l.lengthMm)), minPsu: most(m.listings.map((l) => l.minPsu)) },
+    }));
+  }
   // One file per step; its links and titles from the step's extra file, as builderState.ts writes them on.
   const rows = fromColumns(bf.slots[slot]) as any[];
   const extra = bf.extras[slot];
@@ -247,19 +275,21 @@ for (const slot of B.SLOTS) {
   const cfg = CATEGORIES[slot];
   for (const q of ['corsair', 'am5', 'rtx 5070', 'ddr5', 'noctua', 'asus', '850', 'white']) {
     const hit = (ms: any[]) =>
-      ms.filter((m) => m.listings.some((l: any) => cfg.searchText(l).toLowerCase().includes(q))).map((m) => m.key).sort().join('|');
+      // a merged graphics card (task 7) is searched by its row's own title, a power supply by its product name too
+      ms.filter((m) => (slot === 'gpu' ? [B.rowListing(m.listings).listing] : slot === 'psu' ? m.listings.map((l: object) => ({ ...l, chip: m.chip })) : m.listings).some((l: any) => cfg.searchText(l).toLowerCase().includes(q))).map((m) => m.key).sort().join('|');
     if (hit(full) !== hit(slim)) fail(`builder ${slot} search "${q}" differs`);
   }
   console.log(`builder ${slot}: ${full.length} models compared`);
 }
 // Graphics chip length ranges ("Likely fits"): the same from the rows as from the full data.
-const ctxOld = B.fitContext(oldModels.gpu);
+const ctxOld = B.fitContext(offeredCards);
 // The browser takes them from the index file (builderState.ts), built from the same rows.
 const ctxNew = { chips: new Map(Object.entries(bf.index.chipLengths)) };
 const ctxJson = (c: any) => JSON.stringify([...c.chips.entries()].sort());
-if (ctxJson(ctxOld) !== ctxJson(B.fitContext(newModels.gpu))) fail('builder chip length ranges differ');
+// The merged rows (task 7) are not used for them: the index has the ranges of every offered card.
+const ctxRows = ctxJson(B.fitContext(newModels.gpu)) === ctxJson(ctxOld) ? 'equal' : 'differ (expected: twins merged)';
 if (ctxJson(ctxOld) !== ctxJson(ctxNew)) fail('builder index chip length ranges differ');
-console.log(`builder chip length ranges: ${ctxOld.chips.size} chips with enough measured cards`);
+console.log(`builder chip length ranges: ${ctxOld.chips.size} chips with enough measured cards; from the merged rows they ${ctxRows}`);
 // Compatibility with sample builds: one random part per slot, then every other slot's options and labels.
 let rand = 7;
 const pick = <T,>(xs: T[]) => xs[(rand = (rand * 48271) % 2147483647) % xs.length];
