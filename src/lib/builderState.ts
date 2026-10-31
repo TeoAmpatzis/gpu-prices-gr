@@ -6,12 +6,23 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { BaseListing, BuilderIndex } from '../types';
 import type { Model } from './data';
 import { loadExtra, loadIndex, loadSlot, prefetchSlot } from './builderFiles';
-import { NO_CONTEXT, SLOTS, type Build, type FitContext, type Slot, type SlotListing } from './builder';
+import { NO_CONTEXT, SLOTS, slotFallback, type Build, type FitContext, type Slot, type SlotListing } from './builder';
 import { afterLargestPaint } from './paint';
 import { onBuildChange, readBuild, writeBuild, type BuildChangeSource, type StoredBuild } from './buildStore';
 
 export type Models = { [S in Slot]: Model<SlotListing[S]>[] };
 export type AnyModel = Model<BaseListing>;
+/**
+ * A saved or shared part among its step's models: by its key, else the product or card it became (task 7: a power
+ * supply saved as a spec group "650W Gold ATX", a graphics card listing merged into its twin's row).
+ */
+export function findSaved(slot: Slot, models: AnyModel[], key: string | undefined): AnyModel | undefined {
+  if (key === undefined) return undefined;
+  const own = models.find((x) => x.key === key);
+  if (own) return own;
+  const k = slotFallback(slot, key, models);
+  return k == null ? undefined : models.find((x) => x.key === k);
+}
 export type Use = 'gaming' | 'everyday' | 'creating' | 'unsure';
 export const USES: Use[] = ['gaming', 'everyday', 'creating', 'unsure'];
 export interface Prefs {
@@ -189,7 +200,7 @@ export function useBuilderState() {
                 const want = pendingLazy[slot] ?? parts[slot];
                 delete pendingLazy[slot];
                 setModels((prev) => (prev ? ({ ...prev, [slot]: ms } as Models) : prev));
-                const found = (ms as AnyModel[]).find((x) => x.key === want);
+                const found = findSaved(slot, ms as AnyModel[], want);
                 // Restored only if the user hasn't picked one meanwhile.
                 if (found) setBuild((b) => (b[slot] ? b : { ...b, [slot]: found }));
                 setSlotState((r) => ({ ...r, [slot]: true }));
@@ -245,7 +256,7 @@ export function useBuilderState() {
       for (const s of SLOTS) {
         const key = saved.parts[s];
         if (!key) continue;
-        const found = (models[s] as AnyModel[]).find((x) => x.key === key);
+        const found = findSaved(s, models[s] as AnyModel[], key);
         if (found) (next as Record<Slot, AnyModel>)[s] = found;
         else {
           // Its step's file hasn't arrived (or doesn't have it): restored when it does.

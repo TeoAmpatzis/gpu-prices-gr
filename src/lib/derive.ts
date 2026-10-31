@@ -39,6 +39,7 @@ import type {
   StorageListing,
 } from '../types';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './categories';
+import { psuBaseKey, psuRowKey } from './psuProduct';
 import { OTHER, storageType } from './categoryRules';
 import { boxCooler } from '../engine/data/cpuBox';
 import { casePsu } from '../engine/data/casePsu';
@@ -75,6 +76,10 @@ import {
   cpuSocket,
   fitContext,
   gpuLength,
+  gpuTwinKey,
+  twinsAgree,
+  psuForm,
+  rowListing,
   gpuWaterCooled,
   moboForm,
   moboMemory,
@@ -291,17 +296,51 @@ export function withCasePsu(latest: Latest): Latest {
 export function withMakerTables(cat: Category, latest: Latest): Latest {
   if (cat === 'cpu') return withBoxCoolers(latest);
   if (cat === 'case') return withCasePsu(latest);
+  if (cat === 'psu') return withPsuProducts(latest);
   return latest;
+}
+
+/**
+ * Power supply products (step 5 task 7, review I1): a product is a series at one efficiency. A listing that states
+ * none gets `productEfficiency` = the one efficiency its series' listings (same maker, series, watts, form
+ * factor) state; with none stated, or several (review R1), it stays a product of unknown efficiency. Never mutates its input; the
+ * category page's spec groups (`efficiency`) are untouched.
+ */
+export function withPsuProducts(latest: Latest): Latest {
+  const listings = latest.listings as PsuListing[];
+  const stated = new Map<string, Map<string, number>>();
+  for (const l of listings) {
+    if (!l.efficiency) continue;
+    const base = psuBaseKey(l);
+    if (base.startsWith('id:')) continue;
+    const counts = stated.get(base) ?? new Map<string, number>();
+    counts.set(l.efficiency, (counts.get(l.efficiency) ?? 0) + 1);
+    stated.set(base, counts);
+  }
+  const attach = (base: string): PsuListing['efficiency'] => {
+    const counts = [...(stated.get(base) ?? new Map<string, number>())].sort((a, b) => b[1] - a[1]);
+    return counts.length === 1 ? (counts[0][0] as PsuListing['efficiency']) : null;
+  };
+  return {
+    ...latest,
+    listings: listings.map((l) => {
+      if (l.efficiency) return l;
+      const eff = attach(psuBaseKey(l));
+      return eff ? { ...l, productEfficiency: eff } : l;
+    }) as Latest['listings'],
+  };
 }
 
 export const detailFile = (latest: Latest): Record<string, string> =>
   Object.fromEntries(latest.listings.map((l) => [l.id, l.url]));
 
 /** Fields the builder never reads. */
-const BUILDER_SKIP = new Set(['scrapedAt', 'shopCount', 'shipping', 'total', 'merchant']);
+// `total` stays: the "incl. shipping" note shows the stored total of the row's own offer (task 7, review M2).
+const BUILDER_SKIP = new Set(['scrapedAt', 'shopCount', 'shipping', 'merchant']);
 
 /**
- * One row per offered model: its cheapest listing, with the values the rules take across all of the
+ * One row per offered model: its cheapest listing by price + shipping where known (`rowListing`, owner answer 11;
+ * `ship` = its shipping, null = not known), with the values the rules take across all of the
  * model's listings (most common socket, board size, measurements…) written onto it, so the
  * builder's functions return the same thing for the one-row model as for the full one:
  * - `title`: the model's distinct shop titles, for the picker search (graphics cards are one
@@ -309,11 +348,16 @@ const BUILDER_SKIP = new Set(['scrapedAt', 'shopCount', 'shipping', 'total', 'me
  * - `drop`: the model's sale (`saleOf`, the picker's "−N%"), which may come from another listing.
  */
 function builderRow<S extends Slot>(slot: S, m: Model<SlotListing[S]>): Record<string, unknown> {
-  const sale = saleOf(m.listings, m.cheapest);
+  const { listing, ship } = rowListing(m.listings);
+  const sale = saleOf(m.listings, listing);
   // `pop`: the model's popularity (listings, shops, sites), the one input of the Recommended sort a
   // one-row model can't recompute (src/lib/ranking.ts popularityRaw), as a small integer.
-  const row: Record<string, unknown> = { ...m.cheapest, drop: sale?.pct ?? null, pop: Math.round(POP_SCALE * popularityRaw(m)) };
-  if (slot !== 'gpu') row.title = [...new Set(m.listings.map((l) => l.title))].join(' | ');
+  const row: Record<string, unknown> = { ...listing, ship, drop: sale?.pct ?? null, pop: Math.round(POP_SCALE * popularityRaw(m)) };
+  if (slot !== 'gpu') {
+    row.title = [...new Set(m.listings.map((l) => l.title))].join(' | ');
+    // The model's name, whichever listing the row is (a power supply's is its product name; a card's chip is a rule input).
+    row.chip = m.chip;
+  }
   return Object.assign(row, slotFields(slot, m));
 }
 
@@ -350,9 +394,45 @@ export function slotFields<S extends Slot>(slot: S, m: Model<SlotListing[S]>): R
       };
     case 'cooler':
       return { sockets: most((l) => (l as CoolerListing).sockets), heightMm: coolerHeight(any) };
+    case 'gpu':
+      // A merged card (twins on several sites, task 7) keeps a length any of them states (twinsAgree: at most one;
+      // the longer if not, as specs.SAFER) and the largest stated minimum PSU (review I2).
+      return {
+        lengthMm: maxOf(m.listings.map((l) => (l as GpuListing).lengthMm)),
+        minPsu: maxOf(m.listings.map((l) => (l as GpuListing).minPsu)),
+      };
+    case 'psu':
+      // SFX-L when a title says so (task 7): rule 16 tells it from SFX.
+      return { formFactor: psuForm(any as Model<PsuListing>) };
     default:
       return {};
   }
+}
+
+/**
+ * Graphics card twins (task 7, owner answer 9): the offered cards of one `gpuTwinKey` become one model (the same card
+ * on several sites; its row is the cheapest by `rowListing`, the others its offers) when they agree (`twinsAgree`).
+ * Order: each group's first card.
+ */
+export function mergeTwins(cards: Model<GpuListing>[]): Model<GpuListing>[] {
+  const groups = new Map<string, Model<GpuListing>[]>();
+  for (const m of cards) {
+    const k = gpuTwinKey(m.cheapest);
+    groups.set(k, [...(groups.get(k) ?? []), m]);
+  }
+  return [...groups.values()].flatMap((ms) => {
+    if (ms.length === 1 || !twinsAgree(ms.map((m) => m.cheapest))) return ms;
+    const listings = ms.flatMap((m) => m.listings).sort((a, b) => a.price - b.price);
+    const own = rowListing(listings).listing;
+    const lead = ms.find((m) => m.listings.some((l) => l.id === own.id))!;
+    return { ...lead, listings, maxPrice: listings[listings.length - 1].price };
+  });
+}
+
+/** The largest stated value, null when none is. */
+function maxOf(vs: (number | null | undefined)[]): number | null {
+  const known = vs.filter((v): v is number => v != null);
+  return known.length ? Math.max(...known) : null;
 }
 
 /** Share (%) of the parts whose measurements are known yet; the builder shows a notice under 90%. */
@@ -382,12 +462,22 @@ export function builderFiles(all: Partial<Record<Category, Latest>>, builtAt: st
     const listings = (all[slot as Category]?.listings ?? []) as SlotListing[typeof slot][];
     const grouped = slotModels(slot, listings);
     models[slot] = grouped as Model<BaseListing>[];
-    const offered = candidates(slot, grouped, {});
-    if (slot === 'gpu') offeredGpus = offered as Model<GpuListing>[];
-    const rows = offered.map((m) => builderRow(slot, m));
+    let offered = candidates(slot, grouped, {}) as Model<BaseListing>[];
+    if (slot === 'gpu') {
+      offeredGpus = offered as unknown as Model<GpuListing>[];
+      offered = mergeTwins(offeredGpus) as unknown as Model<BaseListing>[];
+    }
     const extra: BuilderExtraFile = { v: 2, builtAt, urls: {}, titles: {} };
+    const rows = offered.map((m) => {
+      const r = builderRow(slot, m as Model<SlotListing[typeof slot]>);
+      // The photo by the category page's model of the row's own listing (a PSU row's form factor may read SFX-L).
+      r.img = image?.(slot as Category, cfgOf(slot as Category).modelKey(rowListing(m.listings).listing)) ?? null;
+      // Regrouped in the browser from its name (its title goes to the extra file); the key itself only where that differs.
+      if (slot === 'psu' && psuRowKey(r as unknown as PsuListing) !== m.key) r.product = m.key;
+      if (slot === 'gpu') r.twins = m.listings.length > 1 ? m.listings.filter((l) => l.id !== r.id).map((l) => l.id).join(',') : null;
+      return r;
+    });
     for (const r of rows) {
-      r.img = image?.(slot as Category, cfgOf(slot as Category).modelKey(r as unknown as BaseListing)) ?? null;
       const id = r.id as string;
       extra.urls[id] = r.url as string;
       r.url = null;
@@ -428,9 +518,14 @@ export function manifest(
       sources: Object.fromEntries(Object.entries(latest.sources).map(([s, m]) => [s, { updatedAt: m?.updatedAt ?? null, ok: !!m?.ok }])),
     };
   }
-  // Models offered per slot, from the slot files' rows grouped again (as the browser does).
+  // Models offered per slot, from the slot files' rows grouped again (as the browser does). Graphics cards count every
+  // offered card, its twins included (task 7 merges a card's twins into one row; the check compares data, not rows).
   const offered = Object.fromEntries(
-    Object.entries(builder).map(([slot, c]) => [slot, slotModels(slot as Slot, fromColumns(c)).length]),
+    Object.entries(builder).map(([slot, c]) => {
+      const rows = fromColumns<BaseListing & { twins?: string | null }>(c);
+      const twins = slot === 'gpu' ? rows.reduce((n, r) => n + (r.twins ? r.twins.split(',').length : 0), 0) : 0;
+      return [slot, slotModels(slot as Slot, rows as never[]).length + twins];
+    }),
   );
   return { builtAt, cats, builder: offered };
 }

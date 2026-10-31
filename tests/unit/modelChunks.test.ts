@@ -15,6 +15,7 @@ import { MODEL_CHUNKS, loadModel, modelChunkOf, modelChunkPath } from '../../src
 import { SLOT_OF, toPart } from '../../src/lib/pick';
 import { recommendedScores } from '../../src/lib/ranking';
 import { modelSlug, nameSlug, slugLookup } from '../../src/lib/slug';
+import { psuProductKey } from '../../src/lib/psuProduct';
 import type {
   BaseListing,
   Category,
@@ -212,6 +213,8 @@ describe('model chunks over today\'s data', () => {
         const want = slotModels(slot, byKey.get(e.key)!.listings as never[]).map((p) => [p.key, toPart(slot, p as never).fields]);
         expect(e.parts).toEqual(Object.fromEntries(want));
         if (cat === 'gpu') expect(Object.keys(e.parts!).sort()).toEqual(e.listings.map((l) => l.id).sort());
+        // A power supply spec group holds one candidate per product (task 7, psuProduct.psuProductKey).
+        else if (cat === 'psu') expect(Object.keys(e.parts!).sort()).toEqual([...new Set(e.listings.map((l) => psuProductKey(l as never)))].sort());
         else if (cat !== 'cpu') expect(Object.keys(e.parts!)).toEqual([e.key]);
       }
     });

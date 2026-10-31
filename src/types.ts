@@ -24,6 +24,7 @@ export interface BaseListing {
   merchant?: string | null; // shop with that best total
   drop?: number | null; // discount (%) the site itself shows for this offer
   img?: string | null; // builder step file rows only: the model's stored photo ("<cat>/<id>")
+  ship?: number | null; // builder step file rows only (task 7): the row's shipping (0 = free), null = not known
   pop?: number | null; // builder step file rows only: the model's popularity × POP_SCALE (src/lib/ranking.ts popularityRaw)
 }
 
@@ -36,6 +37,7 @@ export interface GpuListing extends BaseListing {
   // sites (normalize.card_key); the safer value when sites disagree.
   lengthMm?: number | null;
   minPsu?: number | null; // card maker's minimum PSU watts
+  twins?: string | null; // builder step file rows only (task 7): ids of the same card's other listings, merged into this row
 }
 
 export interface CpuListing extends BaseListing {
@@ -86,7 +88,12 @@ export interface PsuListing extends BaseListing {
   watts: number;
   efficiency: 'Titanium' | 'Platinum' | 'Gold' | 'Silver' | 'Bronze' | 'Diamond' | 'Standard' | null; // null = not stated
   modular: 'Full' | 'Semi' | 'Non' | null; // null = unknown (BestPrice titles don't say)
-  formFactor: 'ATX' | 'SFX' | 'TFX' | 'Flex';
+  // 'SFX-L' only in builder step file rows and engine parts (task 7: an SFX unit whose title says SFX-L).
+  formFactor: 'ATX' | 'SFX' | 'SFX-L' | 'TFX' | 'Flex';
+  // Build time (task 7, derive.withPsuProducts): a listing with no stated efficiency belongs to its series' product of
+  // this efficiency (the most stated one); the category page's spec groups keep `efficiency`.
+  productEfficiency?: PsuListing['efficiency'];
+  product?: string | null; // builder step file rows only (task 7): the product key where its name doesn't give it (psuProduct.psuRowKey); chip is then its name
   atx3?: boolean | null; // a title or BestPrice's URL says ATX 3.x; null = not stated. Per product, not shared.
 }
 
