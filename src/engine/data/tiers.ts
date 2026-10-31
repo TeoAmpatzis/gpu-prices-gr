@@ -206,21 +206,46 @@ export const TIERS: TierRow[] = [
 
 export const TIER_DISAGREE: TierDisagreement[] = [];
 
+/** A tier found for a chip: `borrowed` names the resolution it came from when the card has none at the one asked (M4). */
+export interface TierHit {
+  tier: number;
+  borrowed?: Res;
+}
+
 /**
- * A lookup over a table. CPU: the chip's one tier (`res` does not change it). GPU: the row of that chip and memory
- * size (`vramGb`, the listing's `vram`); without a memory size a GPU has no tier. A listed disagreement is unknown.
+ * M4 (owner 27/10): a card with no tier at the asked resolution takes the nearest one: 1080p ← 1440p, 4K ← 1440p,
+ * 1440p ← the lower of its 1080p and 4K tiers (the one it has, if only one). 4K and 1080p never borrow each other.
+ */
+function nearest(tier: Partial<Record<Res, number>>, res: Res): TierHit | undefined {
+  const own = tier[res];
+  if (own !== undefined) return { tier: own };
+  if (res !== '1440p') return tier['1440p'] === undefined ? undefined : { tier: tier['1440p'], borrowed: '1440p' };
+  const lo = tier['1080p'], hi = tier['4k'];
+  if (lo === undefined && hi === undefined) return undefined;
+  if (hi === undefined || (lo !== undefined && lo <= hi)) return { tier: lo!, borrowed: '1080p' };
+  return { tier: hi, borrowed: '4k' };
+}
+
+/**
+ * A lookup over a table. CPU: the chip's one tier (`res` does not change it, never borrowed). GPU: the row of that
+ * chip and memory size (`vramGb`, the listing's `vram`), at `res` or borrowed from the nearest resolution (M4);
+ * without a memory size a GPU has no tier. A listed disagreement is unknown.
  */
 export function makeTierOf(rows: TierRow[], disagree: TierDisagreement[]) {
-  return (kind: 'cpu' | 'gpu', chip: string, res: Res, vramGb?: number): number | undefined => {
+  return (kind: 'cpu' | 'gpu', chip: string, res: Res, vramGb?: number): TierHit | undefined => {
     if (disagree.some((d) => d.kind === kind && d.chip === chip && (kind === 'cpu' || d.vram === vramGb))) return undefined;
     for (const r of rows) {
       if (r.kind !== kind || !r.chips.includes(chip)) continue;
-      if (r.kind === 'cpu') return r.tier;
-      if (vramGb !== undefined && r.vram === vramGb) return r.tier[res];
+      if (r.kind === 'cpu') return { tier: r.tier };
+      if (vramGb !== undefined && r.vram === vramGb) return nearest(r.tier, res);
     }
     return undefined;
   };
 }
 
-/** Our tier (exact chip name as in the data; GPUs also need the memory size); undefined = no tier (never guessed). */
-export const tierOf: (kind: 'cpu' | 'gpu', chip: string, res: Res, vramGb?: number) => number | undefined = makeTierOf(TIERS, TIER_DISAGREE);
+/**
+ * Our tier (exact chip name as in the data; GPUs also need the memory size); undefined = no tier (never guessed).
+ * Since M4 it returns `{ tier, borrowed? }`: `.tier` is the number the callers used before; `borrowed` is set only
+ * when a card's tier comes from another resolution (rules 27–30 then say "estimate").
+ */
+export const tierOf: (kind: 'cpu' | 'gpu', chip: string, res: Res, vramGb?: number) => TierHit | undefined = makeTierOf(TIERS, TIER_DISAGREE);

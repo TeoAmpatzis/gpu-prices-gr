@@ -1,6 +1,6 @@
 {
   "id": "S25",
-  "title": "Power supply exactly at the recommended wattage (650 W): warning",
+  "title": "Power supply exactly at the card maker's figure (650 W), formula below it: pass",
   "parts": [
     {
       "category": "cpu",
@@ -134,10 +134,10 @@
   "expected": [
     {
       "rule": 14,
-      "level": "warning"
+      "level": "pass"
     }
   ],
-  "why": "Plan formula: (250 W TBP + 88 W PPT + 50 + 2×5 + 8) × 1.3 = 528 → 550 W; card maker 650 W; recommended = 650 W, and 650 W is within +10% of it.",
+  "why": "Plan formula: (250 W TBP + 88 W PPT + 50 + 2×5 + 8) × 1.3 = 528 → 550 W; card maker 650 W. Owner answer 8 (step 5, 2026-10-25): reaching the maker's figure when the formula is at or below it is a pass; the +10% tight band applies only when the formula decides. Was 'warning' (within +10% of 650 W) until task 5a.",
   "capturedFrom": {
     "builtAt": "2026-10-03T18:51:07.582Z",
     "files": "dist/data/builder.json, builder-storage.json, builder-extra.json"

@@ -1,7 +1,7 @@
 // Rules about cooling: 11 CPU cooler in the box, 21 fan positions, 22 a case without fans, 23 fan headers.
 import { TYPICAL_FAN_HEADERS } from '../tables';
 import type { Build, Finding, Part } from '../types';
-import { all, bool, finding, keys, list, msg, num, one, unknown } from '../util';
+import { all, bool, finding, keys, list, msg, num, one, str, unknown } from '../util';
 
 export function rule11(b: Build): Finding[] {
   const cpu = one(b, 'cpu');
@@ -9,6 +9,10 @@ export function rule11(b: Build): Finding[] {
   const cooler = one(b, 'cooler');
   if (cooler) return [finding(11, 'pass', 'stated', keys(cpu, cooler), msg('Υπάρχει ψύκτρα στο build.', "There's a cooler in the build."))];
   const boxed = bool(cpu, 'coolerIncluded');
+  // `boxCooler`: the cooler the maker's page names (src/engine/data/cpuBox.ts, set at build time with coolerIncluded).
+  const named = str(cpu, 'boxCooler');
+  if (boxed === true && named) return [finding(11, 'pass', 'stated', keys(cpu),
+    msg(`Ο επεξεργαστής έχει στο κουτί ${named}.`, `The CPU comes with an ${named} in the box.`))];
   if (boxed === true) return [finding(11, 'pass', 'stated', keys(cpu), msg('Ο επεξεργαστής έχει ψύκτρα στη συσκευασία.', 'The CPU comes with a cooler in the box.'))];
   if (boxed === false) return [finding(11, 'error', 'stated', keys(cpu),
     msg('Ο επεξεργαστής δεν έχει ψύκτρα στη συσκευασία και δεν υπάρχει ψύκτρα στο build.', "The CPU has no cooler in the box and there's no cooler in the build."),

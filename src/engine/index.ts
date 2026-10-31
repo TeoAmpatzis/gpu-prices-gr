@@ -1,5 +1,7 @@
-// The compatibility engine: every rule of the plan's table (1–26) over a build, a summary, and the
-// candidate check behind "Μόνο συμβατά". Rules 27–30 come in Phase 4 (owner, 2026-10-10).
+// The compatibility engine: every rule of the plan's table (1–30) over a build, a summary, and the
+// candidate check behind "Μόνο συμβατά". Rules 27–30 (balance for gaming, Phase 4) read Context.use and are advice:
+// warnings and notes only.
+import { rule27, rule28, rule29, rule30 } from './rules/balance';
 import { rule11, rule21, rule22, rule23 } from './rules/cooling';
 import { rule10, rule16, rule19, rule26, rule5, rule6, rule7, rule8, rule9 } from './rules/fit';
 import { rule1, rule12, rule13, rule2, rule24, rule25, rule3, rule4 } from './rules/platform';
@@ -15,6 +17,8 @@ export type { PowerEstimate, PowerPart } from './rules/power';
 export { CPU_BOX, boxCooler } from './data/cpuBox';
 export type { CpuBoxRow } from './data/cpuBox';
 export { BIOS, biosSupport } from './data/bios';
+export { tierOf } from './data/tiers';
+export type { TierHit } from './data/tiers';
 export type { BiosRow, BiosVerdict } from './data/bios';
 
 type Rule = (b: Build, ctx: Context) => Finding[];
@@ -24,6 +28,7 @@ export const RULES: Record<RuleId, Rule> = {
   1: rule1, 2: rule2, 3: rule3, 4: rule4, 5: rule5, 6: rule6, 7: rule7, 8: rule8, 9: rule9, 10: rule10,
   11: rule11, 12: rule12, 13: rule13, 14: rule14, 15: rule15, 16: rule16, 17: rule17, 18: rule18, 19: rule19,
   20: rule20, 21: rule21, 22: rule22, 23: rule23, 24: rule24, 25: rule25, 26: rule26,
+  27: rule27, 28: rule28, 29: rule29, 30: rule30,
 };
 
 /** Every finding for a build, rule by rule. A rule whose parts aren't in the build says nothing. */

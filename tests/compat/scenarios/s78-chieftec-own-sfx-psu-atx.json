@@ -1,0 +1,69 @@
+{
+  "id": "S78",
+  "title": "Chieftec BT-02B-U3 (own SFX 250 W in the box) + ATX power supply: rule 16 error",
+  "parts": [
+    {
+      "category": "case",
+      "key": "chieftecbt02bu3",
+      "modelKey": "chieftecbt02bu3",
+      "name": "Chieftec BT-02B-U3",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:4343890",
+        "title": "Chieftec BT-02B-U3 Mini Tower",
+        "price": 100.52
+      },
+      "fields": {
+        "size": "Mini Tower",
+        "maxBoard": "Mini ITX",
+        "gpuMaxMm": null,
+        "coolerMaxMm": null,
+        "fanSlots": 3,
+        "radiatorMounts": null,
+        "fanMounts": null,
+        "fansIncluded": null,
+        "hasFans": null,
+        "radiators": null,
+        "expansionSlots": null,
+        "psuFormFactors": [
+          "SFX"
+        ],
+        "psuIncluded": "SFX 250 W",
+        "usbCFront": null,
+        "bays35": null
+      }
+    },
+    {
+      "category": "psu",
+      "key": "650W Gold ATX",
+      "modelKey": "650W Gold ATX",
+      "name": "650W Gold",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159355769",
+        "title": "Gigabyte P650G 650W",
+        "price": 47
+      },
+      "fields": {
+        "watts": 650,
+        "formFactor": "ATX",
+        "atx3": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 16,
+      "level": "error"
+    }
+  ],
+  "why": "chieftec.eu: \"Power supply: SFX-250VS / 250Watt SFX\" in the box; the case takes SFX, so an ATX unit does not fit (stated) and the message names the included unit.",
+  "capturedFrom": {
+    "builtAt": "2026-10-27",
+    "files": "public/data/<cat>/latest.json as the build checks it (validated, conflicts G1–G4, makers' tables cpuBox/casePsu), engine fields = src/lib/pick.ts toPart"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "id": "S75",
+  "title": "Mini Tower for Micro ATX (Asus Prime AP201) + ATX power supply: rule 16 note (estimate)",
+  "parts": [
+    {
+      "category": "case",
+      "key": "asusprimeap201",
+      "modelKey": "asusprimeap201",
+      "name": "Asus Prime AP201",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2157867076",
+        "title": "Asus Prime AP201 Black Gaming Micro Tower",
+        "price": 72.72
+      },
+      "fields": {
+        "size": "Mini Tower",
+        "maxBoard": "Micro ATX",
+        "gpuMaxMm": 338,
+        "coolerMaxMm": 170,
+        "fanSlots": 4,
+        "radiatorMounts": "Άνω, Πίσω",
+        "fanMounts": null,
+        "fansIncluded": null,
+        "hasFans": null,
+        "radiators": null,
+        "expansionSlots": null,
+        "psuFormFactors": null,
+        "psuIncluded": null,
+        "usbCFront": true,
+        "bays35": 3
+      }
+    },
+    {
+      "category": "psu",
+      "key": "650W Gold ATX",
+      "modelKey": "650W Gold ATX",
+      "name": "650W Gold",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2159355769",
+        "title": "Gigabyte P650G 650W",
+        "price": 47
+      },
+      "fields": {
+        "watts": 650,
+        "formFactor": "ATX",
+        "atx3": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 16,
+      "level": "note"
+    }
+  ],
+  "why": "Owner 27/10 H4: any other Mini Tower \"probably fits (estimate)\" an ATX unit; only Midi / Full Tower pass by estimate.",
+  "capturedFrom": {
+    "builtAt": "2026-10-27",
+    "files": "public/data/<cat>/latest.json as the build checks it (validated, conflicts G1–G4, makers' tables cpuBox/casePsu), engine fields = src/lib/pick.ts toPart"
+  }
+}

@@ -14,5 +14,10 @@ describe('engine tables = v1 tables', () => {
     expect(gpuPsu({ chip: 'Not A Chip', minPsu: null } as unknown as GpuListing)).toBeNull();
     expect(V1_GPU_PSU['Not A Chip']).toBeUndefined();
   });
-  it('BOARD_BY_CASE_SIZE equals v1', () => expect(BOARD_BY_CASE_SIZE).toEqual({ ...V1_BOARD_BY_CASE_SIZE }));
+  it('BOARD_BY_CASE_SIZE equals v1 without its "Άλλο" (unknown size) row (owner 27/10, H5)', () => {
+    const { Άλλο: other, ...rest } = V1_BOARD_BY_CASE_SIZE;
+    expect(other).toBe('ATX'); // v1 still guesses ATX for an unknown size; the engine no longer does
+    expect(BOARD_BY_CASE_SIZE).toEqual(rest);
+    expect('Άλλο' in BOARD_BY_CASE_SIZE).toBe(false);
+  });
 });

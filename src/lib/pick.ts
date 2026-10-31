@@ -17,18 +17,18 @@ export const SLOT_OF: Record<Category, Slot> = {
  * as in a builder.json row. A field the data doesn't carry (yet) is simply null.
  */
 export const PART_FIELDS: Record<Slot, string[]> = {
-  cpu: ['chip', 'socket', 'igpu', 'coolerIncluded'],
+  cpu: ['chip', 'socket', 'igpu', 'coolerIncluded', 'boxCooler', 'cores'],
   mobo: [
     'chip', 'chipset', 'socket', 'formFactor', 'memory', 'ramSlots', 'maxMemoryGB', 'sataPorts', 'm2Slots', 'm2Gen',
     'biosFlashback', 'fanHeaders', 'usbCHeader',
   ],
   ram: ['type', 'speed', 'modules', 'capacity', 'formFactor'],
-  gpu: ['chip', 'lengthMm', 'minPsu', 'powerConnector', 'slots'],
-  cooler: ['type', 'radiator', 'sockets', 'heightMm'],
+  gpu: ['chip', 'vram', 'lengthMm', 'minPsu', 'powerConnector', 'slots'],
+  cooler: ['type', 'radiator', 'sockets', 'socketsTitle', 'heightMm'],
   storage: ['iface', 'pcie', 'formFactor'],
   case: [
     'size', 'maxBoard', 'gpuMaxMm', 'coolerMaxMm', 'fanSlots', 'radiatorMounts', 'fanMounts', 'fansIncluded', 'hasFans',
-    'radiators', 'expansionSlots', 'psuFormFactors', 'usbCFront', 'bays35',
+    'radiators', 'expansionSlots', 'psuFormFactors', 'psuIncluded', 'usbCFront', 'bays35',
   ],
   fan: ['size', 'pack'],
   psu: ['watts', 'formFactor', 'atx3'],
@@ -63,13 +63,14 @@ export const NOT_IN_DATA: Record<Slot, string[]> = {
   cpu: [],
   // fanHeaders, usbCHeader: not on any spec page we read. m2Gen: main's scraper reads it since 2026-10-10, no value
   // yet (data of 2026-10-17: m2Slots 92, sataPorts 79, maxMemoryGB 2393, biosFlashback 60 of 2938 listings).
-  // case usbCFront and bays35, psu atx3 left this list on 2026-10-25 (main's data now has values).
+  // case usbCFront and bays35, psu atx3 left this list on 2026-10-25 (main's data now has values); case psuFormFactors
+  // left it on 2026-10-27 (task 5a: the makers' table src/engine/data/casePsu.ts, applied at build time).
   mobo: ['fanHeaders', 'usbCHeader', 'm2Gen'],
   ram: [],
   gpu: ['powerConnector', 'slots'],
   cooler: [],
   storage: [],
-  case: ['expansionSlots', 'psuFormFactors'],
+  case: ['expansionSlots'],
   fan: [],
   psu: ['native12v2x6'],
 };

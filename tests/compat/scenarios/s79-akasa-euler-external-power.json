@@ -1,0 +1,67 @@
+{
+  "id": "S79",
+  "title": "Akasa Euler MX Plus (external power adapter) + SFX power supply: rule 16 error",
+  "parts": [
+    {
+      "category": "case",
+      "key": "akasaeulermxpluscube",
+      "modelKey": "akasaeulermxpluscube",
+      "name": "Akasa Euler MX Plus Cube",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:65782907",
+        "title": "Akasa Euler MX Plus Cube",
+        "price": 247.95
+      },
+      "fields": {
+        "size": "SFF / Cube",
+        "maxBoard": "Mini ITX",
+        "gpuMaxMm": null,
+        "coolerMaxMm": null,
+        "fanSlots": null,
+        "radiatorMounts": "Κάτω",
+        "fanMounts": null,
+        "fansIncluded": null,
+        "hasFans": null,
+        "radiators": null,
+        "expansionSlots": null,
+        "psuFormFactors": [],
+        "psuIncluded": "external",
+        "usbCFront": null,
+        "bays35": null
+      }
+    },
+    {
+      "category": "psu",
+      "key": "450W Bronze SFX",
+      "modelKey": "450W Bronze SFX",
+      "name": "450W Bronze",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2156350900",
+        "title": "FSP/Fortron SFX Pro 450W",
+        "price": 57.38
+      },
+      "fields": {
+        "watts": 450,
+        "formFactor": "SFX",
+        "atx3": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 16,
+      "level": "error"
+    }
+  ],
+  "why": "akasa.co.uk: the fanless case runs from an external AC adapter (internal DC-to-DC board); there is no power supply bay (stated).",
+  "capturedFrom": {
+    "builtAt": "2026-10-27",
+    "files": "public/data/<cat>/latest.json as the build checks it (validated, conflicts G1–G4, makers' tables cpuBox/casePsu), engine fields = src/lib/pick.ts toPart"
+  }
+}

@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { biosSupport, evaluate, type Context, type Finding, type Part, type PartCategory } from '../../src/engine';
 import { SLOTS, slotModels, type Slot } from '../../src/lib/builder';
@@ -7,16 +7,23 @@ import {
 } from '../../src/lib/pick';
 import { checkAll, hidingErrors } from '../../src/lib/pickCheck';
 import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
+import { conflicts } from '../../src/data/validate/conflicts';
 import { CATEGORY_IDS } from '../../src/lib/categories';
+import { withMakerTables } from '../../src/lib/derive';
 import type { Category, Latest } from '../../src/types';
 
-// One loader for the validated latest.json of every category (validated like the build does).
+// One loader for the latest.json of every category as the build checks it (vite-plugin-data `derive`): validated,
+// then the conflicts pass over the shops' spec pages (G1–G4, e.g. cooler `socketsTitle`), then the makers' tables
+// (box coolers, case PSU sizes).
 let loaded: Partial<Record<Category, Latest>> | undefined;
 function validatedData(): Partial<Record<Category, Latest>> {
   if (!loaded) {
     loaded = {};
     for (const c of CATEGORY_IDS) {
-      loaded[c] = validateLatest(c, JSON.parse(readFileSync(`public/data/${c}/latest.json`, 'utf8')) as Latest, VALIDATION_MODE).latest;
+      const v = validateLatest(c, JSON.parse(readFileSync(`public/data/${c}/latest.json`, 'utf8')) as Latest, VALIDATION_MODE).latest;
+      const specsPath = `public/data/${c}/specs.json`;
+      const specs = existsSync(specsPath) ? (JSON.parse(readFileSync(specsPath, 'utf8')) as Record<string, Record<string, unknown>>) : {};
+      loaded[c] = withMakerTables(c, conflicts(c, v, specs, VALIDATION_MODE).latest);
     }
   }
   return loaded;

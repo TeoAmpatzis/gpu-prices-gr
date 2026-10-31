@@ -1,0 +1,71 @@
+{
+  "id": "S81",
+  "title": "M4: RTX 3060 12 GB (1080p tier only) at 1440p + Ryzen 9 9950X3D: rule 30 note (estimate)",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 9 9950X3D|false",
+      "modelKey": "Ryzen 9 9950X3D",
+      "name": "Ryzen 9 9950X3D",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2160528670",
+        "title": "AMD Ryzen 9 9950X3D Tray",
+        "price": 585.15
+      },
+      "fields": {
+        "chip": "Ryzen 9 9950X3D",
+        "socket": "AM5",
+        "igpu": true,
+        "coolerIncluded": false,
+        "boxCooler": null,
+        "cores": 16
+      }
+    },
+    {
+      "category": "gpu",
+      "key": "skroutz:48214139",
+      "modelKey": "RTX 3060 12GB",
+      "name": "Biostar GeForce RTX 3060 12GB",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:48214139",
+        "title": "Biostar GeForce RTX 3060 12GB",
+        "price": 423.84
+      },
+      "fields": {
+        "chip": "RTX 3060",
+        "vram": 12,
+        "lengthMm": 242,
+        "minPsu": 550,
+        "powerConnector": null,
+        "slots": null
+      }
+    }
+  ],
+  "context": {
+    "use": {
+      "kind": "gaming",
+      "res": "1440p"
+    }
+  },
+  "expected": [
+    {
+      "rule": 30,
+      "level": "note"
+    },
+    {
+      "rule": 29,
+      "level": "pass"
+    }
+  ],
+  "why": "At 1440p a card takes the lower of its 1080p / 4K tiers; the RTX 3060 12 GB has only 1080p = 3. The band max is 3 + 2 = 5 and the CPU is 10: note (estimate). 12 GB meets the 1440p minimum.",
+  "capturedFrom": {
+    "builtAt": "2026-10-27",
+    "files": "public/data/<cat>/latest.json as the build checks it (validated, conflicts G1–G4, makers' tables cpuBox/casePsu), engine fields = src/lib/pick.ts toPart"
+  }
+}

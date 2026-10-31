@@ -44,6 +44,8 @@ export interface CpuListing extends BaseListing {
   packaging?: 'Box' | 'Tray' | null;
   igpu?: boolean; // integrated graphics
   coolerIncluded?: boolean | null; // a cooler in the box; null = not stated
+  /** Build time (src/engine/data/cpuBox.ts): the cooler the maker's page names for a Box CPU with one in the box. */
+  boxCooler?: string | null;
   tdp?: number | null; // W
 }
 
@@ -100,6 +102,10 @@ export interface CaseListing extends BaseListing {
   bays35?: number | null; // internal 3.5" drive bays (v2 Phase 2; not in v1's list.json)
   bays25?: number | null; // internal 2.5" drive bays
   usbCFront?: boolean | null; // front USB-C port; null = the page lists no front ports
+  /** Build time (src/engine/data/casePsu.ts): the PSU sizes the maker's page says the case takes; absent = not stated. */
+  psuFormFactors?: string[] | null;
+  /** Build time (casePsu.ts): the case's own power, 'external' (adapter, no PSU bay) or the unit in the box. */
+  psuIncluded?: string | null;
   radiatorMounts?: string | null; // e.g. "Άνω, Κάτω, Μπροστά"
   // From the case maker's own page (scraper/makers): per position and fan size.
   fanMounts?: CaseFans[] | null; // positions: front 3 × 120 or 2 × 140 = two entries

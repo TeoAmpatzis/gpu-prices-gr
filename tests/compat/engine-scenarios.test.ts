@@ -1,4 +1,4 @@
-// The 64 Phase 0 scenarios through the v2 engine. Scenarios are never edited to fit the engine: what doesn't
+// The compatibility scenarios through the v2 engine: the 64 of Phase 0 and S65–S81 (step 5, task 5a). Scenarios are never edited to fit the engine: what doesn't
 // match is either a KNOWN GAP below (with the engine's and the scenario's answer and why), or a failure. A
 // scenario "note" listed in EXPECTED_UNKNOWN must be the engine's unknown (data missing), not any note.
 import { describe, expect, it } from 'vitest';
@@ -29,6 +29,8 @@ export const KNOWN_GAPS: Record<string, Gap> = {
 export const EXPECTED_UNKNOWN = new Set([
   'S13:R19', 'S14:R6', 'S15:R10', 'S16:R3', 'S20:R6', 'S21:R9', 'S21:R21', 'S22:R8',
   'S30:R17', 'S30:R18', 'S30:R19', 'S46:R20', 'S49:R16',
+  // Step 5 task 5a: a small case without a PSU statement + ATX (H4), a title-only socket (G4), a case of unknown size (H5).
+  'S69:R16', 'S71:R10', 'S74:R16', 'S76:R5',
 ]);
 
 type Row = ReturnType<typeof compare>[number];
@@ -49,6 +51,8 @@ function categorise(id: string, rows: Row[]): Category {
   return 'pass';
 }
 
+/** 64 Phase 0 scenarios + S65–S81 (step 5 task 5a). */
+const SCENARIO_COUNT = 81;
 const all = loadScenarios().map((x) => x.scenario);
 const results = all.map((s) => ({ s, rows: compare(s) }));
 
@@ -78,7 +82,7 @@ describe('engine × Phase 0 scenarios', () => {
     expect([...EXPECTED_UNKNOWN].filter((k) => !notes.has(k) || KNOWN_GAPS[k])).toEqual([]);
   });
 
-  it('reports the totals, which add up to 64', () => {
+  it(`reports the totals, which add up to ${SCENARIO_COUNT}`, () => {
     const by = Object.fromEntries(CATEGORIES.map((c) => [c, [] as string[]])) as Record<Category, string[]>;
     for (const { s, rows } of results) by[categorise(s.id, rows)].push(s.id);
     console.log(
@@ -86,7 +90,7 @@ describe('engine × Phase 0 scenarios', () => {
         CATEGORIES.map((c) => `${c} ${by[c].length}${by[c].length && c !== 'pass' ? ` (${by[c].join(', ')})` : ''}`).join(', ') + '.',
     );
     expect(by.failure).toEqual([]);
-    expect(all.length).toBe(64);
-    expect(CATEGORIES.reduce((n, c) => n + by[c].length, 0)).toBe(64);
+    expect(all.length).toBe(SCENARIO_COUNT);
+    expect(CATEGORIES.reduce((n, c) => n + by[c].length, 0)).toBe(SCENARIO_COUNT);
   });
 });

@@ -1,0 +1,45 @@
+{
+  "id": "S66",
+  "title": "Gaming with a 4-core CPU (Core i3-12100F): rule 28 warning",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Core i3-12100F|false",
+      "modelKey": "Core i3-12100F",
+      "name": "Core i3-12100F",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2157363297",
+        "title": "Intel Core i3-12100F Tray",
+        "price": 81.4
+      },
+      "fields": {
+        "chip": "Core i3-12100F",
+        "socket": "LGA1700",
+        "igpu": false,
+        "coolerIncluded": false,
+        "boxCooler": null,
+        "cores": 4
+      }
+    }
+  ],
+  "context": {
+    "use": {
+      "kind": "gaming",
+      "res": "1080p"
+    }
+  },
+  "expected": [
+    {
+      "rule": 28,
+      "level": "warning"
+    }
+  ],
+  "why": "The data states 4 cores; a gaming build should have at least 6 (redesign \"Ελάχιστα ανά χρήση\").",
+  "capturedFrom": {
+    "builtAt": "2026-10-27",
+    "files": "public/data/<cat>/latest.json as the build checks it (validated, conflicts G1–G4, makers' tables cpuBox/casePsu), engine fields = src/lib/pick.ts toPart"
+  }
+}

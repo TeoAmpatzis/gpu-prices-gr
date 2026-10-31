@@ -25,9 +25,12 @@ export const V1_HIGH_END_EXTRA_W = 100;
 export type BoardSize = 'Mini ITX' | 'Micro ATX' | 'ATX' | 'E-ATX';
 /** Smallest to largest; a case that takes one size takes every smaller one. */
 export const BOARD_RANK: BoardSize[] = ['Mini ITX', 'Micro ATX', 'ATX', 'E-ATX'];
-/** v1 `BOARD_BY_CASE_SIZE` (src/lib/categories.tsx): the usual largest board for a case size (an estimate). */
+/**
+ * v1 `BOARD_BY_CASE_SIZE` (src/lib/categories.tsx): the usual largest board for a case size (an estimate). Without v1's
+ * `Άλλο` ("other", unknown size) row (owner 27/10, H5): a case of unknown size gives an unknown board fit.
+ */
 export const BOARD_BY_CASE_SIZE: Record<string, BoardSize> = {
-  'Full Tower': 'E-ATX', 'Midi Tower': 'ATX', 'Mini Tower': 'Micro ATX', 'SFF / Cube': 'Mini ITX', Άλλο: 'ATX',
+  'Full Tower': 'E-ATX', 'Midi Tower': 'ATX', 'Mini Tower': 'Micro ATX', 'SFF / Cube': 'Mini ITX',
 };
 
 /** v1 `ESTIMATE`: a chip's length range counts once ≥ 8 cards of ≥ 3 makers are measured; margin 10 mm. */
@@ -41,6 +44,22 @@ export const MIN_AIR_COOLER_MM = 30;
 
 /** Fans a board can drive without a hub, when the board doesn't say (plan rule 23: a general note). */
 export const TYPICAL_FAN_HEADERS = 3;
+
+/**
+ * Rules 27 and 30 (docs/redesign-v2.md, "Κανόνας ισορροπίας επεξεργαστή και κάρτας"): the CPU tiers allowed for a card
+ * of tier T at each resolution are T + min … T + max.
+ */
+export const BALANCE: Record<'1080p' | '1440p' | '4k', { min: number; max: number }> = {
+  '1080p': { min: 0, max: 2 },
+  '1440p': { min: -1, max: 2 },
+  '4k': { min: -2, max: 1 },
+};
+
+/** Rule 29 (redesign "Ελάχιστα ανά χρήση"): the card memory a resolution needs, GB. */
+export const MIN_VRAM_GB: Record<'1080p' | '1440p' | '4k', number> = { '1080p': 8, '1440p': 12, '4k': 16 };
+
+/** Rule 28: a gaming CPU has at least this many cores. */
+export const MIN_GAMING_CORES = 6;
 
 /** The plan's power formula (B4): (card + CPU limit + board + sticks + drives + fans + pump) × headroom, rounded up to a step. */
 export const POWER = { boardW: 50, perStickW: 5, perDriveW: 8, perFanW: 3, pumpW: 5, headroom: 1.3, roundToW: 50 } as const;

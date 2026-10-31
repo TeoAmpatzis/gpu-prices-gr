@@ -102,30 +102,82 @@ export function rule9(b: Build): Finding[] {
     msg("Έλεγξε τις θέσεις radiator στη σελίδα του κουτιού.", "Check the radiator positions on the case's page."))];
 }
 
+const socketList = (v: string | null) => (v ? v.split(',').map((s) => s.trim()) : []);
+
 export function rule10(b: Build): Finding[] {
   const cpu = one(b, 'cpu'), cooler = one(b, 'cooler');
   if (!cpu || !cooler) return [];
   const ps = keys(cpu, cooler), socket = str(cpu, 'socket'), sockets = str(cooler, 'sockets');
   if (!socket || !sockets) return [unknown(10, ps, msg('αν η ψύκτρα υποστηρίζει το socket: δεν το δηλώνει.', "whether the cooler supports the socket: it doesn't say."),
     msg("Έλεγξε τα υποστηριζόμενα sockets στη σελίδα της ψύκτρας.", "Check the supported sockets on the cooler's page."))];
-  if (sockets.split(',').map((s) => s.trim()).includes(socket)) return [finding(10, 'pass', 'stated', ps, msg(`Η ψύκτρα υποστηρίζει ${socket}.`, `The cooler supports ${socket}.`))];
+  if (socketList(sockets).includes(socket)) return [finding(10, 'pass', 'stated', ps, msg(`Η ψύκτρα υποστηρίζει ${socket}.`, `The cooler supports ${socket}.`))];
+  // Validation G4: a shop title names the socket the spec page leaves out. The two sources disagree: ask the buyer.
+  if (socketList(str(cooler, 'socketsTitle')).includes(socket)) return [unknown(10, ps,
+    msg(`αν η ψύκτρα υποστηρίζει ${socket}: ο τίτλος του καταστήματος το αναφέρει, η σελίδα προδιαγραφών όχι.`,
+      `whether the cooler supports ${socket}: the shop's title names it, the spec page doesn't.`),
+    msg(`Έλεγξε στη σελίδα του κατασκευαστή αν η ψύκτρα έχει στήριγμα για ${socket}.`, `Check on the maker's page that the cooler has a ${socket} mount.`))];
   return [finding(10, 'error', 'stated', ps,
     msg(`Η ψύκτρα δεν υποστηρίζει ${socket}.`, `The cooler doesn't support ${socket}.`),
     msg(`Διάλεξε ψύκτρα για ${socket}.`, `Choose a cooler for ${socket}.`))];
 }
 
+const SMALL_FORMS = ['SFX', 'SFX-L'];
+/** The `psuIncluded` value of a case that runs from an external power adapter (src/engine/data/casePsu.ts). */
+export const EXTERNAL_POWER = 'external';
+
+/**
+ * Rule 16. A stated list of the PSU sizes the case takes (`psuFormFactors`, from the maker's page through
+ * src/engine/data/casePsu.ts) decides; `psuIncluded` says the case brings its own power (a unit, or an external
+ * adapter). Without a list, the case's size class gives an estimate (owner answer 8 + 27/10 H4): a small case
+ * (stated Mini ITX board size, or "SFF / Cube") never passes an ATX unit; a Mini Tower only "probably" takes one;
+ * Midi / Full Tower take ATX; SFX in a bigger case usually needs a bracket.
+ */
 export function rule16(b: Build): Finding[] {
   const psu = one(b, 'psu'), pc = one(b, 'case');
   if (!psu || !pc) return [];
-  const ps = keys(psu, pc), form = str(psu, 'formFactor'), takes = list<string>(pc, 'psuFormFactors');
-  if (form && takes?.length) {
-    if (takes.includes(form)) return [finding(16, 'pass', 'stated', ps, msg(`Το κουτί δέχεται τροφοδοτικό ${form}.`, `The case takes a ${form} power supply.`))];
+  const ps = keys(psu, pc), form = str(psu, 'formFactor'), takes = list<string>(pc, 'psuFormFactors'), own = str(pc, 'psuIncluded');
+  const checkPage = msg('Έλεγξε στη σελίδα του κουτιού τι τροφοδοτικό δέχεται.', "Check on the case's page which power supply it takes.");
+  if (own === EXTERNAL_POWER) return [finding(16, 'error', 'stated', ps,
+    msg('Το κουτί δεν έχει θέση για τροφοδοτικό: δουλεύει με εξωτερικό τροφοδοτικό (adapter), σύμφωνα με τον κατασκευαστή.',
+      "The case has no room for a power supply: it runs from an external power adapter, says its maker."),
+    msg('Αφαίρεσε το τροφοδοτικό από το build ή διάλεξε άλλο κουτί.', 'Remove the power supply from the build or choose another case.'))];
+  if (!form) return [unknown(16, ps, msg('αν χωράει το τροφοδοτικό: δεν ξέρουμε το μέγεθός του (ATX, SFX…).', "whether the power supply fits: its size (ATX, SFX…) isn't known."), checkPage)];
+  const small = SMALL_FORMS.includes(form);
+  if (takes?.length) {
+    const ownNote = own ? msg(` Το κουτί έρχεται ήδη με δικό του τροφοδοτικό (${own}).`, ` The case already comes with its own power supply (${own}).`) : msg('', '');
+    if (takes.includes(form)) {
+      if (own) return [finding(16, 'note', 'stated', ps,
+        msg(`Το κουτί δέχεται τροφοδοτικό ${form}.${ownNote.el} Ίσως δεν χρειάζεσαι άλλο.`, `The case takes a ${form} power supply.${ownNote.en} You may not need another one.`))];
+      return [finding(16, 'pass', 'stated', ps, msg(`Ο κατασκευαστής του κουτιού δηλώνει ότι δέχεται τροφοδοτικό ${form}.`, `The case maker states it takes a ${form} power supply.`))];
+    }
+    if (form === 'SFX-L' && takes.includes('SFX')) return [unknown(16, ps,
+      msg('αν χωράει τροφοδοτικό SFX-L: ο κατασκευαστής του κουτιού δηλώνει μόνο SFX (το SFX-L είναι μακρύτερο).', "whether an SFX-L power supply fits: the case maker states only SFX (SFX-L is longer)."),
+      msg('Έλεγξε το μέγιστο μήκος τροφοδοτικού στη σελίδα του κουτιού.', "Check the maximum power supply length on the case's page."))];
+    if (small && takes.includes('ATX')) return [finding(16, 'note', 'estimate', ps,
+      msg(`Ο κατασκευαστής δηλώνει θέση για ATX· ένα ${form} συνήθως μπαίνει εκεί με αντάπτορα (bracket).`, `The maker states an ATX bay; an ${form} unit usually fits there with an adapter bracket.`),
+      msg('Έλεγξε ότι το κουτί ή το τροφοδοτικό έχει bracket για SFX.', 'Check that the case or the power supply comes with an SFX bracket.'))];
     return [finding(16, 'error', 'stated', ps,
-      msg(`Το κουτί δέχεται μόνο ${takes.join('/')}, το τροφοδοτικό είναι ${form}.`, `The case takes only ${takes.join('/')}; the power supply is ${form}.`),
+      msg(`Ο κατασκευαστής του κουτιού δηλώνει μόνο ${takes.join('/')}, το τροφοδοτικό είναι ${form}.${ownNote.el}`, `The case maker states only ${takes.join('/')}; the power supply is ${form}.${ownNote.en}`),
       msg(`Διάλεξε τροφοδοτικό ${takes.join(' ή ')}.`, `Choose a ${takes.join(' or ')} power supply.`))];
   }
-  const size = str(pc, 'size');
-  if (size && /Tower$/.test(size)) return [finding(16, 'pass', 'estimate', ps, msg(`Ένα ${size} δέχεται κανονικό τροφοδοτικό ATX.`, `A ${size} takes a standard ATX power supply.`))];
+  const size = str(pc, 'size'), board = str(pc, 'maxBoard');
+  const smallCase = board === 'Mini ITX' || size === 'SFF / Cube';
+  const tower = size === 'Midi Tower' || size === 'Full Tower';
+  if (small && (smallCase || tower || size === 'Mini Tower')) {
+    if (smallCase) return [finding(16, 'note', 'estimate', ps,
+      msg(`Πιθανότατα χωράει (εκτίμηση): τα μικρά κουτιά συνήθως δέχονται ${form}. Το κουτί δεν δηλώνει μέγεθος τροφοδοτικού.`, `Probably fits (estimate): small cases usually take ${form}. The case doesn't state a power supply size.`),
+      checkPage)];
+    return [finding(16, 'note', 'estimate', ps,
+      msg(`Έλεγξε ότι το κουτί δέχεται ${form}: τα κουτιά tower έχουν συνήθως θέση για ATX, όπου ένα ${form} μπαίνει με αντάπτορα (bracket).`, `Check that the case takes ${form}: towers usually have an ATX bay, where an ${form} unit needs an adapter bracket.`),
+      msg('Έλεγξε ότι το κουτί ή το τροφοδοτικό έχει bracket για SFX.', 'Check that the case or the power supply comes with an SFX bracket.'))];
+  }
+  if (form === 'ATX' && smallCase) return [unknown(16, ps,
+    msg('αν χωράει τροφοδοτικό ATX: είναι μικρό κουτί και δεν δηλώνει μέγεθος τροφοδοτικού (πολλά δέχονται μόνο SFX).', "whether an ATX power supply fits: it's a small case that doesn't state a power supply size (many take only SFX)."),
+    msg('Έλεγξε στη σελίδα του κουτιού ότι δέχεται τροφοδοτικό ATX.', "Check on the case's page that it takes an ATX power supply."))];
+  if (form === 'ATX' && tower) return [finding(16, 'pass', 'estimate', ps, msg(`Ένα ${size} δέχεται κανονικό τροφοδοτικό ATX.`, `A ${size} takes a standard ATX power supply.`))];
+  if (form === 'ATX' && size === 'Mini Tower') return [finding(16, 'note', 'estimate', ps,
+    msg('Πιθανότατα χωράει (εκτίμηση): τα περισσότερα Mini Tower δέχονται ATX, αλλά το κουτί δεν δηλώνει μέγεθος τροφοδοτικού.', "Probably fits (estimate): most Mini Towers take ATX, but the case doesn't state a power supply size."),
+    checkPage)];
   return [unknown(16, ps, msg('αν χωράει το τροφοδοτικό: το κουτί δεν δηλώνει τι μέγεθος τροφοδοτικού δέχεται.', "whether the power supply fits: the case doesn't state which size it takes."),
     msg('Έλεγξε στη σελίδα του κουτιού αν δέχεται ATX ή μόνο SFX.', "Check on the case's page whether it takes ATX or only SFX."))];
 }

@@ -1,0 +1,60 @@
+{
+  "id": "S71",
+  "title": "Thermalright Assassin X 120 Refined SE + AM4 CPU: rule 10 note (unknown, not hidden)",
+  "parts": [
+    {
+      "category": "cpu",
+      "key": "Ryzen 7 5700X|false",
+      "modelKey": "Ryzen 7 5700X",
+      "name": "Ryzen 7 5700X",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2158823458",
+        "title": "AMD Ryzen 7 5700X Tray",
+        "price": 138.06
+      },
+      "fields": {
+        "chip": "Ryzen 7 5700X",
+        "socket": "AM4",
+        "igpu": false,
+        "coolerIncluded": false,
+        "boxCooler": null,
+        "cores": 8
+      }
+    },
+    {
+      "category": "cooler",
+      "key": "thermalrightassassinx120refinedse",
+      "modelKey": "thermalrightassassinx120refinedse",
+      "name": "Thermalright Assassin X 120 Refined SE",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:42802484",
+        "title": "Thermalright Assassin X 120 Refined SE Socket AM5/AM4",
+        "price": 20.8
+      },
+      "fields": {
+        "type": "Air",
+        "radiator": null,
+        "sockets": "AM5,LGA1150,LGA1151,LGA1155,LGA1156,LGA1200,LGA1700,LGA1851",
+        "socketsTitle": "AM4",
+        "heightMm": 148
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 10,
+      "level": "note"
+    }
+  ],
+  "why": "The spec page lists no AM4, a shop title does (validation G4 → socketsTitle \"AM4\"): the sources disagree, so the engine asks the buyer to check instead of an error that hides (test-drive finding #10).",
+  "capturedFrom": {
+    "builtAt": "2026-10-27",
+    "files": "public/data/<cat>/latest.json as the build checks it (validated, conflicts G1–G4, makers' tables cpuBox/casePsu), engine fields = src/lib/pick.ts toPart"
+  }
+}

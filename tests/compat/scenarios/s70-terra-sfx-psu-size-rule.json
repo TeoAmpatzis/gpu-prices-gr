@@ -1,0 +1,80 @@
+{
+  "id": "S70",
+  "title": "Fractal Terra (shop fields only, no maker row) + SFX power supply: rule 16 note (estimate)",
+  "parts": [
+    {
+      "category": "case",
+      "key": "fractaldesignterra",
+      "modelKey": "fractaldesignterra",
+      "name": "Fractal Design Terra",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "skroutz",
+        "id": "skroutz:42781832",
+        "title": "Fractal Design Terra Mini Tower",
+        "price": 233.86
+      },
+      "fields": {
+        "size": "Mini Tower",
+        "maxBoard": "Mini ITX",
+        "gpuMaxMm": 322,
+        "coolerMaxMm": 48,
+        "fanSlots": null,
+        "radiatorMounts": null,
+        "fanMounts": [
+          {
+            "n": 1,
+            "pos": "bottom",
+            "size": 120
+          }
+        ],
+        "fansIncluded": null,
+        "hasFans": null,
+        "radiators": [
+          {
+            "pos": "side",
+            "sizes": [
+              120
+            ]
+          }
+        ],
+        "expansionSlots": null,
+        "psuFormFactors": null,
+        "psuIncluded": null,
+        "usbCFront": null,
+        "bays35": null
+      }
+    },
+    {
+      "category": "psu",
+      "key": "450W Bronze SFX",
+      "modelKey": "450W Bronze SFX",
+      "name": "450W Bronze",
+      "quantity": 1,
+      "synthetic": false,
+      "source": {
+        "site": "bestprice",
+        "id": "bestprice:2156350900",
+        "title": "FSP/Fortron SFX Pro 450W",
+        "price": 57.38
+      },
+      "fields": {
+        "watts": 450,
+        "formFactor": "SFX",
+        "atx3": null
+      }
+    }
+  ],
+  "expected": [
+    {
+      "rule": 16,
+      "level": "note"
+    }
+  ],
+  "why": "A small case usually takes SFX: \"probably fits (estimate)\". With the maker row the built data answers pass (stated).",
+  "capturedFrom": {
+    "builtAt": "2026-10-27",
+    "files": "public/data/<cat>/latest.json as the build checks it (validated, conflicts G1–G4, makers' tables cpuBox/casePsu), engine fields = src/lib/pick.ts toPart"
+  }
+}

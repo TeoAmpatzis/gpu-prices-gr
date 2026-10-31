@@ -1,4 +1,4 @@
-// Every rule of the engine (1–26) with a pass, a fail and an unknown case where the rule has them.
+// Every rule of the engine (1–30) with a pass, a fail and an unknown case where the rule has them.
 // Rules 23 and 26 are notes by design (no "unknown"); rule 13 reads the BIOS lookup from the context:
 // small injected lookups test every verdict, the real official table (biosSupport) is tested on pairs read from BIOS.
 import { describe, expect, it } from 'vitest';
@@ -14,6 +14,8 @@ let n = 0;
 const part = (category: PartCategory, fields: Record<string, unknown>, opts: { name?: string; qty?: number } = {}): Part => ({
   category, key: `${category}-${++n}`, name: opts.name ?? category, quantity: opts.qty ?? 1, fields,
 });
+/** Greek and Greek Extended letters: English text must have none (H5). */
+const GREEK = /\p{Script=Greek}/u;
 const status = (rule: RuleId, parts: Part[], ctx: Context = {}) => ruleResult(evaluate(parts, ctx), rule)?.status ?? 'none';
 const basis = (rule: RuleId, parts: Part[], ctx: Context = {}) => ruleResult(evaluate(parts, ctx), rule)?.basis ?? 'none';
 
@@ -58,6 +60,13 @@ describe('rule 5: board size vs case (error; note if estimated)', () => {
   it('fail', () => expect(status(5, [mobo(), pcase({ maxBoard: 'Mini ITX' })])).toBe('error'));
   it('estimate → note', () => expect([status(5, [mobo(), pcase({ maxBoard: null })]), basis(5, [mobo(), pcase({ maxBoard: null })])]).toEqual(['note', 'estimate']));
   it('unknown', () => expect(status(5, [mobo(), pcase({ maxBoard: null, size: null })])).toBe('unknown'));
+  it('H5: a case of size Άλλο (unknown size) → unknown, and the English text has no Greek group word', () => {
+    const parts = [mobo(), pcase({ maxBoard: null, size: 'Άλλο' })];
+    expect([status(5, parts), basis(5, parts)]).toEqual(['unknown', 'unknown']);
+    const f = ruleResult(evaluate(parts), 5)!;
+    expect(f.message.en).not.toMatch(GREEK);
+    expect(f.fix?.en ?? '').not.toMatch(GREEK);
+  });
 });
 
 describe('rule 6: card length vs case (≤ 10 mm margin → warning)', () => {
@@ -98,6 +107,20 @@ describe('rule 10: cooler supports the socket', () => {
   it('pass', () => expect(status(10, [cpu(), cooler()])).toBe('pass'));
   it('fail', () => expect(status(10, [cpu(), cooler({ sockets: 'LGA1700,LGA1851' })])).toBe('error'));
   it('unknown', () => expect(status(10, [cpu(), cooler({ sockets: null })])).toBe('unknown'));
+  it('G4: a socket only a shop title names (socketsTitle) → unknown, not an error', () => {
+    const am4 = cpu({ socket: 'AM4' });
+    const c = cooler({ sockets: 'LGA1700,LGA1851', socketsTitle: 'AM4' });
+    expect([status(10, [am4, c]), basis(10, [am4, c])]).toEqual(['unknown', 'unknown']);
+    const f = ruleResult(evaluate([am4, c]), 10)!;
+    expect(f.message.en).toContain('AM4');
+    expect(f.message.el).toContain('AM4');
+    expect(f.fix?.en).toBeTruthy();
+    // a socket in neither list is still an error; one in the spec list still passes
+    expect(status(10, [cpu({ socket: 'AM5' }), c])).toBe('error');
+    expect(status(10, [cpu({ socket: 'LGA1700' }), c])).toBe('pass');
+    // a list of title sockets
+    expect(status(10, [cpu({ socket: 'LGA1200' }), cooler({ sockets: 'AM5', socketsTitle: 'LGA1200,LGA1851' })])).toBe('unknown');
+  });
 });
 
 describe('rule 11: a cooler in the box or in the build (unknown → warning)', () => {
@@ -105,6 +128,13 @@ describe('rule 11: a cooler in the box or in the build (unknown → warning)', (
   it('pass: in the build', () => expect(status(11, [cpu({ coolerIncluded: false }), cooler()])).toBe('pass'));
   it('fail', () => expect(status(11, [cpu({ coolerIncluded: false })])).toBe('error'));
   it('unknown → warning', () => expect([status(11, [cpu({ coolerIncluded: null })]), basis(11, [cpu({ coolerIncluded: null })])]).toEqual(['warning', 'unknown']));
+  it("the box-cooler table's value: pass, basis stated, the message names the cooler", () => {
+    const c = cpu({ coolerIncluded: true, boxCooler: 'AMD Wraith Stealth' });
+    expect([status(11, [c]), basis(11, [c])]).toEqual(['pass', 'stated']);
+    const f = ruleResult(evaluate([c]), 11)!;
+    expect(f.message.el).toBe('Ο επεξεργαστής έχει στο κουτί AMD Wraith Stealth.');
+    expect(f.message.en).toBe('The CPU comes with an AMD Wraith Stealth in the box.');
+  });
 });
 
 describe('rule 12: graphics', () => {
@@ -361,12 +391,33 @@ describe("rule 14: PSU vs the maker figure and the whole-build estimate (owner's
     expect([e.formulaW, e.makerW]).toEqual([null, Math.max(1000, g90.makerPsuW!)]);
     expect([status(14, amd), basis(14, amd)]).toEqual(['pass', 'stated']);
   });
+  it("owner answer 8 (S25): the maker's figure reached and the formula at or below it → pass, stated", () => {
+    // Ryzen 5 7600 (TDP 65 W) + RTX 5070 (card figure 650 W): the formula is below 650 W.
+    const parts = (w: number) => [cpu(), mobo(), ram(), gpu(), drive(), psu(w)];
+    const e = powerEstimate(parts(650));
+    expect(e.formulaW!).toBeLessThanOrEqual(e.makerW!);
+    for (const w of [e.makerW!, e.makerW! + 20]) expect([status(14, parts(w)), basis(14, parts(w))]).toEqual(['pass', 'stated']);
+    expect(msgEl(parts(e.makerW!))).not.toContain('Οριακό');
+    expect(status(14, parts(e.makerW! - 50))).toBe('error');
+  });
+  it('the formula above the maker figure keeps the +10% tight band (the formula decides)', () => {
+    expect(status(14, base(formula))).toBe('warning');
+    expect(msgEl(base(formula))).toContain('Οριακό');
+  });
+  it('finding #3: Ryzen 9 9950X3D + RTX 5090 (card 1000 W) + 1000 W → warning (never an error that hides)', () => {
+    const parts = [cpu({}, 'Ryzen 9 9950X3D'), mobo(), ram(), gpu({ chip: 'RTX 5090', minPsu: 1000 }), drive(), psu(1000)];
+    const e = powerEstimate(parts);
+    expect(e.formulaW!).toBeGreaterThan(1000);
+    expect([status(14, parts), basis(14, parts)]).toEqual(['warning', 'estimate']);
+    expect(evaluate(parts).filter((f) => f.rule === 14)).toHaveLength(1);
+  });
   it('a card chip not in the table: formula null, maker figure from the card minPsu only', () => {
     const parts = base(700, gpu({ chip: 'Unknown X', minPsu: 650 }));
     const e = powerEstimate(parts);
     expect([e.totalW, e.formulaW, e.makerW, e.makerFrom]).toEqual([null, null, 650, 'card']);
     expect(e.missing.length).toBeGreaterThan(0);
-    expect(status(14, parts)).toBe('warning'); // 700 <= 650 * 1.1 = 715
+    // Owner answer 8: the maker's figure decides (no formula), so reaching it passes; the +10% band is the formula's.
+    expect([status(14, parts), basis(14, parts)]).toEqual(['pass', 'stated']);
     expect(msgEl(parts)).toContain('650');
   });
   it('makerFrom: chip when the chip table is larger, card on a tie or when it is larger', () => {
@@ -419,10 +470,74 @@ describe('rule 15: 12V-2x6 card and a native PSU cable', () => {
 });
 
 describe('rule 16: PSU form factor vs case', () => {
+  const sfx = (f: Record<string, unknown> = {}) => psu(650, { formFactor: 'SFX', ...f });
+  const sb = (p: Part, c: Part) => [status(16, [p, c]), basis(16, [p, c])];
   it('pass: tower (estimate)', () => expect([status(16, [psu(650), pcase()]), basis(16, [psu(650), pcase()])]).toEqual(['pass', 'estimate']));
+  it('pass: Full Tower + ATX (estimate)', () => expect(sb(psu(650), pcase({ size: 'Full Tower', maxBoard: 'E-ATX' }))).toEqual(['pass', 'estimate']));
   it('pass: stated', () => expect(status(16, [psu(650, { formFactor: 'SFX' }), pcase({ size: 'SFF / Cube', psuFormFactors: ['SFX'] })])).toBe('pass'));
   it('fail', () => expect(status(16, [psu(650), pcase({ size: 'SFF / Cube', psuFormFactors: ['SFX'] })])).toBe('error'));
   it('unknown: SFF case without a statement', () => expect(status(16, [psu(650), pcase({ size: 'SFF / Cube' })])).toBe('unknown'));
+  // H4 (owner 27/10): only Midi / Full Tower take ATX by estimate.
+  it('Mini Tower with a stated Mini ITX board size + ATX → unknown (small case)', () =>
+    expect(sb(psu(650), pcase({ size: 'Mini Tower', maxBoard: 'Mini ITX' }))).toEqual(['unknown', 'unknown']));
+  it('any other Mini Tower + ATX → note "probably fits (estimate)"', () => {
+    const c = pcase({ size: 'Mini Tower', maxBoard: 'Micro ATX' });
+    expect(sb(psu(650), c)).toEqual(['note', 'estimate']);
+    expect(ruleResult(evaluate([psu(650), c]), 16)!.message.en).toMatch(/Probably fits.*estimate/);
+    expect(sb(psu(650), pcase({ size: 'Mini Tower', maxBoard: null }))).toEqual(['note', 'estimate']);
+  });
+  it('a Midi Tower that states Mini ITX is a small case too: ATX → unknown', () =>
+    expect(sb(psu(650), pcase({ size: 'Midi Tower', maxBoard: 'Mini ITX' }))).toEqual(['unknown', 'unknown']));
+  it('small case + SFX / SFX-L → note "probably fits (estimate)"', () => {
+    for (const c of [pcase({ size: 'SFF / Cube', maxBoard: 'Mini ITX' }), pcase({ size: 'Mini Tower', maxBoard: 'Mini ITX' })]) {
+      expect(sb(sfx(), c)).toEqual(['note', 'estimate']);
+      expect(sb(sfx({ formFactor: 'SFX-L' }), c)).toEqual(['note', 'estimate']);
+    }
+  });
+  it('tower + SFX → note "check the case takes it (often with a bracket)"', () => {
+    const c = pcase();
+    expect(sb(sfx(), c)).toEqual(['note', 'estimate']);
+    expect(ruleResult(evaluate([sfx(), c]), 16)!.message.en).toMatch(/bracket/);
+  });
+  it('a case of unknown size (Άλλο) → unknown; no Greek group word in English', () => {
+    const c = pcase({ size: 'Άλλο', maxBoard: 'ATX' });
+    expect(sb(psu(650), c)).toEqual(['unknown', 'unknown']);
+    expect(ruleResult(evaluate([psu(650), c]), 16)!.message.en).not.toMatch(GREEK);
+  });
+  it('a small case or a Mini Tower never shows "fits" for an ATX power supply without a stated row', () => {
+    for (const size of ['Mini Tower', 'SFF / Cube', 'Άλλο', null]) for (const maxBoard of ['Mini ITX', 'Micro ATX', 'ATX', null])
+      expect([size, maxBoard, status(16, [psu(650), pcase({ size, maxBoard })])]).not.toEqual([size, maxBoard, 'pass']);
+  });
+  it("the PSU's form not known → unknown", () => expect(status(16, [psu(650, { formFactor: null }), pcase()])).toBe('unknown'));
+  describe('a maker row (src/engine/data/casePsu.ts → psuFormFactors / psuIncluded): stated', () => {
+    const terra = pcase({ size: 'Mini Tower', maxBoard: 'Mini ITX', psuFormFactors: ['SFX', 'SFX-L'] });
+    it('SFX / SFX-L listed → pass, stated', () => {
+      expect(sb(sfx(), terra)).toEqual(['pass', 'stated']);
+      expect(sb(sfx({ formFactor: 'SFX-L' }), terra)).toEqual(['pass', 'stated']);
+    });
+    it('ATX not listed → error, stated', () => expect(sb(psu(650), terra)).toEqual(['error', 'stated']));
+    it('only SFX listed + SFX-L → unknown (the longer unit is not stated)', () =>
+      expect(sb(sfx({ formFactor: 'SFX-L' }), pcase({ size: 'Mini Tower', psuFormFactors: ['SFX'] }))).toEqual(['unknown', 'unknown']));
+    it('only ATX listed + SFX → note (an SFX unit in an ATX bay needs a bracket)', () =>
+      expect(sb(sfx(), pcase({ size: 'Mini Tower', psuFormFactors: ['ATX'] }))).toEqual(['note', 'estimate']));
+    it('the row beats the size rule: Mini Tower ITX that takes ATX → pass, stated', () =>
+      expect(sb(psu(650), pcase({ size: 'Mini Tower', maxBoard: 'Mini ITX', psuFormFactors: ['ATX'] }))).toEqual(['pass', 'stated']));
+    it('a case powered by an external adapter: any power supply → error, stated, saying so', () => {
+      const euler = pcase({ size: 'SFF / Cube', maxBoard: 'Mini ITX', psuFormFactors: [], psuIncluded: 'external' });
+      for (const p of [psu(650), sfx()]) expect(sb(p, euler)).toEqual(['error', 'stated']);
+      const f = ruleResult(evaluate([sfx(), euler]), 16)!;
+      expect(f.message.en).toMatch(/external power adapter/);
+      expect(f.message.el).toMatch(/εξωτερικ/);
+      expect(f.fix?.en).toBeTruthy();
+    });
+    it('a case with its own SFX power supply: ATX → error; SFX → note that one is already in the box', () => {
+      const bt = pcase({ size: 'Mini Tower', maxBoard: 'Mini ITX', psuFormFactors: ['SFX'], psuIncluded: 'SFX 250 W' });
+      expect(sb(psu(650), bt)).toEqual(['error', 'stated']);
+      expect(ruleResult(evaluate([psu(650), bt]), 16)!.message.en).toContain('SFX 250 W');
+      expect(sb(sfx(), bt)).toEqual(['note', 'stated']);
+      expect(ruleResult(evaluate([sfx(), bt]), 16)!.message.en).toMatch(/already comes with its own power supply \(SFX 250 W\)/);
+    });
+  });
 });
 
 describe('rule 17: M.2 drives ≤ M.2 slots', () => {
@@ -531,5 +646,84 @@ describe('every finding', () => {
     ].filter((f) => f.status === 'error' || f.status === 'warning');
     expect(all.length).toBeGreaterThan(5);
     for (const f of all) expect(f.fix?.el && f.fix.en).toBeTruthy();
+  });
+});
+
+describe('rules 27–30: CPU and card balance for gaming (advice: never an error, never hides)', () => {
+  // Real tiers (src/engine/data/tiers.ts): Ryzen 5 7600 = 7, Ryzen 9 9950X3D = 10, Core i5-12400F = 5, Ryzen 7 9700X = 8;
+  // RTX 5090 32 GB = 10 everywhere, RTX 5060 8 GB = 4 / 3 / 2, RTX 5070 12 GB = 1440p 6, 4K 5 (no 1080p tier).
+  const g = (res?: '1080p' | '1440p' | '4k'): Context => ({ use: { kind: 'gaming', ...(res && { res }) } });
+  const c = (name: string, cores = 8) => cpu({ chip: name, cores }, name);
+  const card = (chip: string, vram: number) => gpu({ chip, vram });
+  const at = (rule: RuleId, parts: Part[], ctx: Context) => ruleResult(evaluate(parts, ctx), rule);
+
+  it('not gaming (or no use) → the four rules say nothing', () => {
+    const parts = [c('Ryzen 5 7600', 6), card('RTX 5090', 32)];
+    for (const ctx of [{}, { use: { kind: 'everyday' as const } }, { use: { kind: 'creating' as const } }, { use: { kind: 'unsure' as const } }])
+      for (const r of [27, 28, 29, 30] as RuleId[]) expect(status(r, parts, ctx)).toBe('none');
+  });
+  it('rule 27: CPU tier below the band → warning (S65: Ryzen 5 7600 + RTX 5090 at 1080p)', () => {
+    const parts = [c('Ryzen 5 7600', 6), card('RTX 5090', 32)];
+    const f = at(27, parts, g('1080p'))!;
+    expect([f.status, f.basis]).toEqual(['warning', 'stated']);
+    expect(f.fix?.en).toBeTruthy();
+    expect(f.message.en).toContain('1080p');
+    expect(f.message.en).not.toMatch(/estimate/);
+    // gaming without a resolution = 1080p
+    expect(status(27, parts, g())).toBe('warning');
+  });
+  it('rule 27: the band moves with the resolution (1440p card − 1, 4K card − 2)', () => {
+    // Core i5-12400F (5) + RTX 5060 8 GB (1080p 4): in band
+    expect(status(27, [c('Core i5-12400F', 6), card('RTX 5060', 8)], g('1080p'))).toBe('pass');
+    // Ryzen 5 7600 (7) + RTX 5090 (10): 1440p min 9 → warning; 4K min 8 → warning
+    const big = [c('Ryzen 5 7600', 6), card('RTX 5090', 32)];
+    expect(status(27, big, g('1440p'))).toBe('warning');
+    expect(status(27, big, g('4k'))).toBe('warning');
+    // Ryzen 7 9700X (8) + RTX 5090: 4K min 8 → pass
+    expect(status(27, [c('Ryzen 7 9700X'), card('RTX 5090', 32)], g('4k'))).toBe('pass');
+  });
+  it('rule 27/30: no tier for either chip → nothing (tiers are advice)', () => {
+    for (const parts of [[c('Ryzen 5 7500F', 6), card('RTX 5090', 32)], [c('Ryzen 5 7600', 6), card('GT 710', 2)]]) {
+      expect(status(27, parts, g('1080p'))).toBe('none');
+      expect(status(30, parts, g('1080p'))).toBe('none');
+    }
+  });
+  it('M4: a borrowed card tier makes the message say "estimate" (RTX 5070 12 GB at 1080p borrows 1440p)', () => {
+    const parts = [c('Core i5-12400F', 6), card('RTX 5070', 12)];
+    const f = at(27, parts, g('1080p'))!;
+    expect([f.status, f.basis]).toEqual(['warning', 'estimate']);
+    expect(f.message.en).toMatch(/estimate/);
+    expect(f.message.el).toMatch(/εκτίμηση/);
+    expect(f.message.en).toContain('1440p');
+  });
+  it('rule 28: gaming with a CPU under 6 cores → warning; 6+ → pass; cores unknown → nothing', () => {
+    expect([status(28, [c('Core i3-12100F', 4)], g('1080p')), basis(28, [c('Core i3-12100F', 4)], g('1080p'))]).toEqual(['warning', 'stated']);
+    expect(at(28, [c('Core i3-12100F', 4)], g())!.fix?.en).toBeTruthy();
+    expect(status(28, [c('Ryzen 5 7600', 6)], g())).toBe('pass');
+    expect(status(28, [cpu({ chip: 'X', cores: null }, 'X')], g())).toBe('none');
+  });
+  it('rule 29: card memory below the resolution minimum → note (1080p 8, 1440p 12, 4K 16 GB)', () => {
+    const r5060 = [card('RTX 5060', 8)];
+    expect(status(29, r5060, g('1080p'))).toBe('pass');
+    expect([status(29, r5060, g('1440p')), basis(29, r5060, g('1440p'))]).toEqual(['note', 'stated']);
+    expect(at(29, r5060, g('1440p'))!.message.en).toContain('12 GB');
+    expect(status(29, [card('RTX 5070', 12)], g('4k'))).toBe('note');
+    expect(status(29, [card('RTX 5080', 16)], g('4k'))).toBe('pass');
+    expect(status(29, [gpu({ chip: 'RTX 5070', vram: null })], g('4k'))).toBe('none');
+  });
+  it('rule 30: CPU tier above the band → note (S68: Ryzen 9 9950X3D + RTX 5060 8 GB at 1080p)', () => {
+    const parts = [c('Ryzen 9 9950X3D', 16), card('RTX 5060', 8)];
+    const f = at(30, parts, g('1080p'))!;
+    expect([f.status, f.basis]).toEqual(['note', 'stated']);
+    expect(f.message.en).toMatch(/more FPS/);
+    // in the band → 30 says nothing
+    expect(status(30, [c('Core i5-12400F', 6), card('RTX 5060', 8)], g('1080p'))).toBe('none');
+    // 4K max = card + 1: 9950X3D (10) + RTX 5060 (4K 2) → note
+    expect(status(30, parts, g('4k'))).toBe('note');
+  });
+  it('none of 27–30 is ever an error (nothing hides)', () => {
+    const builds = [[c('Ryzen 5 7600', 6), card('RTX 5090', 32)], [c('Core i3-12100F', 4), card('RTX 5060', 8)], [c('Ryzen 9 9950X3D', 16), card('RTX 5060', 8)]];
+    for (const b of builds) for (const res of ['1080p', '1440p', '4k'] as const)
+      expect(evaluate(b, g(res)).filter((f) => f.rule >= 27 && f.status === 'error')).toEqual([]);
   });
 });

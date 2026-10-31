@@ -32,7 +32,8 @@ export interface Msg {
 
 export type RuleId =
   | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13
-  | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26;
+  | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26
+  | 27 | 28 | 29 | 30;
 
 export interface Finding {
   rule: RuleId;
@@ -57,7 +58,17 @@ export interface ChipLengths {
 export type BiosVerdict = 'ok' | 'update' | 'may-update' | 'not-listed' | 'unsupported';
 export type BiosLookup = (chipset: string, cpuName: string) => BiosVerdict | undefined;
 
+/** Gaming resolution (the tier table's resolutions). */
+export type Resolution = '1080p' | '1440p' | '4k';
+
+/** What the build is for (the builder's first step). Rules 27–30 speak only for gaming; a gaming use without a resolution is 1080p. */
+export interface Use {
+  kind: 'gaming' | 'everyday' | 'creating' | 'unsure';
+  res?: Resolution;
+}
+
 export interface Context {
   chipLengths?: Record<string, ChipLengths>;
   bios?: BiosLookup;
+  use?: Use;
 }
