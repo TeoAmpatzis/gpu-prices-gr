@@ -17,5 +17,5 @@ export const photoId = (cat: string, key: string): string => sha1Hex(`${cat}\0${
 export const productImage = (cat: string, key: string, has: boolean): ProductImage | null =>
   has ? { src: `/img/${cat}/${photoId(cat, key)}` } : null;
 
-/** A photo from its stored path ("<cat>/<id>"), as builder.json rows carry it; null for the category icon. */
+/** A photo from its stored path ("<cat>/<id>"), as the builder step files' rows carry it; null for the category icon. */
 export const storedImage = (stored: string | null | undefined): ProductImage | null => (stored ? { src: `/img/${stored}` } : null);

@@ -5,7 +5,8 @@
 //   as columns, without shop URLs and scrape times, plus a few daily lows per model;
 // - /data/<cat>/detail.json listing id → shop URL, loaded when a product is opened (together with
 //   the full history.json for the chart);
-// - /data/builder.json      only the parts the PC builder can offer, grouped by the same code;
+// - /data/builder/index.json, /data/builder/<slot>.json, /data/builder/<slot>-extra.json  the PC builder: the first
+//   screen's small index, one file per step with the parts it can offer (grouped by the same code), their links;
 // - /data/<cat>/model/<nnn>.json  the product pages: 256 files per category, each model (listings with links,
 //   full history, variants, alternatives…) in the file of its address slug (src/lib/modelData.ts);
 // - /data/manifest.json     counts, which the next build compares its data with (see checkData).
@@ -14,8 +15,8 @@
 
 import type {
   BaseListing,
-  BuilderExtra,
-  BuilderFile,
+  BuilderExtraFile,
+  BuilderIndex,
   BuilderSlotFile,
   CaseListing,
   Category,
@@ -58,7 +59,6 @@ import { modelSlug, nameSlug, slugLookup } from './slug';
 import { POP_SCALE, popularityRaw, recommendedScores } from './ranking';
 import type { SearchIndexFile, SearchModel } from './search';
 import {
-  LAZY_SLOTS,
   SLOTS,
   candidates,
   caseBoardStated,
@@ -86,7 +86,7 @@ import {
 
 /** Only needed when a product is opened (URL) or never shown (scrape time). */
 const DETAIL_ONLY = new Set(['url', 'scrapedAt']);
-/** Not in list.v2.json either: only the builder reads them (builder.json keeps them). */
+/** Not in list.v2.json either: only the builder reads them (its step files keep them). */
 // Fields for v2's rules (Phase 2): collected now, not shown or checked by v1.
 const V2_ONLY = [
   'm2Slots', 'm2Gen', 'sataPorts', 'maxMemoryGB', 'biosFlashback', 'atx3', 'bays35', 'bays25', 'usbCFront', 'socketsTitle',
@@ -359,32 +359,35 @@ export function slotFields<S extends Slot>(slot: S, m: Model<SlotListing[S]>): R
 const share = <L extends BaseListing>(ms: Model<L>[], known: (m: Model<L>) => boolean) =>
   ms.length ? Math.round((100 * ms.filter(known).length) / ms.length) : 100;
 
+/** The builder's files (src/types.ts BuilderIndex, BuilderSlotFile, BuilderExtraFile), by slot. */
+export interface BuilderFiles {
+  index: BuilderIndex;
+  slots: Record<Slot, BuilderSlotFile>;
+  extras: Record<Slot, BuilderExtraFile>;
+}
+
 /**
  * Per builder slot, one row per model it can offer (`candidates` with an empty build is exactly the
- * "enough known data" rule); grouping the rows again in the browser gives the same models.
+ * "enough known data" rule), in its own file; grouping the rows again in the browser gives the same models.
+ * The rows carry the listing's fields (the engine's `pick.PART_FIELDS` among them) plus `pop`, `img`, `drop`;
+ * shop links and search titles go to the slot's extra file (graphics cards keep their title: it is their name).
  */
-export function builderFile(
-  all: Partial<Record<Category, Latest>>,
-  builtAt: string,
-  image?: ImageLookup,
-): { file: BuilderFile; extra: BuilderExtra; lazy: Record<string, BuilderSlotFile> } {
-  const slots: BuilderFile['slots'] = {};
-  const extra: BuilderExtra = { urls: {}, titles: {} };
-  const lazy: Record<string, BuilderSlotFile> = {};
+export function builderFiles(all: Partial<Record<Category, Latest>>, builtAt: string, image?: ImageLookup): BuilderFiles {
+  const slots = {} as Record<Slot, BuilderSlotFile>;
+  const extras = {} as Record<Slot, BuilderExtraFile>;
+  const counts = {} as BuilderIndex['slots'];
   const models: Partial<Record<Slot, Model<BaseListing>[]>> = {};
+  let offeredGpus: Model<GpuListing>[] = [];
   for (const slot of SLOTS) {
     const listings = (all[slot as Category]?.listings ?? []) as SlotListing[typeof slot][];
     const grouped = slotModels(slot, listings);
     models[slot] = grouped as Model<BaseListing>[];
-    const rows = candidates(slot, grouped, {}).map((m) => builderRow(slot, m));
-    for (const r of rows) r.img = image?.(slot as Category, cfgOf(slot as Category).modelKey(r as unknown as BaseListing)) ?? null;
-    // A slot in its own file (/data/builder-<slot>.json, loaded when needed) keeps its links and titles.
-    if (LAZY_SLOTS.includes(slot)) {
-      lazy[slot] = { v: 1, builtAt, ...toColumns(rows, BUILDER_SKIP) };
-      continue;
-    }
-    // Links and search titles are only needed after the builder has appeared: builder-extra.json.
+    const offered = candidates(slot, grouped, {});
+    if (slot === 'gpu') offeredGpus = offered as Model<GpuListing>[];
+    const rows = offered.map((m) => builderRow(slot, m));
+    const extra: BuilderExtraFile = { v: 2, builtAt, urls: {}, titles: {} };
     for (const r of rows) {
+      r.img = image?.(slot as Category, cfgOf(slot as Category).modelKey(r as unknown as BaseListing)) ?? null;
       const id = r.id as string;
       extra.urls[id] = r.url as string;
       r.url = null;
@@ -393,22 +396,25 @@ export function builderFile(
         r.title = '';
       }
     }
-    slots[slot] = toColumns(rows, BUILDER_SKIP);
+    slots[slot] = { v: 2, builtAt, ...toColumns(rows, BUILDER_SKIP) };
+    extras[slot] = extra;
+    counts[slot] = { rows: rows.length, bytes: new TextEncoder().encode(JSON.stringify(slots[slot])).length };
   }
   const coverage = {
     gpu: share((models.gpu ?? []).filter((m) => !m.pro) as Model<GpuListing>[], (m) => gpuLength(m) != null),
     case: share((models.case ?? []) as Model<CaseListing>[], (m) => caseGpuMax(m) != null),
     cooler: share((models.cooler ?? []) as Model<CoolerListing>[], (m) => coolerSockets(m).length > 0),
   };
-  return { file: { v: 1, builtAt, slots, coverage }, extra, lazy };
+  // Rule 6 estimates: fitContext over the offered cards (the gpu step file's rows; the browser reads them from the index).
+  const chipLengths = Object.fromEntries(fitContext(offeredGpus).chips);
+  return { index: { v: 2, builtAt, slots: counts, chipLengths, minimum: {}, coverage }, slots, extras };
 }
 
 export function manifest(
   all: Partial<Record<Category, Latest>>,
-  builder: BuilderFile,
+  builder: Partial<Record<Slot, Columns>>,
   builtAt: string,
   history: Partial<Record<Category, History>> = {},
-  lazy: Record<string, Columns> = {},
 ): Manifest {
   const cats: Manifest['cats'] = {};
   for (const cat of CATEGORY_IDS) {
@@ -422,11 +428,9 @@ export function manifest(
       sources: Object.fromEntries(Object.entries(latest.sources).map(([s, m]) => [s, { updatedAt: m?.updatedAt ?? null, ok: !!m?.ok }])),
     };
   }
+  // Models offered per slot, from the slot files' rows grouped again (as the browser does).
   const offered = Object.fromEntries(
-    Object.entries({ ...builder.slots, ...lazy }).map(([slot, c]) => [
-      slot,
-      slotModels(slot as (typeof SLOTS)[number], fromColumns(c)).length,
-    ]),
+    Object.entries(builder).map(([slot, c]) => [slot, slotModels(slot as Slot, fromColumns(c)).length]),
   );
   return { builtAt, cats, builder: offered };
 }
@@ -568,7 +572,7 @@ export function modelChunks(cat: Category, input: CategoryInput, builtAt: string
   // shows, so its numbers differ by filter; the order among models of one kind is what matters here).
   const recommended = recommendedScores(models, cat, cfg.value);
   // Graphics cards: the builder's chip length range (builder.fitContext, its ESTIMATE rule, over the same rows as
-  // builder.json: candidates()) for a card with no measured
+  // the builder's gpu step file: candidates()) for a card with no measured
   // length of its own; none for a water-cooled card (its length is not the chip's).
   const chipLengths = cat === 'gpu' ? fitContext(candidates('gpu', slotModels('gpu', input.latest.listings as GpuListing[]), {})).chips : null;
   const lengthRange = (m: Model<BaseListing>): { min: number; max: number } | null => {
@@ -745,7 +749,16 @@ export function checkData(next: Manifest, live: Manifest | null, models?: Partia
     }
   }
   for (const slot of SLOTS) {
-    if (!next.builder[slot]) problems.push(`builder: nothing to offer for ${slot}`);
+    const now = next.builder[slot];
+    if (!now) {
+      problems.push(`builder: nothing to offer for ${slot}`);
+      continue;
+    }
+    // A step's file with far fewer models than the live site's (a slot the live manifest doesn't count: no comparison).
+    const before = live?.builder?.[slot];
+    if (before != null && now < before * (1 - MAX_DROP)) {
+      problems.push(`builder: ${slot} offers ${now} models, live site has ${before} (more than ${MAX_DROP * 100}% fewer)`);
+    }
   }
   return problems;
 }

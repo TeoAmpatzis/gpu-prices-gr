@@ -32,13 +32,6 @@ import { SLOTS, type Slot } from './slots';
 export { SLOTS, type Slot } from './slots';
 /** Parts a build can be finished without (the GPU needs an iGPU, the cooler a boxed one; see notes). */
 export const OPTIONAL: Slot[] = ['gpu', 'cooler', 'fan'];
-/**
- * Slots whose rows are not in builder.json but in their own file (/data/builder-<slot>.json), loaded
- * only when the step opens or a saved build has one: nothing else in the build depends on them, and
- * builder.json's size costs the builder's phone Lighthouse score (measured 2026-10-03: storage rows
- * inside builder.json took it from 91 to 89).
- */
-export const LAZY_SLOTS: Slot[] = ['storage'];
 
 export interface SlotListing {
   cpu: CpuListing;

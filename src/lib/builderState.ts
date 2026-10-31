@@ -1,11 +1,12 @@
-// PC builder state shared by the Guided and Quick list modes: builder.json, the build, the use and
-// budget, a build opened from a share link, and builder-extra.json fetched only when needed.
+// PC builder state shared by the Guided and Quick list modes: the builder's index file, each step's parts (one file
+// per step, src/lib/builderFiles.ts), the build, the use and budget, a build opened from a share link, and each step's
+// shop links and search titles fetched only when needed.
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { BaseListing, BuilderFile } from '../types';
-import { fromColumns } from './columns';
-import { loadBuilder, loadBuilderExtra, loadBuilderSlot, type Model } from './data';
-import { LAZY_SLOTS, SLOTS, fitContext, slotModels, type Build, type Slot, type SlotListing } from './builder';
+import type { BaseListing, BuilderIndex } from '../types';
+import type { Model } from './data';
+import { loadExtra, loadIndex, loadSlot, prefetchSlot } from './builderFiles';
+import { NO_CONTEXT, SLOTS, type Build, type FitContext, type Slot, type SlotListing } from './builder';
 import { afterLargestPaint } from './paint';
 import { onBuildChange, readBuild, writeBuild, type BuildChangeSource, type StoredBuild } from './buildStore';
 
@@ -20,7 +21,7 @@ export interface Prefs {
 
 // The saved build lives in localStorage `pcBuild` (src/lib/buildStore.ts) — per-browser convenience
 // only (listed on the privacy page).
-const EXTRA_DELAY = 5000; // ms after the parts load before builder-extra.json is fetched unasked
+const EXTRA_DELAY = 5000; // ms after the index loads before the loaded steps' extra files are fetched unasked
 
 interface Saved {
   parts: Partial<Record<Slot, string>>;
@@ -38,7 +39,7 @@ function readSaved(): Saved {
   return { parts, prefs: asPrefs(b.use, b.budget) };
 }
 
-/** Saved parts of lazy slots whose file hasn't arrived yet: kept when the build is saved meanwhile. */
+/** Saved parts of steps whose file hasn't arrived yet: kept when the build is saved meanwhile. */
 const pendingLazy: Partial<Record<Slot, string>> = {};
 
 /**
@@ -128,7 +129,8 @@ export function useBuilderState() {
   // A shared link is shown as it is; the saved build is left alone until the user changes something.
   const [sharedAtStart] = useState(readShared);
   const [models, setModels] = useState<Models | null>(null);
-  const [coverage, setCoverage] = useState<BuilderFile['coverage'] | null>(null);
+  const [coverage, setCoverage] = useState<BuilderIndex['coverage'] | null>(null);
+  const [chipLengths, setChipLengths] = useState<BuilderIndex['chipLengths'] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [build, setBuild] = useState<Build>({});
   const [prefs, setPrefsState] = useState<Prefs>(() => (sharedAtStart ?? readSaved()).prefs);
@@ -137,83 +139,86 @@ export function useBuilderState() {
   const [builtAt, setBuiltAt] = useState<string | null>(null);
   const extraRef = useRef<(() => void) | null>(null);
   const extraTimer = useRef<number | undefined>(undefined);
-  // Slots kept out of builder.json (LAZY_SLOTS): loaded on demand, then restored into the build.
-  const [lazyReady, setLazyReady] = useState<Partial<Record<Slot, boolean>>>({});
+  // Each step's parts are their own file: loaded on demand (the step or picker opens, or a saved part is there),
+  // then restored into the build. true = loaded, false = failed, missing = not loaded yet.
+  const [slotState, setSlotState] = useState<Partial<Record<Slot, boolean>>>({});
   const slotRef = useRef<((slot: Slot) => void) | null>(null);
 
   useEffect(() => {
-    // builder.json: one row per model the builder can offer, in Recommended order (src/lib/derive.ts).
-    // Requested once the builder's step text (the page's largest paint) is on screen: a download that
-    // finishes before that paint counts toward it in Lighthouse's phone simulation (src/lib/paint.ts).
+    // /data/builder/index.json (a few KiB): the build date, coverage and chip lengths; requested once the builder's
+    // step text (the page's largest paint) is on screen: a download that finishes before that paint counts toward
+    // it in Lighthouse's phone simulation (src/lib/paint.ts). The steps' files follow on demand.
     const cancel = afterLargestPaint(() => {
-      loadBuilder('all')
-        .then((file) => {
-          const m = Object.fromEntries(
-            SLOTS.map((s) => [s, slotModels(s, fromColumns<SlotListing[typeof s]>(file.slots[s] ?? { cols: [], rows: [] }))]),
-          ) as unknown as Models;
-          setCoverage(file.coverage);
-          setBuiltAt(file.builtAt);
-          setModels(m);
+      loadIndex()
+        .then((index) => {
+          const at = index.builtAt;
+          setCoverage(index.coverage);
+          setChipLengths(index.chipLengths);
+          setBuiltAt(at);
+          setModels(Object.fromEntries(SLOTS.map((s) => [s, []])) as unknown as Models);
           // The shared or the saved build; parts that disappeared from the market are dropped.
           const parts = (sharedAtStart ?? readSaved()).parts;
-          const restored: Build = {};
-          for (const s of SLOTS) {
-            const found = (m[s] as AnyModel[]).find((x) => x.key === parts[s]);
-            if (found) (restored as Record<Slot, AnyModel>)[s] = found;
-          }
-          setBuild(restored);
-          // A lazy slot's own file: when its step or picker opens, or at once when the saved/shared
-          // build has a part there (no request otherwise, so the first load stays as it was).
+          const loaded: Partial<Record<Slot, AnyModel[]>> = {};
+          // Shop links and search titles (<slot>-extra.json), written onto each model's one row; `extraVersion`
+          // makes searches and links pick them up. Per loaded step, once wanted (see extraRef below).
+          let extraWanted = false;
+          const extraRequested = new Set<Slot>();
+          const fetchExtra = (slot: Slot) => {
+            const ms = loaded[slot];
+            if (!ms || extraRequested.has(slot)) return;
+            extraRequested.add(slot);
+            loadExtra(slot, at)
+              .then((extra) => {
+                for (const model of ms) {
+                  const row = model.cheapest;
+                  row.url = extra.urls[row.id] ?? row.url;
+                  if (!row.title) row.title = extra.titles[row.id] ?? '';
+                }
+                setExtraVersion((v) => v + 1);
+              })
+              .catch(() => extraRequested.delete(slot)); // the builder still works; links and title search stay missing
+          };
           const requestedSlots = new Set<Slot>();
           slotRef.current = (slot) => {
-            if (!LAZY_SLOTS.includes(slot) || requestedSlots.has(slot)) return;
+            if (requestedSlots.has(slot)) return;
             requestedSlots.add(slot);
-            loadBuilderSlot(`${slot}.json?v=${file.builtAt}`)
-              .then((f) => {
+            loadSlot(slot, at)
+              .then((ms) => {
+                loaded[slot] = ms as AnyModel[];
                 // The part saved meanwhile (a category page's "Add to build") wins over the one at load.
                 const want = pendingLazy[slot] ?? parts[slot];
                 delete pendingLazy[slot];
-                const ms = slotModels(slot, fromColumns<SlotListing[typeof slot]>(f));
                 setModels((prev) => (prev ? ({ ...prev, [slot]: ms } as Models) : prev));
                 const found = (ms as AnyModel[]).find((x) => x.key === want);
                 // Restored only if the user hasn't picked one meanwhile.
                 if (found) setBuild((b) => (b[slot] ? b : { ...b, [slot]: found }));
-                setLazyReady((r) => ({ ...r, [slot]: true }));
+                setSlotState((r) => ({ ...r, [slot]: true }));
+                if (extraWanted) fetchExtra(slot);
+                // The next step's parts, in idle time.
+                const next = SLOTS[SLOTS.indexOf(slot) + 1];
+                if (next) prefetchSlot(next, at);
               })
               .catch(() => {
                 requestedSlots.delete(slot); // the next request retries
-                setLazyReady((r) => ({ ...r, [slot]: false }));
+                setSlotState((r) => ({ ...r, [slot]: false }));
               });
           };
-          for (const s of LAZY_SLOTS) {
+          for (const s of SLOTS) {
             // Only the saved build is protected; a shared one isn't saved until changed (then it's the user's).
             if (parts[s] && !sharedAtStart) pendingLazy[s] = parts[s];
             if (parts[s]) slotRef.current(s);
           }
-          // Then the shop links and the search titles (builder-extra.json, ~430 KB gzipped), written
-          // onto each model's one row; `extraVersion` makes searches and links pick them up. Only when
-          // needed: at once for a restored build (its parts need their links), else on the first
-          // interaction, or EXTRA_DELAY after the parts load, so a phone's first seconds download the
-          // parts only.
-          let requested = false;
+          // The first step's parts, in idle time (after the first paint: the largest one is on screen here).
+          prefetchSlot(SLOTS[0], at);
+          // At once for a restored build (its parts need their links), else on the first interaction, or
+          // EXTRA_DELAY after the index loads, so a phone's first seconds download the first screen only.
           extraRef.current = () => {
-            if (requested) return;
-            requested = true;
+            if (extraWanted) return;
+            extraWanted = true;
             window.clearTimeout(extraTimer.current);
-            loadBuilderExtra(file.builtAt)
-              .then((extra) => {
-                for (const s of SLOTS) {
-                  for (const model of m[s] as AnyModel[]) {
-                    const row = model.cheapest;
-                    row.url = extra.urls[row.id] ?? row.url;
-                    if (!row.title) row.title = extra.titles[row.id] ?? '';
-                  }
-                }
-                setExtraVersion((v) => v + 1);
-              })
-              .catch(() => {}); // the builder still works; links and title search just stay missing
+            for (const s of SLOTS) fetchExtra(s);
           };
-          if (Object.keys(restored).length || LAZY_SLOTS.some((s) => parts[s])) extraRef.current();
+          if (SLOTS.some((s) => parts[s])) extraRef.current();
           else extraTimer.current = window.setTimeout(() => extraRef.current?.(), EXTRA_DELAY);
         })
         .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)));
@@ -242,8 +247,8 @@ export function useBuilderState() {
         if (!key) continue;
         const found = (models[s] as AnyModel[]).find((x) => x.key === key);
         if (found) (next as Record<Slot, AnyModel>)[s] = found;
-        else if (LAZY_SLOTS.includes(s)) {
-          // Its file hasn't arrived (or doesn't have it): restored when it does.
+        else {
+          // Its step's file hasn't arrived (or doesn't have it): restored when it does.
           pendingLazy[s] = key;
           slotRef.current?.(s);
         }
@@ -265,8 +270,8 @@ export function useBuilderState() {
     clearShareParams();
   };
   const update = (b: Build) => {
-    // A lazy slot the user empties or fills themselves is no longer pending.
-    for (const s of LAZY_SLOTS) if (s in b) delete pendingLazy[s];
+    // A step the user empties or fills themselves is no longer pending.
+    for (const s of SLOTS) if (s in b) delete pendingLazy[s];
     setBuild(b);
     writeSaved(b, prefs);
     own();
@@ -277,8 +282,8 @@ export function useBuilderState() {
     own();
   };
 
-  // Measured length range per graphics chip, for "Likely fits" (src/lib/builder.ts fitContext).
-  const ctx = useMemo(() => fitContext(models?.gpu ?? []), [models]);
+  // Measured length range per graphics chip, for "Likely fits" (src/lib/builder.ts fitContext, from the index file).
+  const ctx = useMemo<FitContext>(() => (chipLengths ? { chips: new Map(Object.entries(chipLengths)) } : NO_CONTEXT), [chipLengths]);
 
   return {
     models,
@@ -294,12 +299,12 @@ export function useBuilderState() {
     extraVersion,
     /** When the site's data was built (the prices' date). */
     builtAt,
-    /** Load builder-extra.json now (first interaction); a no-op before builder.json has arrived. */
+    /** Load the loaded steps' extra files now (first interaction); a no-op before the index has arrived. */
     wantExtra: () => extraRef.current?.(),
-    /** Load a lazy slot's file (storage) now; a no-op for the others and once requested. */
+    /** Load a step's file now; a no-op once requested (until it fails). */
     wantSlot: (slot: Slot) => slotRef.current?.(slot),
-    /** False while a lazy slot's parts haven't arrived (or failed: undefined → still loading). */
-    slotReady: (slot: Slot) => !LAZY_SLOTS.includes(slot) || lazyReady[slot] === true,
+    /** False while a step's parts haven't arrived (or failed). */
+    slotReady: (slot: Slot) => slotState[slot] === true,
   };
 }
 

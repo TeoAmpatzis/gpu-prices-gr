@@ -12,7 +12,7 @@ import { VALIDATION_MODE, validateLatest, type Rejection } from '../src/data/val
 import { CONFLICT_CHECKS, conflicts, type Conflict } from '../src/data/validate/conflicts';
 import { CATEGORIES, type CategoryConfig } from '../src/lib/categories';
 import type { BaseListing } from '../src/types';
-import { builderFile } from '../src/lib/derive';
+import { builderFiles } from '../src/lib/derive';
 import { fromColumns } from '../src/lib/columns';
 // Resolved from this file, not the working directory, so the script runs from anywhere.
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -92,21 +92,20 @@ for (const c of RANGES) {
 type Cols = { cols: string[]; rows: unknown[][] };
 const builderRows = (all: Partial<Record<Category, Latest>>) => {
   const out: Record<string, Map<string, Record<string, unknown>>> = {};
-  const { file, lazy } = builderFile(all, BUILT_AT);
+  const { slots } = builderFiles(all, BUILT_AT);
   const put = (slot: string, c: Cols) => {
     const m = new Map<string, Record<string, unknown>>();
     for (const r of fromColumns<Record<string, unknown>>(c as never)) m.set(String(r['id']), r);
     out[slot] = m;
   };
-  for (const [slot, c] of Object.entries(file.slots)) put(slot, c as unknown as Cols);
-  for (const [slot, f] of Object.entries(lazy)) put(slot, f as unknown as Cols);
+  for (const [slot, c] of Object.entries(slots)) put(slot, c as unknown as Cols);
   return out;
 };
 const before = builderRows(raw);
 const after = builderRows(checked);
 lines.push('## Builder rows changed', '');
 lines.push(
-  "builder.json built from the scraper's raw data and again from the checked data, rows matched by listing id " +
+  "The builder's step files (data/builder/<slot>.json) built from the scraper's raw data and again from the checked data, rows matched by listing id " +
     '(a row is one model; its value is the one the builder uses for that model). Rows whose value differs:',
   '',
 );

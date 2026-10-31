@@ -14,7 +14,7 @@ export const SLOT_OF: Record<Category, Slot> = {
 /**
  * Per slot, the fields the compatibility rules read (src/engine/rules) that the listing data has:
  * the model-wide values come from `slotFields`, the others from the model's cheapest listing, exactly
- * as in a builder.json row. A field the data doesn't carry (yet) is simply null.
+ * as in a builder step file row. A field the data doesn't carry (yet) is simply null.
  */
 export const PART_FIELDS: Record<Slot, string[]> = {
   cpu: ['chip', 'socket', 'igpu', 'coolerIncluded', 'boxCooler', 'cores'],

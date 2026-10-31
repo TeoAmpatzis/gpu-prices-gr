@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { fromColumns } from '../../src/lib/columns';
-import { builderFile } from '../../src/lib/derive';
+import { builderFiles } from '../../src/lib/derive';
 import { SLOTS, slotModels, usable as builderUsable, type Slot } from '../../src/lib/builder';
 import { PART_FIELDS, SLOT_OF, toPart, usable } from '../../src/lib/pick';
 import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
@@ -13,9 +13,9 @@ for (const cat of CATEGORY_IDS) {
   const raw = JSON.parse(readFileSync(`public/data/${cat}/latest.json`, 'utf8')) as Latest;
   validated[cat] = validateLatest(cat, raw, VALIDATION_MODE).latest;
 }
-const built = builderFile(validated, '2026-10-12T00:00:00Z');
+const built = builderFiles(validated, '2026-10-12T00:00:00Z');
 const rowsOf = (slot: Slot): Record<string, unknown>[] =>
-  fromColumns<Record<string, unknown>>(built.file.slots[slot] ?? built.lazy[slot]);
+  fromColumns<Record<string, unknown>>(built.slots[slot]);
 const modelsOf = (slot: Slot) => slotModels(slot, (validated[slot as Category]?.listings ?? []) as never[]);
 const sample = <T,>(xs: T[], n: number) => xs.filter((_, i) => i % Math.max(1, Math.floor(xs.length / n)) === 0).slice(0, n);
 

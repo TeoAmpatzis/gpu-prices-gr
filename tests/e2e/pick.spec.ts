@@ -63,7 +63,7 @@ test('AM5 CPU in the build: /mobo?pick=1 hides AM4 boards; switched off they are
   await expect(onlyCompatible(page)).toHaveAttribute('aria-checked', 'true');
   await expect(onlyCompatible(page)).toContainText(/Only compatible \(\d[\d,]*\u00a0hidden\)/);
   // The fields were stored and current: no chunk, never builder.json.
-  expect(requests.filter((p) => p.startsWith('/data/compat/') || p === '/data/builder.json')).toEqual([]);
+  expect(requests.filter((p) => p.startsWith('/data/compat/') || p.startsWith('/data/builder'))).toEqual([]);
 
   await onlyCompatible(page).click();
   await expect.poll(() => new URL(page.url()).search).toBe('?pick=1&compat=0&q=b550&sock=am4');
@@ -137,7 +137,7 @@ test('an old build (keys only) loads only its compat chunk, never builder.json, 
   const chunks = requests.filter((p) => p.startsWith('/data/compat/'));
   expect(chunks).toHaveLength(1); // the CPU's chunk; the card is not read by the board page's rules
   expect(chunks[0]).toMatch(/^\/data\/compat\/cpu-\d\d\.json$/);
-  expect(requests).not.toContain('/data/builder.json');
+  expect(requests.filter((p) => p.startsWith('/data/builder'))).toEqual([]);
   const compat = (await savedBuild(page)).compat as Record<string, { fields: Record<string, unknown> }>;
   expect(compat.cpu.fields.socket).toBe('AM5');
 
@@ -146,7 +146,7 @@ test('an old build (keys only) loads only its compat chunk, never builder.json, 
   await page.reload();
   await waitChecked(page);
   await expect(rows(page)).toHaveCount(0);
-  expect(requests.filter((p) => p.startsWith('/data/compat/') || p === '/data/builder.json')).toEqual([]);
+  expect(requests.filter((p) => p.startsWith('/data/compat/') || p.startsWith('/data/builder'))).toEqual([]);
   expect(errors).toEqual([]);
 });
 
@@ -410,7 +410,7 @@ test('a normal category page loads no pick code, no compat chunk and no builder.
   await withBuild(page, { cpu: AM5_CPU }, '/gpu');
   await expect(rows(page).first()).toBeVisible({ timeout: 20_000 });
   await page.waitForLoadState('networkidle');
-  expect(requests.filter((p) => p.startsWith('/data/compat/') || p === '/data/builder.json' || /\/assets\/(PickView|pick\.worker)-/.test(p))).toEqual([]);
+  expect(requests.filter((p) => p.startsWith('/data/compat/') || p.startsWith('/data/builder') || /\/assets\/(PickView|pick\.worker)-/.test(p))).toEqual([]);
   await expect(page.locator('main [data-pick=bar] [role=status]')).toHaveCount(0);
   await expect(page.locator('main [role=switch]')).toHaveCount(0);
   await expect(addButtons(page)).toHaveCount(0);

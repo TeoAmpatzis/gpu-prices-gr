@@ -18,7 +18,7 @@ const M = {
   mode: { el: 'Τρόπος συναρμολόγησης', en: 'Builder mode' },
 } satisfies Record<string, Text>;
 
-/** The measurement notice: the text, then a line with today's percentages (from builder.json). */
+/** The measurement notice: the text, then a line with today's percentages (from the builder's index file). */
 const C = {
   text: {
     el: 'Οι διαστάσεις για τον έλεγχο συμβατότητας συλλέγονται σταδιακά. Όσα δεν έχουν ακόμα στοιχεία εμφανίζονται ως «Χωρίς επιβεβαίωση»· προστίθενται καθημερινά.',
@@ -85,7 +85,7 @@ export default function Builder() {
           <Info className="mt-0.5 h-4 w-4 shrink-0" />
           <span className="flex flex-col gap-1">
             <span>{t(C.text)}</span>
-            {/* The percentages are their own line, which keeps its room while builder.json loads (invisible,
+            {/* The percentages are their own line, which keeps its room while the index file loads (invisible,
                 fixed-width digits): the notice doesn't grow and push the steps down when they arrive (CLS), and
                 the large text above is complete in the first render (it's the page's largest paint). */}
             <span className={coverage ? undefined : 'invisible'} aria-hidden={coverage ? undefined : true}>
@@ -100,9 +100,9 @@ export default function Builder() {
   );
 
   return (
-    // The page renders before builder.json arrives (the text is the largest element; waiting for the
+    // The page renders before its data arrives (the text is the largest element; waiting for the
     // data cost 1.7 s of LCP on phones). Any click, tap or keyboard focus fetches the shop links and
-    // search titles (builder-extra.json).
+    // search titles (the steps' extra files).
     <div
       className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]"
       onPointerDownCapture={wantExtra}

@@ -2,8 +2,8 @@
 // download that finished before a paint as part of that paint's cost, even when it didn't block it; v1
 // fetched its data after painting, and these keep v2's pages in that order:
 //   afterFirstPaint   — the page's code and data start once the first frame (header, title) is on screen.
-//   afterLargestPaint — the builder's builder.json starts once its step text (the page's largest paint)
-//                       is on screen.
+//   afterLargestPaint — the builder's index file (/data/builder/index.json) starts once its step text (the
+//                       page's largest paint) is on screen; each step's file follows in idle time or on demand.
 // Both are a few milliseconds later than starting at once, and never block anything.
 
 let interacted = false;

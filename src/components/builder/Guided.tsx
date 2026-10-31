@@ -373,7 +373,7 @@ type Rated = { m: Model<BaseListing>; rating: Rating };
 function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang: Lang }) {
   const t = (x: Text) => tr(lang, x);
   const { models, build, update, ctx, prefs, extraVersion, wantSlot } = state;
-  // Storage has its own file (builder.LAZY_SLOTS), fetched when its step opens.
+  // Each step's parts are their own file (/data/builder/<slot>.json), fetched when the step opens.
   const loading = state.loading || !state.slotReady(slot);
   useEffect(() => {
     if (!state.loading) wantSlot(slot);
@@ -388,7 +388,7 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
   // Fans step: sizes the chosen case needs (from the fan plan), and the type named in the product.
   const planSizes = useMemo(() => (slot === 'fan' && build.case ? [...new Set(fanPlan(build).add.map((a) => a.size))] : []), [slot, build]);
   const [sizes, setSizes] = useState<number[]>(planSizes);
-  // A saved build arrives with builder.json, after the first render: follow the plan when it changes.
+  // A saved build arrives with its steps' files, after the first render: follow the plan when it changes.
   const planKey = planSizes.join();
   useEffect(() => setSizes(planSizes), [planKey]);
   const [fanType, setFanType] = useState<'airflow' | 'pressure' | null>(null);
@@ -409,7 +409,7 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
     if (slot === 'fan' && fanType) list = list.filter((r) => (r.m as Model<FanListing>).cheapest.fanType === fanType);
     // Clashes (shown when "Only compatible" is off) go last, greyed out.
     return { shown: [...list].sort((a, b) => Number(a.rating.fit === 'no') - Number(b.rating.fit === 'no') || order(a, b)), hidden: clashes };
-    // extraVersion: search titles arrive later (builder-extra.json).
+    // extraVersion: search titles arrive later (/data/builder/<slot>-extra.json).
   }, [rated, order, query, onlyCompatible, verifiedOnly, withinBudget, left, cfg, extraVersion, slot, sizes, fanType]);
   useEffect(() => setLimit(PAGE), [query, sort, onlyCompatible, verifiedOnly, withinBudget, sizes, fanType]);
 

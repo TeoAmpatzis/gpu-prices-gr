@@ -153,7 +153,7 @@ function priceFit(price: number, lo: number, hi: number): number {
   return Math.max(0, 1 - Math.abs(Math.log2(price / edge)) * 0.5);
 }
 
-/** builder.json rows carry popularityRaw × POP_SCALE, rounded (`pop`): 2 costs 7 KB gzipped. */
+/** The builder step files' rows carry popularityRaw × POP_SCALE, rounded (`pop`): 2 costs 7 KB gzipped. */
 export const POP_SCALE = 2;
 
 /** How much a model is on offer: its listings, its shops, the sites listing it (log-scaled). A builder

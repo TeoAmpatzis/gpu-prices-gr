@@ -43,7 +43,8 @@ function prefetchPath(path: string) {
   else if (r.kind === 'category') void loadCategoryPage().then((m) => m.prefetch(r.cat));
   else if (r.kind === 'builder') {
     void loadBuilderView();
-    void import('./lib/data').then((m) => m.prefetch('builder'));
+    // Its first screen's small index (/data/builder/index.json); each step's parts load when the step opens.
+    void import('./lib/builderFiles').then((m) => m.loadIndex()).catch(() => {});
   } else if (r.kind === 'info') void loadInfoView();
 }
 
@@ -55,8 +56,8 @@ function prefetchPath(path: string) {
 function startFirstPage() {
   const first = matchRoute(location.pathname);
   if (first.kind === 'builder') {
-    // Code only: the builder requests builder.json itself once it has rendered, as in v1. Its step text is
-    // the page's largest paint, and the 270 KB file finishing before it counted toward it (mobile 91 → 88).
+    // Code only: the builder requests its index file itself once it has rendered, as in v1. Its step text is
+    // the page's largest paint, and the 270 KB builder.json finishing before it counted toward it (mobile 91 → 88).
     void loadBuilderView();
     return;
   }

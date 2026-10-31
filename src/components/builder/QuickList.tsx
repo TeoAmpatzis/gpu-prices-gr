@@ -37,7 +37,7 @@ export default function QuickList({ state }: { state: BuilderState }) {
   const t = (x: Text) => tr(lang, x);
   const { models, build, update, ctx, extraVersion } = state;
   const [open, setOpen] = useState<Slot | null>(null);
-  // Storage's parts come in their own file (builder.LAZY_SLOTS), requested when its picker opens.
+  // Each step's parts come in their own file (/data/builder/<slot>.json), requested when its picker opens.
   const loading = state.loading || (open != null && !state.slotReady(open));
   useEffect(() => {
     if (open && !state.loading) state.wantSlot(open);
@@ -56,7 +56,7 @@ export default function QuickList({ state }: { state: BuilderState }) {
       .filter((m) => !q || m.listings.some((l) => cfg.searchText(l).toLowerCase().includes(q)))
       .sort((a, b) => a.cheapest.price - b.cheapest.price)
       .map((m) => ({ m, rating: rate(open, m as never, rest, ctx) }));
-    // extraVersion: the search titles arrive later (builder-extra.json).
+    // extraVersion: the search titles arrive later (/data/builder/<slot>-extra.json).
   }, [models, open, query, build, ctx, extraVersion]);
   const options = verifiedOnly ? rated.filter((o) => o.rating.fit !== 'unverified') : rated;
   const fitCounts = rated.reduce<Partial<Record<Fit, number>>>((n, o) => {

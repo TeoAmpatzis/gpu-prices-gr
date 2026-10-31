@@ -1,8 +1,8 @@
 // Build step: derives the site's small data files from the scraper's JSON in public/data
 // (src/lib/derive.ts) and refuses to publish data that looks broken.
 //
-// - `vite build`: writes data/<cat>/list.v2.json, data/<cat>/detail.json, data/builder(-extra).json,
-//   data/builder-<slot>.json (builder.LAZY_SLOTS: storage), data/<cat>/model/000…255.json (product pages) and
+// - `vite build`: writes data/<cat>/list.v2.json, data/<cat>/detail.json, data/builder/index.json,
+//   data/builder/<slot>.json + <slot>-extra.json (one per builder step), data/<cat>/model/000…255.json (product pages) and
 //   data/manifest.json into dist after comparing the counts with the live site's manifest. If a
 //   category is empty or lost more than derive.MAX_DROP of its models/listings, or a current model is not
 //   in exactly one model chunk, the build fails and Vercel keeps serving the previous deployment.
@@ -20,7 +20,7 @@ import { CATEGORY_IDS } from './src/lib/categories';
 import { VALIDATION_MODE, validateLatest } from './src/data/validate';
 import { conflicts } from './src/data/validate/conflicts';
 import { compatFiles } from './src/lib/compatBuild';
-import { builderFile, checkData, detailFile, listFile, manifest, modelChunks, searchFile, withMakerTables, type CategoryInput, type ImageLookup } from './src/lib/derive';
+import { builderFiles, checkData, detailFile, listFile, manifest, modelChunks, searchFile, withMakerTables, type CategoryInput, type ImageLookup } from './src/lib/derive';
 import { photoId } from './src/lib/images';
 import { aliasFile, type AliasSource, type SlugOf } from './src/data/modelAliases';
 import { nameSlug } from './src/lib/slug';
@@ -128,14 +128,14 @@ export function derive(
   }
   console.log(`[data] validation (${VALIDATION_MODE}): ${rejectedTotal ? `${rejectedTotal} value(s) out of range — ${rejected.join(', ')}` : 'none'}`);
   console.log(`[data] conflicts (${VALIDATION_MODE}): ${conflictTotal ? `${conflictTotal} value(s) unknown or corrected — ${conflicted.join(', ')}` : 'none'}`);
-  const { file: builder, extra, lazy } = builderFile(latest, builtAt, image);
-  files['data/builder.json'] = JSON.stringify(builder);
-  files['data/builder-extra.json'] = JSON.stringify(extra);
-  for (const [slot, file] of Object.entries(lazy)) files[`data/builder-${slot}.json`] = JSON.stringify(file);
+  const builder = builderFiles(latest, builtAt, image);
+  files['data/builder/index.json'] = JSON.stringify(builder.index);
+  for (const [slot, file] of Object.entries(builder.slots)) files[`data/builder/${slot}.json`] = JSON.stringify(file);
+  for (const [slot, file] of Object.entries(builder.extras)) files[`data/builder/${slot}-extra.json`] = JSON.stringify(file);
   for (const [path, chunk] of Object.entries(compatFiles(latest, builtAt))) files[path] = JSON.stringify(chunk);
   files['data/aliases.json'] = aliasesJson(models, builtAt, readJson<AliasSource>(ALIASES_PATH, {}));
   files['data/search.json'] = JSON.stringify(searchFile(latest, builtAt));
-  const m = manifest(latest, builder, builtAt, history, lazy);
+  const m = manifest(latest, builder.slots, builtAt, history);
   files['data/manifest.json'] = JSON.stringify(m);
   return { files, manifest: m, models };
 }

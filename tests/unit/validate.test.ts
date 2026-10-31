@@ -3,7 +3,7 @@ import { evaluate, type Part } from '../../src/engine';
 import { ruleResult } from '../compat/engine-adapter';
 import { RANGES } from '../../src/data/validate/ranges';
 import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
-import { builderFile } from '../../src/lib/derive';
+import { builderFiles } from '../../src/lib/derive';
 import { fromColumns } from '../../src/lib/columns';
 import type { BaseListing, Latest } from '../../src/types';
 
@@ -95,7 +95,7 @@ describe('validateLatest', () => {
     };
     const input = latest([spire]);
     const caseRow = (all: Latest<BaseListing>) => {
-      const rows = fromColumns(builderFile({ case: all as never }, '2026-10-11T00:00:00Z').file.slots.case!) as unknown as Row[];
+      const rows = fromColumns(builderFiles({ case: all as never }, '2026-10-11T00:00:00Z').slots.case) as unknown as Row[];
       return rows.find((r) => r['id'] === 'skroutz:spire');
     };
     expect(caseRow(input)?.['gpuMaxMm']).toBe(3.502); // raw data: the bad value reaches the builder

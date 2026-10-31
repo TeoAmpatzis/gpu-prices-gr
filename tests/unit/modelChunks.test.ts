@@ -17,7 +17,6 @@ import { recommendedScores } from '../../src/lib/ranking';
 import { modelSlug, nameSlug, slugLookup } from '../../src/lib/slug';
 import type {
   BaseListing,
-  BuilderFile,
   Category,
   CoolerListing,
   CpuListing,
@@ -351,8 +350,7 @@ describe('reviewer examples (fix round 1)', () => {
 
 describe('publishing check: every current model in exactly one chunk', () => {
   const all = Object.fromEntries(CATEGORY_IDS.filter((c) => inputs[c]).map((c) => [c, inputs[c]!.latest])) as Partial<Record<Category, Latest>>;
-  const builder: BuilderFile = { v: 1, builtAt: BUILT, slots: {}, coverage: { gpu: 0, case: 0, cooler: 0 } };
-  const next: Manifest = manifest(all, builder, BUILT);
+  const next: Manifest = manifest(all, {}, BUILT);
   next.builder = Object.fromEntries(Object.keys(SLOT_OF).map((s) => [s, 1]));
   const modelProblems = (cs: Partial<Record<Category, ModelChunk[]>>) => checkData(next, next, cs).filter((p) => p.includes('model chunk'));
   /** The real chunks with a copy of one category's, to change; returns both. */
