@@ -65,7 +65,7 @@ describe('chart data from the model chunks', () => {
 
 describe('dist leaves the raw scraper files out (allow-list of generated files)', () => {
   const RAW = ['latest.json', 'offers.json', 'specs.json', 'image_urls.json', 'history.json', 'history_imported.json'];
-  const GENERATED = ['data/manifest.json', 'data/builder.json', 'data/search.json', 'data/gpu/list.v2.json', 'data/gpu/detail.json', 'data/gpu/model/000.json', 'data/compat/cpu-00.json'];
+  const GENERATED = ['data/manifest.json', 'data/builder/index.json', 'data/builder/case.json', 'data/builder/case-extra.json', 'data/search.json', 'data/gpu/list.v2.json', 'data/gpu/detail.json', 'data/gpu/model/000.json', 'data/compat/cpu-00.json'];
   function fakeDist() {
     const out = mkdtempSync(join(tmpdir(), 'dist-'));
     const put = (p: string) => {

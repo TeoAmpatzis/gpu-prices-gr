@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 import type { Category, CpuListing, Latest } from '../../src/types';
 import { validateLatest, type Rejection } from '../../src/data/validate';
 import { minPsuFloor } from '../../src/data/validate/ranges';
-import { builderFile } from '../../src/lib/derive';
+import { builderFiles } from '../../src/lib/derive';
 import { fromColumns } from '../../src/lib/columns';
 import { powerEstimate, v1RecommendedPsu, type Part } from '../../src/engine';
 import { cpuPowerRow } from '../../src/engine/data/cpuPower';
@@ -38,9 +38,9 @@ for (const cat of ['gpu', 'cpu'] as const) {
   if (cat === 'gpu') rejectedMinPsu = v.rejections.filter((r) => r.check === 'gpu-minpsu-plausible');
   updated.push(`${cat}: ${latest.updatedAt}`);
 }
-const { file } = builderFile(all, BUILT_AT);
+const { slots } = builderFiles(all, BUILT_AT);
 interface CardRow { id: string; chip: string; title: string; minPsu: number | null }
-const cards = fromColumns<Record<string, unknown>>(file.slots.gpu as never).map((r): CardRow => ({
+const cards = fromColumns<Record<string, unknown>>(slots.gpu as never).map((r): CardRow => ({
   id: String(r['id']),
   chip: String(r['chip']),
   title: String(r['title']),

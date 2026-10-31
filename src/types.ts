@@ -1,5 +1,6 @@
 // Mirror of the JSON written by scraper/main.py (see scraper/models.py).
 import type { AliasRecord } from './data/modelAliases';
+import type { Slot } from './lib/slots';
 
 export type Category = 'gpu' | 'cpu' | 'mobo' | 'ram' | 'storage' | 'psu' | 'case' | 'fan' | 'cooler';
 export type Brand = 'NVIDIA' | 'AMD' | 'Intel';
@@ -22,8 +23,8 @@ export interface BaseListing {
   total?: number | null;
   merchant?: string | null; // shop with that best total
   drop?: number | null; // discount (%) the site itself shows for this offer
-  img?: string | null; // builder.json rows only: the model's stored photo ("<cat>/<id>")
-  pop?: number | null; // builder.json rows only: the model's popularity × POP_SCALE (src/lib/ranking.ts popularityRaw)
+  img?: string | null; // builder step file rows only: the model's stored photo ("<cat>/<id>")
+  pop?: number | null; // builder step file rows only: the model's popularity × POP_SCALE (src/lib/ranking.ts popularityRaw)
 }
 
 export interface GpuListing extends BaseListing {
@@ -238,24 +239,35 @@ export interface ListFile extends Columns {
 /** /data/<cat>/detail.json — listing id → shop URL (loaded when a product is opened). */
 export type DetailFile = Record<string, string>;
 
-/** /data/builder.json — one row per model the PC builder can offer, per slot (src/lib/derive.ts). */
-export interface BuilderFile {
-  v: 1;
+/**
+ * The PC builder's files (step 5 task 6, src/lib/derive.ts builderFiles; build outputs, never committed). The first
+ * screen reads only /data/builder/index.json; each step's parts are /data/builder/<slot>.json, fetched when the step
+ * or its picker opens; their shop links and search titles /data/builder/<slot>-extra.json (src/lib/builderFiles.ts).
+ */
+export interface BuilderIndex {
+  v: 2;
   builtAt: string;
-  slots: Record<string, Columns>;
+  /** Per slot: rows in its file and the file's size (bytes, not compressed), for skeleton counts and the data check. */
+  slots: Record<Slot, { rows: number; bytes: number }>;
+  /** Rule 6 estimates: measured length range per graphics chip (builder.fitContext over the offered cards). */
+  chipLengths: Record<string, { cards: number; makers: number; min: number; max: number }>;
+  /** The cheapest build per use, for "costs at least X € today" (filled by step 5 task 10). */
+  minimum: Partial<Record<BuilderUseKey, { total: number; parts: Partial<Record<Slot, string>> } | null>>;
   /** % of graphics cards / cases / coolers whose measurements are known (all models, not just offered). */
   coverage: { gpu: number; case: number; cooler: number };
 }
+export type BuilderUseKey = 'gaming-1080p' | 'gaming-1440p' | 'gaming-4k' | 'everyday' | 'creating' | 'unsure';
 
-/** /data/builder-<slot>.json — a slot kept out of builder.json (builder.LAZY_SLOTS: storage), loaded
- * when its step opens; its rows keep their URL and shop titles. */
+/** /data/builder/<slot>.json — one row per model the builder can offer in that step (columns; no links, no titles). */
 export interface BuilderSlotFile extends Columns {
-  v: 1;
+  v: 2;
   builtAt: string;
 }
 
-/** /data/builder-extra.json — by builder row id: shop URL, and the model's shop titles (picker search). */
-export interface BuilderExtra {
+/** /data/builder/<slot>-extra.json — by row id: shop URL, and the model's shop titles (picker search). */
+export interface BuilderExtraFile {
+  v: 2;
+  builtAt: string;
   urls: Record<string, string>;
   titles: Record<string, string>;
 }

@@ -45,5 +45,12 @@ n = clone(); n.cats.storage.models = 5;
 expect('new category (not live yet) with 5 models fails', checkData(n, noStorage), true);
 n = clone(); n.builder.storage = 0;
 expect('builder offers no drives fails', checkData(n, live), true);
+// One file per builder step (step 5 task 6): a step's model count compared with the live manifest's.
+n = clone(); n.builder.case = Math.round(live.builder.case * 0.75);
+expect('builder cases -25% (normal swing) passes', checkData(n, live), false);
+n = clone(); n.builder.case = Math.round(live.builder.case * 0.65);
+expect('builder cases -35% fails', checkData(n, live), true);
+const noFanStep = clone(); delete noFanStep.builder.fan;
+expect('builder step the live site does not count yet: no comparison', checkData(clone(), noFanStep), false);
 console.log(bad ? `${bad} FAILED` : 'all checks behave as intended');
 process.exit(bad ? 1 : 0);

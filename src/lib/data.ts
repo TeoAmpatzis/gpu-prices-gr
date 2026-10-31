@@ -1,8 +1,5 @@
 import type {
   BaseListing,
-  BuilderExtra,
-  BuilderFile,
-  BuilderSlotFile,
   Category,
   DailyLow,
   DetailFile,
@@ -91,16 +88,12 @@ export const loadDetails = memo(
     ),
 );
 
-export const loadBuilder = memo((_: 'all') => getJson<BuilderFile>('/data/builder.json'));
-/** Shop links and picker-search titles of the builder's rows; fetched once the builder has appeared. */
-export const loadBuilderExtra = memo((builtAt: string) => getJson<BuilderExtra>(`/data/builder-extra.json?v=${builtAt}`));
-/** A builder slot kept out of builder.json (builder.LAZY_SLOTS), same build: key "<slot>?v=<builtAt>". */
-export const loadBuilderSlot = memo((key: string) => getJson<BuilderSlotFile>(`/data/builder-${key}`));
-
-/** Start loading a page's data before it is opened (tab hover/focus/touch), so the switch is instant. */
+/**
+ * Start loading a category page's data before it is opened (tab hover/focus/touch), so the switch is instant. The
+ * builder's own files: src/lib/builderFiles.ts (App.prefetchPath).
+ */
 export function prefetch(page: string) {
-  if (page === 'builder') void loadBuilder('all').catch(() => {});
-  else if (/^(gpu|cpu|mobo|ram|storage|psu|case|fan|cooler)$/.test(page)) void loadList(page as Category).catch(() => {});
+  if (/^(gpu|cpu|mobo|ram|storage|psu|case|fan|cooler)$/.test(page)) void loadList(page as Category).catch(() => {});
 }
 
 export interface Model<L extends BaseListing> {

@@ -1,4 +1,4 @@
-// Equivalence test: the site's results from the derived files (list.v2.json / builder.json) must equal
+// Equivalence test: the site's results from the derived files (list.v2.json / data/builder/<slot>.json) must equal
 // its results from the scraper's full files. Run from the repo root: npx tsx scripts/checks/data-equivalence.test.mts
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -8,7 +8,7 @@ const ROOT = process.cwd();
 const src = (p: string) => pathToFileURL(join(ROOT, 'src', p)).href;
 const { CATEGORIES, CATEGORY_IDS } = await import(src('lib/categories.tsx'));
 const { applyFilters, defaultFilters, allTimeLow, saleOf } = await import(src('lib/data.ts'));
-const { listFile, builderFile, reduceHistory } = await import(src('lib/derive.ts'));
+const { listFile, builderFiles, reduceHistory } = await import(src('lib/derive.ts'));
 const { implausibleDips, isDipPrice, sharedImportedDays, sharedImportedLows, importGlitches, untrustedPoints, withoutSharedLow } = await import(src('lib/dips.ts'));
 const { fromColumns, decodeHist, decodePhotos } = await import(src('lib/columns.ts'));
 const { productImage } = await import(src('lib/images.ts'));
@@ -190,7 +190,7 @@ for (const cat of CATEGORY_IDS) {
 }
 
 // ---------- Builder ----------
-const { file: bf, extra, lazy } = builderFile(allLatest, built);
+const bf = builderFiles(allLatest, built);
 const spec = (slot: string, m: { cheapest: Record<string, unknown> } & Record<string, unknown>) =>
   JSON.stringify({
     chip: m.chip,
@@ -225,9 +225,10 @@ const oldModels: Record<string, any[]> = {};
 const newModels: Record<string, any[]> = {};
 for (const slot of B.SLOTS) {
   const full = B.candidates(slot, B.slotModels(slot, (allLatest[slot] as { listings: unknown[] }).listings), {});
-  // Lazy slots (storage) come from their own file, links and titles included.
-  const rows = fromColumns(bf.slots[slot] ?? lazy[slot]) as any[];
-  for (const r of rows) { r.url = extra.urls[r.id] ?? r.url; if (!r.title) r.title = extra.titles[r.id] ?? ''; } // as Builder.tsx does
+  // One file per step; its links and titles from the step's extra file, as builderState.ts writes them on.
+  const rows = fromColumns(bf.slots[slot]) as any[];
+  const extra = bf.extras[slot];
+  for (const r of rows) { r.url = extra.urls[r.id] ?? r.url; if (!r.title) r.title = extra.titles[r.id] ?? ''; }
   const slim = B.candidates(slot, B.slotModels(slot, rows), {});
   oldModels[slot] = full;
   newModels[slot] = slim;
@@ -253,9 +254,11 @@ for (const slot of B.SLOTS) {
 }
 // Graphics chip length ranges ("Likely fits"): the same from the rows as from the full data.
 const ctxOld = B.fitContext(oldModels.gpu);
-const ctxNew = B.fitContext(newModels.gpu);
+// The browser takes them from the index file (builderState.ts), built from the same rows.
+const ctxNew = { chips: new Map(Object.entries(bf.index.chipLengths)) };
 const ctxJson = (c: any) => JSON.stringify([...c.chips.entries()].sort());
-if (ctxJson(ctxOld) !== ctxJson(ctxNew)) fail('builder chip length ranges differ');
+if (ctxJson(ctxOld) !== ctxJson(B.fitContext(newModels.gpu))) fail('builder chip length ranges differ');
+if (ctxJson(ctxOld) !== ctxJson(ctxNew)) fail('builder index chip length ranges differ');
 console.log(`builder chip length ranges: ${ctxOld.chips.size} chips with enough measured cards`);
 // Compatibility with sample builds: one random part per slot, then every other slot's options and labels.
 let rand = 7;
@@ -286,7 +289,7 @@ for (let t = 0; t < 40; t++) {
   if (n1 !== n2) fail(`builder notes test ${t} differ`);
 }
 console.log(`builder labels in the sample builds: ${JSON.stringify(labels)}`);
-console.log(`coverage: ${JSON.stringify(bf.coverage)}`);
+console.log(`coverage: ${JSON.stringify(bf.index.coverage)}`);
 console.log(`C6 dip differences, full history vs the list file (expected, not failures): ${c6Diffs} model rows`);
 console.log('  (the old 84 "failures" came from comparing the scraper FULL history.json with the list file history, which has the C6 implausible dips removed since commit f198493; that comparison is only counted here, the pass/fail comparison is old list file vs new list file)');
 const t7bTotal = Object.values(t7bDiffs).reduce((n, s) => n + s.size, 0);

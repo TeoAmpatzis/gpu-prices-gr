@@ -58,7 +58,7 @@ export default function Review({ state, lang, onGo }: { state: BuilderState; lan
   const { build, ctx, prefs, builtAt, wantExtra } = state;
   const [copied, setCopied] = useState<'list' | 'link' | null>(null);
   const timer = useRef<number | undefined>(undefined);
-  // The list carries the shop links (builder-extra.json).
+  // The list carries the shop links (/data/builder/<slot>-extra.json).
   useEffect(() => wantExtra(), [wantExtra]);
   useEffect(() => () => window.clearTimeout(timer.current), []);
 

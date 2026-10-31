@@ -166,5 +166,5 @@ export function specLine(slot: Slot, m: AnyModel, lang: Lang): string {
   }
 }
 
-/** A builder part's photo: builder.json rows carry the stored photo (`img`). */
+/** A builder part's photo: the builder step files' rows carry the stored photo (`img`). */
 export const partImage = (m: AnyModel) => storedImage(m.cheapest.img);
