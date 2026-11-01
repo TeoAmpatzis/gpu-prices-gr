@@ -1,8 +1,7 @@
-import { BookOpen } from 'lucide-react';
-import { tr, useLang, type Text } from '../lib/i18n';
+import type { Text } from '../lib/i18n';
 
-/** Short step-by-step guide to choosing parts, shown above the builder (and per step in the guided
- * builder: GUIDE_STEPS[i] — 0 budget/use, 1 CPU + board, 2 RAM, 3 GPU, 4 cooler, 5 storage, 6 case,
+/** Short step-by-step guide to choosing parts, one line per step in the guided builder (task 11: the box above the
+ * part list is gone): GUIDE_STEPS[i] — 0 budget/use, 1 CPU + board, 2 RAM, 3 GPU, 4 cooler, 5 storage, 6 case,
  * 7 fans, 8 PSU; wizard.GUIDE_INDEX). */
 export const GUIDE_STEPS: { title: Text; body: Text }[] = [
   {
@@ -69,37 +68,3 @@ export const GUIDE_STEPS: { title: Text; body: Text }[] = [
     },
   },
 ];
-
-export default function BuildGuide() {
-  const lang = useLang();
-  return (
-    <details className="card group p-4" open>
-      <summary className="tap flex cursor-pointer list-none items-center gap-2 text-sm font-semibold">
-        <BookOpen className="h-4 w-4 text-accent" />
-        {tr(lang, {
-          el: 'Οδηγός: πώς διαλέγουμε εξαρτήματα, βήμα-βήμα',
-          en: 'Guide: how to choose parts, step by step',
-        })}
-        <span className="ml-auto text-xs font-normal text-muted group-open:hidden">
-          {tr(lang, { el: 'Άνοιγμα', en: 'Show' })}
-        </span>
-        <span className="ml-auto hidden text-xs font-normal text-muted group-open:inline">
-          {tr(lang, { el: 'Κλείσιμο', en: 'Hide' })}
-        </span>
-      </summary>
-      <ol className="mt-3 grid gap-3 sm:grid-cols-2">
-        {GUIDE_STEPS.map((s, i) => (
-          <li key={i} className="flex gap-3">
-            <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-accent/10 text-xs font-semibold text-accent">
-              {i + 1}
-            </span>
-            <div>
-              <div className="text-sm font-semibold">{tr(lang, s.title)}</div>
-              <p className="mt-0.5 text-sm text-muted">{tr(lang, s.body)}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
-    </details>
-  );
-}

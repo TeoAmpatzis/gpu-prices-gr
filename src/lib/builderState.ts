@@ -7,14 +7,16 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Finding, Part } from '../engine';
 import type { BaseListing, BuilderIndex } from '../types';
 import type { Model } from './data';
+import type { Res } from '../engine/data/tiers';
 import { loadExtra, loadIndex, loadSlot, prefetchSlot } from './builderFiles';
 import { SLOTS, candidates, slotFallback, type Build, type Slot, type SlotListing } from './builderData';
 import { engineUse, partOf, toParts, withoutOptional, type ActiveBuild } from './builderEngine';
 import type { Checker } from './pickChecker';
 import type { PostedContext, Verdict } from './pickProtocol';
 import { afterLargestPaint } from './paint';
-import { onBuildChange, readBuild, writeBuild, type BuildChangeSource, type StoredBuild } from './buildStore';
+import { MAX_FAN_QTY, onBuildChange, readBuild, writeBuild, type BuildChangeSource, type StoredBuild } from './buildStore';
 import { decodeShare, isShareParam } from './share';
+import { builderParams, writeBuilderParams } from './builderView';
 
 export type Models = { [S in Slot]: Model<SlotListing[S]>[] };
 export type AnyModel = Model<BaseListing>;
@@ -34,6 +36,8 @@ export const USES: Use[] = ['gaming', 'everyday', 'creating', 'unsure'];
 export interface Prefs {
   use: Use | null;
   budget: number | null; // €
+  /** Gaming only: the screen resolution (rules 27–30, the use's minimums). */
+  res?: Res | null;
 }
 
 // The saved build lives in localStorage `pcBuild` (src/lib/buildStore.ts) — per-browser convenience
@@ -42,20 +46,23 @@ const EXTRA_DELAY = 5000; // ms after the index loads before the loaded steps' e
 
 interface Saved {
   parts: Partial<Record<Slot, string>>;
+  /** The second drive's key (answer 13). */
+  storage2?: string;
   prefs: Prefs;
   /** A shared link's whole build (second drive, fan quantity, shops, resolution): saved from it on the first edit. */
   build?: StoredBuild;
 }
 
-const asPrefs = (use: unknown, budget: unknown): Prefs => ({
-  use: USES.includes(use as Use) ? (use as Use) : null,
-  budget: Number(budget) > 0 ? Math.round(Number(budget)) : null,
+const asPrefs = (b: StoredBuild): Prefs => ({
+  use: USES.includes(b.use as Use) ? (b.use as Use) : null,
+  budget: Number(b.budget) > 0 ? Math.round(Number(b.budget)) : null,
+  res: b.res ?? null,
 });
 
 function readSaved(): Saved {
   const b = readBuild();
   const parts = Object.fromEntries(SLOTS.filter((s) => b.parts[s]).map((s) => [s, b.parts[s]!.key]));
-  return { parts, prefs: asPrefs(b.use, b.budget) };
+  return { parts, storage2: b.storage2?.key, prefs: asPrefs(b) };
 }
 
 /** Saved parts of steps whose file hasn't arrived yet: kept when the build is saved meanwhile. */
@@ -87,7 +94,7 @@ let ownWrite = false;
  * build store's other lines (second drive, fan quantity, resolution) are kept as they are: from the saved build, or
  * from `base` (the shared link on screen, whose first edit makes it the user's own).
  */
-export function writeSaved(b: Build, p: Prefs, base?: StoredBuild) {
+export function writeSaved(b: Build, p: Prefs, base?: StoredBuild, lines: { storage2?: AnyModel | null; fanQty?: number } = {}) {
   const prev = base ?? readBuild();
   const old = prev.parts;
   const offers = { ...prev.offers };
@@ -102,10 +109,22 @@ export function writeSaved(b: Build, p: Prefs, base?: StoredBuild) {
     if (old[s]?.key !== key) delete offers[s];
   }
   const next: StoredBuild = { ...prev, parts, offers };
+  // The second drive and the fan quantity change only when given (a drive whose file hasn't arrived is kept).
+  if (lines.storage2 !== undefined) {
+    const key = lines.storage2?.key;
+    if (prev.storage2?.key !== key) delete offers.storage2;
+    if (key) next.storage2 = prev.storage2?.key === key ? prev.storage2 : { key };
+    else delete next.storage2;
+  }
+  if (lines.fanQty !== undefined) next.fanQty = lines.fanQty;
   delete next.use;
   delete next.budget;
   if (p.use) next.use = p.use;
   if (p.budget) next.budget = p.budget;
+  if (p.res !== undefined) {
+    delete next.res;
+    if (p.res) next.res = p.res;
+  }
   ownWrite = true;
   try {
     writeBuild(next);
@@ -116,20 +135,7 @@ export function writeSaved(b: Build, p: Prefs, base?: StoredBuild) {
 
 // ---------- The builder's URL parameters (/builder?mode=quick&step=case&cpu=…) ----------
 
-/** The builder's parameters, or empty ones on another page. */
-export function builderParams(): URLSearchParams {
-  return location.pathname === '/builder' ? new URLSearchParams(location.search) : new URLSearchParams();
-}
-
-/** Replace (not push) the builder's parameters; the page stays "/builder". */
-export function writeBuilderParams(change: (p: URLSearchParams) => void) {
-  if (location.pathname !== '/builder') return;
-  const p = builderParams();
-  change(p);
-  const qs = p.toString();
-  const next = `/builder${qs ? `?${qs}` : ''}`;
-  if (location.pathname + location.search !== next) history.replaceState(history.state, '', next);
-}
+export { builderParams, writeBuilderParams } from './builderView';
 
 /** A shared build became the user's own: its parameters (share.ts, v1 and v2 links) leave the builder's address. */
 export const clearShareParams = () => writeBuilderParams((p) => [...p.keys()].filter(isShareParam).forEach((k) => p.delete(k)));
@@ -148,7 +154,8 @@ function readShared(): Saved | null {
   if (!d) return null;
   return {
     parts: Object.fromEntries(SLOTS.filter((s) => d.build.parts[s]).map((s) => [s, d.build.parts[s]!.key])),
-    prefs: asPrefs(d.build.use, d.build.budget),
+    storage2: d.build.storage2?.key,
+    prefs: asPrefs(d.build),
     build: d.build,
   };
 }
@@ -167,6 +174,13 @@ export function useBuilderState() {
   const [shared, setShared] = useState(sharedAtStart != null);
   const [extraVersion, setExtraVersion] = useState(0);
   const [builtAt, setBuiltAt] = useState<string | null>(null);
+  // The second drive (a storage row) and the fan quantity (packs), from the shared or the saved build.
+  const [storage2, setStorage2State] = useState<AnyModel | undefined>(undefined);
+  const [fanQty, setFanQtyState] = useState<number>(() => (sharedAtStart?.build ?? readBuild()).fanQty ?? 1);
+  // Saved or shared parts whose step file hasn't arrived (or failed): the total leaves them out and says so.
+  const [wanted, setWanted] = useState<Partial<Record<Slot, string>>>({});
+  const [wanted2, setWanted2] = useState(false); // the same for the second drive
+
   const extraRef = useRef<(() => void) | null>(null);
   const extraTimer = useRef<number | undefined>(undefined);
   // Each step's parts are their own file: loaded on demand (the step or picker opens, or a saved part is there),
@@ -187,7 +201,10 @@ export function useBuilderState() {
           setBuiltAt(at);
           setModels(Object.fromEntries(SLOTS.map((s) => [s, []])) as unknown as Models);
           // The shared or the saved build; parts that disappeared from the market are dropped.
-          const parts = (sharedAtStart ?? readSaved()).parts;
+          const start = sharedAtStart ?? readSaved();
+          const parts = start.parts;
+          setWanted(parts);
+          setWanted2(!!start.storage2);
           const loaded: Partial<Record<Slot, AnyModel[]>> = {};
           // Shop links and search titles (<slot>-extra.json), written onto each model's one row; `extraVersion`
           // makes searches and links pick them up. Per loaded step, once wanted (see extraRef below).
@@ -222,11 +239,21 @@ export function useBuilderState() {
                 const found = findSaved(slot, ms as AnyModel[], want);
                 // Restored only if the user hasn't picked one meanwhile.
                 if (found) setBuild((b) => (b[slot] ? b : { ...b, [slot]: found }));
+                if (slot === 'storage' && start.storage2) {
+                  setWanted2(false);
+                  const second = findSaved('storage', ms as AnyModel[], start.storage2);
+                  if (second) setStorage2State((d) => d ?? second);
+                }
+                setWanted((w) => {
+                  const { [slot]: _, ...rest } = w;
+                  return rest;
+                });
                 setSlotState((r) => ({ ...r, [slot]: true }));
                 if (extraWanted) fetchExtra(slot);
-                // The next step's parts, in idle time.
+                // The next step's parts, in idle time once this step's cards (its largest paint) are on screen: a file
+                // that finishes before that paint counts toward it in Lighthouse's phone simulation (review I1).
                 const next = SLOTS[SLOTS.indexOf(slot) + 1];
-                if (next) prefetchSlot(next, at);
+                if (next) afterLargestPaint(() => prefetchSlot(next, at), 3000);
               })
               .catch(() => {
                 requestedSlots.delete(slot); // the next request retries
@@ -236,10 +263,8 @@ export function useBuilderState() {
           for (const s of SLOTS) {
             // Only the saved build is protected; a shared one isn't saved until changed (then it's the user's).
             if (parts[s] && !sharedAtStart) pendingLazy[s] = parts[s];
-            if (parts[s]) slotRef.current(s);
+            if (parts[s] || (s === 'storage' && start.storage2)) slotRef.current(s);
           }
-          // The first step's parts, in idle time (after the first paint: the largest one is on screen here).
-          prefetchSlot(SLOTS[0], at);
           // At once for a restored build (its parts need their links), else on the first interaction, or
           // EXTRA_DELAY after the index loads, so a phone's first seconds download the first screen only.
           extraRef.current = () => {
@@ -285,6 +310,8 @@ export function useBuilderState() {
       }
       setBuild(next);
       setPrefsState(saved.prefs);
+      setFanQtyState(readBuild().fanQty ?? 1);
+      setStorage2State(saved.storage2 ? findSaved('storage', models.storage as AnyModel[], saved.storage2) : undefined);
       if (action === 'own') {
         // The same path as editing a shared build: it is the user's own now, and the link parameters go.
         setShared(false);
@@ -302,6 +329,7 @@ export function useBuilderState() {
   const update = (b: Build) => {
     // A step the user empties or fills themselves is no longer pending.
     for (const s of SLOTS) if (s in b) delete pendingLazy[s];
+    setWanted((w) => Object.fromEntries(Object.entries(w).filter(([s]) => !(s in b))));
     setBuild(b);
     writeSaved(b, prefs, shared ? sharedAtStart?.build : undefined);
     own();
@@ -311,14 +339,34 @@ export function useBuilderState() {
     writeSaved(build, p, shared ? sharedAtStart?.build : undefined);
     own();
   };
+  /** Empties the build: every part, the second drive, and the fan quantity back to 1 (parts whose file is pending too). */
+  const clear = () => {
+    for (const s of SLOTS) delete pendingLazy[s];
+    setWanted({});
+    setWanted2(false);
+    setBuild({});
+    setStorage2State(undefined);
+    setFanQtyState(1);
+    writeSaved({}, prefs, shared ? sharedAtStart?.build : undefined, { storage2: null, fanQty: 1 });
+    own();
+  };
+  const setStorage2 = (m: AnyModel | null) => {
+    setWanted2(false);
+    setStorage2State(m ?? undefined);
+    writeSaved(build, prefs, shared ? sharedAtStart?.build : undefined, { storage2: m });
+    own();
+  };
+  const setFanQty = (n: number) => {
+    const q = Math.min(MAX_FAN_QTY, Math.max(1, Math.round(n)));
+    setFanQtyState(q);
+    writeSaved(build, prefs, shared ? sharedAtStart?.build : undefined, { fanQty: q });
+    own();
+  };
 
-  // The engine's view of the build. Resolution and fan quantity come from the saved or shared build (their controls
-  // are tasks 11–12); the second drive is not loaded as a model yet (task 12).
-  // TODO(step 5 tasks 11–12): fanQty and res are read once at mount; follow the store when their controls exist.
-  const [stored] = useState(() => sharedAtStart?.build ?? readBuild());
+  // The engine's view of the build: the parts, the second drive, the fan quantity, the use and resolution.
   const active = useMemo<ActiveBuild>(
-    () => ({ parts: build, fanQty: stored.fanQty ?? 1, offers: {}, use: prefs.use, res: stored.res ?? null, budget: prefs.budget }),
-    [build, prefs, stored],
+    () => ({ parts: build, storage2: storage2 as ActiveBuild['storage2'], fanQty, offers: {}, use: prefs.use, res: prefs.res ?? null, budget: prefs.budget }),
+    [build, storage2, fanQty, prefs],
   );
   const parts = useMemo(() => toParts(active), [active]);
   // Chip length estimates (rule 6) and the use (rules 27–30): the same context pick mode and the product pages send.
@@ -404,6 +452,16 @@ export function useBuilderState() {
     checkerFailed,
     build,
     update,
+    /** The second drive (answer 13) and the fan quantity in packs (1–12). */
+    storage2,
+    setStorage2,
+    fanQty,
+    setFanQty,
+    /** Saved parts whose step file hasn't arrived or failed: not in the total yet. */
+    pending: SLOTS.filter((s) => wanted[s] !== undefined),
+    /** A saved second drive whose storage file hasn't arrived or failed. */
+    pendingStorage2: wanted2,
+    clear,
     prefs,
     setPrefs,
     shared,
@@ -416,6 +474,8 @@ export function useBuilderState() {
     wantSlot: (slot: Slot) => slotRef.current?.(slot),
     /** False while a step's parts haven't arrived (or failed). */
     slotReady: (slot: Slot) => slotState[slot] === true,
+    /** True after a step's file failed (twice: one retry inside); `wantSlot` asks again. */
+    slotFailed: (slot: Slot) => slotState[slot] === false,
   };
 }
 

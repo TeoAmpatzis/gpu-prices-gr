@@ -1,20 +1,22 @@
-// The guided builder's steps: order, budget shares
-// per use, and the three sorts (Recommended, Price, Value).
+// The guided builder's steps (task 11: the start screen took the use and budget; fans are a section of the case
+// step), what's left of the budget, and the three sorts (Recommended, Price, Value).
 
 import type { BaseListing, Category } from '../types';
 import { CATEGORIES, type CategoryConfig } from './categories';
 import type { Model } from './data';
 import type { Build, Slot } from './builderData';
 import type { Rating } from './fitLabel';
-import type { Prefs, Use } from './builderState';
+import type { Prefs } from './builderState';
 import type { Text } from './i18n';
 import { recommendedScores } from './ranking';
 
-export type StepId = 'use' | Slot | 'review';
-export const STEPS: StepId[] = ['use', 'cpu', 'mobo', 'ram', 'gpu', 'cooler', 'storage', 'case', 'psu', 'fan', 'review'];
+/** A step, or a slot shown inside one (fans: in the case step). */
+export type StepId = Slot | 'review';
+export const STEPS: StepId[] = ['cpu', 'mobo', 'ram', 'gpu', 'cooler', 'storage', 'case', 'psu', 'review'];
+/** The step a slot is chosen in (an old  address opens the case step). */
+export const stepOf = (s: string | null): StepId | null => (s === 'fan' ? 'case' : STEPS.includes(s as StepId) ? (s as StepId) : null);
 
 export const STEP_NAME: Record<StepId, Text> = {
-  use: { el: 'Χρήση και προϋπολογισμός', en: 'Use and budget' },
   cpu: { el: 'Επεξεργαστής', en: 'Processor' },
   mobo: { el: 'Μητρική', en: 'Motherboard' },
   ram: { el: 'Μνήμη RAM', en: 'Memory (RAM)' },
@@ -28,7 +30,6 @@ export const STEP_NAME: Record<StepId, Text> = {
 };
 /** Short names for the progress bar. */
 export const STEP_SHORT: Record<StepId, Text> = {
-  use: { el: 'Χρήση', en: 'Use' },
   cpu: 'CPU',
   mobo: { el: 'Μητρική', en: 'Board' },
   ram: 'RAM',
@@ -42,22 +43,12 @@ export const STEP_SHORT: Record<StepId, Text> = {
 };
 /** The buying guide's text for each step (BuildGuide GUIDE_STEPS index). */
 export const GUIDE_INDEX: Partial<Record<StepId, number>> = {
-  use: 0, cpu: 1, mobo: 1, ram: 2, gpu: 3, cooler: 4, storage: 5, case: 6, fan: 7, psu: 8,
+  cpu: 1, mobo: 1, ram: 2, gpu: 3, cooler: 4, storage: 5, case: 6, fan: 7, psu: 8,
 };
 
-export const isDone = (step: StepId, b: Build, p: Prefs): boolean =>
-  step === 'use' ? p.use != null || p.budget != null : step === 'review' ? false : b[step] != null;
+export const isDone = (step: StepId, b: Build): boolean => step !== 'review' && b[step] != null;
 
 // ---------- Budget ----------
-
-/** Usual share of the whole budget per part, by use ([min, max] %). */
-const SHARES: Record<Use, Partial<Record<Slot, [number, number]>>> = {
-  gaming: { cpu: [15, 20], mobo: [10, 12], ram: [6, 8], gpu: [35, 45], cooler: [3, 5], storage: [6, 8], case: [5, 7], psu: [7, 9], fan: [1, 3] },
-  everyday: { cpu: [25, 30], mobo: [15, 20], ram: [12, 15], gpu: [0, 10], cooler: [0, 5], storage: [8, 12], case: [10, 15], psu: [10, 12], fan: [0, 3] },
-  creating: { cpu: [25, 30], mobo: [12, 15], ram: [12, 15], gpu: [25, 30], cooler: [4, 6], storage: [8, 10], case: [6, 8], psu: [8, 10], fan: [1, 3] },
-  unsure: { cpu: [18, 22], mobo: [11, 13], ram: [8, 10], gpu: [25, 35], cooler: [3, 5], storage: [6, 9], case: [6, 8], psu: [8, 10], fan: [1, 3] },
-};
-export const shareOf = (use: Use | null, slot: Slot): [number, number] | null => SHARES[use ?? 'unsure'][slot] ?? null;
 
 /** What's left of the budget for `slot`, after the other chosen parts. */
 export function remaining(b: Build, p: Prefs, slot: Slot): number | null {

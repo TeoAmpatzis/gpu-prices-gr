@@ -44,7 +44,7 @@ function prefetchPath(path: string) {
   else if (r.kind === 'builder') {
     void loadBuilderView();
     // Its first screen's small index (/data/builder/index.json); each step's parts load when the step opens.
-    void import('./lib/builderFiles').then((m) => m.loadIndex()).catch(() => {});
+    void import('./lib/builderIndex').then((m) => m.loadIndex()).catch(() => {});
   } else if (r.kind === 'info') void loadInfoView();
 }
 
@@ -59,6 +59,19 @@ function startFirstPage() {
     // Code only: the builder requests its index file itself once it has rendered, as in v1. Its step text is
     // the page's largest paint, and the 270 KB builder.json finishing before it counted toward it (mobile 91 → 88).
     void loadBuilderView();
+    // An address that opens the steps or the part list (a step, the list, a shared build) or a saved build skips the
+    // start screen: its workbench code starts with the page's, not after it (one hop less; the same test as
+    // builderView.firstView, kept here so the shell doesn't carry the build store).
+    let saved = '';
+    try {
+      saved = localStorage.getItem('pcBuild') ?? '';
+    } catch {
+      /* no storage: the start screen */
+    }
+    const part = /"(cpu|mobo|ram|gpu|cooler|storage|case|psu|fan)":/;
+    if (/[?&](step=(?!use\b)|mode=quick|(cpu|mobo|ram|gpu|cooler|storage|case|psu|fan)=)/.test(location.search) || part.test(saved)) {
+      void import('./components/builder/Workbench');
+    }
     return;
   }
   // A category page needs its list. A product page never loads it: ModelPage requests only the manifest and its
