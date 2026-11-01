@@ -4,7 +4,8 @@
 import { psuProductKey, type PsuTitle } from './psuProduct';
 
 export type Slot = 'cpu' | 'mobo' | 'ram' | 'gpu' | 'cooler' | 'storage' | 'case' | 'fan' | 'psu';
-export const SLOTS: Slot[] = ['cpu', 'mobo', 'ram', 'gpu', 'cooler', 'storage', 'case', 'fan', 'psu'];
+/** One order everywhere: steps, summary, Review, Copy list (finding #28; fans after the PSU, answer 7). */
+export const SLOTS: Slot[] = ['cpu', 'mobo', 'ram', 'gpu', 'cooler', 'storage', 'case', 'psu', 'fan'];
 
 /**
  * Which other slots' parts the rules of each category page need (step2-plan section 2, "Ποιες θέσεις αφορούν οι

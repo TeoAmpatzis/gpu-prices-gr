@@ -5,6 +5,8 @@ vi.hoisted(() => {
   (globalThis as { window?: unknown }).window = { addEventListener: () => {}, removeEventListener: () => {} };
 });
 import { onBuildChange, readBuild, resolveKey, setPart, writeBuild } from '../../src/lib/buildStore';
+import { SLOTS } from '../../src/lib/slots';
+import { decodeShare } from '../../src/lib/share';
 import { clearShareParams, followSavedBuild, writeSaved } from '../../src/lib/builderState';
 
 function stubStorage(initial: Record<string, string> = {}) {
@@ -158,5 +160,91 @@ describe('builderState.followSavedBuild (the open builder and outside changes)',
     expect(followSavedBuild({ ...base, shared: true })).toBe('own');
     clearShareParams();
     expect(url).toBe('/builder?mode=quick');
+  });
+});
+describe('build store v2 (task 8): second drive, fan quantity, chosen shops, resolution', () => {
+  const full = {
+    parts: { cpu: { key: 'c', fields: { socket: 'AM5' }, builtAt: 'T' }, storage: { key: 's1' }, fan: { key: 'f' } },
+    storage2: { key: 's2', fields: { iface: 'SATA' }, builtAt: 'T' },
+    fanQty: 3,
+    offers: { cpu: 'skroutz:1', storage2: 'bestprice:2' },
+    use: 'gaming' as const,
+    res: '1440p' as const,
+    budget: 1200,
+  };
+  it('round-trips every field', () => {
+    const data = stubStorage();
+    writeBuild(full);
+    expect(readBuild()).toEqual(full);
+    expect(raw(data)).toMatchObject({ storage2: 's2', fanQty: 3, res: '1440p', compat: { storage2: { fields: { iface: 'SATA' } } } });
+  });
+  it('setPart keeps storage2, fanQty and the other lines\' shops; the changed line drops its old shop', () => {
+    stubStorage();
+    writeBuild(full);
+    setPart('cpu', { key: 'c2' });
+    const b = readBuild();
+    expect(b.storage2).toEqual(full.storage2);
+    expect(b.fanQty).toBe(3);
+    expect(b.offers).toEqual({ storage2: 'bestprice:2' });
+    expect(b.res).toBe('1440p');
+  });
+  it('unknown keys of the file round-trip; bad values are dropped', () => {
+    const data = stubStorage({ pcBuild: JSON.stringify({ cpu: 'a', future: { x: 1 }, fanQty: 40, use: 'mining', res: '8k', offers: { cpu: 5, ram: 'r:1', nope: 'x' } }) });
+    expect(readBuild()).toEqual({ parts: { cpu: { key: 'a' } }, offers: { ram: 'r:1' } });
+    setPart('gpu', { key: 'g' });
+    expect(raw(data)).toMatchObject({ cpu: 'a', gpu: 'g', future: { x: 1 } });
+  });
+  it('storage full: writes and setPart do not throw', () => {
+    vi.stubGlobal('localStorage', {
+      getItem: () => null,
+      setItem: () => { throw new DOMException('full', 'QuotaExceededError'); },
+    });
+    // The open builder keeps the build in memory: listeners are still told, nothing throws.
+    const fn = vi.fn();
+    const off = onBuildChange(fn);
+    expect(() => writeBuild(full)).not.toThrow();
+    expect(() => setPart('cpu', { key: 'a' })).not.toThrow();
+    expect(() => writeSaved({ cpu: model('a') }, { use: null, budget: null })).not.toThrow();
+    expect(fn).toHaveBeenCalledTimes(3);
+    off();
+  });
+  it('builderState.writeSaved keeps the second drive, fan quantity, shops and resolution', () => {
+    stubStorage();
+    writeBuild(full);
+    writeSaved({ cpu: model('c'), storage: model('s1'), fan: model('f') }, { use: null, budget: 900 });
+    const b = readBuild();
+    expect(b).toMatchObject({ storage2: full.storage2, fanQty: 3, offers: full.offers, res: '1440p', budget: 900 });
+    expect(b.use).toBeUndefined();
+  });
+  it('a share link never overwrites the saved build until the user changes something; the first edit saves the link build', () => {
+    const data = stubStorage({ pcBuild: JSON.stringify({ cpu: 'mine', gpu: 'my-gpu', budget: 700 }) });
+    const before = data.pcBuild;
+    // The builder opens /builder?v=2&… : the link is decoded and shown, the saved build is not touched.
+    const link = decodeShare(new URLSearchParams('v=2&cpu=theirs&n.cpu=Their+CPU&storage2=x&fanQty=2&o.cpu=s%3A1&use=gaming&res=4k'))!;
+    expect(data.pcBuild).toBe(before);
+    expect(followSavedBuild({ ownWrite: false, changed: true, shared: true, source: 'other-tab' })).toBe('ignore');
+    // One edit (a GPU picked) writes the link's build, with its second drive, fans, shop and resolution.
+    writeSaved({ cpu: model('theirs'), gpu: model('g') }, { use: 'gaming', budget: null }, link.build);
+    expect(readBuild()).toEqual({
+      parts: { cpu: { key: 'theirs' }, gpu: { key: 'g' } },
+      storage2: { key: 'x' },
+      fanQty: 2,
+      offers: { cpu: 's:1' },
+      use: 'gaming',
+      res: '4k',
+    });
+  });
+  it('clearShareParams removes v2 link parameters (names, shops, second drive) and keeps the rest', () => {
+    let url = '/builder?mode=quick&v=2&cpu=a&n.cpu=A&o.cpu=s%3A1&storage2=x&fanQty=2&res=4k&use=gaming&budget=9';
+    vi.stubGlobal('location', {
+      get pathname() { return new URL(url, 'http://x').pathname; },
+      get search() { return new URL(url, 'http://x').search; },
+    });
+    vi.stubGlobal('history', { state: null, replaceState: (_s: unknown, _t: string, next: string) => void (url = next) });
+    clearShareParams();
+    expect(url).toBe('/builder?mode=quick');
+  });
+  it('the slots run case, psu, fan (one order everywhere, finding #28)', () => {
+    expect(SLOTS.slice(-3)).toEqual(['case', 'psu', 'fan']);
   });
 });
