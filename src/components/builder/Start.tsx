@@ -3,7 +3,7 @@
 // "Costs at least X € today" appears as soon as use and budget are set. This screen is the builder's first paint: it
 // loads only the index file (and auto.json once a budget is set), never the parts' code (rule 11).
 
-import { useEffect, useState } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import { Briefcase, Gamepad2, HelpCircle, Info, ListChecks, ListOrdered, Palette, Sparkles } from 'lucide-react';
 import type { AutoFile, BuilderIndex } from '../../types';
 import { autoFor, loadAuto } from '../../lib/autoPick';
@@ -17,6 +17,13 @@ import { toUseKey } from '../../lib/useMinimums';
 import type { Res } from '../../engine/data/tiers';
 import { BUILDER as B, PC_FOR, USE_TEXT, fill } from '../../ui/builderStrings';
 import { UI } from '../../ui/strings';
+import { Button } from '../../ui/Button';
+
+// Only when "Build it for me" would replace an open named build: kept out of the first paint (rule 11).
+const Dialog = lazy(() => import('../../ui/overlays').then((m) => ({ default: m.Dialog })));
+const Toast = lazy(() => import('../../ui/overlays').then((m) => ({ default: m.Toast })));
+const ToastRegion = lazy(() => import('../../ui/overlays').then((m) => ({ default: m.ToastRegion })));
+import { NOT_STORED_TEXT, closeActive, readSavedBuilds } from '../../lib/savedBuilds';
 
 const USES: { id: UseKind; icon: typeof Gamepad2 }[] = [
   { id: 'gaming', icon: Gamepad2 },
@@ -96,10 +103,26 @@ export default function Start({ onGo, onIntent }: { onGo: (v: Exclude<View, 'sta
   const key = toUseKey(prefs.use, prefs.use === 'gaming' ? prefs.res : null);
   const minimum = key ? index?.minimum[key] : null;
   const pick = key && prefs.budget && auto ? autoFor(auto, key, prefs.budget) : null;
+  // An open named build that "Build it for me" would replace: asked first, then closed so it stays as saved.
+  const [replacing, setReplacing] = useState<{ name: string; budget: number } | null>(null);
+  const [refused, setRefused] = useState(0); // > 0: the storage-refused toast (its key, so a repeat shows again)
+  useEffect(() => {
+    if (!refused) return;
+    const id = window.setTimeout(() => setRefused(0), 4000);
+    return () => window.clearTimeout(id);
+  }, [refused]);
   /** Saves an automatic build (the parts, their fan quantity, the use and budget) and opens the part list. */
-  const take = (budget: number) => {
+  const take = (budget: number, confirmed = false) => {
     const r = key && auto ? autoFor(auto, key, budget) : null;
     if (r?.kind !== 'build') return;
+    const saved = readSavedBuilds();
+    const named = saved.active ? saved.builds[saved.active] : undefined;
+    if (named && !confirmed) return setReplacing({ name: named.name, budget });
+    // Storage refused closing it: writing now would overwrite the named build (mirrorActive), so stop and say so.
+    if (named && !closeActive()) {
+      setReplacing(null);
+      return setRefused((n) => n + 1);
+    }
     const b: StoredBuild = { parts: Object.fromEntries(Object.entries(r.build.parts).map(([s, k]) => [s, { key: k }])) };
     if (r.build.fanQty > 0) b.fanQty = r.build.fanQty;
     if (prefs.use) b.use = prefs.use;
@@ -213,6 +236,32 @@ export default function Start({ onGo, onIntent }: { onGo: (v: Exclude<View, 'sta
         </button>
       </div>
       {(!key || !prefs.budget) && <p className="-mt-3 text-xs text-muted">{t(B.needUseBudget)}</p>}
+      {replacing && (
+        <Suspense fallback={null}>
+          <Dialog
+            open
+            title={t(B.autoTitle)}
+            onClose={() => setReplacing(null)}
+            actions={
+              <>
+                <Button onClick={() => setReplacing(null)}>{t(UI.cancel)}</Button>
+                <Button variant="primary" onClick={() => take(replacing.budget, true)}>
+                  {t(B.continue)}
+                </Button>
+              </>
+            }
+          >
+            {fill(t(B.autoKeeps), { name: replacing.name })}
+          </Dialog>
+        </Suspense>
+      )}
+      {refused > 0 && (
+        <Suspense fallback={null}>
+          <ToastRegion>
+            <Toast key={refused} text={t(NOT_STORED_TEXT)} />
+          </ToastRegion>
+        </Suspense>
+      )}
 
       {/* The measurement notice in full, once; the steps and the part list show it on one line (C9). The
           percentages keep their room while the index loads (no layout shift). */}

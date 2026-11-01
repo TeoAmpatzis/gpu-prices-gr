@@ -71,8 +71,16 @@ function add(s: SavedBuilds, name: string, build: StoredBuild): SaveResult {
   return store(s) ? { ok: true, id } : { ok: false, message: NOT_STORED_TEXT };
 }
 
-/** The current build (`pcBuild`) under a new name; it becomes the active one. */
-export const saveBuildAs = (name: string): SaveResult => add(readSavedBuilds(), name, readBuild());
+/** The current build (`pcBuild`), or `build` (a shared link on screen), under a new name; it becomes the active one. */
+export const saveBuildAs = (name: string, build: StoredBuild = readBuild()): SaveResult => add(readSavedBuilds(), name, build);
+
+/** No named build is open any more: later writes of `pcBuild` leave every named build as saved ("Build it for me"). */
+export function closeActive(): boolean {
+  const s = readSavedBuilds();
+  if (!s.active) return true;
+  s.active = null;
+  return store(s);
+}
 
 /** A copy of a named build under "<name> (2)"; the copy becomes the active one and opens. */
 export function duplicateBuild(id: string): SaveResult {

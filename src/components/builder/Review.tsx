@@ -1,147 +1,128 @@
-// The guided builder's last step: every part with photo, price and shop, the total, what's missing,
-// "Copy list" (plain text) and the share link (the build in the URL, src/lib/builderState.ts).
+// One Review for both modes (step 5 task 13): every line with photo, the product name and the variant used (the
+// chosen listing's title), price, shop (a 44 px link, #25) and label naming the other part (#19); a chosen shop offer
+// that is loading or gone says so and the line shows the price used (Review Focus 5); missing lines open their step;
+// the total = the sum of the shown prices, with the prices' date; parts no longer sold are named (finding #22); the
+// engine's messages in three groups with their fix and the "not checked yet" line (M1); the BIOS note (rule 13);
+// the power estimate per part and the recommended PSU; then Copy list and the share link.
 
-import { useEffect, useRef, useState } from 'react';
-import { Check, ClipboardCopy, ExternalLink, Link2 } from 'lucide-react';
-import type { Category, SourceName } from '../../types';
+import { useEffect, type ReactNode } from 'react';
+import { AlertTriangle, ExternalLink, Info, XCircle } from 'lucide-react';
+import type { Category } from '../../types';
+import type { Finding } from '../../engine';
 import { CATEGORIES } from '../../lib/categories';
-import { formatPrice } from '../../lib/data';
+import { formatPrice } from '../../lib/format';
 import { SLOTS, type Slot } from '../../lib/builderData';
-import { optionalSlot } from '../../lib/builderEngine';
+import type { Line } from '../../lib/buildStore';
+import { isAdvice, notCheckedYet, optionalSlot, shownFindings } from '../../lib/builderEngine';
 import { ratingOf } from '../../lib/fitLabel';
-import { shareLink, type AnyModel, type BuilderState } from '../../lib/builderState';
-import { SOURCES } from '../../lib/sources';
-import { STEP_NAME, type StepId } from '../../lib/wizard';
+import { lineNotice, lineTitle, ownTitle, shopName } from '../../lib/copyList';
+import type { BuilderState } from '../../lib/builderState';
+import { STEP_NAME } from '../../lib/wizard';
 import { tr, type Lang, type Text } from '../../lib/i18n';
+import { UI } from '../../ui/strings';
 import ProductPhoto from '../ProductPhoto';
 import SourceBadge from '../SourceBadge';
 import { FitBadge, partImage } from './parts';
+import PowerBreakdown from './PowerBreakdown';
+import CopyList from './CopyList';
+import { BUILDER as B, fill } from '../../ui/builderStrings';
 
-const R = {
-  missing: { el: 'Λείπει', en: 'Missing' },
-  choose: { el: 'Επιλογή', en: 'Choose' },
-  total: { el: 'Σύνολο', en: 'Total' },
-  copyList: { el: 'Αντιγραφή λίστας', en: 'Copy list' },
-  copyLink: { el: 'Αντιγραφή συνδέσμου', en: 'Copy link' },
-  copied: { el: 'Αντιγράφηκε', en: 'Copied' },
-  link: { el: 'Σύνδεσμος της σύνθεσης', en: 'Link to this build' },
-  linkHint: {
-    el: 'Όποιος τον ανοίξει βλέπει αυτή τη σύνθεση· η δική του αποθηκευμένη σύνθεση δεν αλλάζει.',
-    en: 'Anyone who opens it sees this build; their own saved build is not changed.',
-  },
-  title: { el: 'Η σύνθεσή μου', en: 'My build' },
-  prices: {
-    el: 'Χαμηλότερες τιμές ανά προϊόν· τα μεταφορικά δεν περιλαμβάνονται',
-    en: 'Lowest price per product; shipping not included',
-  },
-} satisfies Record<string, Text>;
+const LINES: Line[] = SLOTS.flatMap((s): Line[] => (s === 'storage' ? ['storage', 'storage2'] : [s]));
+const slotOf = (l: Line): Slot => (l === 'storage2' ? 'storage' : l);
 
-/** Clipboard API, else the old select-and-copy (some in-app browsers). */
-async function copyText(text: string): Promise<boolean> {
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.setAttribute('readonly', '');
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    const ok = document.execCommand('copy');
-    ta.remove();
-    return ok;
-  }
-}
-
-export default function Review({ state, lang, onGo }: { state: BuilderState; lang: Lang; onGo: (s: StepId) => void }) {
+export default function Review({ state, lang, onGo }: { state: BuilderState; lang: Lang; onGo: (s: Slot) => void }) {
   const t = (x: Text) => tr(lang, x);
-  const { build, prefs, builtAt, wantExtra } = state;
+  const { builtAt, wantExtra } = state;
   const findings = state.findings ?? [];
-  const [copied, setCopied] = useState<'list' | 'link' | null>(null);
-  const timer = useRef<number | undefined>(undefined);
-  // The list carries the shop links (/data/builder/<slot>-extra.json).
+  // The lines carry the shop links and the listings' titles (/data/builder/<slot>-extra.json).
   useEffect(() => wantExtra(), [wantExtra]);
-  useEffect(() => () => window.clearTimeout(timer.current), []);
-
-  const chosen = SLOTS.filter((s) => build[s]);
-  const total = state.resolvedTotal;
-  const displayModel = (slot: Slot): AnyModel => {
-    const m = build[slot] as AnyModel;
-    const line = state.resolvedLines.find((r) => r.line === slot);
-    return line ? { ...m, cheapest: line.offer } : m;
-  };
-  const link = shareLink(build, prefs);
   const date = builtAt ? new Date(builtAt).toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB') : null;
+  const name = (l: Line) => t(l === 'storage2' ? B.storage2 : STEP_NAME[l]);
 
-  // Built when copied, so the shop links (which arrive later) are in it.
-  const listText = () => {
-    const lines = [`BuildDraft.gr · ${t(R.title)}`, ''];
-    for (const s of chosen) {
-      const m = displayModel(s);
-      const shop = SOURCES[m.cheapest.source as SourceName]?.label ?? m.cheapest.source;
-      lines.push(`${t(STEP_NAME[s])}: ${m.chip} · ${formatPrice(m.cheapest.price, lang)} (${shop})${m.cheapest.url ? ` ${m.cheapest.url}` : ''}`);
-    }
-    lines.push('', `${t(R.total)}: ${formatPrice(total, lang)}`, `${t(R.prices)}${date ? ` · ${date}` : ''}`, link);
-    return lines.join('\n');
-  };
-  const copy = async (what: 'list' | 'link') => {
-    if (await copyText(what === 'list' ? listText() : link)) {
-      setCopied(what);
-      window.clearTimeout(timer.current);
-      timer.current = window.setTimeout(() => setCopied(null), 2000);
-    }
-  };
-
-  const button = (what: 'list' | 'link', label: Text, Icon: typeof Link2) => (
-    <button
-      type="button"
-      onClick={() => copy(what)}
-      disabled={!chosen.length}
-      className="tap inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-accent ring-1 ring-inset ring-accent/30 hover:bg-accent/10 disabled:cursor-not-allowed disabled:text-muted disabled:ring-line-strong disabled:hover:bg-transparent"
-    >
-      {copied === what ? <Check className="h-4 w-4" /> : <Icon className="h-4 w-4" />}
-      <span aria-live="polite">{t(copied === what ? R.copied : label)}</span>
-    </button>
-  );
+  // Messages: rule 13 has its own BIOS line; advice (rules 26–30) is a note whatever its level.
+  const shown = shownFindings(findings).filter((f) => f.rule !== 13);
+  const groups: { title: Text; items: Finding[]; icon: ReactNode; kind: string }[] = [
+    { kind: 'errors', title: B.errors, items: shown.filter((f) => f.status === 'error' && !isAdvice(f)), icon: <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-up" aria-hidden="true" /> },
+    { kind: 'warnings', title: B.warnings, items: shown.filter((f) => f.status === 'warning' && !isAdvice(f)), icon: <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warn" aria-hidden="true" /> },
+    { kind: 'notes', title: B.notes, items: shown.filter((f) => (f.status !== 'error' && f.status !== 'warning') || isAdvice(f)), icon: <Info className="mt-0.5 h-4 w-4 shrink-0 text-faint" aria-hidden="true" /> },
+  ];
+  const notChecked = notCheckedYet(findings);
+  const bios = findings.find((f) => f.rule === 13);
 
   return (
     <div className="flex flex-col gap-4">
+      {state.gone.length > 0 && (
+        <ul className="notice-warn flex flex-col gap-1 p-3 text-sm" data-gone>
+          {state.gone.map((g) => (
+            <li key={g.line}>{fill(t(B.gone), { name: g.name ?? g.key, step: name(g.line) })}</li>
+          ))}
+        </ul>
+      )}
       <ul className="divide-y divide-line rounded-xl ring-1 ring-edge">
-        {SLOTS.map((s: Slot) => {
-          const m = build[s] ? displayModel(s) : undefined;
-          const Icon = CATEGORIES[s as Category].icon;
-          const opt = optionalSlot(s, state.optFindings);
+        {LINES.map((line) => {
+          const slot = slotOf(line);
+          const r = state.resolvedLines.find((x) => x.line === line);
+          // The second drive is listed only when there is one.
+          if (line === 'storage2' && !r) return null;
+          const Icon = CATEGORIES[slot as Category].icon;
+          const opt = optionalSlot(slot, state.optFindings);
+          const variant = r && ownTitle(r.offer.title);
+          const notice = r && lineNotice(r);
           return (
-            <li key={s} className="flex flex-wrap items-center gap-3 p-3">
-              {m ? (
-                <ProductPhoto image={partImage(m)} size="md" icon={Icon} alt="" />
+            <li key={line} className="flex flex-wrap items-center gap-3 p-3" data-review-line={line}>
+              {r ? (
+                <ProductPhoto image={partImage(r.model)} size="md" icon={Icon} alt="" />
               ) : (
                 <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent/10 text-accent">
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-4 w-4" aria-hidden="true" />
                 </span>
               )}
               <div className="min-w-[9rem] flex-1">
-                <div className="text-xs text-muted">{t(STEP_NAME[s])}</div>
-                {m ? (
+                <div className="text-xs text-muted">{name(line)}</div>
+                {r ? (
                   <>
-                    <div className="font-medium [overflow-wrap:anywhere]">{m.chip}</div>
-                    <div className="mt-1 empty:hidden">
-                      <FitBadge rating={ratingOf(findings, m.key, state.parts)} lang={lang} />
+                    <div className="font-medium [overflow-wrap:anywhere]">
+                      {r.quantity > 1 && <span className="font-normal text-muted">{r.quantity} × </span>}
+                      {/* A PSU: maker + model and the picker card's specs, as in the part list and Copy list. */}
+                      {r.line === 'psu' ? lineTitle(r, lang) : r.model.chip}
                     </div>
+                    {variant && variant.toLowerCase() !== r.model.chip.toLowerCase() && (
+                      <div className="text-xs text-muted [overflow-wrap:anywhere]" data-variant>
+                        {variant}
+                      </div>
+                    )}
+                    <div className="mt-1 empty:hidden">
+                      <FitBadge rating={ratingOf(findings, line === 'storage2' ? `${r.model.key}#2` : r.model.key, state.parts)} lang={lang} />
+                    </div>
+                    {notice && (
+                      <p className="mt-1 text-xs font-medium text-warn" data-offer-notice={r.status}>
+                        {t(notice)}
+                        {r.status === 'failed' && (
+                          <button type="button" onClick={() => void state.loadOffers(line, r.model).catch(() => {})} className="tap ml-2 font-medium text-accent hover:underline">
+                            {t(UI.retry)}
+                          </button>
+                        )}
+                      </p>
+                    )}
                   </>
                 ) : (
-                  <button type="button" onClick={() => onGo(s)} className="tap text-sm font-medium text-accent hover:underline">
-                    {opt.optional ? '—' : t(R.missing)} · {t(R.choose)}
+                  <button type="button" onClick={() => onGo(slot)} className="tap text-sm font-medium text-accent hover:underline">
+                    {opt.optional ? '—' : t(B.missing)} · {t(B.choose)}
                   </button>
                 )}
               </div>
-              {m && (
-                <a href={m.cheapest.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 whitespace-nowrap">
-                  <span className="font-semibold tabular-nums text-accent">{formatPrice(m.cheapest.price, lang)}</span>
-                  <SourceBadge source={m.cheapest.source} />
-                  <ExternalLink className="h-3.5 w-3.5 text-faint" />
+              {r && (
+                <a
+                  href={r.offer.url || undefined}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${formatPrice(r.total, lang)} · ${shopName(r)}`}
+                  className="tap flex items-center gap-2 whitespace-nowrap"
+                  data-price={r.total}
+                >
+                  <span className="font-semibold tabular-nums text-accent">{formatPrice(r.total, lang)}</span>
+                  <SourceBadge source={r.offer.source} />
+                  <ExternalLink className="h-3.5 w-3.5 text-faint" aria-hidden="true" />
                 </a>
               )}
             </li>
@@ -150,30 +131,55 @@ export default function Review({ state, lang, onGo }: { state: BuilderState; lan
       </ul>
       <div className="flex items-baseline justify-between gap-2">
         <span className="text-sm text-muted">
-          {t(R.total)}
-          {date && <span className="text-faint"> · {date}</span>}
+          {t(B.total)}
+          <span className="text-faint"> · {date ? `${t(B.pricesOf)} ${date} · ` : ''}{t(B.noShipping)}</span>
         </span>
-        <span className="text-2xl font-semibold tabular-nums text-accent">{formatPrice(total, lang)}</span>
+        <span className="text-2xl font-semibold tabular-nums text-accent" data-review-total={state.resolvedTotal}>
+          {formatPrice(state.resolvedTotal, lang)}
+        </span>
       </div>
-      <div className="flex flex-wrap gap-2">
-        {button('list', R.copyList, ClipboardCopy)}
-        {button('link', R.copyLink, Link2)}
-      </div>
-      {chosen.length > 0 && (
-        <div>
-          <label htmlFor="share-link" className="mb-1 block text-sm font-semibold">
-            {t(R.link)}
-          </label>
-          <input
-            id="share-link"
-            readOnly
-            value={link}
-            onFocus={(e) => e.currentTarget.select()}
-            className="field w-full py-2 pl-3 pr-3 text-sm text-muted"
-          />
-          <p className="mt-1 text-xs text-muted">{t(R.linkHint)}</p>
+
+      {state.findings && state.resolvedLines.length > 0 && (
+        <div className="flex flex-col gap-3" data-messages>
+          {groups.every((g) => !g.items.length) && !notChecked && <p className="text-sm text-muted">{t(B.allFit)}</p>}
+          {groups.map(
+            (g) =>
+              (g.items.length > 0 || (g.kind === 'notes' && notChecked)) && (
+                <section key={g.kind} aria-label={t(g.title)} data-group={g.kind}>
+                  <h3 className="mb-1 text-sm font-semibold">{t(g.title)}</h3>
+                  <ul className="flex flex-col gap-1.5 text-sm">
+                    {g.items.map((f, i) => (
+                      <li key={i} className="flex gap-2">
+                        {g.icon}
+                        <span>
+                          {t(f.message)}
+                          {f.fix && <span className="text-muted"> {t(f.fix)}</span>}
+                        </span>
+                      </li>
+                    ))}
+                    {g.kind === 'notes' && notChecked && (
+                      <li className="flex gap-2 text-muted" data-not-checked>
+                        {g.icon}
+                        <span>{t(notChecked)}</span>
+                      </li>
+                    )}
+                  </ul>
+                </section>
+              ),
+          )}
+          {bios && (
+            <section aria-label={t(B.bios)} data-bios>
+              <h3 className="mb-1 text-sm font-semibold">{t(B.bios)}</h3>
+              <p className="text-sm">
+                {t(bios.message)}
+                {bios.fix && <span className="text-muted"> {t(bios.fix)}</span>}
+              </p>
+            </section>
+          )}
         </div>
       )}
+      {state.power && state.parts.length > 0 && <PowerBreakdown power={state.power} watts={state.psuWatts} lang={lang} />}
+      <CopyList state={state} lang={lang} date={date} />
     </div>
   );
 }

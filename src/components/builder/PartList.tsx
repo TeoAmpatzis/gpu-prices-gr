@@ -2,7 +2,6 @@
 // drive after the first, the fans with their quantity last; each line with photo, name, specs, price, shop and label,
 // and the step picker shared with the guided walk (task 12) in a sheet. A saved part whose step file failed shows a retry.
 
-import { useState } from 'react';
 import { ExternalLink, RotateCw, X } from 'lucide-react';
 import type { Category, StorageListing } from '../../types';
 import { CATEGORIES } from '../../lib/categories';
@@ -34,12 +33,12 @@ const S = {
   optional: { el: 'προαιρετικό', en: 'optional' },
 } satisfies Record<string, Text>;
 
-export default function PartList({ state }: { state: BuilderState }) {
+/** `openLine`: the line whose picker is open, held by the workbench so Review's missing lines can open it. */
+export default function PartList({ state, openLine, setOpen }: { state: BuilderState; openLine: Line | null; setOpen: (l: Line | null) => void }) {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
   const { build, update } = state;
   const findings = state.findings ?? [];
-  const [openLine, setOpen] = useState<Line | null>(null);
   const pick = (line: Line, m: AnyModel | undefined) => (line === 'storage2' ? state.setStorage2(m ?? null) : update({ ...build, [line]: m }));
 
   return (

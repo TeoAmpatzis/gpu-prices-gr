@@ -345,7 +345,7 @@ const BUILDER_SKIP = new Set(['scrapedAt', 'shopCount', 'shipping', 'merchant'])
  * `ship` = its shipping, null = not known), with the values the rules take across all of the
  * model's listings (most common socket, board size, measurements…) written onto it, so the
  * builder's functions return the same thing for the one-row model as for the full one:
- * - `title`: the model's distinct shop titles, for the picker search (graphics cards are one
+ * - `title`: the model's distinct shop titles, the row's own first, for the picker search (graphics cards are one
  *   listing each and show their title as their name, so theirs stays as it is);
  * - `drop`: the model's sale (`saleOf`, the picker's "−N%"), which may come from another listing.
  */
@@ -356,7 +356,8 @@ function builderRow<S extends Slot>(slot: S, m: Model<SlotListing[S]>): Record<s
   // one-row model can't recompute (src/lib/ranking.ts popularityRaw), as a small integer.
   const row: Record<string, unknown> = { ...listing, ship, drop: sale?.pct ?? null, pop: Math.round(POP_SCALE * popularityRaw(m)) };
   if (slot !== 'gpu') {
-    row.title = [...new Set(m.listings.map((l) => l.title))].join(' | ');
+    // The row listing's own title first: Review and Copy list name that variant (copyList.ownTitle).
+    row.title = [...new Set([listing.title, ...m.listings.map((l) => l.title)])].join(' | ');
     // The model's name, whichever listing the row is (a power supply's is its product name; a card's chip is a rule input).
     row.chip = m.chip;
   }

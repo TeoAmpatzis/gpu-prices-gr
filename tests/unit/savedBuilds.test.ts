@@ -1,7 +1,7 @@
 // Tests for named saved builds (task 8, answer 12): localStorage `pcBuilds`, the active one mirrored to `pcBuild`.
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { readBuild, setPart, writeBuild } from '../../src/lib/buildStore';
-import { MAX_BUILDS, NOT_STORED_TEXT, duplicateBuild, openBuild, readSavedBuilds, removeBuild, renameBuild, saveBuildAs } from '../../src/lib/savedBuilds';
+import { MAX_BUILDS, NOT_STORED_TEXT, closeActive, duplicateBuild, openBuild, readSavedBuilds, removeBuild, renameBuild, saveBuildAs } from '../../src/lib/savedBuilds';
 
 function stubStorage(initial: Record<string, string> = {}) {
   const data = { ...initial };
@@ -40,6 +40,21 @@ describe('named builds', () => {
     removeBuild(id);
     expect(readSavedBuilds()).toEqual({ v: 1, active: null, builds: {} });
     expect(readBuild().parts.cpu?.key).toBe('a'); // the current build stays
+  });
+  it('task 13: "Build it for me" closes the open named build first, so its saved content stays as it was', () => {
+    writeBuild({ parts: { cpu: { key: 'mine' } } });
+    const id = idOf(saveBuildAs('Mine'));
+    expect(closeActive()).toBe(true);
+    writeBuild({ parts: { cpu: { key: 'auto' } } }); // the automatic build
+    expect(readSavedBuilds().active).toBeNull();
+    expect(readSavedBuilds().builds[id].build).toEqual({ parts: { cpu: { key: 'mine' } } });
+    expect(closeActive()).toBe(true); // nothing open: a no-op
+  });
+  it('task 13: save as can store a given build (a shared link on screen), not only pcBuild', () => {
+    writeBuild({ parts: { cpu: { key: 'own' } } });
+    const id = idOf(saveBuildAs('From link', { parts: { gpu: { key: 'shared' } }, fanQty: 3 }));
+    expect(readSavedBuilds().builds[id].build).toEqual({ parts: { gpu: { key: 'shared' } }, fanQty: 3 });
+    expect(readBuild().parts.cpu?.key).toBe('own');
   });
   it('the active one follows every change of pcBuild, including a write from pick mode (setPart)', () => {
     const id = idOf(saveBuildAs('A'));

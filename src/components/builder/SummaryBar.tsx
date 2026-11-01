@@ -228,6 +228,13 @@ export default function Summary({ state, onSlot, back, next }: Props) {
           </ul>
         )}
         <ul className="flex flex-col gap-2 border-t border-line pt-3 text-sm">
+          {/* A saved or shared part the data no longer has: named, never dropped silently (finding #22). */}
+          {state.gone.map((g) => (
+            <li key={`gone-${g.line}`} className="flex gap-2 text-fg" data-gone-part={g.line}>
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warn" />
+              <span>{fill(t(B.gone), { name: g.name ?? g.key, step: t(g.line === 'storage2' ? B.storage2 : STEP_SHORT[g.line]) })}</span>
+            </li>
+          ))}
           {missing.map((s) => (
             <li key={s} className="flex gap-2 text-fg">
               <Info className="mt-0.5 h-4 w-4 shrink-0 text-faint" />
