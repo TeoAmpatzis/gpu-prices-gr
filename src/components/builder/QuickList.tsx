@@ -5,8 +5,10 @@ import { ExternalLink, Loader2, Search, X } from 'lucide-react';
 import type { BaseListing, Category } from '../../types';
 import { CATEGORIES } from '../../lib/categories';
 import { formatPrice, saleOf } from '../../lib/data';
-import { FIT_LABEL, OPTIONAL, SLOTS, candidates, rate, type Build, type Fit, type Slot } from '../../lib/builder';
-import type { AnyModel, BuilderState } from '../../lib/builderState';
+import { SLOTS, candidates, type Slot } from '../../lib/builderData';
+import { ENGINE_TEXT, optionalSlot } from '../../lib/builderEngine';
+import { useStepVerdicts, type AnyModel, type BuilderState } from '../../lib/builderState';
+import { LABEL_TEXT, ratingOf, type Label } from '../../lib/fitLabel';
 import { T, tr, useLang, type Text } from '../../lib/i18n';
 import BuildGuide from '../BuildGuide';
 import ProductPhoto from '../ProductPhoto';
@@ -35,10 +37,13 @@ const S = {
 export default function QuickList({ state }: { state: BuilderState }) {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
-  const { models, build, update, ctx, extraVersion } = state;
+  const { models, build, update, extraVersion } = state;
+  const findings = state.findings ?? [];
   const [open, setOpen] = useState<Slot | null>(null);
-  // Each step's parts come in their own file (/data/builder/<slot>.json), requested when its picker opens.
-  const loading = state.loading || (open != null && !state.slotReady(open));
+  // Each step's parts come in their own file (/data/builder/<slot>.json), requested when its picker opens, then the
+  // pick worker checks them against the build.
+  const { verdicts } = useStepVerdicts(state, open);
+  const loading = state.loading || (open != null && (!state.slotReady(open) || verdicts === null));
   useEffect(() => {
     if (open && !state.loading) state.wantSlot(open);
   }, [open, state.loading]);
@@ -46,20 +51,21 @@ export default function QuickList({ state }: { state: BuilderState }) {
   // Picker toggle: hide parts whose fit can't be checked. Not remembered (the privacy page lists the stored keys).
   const [verifiedOnly, setVerifiedOnly] = useState(false);
 
-  // Picker: every part that doesn't definitely clash, cheapest first, each with its fit label.
+  // Picker: every part the engine doesn't hide (a real "no", pickHide), cheapest first, each with its fit label.
   const rated = useMemo(() => {
-    if (!models || !open) return [];
+    if (!models || !open || !verdicts) return [];
     const q = query.trim().toLowerCase();
     const cfg = CATEGORIES[open as Category] as unknown as { searchText: (l: BaseListing) => string };
-    const rest: Build = { ...build, [open]: undefined };
-    return (candidates(open, models[open] as never, build, ctx) as AnyModel[])
+    // A part without a verdict (the check failed) is shown unlabelled, never hidden.
+    return (candidates(open, models[open] as never) as AnyModel[])
+      .filter((m) => !verdicts.get(m.key)?.hide)
       .filter((m) => !q || m.listings.some((l) => cfg.searchText(l).toLowerCase().includes(q)))
       .sort((a, b) => a.cheapest.price - b.cheapest.price)
-      .map((m) => ({ m, rating: rate(open, m as never, rest, ctx) }));
+      .map((m) => ({ m, rating: ratingOf(verdicts.get(m.key)?.findings ?? [], m.key, state.parts) }));
     // extraVersion: the search titles arrive later (/data/builder/<slot>-extra.json).
-  }, [models, open, query, build, ctx, extraVersion]);
+  }, [models, open, query, verdicts, state.parts, extraVersion]);
   const options = verifiedOnly ? rated.filter((o) => o.rating.fit !== 'unverified') : rated;
-  const fitCounts = rated.reduce<Partial<Record<Fit, number>>>((n, o) => {
+  const fitCounts = rated.reduce<Partial<Record<Label, number>>>((n, o) => {
     if (o.rating.fit) n[o.rating.fit] = (n[o.rating.fit] ?? 0) + 1;
     return n;
   }, {});
@@ -89,14 +95,14 @@ export default function QuickList({ state }: { state: BuilderState }) {
                 <div className="min-w-[9rem] flex-1">
                   <div className="text-xs text-muted">
                     {t(cfg.tab)}
-                    {OPTIONAL.includes(slot) && <span className="text-faint"> · {t(S.optional)}</span>}
+                    {optionalSlot(slot, state.optFindings).optional && <span className="text-faint"> · {t(S.optional)}</span>}
                   </div>
                   {m ? (
                     <>
                       <div className="font-semibold [overflow-wrap:anywhere]">{m.chip}</div>
                       <div className="text-xs text-muted">{specLine(slot, m, lang)}</div>
                       <div className="mt-1 empty:hidden">
-                        <FitBadge rating={rate(slot, m as never, build, ctx)} lang={lang} />
+                        <FitBadge rating={ratingOf(findings, m.key, state.parts)} lang={lang} />
                       </div>
                     </>
                   ) : (
@@ -154,11 +160,12 @@ export default function QuickList({ state }: { state: BuilderState }) {
                     />
                   </label>
                   <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-muted">
+                    {state.checkerFailed && <span className="w-full">{t(ENGINE_TEXT.checkerFailed)}</span>}
                     <span className={loading ? 'invisible' : undefined}>
                       {options.length} {t(S.options)}
                       {(['fits', 'likely', 'unverified'] as const)
                         .filter((f) => fitCounts[f])
-                        .map((f) => ` · ${fitCounts[f]} ${t(FIT_LABEL[f]).toLowerCase()}`)
+                        .map((f) => ` · ${fitCounts[f]} ${t(LABEL_TEXT[f]).toLowerCase()}`)
                         .join('')}
                     </span>
                     {fitCounts.unverified ? (

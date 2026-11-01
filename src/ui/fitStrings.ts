@@ -1,6 +1,6 @@
 // Text of the product page's "fits your build" (v2 step 4, task 8), Greek and English. Kept apart from strings.ts
 // (in every page's first download) so it loads only with the product page; pick mode's shared wording is PICK.
-import type { Slot } from '../lib/builder';
+import type { Slot } from '../lib/builderData';
 import type { Text } from '../lib/i18n';
 
 export const FIT = {

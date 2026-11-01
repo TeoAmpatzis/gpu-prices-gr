@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { SLOTS, slotModels } from '../../src/lib/builder';
+import { SLOTS, slotModels } from '../../src/lib/builderData';
 import { CHUNKS, chunkOf, loadCompat } from '../../src/lib/compatChunks';
 import { compatFiles } from '../../src/lib/compatBuild';
 import { toPart, usable } from '../../src/lib/pick';

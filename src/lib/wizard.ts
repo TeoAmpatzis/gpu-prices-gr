@@ -1,10 +1,11 @@
-// The guided builder's steps and rules: order, which steps can be skipped (and why), budget shares
+// The guided builder's steps: order, budget shares
 // per use, and the three sorts (Recommended, Price, Value).
 
 import type { BaseListing, Category } from '../types';
 import { CATEGORIES, type CategoryConfig } from './categories';
 import type { Model } from './data';
-import { cpuCooler, cpuHasIgpu, type Build, type Rating, type Slot } from './builder';
+import type { Build, Slot } from './builderData';
+import type { Rating } from './fitLabel';
 import type { Prefs, Use } from './builderState';
 import type { Text } from './i18n';
 import { recommendedScores } from './ranking';
@@ -43,41 +44,6 @@ export const STEP_SHORT: Record<StepId, Text> = {
 export const GUIDE_INDEX: Partial<Record<StepId, number>> = {
   use: 0, cpu: 1, mobo: 1, ram: 2, gpu: 3, cooler: 4, storage: 5, case: 6, fan: 7, psu: 8,
 };
-
-/** Can the step be skipped, and why (or why not). */
-export function optional(step: StepId, b: Build): { optional: boolean; why?: Text } {
-  if (step === 'use' || step === 'fan') return { optional: true };
-  if (step === 'gpu') {
-    if (b.cpu && !cpuHasIgpu(b.cpu))
-      return {
-        optional: false,
-        why: { el: 'Ο επεξεργαστής δεν έχει ενσωματωμένα γραφικά: χρειάζεται κάρτα γραφικών.', en: 'The CPU has no integrated graphics: a graphics card is needed.' },
-      };
-    return {
-      optional: true,
-      why: b.cpu
-        ? { el: 'Ο επεξεργαστής έχει ενσωματωμένα γραφικά: η κάρτα είναι προαιρετική.', en: 'The CPU has integrated graphics: a card is optional.' }
-        : undefined,
-    };
-  }
-  if (step === 'cooler') {
-    const inBox = b.cpu ? cpuCooler(b.cpu) : null;
-    if (inBox)
-      return {
-        optional: true,
-        why: { el: 'Ο επεξεργαστής έχει ψύκτρα στο κουτί: μια καλύτερη είναι προαιρετική.', en: 'The CPU comes with a cooler: a better one is optional.' },
-      };
-    return {
-      optional: false,
-      why: b.cpu
-        ? inBox === false
-          ? { el: 'Ο επεξεργαστής δεν έχει ψύκτρα στο κουτί.', en: 'The CPU has no cooler in the box.' }
-          : { el: 'Δεν αναφέρεται αν ο επεξεργαστής έχει ψύκτρα στο κουτί.', en: "It isn't stated whether the CPU has a cooler in the box." }
-        : undefined,
-    };
-  }
-  return { optional: false };
-}
 
 export const isDone = (step: StepId, b: Build, p: Prefs): boolean =>
   step === 'use' ? p.use != null || p.budget != null : step === 'review' ? false : b[step] != null;

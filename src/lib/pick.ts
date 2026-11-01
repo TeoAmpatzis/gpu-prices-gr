@@ -2,37 +2,18 @@
 // page's own models, with the same field values the builder rows carry (derive.ts `slotFields`).
 import type { Part } from '../engine';
 import type { Category } from '../types';
-import { usable as builderUsable, type Slot, type SlotListing } from './builder';
+import { usable as builderUsable, type Slot, type SlotListing } from './builderData';
 import type { Model } from './data';
 import { slotFields } from './derive';
+import { PART_FIELDS } from './slots';
 
 /** Category id → builder slot (the nine are identical). */
 export const SLOT_OF: Record<Category, Slot> = {
   gpu: 'gpu', cpu: 'cpu', mobo: 'mobo', ram: 'ram', storage: 'storage', psu: 'psu', case: 'case', fan: 'fan', cooler: 'cooler',
 };
 
-/**
- * Per slot, the fields the compatibility rules read (src/engine/rules) that the listing data has:
- * the model-wide values come from `slotFields`, the others from the model's cheapest listing, exactly
- * as in a builder step file row. A field the data doesn't carry (yet) is simply null.
- */
-export const PART_FIELDS: Record<Slot, string[]> = {
-  cpu: ['chip', 'socket', 'igpu', 'coolerIncluded', 'boxCooler', 'cores'],
-  mobo: [
-    'chip', 'chipset', 'socket', 'formFactor', 'memory', 'ramSlots', 'maxMemoryGB', 'sataPorts', 'm2Slots', 'm2Gen',
-    'biosFlashback', 'fanHeaders', 'usbCHeader',
-  ],
-  ram: ['type', 'speed', 'modules', 'capacity', 'formFactor'],
-  gpu: ['chip', 'vram', 'lengthMm', 'minPsu', 'powerConnector', 'slots'],
-  cooler: ['type', 'radiator', 'sockets', 'socketsTitle', 'heightMm'],
-  storage: ['iface', 'pcie', 'formFactor'],
-  case: [
-    'size', 'maxBoard', 'gpuMaxMm', 'coolerMaxMm', 'fanSlots', 'radiatorMounts', 'fanMounts', 'fansIncluded', 'hasFans',
-    'radiators', 'expansionSlots', 'psuFormFactors', 'psuIncluded', 'usbCFront', 'bays35',
-  ],
-  fan: ['size', 'pack'],
-  psu: ['watts', 'formFactor', 'atx3'],
-};
+// PART_FIELDS lives in slots.ts (no code imports: the builder chunk uses it without derive.ts).
+export { PART_FIELDS } from './slots';
 
 /**
  * The model as an engine part. `key` is the builder's (`slotModels`: a card per listing id, a CPU per

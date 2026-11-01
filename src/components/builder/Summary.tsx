@@ -6,7 +6,8 @@ import { useState, type ReactNode } from 'react';
 import { AlertTriangle, CheckCircle2, ChevronUp, Info } from 'lucide-react';
 import { formatPrice } from '../../lib/data';
 import { STEP_SHORT } from '../../lib/wizard';
-import { SLOTS, buildNotes, buildStatus, requiredWatts, type Slot } from '../../lib/builder';
+import { SLOTS, type Slot } from '../../lib/builderData';
+import { ENGINE_TEXT, MISSING, buildStatus, isAdvice, missingSlots, notCheckedYet, shownFindings } from '../../lib/builderEngine';
 import type { AnyModel, BuilderState } from '../../lib/builderState';
 import { tr, useLang, type Text } from '../../lib/i18n';
 import { plural } from '../../ui/strings';
@@ -25,6 +26,7 @@ const S = {
   left: { el: 'απομένουν', en: 'left' },
   over: { el: 'υπέρβαση', en: 'over' },
   allFit: { el: 'Όλα ταιριάζουν', en: 'Everything fits' },
+  missing: { el: 'Λείπουν', en: 'Missing' },
   shared: {
     el: 'Βλέπεις μια σύνθεση από σύνδεσμο. Η δική σου αποθηκευμένη σύνθεση μένει ως έχει μέχρι να αλλάξεις κάτι εδώ.',
     en: "You're viewing a build from a link. Your own saved build stays as it is until you change something here.",
@@ -37,6 +39,7 @@ const N = {
   fits: { el: ['χωράει', 'χωράνε'], en: ['fits', 'fit'] },
   likely: { el: ['πιθανότατα', 'πιθανότατα'], en: ['likely', 'likely'] },
   unverified: { el: ['χωρίς επιβεβαίωση', 'χωρίς επιβεβαίωση'], en: ['not verified', 'not verified'] },
+  check: { el: ['προς έλεγχο', 'προς έλεγχο'], en: ['to check', 'to check'] },
   clash: { el: ['ασύμβατο', 'ασύμβατα'], en: ['incompatible', 'incompatible'] },
 } satisfies Record<string, { el: [string, string]; en: [string, string] }>;
 
@@ -53,43 +56,60 @@ export default function Summary({ state, onSlot, back, next }: Props) {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
   const [open, setOpen] = useState(false);
-  const { build, ctx, prefs, update, shared } = state;
+  const { build, prefs, update, shared } = state;
 
   const chosen = SLOTS.filter((s) => build[s]).map((s) => build[s] as AnyModel);
   const total = chosen.reduce((sum, m) => sum + m.cheapest.price, 0);
-  const watts = requiredWatts(build);
+  // Fits, warnings and the recommended PSU come from the v2 engine (step 5 task 9); none while its chunk loads.
+  const findings = state.findings ?? [];
+  const watts = state.psuWatts;
   const tdp = build.cpu?.cheapest.tdp;
-  const notes = buildNotes(build, ctx);
-  const errors = notes.filter((n) => n.level === 'error').length;
-  const status = buildStatus(build, ctx);
-  const checked = status.fits + status.likely + status.unverified + status.no;
+  const missing = missingSlots(build, state.optFindings);
+  const status = buildStatus(state.findings, missing);
+  const { counts } = status;
+  const shownNotes = shownFindings(findings);
+  const notChecked = notCheckedYet(findings);
+  const errors = missing.length + findings.filter((f) => f.status === 'error' && !isAdvice(f)).length;
   const left = prefs.budget != null ? prefs.budget - total : null;
+  const countLine = (
+    [
+      [counts.fits, N.fits],
+      [counts.likely, N.likely],
+      [counts.unverified, N.unverified],
+      [counts.check, N.check],
+      [counts.no, N.clash],
+    ] as const
+  )
+    .filter(([n]) => n > 0)
+    .map(([n, forms]) => plural(lang, n, forms))
+    .join(' · ');
 
-  const statusLine =
-    checked === 0 ? null : (
-      <div className="flex items-start gap-2 text-sm">
-        {status.no || status.unverified ? (
-          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warn" />
-        ) : (
-          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-ok" />
+  // C8: an unfinished build says what is missing (neutral), never "everything fits".
+  const statusLine = (
+    <div className="flex items-start gap-2 text-sm">
+      {status.kind === 'error' || status.kind === 'warning' ? (
+        <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warn" />
+      ) : status.kind === 'ok' ? (
+        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-ok" />
+      ) : (
+        <Info className="mt-0.5 h-4 w-4 shrink-0 text-faint" />
+      )}
+      <span>
+        {status.kind === 'missing' && (
+          <>
+            {t(S.missing)}: {missing.map((s) => t(STEP_SHORT[s])).join(', ')}
+            {(countLine || state.findings === null) && ' · '}
+          </>
         )}
-        <span>
-          {status.likely + status.unverified + status.no === 0
+        {/* No findings yet: checking, or the engine failed to load (never "everything fits"). */}
+        {state.findings === null
+          ? t(state.engineFailed ? ENGINE_TEXT.unavailable : ENGINE_TEXT.checking)
+          : status.kind === 'ok' && counts.likely + counts.unverified + counts.check + counts.no === 0
             ? t(S.allFit)
-            : (
-                [
-                  [status.fits, N.fits],
-                  [status.likely, N.likely],
-                  [status.unverified, N.unverified],
-                  [status.no, N.clash],
-                ] as const
-              )
-                .filter(([n]) => n > 0)
-                .map(([n, forms]) => plural(lang, n, forms))
-                .join(' · ')}
-        </span>
-      </div>
-    );
+            : countLine}
+      </span>
+    </div>
+  );
 
   return (
     <aside className="fixed inset-x-0 bottom-0 z-30 flex flex-col gap-3 rounded-t-2xl bg-panel px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-4px_20px_rgb(0_0_0/0.12)] ring-1 ring-edge lg:card lg:sticky lg:top-4 lg:inset-auto lg:z-auto lg:p-4">
@@ -191,16 +211,31 @@ export default function Summary({ state, onSlot, back, next }: Props) {
           </ul>
         )}
         <ul className="flex flex-col gap-2 border-t border-line pt-3 text-sm">
-          {notes.map((n, i) => (
-            <li key={i} className={`flex gap-2 ${n.level === 'error' ? 'text-fg' : 'text-muted'}`}>
-              {n.level === 'error' ? (
-                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warn" />
-              ) : (
-                <Info className="mt-0.5 h-4 w-4 shrink-0 text-faint" />
-              )}
-              <span>{t(n.text)}</span>
+          {missing.map((s) => (
+            <li key={s} className="flex gap-2 text-fg">
+              <Info className="mt-0.5 h-4 w-4 shrink-0 text-faint" />
+              <span>{t(MISSING[s])}</span>
             </li>
           ))}
+          {shownNotes.map((f, i) => {
+            // Rules 26–30 are advice: information whatever their level.
+            const serious = (f.status === 'error' || f.status === 'warning') && !isAdvice(f);
+            return (
+              <li key={i} className={`flex gap-2 ${serious ? 'text-fg' : 'text-muted'}`}>
+                {serious ? <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warn" /> : <Info className="mt-0.5 h-4 w-4 shrink-0 text-faint" />}
+                <span>
+                  {t(f.message)}
+                  {f.fix && <> {t(f.fix)}</>}
+                </span>
+              </li>
+            );
+          })}
+          {notChecked && (
+            <li className="flex gap-2 text-muted">
+              <Info className="mt-0.5 h-4 w-4 shrink-0 text-faint" />
+              <span>{t(notChecked)}</span>
+            </li>
+          )}
         </ul>
       </div>
     </aside>

@@ -373,7 +373,9 @@ for (const [name, size] of [['360', { width: 360, height: 740 }], ['1366', { wid
       await expect(add).toHaveText('Add to build');
       await expect.poll(() => requests.some((p) => /\/assets\/BuildFit-/.test(p))).toBe(true); // after the first paint
       await expect(page.locator('[data-build-fit]')).toHaveCount(0);
-      expect(requests.filter((p) => p.startsWith('/data/compat/') || /pick\.worker|pickCheck/.test(p))).toEqual([]);
+      // No engine: neither the worker nor the engine chunk (pickCheck-…). pickChecker-… (the checker, no engine) is a chunk
+      // of its own since the builder imports it too (step 5 task 9); before, it came inside useBuildCheck's chunk.
+      expect(requests.filter((p) => p.startsWith('/data/compat/') || /pick\.worker|pickCheck-/.test(p))).toEqual([]);
       if (size.width < 1024) expect((await add.boundingBox())!.height).toBeGreaterThanOrEqual(44);
 
       await add.click();

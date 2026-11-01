@@ -31,6 +31,7 @@ import { titleKey, titleOptions } from './titles';
 
 export { storageType } from './categories';
 export { psuProductKey } from './psuProduct';
+export { SLOTS, type Slot } from './slots';
 
 export interface SlotListing {
   cpu: CpuListing;
@@ -43,6 +44,9 @@ export interface SlotListing {
   fan: FanListing;
   psu: PsuListing;
 }
+
+/** The builder's chosen parts, one model per slot. */
+export type Build = { [S in Slot]?: Model<SlotListing[S]> };
 
 /** Most common value of a field across a model's listings (sites sometimes disagree). */
 export const attr = <L extends BaseListing, V>(m: Model<L>, get: (l: L) => V | null | undefined): V | null =>
@@ -260,6 +264,10 @@ export const usable: { [S in Slot]: (m: Model<SlotListing[S]>) => boolean } = {
   // ATX, SFX and SFX-L (owner answer 8; rule 16 checks the case). TFX/Flex stay out: no case data says which takes them.
   psu: (m) => PSU_FORMS.includes(psuForm(m)),
 };
+
+/** The models `slot` can offer at all; how each fits a build is the engine's answer (builderEngine.ts, fitLabel.ts). */
+export const candidates = <S extends Slot>(slot: S, models: Model<SlotListing[S]>[]): Model<SlotListing[S]>[] =>
+  models.filter((m) => usable[slot](m));
 
 /**
  * Models per slot, grouped like the category pages except:

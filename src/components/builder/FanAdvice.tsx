@@ -1,11 +1,11 @@
 // Fan advice in the guided builder: the included fans on each case card, and the recommendation box
-// on the case and fans steps (src/lib/fans.ts).
+// on the case and fans steps (src/lib/fanPlan.ts).
 
 import { Fan, Lightbulb } from 'lucide-react';
 import type { CaseListing } from '../../types';
 import type { Model } from '../../lib/data';
-import type { Build } from '../../lib/builder';
-import { fanPlan, includedText, planText } from '../../lib/fans';
+import type { Build } from '../../lib/builderData';
+import { fanPlan, includedText, planText } from '../../lib/fanPlan';
 import { tr, type Lang, type Text } from '../../lib/i18n';
 
 const F = {
@@ -44,10 +44,10 @@ const F = {
   },
 } satisfies Record<string, Text>;
 
-/** One line on a case card: what's in the box, and what this build would add. */
-export function CaseFansLine({ c, build, lang }: { c: Model<CaseListing>; build: Build; lang: Lang }) {
+/** One line on a case card: what's in the box, and what this build would add (`watts`: the recommended PSU). */
+export function CaseFansLine({ c, build, watts, lang }: { c: Model<CaseListing>; build: Build; watts: number | null; lang: Lang }) {
   const inc = includedText(c);
-  const plan = fanPlan({ ...build, case: c });
+  const plan = fanPlan({ ...build, case: c }, watts);
   return (
     <div className="flex flex-col gap-0.5 text-xs">
       <span className={`flex items-start gap-1.5 ${inc.known ? 'font-medium text-fg' : 'text-muted'}`}>
@@ -62,9 +62,9 @@ export function CaseFansLine({ c, build, lang }: { c: Model<CaseListing>; build:
 const MESH = /\b(mesh|air(flow)?|flow)\b/i;
 
 /** The recommendation box on the case step (no case yet: the general rule) and the fans step. */
-export function FanAdviceBox({ build, step, lang }: { build: Build; step: 'case' | 'fan'; lang: Lang }) {
+export function FanAdviceBox({ build, watts, step, lang }: { build: Build; watts: number | null; step: 'case' | 'fan'; lang: Lang }) {
   const t = (x: Text) => tr(lang, x);
-  const plan = fanPlan(build);
+  const plan = fanPlan(build, watts);
   const lines: Text[] = [];
   if (step === 'case' || !build.case) lines.push(F.base, F.sizes);
   if (step === 'fan' && build.case) {

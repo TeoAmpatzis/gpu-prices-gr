@@ -5,7 +5,7 @@ import { gzipSync } from 'node:zlib';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { fromColumns } from '../../src/lib/columns';
 import { builderFiles, checkData, manifest, mergeTwins } from '../../src/lib/derive';
-import { SLOTS, candidates, fitContext, rowListing, slotModels, type Slot } from '../../src/lib/builder';
+import { SLOTS, candidates, fitContext, rowListing, slotModels, type Slot } from '../../src/lib/builderData';
 import { PART_FIELDS } from '../../src/lib/pick';
 import { loadExtra, loadIndex, loadSlot, prefetchSlot } from '../../src/lib/builderFiles';
 import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
@@ -19,7 +19,7 @@ for (const cat of CATEGORY_IDS) {
   validated[cat] = validateLatest(cat, raw, VALIDATION_MODE).latest;
 }
 const built = builderFiles(validated, BUILT);
-const offered = (slot: Slot) => candidates(slot, slotModels(slot, (validated[slot as Category]?.listings ?? []) as never[]), {});
+const offered = (slot: Slot) => candidates(slot, slotModels(slot, (validated[slot as Category]?.listings ?? []) as never[]));
 // Task 7: a graphics card's twins on other sites are one row (derive.mergeTwins).
 const full = (slot: Slot) => (slot === 'gpu' ? mergeTwins(offered(slot) as never) : offered(slot));
 
@@ -39,7 +39,7 @@ describe('builder files (one per step)', () => {
         if (!r.title) r.title = extra.titles[r.id] ?? '';
       }
       const want = full(slot);
-      const got = candidates(slot, slotModels(slot, rows as never[]), {});
+      const got = candidates(slot, slotModels(slot, rows as never[]));
       expect(got.map((m) => m.key)).toEqual(want.map((m) => m.key));
       want.forEach((m, i) => {
         const n = got[i];

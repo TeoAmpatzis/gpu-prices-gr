@@ -1,12 +1,17 @@
 // PC builder state shared by the Guided and Quick list modes: the builder's index file, each step's parts (one file
 // per step, src/lib/builderFiles.ts), the build, the use and budget, a build opened from a share link, and each step's
-// shop links and search titles fetched only when needed.
+// shop links and search titles fetched only when needed. Fits come from the v2 engine (step 5 task 9): the build's own
+// findings from the engine's lazy chunk (pickCheck.ts), each step's candidates from the pick worker (`useStepVerdicts`).
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import type { Finding, Part } from '../engine';
 import type { BaseListing, BuilderIndex } from '../types';
 import type { Model } from './data';
 import { loadExtra, loadIndex, loadSlot, prefetchSlot } from './builderFiles';
-import { NO_CONTEXT, SLOTS, slotFallback, type Build, type FitContext, type Slot, type SlotListing } from './builder';
+import { SLOTS, candidates, slotFallback, type Build, type Slot, type SlotListing } from './builderData';
+import { engineUse, partOf, toParts, withoutOptional, type ActiveBuild } from './builderEngine';
+import type { Checker } from './pickChecker';
+import type { PostedContext, Verdict } from './pickProtocol';
 import { afterLargestPaint } from './paint';
 import { onBuildChange, readBuild, writeBuild, type BuildChangeSource, type StoredBuild } from './buildStore';
 import { decodeShare, isShareParam } from './share';
@@ -307,15 +312,96 @@ export function useBuilderState() {
     own();
   };
 
-  // Measured length range per graphics chip, for "Likely fits" (src/lib/builder.ts fitContext, from the index file).
-  const ctx = useMemo<FitContext>(() => (chipLengths ? { chips: new Map(Object.entries(chipLengths)) } : NO_CONTEXT), [chipLengths]);
+  // The engine's view of the build. Resolution and fan quantity come from the saved or shared build (their controls
+  // are tasks 11–12); the second drive is not loaded as a model yet (task 12).
+  // TODO(step 5 tasks 11–12): fanQty and res are read once at mount; follow the store when their controls exist.
+  const [stored] = useState(() => sharedAtStart?.build ?? readBuild());
+  const active = useMemo<ActiveBuild>(
+    () => ({ parts: build, fanQty: stored.fanQty ?? 1, offers: {}, use: prefs.use, res: stored.res ?? null, budget: prefs.budget }),
+    [build, prefs, stored],
+  );
+  const parts = useMemo(() => toParts(active), [active]);
+  // Chip length estimates (rule 6) and the use (rules 27–30): the same context pick mode and the product pages send.
+  const engineCtx = useMemo<PostedContext>(() => {
+    const use = engineUse(active);
+    return { ...(chipLengths ? { chipLengths } : {}), ...(use ? { use } : {}) };
+  }, [chipLengths, active]);
+  // The engine's chunk (shared with the pick worker's main-thread fallback), loaded once a part is chosen.
+  // A failed load is retried on the next change of the build; meanwhile the summary says the checks are unavailable.
+  const [engine, setEngine] = useState<typeof import('./pickCheck') | null>(null);
+  const [engineFailed, setEngineFailed] = useState(false);
+  const anyPart = parts.length > 0;
+  useEffect(() => {
+    if (engine || !anyPart) return;
+    let live = true;
+    const load = () => import('./pickCheck');
+    load()
+      .catch(load)
+      .then(
+        (m) => {
+          if (!live) return;
+          setEngine(m);
+          setEngineFailed(false);
+        },
+        () => live && setEngineFailed(true),
+      );
+    return () => {
+      live = false;
+    };
+  }, [engine, anyPart, parts]);
+  const findings = useMemo<Finding[] | null>(
+    () => (engine ? engine.evaluate(parts, { ...engine.PICK_CTX, ...engineCtx }) : anyPart ? null : []),
+    [engine, parts, engineCtx, anyPart],
+  );
+  // The CPU's own rule 11 / 12 findings (the build without card and cooler), for which steps can be skipped.
+  const optFindings = useMemo<Finding[] | null>(
+    () => (engine ? engine.evaluate(withoutOptional(parts), { ...engine.PICK_CTX, ...engineCtx }) : anyPart ? null : []),
+    [engine, parts, engineCtx, anyPart],
+  );
+  // The recommended PSU: the larger of the card maker's figure and the whole-build formula (rule 14's two figures).
+  const psuWatts = useMemo(() => {
+    if (!engine) return null;
+    const e = engine.powerEstimate(parts);
+    return Math.max(e.makerW ?? 0, e.formulaW ?? 0) || null;
+  }, [engine, parts]);
+  // The pick worker's checker: its own chunk, loaded after the first paint (once the index is here), so the builder's
+  // first-paint JS stays within rule 11.
+  const [checker, setChecker] = useState<Checker | null>(null);
+  const [checkerFailed, setCheckerFailed] = useState(false);
+  const indexReady = models != null;
+  useEffect(() => {
+    if (!indexReady) return;
+    let made: Checker | null = null;
+    let live = true;
+    const load = () => import('./pickChecker');
+    load()
+      .catch(load)
+      .then((m) => {
+        if (!live) return;
+        made = m.createChecker(m.makeWorker);
+        setChecker(made);
+      }, () => live && setCheckerFailed(true)); // no checker: the steps show their parts unlabelled, nothing hidden
+    return () => {
+      live = false;
+      made?.dispose();
+    };
+  }, [indexReady]);
 
   return {
     models,
     coverage,
     error,
     loading: !models,
-    ctx,
+    /** The build as engine parts, its findings (null while the engine loads) and the recommended PSU. */
+    parts,
+    findings,
+    /** Findings of the build without card and cooler (builderEngine.optionalSlot); null while the engine loads. */
+    optFindings,
+    engineFailed,
+    psuWatts,
+    engineCtx,
+    checker,
+    checkerFailed,
     build,
     update,
     prefs,
@@ -334,3 +420,30 @@ export function useBuilderState() {
 }
 
 export type BuilderState = ReturnType<typeof useBuilderState>;
+
+/**
+ * The engine's verdict on every part a step can offer, from the pick worker (`full: 'all'`: passes kept, so a label
+ * tells a stated fit from an estimate). While a new build is checked the previous verdicts stay (no flicker); null
+ * until the step's file and the first check are there. A part without a verdict (the check failed) is shown unlabelled
+ * and never hidden.
+ */
+export function useStepVerdicts(state: BuilderState, slot: Slot | null): { verdicts: Map<string, Verdict> | null; checking: boolean } {
+  const ready = slot != null && state.slotReady(slot);
+  const models = ready ? (state.models?.[slot] as AnyModel[] | undefined) : undefined;
+  const list = useMemo<Part[] | null>(
+    () => (slot && models ? candidates(slot, models as never).map((m) => partOf(slot, m as AnyModel)) : null),
+    [slot, models],
+  );
+  const { checker, parts, engineCtx } = state;
+  // parts + context by value: a re-render with the same build doesn't re-run the check.
+  const runKey = JSON.stringify([parts, engineCtx]);
+  const [res, setRes] = useState<{ of: Part[]; key: string; map: Map<string, Verdict> } | null>(null);
+  useEffect(() => {
+    if (!slot || !list || !checker) return;
+    return checker.run(slot, parts, list, (map) => setRes({ of: list, key: runKey, map }), { full: 'all', ctx: engineCtx });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- runKey stands for parts and engineCtx
+  }, [slot, list, runKey, checker]);
+  const own = res && res.of === list ? res : null;
+  if (!own && list && state.checkerFailed) return { verdicts: new Map(), checking: false };
+  return { verdicts: own?.map ?? null, checking: !!list && own?.key !== runKey };
+}

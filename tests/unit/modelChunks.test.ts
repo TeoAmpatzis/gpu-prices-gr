@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from '../../src/lib/categories';
 import { chunkOf } from '../../src/lib/compatChunks';
-import { slotModels } from '../../src/lib/builder';
+import { slotModels } from '../../src/lib/builderData';
 import { allTimeLow, decodeList, groupModels, saleOf } from '../../src/lib/data';
 import { checkData, listFile, manifest, modelChunks, sameKind, searchFile, type CategoryInput } from '../../src/lib/derive';
 import { importGlitches, sharedImportedDays, sharedImportedLows, untrustedPoints } from '../../src/lib/dips';

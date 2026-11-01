@@ -9,13 +9,7 @@
 
 import type { CaseFans, CaseListing, CasePosition } from '../types';
 import type { Model } from './data';
-import {
-  caseFanMounts,
-  caseFansIncluded,
-  gpuPsu,
-  requiredWatts,
-  type Build,
-} from './builder';
+import { caseFanMounts, caseFansIncluded, gpuPsu, type Build } from './builderData';
 import type { Text } from './i18n';
 
 export const POS_NAME: Record<CasePosition, { el: string; en: string }> = {
@@ -56,9 +50,12 @@ export function includedText(c: Model<CaseListing>): { text: Text; known: boolea
   return { text: { el: 'Ανεμιστήρες στο κουτί: δεν αναφέρεται', en: 'Fans in the box: not stated' }, known: false };
 }
 
-/** Build that needs more airflow: a ≥ 750 W recommendation, a top CPU or a TDP of 125 W and up. */
-export function highPower(b: Build): boolean {
-  const watts = requiredWatts(b) ?? 0;
+/**
+ * Build that needs more airflow: a ≥ 750 W recommendation, a top CPU or a TDP of 125 W and up. `watts`: the build's
+ * recommended PSU (the engine's power estimate, builderState.ts), null while unknown.
+ */
+export function highPower(b: Build, watts: number | null = null): boolean {
+  watts ??= 0;
   const gpu = b.gpu ? (gpuPsu(b.gpu.cheapest) ?? 0) : 0;
   const cpu = b.cpu ? /^(Ryzen 9|Core i9|Core Ultra 9)\b/.test(b.cpu.chip) || (b.cpu.cheapest.tdp ?? 0) >= 125 : false;
   return watts >= 750 || gpu >= 750 || cpu;
@@ -79,8 +76,8 @@ export interface FanPlan {
 }
 
 /** How many fans to add where, for the build's case (or a case of unknown layout when none is chosen). */
-export function fanPlan(b: Build): FanPlan {
-  const high = highPower(b);
+export function fanPlan(b: Build, watts: number | null = null): FanPlan {
+  const high = highPower(b, watts);
   const aio = b.cooler?.cheapest.type === 'AIO';
   const mounts = b.case ? caseFanMounts(b.case) : null;
   const inc = b.case ? (caseFansIncluded(b.case) ?? []) : [];

@@ -3,7 +3,6 @@
 import { formatPrice, type Model } from '../../lib/data';
 import { groupName, storageTypeLine } from '../../lib/categories';
 import {
-  FIT_LABEL,
   caseBoard,
   caseCoolerMax,
   caseFanSlots,
@@ -19,11 +18,10 @@ import {
   moboMemory,
   moboSlots,
   moboSocket,
-  type Fit,
-  type Rating,
   type Slot,
   type SlotListing,
-} from '../../lib/builder';
+} from '../../lib/builderData';
+import { LABEL_TEXT, type Label, type Rating } from '../../lib/fitLabel';
 import type { AnyModel } from '../../lib/builderState';
 import { storedImage } from '../../lib/images';
 import { T, tr, type Lang, type Text } from '../../lib/i18n';
@@ -40,15 +38,15 @@ export const S = {
   fanPositions: { el: 'θέσεις ανεμ.', en: 'fan positions' },
   airflow: { el: 'για ροή αέρα', en: 'airflow type' },
   pressure: { el: 'για στατική πίεση', en: 'static pressure type' },
-  incompatible: { el: 'Ασύμβατο', en: 'Incompatible' },
   dramLess: { el: 'χωρίς DRAM', en: 'DRAM-less' },
 } satisfies Record<string, Text>;
 
 // Written out in full so Tailwind keeps the classes (index.css).
-const FIT_CLASS: Record<Fit, string> = {
+const FIT_CLASS: Record<Label, string> = {
   fits: 'badge badge-fits',
   likely: 'badge badge-likely',
   unverified: 'badge badge-unverified',
+  check: 'badge badge-check',
   no: 'badge badge-no',
 };
 
@@ -56,10 +54,9 @@ const FIT_CLASS: Record<Fit, string> = {
 export function FitBadge({ rating, lang }: { rating: Rating; lang: Lang }) {
   if (!rating.fit) return null;
   const why = rating.reasons.map((r) => tr(lang, r)).join(' ');
-  const label = rating.fit === 'no' ? S.incompatible : FIT_LABEL[rating.fit];
   return (
     <span className={FIT_CLASS[rating.fit]} title={why || undefined}>
-      {tr(lang, label)}
+      {tr(lang, LABEL_TEXT[rating.fit])}
     </span>
   );
 }

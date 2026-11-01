@@ -15,7 +15,7 @@ import { useEffect, useMemo, useState } from 'react';
 import type { Part } from '../engine';
 import type { BaseListing } from '../types';
 import { setPart } from './buildStore';
-import { slotModels, type Slot } from './builder';
+import { slotModels, type Slot } from './builderData';
 import type { CategoryData } from './data';
 import { toPart, usable, type Verdict } from './pick';
 import { idle } from './pickBuild';

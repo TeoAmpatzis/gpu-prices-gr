@@ -87,7 +87,7 @@ import {
   slotModels,
   type Slot,
   type SlotListing,
-} from './builder';
+} from './builderData';
 
 /** Only needed when a product is opened (URL) or never shown (scrape time). */
 const DETAIL_ONLY = new Set(['url', 'scrapedAt']);
@@ -462,7 +462,7 @@ export function builderFiles(all: Partial<Record<Category, Latest>>, builtAt: st
     const listings = (all[slot as Category]?.listings ?? []) as SlotListing[typeof slot][];
     const grouped = slotModels(slot, listings);
     models[slot] = grouped as Model<BaseListing>[];
-    let offered = candidates(slot, grouped, {}) as Model<BaseListing>[];
+    let offered = candidates(slot, grouped) as Model<BaseListing>[];
     if (slot === 'gpu') {
       offeredGpus = offered as unknown as Model<GpuListing>[];
       offered = mergeTwins(offeredGpus) as unknown as Model<BaseListing>[];
@@ -669,7 +669,7 @@ export function modelChunks(cat: Category, input: CategoryInput, builtAt: string
   // Graphics cards: the builder's chip length range (builder.fitContext, its ESTIMATE rule, over the same rows as
   // the builder's gpu step file: candidates()) for a card with no measured
   // length of its own; none for a water-cooled card (its length is not the chip's).
-  const chipLengths = cat === 'gpu' ? fitContext(candidates('gpu', slotModels('gpu', input.latest.listings as GpuListing[]), {})).chips : null;
+  const chipLengths = cat === 'gpu' ? fitContext(candidates('gpu', slotModels('gpu', input.latest.listings as GpuListing[]))).chips : null;
   const lengthRange = (m: Model<BaseListing>): { min: number; max: number } | null => {
     const c = chipLengths?.get(m.cheapest.chip);
     if (!c || m.listings.some((l) => (l as GpuListing).lengthMm != null) || gpuWaterCooled(m.cheapest as GpuListing)) return null;

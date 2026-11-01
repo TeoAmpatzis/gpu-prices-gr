@@ -1,7 +1,7 @@
 // Compat chunks (v2 step 3, A7): small per-slot files with the engine fields of every usable model, so a
 // part saved without fields (old builds, share links) or from older data can be checked without
 // loading the builder's step files. The chunk of a key is a hash of it, the same function in build and browser.
-import type { Slot } from './builder';
+import type { Slot } from './builderData';
 
 export const CHUNKS = 64;
 

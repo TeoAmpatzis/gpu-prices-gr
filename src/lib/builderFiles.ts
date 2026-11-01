@@ -7,7 +7,7 @@
 
 import type { BuilderExtraFile, BuilderIndex, BuilderSlotFile } from '../types';
 import { fromColumns } from './columns';
-import { slotModels, type Slot, type SlotListing } from './builder';
+import { slotModels, type Slot, type SlotListing } from './builderData';
 import type { Model } from './data';
 
 export const INDEX_URL = '/data/builder/index.json';

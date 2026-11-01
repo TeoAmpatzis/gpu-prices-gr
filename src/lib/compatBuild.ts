@@ -1,7 +1,7 @@
 // Build side of the compat chunks (src/lib/compatChunks.ts): for every builder slot, 64 files with the
 // engine fields of each usable model, grouped by the builder's own `slotModels` so the keys are its keys.
 import type { Category, Latest } from '../types';
-import { SLOTS, slotModels, type SlotListing } from './builder';
+import { SLOTS, slotModels, type SlotListing } from './builderData';
 import { CHUNKS, chunkOf, chunkPath, type CompatChunk } from './compatChunks';
 import { toPart, usable } from './pick';
 

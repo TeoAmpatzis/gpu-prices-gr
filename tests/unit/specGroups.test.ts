@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { variantChips } from '../../src/components/product/variantChips';
 import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
 import { CATEGORY_IDS } from '../../src/lib/categories';
-import { candidates, fitContext, slotModels } from '../../src/lib/builder';
+import { candidates, fitContext, slotModels } from '../../src/lib/builderData';
 import { modelChunks, type CategoryInput } from '../../src/lib/derive';
 import { SPEC_GROUP_ORDER, specGroups } from '../../src/ui/specs';
 import type { BaseListing, CaseListing, Category, GpuListing, History, Imported, Latest, ModelEntry, StorageListing } from '../../src/types';
@@ -119,7 +119,7 @@ describe('GPU length estimate (builder.fitContext rule)', () => {
     const raw = readJson<Latest>('gpu', 'latest.json');
     if (!raw) return;
     const listings = validateLatest('gpu', raw, VALIDATION_MODE).latest.listings as GpuListing[];
-    const ctx = fitContext(candidates('gpu', slotModels('gpu', listings), {}));
+    const ctx = fitContext(candidates('gpu', slotModels('gpu', listings)));
     const withEstimate = gpus.filter((g) => g.lengthEstimate);
     expect(withEstimate.length).toBeGreaterThan(0);
     for (const g of withEstimate) {

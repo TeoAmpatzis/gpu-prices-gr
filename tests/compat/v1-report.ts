@@ -1,7 +1,7 @@
 // The Phase 0 results table (docs/audit/compat-results.md) from the v1 adapter's results, and the
 // wattage comparison between v1 and the plan's formula ("Κατανάλωση και τροφοδοτικό").
 
-import { gpuPsu } from '../../src/lib/builder';
+import { gpuPsu } from '../../src/lib/builderData';
 import type { GpuListing } from '../../src/types';
 import type { Scenario, ScenarioPart } from './scenario';
 import { V1_CHECKS, modelOf, type ScenarioResult } from './v1-adapter';

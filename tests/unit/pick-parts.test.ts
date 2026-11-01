@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { fromColumns } from '../../src/lib/columns';
 import { builderFiles } from '../../src/lib/derive';
-import { SLOTS, slotModels, usable as builderUsable, type Slot } from '../../src/lib/builder';
+import { SLOTS, slotModels, usable as builderUsable, type Slot } from '../../src/lib/builderData';
 import { PART_FIELDS, SLOT_OF, toPart, usable } from '../../src/lib/pick';
 import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
 import { CATEGORY_IDS } from '../../src/lib/categories';

@@ -7,7 +7,9 @@ import { loadScenarios } from './scenario';
 import { runScenario } from './v1-adapter';
 import { report } from './v1-report';
 
-const scenarios = loadScenarios().map((x) => x.scenario);
+// The record is v1's audit over the Phase 0 scenarios (S01–S64); later scenarios test the v2 engine only.
+const PHASE0 = /^S(0[1-9]|[1-5]\d|6[0-4])$/;
+const scenarios = loadScenarios().map((x) => x.scenario).filter((s) => PHASE0.test(s.id));
 const results = scenarios.map(runScenario);
 
 it('v1 answers every scenario', () => {

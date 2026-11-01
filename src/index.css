@@ -109,6 +109,9 @@
   .badge-unverified {
     @apply bg-info-bg text-info-strong;
   }
+  .badge-check {
+    @apply bg-warning-bg text-warning-strong;
+  }
   .badge-no {
     @apply bg-danger-bg text-danger-strong;
   }
