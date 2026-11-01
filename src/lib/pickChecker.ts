@@ -29,6 +29,7 @@ export const makeWorker =
  * passes too. `ctx`: chip lengths and use, added to the worker's BIOS table.
  */
 export interface RunOptions {
+  replaceKey?: string;
   full?: Keep;
   ctx?: PostedContext;
 }
@@ -65,6 +66,7 @@ export function checkSliced(
   load: typeof loadCheck = loadCheck,
   full: Keep = false,
   ctx: PostedContext = {},
+  replaceKey?: string,
 ): () => void {
   let cancelled = false;
   let cancelRun = () => {};
@@ -74,7 +76,7 @@ export function checkSliced(
       ({ checkAll, PICK_CTX }) => {
         if (cancelled) return;
         const map = new Map<string, Verdict>();
-        cancelRun = runSliced(candidates, SLICE, (slice) => toVerdicts(toResults(checkAll(build, slot, slice, { ...PICK_CTX, ...ctx }), full), map), () => done(map), schedule);
+        cancelRun = runSliced(candidates, SLICE, (slice) => toVerdicts(toResults(checkAll(build, slot, slice, { ...PICK_CTX, ...ctx }, replaceKey), full), map), () => done(map), schedule);
       },
       () => {
         if (!cancelled) done(new Map());
@@ -144,7 +146,7 @@ export function createChecker(
       let cancelled = false;
       let cancelFallback = () => {};
       const fallback = () => {
-        if (!cancelled) cancelFallback = checkSliced(slot, build, candidates, (v) => !cancelled && done(v), schedule, loadCheck, full, ctx);
+        if (!cancelled) cancelFallback = checkSliced(slot, build, candidates, (v) => !cancelled && done(v), schedule, loadCheck, full, ctx, opts.replaceKey);
       };
       const w = get();
       if (!w) {
@@ -165,7 +167,7 @@ export function createChecker(
         else fallback(); // the worker failed, or the engine threw there
       });
       try {
-        w.postMessage({ id, slot, build, candidates, ...(full ? { full } : {}), ...(ctx ? { ctx } : {}) });
+        w.postMessage({ id, slot, build, candidates, ...(full ? { full } : {}), ...(ctx ? { ctx } : {}), ...(opts.replaceKey === undefined ? {} : { replaceKey: opts.replaceKey }) });
         busy.add(id);
       } catch {
         fail(); // e.g. a value that can't be cloned: the main thread checks it

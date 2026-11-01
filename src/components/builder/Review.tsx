@@ -66,7 +66,12 @@ export default function Review({ state, lang, onGo }: { state: BuilderState; lan
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
   const chosen = SLOTS.filter((s) => build[s]);
-  const total = chosen.reduce((sum, s) => sum + build[s]!.cheapest.price, 0);
+  const total = state.resolvedTotal;
+  const displayModel = (slot: Slot): AnyModel => {
+    const m = build[slot] as AnyModel;
+    const line = state.resolvedLines.find((r) => r.line === slot);
+    return line ? { ...m, cheapest: line.offer } : m;
+  };
   const link = shareLink(build, prefs);
   const date = builtAt ? new Date(builtAt).toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB') : null;
 
@@ -74,7 +79,7 @@ export default function Review({ state, lang, onGo }: { state: BuilderState; lan
   const listText = () => {
     const lines = [`BuildDraft.gr · ${t(R.title)}`, ''];
     for (const s of chosen) {
-      const m = build[s] as AnyModel;
+      const m = displayModel(s);
       const shop = SOURCES[m.cheapest.source as SourceName]?.label ?? m.cheapest.source;
       lines.push(`${t(STEP_NAME[s])}: ${m.chip} · ${formatPrice(m.cheapest.price, lang)} (${shop})${m.cheapest.url ? ` ${m.cheapest.url}` : ''}`);
     }
@@ -105,7 +110,7 @@ export default function Review({ state, lang, onGo }: { state: BuilderState; lan
     <div className="flex flex-col gap-4">
       <ul className="divide-y divide-line rounded-xl ring-1 ring-edge">
         {SLOTS.map((s: Slot) => {
-          const m = build[s] as AnyModel | undefined;
+          const m = build[s] ? displayModel(s) : undefined;
           const Icon = CATEGORIES[s as Category].icon;
           const opt = optionalSlot(s, state.optFindings);
           return (

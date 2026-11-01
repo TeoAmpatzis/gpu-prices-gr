@@ -120,7 +120,7 @@ test('"Clear build" empties every line, the second drive included, and the fan q
   await fresh(page, 'en', '/builder?mode=quick');
   for (const line of ['cpu', 'storage2', 'fan']) {
     await page.locator(`[data-line=${line}] button`).filter({ hasText: 'Choose' }).click();
-    await page.locator('main ul.max-h-80 li button').first().click();
+    await page.getByRole('dialog').getByRole('button', { name: TEXT.choose.en, exact: true }).first().click();
     await expect(page.locator(`[data-line=${line}] .font-semibold`).first()).toBeVisible({ timeout: 20_000 });
   }
   await page.locator('[data-line=fan]').getByRole('button', { name: 'One pack more' }).click();
@@ -133,6 +133,66 @@ test('"Clear build" empties every line, the second drive included, and the fan q
   expect(saved.cpu).toBeUndefined();
   expect(saved.fanQty).toBe(1);
 });
+
+for (const width of [360, 1366]) {
+  test.describe(`shared picker ${width}`, () => {
+    test.use({ viewport: { width, height: 900 } });
+    test('CPU versions, PSU fields, storage, case and fan cards share the toolbar and preserve selections', async ({ page }) => {
+      test.setTimeout(180_000);
+      await fresh(page, 'en', '/builder?mode=quick');
+      for (const line of ['cpu', 'psu', 'storage', 'storage2', 'case', 'fan']) {
+        await page.locator(`[data-line=${line}]`).getByRole('button', { name: 'Choose', exact: true }).click();
+        const dialog = page.getByRole('dialog');
+        const picker = dialog.locator(`[data-picker=${line}]`);
+        await expect(picker.locator('li.card').first()).toBeVisible({ timeout: 20_000 });
+        await expect(picker.getByRole('button', { name: 'Only compatible', exact: true })).toHaveAttribute('aria-pressed', 'true');
+        await expect(picker.getByRole('combobox')).toBeVisible();
+        if (line === 'cpu') await expect(picker.locator('[data-card=cpu] ul li.card').first()).toBeVisible();
+        if (line === 'psu') await expect(picker.locator('[data-card=psu]').first()).toContainText(/\d+ W/);
+        if (line === 'fan') await expect(dialog.locator('[data-fan-plan]')).toBeVisible();
+        expect(await noOverflow(page)).toBe(true);
+        if (width === 360) expect(await shortControls(page)).toEqual([]);
+        await picker.getByRole('button', { name: 'Choose', exact: true }).first().click();
+        await expect(dialog).toHaveCount(0);
+        await expect(page.locator(`[data-line=${line}]`).getByRole('button', { name: 'Change', exact: true })).toBeVisible();
+      }
+      const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('pcBuild') ?? '{}'));
+      expect(saved.storage).toBeTruthy();
+      expect(saved.storage2).toBeTruthy();
+      await page.locator('[data-line=fan]').getByRole('button', { name: 'One pack more' }).click();
+      await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('pcBuild') ?? '{}').fanQty)).toBe(2);
+    });
+
+    test('chosen CPU offer updates the line and total in both modes, survives reload, and loads only on demand', async ({ page }) => {
+      test.setTimeout(120_000);
+      const chunks: string[] = [];
+      page.on('request', (request) => { if (/\/data\/cpu\/model\//.test(request.url())) chunks.push(request.url()); });
+      await fresh(page, 'en', '/builder?step=cpu');
+      const picker = page.locator('[data-picker=cpu]');
+      await expect(picker.locator('li.card').first()).toBeVisible({ timeout: 20_000 });
+      expect(chunks).toEqual([]);
+      await picker.getByRole('textbox').fill('Ryzen 5 7600');
+      await picker.getByRole('button', { name: 'Choose', exact: true }).first().click();
+      const choice = picker.locator('[data-shop-choice=cpu]');
+      await choice.getByRole('button', { name: 'Other shop', exact: true }).click();
+      const offers = choice.locator('button[aria-pressed]');
+      await expect.poll(() => offers.count()).toBeGreaterThan(1);
+      const price = await offers.last().locator('.font-semibold').innerText();
+      await offers.last().click();
+      await expect(offers.last()).toHaveAttribute('aria-pressed', 'true');
+      await expect(page.locator('main aside').first()).toContainText(price);
+      expect(chunks.length).toBeGreaterThan(0);
+      const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('pcBuild') ?? '{}'));
+      expect(saved.offers.cpu).toBeTruthy();
+      await page.goto('/builder?mode=quick');
+      const line = page.locator('[data-line=cpu]');
+      await expect(line).toContainText(price, { timeout: 20_000 });
+      await page.reload();
+      await expect(line).toContainText(price, { timeout: 20_000 });
+      expect(await noOverflow(page)).toBe(true);
+    });
+  });
+}
 
 test.describe('a step file that fails (Review Focus 3)', () => {
   test('guided: the case step shows a retry; other steps and the summary keep working; the retry loads it', async ({ page }) => {
@@ -166,7 +226,7 @@ test.describe('a step file that fails (Review Focus 3)', () => {
     // Find a case key through the builder itself: choose one in the part list, then reload with its file failing.
     await fresh(page, 'en', '/builder?mode=quick');
     await page.locator('[data-line=case] button').filter({ hasText: 'Choose' }).click();
-    await page.locator('main ul.max-h-80 li button').first().click();
+    await page.getByRole('dialog').getByRole('button', { name: TEXT.choose.en, exact: true }).first().click();
     await expect(page.locator('[data-line=case] .font-semibold').first()).toBeVisible();
     fail = true;
     await page.reload();
@@ -177,4 +237,17 @@ test.describe('a step file that fails (Review Focus 3)', () => {
     await expect(page.locator('[data-line=case] .font-semibold').first()).toBeVisible({ timeout: 20_000 });
     await expect(page.locator('[data-not-loaded]')).toHaveCount(0);
   });
+});
+
+test('CPU step pages by card: "Show more" counts the cards left and disappears once all are shown', async ({ page }) => {
+  await fresh(page, 'en', '/builder?step=cpu');
+  const cards = page.locator('[data-picker=cpu] [data-card=cpu]');
+  await expect(cards.first()).toBeVisible({ timeout: 20_000 });
+  const more = page.locator('[data-picker=cpu]').getByRole('button', { name: /^Show more \(\d+\)$/ });
+  while (await more.count()) {
+    const before = await cards.count();
+    const left = Number((await more.innerText()).match(/\d+/)![0]);
+    await more.click();
+    await expect(cards).toHaveCount(before + Math.min(left, 24));
+  }
 });

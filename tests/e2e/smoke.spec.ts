@@ -48,7 +48,7 @@ test('quick list builder opens a picker', async ({ page }) => {
   await page.goto('/builder?mode=quick');
   const choose = page.locator('main button').filter({ hasText: /^(Επιλογή|Choose)$/ }).first();
   await choose.click({ timeout: 20_000 });
-  await expect(page.locator('main ul.max-h-80 li').first()).toBeVisible({ timeout: 10_000 });
+  await expect(page.locator('main li.card').first()).toBeVisible({ timeout: 10_000 });
   expect(errors).toEqual([]);
 });
 

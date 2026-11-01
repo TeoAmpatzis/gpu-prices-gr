@@ -82,7 +82,8 @@ test('a v1 shared build opens the same build on Review', async ({ page }) => {
   const firstCard = page.locator('main li.card').first();
   await firstCard.waitFor({ timeout: 20_000 });
   const cpuName = (await firstCard.locator('h3, .font-semibold').first().innerText()).trim();
-  await firstCard.getByRole('button', { name: /^(Επιλογή|Choose)$/ }).click();
+  // A CPU card lists its versions (Box, Tray), each with its own Choose.
+  await firstCard.getByRole('button', { name: /^(Επιλογή|Choose)$/ }).first().click();
   // The builder's own share link (v2 form), turned back into the v1 form an old message would hold.
   const share = await page.evaluate(() => {
     const raw = localStorage.getItem('pcBuild');
