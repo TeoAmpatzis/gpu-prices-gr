@@ -1,7 +1,9 @@
-// The builder's Quick list mode: every part on one page, each with a picker of compatible choices.
+// The builder's part list (step 5 task 11, the Quick list base): one line per part in the order of SLOTS, the second
+// drive after the first, the fans with their quantity last; each line with photo, name, specs, price, shop and label,
+// and a picker of compatible choices (task 12 replaces the picker). A saved part whose step file failed shows a retry.
 
 import { useEffect, useMemo, useState } from 'react';
-import { ExternalLink, Loader2, Search, X } from 'lucide-react';
+import { ExternalLink, Loader2, RotateCw, Search, X } from 'lucide-react';
 import type { BaseListing, Category } from '../../types';
 import { CATEGORIES } from '../../lib/categories';
 import { formatPrice, saleOf } from '../../lib/data';
@@ -10,10 +12,17 @@ import { ENGINE_TEXT, optionalSlot } from '../../lib/builderEngine';
 import { useStepVerdicts, type AnyModel, type BuilderState } from '../../lib/builderState';
 import { LABEL_TEXT, ratingOf, type Label } from '../../lib/fitLabel';
 import { T, tr, useLang, type Text } from '../../lib/i18n';
-import BuildGuide from '../BuildGuide';
 import ProductPhoto from '../ProductPhoto';
 import SourceBadge from '../SourceBadge';
 import { FitBadge, ShipNote, partImage, specLine } from './parts';
+import { FanQty } from './GuidedWalk';
+import { UI } from '../../ui/strings';
+import { BUILDER as B } from '../../ui/builderStrings';
+
+/** A line of the list: a slot, or the second drive (chosen from the storage step's parts). */
+type Line = Slot | 'storage2';
+const LINES: Line[] = SLOTS.flatMap((s): Line[] => (s === 'storage' ? ['storage', 'storage2'] : [s]));
+const slotOf = (l: Line): Slot => (l === 'storage2' ? 'storage' : l);
 
 const PICKER_LIMIT = 60;
 
@@ -34,12 +43,13 @@ const S = {
   },
 } satisfies Record<string, Text>;
 
-export default function QuickList({ state }: { state: BuilderState }) {
+export default function PartList({ state }: { state: BuilderState }) {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
   const { models, build, update, extraVersion } = state;
   const findings = state.findings ?? [];
-  const [open, setOpen] = useState<Slot | null>(null);
+  const [openLine, setOpen] = useState<Line | null>(null);
+  const open = openLine && slotOf(openLine);
   // Each step's parts come in their own file (/data/builder/<slot>.json), requested when its picker opens, then the
   // pick worker checks them against the build.
   const { verdicts } = useStepVerdicts(state, open);
@@ -47,6 +57,7 @@ export default function QuickList({ state }: { state: BuilderState }) {
   useEffect(() => {
     if (open && !state.loading) state.wantSlot(open);
   }, [open, state.loading]);
+  const pick = (line: Line, m: AnyModel | undefined) => (line === 'storage2' ? state.setStorage2(m ?? null) : update({ ...build, [line]: m }));
   const [query, setQuery] = useState('');
   // Picker toggle: hide parts whose fit can't be checked. Not remembered (the privacy page lists the stored keys).
   const [verifiedOnly, setVerifiedOnly] = useState(false);
@@ -72,15 +83,17 @@ export default function QuickList({ state }: { state: BuilderState }) {
 
   return (
     <div className="flex min-w-0 flex-col gap-4">
-      <BuildGuide />
       <div className="card divide-y divide-line">
-        {SLOTS.map((slot) => {
+        {LINES.map((line) => {
+          const slot = slotOf(line);
           const cfg = CATEGORIES[slot as Category];
           const Icon = cfg.icon;
-          const m = build[slot] as AnyModel | undefined;
-          const isOpen = open === slot;
+          const m = (line === 'storage2' ? state.storage2 : build[slot]) as AnyModel | undefined;
+          const isOpen = openLine === line;
+          const waiting = line === 'storage2' ? state.pendingStorage2 : state.pending.includes(slot);
+          const qty = slot === 'fan' ? state.fanQty : 1;
           return (
-            <div key={slot} className="p-4">
+            <div key={line} className="p-3 sm:p-4" data-line={line}>
               <div className="flex flex-wrap items-center gap-3">
                 {m ? (
                   // The chosen part's photo (the shop's own), the category icon if none.
@@ -94,8 +107,8 @@ export default function QuickList({ state }: { state: BuilderState }) {
                     of squeezing the name. */}
                 <div className="min-w-[9rem] flex-1">
                   <div className="text-xs text-muted">
-                    {t(cfg.tab)}
-                    {optionalSlot(slot, state.optFindings).optional && <span className="text-faint"> · {t(S.optional)}</span>}
+                    {line === 'storage2' ? t(B.storage2) : t(cfg.tab)}
+                    {(line === 'storage2' || slot === 'fan' || optionalSlot(slot, state.optFindings).optional) && <span className="text-faint"> · {t(S.optional)}</span>}
                   </div>
                   {m ? (
                     <>
@@ -105,6 +118,13 @@ export default function QuickList({ state }: { state: BuilderState }) {
                         <FitBadge rating={ratingOf(findings, m.key, state.parts)} lang={lang} />
                       </div>
                     </>
+                  ) : waiting && state.slotFailed(slot) ? (
+                    // Its step file failed (Review Focus 3): not counted in the total; a retry here.
+                    <button type="button" onClick={() => state.wantSlot(slot)} className="tap inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:underline">
+                      <RotateCw className="h-4 w-4" aria-hidden="true" /> {t(UI.retry)}
+                    </button>
+                  ) : waiting ? (
+                    <div className="ui-skeleton mt-1 h-4 w-40" role="status" aria-label={t(T.loading)} />
                   ) : (
                     <div className="text-sm text-faint">—</div>
                   )}
@@ -114,9 +134,12 @@ export default function QuickList({ state }: { state: BuilderState }) {
                     href={m.cheapest.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 whitespace-nowrap"
+                    className="tap flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1"
                   >
-                    <span className="font-semibold tabular-nums text-accent">{formatPrice(m.cheapest.price, lang)}</span>
+                    <span className="font-semibold tabular-nums text-accent">
+                      {qty > 1 && <span className="font-normal text-muted">{qty} × </span>}
+                      {formatPrice(m.cheapest.price, lang)}
+                    </span>
                     <SourceBadge source={m.cheapest.source} />
                     <ShipNote m={m} lang={lang} />
                     <ExternalLink className="h-3.5 w-3.5 text-faint" />
@@ -126,7 +149,7 @@ export default function QuickList({ state }: { state: BuilderState }) {
                   <button
                     type="button"
                     onClick={() => {
-                      setOpen(isOpen ? null : slot);
+                      setOpen(isOpen ? null : line);
                       setQuery('');
                     }}
                     className="tap rounded-lg px-3 py-1.5 text-sm font-medium text-accent ring-1 ring-inset ring-accent/30 hover:bg-accent/10"
@@ -136,7 +159,7 @@ export default function QuickList({ state }: { state: BuilderState }) {
                   {m && (
                     <button
                       type="button"
-                      onClick={() => update({ ...build, [slot]: undefined })}
+                      onClick={() => pick(line, undefined)}
                       title={t(S.remove)}
                       className="tap-square grid place-items-center rounded-lg p-1.5 text-muted edge hover:bg-hover hover:text-fg dark:ring-0"
                     >
@@ -146,6 +169,11 @@ export default function QuickList({ state }: { state: BuilderState }) {
                 </div>
               </div>
 
+              {slot === 'fan' && m && (
+                <div className="mt-2">
+                  <FanQty state={state} lang={lang} />
+                </div>
+              )}
               {isOpen && (
                 <div className="mt-3 rounded-xl bg-sunken p-3 ring-1 ring-edge">
                   <label className="relative mb-2 block">
@@ -184,7 +212,11 @@ export default function QuickList({ state }: { state: BuilderState }) {
                       </button>
                     ) : null}
                   </div>
-                  {loading ? (
+                  {state.slotFailed(slot) ? (
+                    <button type="button" onClick={() => state.wantSlot(slot)} className="tap inline-flex items-center gap-1.5 p-3 text-sm font-medium text-accent hover:underline">
+                      <RotateCw className="h-4 w-4" aria-hidden="true" /> {t(B.stepFailed)} {t(UI.retry)}
+                    </button>
+                  ) : loading ? (
                     <div className="flex items-center gap-2 p-3 text-sm text-faint">
                       <Loader2 className="h-4 w-4 animate-spin" /> {t(T.loading)}
                     </div>
@@ -207,7 +239,7 @@ export default function QuickList({ state }: { state: BuilderState }) {
                             <button
                               type="button"
                               onClick={() => {
-                                update({ ...build, [slot]: o });
+                                pick(line, o);
                                 setOpen(null);
                               }}
                               className="tap flex w-full items-center gap-3 px-3 py-2 text-left text-sm hover:bg-hover"

@@ -23,7 +23,66 @@ export const BUILDER = {
     el: 'Για προϋπολογισμό πάνω από {max} δεν φτιάχνουμε αυτόματο build· διάλεξε τα εξαρτήματα ένα ένα.',
     en: "Above {max} we don't make an automatic build; choose the parts one by one.",
   },
+  // The start screen (task 11).
+  useQ: { el: 'Για τι θα χρησιμοποιηθεί ο υπολογιστής;', en: 'What is the PC for?' },
+  resQ: { el: 'Ανάλυση οθόνης', en: 'Screen resolution' },
+  budgetQ: { el: 'Προϋπολογισμός', en: 'Budget' },
+  budgetHint: {
+    el: 'Δεν κρύβει εξαρτήματα· δείχνει πόσα μένουν και ταξινομεί τις προτάσεις.',
+    en: "It never hides parts; it shows what's left and orders the suggestions.",
+  },
+  buildForMe: { el: "Φτιάξ' το για μένα", en: 'Build it for me' },
+  stepByStep: { el: 'Βήμα-βήμα', en: 'Step by step' },
+  partList: { el: 'Λίστα εξαρτημάτων', en: 'Part list' },
+  needUseBudget: {
+    el: 'Για αυτόματο build διάλεξε χρήση και προϋπολογισμό.',
+    en: 'For an automatic build choose a use and a budget.',
+  },
+  autoFailed: { el: 'Το αυτόματο build δεν φορτώθηκε.', en: "The automatic build didn't load." },
+  // The measurement notice: full on the start screen, one line in the steps and the part list (C9).
+  notice: {
+    el: 'Οι διαστάσεις για τον έλεγχο συμβατότητας συλλέγονται σταδιακά. Όσα δεν έχουν ακόμα στοιχεία εμφανίζονται ως «Χωρίς επιβεβαίωση»· προστίθενται καθημερινά.',
+    en: 'Measurements for the compatibility check are being collected gradually. Parts without them are shown as "Fit not verified"; more are added every day.',
+  },
+  noticeShort: { el: 'Οι διαστάσεις συλλέγονται σταδιακά.', en: 'Measurements are being collected gradually.' },
+  known: { el: 'Γνωστές σήμερα:', en: 'Known today:' },
+  knownGpu: { el: 'κάρτες γραφικών', en: 'graphics cards' },
+  knownCase: { el: 'κουτιά', en: 'cases' },
+  knownCooler: { el: 'ψύκτρες', en: 'coolers' },
+  // The steps and the part list (task 11).
+  mode: { el: 'Τρόπος συναρμολόγησης', en: 'Builder mode' },
+  useBudget: { el: 'Χρήση και προϋπολογισμός', en: 'Use and budget' },
+  stepOf: { el: 'Βήμα {n}/{total}', en: 'Step {n}/{total}' },
+  steps: { el: 'Βήματα', en: 'Steps' },
+  prevStep: { el: 'Προηγούμενο βήμα', en: 'Previous step' },
+  nextStep: { el: 'Επόμενο βήμα', en: 'Next step' },
+  more: { el: 'Περισσότερα', en: 'More' },
+  less: { el: 'Λιγότερα', en: 'Less' },
+  fansSection: { el: 'Ανεμιστήρες κουτιού (προαιρετικό)', en: 'Case fans (optional)' },
+  quantity: { el: 'Ποσότητα', en: 'Quantity' },
+  fewer: { el: 'Ένα πακέτο λιγότερο', en: 'One pack fewer' },
+  morePacks: { el: 'Ένα πακέτο περισσότερο', en: 'One pack more' },
+  storage2: { el: 'Δεύτερος δίσκος', en: 'Second drive' },
+  stepFailed: { el: 'Τα εξαρτήματα αυτού του βήματος δεν φορτώθηκαν.', en: "This step's parts didn't load." },
+  notLoaded: { el: 'Η τιμή δεν φορτώθηκε ακόμη: {parts}', en: 'Price not loaded yet: {parts}' },
 } satisfies Record<string, Text>;
+
+/** The uses on the start screen: name and one line. */
+export const USE_TEXT = {
+  gaming: { label: { el: 'Gaming', en: 'Gaming' }, desc: { el: 'Η κάρτα γραφικών παίρνει το μεγαλύτερο μέρος.', en: 'The graphics card takes the biggest share.' } },
+  everyday: {
+    label: { el: 'Καθημερινή χρήση', en: 'Everyday' },
+    desc: { el: 'Γραφείο, σπουδές, internet· αρκούν ενσωματωμένα γραφικά.', en: 'Office, study, web; integrated graphics are enough.' },
+  },
+  creating: {
+    label: { el: 'Δημιουργία', en: 'Creating' },
+    desc: { el: 'Μοντάζ, 3D, φωτογραφία· επεξεργαστής και μνήμη μετράνε.', en: 'Video, 3D, photos; CPU and memory matter.' },
+  },
+  unsure: { label: { el: 'Δεν ξέρω ακόμα', en: 'Not sure' }, desc: { el: 'Μια ισορροπημένη σύνθεση.', en: 'A balanced build.' } },
+} satisfies Record<string, { label: Text; desc: Text }>;
+
+/** Fills a string's placeholders: fill('Step {n}/{total}', { n: 2, total: 9 }). */
+export const fill = (s: string, v: Record<string, string | number>): string => s.replace(/\{(\w+)\}/g, (m, k: string) => String(v[k] ?? m));
 
 /** "A 1440p gaming PC with 32 GB" per use (the RAM of useMinimums.USE_MINIMUMS), for BUILDER.minimum's {pc}. */
 export const PC_FOR = {

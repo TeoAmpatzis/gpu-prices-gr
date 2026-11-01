@@ -42,6 +42,10 @@ export function toParts(b: ActiveBuild): Part[] {
 export const engineUse = (b: Pick<ActiveBuild, 'use' | 'res'>): Use | undefined =>
   b.use ? (b.res ? { kind: b.use, res: b.res } : { kind: b.use }) : undefined;
 
+/** The build's total (task 11): each chosen part's price, the fans × their quantity (packs), the second drive. */
+export const buildTotal = (b: Build, storage2: Model<BaseListing> | undefined, fanQty: number): number =>
+  Math.round((SLOTS.reduce((n, s) => n + (b[s] ? b[s]!.cheapest.price * (s === 'fan' ? fanQty : 1) : 0), 0) + (storage2?.cheapest.price ?? 0)) * 100) / 100;
+
 /**
  * The build without its card and cooler: evaluated, it gives the CPU's own rule 11 / 12 findings that `optionalSlot`
  * reads, also when a card or cooler is chosen (a chosen cooler for an 8600G Box is still optional).

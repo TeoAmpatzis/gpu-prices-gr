@@ -1,124 +1,29 @@
-// The PC builder page: shared state (src/lib/builderState.ts), the mode toggle (Guided, the default,
-// or Quick list: #builder?mode=quick), the measurement notice and the summary.
+// The PC builder page (step 5 task 11): the start screen (use and budget, src/components/builder/Start.tsx), or the
+// workbench (guided steps or the part list, with the summary). The start screen is the page's first paint and carries
+// no parts' code; the workbench is its own chunk, loaded on the first interaction, 5 s later, or at once when the
+// address or a saved build opens it (rule 11: /builder first-paint JS).
 
-import { useState } from 'react';
-import { Info, ListChecks, ListOrdered } from 'lucide-react';
-import { builderParams, useBuilderState, writeBuilderParams } from '../lib/builderState';
-import { tr, useLang, type Text } from '../lib/i18n';
-import { ErrorState } from '../ui/states';
-import Guided from './builder/Guided';
-import QuickList from './builder/QuickList';
-import Summary from './builder/Summary';
+import { Suspense, lazy, useCallback, useState } from 'react';
+import { builderParams, firstView, viewParams, writeBuilderParams, type View } from '../lib/builderView';
+import { readBuild } from '../lib/buildStore';
+import { SkeletonCards } from '../ui/states';
+import Start from './builder/Start';
 
-type Mode = 'guided' | 'quick';
-
-const M = {
-  guided: { el: 'Βήμα-βήμα', en: 'Guided' },
-  quick: { el: 'Γρήγορη λίστα', en: 'Quick list' },
-  mode: { el: 'Τρόπος συναρμολόγησης', en: 'Builder mode' },
-} satisfies Record<string, Text>;
-
-/** The measurement notice: the text, then a line with today's percentages (from the builder's index file). */
-const C = {
-  text: {
-    el: 'Οι διαστάσεις για τον έλεγχο συμβατότητας συλλέγονται σταδιακά. Όσα δεν έχουν ακόμα στοιχεία εμφανίζονται ως «Χωρίς επιβεβαίωση»· προστίθενται καθημερινά.',
-    en: 'Measurements for the compatibility check are being collected gradually. Parts without them are shown as "Fit not verified"; more are added every day.',
-  },
-  known: { el: 'Γνωστές σήμερα:', en: 'Known today:' },
-  gpu: { el: 'κάρτες γραφικών', en: 'graphics cards' },
-  case: { el: 'κουτιά', en: 'cases' },
-  cooler: { el: 'ψύκτρες', en: 'coolers' },
-} satisfies Record<string, Text>;
+const loadWorkbench = () => import('./builder/Workbench');
+const Workbench = lazy(loadWorkbench);
 
 export default function Builder() {
-  const lang = useLang();
-  const t = (x: Text) => tr(lang, x);
-  const state = useBuilderState();
-  const { coverage, error, wantExtra } = state;
-  const [mode, setMode] = useState<Mode>(() => (builderParams().get('mode') === 'quick' ? 'quick' : 'guided'));
-  const choose = (m: Mode) => {
-    setMode(m);
-    writeBuilderParams((p) => {
-      if (m === 'quick') p.set('mode', 'quick');
-      else p.delete('mode');
-      p.delete('step');
-    });
+  const [view, setView] = useState<View>(() => firstView(builderParams(), Object.keys(readBuild().parts).length > 0));
+  const go = (v: View) => {
+    setView(v);
+    writeBuilderParams((p) => viewParams(p, v, v === 'guided' ? 'cpu' : undefined));
+    window.scrollTo({ top: 0 });
   };
-
-  // A failed load: the translated message, the detail folded, and a retry (UX-19). The builder's data
-  // loader keeps its result for the session, so the retry reloads the page.
-  if (error) {
-    return (
-      <div className="card">
-        <ErrorState detail={error} onRetry={() => location.reload()} />
-      </div>
-    );
-  }
-  // Share of parts whose measurements are known yet (collected gradually, see scraper/specs.py),
-  // counted at build time over every product, not just the ones the builder can offer.
-  // While loading the notice shows without the percentages, so it doesn't push the parts down later.
-  const collecting = !coverage || Object.values(coverage).some((v) => v < 90);
-
-  const header = (
-    <>
-      <div role="radiogroup" aria-label={t(M.mode)} className="inline-flex self-start rounded-lg bg-sunken p-1 ring-1 ring-inset ring-edge">
-        {(['guided', 'quick'] as const).map((m) => {
-          const Icon = m === 'guided' ? ListOrdered : ListChecks;
-          return (
-            <button
-              key={m}
-              type="button"
-              role="radio"
-              aria-checked={mode === m}
-              onClick={() => choose(m)}
-              className={`tap inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition ${
-                mode === m ? 'bg-panel text-fg shadow-sm ring-1 ring-accent dark:ring-line' : 'text-muted hover:text-fg'
-              }`}
-            >
-              <Icon className={`h-4 w-4 ${mode === m ? 'text-accent' : ''}`} /> {t(M[m])}
-            </button>
-          );
-        })}
-      </div>
-      {collecting && (
-        <div className="notice-warn flex gap-2 p-3 text-sm">
-          <Info className="mt-0.5 h-4 w-4 shrink-0" />
-          <span className="flex flex-col gap-1">
-            <span>{t(C.text)}</span>
-            {/* The percentages are their own line, which keeps its room while the index file loads (invisible,
-                fixed-width digits): the notice doesn't grow and push the steps down when they arrive (CLS), and
-                the large text above is complete in the first render (it's the page's largest paint). */}
-            <span className={coverage ? undefined : 'invisible'} aria-hidden={coverage ? undefined : true}>
-              {t(C.known)} {t(C.gpu)} <span className="tabular-nums">{coverage?.gpu ?? 88}</span>%, {t(C.case)}{' '}
-              <span className="tabular-nums">{coverage?.case ?? 88}</span>%, {t(C.cooler)}{' '}
-              <span className="tabular-nums">{coverage?.cooler ?? 88}</span>%.
-            </span>
-          </span>
-        </div>
-      )}
-    </>
-  );
-
+  const intent = useCallback(() => void loadWorkbench().catch(() => {}), []);
+  if (view === 'start') return <Start onGo={go} onIntent={intent} />;
   return (
-    // The page renders before its data arrives (the text is the largest element; waiting for the
-    // data cost 1.7 s of LCP on phones). Any click, tap or keyboard focus fetches the shop links and
-    // search titles (the steps' extra files).
-    <div
-      className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]"
-      onPointerDownCapture={wantExtra}
-      onFocusCapture={wantExtra}
-    >
-      {mode === 'guided' ? (
-        <Guided state={state} header={header} />
-      ) : (
-        <>
-          <div className="flex min-w-0 flex-col gap-4">
-            {header}
-            <QuickList state={state} />
-          </div>
-          <Summary state={state} />
-        </>
-      )}
-    </div>
+    <Suspense fallback={<SkeletonCards cards={4} />}>
+      <Workbench view={view} onView={go} />
+    </Suspense>
   );
 }

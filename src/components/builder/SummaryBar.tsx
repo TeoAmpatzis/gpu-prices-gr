@@ -1,5 +1,6 @@
-// The builder's summary: total, budget, power, compatibility status, notes (and the chosen parts in
-// guided mode). Wide screens: a sticky card beside the steps. Phones and tablets (< lg): a bar fixed
+// The builder's summary bar: total (fans × their quantity, the second drive; parts whose price hasn't loaded are named,
+// never counted as 0), budget bar, recommended PSU, status (missing parts first, then errors and warnings), notes (and
+// the chosen parts in guided mode). Wide screens: a sticky card beside the steps. Phones and tablets (< lg): a bar fixed
 // to the bottom of the screen with the total (and Back / Next in guided mode); the details open from it.
 
 import { useState, type ReactNode } from 'react';
@@ -10,6 +11,8 @@ import { SLOTS, type Slot } from '../../lib/builderData';
 import { ENGINE_TEXT, MISSING, buildStatus, isAdvice, missingSlots, notCheckedYet, shownFindings } from '../../lib/builderEngine';
 import type { AnyModel, BuilderState } from '../../lib/builderState';
 import { tr, useLang, type Text } from '../../lib/i18n';
+import { buildTotal } from '../../lib/builderEngine';
+import { BUILDER as B, fill } from '../../ui/builderStrings';
 import { plural } from '../../ui/strings';
 
 const S = {
@@ -56,15 +59,19 @@ export default function Summary({ state, onSlot, back, next }: Props) {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
   const [open, setOpen] = useState(false);
-  const { build, prefs, update, shared } = state;
+  const { build, prefs, shared } = state;
 
-  const chosen = SLOTS.filter((s) => build[s]).map((s) => build[s] as AnyModel);
-  const total = chosen.reduce((sum, m) => sum + m.cheapest.price, 0);
+  const chosen = [...SLOTS.filter((s) => build[s]).map((s) => build[s] as AnyModel), ...(state.storage2 ? [state.storage2] : [])];
+  const total = buildTotal(build, state.storage2, state.fanQty);
+  // Saved parts whose step file hasn't arrived or failed (Review Focus 3): named, not counted as 0.
+  const waiting = [...state.pending.map((s) => t(STEP_SHORT[s])), ...(state.pendingStorage2 ? [t(B.storage2)] : [])];
+  const notLoaded = waiting.length > 0 && fill(t(B.notLoaded), { parts: waiting.join(', ') });
   // Fits, warnings and the recommended PSU come from the v2 engine (step 5 task 9); none while its chunk loads.
   const findings = state.findings ?? [];
   const watts = state.psuWatts;
   const tdp = build.cpu?.cheapest.tdp;
-  const missing = missingSlots(build, state.optFindings);
+  // A saved part whose file is loading or failed is named as not loaded (below), not as missing.
+  const missing = missingSlots(build, state.optFindings).filter((s) => !state.pending.includes(s));
   const status = buildStatus(state.findings, missing);
   const { counts } = status;
   const shownNotes = shownFindings(findings);
@@ -125,7 +132,10 @@ export default function Summary({ state, onSlot, back, next }: Props) {
             <span className="truncate text-xs text-muted">
               {t(S.total)} · {plural(lang, chosen.length, N.parts)}
             </span>
-            <span className="text-xl font-semibold tabular-nums text-accent">{formatPrice(total, lang)}</span>
+            <span className="text-xl font-semibold tabular-nums text-accent">
+              {formatPrice(total, lang)}
+              {notLoaded && ' + …'}
+            </span>
           </span>
           <span className="ml-auto flex shrink-0 items-center gap-1 text-sm text-muted">
             {errors > 0 && (
@@ -145,7 +155,7 @@ export default function Summary({ state, onSlot, back, next }: Props) {
         <div className="flex items-center justify-between">
           <span className="text-sm font-semibold">{t(S.summary)}</span>
           {chosen.length > 0 && (
-            <button type="button" onClick={() => update({})} className="tap text-sm text-muted hover:text-fg">
+            <button type="button" onClick={state.clear} className="tap text-sm text-muted hover:text-fg">
               {t(S.clear)}
             </button>
           )}
@@ -155,7 +165,15 @@ export default function Summary({ state, onSlot, back, next }: Props) {
           <div className="hidden text-xs text-muted lg:block">
             {t(S.total)} · {plural(lang, chosen.length, N.parts)}
           </div>
-          <div className="hidden text-3xl font-semibold tabular-nums text-accent lg:block">{formatPrice(total, lang)}</div>
+          <div className="hidden text-3xl font-semibold tabular-nums text-accent lg:block">
+            {formatPrice(total, lang)}
+            {notLoaded && ' + …'}
+          </div>
+          {notLoaded && (
+            <div className="mt-1 text-sm font-medium text-warn" data-not-loaded>
+              {notLoaded}
+            </div>
+          )}
           <div className="mt-1 text-xs text-faint">{t(S.priceNote)}</div>
         </div>
         {left != null && prefs.budget != null && (

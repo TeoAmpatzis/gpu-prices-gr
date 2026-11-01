@@ -128,10 +128,10 @@ for (const width of WIDTHS) {
         if (width < 1024) states.push(['filter-sheet', async () => { await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape'}))`); return click('button[aria-haspopup="dialog"]'); }]);
       }
       if (builder && !page.includes('mode=quick')) {
-        // Guided: pick a use and a budget, open the CPU cards, then walk every step choosing its
-        // first compatible part (Next / Skip) down to the Review.
+        // Guided: the start screen (a use and a budget), "Step by step" to the CPU cards, then walk every
+        // step choosing its first compatible part (Next / Skip) down to the Review.
         states.push(['use', async () => { await click('button[aria-pressed="false"]', '/Gaming/'); return click('button[aria-pressed="false"]', '/^1000 €$/'); }]);
-        states.push(['cards', async () => { await click('button', '/^\\s*(Επόμενο|Next)\\s*$/'); await sleep(1500); return true; }]);
+        states.push(['cards', async () => { await click('button', '/^\\s*(Βήμα-βήμα|Step by step)\\s*$/'); await sleep(1500); return true; }]);
         states.push(['walk', async () => {
           for (let i = 0; i < 12; i++) {
             await click('li.card button:not([disabled])', '/^(Επιλογή|Choose)$/');

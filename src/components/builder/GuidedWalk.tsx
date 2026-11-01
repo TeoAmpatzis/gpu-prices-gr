@@ -1,48 +1,33 @@
-// The builder's Guided mode: one step at a time (src/lib/wizard.ts), product cards per step, a
-// numbered progress bar and the summary (Back / Next in its phone bar).
+// The builder's guided walk (step 5 task 11): one step at a time over the same list as the part list, a compact header
+// "Βήμα 2/9 · Μητρική" with ‹ › and the step list on tap (C9), one line of guide text with "More" (C10), the step's
+// picker (task 12 replaces it), fans as a section of the case step, the summary (Back / Next in its phone bar).
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import {
-  Briefcase,
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  Gamepad2,
-  HelpCircle,
-  Loader2,
-  Palette,
-  Search,
-} from 'lucide-react';
-import type { BaseListing, CaseListing, Category, FanListing } from '../../types';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { Check, ChevronDown, ChevronLeft, ChevronRight, Loader2, Minus, Plus, Search } from 'lucide-react';
+import type { AutoFile, BaseListing, CaseListing, Category, FanListing } from '../../types';
 import { CATEGORIES } from '../../lib/categories';
 import { formatPrice, saleOf, type Model } from '../../lib/data';
-import { SLOTS, candidates, type Build, type Slot } from '../../lib/builderData';
+import { candidates, type Slot } from '../../lib/builderData';
+import { MAX_FAN_QTY } from '../../lib/buildStore';
 import { ENGINE_TEXT, optionalSlot } from '../../lib/builderEngine';
 import { fanPlan } from '../../lib/fanPlan';
 import { ratingOf, stepReason, LABEL_TEXT, type Rating } from '../../lib/fitLabel';
-import { USES, builderParams, useStepVerdicts, writeBuilderParams, type AnyModel, type BuilderState, type Prefs, type Use } from '../../lib/builderState';
-import {
-  GUIDE_INDEX,
-  SORTS,
-  STEPS,
-  STEP_NAME,
-  STEP_SHORT,
-  isDone,
-  remaining,
-  shareOf,
-  sorter,
-  type SortBy,
-  type StepId,
-} from '../../lib/wizard';
+import { builderParams, useStepVerdicts, writeBuilderParams, type AnyModel, type BuilderState } from '../../lib/builderState';
+import { pickerOrder, loadAuto } from '../../lib/recommend';
+import { toUseKey } from '../../lib/useMinimums';
+import { afterLargestPaint } from '../../lib/paint';
+import { GUIDE_INDEX, SORTS, STEPS, STEP_NAME, isDone, remaining, sorter, stepOf, type SortBy, type StepId } from '../../lib/wizard';
 import { T, tr, useLang, type Lang, type Text } from '../../lib/i18n';
 import { GUIDE_STEPS } from '../BuildGuide';
 import ProductPhoto from '../ProductPhoto';
 import SourceBadge from '../SourceBadge';
 import { CaseFansLine, FanAdviceBox } from './FanAdvice';
 import Review from './Review';
-import Summary from './Summary';
+import Summary from './SummaryBar';
 import { FitBadge, ShipNote, partImage, specLine } from './parts';
 import { plural } from '../../ui/strings';
+import { ErrorState } from '../../ui/states';
+import { BUILDER as B, fill } from '../../ui/builderStrings';
 
 const PAGE = 24; // cards per "Show more"
 
@@ -50,8 +35,6 @@ const PAGE = 24; // cards per "Show more"
 const HIDDEN = { el: ['ασύμβατο κρυμμένο', 'ασύμβατα κρυμμένα'] as [string, string], en: ['incompatible hidden', 'incompatible hidden'] as [string, string] };
 
 const G = {
-  step: { el: 'Βήμα', en: 'Step' },
-  of: { el: 'από', en: 'of' },
   back: { el: 'Πίσω', en: 'Back' },
   next: { el: 'Επόμενο', en: 'Next' },
   skip: { el: 'Παράλειψη', en: 'Skip' },
@@ -68,41 +51,7 @@ const G = {
   pressureType: { el: 'Στατικής πίεσης', en: 'Static pressure' },
   showMore: { el: 'Περισσότερα', en: 'Show more' },
   none: { el: 'Κανένα προϊόν με αυτά τα φίλτρα.', en: 'No parts match these filters.' },
-  suggested: { el: 'Πρόταση για αυτό το εξάρτημα', en: 'Suggested for this part' },
-  ofBudget: { el: 'του προϋπολογισμού', en: 'of the budget' },
-  // Use and budget
-  useQ: { el: 'Για τι θα χρησιμοποιηθεί ο υπολογιστής;', en: 'What is the PC for?' },
-  budgetQ: { el: 'Προϋπολογισμός (προαιρετικός)', en: 'Budget (optional)' },
-  budgetHint: {
-    el: 'Δεν κρύβει εξαρτήματα· δείχνει πόσα μένουν και προτεινόμενο ποσό ανά εξάρτημα.',
-    en: "It never hides parts; it shows what's left and a suggested amount per part.",
-  },
-  split: { el: 'Συνήθης κατανομή', en: 'Usual split' },
 } satisfies Record<string, Text>;
-
-const USE_INFO: Record<Use, { label: Text; desc: Text; icon: typeof Gamepad2 }> = {
-  gaming: {
-    label: { el: 'Gaming', en: 'Gaming' },
-    desc: { el: 'Η κάρτα γραφικών παίρνει το μεγαλύτερο μέρος.', en: 'The graphics card takes the biggest share.' },
-    icon: Gamepad2,
-  },
-  everyday: {
-    label: { el: 'Καθημερινή χρήση', en: 'Everyday' },
-    desc: { el: 'Γραφείο, σπουδές, internet· αρκούν ενσωματωμένα γραφικά.', en: 'Office, study, web; integrated graphics are enough.' },
-    icon: Briefcase,
-  },
-  creating: {
-    label: { el: 'Δημιουργία', en: 'Creating' },
-    desc: { el: 'Μοντάζ, 3D, φωτογραφία· επεξεργαστής και μνήμη μετράνε.', en: 'Video, 3D, photos; CPU and memory matter.' },
-    icon: Palette,
-  },
-  unsure: {
-    label: { el: 'Δεν ξέρω ακόμα', en: 'Not sure' },
-    desc: { el: 'Μια ισορροπημένη σύνθεση.', en: 'A balanced build.' },
-    icon: HelpCircle,
-  },
-};
-const BUDGETS = [700, 1000, 1500, 2000];
 
 /** Chip toggle, the same look as the category filters' chips. */
 function Chip({ on, onClick, children, title }: { on: boolean; onClick: () => void; children: ReactNode; title?: string }) {
@@ -112,7 +61,7 @@ function Chip({ on, onClick, children, title }: { on: boolean; onClick: () => vo
       aria-pressed={on}
       title={title}
       onClick={onClick}
-      className={`tap inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-sm font-medium ring-1 ring-inset transition ${
+      className={`tap inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-sm font-medium ring-1 ring-inset transition ${
         on
           ? 'bg-accent/10 text-accent ring-accent dark:ring-accent/30'
           : 'text-muted ring-line-strong hover:bg-hover hover:text-fg hover:ring-muted dark:hover:ring-line-strong'
@@ -126,33 +75,54 @@ function Chip({ on, onClick, children, title }: { on: boolean; onClick: () => vo
 
 function initialStep(): StepId {
   const p = builderParams();
-  const s = p.get('step') as StepId | null;
-  if (s && STEPS.includes(s)) return s;
   // A shared build opens on its review.
-  return SLOTS.some((slot) => p.has(slot)) ? 'review' : 'use';
+  return stepOf(p.get('step')) ?? (STEPS.some((s) => s !== 'review' && p.has(s)) ? 'review' : 'cpu');
 }
 
-export default function Guided({ state, header }: { state: BuilderState; header: ReactNode }) {
+/** The automatic build's file once a budget is set (the Recommended order's step targets); null meanwhile or on failure. */
+function useAuto(builtAt: string | null, budget: number | null): AutoFile | null {
+  const [auto, setAuto] = useState<AutoFile | null>(null);
+  useEffect(() => {
+    if (!builtAt || budget == null) return;
+    let live = true;
+    loadAuto(builtAt).then(
+      (a) => {
+        if (live) setAuto(a);
+      },
+      () => {},
+    );
+    return () => {
+      live = false;
+    };
+  }, [builtAt, budget]);
+  return auto;
+}
+
+export default function GuidedWalk({ state, header }: { state: BuilderState; header: ReactNode }) {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
-  const { build, prefs } = state;
+  const { build } = state;
   const [step, setStep] = useState<StepId>(initialStep);
-  const top = useRef<HTMLDivElement>(null);
+  const [list, setList] = useState(false);
+  const [more, setMore] = useState(false);
+  const auto = useAuto(state.builtAt, state.prefs.budget);
   const index = STEPS.indexOf(step);
-  const opt: { optional: boolean; why?: Text } =
-    step === 'use' ? { optional: true } : step === 'review' ? { optional: false } : optionalSlot(step, state.optFindings);
+  const opt: { optional: boolean; why?: Text } = step === 'review' ? { optional: false } : optionalSlot(step, state.optFindings);
 
   const go = (s: StepId) => {
     setStep(s);
-    writeBuilderParams((p) => (s === 'use' ? p.delete('step') : p.set('step', s)));
+    setList(false);
+    setMore(false);
+    writeBuilderParams((p) => p.set('step', s));
     // Back to the top of the step when it starts above the screen.
-    const el = top.current;
+    const el = document.getElementById('builder-step-top');
     if (el && el.getBoundingClientRect().top < 0) el.scrollIntoView({ block: 'start' });
   };
   const back = index > 0 ? () => go(STEPS[index - 1]) : undefined;
   const next = index < STEPS.length - 1 ? () => go(STEPS[index + 1]) : undefined;
-  const isSlot = step !== 'use' && step !== 'review';
+  const isSlot = step !== 'review';
   const canSkip = isSlot && opt.optional && !build[step as Slot];
+  const guide = GUIDE_INDEX[step] != null ? GUIDE_STEPS[GUIDE_INDEX[step]!].body : null;
 
   const navButton = (dir: 'back' | 'next', phone: boolean) => {
     const fn = dir === 'back' ? back : next;
@@ -170,35 +140,91 @@ export default function Guided({ state, header }: { state: BuilderState; header:
       </button>
     ) : null;
   };
+  const arrow = (dir: 'back' | 'next') => {
+    const fn = dir === 'back' ? back : next;
+    const Icon = dir === 'back' ? ChevronLeft : ChevronRight;
+    return (
+      <button
+        type="button"
+        onClick={fn}
+        disabled={!fn}
+        aria-label={t(dir === 'back' ? B.prevStep : B.nextStep)}
+        className="tap-square grid shrink-0 place-items-center rounded-lg p-1.5 text-muted hover:bg-hover hover:text-fg disabled:invisible"
+      >
+        <Icon className="h-5 w-5" aria-hidden="true" />
+      </button>
+    );
+  };
 
   return (
     <>
-      <div ref={top} className="flex min-w-0 scroll-mt-4 flex-col gap-4">
+      <div id="builder-step-top" className="flex min-w-0 scroll-mt-4 flex-col gap-3">
         {header}
-        <Progress step={step} build={build} prefs={prefs} onGo={go} lang={lang} />
-        <section className="card flex flex-col gap-4 p-4 sm:p-5" aria-labelledby="step-title">
+        <section className="card flex flex-col gap-3 p-3 sm:p-4" aria-labelledby="step-title">
           <div>
-            <div className="text-xs font-medium text-muted">
-              {t(G.step)} {index + 1} {t(G.of)} {STEPS.length}
-              {opt.optional && <span className="text-faint"> · {t(G.optional)}</span>}
+            {/* "Βήμα 2/9 · Μητρική" with ‹ ›; a tap on the name opens the step list (C9). */}
+            <div className="flex items-center gap-1">
+              {arrow('back')}
+              <h2 id="step-title" className="min-w-0 flex-1">
+                <button
+                  type="button"
+                  aria-expanded={list}
+                  aria-controls="step-list"
+                  onClick={() => setList((v) => !v)}
+                  className="tap flex w-full items-center justify-center gap-1.5 rounded-lg px-2 py-1 text-base font-semibold tracking-tight hover:bg-hover sm:text-lg"
+                >
+                  <span className="truncate">
+                    {fill(t(B.stepOf), { n: index + 1, total: STEPS.length })} · {t(STEP_NAME[step])}
+                    {opt.optional && <span className="text-sm font-normal text-faint"> · {t(G.optional)}</span>}
+                  </span>
+                  <ChevronDown className={`hidden h-4 w-4 shrink-0 text-muted sm:block transition-transform duration-150 ${list ? 'rotate-180' : ''}`} aria-hidden="true" />
+                </button>
+              </h2>
+              {arrow('next')}
             </div>
-            <h2 id="step-title" className="text-xl font-semibold tracking-tight">
-              {t(STEP_NAME[step])}
-            </h2>
-            {GUIDE_INDEX[step] != null && <p className="mt-1 text-sm text-muted">{t(GUIDE_STEPS[GUIDE_INDEX[step]!].body)}</p>}
+            {list && (
+              <ol id="step-list" aria-label={t(B.steps)} className="mt-2 grid gap-1 sm:grid-cols-3">
+                {STEPS.map((s, i) => (
+                  <li key={s}>
+                    <button
+                      type="button"
+                      onClick={() => go(s)}
+                      aria-current={s === step ? 'step' : undefined}
+                      className={`tap flex w-full items-center gap-2 rounded-lg px-2 py-1 text-left text-sm ${s === step ? 'bg-accent/10 font-semibold' : 'text-muted hover:bg-hover hover:text-fg'}`}
+                    >
+                      <span
+                        className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-xs font-semibold ${
+                          isDone(s, build) ? 'bg-accent text-panel' : 'bg-sunken text-muted ring-1 ring-inset ring-line-strong'
+                        }`}
+                      >
+                        {isDone(s, build) ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : i + 1}
+                      </span>
+                      {t(STEP_NAME[s])}
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            )}
+            {/* One line of the buying guide, the rest behind "More" (C10). */}
+            {guide && (
+              <div className="mt-1 flex items-start gap-2 text-sm text-muted">
+                <p className={`min-w-0 flex-1 ${more ? '' : 'truncate'}`}>{t(guide)}</p>
+                <button type="button" aria-expanded={more} onClick={() => setMore((v) => !v)} className="tap shrink-0 font-medium text-accent hover:underline">
+                  {t(more ? B.less : B.more)}
+                </button>
+              </div>
+            )}
             {opt.why && <p className="mt-1 text-sm font-medium">{t(opt.why)}</p>}
-            {isSlot && <Suggested slot={step as Slot} build={build} prefs={prefs} lang={lang} />}
           </div>
 
-          {step === 'use' ? (
-            <UseStep state={state} lang={lang} />
-          ) : step === 'review' ? (
-            <Review state={state} lang={lang} onGo={go} />
+          {step === 'review' ? (
+            <Review state={state} lang={lang} onGo={(s) => go(stepOf(s) ?? 'cpu')} />
           ) : (
-            <PartStep key={step} slot={step} state={state} lang={lang} />
+            <PartStep key={step} slot={step} state={state} auto={auto} lang={lang} />
           )}
+          {step === 'case' && state.slotReady('case') && <FansSection state={state} auto={auto} lang={lang} />}
 
-          <div className="flex items-center gap-2 border-t border-line pt-4">
+          <div className="flex items-center gap-2 border-t border-line pt-3">
             {back && (
               <button type="button" onClick={back} className="tap inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-muted edge hover:bg-hover hover:text-fg dark:ring-0">
                 <ChevronLeft className="h-4 w-4" /> {t(G.back)}
@@ -216,156 +242,47 @@ export default function Guided({ state, header }: { state: BuilderState; header:
           </div>
         </section>
       </div>
-      <Summary
-        state={state}
-        onSlot={(s) => go(s)}
-        back={navButton('back', true)}
-        next={navButton('next', true)}
-      />
+      <Summary state={state} onSlot={(s) => go(stepOf(s) ?? 'cpu')} back={navButton('back', true)} next={navButton('next', true)} />
     </>
   );
 }
 
-/** Numbered steps with checkmarks; any step can be opened. Wraps onto a second line when narrow
- * (phones show only the current step's name). */
-function Progress({ step, build, prefs, onGo, lang }: { step: StepId; build: Build; prefs: Prefs; onGo: (s: StepId) => void; lang: Lang }) {
+/** "Ανεμιστήρες κουτιού (προαιρετικό)": the fan plan, the fans' picker and their quantity, inside the case step. */
+function FansSection({ state, auto, lang }: { state: BuilderState; auto: AutoFile | null; lang: Lang }) {
   const t = (x: Text) => tr(lang, x);
+  // The fans' file after the case cards are painted (the step's largest paint; review I1). The case step's tall loading
+  // area keeps this section below the screen until then.
+  const [ready, setReady] = useState(false);
+  useEffect(() => afterLargestPaint(() => setReady(true), 3000), []);
   return (
-    <nav aria-label={t(G.step)} className="card px-2 py-2">
-      <ol className="flex flex-wrap items-center gap-x-1 gap-y-1.5">
-        {STEPS.map((s, i) => {
-          const current = s === step;
-          const done = isDone(s, build, prefs);
-          return (
-            <li key={s}>
-              <button
-                type="button"
-                onClick={() => onGo(s)}
-                aria-current={current ? 'step' : undefined}
-                className={`tap flex items-center gap-1.5 rounded-full py-1 pl-1 pr-2.5 text-sm transition ${
-                  current ? 'bg-accent/10 font-semibold text-fg ring-1 ring-inset ring-accent dark:ring-accent/30' : 'text-muted hover:bg-hover hover:text-fg'
-                }`}
-              >
-                <span
-                  className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-xs font-semibold ${
-                    done ? 'bg-accent text-panel' : current ? 'bg-accent/15 text-accent' : 'bg-sunken text-muted ring-1 ring-inset ring-line-strong'
-                  }`}
-                >
-                  {done ? <Check className="h-3.5 w-3.5" /> : i + 1}
-                </span>
-                <span className={current ? undefined : 'hidden md:inline'}>{t(STEP_SHORT[s])}</span>
-              </button>
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
+    <section aria-labelledby="fans-title" className="flex flex-col gap-3 border-t border-line pt-3">
+      <h3 id="fans-title" className="text-base font-semibold">
+        {t(B.fansSection)}
+      </h3>
+      <FanAdviceBox build={state.build} watts={state.psuWatts} step="fan" lang={lang} />
+      {state.build.fan && <FanQty state={state} lang={lang} />}
+      {ready && <PartStep slot="fan" state={state} auto={auto} lang={lang} />}
+    </section>
   );
 }
 
-/** "Suggested for this part: 150–200 € (15–20% of the budget)" when a budget is set. */
-function Suggested({ slot, build, prefs, lang }: { slot: Slot; build: Build; prefs: Prefs; lang: Lang }) {
-  const share = shareOf(prefs.use, slot);
-  if (!prefs.budget || !share) return null;
-  const [lo, hi] = share.map((p) => Math.round((prefs.budget! * p) / 100 / 5) * 5);
-  const left = remaining(build, prefs, slot);
-  return (
-    <p className="mt-1 text-sm text-muted">
-      {tr(lang, G.suggested)}: <span className="font-medium text-fg">{lo}–{hi} €</span> ({share[0]}–{share[1]}% {tr(lang, G.ofBudget)})
-      {left != null && left < hi && <> · {formatPrice(Math.max(0, left), lang)} {tr(lang, { el: 'απομένουν', en: 'left' })}</>}
-    </p>
-  );
-}
-
-function UseStep({ state, lang }: { state: BuilderState; lang: Lang }) {
+/** The chosen fan product's quantity in packs (1–12). */
+export function FanQty({ state, lang }: { state: BuilderState; lang: Lang }) {
   const t = (x: Text) => tr(lang, x);
-  const { prefs, setPrefs } = state;
-  const [text, setText] = useState(prefs.budget ? String(prefs.budget) : '');
-  useEffect(() => setText(prefs.budget ? String(prefs.budget) : ''), [prefs.budget]);
-  const setBudget = (v: string) => {
-    setText(v);
-    const n = Math.round(Number(v.replace(/[^\d]/g, '')));
-    setPrefs({ ...prefs, budget: n > 0 ? n : null });
-  };
-  const use = prefs.use ?? 'unsure';
+  const { fanQty, setFanQty } = state;
+  const btn = 'tap-square grid place-items-center rounded-lg p-1.5 text-muted edge hover:bg-hover hover:text-fg disabled:opacity-40 dark:ring-0';
   return (
-    <div className="flex flex-col gap-5">
-      <fieldset>
-        <legend className="mb-2 text-sm font-semibold">{t(G.useQ)}</legend>
-        <div className="grid gap-2 sm:grid-cols-2">
-          {USES.map((u) => {
-            const info = USE_INFO[u];
-            const Icon = info.icon;
-            const on = prefs.use === u;
-            return (
-              <button
-                key={u}
-                type="button"
-                aria-pressed={on}
-                onClick={() => setPrefs({ ...prefs, use: on ? null : u })}
-                className={`tap flex items-start gap-3 rounded-xl p-3 text-left ring-1 ring-inset transition ${
-                  on ? 'bg-accent/10 ring-accent dark:ring-accent/40' : 'ring-line-strong hover:bg-hover'
-                }`}
-              >
-                <Icon className={`mt-0.5 h-5 w-5 shrink-0 ${on ? 'text-accent' : 'text-muted'}`} />
-                <span>
-                  <span className="block font-semibold">{t(info.label)}</span>
-                  <span className="block text-sm text-muted">{t(info.desc)}</span>
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </fieldset>
-      <div>
-        <label htmlFor="budget" className="mb-1 block text-sm font-semibold">
-          {t(G.budgetQ)}
-        </label>
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="relative">
-            <input
-              id="budget"
-              inputMode="numeric"
-              value={text}
-              onChange={(e) => setBudget(e.target.value)}
-              placeholder="1000"
-              className="field w-32 py-2 pl-3 pr-8 tabular-nums"
-            />
-            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">€</span>
-          </div>
-          {BUDGETS.map((b) => (
-            <Chip key={b} on={prefs.budget === b} onClick={() => setBudget(prefs.budget === b ? '' : String(b))}>
-              {b} €
-            </Chip>
-          ))}
-        </div>
-        <p className="mt-1 text-xs text-muted">{t(G.budgetHint)}</p>
-      </div>
-      <div>
-        <div className="mb-1 text-sm font-semibold">
-          {t(G.split)} · {t(USE_INFO[use].label)}
-        </div>
-        <ul className="grid gap-x-6 gap-y-1 text-sm sm:grid-cols-2">
-          {SLOTS.map((s) => {
-            const share = shareOf(use, s);
-            if (!share) return null;
-            return (
-              <li key={s} className="flex justify-between gap-2 border-b border-line py-1">
-                <span className="text-muted">{t(STEP_NAME[s])}</span>
-                <span className="tabular-nums">
-                  {share[0]}–{share[1]}%
-                  {prefs.budget ? (
-                    <span className="text-muted">
-                      {' '}
-                      · {Math.round((prefs.budget * share[0]) / 100)}–{Math.round((prefs.budget * share[1]) / 100)} €
-                    </span>
-                  ) : null}
-                </span>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+    <div className="flex items-center gap-2 text-sm">
+      <span className="text-muted">{t(B.quantity)}</span>
+      <button type="button" aria-label={t(B.fewer)} disabled={fanQty <= 1} onClick={() => setFanQty(fanQty - 1)} className={btn}>
+        <Minus className="h-4 w-4" aria-hidden="true" />
+      </button>
+      <span className="w-6 text-center font-semibold tabular-nums" aria-live="polite">
+        {fanQty}
+      </span>
+      <button type="button" aria-label={t(B.morePacks)} disabled={fanQty >= MAX_FAN_QTY} onClick={() => setFanQty(fanQty + 1)} className={btn}>
+        <Plus className="h-4 w-4" aria-hidden="true" />
+      </button>
     </div>
   );
 }
@@ -374,12 +291,13 @@ function UseStep({ state, lang }: { state: BuilderState; lang: Lang }) {
 type Rated = { m: Model<BaseListing>; rating: Rating; hide: boolean };
 const NO_RATING: Rating = { fit: null, reasons: [] };
 
-function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang: Lang }) {
+function PartStep({ slot, state, auto, lang }: { slot: Slot; state: BuilderState; auto: AutoFile | null; lang: Lang }) {
   const t = (x: Text) => tr(lang, x);
   const { models, build, update, prefs, extraVersion, wantSlot } = state;
   // Each step's parts are their own file (/data/builder/<slot>.json), fetched when the step opens; then the pick worker
   // checks them against the build (the first answer is waited for, later ones replace the labels when they arrive).
   const { verdicts } = useStepVerdicts(state, slot);
+  const failed = state.slotFailed(slot);
   const loading = state.loading || !state.slotReady(slot) || verdicts === null;
   useEffect(() => {
     if (!state.loading) wantSlot(slot);
@@ -390,16 +308,17 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
   const [onlyCompatible, setOnlyCompatible] = useState(true);
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [withinBudget, setWithinBudget] = useState(false);
-  const [limit, setLimit] = useState(PAGE);
   // Fans step: sizes the chosen case needs (from the fan plan), and the type named in the product.
   const planSizes = useMemo(
     () => (slot === 'fan' && build.case ? [...new Set(fanPlan(build, state.psuWatts).add.map((a) => a.size))] : []),
     [slot, build, state.psuWatts],
   );
-  const [sizes, setSizes] = useState<number[]>(planSizes);
+  // The plan's sizes until the user picks; a saved build's case arrives after the first render, so a new plan resets.
+  const [picked, setPicked] = useState<{ plan: string; sizes: number[] } | null>(null);
   // A saved build arrives with its steps' files, after the first render: follow the plan when it changes.
   const planKey = planSizes.join();
-  useEffect(() => setSizes(planSizes), [planKey]);
+  const sizes = picked?.plan === planKey ? picked.sizes : planSizes;
+  const setSizes = (f: (v: number[]) => number[]) => setPicked({ plan: planKey, sizes: f(sizes) });
   const [fanType, setFanType] = useState<'airflow' | 'pressure' | null>(null);
 
   const rated: Rated[] = useMemo(() => {
@@ -412,7 +331,15 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
   }, [models, slot, verdicts, state.parts]);
   // The one "not verified" reason of the step (#14), said above the cards instead of on each.
   const reason = useMemo(() => (verdicts ? stepReason(verdicts) : null), [verdicts]);
-  const order = useMemo(() => sorter(slot, rated.map((r) => r.m), sort), [slot, rated, sort]);
+  // Recommended: by the use and the budget left (recommend.ts, task 10); Price and Value as before.
+  const useKey = toUseKey(prefs.use, prefs.res);
+  const order = useMemo(
+    () =>
+      sort === 'recommended'
+        ? pickerOrder(slot, rated, { auto, use: useKey, budget: prefs.budget, build, psuWatts: state.psuWatts })
+        : sorter(slot, rated.map((r) => r.m), sort),
+    [slot, rated, sort, auto, useKey, prefs.budget, build, state.psuWatts],
+  );
   const left = remaining(build, prefs, slot);
 
   const { shown, hidden } = useMemo(() => {
@@ -431,21 +358,18 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
     return { shown: [...list].sort((a, b) => rank(a) - rank(b) || order(a, b)), hidden: clashes };
     // extraVersion: search titles arrive later (/data/builder/<slot>-extra.json).
   }, [rated, order, query, onlyCompatible, verifiedOnly, withinBudget, left, cfg, extraVersion, slot, sizes, fanType]);
-  useEffect(() => setLimit(PAGE), [query, sort, onlyCompatible, verifiedOnly, withinBudget, sizes, fanType]);
+  // Back to one page when the filters change.
+  const filterKey = JSON.stringify([query, sort, onlyCompatible, verifiedOnly, withinBudget, sizes, fanType]);
+  const [paged, setPaged] = useState({ key: filterKey, n: PAGE });
+  const limit = paged.key === filterKey ? paged.n : PAGE;
 
   const chosen = build[slot] as AnyModel | undefined;
 
   return (
     <div className="flex flex-col gap-3">
-      {(slot === 'case' || slot === 'fan') && <FanAdviceBox build={build} watts={state.psuWatts} step={slot} lang={lang} />}
       {state.checkerFailed && <p className="notice-warn p-2.5 text-sm">{t(ENGINE_TEXT.checkerFailed)}</p>}
-      {reason && !loading && (
-        <p className="notice-warn p-2.5 text-sm">
-          {t(LABEL_TEXT.unverified)}: {t(reason)}
-        </p>
-      )}
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-        <label className="relative block flex-1">
+      <div className="flex items-center gap-2">
+        <label className="relative block min-w-0 flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
           <input
             value={query}
@@ -455,9 +379,9 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
             className="field w-full text-ellipsis py-2 pl-9 pr-3"
           />
         </label>
-        <label className="flex min-w-0 items-center gap-2 text-sm">
-          <span className="shrink-0 text-muted">{t(G.sort)}</span>
-          <select value={sort} onChange={(e) => setSort(e.target.value as SortBy)} className="field min-w-0 flex-1 py-2 pl-3 pr-8 sm:flex-none">
+        <label className="flex w-36 shrink-0 items-center gap-2 text-sm sm:w-auto">
+          <span className="sr-only shrink-0 text-muted sm:not-sr-only">{t(G.sort)}</span>
+          <select value={sort} onChange={(e) => setSort(e.target.value as SortBy)} className="field w-full min-w-0 py-2 pl-3 pr-8 sm:w-auto">
             {SORTS.map((s) => (
               <option key={s.id} value={s.id}>
                 {t(s.label)}
@@ -466,7 +390,7 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
           </select>
         </label>
       </div>
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="scrollbar-none flex items-center gap-2 overflow-x-auto sm:flex-wrap">
         <Chip on={onlyCompatible} onClick={() => setOnlyCompatible((v) => !v)}>
           {t(G.onlyCompatible)}
         </Chip>
@@ -490,7 +414,7 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
               {t(k === 'airflow' ? G.airflowType : G.pressureType)}
             </Chip>
           ))}
-        <span className={`text-sm text-muted ${loading ? 'invisible' : ''}`}>
+        <span className={`shrink-0 whitespace-nowrap text-sm text-muted ${loading ? 'invisible' : ''}`}>
           {shown.length} {t(G.shown)}
           {onlyCompatible && hidden > 0 && (
             <>
@@ -501,8 +425,22 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
         </span>
       </div>
 
-      {loading ? (
-        <div className="flex min-h-40 items-center justify-center gap-2 text-sm text-faint">
+      {/* Below the toolbar: it arrives with the cards and pushes nothing that is already on screen. */}
+      {reason && !loading && (
+        <p className="notice-warn p-2.5 text-sm">
+          {t(LABEL_TEXT.unverified)}: {t(reason)}
+        </p>
+      )}
+      {failed ? (
+        // The step's file failed (Review Focus 3): a retry here; the other steps and the summary keep working.
+        <div className="rounded-xl ring-1 ring-inset ring-edge">
+          <p className="px-3 pt-3 text-center text-sm font-medium">{t(B.stepFailed)}</p>
+          <ErrorState onRetry={() => wantSlot(slot)} />
+        </div>
+      ) : loading ? (
+        // At least a screen tall while the step loads: the cards that replace it never push the Back / Next row
+        // below up into view (CLS 0 on /builder?step=…, review I1).
+        <div className="flex min-h-screen items-start justify-center gap-2 pt-10 text-sm text-faint">
           <Loader2 className="h-4 w-4 animate-spin" /> {t(T.loading)}
         </div>
       ) : shown.length === 0 ? (
@@ -530,7 +468,7 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
           {shown.length > limit && (
             <button
               type="button"
-              onClick={() => setLimit((n) => n + PAGE)}
+              onClick={() => setPaged({ key: filterKey, n: limit + PAGE })}
               className="tap mx-auto rounded-lg px-4 py-2 text-sm font-medium text-accent ring-1 ring-inset ring-accent/30 hover:bg-accent/10"
             >
               {t(G.showMore)} ({shown.length - limit})

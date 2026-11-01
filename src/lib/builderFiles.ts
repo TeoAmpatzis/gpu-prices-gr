@@ -5,41 +5,15 @@
 // - /data/builder/<slot>-extra.json   that step's shop links and search titles, fetched when needed.
 // A step's files carry `?v=<builtAt>` of the index, so a deploy in between can't mix two builds.
 
-import type { BuilderExtraFile, BuilderIndex, BuilderSlotFile } from '../types';
+import type { BuilderExtraFile, BuilderSlotFile } from '../types';
 import { fromColumns } from './columns';
 import { slotModels, type Slot, type SlotListing } from './builderData';
 import type { Model } from './data';
+import { getJsonRetry, memo } from './builderIndex';
 
-export const INDEX_URL = '/data/builder/index.json';
+export { INDEX_URL, loadIndex } from './builderIndex';
 export const slotUrl = (slot: Slot, builtAt: string) => `/data/builder/${slot}.json?v=${builtAt}`;
 export const extraUrl = (slot: Slot, builtAt: string) => `/data/builder/${slot}-extra.json?v=${builtAt}`;
-
-const getJson = <T>(url: string): Promise<T> =>
-  fetch(url).then((r) => {
-    if (!r.ok) throw new Error(`${url}: HTTP ${r.status}`);
-    return r.json() as Promise<T>;
-  });
-
-/** One retry at once: a phone's connection drops a request now and then. */
-const getJsonRetry = <T>(url: string): Promise<T> => getJson<T>(url).catch(() => getJson<T>(url));
-
-/** A promise per key that is forgotten if it fails, so the next call retries. */
-function memo<V>(load: (k: string) => Promise<V>): (k: string) => Promise<V> {
-  const cache = new Map<string, Promise<V>>();
-  return (k) => {
-    let p = cache.get(k);
-    if (!p) {
-      p = load(k);
-      p.catch(() => cache.delete(k));
-      cache.set(k, p);
-    }
-    return p;
-  };
-}
-
-const index = memo(() => getJsonRetry<BuilderIndex>(INDEX_URL));
-/** The first screen's file (a few KiB). */
-export const loadIndex = (): Promise<BuilderIndex> => index('');
 
 type SlotModels = { [S in Slot]: Model<SlotListing[S]>[] };
 const slots = memo((k: string) => {
