@@ -188,6 +188,10 @@ export const PRIVACY: InfoPageContent = {
           el: '`pcBuild`: τα εξαρτήματα που έχεις διαλέξει στο PC Builder, με τα τεχνικά στοιχεία συμβατότητας (π.χ. socket, μέγεθος, διαστάσεις). Ξεχωριστά από αυτά, η χρήση και ο προϋπολογισμός, αν τα όρισες. Ο σύνδεσμος κοινοποίησης μιας σύνθεσης περιέχει μόνο τα εξαρτήματα, τη χρήση και τον προϋπολογισμό, στη διεύθυνση της σελίδας (π.χ. `/builder?cpu=…`)· όπως κάθε διεύθυνση που ανοίγεις, εμφανίζεται στα αρχεία καταγραφής της φιλοξενίας (Vercel).',
           en: "`pcBuild`: the parts you picked in the PC Builder, with technical details such as socket, size and dimensions. Separately from these, the use and budget, if you set them. A build's share link holds only the parts, the use and the budget, in the page address (e.g. `/builder?cpu=…`); like any address you open, it appears in the hosting provider's logs (Vercel).",
         },
+        {
+          el: '`pcBuilds`: οι συνθέσεις που αποθηκεύεις με όνομα (έως 30): για καθεμία το όνομα, τα εξαρτήματα όπως στο `pcBuild` και η ώρα της τελευταίας αλλαγής, και ποια είναι ανοιχτή. Μένουν μόνο στον browser σου· σβήνονται αν καθαρίσεις τα δεδομένα του site στον browser.',
+          en: "`pcBuilds`: the builds you save under a name (up to 30): for each, its name, the parts as in `pcBuild` and the time of the last change, and which one is open. They stay only in your browser; clearing the site's data in your browser deletes them.",
+        },
       ],
     },
     {

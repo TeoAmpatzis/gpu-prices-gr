@@ -1,8 +1,14 @@
 // The saved PC build (localStorage `pcBuild`): { <slot>: model key, use?, budget?, compat?: { <slot>:
 // { fields, builtAt } } }. The keys stay at the top level, as they always were, so an old file (keys
 // only) is still valid; `compat` holds, per part, the engine fields and the data date they came from.
-// Per-browser convenience only (listed on the privacy page).
+// Per-browser convenience only (listed on the privacy page). Task 8 adds, at the top level too: `storage2` (a second
+// drive's key, its compat under `compat.storage2`), `fanQty` (packs of the chosen fan product), `offers` ({ <line>:
+// chosen listing id }) and `res` (gaming resolution). Keys this version doesn't know are kept on every write.
+// The active named build (src/lib/savedBuilds.ts, localStorage `pcBuilds`) follows every write.
 
+import type { Res } from '../engine/data/tiers';
+import type { Use } from '../engine/types';
+import { mirrorActive } from './savedBuilds';
 import { SLOTS, type Slot } from './slots';
 
 export interface StoredPart {
@@ -10,38 +16,77 @@ export interface StoredPart {
   fields?: Record<string, unknown>;
   builtAt?: string;
 }
+export type UseKind = Use['kind'];
+/** A line of the build: a slot, or the second drive (answer 13). */
+export type Line = Slot | 'storage2';
 export interface StoredBuild {
   parts: Partial<Record<Slot, StoredPart>>;
-  use?: string;
+  storage2?: StoredPart; // answer 13: a second drive
+  fanQty?: number; // 1–12, packs of the chosen fan product
+  offers?: Partial<Record<Line, string>>; // chosen listing id per line (answer 11)
+  use?: UseKind;
+  res?: Res;
   budget?: number;
 }
 
+export const LINES: Line[] = [...SLOTS, 'storage2'];
+export const MAX_FAN_QTY = 12;
+const USE_KINDS: UseKind[] = ['gaming', 'everyday', 'creating', 'unsure'];
+const RESOLUTIONS: Res[] = ['1080p', '1440p', '4k']; // engine/data/tiers.ts RESOLUTIONS, without loading the tier table
+
+export const lineOf = (b: StoredBuild, line: Line): StoredPart | undefined => (line === 'storage2' ? b.storage2 : b.parts[line]);
+export const asUse = (v: unknown): UseKind | undefined => (USE_KINDS.includes(v as UseKind) ? (v as UseKind) : undefined);
+export const asRes = (v: unknown): Res | undefined => (RESOLUTIONS.includes(v as Res) ? (v as Res) : undefined);
+export const asFanQty = (v: unknown): number | undefined =>
+  Number.isInteger(v) && (v as number) >= 1 && (v as number) <= MAX_FAN_QTY ? (v as number) : undefined;
+
 const STORAGE_KEY = 'pcBuild';
+const KNOWN = new Set<string>([...LINES, 'compat', 'fanQty', 'offers', 'use', 'res', 'budget']);
 /** Where a change came from: a write in this tab, or another tab (the `storage` event). */
 export type BuildChangeSource = 'tab' | 'other-tab';
 const listeners = new Set<(source: BuildChangeSource) => void>();
 
 const isObject = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);
 
+function readRaw(): Record<string, unknown> {
+  const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}') as unknown;
+  return isObject(raw) ? raw : {};
+}
+
 export function readBuild(): StoredBuild {
   try {
-    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}') as unknown;
-    if (!isObject(raw)) return { parts: {} };
+    const raw = readRaw();
     const compat = isObject(raw.compat) ? raw.compat : {};
+    const part = (line: Line): StoredPart | undefined => {
+      const key = raw[line];
+      if (typeof key !== 'string') return undefined;
+      const c = compat[line];
+      const p: StoredPart = { key };
+      if (isObject(c)) {
+        if (isObject(c.fields)) p.fields = c.fields;
+        if (typeof c.builtAt === 'string') p.builtAt = c.builtAt;
+      }
+      return p;
+    };
     const parts: StoredBuild['parts'] = {};
     for (const s of SLOTS) {
-      const key = raw[s];
-      if (typeof key !== 'string') continue;
-      const c = compat[s];
-      const part: StoredPart = { key };
-      if (isObject(c)) {
-        if (isObject(c.fields)) part.fields = c.fields;
-        if (typeof c.builtAt === 'string') part.builtAt = c.builtAt;
-      }
-      parts[s] = part;
+      const p = part(s);
+      if (p) parts[s] = p;
     }
     const build: StoredBuild = { parts };
-    if (typeof raw.use === 'string') build.use = raw.use;
+    const storage2 = part('storage2');
+    if (storage2) build.storage2 = storage2;
+    const fanQty = asFanQty(raw.fanQty);
+    if (fanQty) build.fanQty = fanQty;
+    if (isObject(raw.offers)) {
+      const offers: StoredBuild['offers'] = {};
+      for (const l of LINES) if (typeof raw.offers[l] === 'string') offers[l] = raw.offers[l];
+      if (Object.keys(offers).length) build.offers = offers;
+    }
+    const use = asUse(raw.use);
+    if (use) build.use = use;
+    const res = asRes(raw.res);
+    if (res) build.res = res;
     if (Number(raw.budget) > 0) build.budget = Number(raw.budget);
     return build;
   } catch {
@@ -51,27 +96,38 @@ export function readBuild(): StoredBuild {
 
 export function writeBuild(b: StoredBuild): void {
   try {
-    const out: Record<string, unknown> = {};
-    const compat: Record<string, unknown> = {};
-    for (const s of SLOTS) {
-      const p = b.parts[s];
-      if (!p) continue;
-      out[s] = p.key;
-      if (p.fields || p.builtAt) compat[s] = { ...(p.fields && { fields: p.fields }), ...(p.builtAt && { builtAt: p.builtAt }) };
+    let out: Record<string, unknown> = {};
+    try {
+      // A newer version's keys survive this version's writes.
+      out = Object.fromEntries(Object.entries(readRaw()).filter(([k]) => !KNOWN.has(k)));
+    } catch {
+      /* unreadable file: written fresh */
     }
+    const compat: Record<string, unknown> = {};
+    for (const l of LINES) {
+      const p = lineOf(b, l);
+      if (!p) continue;
+      out[l] = p.key;
+      if (p.fields || p.builtAt) compat[l] = { ...(p.fields && { fields: p.fields }), ...(p.builtAt && { builtAt: p.builtAt }) };
+    }
+    if (b.fanQty) out.fanQty = b.fanQty;
+    if (b.offers && Object.keys(b.offers).length) out.offers = b.offers;
     if (b.use) out.use = b.use;
+    if (b.res) out.res = b.res;
     if (b.budget) out.budget = b.budget;
     if (Object.keys(compat).length) out.compat = compat;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(out));
   } catch {
-    /* storage unavailable (private mode): the build just isn't remembered */
+    /* storage unavailable or full (private mode): the build just isn't remembered */
   }
+  mirrorActive(b);
   for (const fn of [...listeners]) fn('tab');
 }
 
-/** Read-modify-write one slot (null removes it) and notify. */
+/** Read-modify-write one slot (null removes it) and notify. A changed part drops the shop chosen for the old one. */
 export function setPart(slot: Slot, part: StoredPart | null): void {
   const b = readBuild();
+  if (b.offers && b.parts[slot]?.key !== part?.key) delete b.offers[slot];
   if (part) b.parts[slot] = part;
   else delete b.parts[slot];
   writeBuild(b);

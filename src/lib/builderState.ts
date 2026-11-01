@@ -9,6 +9,7 @@ import { loadExtra, loadIndex, loadSlot, prefetchSlot } from './builderFiles';
 import { NO_CONTEXT, SLOTS, slotFallback, type Build, type FitContext, type Slot, type SlotListing } from './builder';
 import { afterLargestPaint } from './paint';
 import { onBuildChange, readBuild, writeBuild, type BuildChangeSource, type StoredBuild } from './buildStore';
+import { decodeShare, isShareParam } from './share';
 
 export type Models = { [S in Slot]: Model<SlotListing[S]>[] };
 export type AnyModel = Model<BaseListing>;
@@ -37,6 +38,8 @@ const EXTRA_DELAY = 5000; // ms after the index loads before the loaded steps' e
 interface Saved {
   parts: Partial<Record<Slot, string>>;
   prefs: Prefs;
+  /** A shared link's whole build (second drive, fan quantity, shops, resolution): saved from it on the first edit. */
+  build?: StoredBuild;
 }
 
 const asPrefs = (use: unknown, budget: unknown): Prefs => ({
@@ -74,9 +77,15 @@ export function followSavedBuild(c: {
 /** True while the builder writes its own build (its change listener ignores that write). */
 let ownWrite = false;
 
-/** Saves the build; a part whose key didn't change keeps its stored engine fields and data date. */
-export function writeSaved(b: Build, p: Prefs) {
-  const old = readBuild().parts;
+/**
+ * Saves the build; a part whose key didn't change keeps its stored engine fields, data date and chosen shop. The
+ * build store's other lines (second drive, fan quantity, resolution) are kept as they are: from the saved build, or
+ * from `base` (the shared link on screen, whose first edit makes it the user's own).
+ */
+export function writeSaved(b: Build, p: Prefs, base?: StoredBuild) {
+  const prev = base ?? readBuild();
+  const old = prev.parts;
+  const offers = { ...prev.offers };
   const keys: Partial<Record<Slot, string>> = {
     ...pendingLazy,
     ...Object.fromEntries(SLOTS.filter((s) => b[s]).map((s) => [s, b[s]!.key])),
@@ -85,10 +94,16 @@ export function writeSaved(b: Build, p: Prefs) {
   for (const s of SLOTS) {
     const key = keys[s];
     if (key !== undefined) parts[s] = old[s]?.key === key ? old[s] : { key };
+    if (old[s]?.key !== key) delete offers[s];
   }
+  const next: StoredBuild = { ...prev, parts, offers };
+  delete next.use;
+  delete next.budget;
+  if (p.use) next.use = p.use;
+  if (p.budget) next.budget = p.budget;
   ownWrite = true;
   try {
-    writeBuild({ parts, ...(p.use && { use: p.use }), ...(p.budget && { budget: p.budget }) });
+    writeBuild(next);
   } finally {
     ownWrite = false;
   }
@@ -111,10 +126,8 @@ export function writeBuilderParams(change: (p: URLSearchParams) => void) {
   if (location.pathname + location.search !== next) history.replaceState(history.state, '', next);
 }
 
-const SHARE_KEYS = [...SLOTS, 'use', 'budget'];
-
-/** A shared build became the user's own: its parameters leave the builder's address. */
-export const clearShareParams = () => writeBuilderParams((p) => SHARE_KEYS.forEach((k) => p.delete(k)));
+/** A shared build became the user's own: its parameters (share.ts, v1 and v2 links) leave the builder's address. */
+export const clearShareParams = () => writeBuilderParams((p) => [...p.keys()].filter(isShareParam).forEach((k) => p.delete(k)));
 
 /** A build in a share link: one parameter per part (model keys hold "|", ":" and spaces). */
 export function shareLink(b: Build, p: Prefs): string {
@@ -126,11 +139,12 @@ export function shareLink(b: Build, p: Prefs): string {
 }
 
 function readShared(): Saved | null {
-  const p = builderParams();
-  if (!SLOTS.some((s) => p.has(s))) return null;
+  const d = decodeShare(builderParams());
+  if (!d) return null;
   return {
-    parts: Object.fromEntries(SLOTS.filter((s) => p.get(s)).map((s) => [s, p.get(s)!])),
-    prefs: asPrefs(p.get('use'), p.get('budget')),
+    parts: Object.fromEntries(SLOTS.filter((s) => d.build.parts[s]).map((s) => [s, d.build.parts[s]!.key])),
+    prefs: asPrefs(d.build.use, d.build.budget),
+    build: d.build,
   };
 }
 
@@ -284,12 +298,12 @@ export function useBuilderState() {
     // A step the user empties or fills themselves is no longer pending.
     for (const s of SLOTS) if (s in b) delete pendingLazy[s];
     setBuild(b);
-    writeSaved(b, prefs);
+    writeSaved(b, prefs, shared ? sharedAtStart?.build : undefined);
     own();
   };
   const setPrefs = (p: Prefs) => {
     setPrefsState(p);
-    writeSaved(build, p);
+    writeSaved(build, p, shared ? sharedAtStart?.build : undefined);
     own();
   };
 
