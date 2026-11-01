@@ -122,9 +122,9 @@ export function builderRows() {
 
 export const manifest = () => readJson(join(DIST, 'manifest.json'));
 
-/** GPU_PSU from src/lib/builder.ts, read from the source so the audit can't drift from it. */
+/** GPU_PSU from src/lib/builderData.ts, read from the source so the audit can't drift from it. */
 export function gpuPsuTable() {
-  const src = readFileSync(join(ROOT, 'src', 'lib', 'builder.ts'), 'utf8');
+  const src = readFileSync(join(ROOT, 'src', 'lib', 'builderData.ts'), 'utf8');
   const block = src.match(/const GPU_PSU: Record<string, number> = \{([\s\S]*?)\n\};/)[1];
   return Object.fromEntries([...block.matchAll(/'([^']+)':\s*(\d+)/g)].map((m) => [m[1], Number(m[2])]));
 }

@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { CHIPSET_SOCKET, conflicts } from '../../src/data/validate/conflicts';
 import { CATEGORIES } from '../../src/lib/categories';
-import { candidates, slotModels } from '../../src/lib/builder';
+import { candidates, slotModels } from '../../src/lib/builderData';
 import type { BaseListing, Category, Latest, MoboListing } from '../../src/types';
 
 type Row = Record<string, unknown>;
@@ -62,13 +62,13 @@ describe('conflicts: real cut-outs', () => {
     const r = conflicts('mobo', m.latest, m.specs);
     expect(values(r.latest, 'mobo', 'asusrogstrixb850igamingwifi', 'formFactor')).toEqual(['Άλλο']);
     const offered = (latest: Latest) =>
-      candidates('mobo', slotModels('mobo', latest.listings as MoboListing[]), {}).map((x) => keyOf('mobo', x.cheapest));
+      candidates('mobo', slotModels('mobo', latest.listings as MoboListing[])).map((x) => keyOf('mobo', x.cheapest));
     expect(offered(m.latest)).toContain('asusrogstrixb850igamingwifi');
     expect(offered(r.latest)).toContain('asusrogstrixb850igamingwifi');
     expect(offered(r.latest)).toHaveLength(offered(m.latest).length); // G3 hides nothing from the builder
     // a board the scraper itself labels 'Άλλο' keeps today's exclusion
     const own = lat([{ id: 'm:1', title: 't', chip: 'Acme X', formFactor: 'Άλλο', socket: 'AM5', memory: 'DDR5', chipset: 'X' }]);
-    expect(candidates('mobo', slotModels('mobo', own.listings as unknown as MoboListing[]), {})).toHaveLength(0);
+    expect(candidates('mobo', slotModels('mobo', own.listings as unknown as MoboListing[]))).toHaveLength(0);
   });
 
   it('M2: a listing that states no size (Άλλο) is not a disagreement with Micro ATX', () => {

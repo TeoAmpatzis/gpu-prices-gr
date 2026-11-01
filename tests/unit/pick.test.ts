@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { biosSupport, evaluate, type Context, type Finding, type Part, type PartCategory } from '../../src/engine';
-import { SLOTS, slotModels, type Slot } from '../../src/lib/builder';
+import { SLOTS, slotModels, type Slot } from '../../src/lib/builderData';
 import {
   CATEGORY_RULE_SLOTS, HIDE_RULES, hides, NEVER_HIDE_WHEN_MISSING, NOT_IN_DATA, PART_FIELDS, toPart, usable,
 } from '../../src/lib/pick';

@@ -12,7 +12,7 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const ROOT = process.cwd();
-const B = await import(pathToFileURL(join(ROOT, 'src/lib/builder.ts')).href);
+const B = await import(pathToFileURL(join(ROOT, 'src/lib/builderData.ts')).href);
 const { VALIDATION_MODE, validateLatest } = await import(pathToFileURL(join(ROOT, 'src/data/validate/index.ts')).href);
 
 const arg = (name: string) => {

@@ -44,3 +44,26 @@ export const cpuVersion = (key: string): 'box' | 'tray' | null => {
   const v = key.slice(key.lastIndexOf('|') + 1);
   return v === 'true' ? 'box' : v === 'false' ? 'tray' : null;
 };
+
+/**
+ * Per slot, the fields the compatibility rules read (src/engine/rules) that the listing data has:
+ * the model-wide values come from `slotFields`, the others from the model's cheapest listing, exactly
+ * as in a builder step file row. A field the data doesn't carry (yet) is simply null.
+ */
+export const PART_FIELDS: Record<Slot, string[]> = {
+  cpu: ['chip', 'socket', 'igpu', 'coolerIncluded', 'boxCooler', 'cores'],
+  mobo: [
+    'chip', 'chipset', 'socket', 'formFactor', 'memory', 'ramSlots', 'maxMemoryGB', 'sataPorts', 'm2Slots', 'm2Gen',
+    'biosFlashback', 'fanHeaders', 'usbCHeader',
+  ],
+  ram: ['type', 'speed', 'modules', 'capacity', 'formFactor'],
+  gpu: ['chip', 'vram', 'lengthMm', 'minPsu', 'powerConnector', 'slots'],
+  cooler: ['type', 'radiator', 'sockets', 'socketsTitle', 'heightMm'],
+  storage: ['iface', 'pcie', 'formFactor'],
+  case: [
+    'size', 'maxBoard', 'gpuMaxMm', 'coolerMaxMm', 'fanSlots', 'radiatorMounts', 'fanMounts', 'fansIncluded', 'hasFans',
+    'radiators', 'expansionSlots', 'psuFormFactors', 'psuIncluded', 'usbCFront', 'bays35',
+  ],
+  fan: ['size', 'pack'],
+  psu: ['watts', 'formFactor', 'atx3'],
+};

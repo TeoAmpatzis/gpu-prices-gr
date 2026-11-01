@@ -5,7 +5,7 @@
 import type { Finding, Part } from '../engine';
 import type { BaseListing, ModelEntry } from '../types';
 import { readBuild, setPart, type StoredBuild, type StoredPart } from './buildStore';
-import { slotModels, usable, type Slot } from './builder';
+import { slotModels, usable, type Slot } from './builderData';
 import { partOf, shownOffer, validStored } from './pickBuild';
 import { hides } from './pickHide';
 import { cpuVersion } from './slots';

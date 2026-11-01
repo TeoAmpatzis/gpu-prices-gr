@@ -4,7 +4,7 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Part, PartCategory } from '../../src/engine';
-import { slotModels } from '../../src/lib/builder';
+import { slotModels } from '../../src/lib/builderData';
 import { candidateKey, SLOTS } from '../../src/lib/slots';
 import { addToBuild, cpuVersion, fitCandidates, fitView, hasParts, mainCandidate, slotAction, type FitCandidate } from '../../src/lib/buildFit';
 import { readBuild, type StoredBuild } from '../../src/lib/buildStore';

@@ -4,12 +4,13 @@
 // worker (pickChecker.ts; idle slices on the main thread when no worker can run). Moved out of usePick.ts (plus the
 // options below), so the category page's pick mode and the product page run the same steps (no second engine path).
 import { useEffect, useMemo, useState } from 'react';
-import type { Part } from '../engine';
+import type { ChipLengths, Part } from '../engine';
 import { onBuildChange, readBuild, setPart, type StoredBuild } from './buildStore';
-import type { Slot } from './builder';
+import type { Slot } from './builderData';
+import { loadIndex } from './builderFiles';
 import { loadCompat } from './compatChunks';
 import { fetchOutcomes, outcomeKey, partOf, planBuild, resolvePlan, validStored, type Outcome } from './pickBuild';
-import { createChecker, type WorkerLike } from './pickChecker';
+import { createChecker, makeWorker } from './pickChecker';
 import type { Verdict } from './pickProtocol';
 
 /**
@@ -19,12 +20,6 @@ import type { Verdict } from './pickProtocol';
  */
 // Must exceed the worker's timeout (pickChecker.WORKER_TIMEOUT, 10 s) plus the main-thread fallback after it.
 export const PENDING_DEADLINE = 15_000;
-
-/** The pick worker (a lazy chunk of its own); null where the browser has no Worker (main-thread fallback). */
-const makeWorker =
-  typeof Worker === 'undefined'
-    ? null
-    : () => new Worker(new URL('./pick.worker.ts', import.meta.url), { type: 'module' }) as unknown as WorkerLike;
 
 export interface BuildCheck {
   /** The saved build as read now (follows writes in this tab and in others). */
@@ -102,10 +97,24 @@ export function useBuildCheck(
   useEffect(() => {
     if (hasParts) checker.warm();
   }, [checker, hasParts]);
+  // Rule 6's chip length estimates on the card and case pages, the same as the builder's (audit L2): from the builder's
+  // index file (a few KiB, memoised). null = it failed: checked without estimates.
+  const lengthsWanted = (slot === 'gpu' || slot === 'case') && hasParts;
+  const [chipLengths, setChipLengths] = useState<Record<string, ChipLengths> | null | undefined>(undefined);
   useEffect(() => {
-    if (!candidates || !engineParts || runKey === null) return;
-    return checker.run(slot, engineParts, candidates, (map) => setResult({ key: runKey, of: candidates, map }), { full });
-  }, [checker, candidates, engineParts, runKey, slot, full]);
+    if (!lengthsWanted || chipLengths !== undefined) return;
+    let live = true;
+    loadIndex().then((i) => live && setChipLengths(i.chipLengths), () => live && setChipLengths(null));
+    return () => {
+      live = false;
+    };
+  }, [lengthsWanted, chipLengths]);
+  const lengthsReady = !lengthsWanted || chipLengths !== undefined;
+  useEffect(() => {
+    if (!candidates || !engineParts || runKey === null || !lengthsReady) return;
+    const ctx = chipLengths ? { chipLengths } : undefined;
+    return checker.run(slot, engineParts, candidates, (map) => setResult({ key: runKey, of: candidates, map }), { full, ctx });
+  }, [checker, candidates, engineParts, runKey, slot, full, lengthsReady, chipLengths]);
   // The deadline, per data date, page and saved keys (not their fields: saving fresh fields back doesn't restart it).
   const deadlineKey = `${builtAt}
 ${slot}

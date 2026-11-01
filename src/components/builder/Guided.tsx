@@ -16,9 +16,11 @@ import {
 import type { BaseListing, CaseListing, Category, FanListing } from '../../types';
 import { CATEGORIES } from '../../lib/categories';
 import { formatPrice, saleOf, type Model } from '../../lib/data';
-import { SLOTS, rateAll, type Build, type Rating, type Slot } from '../../lib/builder';
-import { fanPlan } from '../../lib/fans';
-import { USES, builderParams, writeBuilderParams, type AnyModel, type BuilderState, type Prefs, type Use } from '../../lib/builderState';
+import { SLOTS, candidates, type Build, type Slot } from '../../lib/builderData';
+import { ENGINE_TEXT, optionalSlot } from '../../lib/builderEngine';
+import { fanPlan } from '../../lib/fanPlan';
+import { ratingOf, stepReason, LABEL_TEXT, type Rating } from '../../lib/fitLabel';
+import { USES, builderParams, useStepVerdicts, writeBuilderParams, type AnyModel, type BuilderState, type Prefs, type Use } from '../../lib/builderState';
 import {
   GUIDE_INDEX,
   SORTS,
@@ -26,7 +28,6 @@ import {
   STEP_NAME,
   STEP_SHORT,
   isDone,
-  optional,
   remaining,
   shareOf,
   sorter,
@@ -138,7 +139,8 @@ export default function Guided({ state, header }: { state: BuilderState; header:
   const [step, setStep] = useState<StepId>(initialStep);
   const top = useRef<HTMLDivElement>(null);
   const index = STEPS.indexOf(step);
-  const opt = optional(step, build);
+  const opt: { optional: boolean; why?: Text } =
+    step === 'use' ? { optional: true } : step === 'review' ? { optional: false } : optionalSlot(step, state.optFindings);
 
   const go = (s: StepId) => {
     setStep(s);
@@ -368,13 +370,17 @@ function UseStep({ state, lang }: { state: BuilderState; lang: Lang }) {
   );
 }
 
-type Rated = { m: Model<BaseListing>; rating: Rating };
+/** A part of the step with the engine's label, and whether "Only compatible" hides it (pickHide: a real "no"). */
+type Rated = { m: Model<BaseListing>; rating: Rating; hide: boolean };
+const NO_RATING: Rating = { fit: null, reasons: [] };
 
 function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang: Lang }) {
   const t = (x: Text) => tr(lang, x);
-  const { models, build, update, ctx, prefs, extraVersion, wantSlot } = state;
-  // Each step's parts are their own file (/data/builder/<slot>.json), fetched when the step opens.
-  const loading = state.loading || !state.slotReady(slot);
+  const { models, build, update, prefs, extraVersion, wantSlot } = state;
+  // Each step's parts are their own file (/data/builder/<slot>.json), fetched when the step opens; then the pick worker
+  // checks them against the build (the first answer is waited for, later ones replace the labels when they arrive).
+  const { verdicts } = useStepVerdicts(state, slot);
+  const loading = state.loading || !state.slotReady(slot) || verdicts === null;
   useEffect(() => {
     if (!state.loading) wantSlot(slot);
   }, [slot, state.loading]);
@@ -386,14 +392,26 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
   const [withinBudget, setWithinBudget] = useState(false);
   const [limit, setLimit] = useState(PAGE);
   // Fans step: sizes the chosen case needs (from the fan plan), and the type named in the product.
-  const planSizes = useMemo(() => (slot === 'fan' && build.case ? [...new Set(fanPlan(build).add.map((a) => a.size))] : []), [slot, build]);
+  const planSizes = useMemo(
+    () => (slot === 'fan' && build.case ? [...new Set(fanPlan(build, state.psuWatts).add.map((a) => a.size))] : []),
+    [slot, build, state.psuWatts],
+  );
   const [sizes, setSizes] = useState<number[]>(planSizes);
   // A saved build arrives with its steps' files, after the first render: follow the plan when it changes.
   const planKey = planSizes.join();
   useEffect(() => setSizes(planSizes), [planKey]);
   const [fanType, setFanType] = useState<'airflow' | 'pressure' | null>(null);
 
-  const rated: Rated[] = useMemo(() => (models ? (rateAll(slot, models[slot] as never, build, ctx) as Rated[]) : []), [models, slot, build, ctx]);
+  const rated: Rated[] = useMemo(() => {
+    if (!models || !verdicts) return [];
+    // A part without a verdict (the check failed) is shown unlabelled, never hidden.
+    return (candidates(slot, models[slot] as never) as AnyModel[]).map((m) => {
+      const v = verdicts.get(m.key);
+      return { m, rating: v ? ratingOf(v.findings, m.key, state.parts) : NO_RATING, hide: v?.hide ?? false };
+    });
+  }, [models, slot, verdicts, state.parts]);
+  // The one "not verified" reason of the step (#14), said above the cards instead of on each.
+  const reason = useMemo(() => (verdicts ? stepReason(verdicts) : null), [verdicts]);
   const order = useMemo(() => sorter(slot, rated.map((r) => r.m), sort), [slot, rated, sort]);
   const left = remaining(build, prefs, slot);
 
@@ -401,14 +419,16 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
     const q = query.trim().toLowerCase();
     const search = cfg as unknown as { searchText: (l: BaseListing) => string };
     let list = rated.filter((r) => !q || r.m.listings.some((l) => search.searchText(l).toLowerCase().includes(q)));
-    const clashes = list.filter((r) => r.rating.fit === 'no').length;
-    if (onlyCompatible) list = list.filter((r) => r.rating.fit !== 'no');
+    const clashes = list.filter((r) => r.hide).length;
+    if (onlyCompatible) list = list.filter((r) => !r.hide);
     if (verifiedOnly) list = list.filter((r) => r.rating.fit !== 'unverified');
     if (withinBudget && left != null) list = list.filter((r) => r.m.cheapest.price <= left);
     if (slot === 'fan' && sizes.length) list = list.filter((r) => sizes.includes((r.m as Model<FanListing>).cheapest.size));
     if (slot === 'fan' && fanType) list = list.filter((r) => (r.m as Model<FanListing>).cheapest.fanType === fanType);
-    // Clashes (shown when "Only compatible" is off) go last, greyed out.
-    return { shown: [...list].sort((a, b) => Number(a.rating.fit === 'no') - Number(b.rating.fit === 'no') || order(a, b)), hidden: clashes };
+    // "Fit not verified" after the verified parts (owner answers 1–4); clashes (shown when "Only compatible" is off)
+    // go last, greyed out.
+    const rank = (r: Rated) => (r.hide ? 2 : r.rating.fit === 'unverified' ? 1 : 0);
+    return { shown: [...list].sort((a, b) => rank(a) - rank(b) || order(a, b)), hidden: clashes };
     // extraVersion: search titles arrive later (/data/builder/<slot>-extra.json).
   }, [rated, order, query, onlyCompatible, verifiedOnly, withinBudget, left, cfg, extraVersion, slot, sizes, fanType]);
   useEffect(() => setLimit(PAGE), [query, sort, onlyCompatible, verifiedOnly, withinBudget, sizes, fanType]);
@@ -417,7 +437,13 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
 
   return (
     <div className="flex flex-col gap-3">
-      {(slot === 'case' || slot === 'fan') && <FanAdviceBox build={build} step={slot} lang={lang} />}
+      {(slot === 'case' || slot === 'fan') && <FanAdviceBox build={build} watts={state.psuWatts} step={slot} lang={lang} />}
+      {state.checkerFailed && <p className="notice-warn p-2.5 text-sm">{t(ENGINE_TEXT.checkerFailed)}</p>}
+      {reason && !loading && (
+        <p className="notice-warn p-2.5 text-sm">
+          {t(LABEL_TEXT.unverified)}: {t(reason)}
+        </p>
+      )}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
         <label className="relative block flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
@@ -490,12 +516,14 @@ function PartStep({ slot, state, lang }: { slot: Slot; state: BuilderState; lang
                 slot={slot}
                 m={r.m as AnyModel}
                 rating={r.rating}
+                hide={r.hide}
+                reason={reason}
                 chosen={chosen?.key === r.m.key}
                 onChoose={() => update({ ...build, [slot]: r.m })}
                 onRemove={() => update({ ...build, [slot]: undefined })}
                 lang={lang}
               >
-                {slot === 'case' && <CaseFansLine c={r.m as Model<CaseListing>} build={build} lang={lang} />}
+                {slot === 'case' && <CaseFansLine c={r.m as Model<CaseListing>} build={build} watts={state.psuWatts} lang={lang} />}
               </PartCard>
             ))}
           </ul>
@@ -518,6 +546,8 @@ function PartCard({
   slot,
   m,
   rating,
+  hide,
+  reason,
   chosen,
   onChoose,
   onRemove,
@@ -527,6 +557,9 @@ function PartCard({
   slot: Slot;
   m: AnyModel;
   rating: Rating;
+  hide: boolean;
+  /** The step's one "not verified" reason: not repeated on the card. */
+  reason: Text | null;
   chosen: boolean;
   onChoose: () => void;
   onRemove: () => void;
@@ -534,7 +567,8 @@ function PartCard({
   children?: ReactNode;
 }) {
   const t = (x: Text) => tr(lang, x);
-  const clash = rating.fit === 'no';
+  const clash = hide;
+  const reasons = rating.reasons.filter((r) => !reason || tr('en', r) !== tr('en', reason));
   const sale = saleOf(m.listings, m.cheapest);
   const Icon = CATEGORIES[slot as Category].icon;
   return (
@@ -556,9 +590,7 @@ function PartCard({
           {sale && <span className="badge badge-sale">−{sale.pct}%</span>}
         </div>
       )}
-      {rating.fit && rating.fit !== 'fits' && rating.reasons[0] && (
-        <p className="line-clamp-3 text-xs text-muted">{rating.reasons.map((r) => t(r)).join(' ')}</p>
-      )}
+      {rating.fit && rating.fit !== 'fits' && reasons[0] && <p className="line-clamp-3 text-xs text-muted">{reasons.map((r) => t(r)).join(' ')}</p>}
       <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
         <span className="font-semibold tabular-nums">{formatPrice(m.cheapest.price, lang)}</span>
         <SourceBadge source={m.cheapest.source} />

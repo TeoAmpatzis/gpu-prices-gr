@@ -13,7 +13,8 @@ const { implausibleDips, isDipPrice, sharedImportedDays, sharedImportedLows, imp
 const { fromColumns, decodeHist, decodePhotos } = await import(src('lib/columns.ts'));
 const { productImage } = await import(src('lib/images.ts'));
 const { createHash } = await import('node:crypto');
-const B = await import(src('lib/builder.ts'));
+// v1's rules (rate, buildNotes) live in a frozen test-only copy since step 5 task 9.
+const B = await import(pathToFileURL(join(ROOT, 'tests/compat/v1-rules.ts')).href);
 const { VALIDATION_MODE, validateLatest } = await import(src('data/validate/index.ts'));
 
 const read = (cat: string, f: string, fb: unknown = {}) => {

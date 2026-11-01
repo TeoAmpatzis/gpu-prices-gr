@@ -7,9 +7,11 @@ import { hides } from './pickHide';
 import { toResults, type CheckAnswer, type CheckRequest, type Verdict } from './pickProtocol';
 
 export { hides, HIDE_RULES, NEVER_HIDE_WHEN_MISSING } from './pickHide';
+// The builder evaluates its own build with this chunk (loaded on demand, builderState.ts): one engine copy for both.
+export { evaluate, powerEstimate } from '../engine';
 export type { Verdict };
 
-/** Pick mode's engine context: the BIOS table only (no chip length estimates: they need every card's data). */
+/** The worker's own engine context: the BIOS table (a function); chip lengths and the use come with each request. */
 export const PICK_CTX: Context = { bios: biosSupport };
 
 /** The own-clash filter of `candidateErrors`, from two evaluations (so `checkAll` evaluates the base build once). */
@@ -50,7 +52,7 @@ export function checkAll(build: Part[], slot: PartCategory, candidates: Part[], 
 /** The worker's whole job: one request → one answer (an engine error is an answer too, never a dead worker). */
 export function answer(req: CheckRequest): CheckAnswer {
   try {
-    return { id: req.id, ok: true, results: toResults(checkAll(req.build, req.slot, req.candidates, PICK_CTX), req.full) };
+    return { id: req.id, ok: true, results: toResults(checkAll(req.build, req.slot, req.candidates, { ...PICK_CTX, ...req.ctx }), req.full) };
   } catch (e) {
     return { id: req.id, ok: false, error: e instanceof Error ? e.message : String(e) };
   }

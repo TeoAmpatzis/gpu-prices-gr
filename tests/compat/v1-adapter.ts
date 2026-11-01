@@ -2,7 +2,7 @@
 // calls (src/lib/builder.ts: slotModels, rate, buildNotes, buildStatus, requiredWatts) on the same row
 // shape builder.json gives the browser — and maps v1's answers to the plan's levels.
 //
-// Mapping (documented in docs/audit-v1.md, "Compatibility scenario results"):
+// Mapping (results table: docs/audit/compat-results.md):
 //   v1 check "Fits"                         → pass
 //   v1 check "Likely fits" (an estimate)    → note   (plan: an estimate is said to be one; rule 5 "note if estimate")
 //   v1 check "Fit not verified" (no data)   → note   (plan: unknown → "Δεν μπορέσαμε να ελέγξουμε…")
@@ -26,7 +26,7 @@ import {
   type Fit,
   type FitContext,
   type Slot,
-} from '../../src/lib/builder';
+} from './v1-rules';
 import { CATEGORIES } from '../../src/lib/categories';
 import { groupModels, type Model } from '../../src/lib/data';
 import { tr } from '../../src/lib/i18n';

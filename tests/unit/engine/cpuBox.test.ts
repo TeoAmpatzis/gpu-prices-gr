@@ -2,11 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { CPU_BOX, boxCooler } from '../../../src/engine/data/cpuBox';
 import { OFFICIAL_DOMAINS } from '../../../src/engine/data/cpuMemory';
 import { withBoxCoolers } from '../../../src/lib/derive';
-import type { CpuListing, Latest } from '../../../src/types';
+import type { Latest } from '../../../src/types';
 import { evaluate, type Part } from '../../../src/engine';
 import { ruleResult } from '../../compat/engine-adapter';
-import { optional } from '../../../src/lib/wizard';
-import type { Model } from '../../../src/lib/data';
+import { optionalSlot } from '../../../src/lib/builderEngine';
 
 describe('CPU box table integrity', () => {
   it('has rows', () => expect(CPU_BOX.length).toBeGreaterThan(0));
@@ -99,8 +98,8 @@ describe('a Box 7600 filled from the table', () => {
     const f = ruleResult(evaluate([cpu]), 11);
     expect(f?.status).toBe('pass');
   });
-  it('the builder cooler step is optional', () => {
-    const model = { cheapest: listing, listings: [listing] } as unknown as Model<CpuListing>;
-    expect(optional('cooler', { cpu: model }).optional).toBe(true);
+  it('the builder cooler step is optional (the engine rule 11, task 9)', () => {
+    const cpu: Part = { category: 'cpu', key: 'Ryzen 5 7600|true', name: 'Ryzen 5 7600', quantity: 1, fields };
+    expect(optionalSlot('cooler', evaluate([cpu])).optional).toBe(true);
   });
 });

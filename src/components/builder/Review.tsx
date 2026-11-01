@@ -6,10 +6,12 @@ import { Check, ClipboardCopy, ExternalLink, Link2 } from 'lucide-react';
 import type { Category, SourceName } from '../../types';
 import { CATEGORIES } from '../../lib/categories';
 import { formatPrice } from '../../lib/data';
-import { SLOTS, rate, type Slot } from '../../lib/builder';
+import { SLOTS, type Slot } from '../../lib/builderData';
+import { optionalSlot } from '../../lib/builderEngine';
+import { ratingOf } from '../../lib/fitLabel';
 import { shareLink, type AnyModel, type BuilderState } from '../../lib/builderState';
 import { SOURCES } from '../../lib/sources';
-import { STEP_NAME, optional, type StepId } from '../../lib/wizard';
+import { STEP_NAME, type StepId } from '../../lib/wizard';
 import { tr, type Lang, type Text } from '../../lib/i18n';
 import ProductPhoto from '../ProductPhoto';
 import SourceBadge from '../SourceBadge';
@@ -55,7 +57,8 @@ async function copyText(text: string): Promise<boolean> {
 
 export default function Review({ state, lang, onGo }: { state: BuilderState; lang: Lang; onGo: (s: StepId) => void }) {
   const t = (x: Text) => tr(lang, x);
-  const { build, ctx, prefs, builtAt, wantExtra } = state;
+  const { build, prefs, builtAt, wantExtra } = state;
+  const findings = state.findings ?? [];
   const [copied, setCopied] = useState<'list' | 'link' | null>(null);
   const timer = useRef<number | undefined>(undefined);
   // The list carries the shop links (/data/builder/<slot>-extra.json).
@@ -104,7 +107,7 @@ export default function Review({ state, lang, onGo }: { state: BuilderState; lan
         {SLOTS.map((s: Slot) => {
           const m = build[s] as AnyModel | undefined;
           const Icon = CATEGORIES[s as Category].icon;
-          const opt = optional(s, build);
+          const opt = optionalSlot(s, state.optFindings);
           return (
             <li key={s} className="flex flex-wrap items-center gap-3 p-3">
               {m ? (
@@ -120,7 +123,7 @@ export default function Review({ state, lang, onGo }: { state: BuilderState; lan
                   <>
                     <div className="font-medium [overflow-wrap:anywhere]">{m.chip}</div>
                     <div className="mt-1 empty:hidden">
-                      <FitBadge rating={rate(s, m as never, build, ctx)} lang={lang} />
+                      <FitBadge rating={ratingOf(findings, m.key, state.parts)} lang={lang} />
                     </div>
                   </>
                 ) : (

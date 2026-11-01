@@ -1,7 +1,7 @@
 // The engine's v1 tables are copies (src/engine stays free of React/v1 imports): they must equal v1's.
 import { describe, expect, it } from 'vitest';
 import { BOARD_BY_CASE_SIZE as V1_BOARD_BY_CASE_SIZE } from '../../../src/lib/categories';
-import { gpuPsu } from '../../../src/lib/builder';
+import { gpuPsu } from '../../../src/lib/builderData';
 import { BOARD_BY_CASE_SIZE, V1_GPU_PSU } from '../../../src/engine/tables';
 import type { GpuListing } from '../../../src/types';
 

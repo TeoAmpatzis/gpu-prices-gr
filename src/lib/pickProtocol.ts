@@ -1,7 +1,13 @@
 // The pick worker's messages (v2 step 3, task 6b): the page sends the candidates' engine parts and the build's
 // parts, the worker answers with each candidate's verdict. Pure functions and types only (no engine code), shared
 // by the worker (pick.worker.ts → pickCheck.answer), the checker (pickChecker.ts) and the tests.
-import type { Finding, Part, PartCategory } from '../engine';
+import type { Context, Finding, Part, PartCategory } from '../engine';
+
+/** What the page adds to the worker's context (the BIOS table is a function: the worker adds it itself). */
+export type PostedContext = Pick<Context, 'chipLengths' | 'use'>;
+
+/** Which findings a verdict keeps: errors and warnings (pick mode), every non-pass (`true`, product page) or all (`'all'`, the builder's labels, which tell a stated pass from an estimate). */
+export type Keep = boolean | 'all';
 
 /** The engine's verdict on one candidate: hidden by "Only compatible" or not, and its findings for the row. */
 export type Verdict = { hide: boolean; findings: Finding[] };
@@ -14,8 +20,10 @@ export interface CheckRequest {
   build: Part[];
   /** Every model of the page as an engine part (`pick.toPart`). */
   candidates: Part[];
-  /** Keep every finding but passes (notes and unknowns too): the product page's fit section (`keptFinding`). */
-  full?: boolean;
+  /** Keep every finding but passes (notes and unknowns too): the product page's fit section (`keptFinding`); `'all'`: passes too. */
+  full?: Keep;
+  /** Chip length estimates (rule 6) and the use (rules 27–30), the same for pick mode, product pages and the builder. */
+  ctx?: PostedContext;
 }
 
 /** One candidate: key, hidden by "Only compatible", the findings its row can show. */
@@ -37,8 +45,8 @@ export const shownFinding = (f: Finding): boolean => f.status === 'error' || f.s
 export const keptFinding = (f: Finding): boolean => f.status !== 'pass';
 
 /** `checkAll`'s result as the answer's rows (findings trimmed to `shownFinding`, or to `keptFinding` when `full`). */
-export function toResults(map: Map<string, Verdict>, full = false): CheckResult[] {
-  const keep = full ? keptFinding : shownFinding;
+export function toResults(map: Map<string, Verdict>, full: Keep = false): CheckResult[] {
+  const keep = full === 'all' ? () => true : full ? keptFinding : shownFinding;
   return [...map].map(([key, v]) => [key, v.hide, v.findings.filter(keep)]);
 }
 

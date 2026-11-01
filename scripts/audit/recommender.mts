@@ -29,18 +29,19 @@ import {
   cpuHasIgpu,
   fitContext,
   rateAll,
+  optional,
   requiredWatts,
   slotModels,
   type Build,
   type FitContext,
   type Slot,
   type SlotListing,
-} from '../../src/lib/builder';
+} from '../../tests/compat/v1-rules';
 import { fromColumns } from '../../src/lib/columns';
 import type { Model } from '../../src/lib/data';
-import { fanPlan } from '../../src/lib/fans';
+import { fanPlan } from '../../src/lib/fanPlan';
 import { tr } from '../../src/lib/i18n';
-import { optional, remaining, shareOf, sorter } from '../../src/lib/wizard';
+import { remaining, shareOf, sorter } from '../../src/lib/wizard';
 import type { BaseListing, BuilderFile, FanListing } from '../../src/types';
 
 type Use = 'gaming' | 'everyday' | 'creating' | 'unsure';
@@ -62,7 +63,7 @@ function pick(slot: Slot, build: Build, use: Use, budget: number, strategy: Stra
   const prefs = { use, budget };
   let list = rateAll(slot, models[slot] as never, build, ctx).filter((r) => r.rating.fit !== 'no');
   if (slot === 'fan' && build.case) {
-    const sizes = [...new Set(fanPlan(build).add.map((a) => a.size))];
+    const sizes = [...new Set(fanPlan(build, requiredWatts(build)).add.map((a) => a.size))];
     if (sizes.length) list = list.filter((r) => sizes.includes((r.m as Model<FanListing>).cheapest.size));
   }
   const byValue = strategy === 'value' || (strategy === 'valueCpu' && slot === 'cpu');
