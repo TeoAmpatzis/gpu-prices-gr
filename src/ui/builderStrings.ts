@@ -4,6 +4,17 @@ import type { Text } from '../lib/text';
 import type { BuilderUseKey } from '../types';
 
 export const BUILDER = {
+  hddSystem: { el: 'Ένας σκληρός δίσκος ως δίσκος συστήματος είναι αργός· για το σύστημα διάλεξε SSD.', en: 'An HDD as the system drive is slow; choose an SSD for the system.' },
+  noEfficiency: { el: 'χωρίς δηλωμένη απόδοση', en: 'no stated efficiency' },
+  fullModular: { el: 'Πλήρως αρθρωτό', en: 'Fully modular' },
+  semiModular: { el: 'Ημι-αρθρωτό', en: 'Semi-modular' },
+  nonModular: { el: 'Μη αρθρωτό', en: 'Non-modular' },
+  otherShop: { el: 'Άλλο κατάστημα', en: 'Other shop' },
+  offersRetry: { el: 'Οι προσφορές δεν φόρτωσαν. Δοκίμασε ξανά.', en: 'Offers did not load. Try again.' },
+  noOffers: { el: 'Δεν βρέθηκαν προσφορές για αυτή την έκδοση.', en: 'No offers found for this version.' },
+  shopLink: { el: 'Κατάστημα', en: 'Shop' },
+  fewerFans: { el: 'Οι επιλεγμένοι ανεμιστήρες είναι λιγότεροι από την πρόταση.', en: 'The chosen fans are fewer than the plan.' },
+
   /** Credit for the performance tiers (src/engine/data/tiers.ts), shown where the builder shows a tier. */
   tierCredit: {
     el: "Επίπεδα απόδοσης: δική μας ομαδοποίηση, με βάση τις κατατάξεις των Tom's Hardware, PC Games Hardware και ComputerBase και τις δοκιμές επεξεργαστών των PC Games Hardware και ComputerBase.",

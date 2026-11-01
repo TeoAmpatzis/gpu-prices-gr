@@ -61,6 +61,24 @@ const flush = () => new Promise((r) => setTimeout(r, 0));
 const called = (fn: ReturnType<typeof vi.fn>) => vi.waitFor(() => expect(fn).toHaveBeenCalled());
 
 describe('protocol', () => {
+  it('replaces one storage line and preserves the other, including two identical drives', () => {
+    const board = part('mobo', { m2Slots: 1 }, 'board');
+    const first = part('storage', { iface: 'NVMe', media: 'SSD', formFactor: 'M.2 2280' }, 'ssd');
+    const second = { ...first, key: 'ssd#2' };
+    const v = checkAll([board, first, second], 'storage', [second], PICK_CTX, 'ssd#2');
+    expect(v.get('ssd#2')?.findings.some((f) => f.rule === 17 && f.status === 'error')).toBe(true);
+  });
+  it.each([true, false])('line-aware storage check survives worker/fallback transport: worker=%s', async (worker) => {
+    const board = part('mobo', { m2Slots: 1 }, 'board');
+    const first = part('storage', { iface: 'NVMe', media: 'SSD', formFactor: 'M.2 2280' }, 'ssd');
+    const second = { ...first, key: 'ssd#2' };
+    const checker = createChecker(worker ? () => fakeWorker() : null, now);
+    const done = vi.fn();
+    checker.run('storage', [board, first], [second], done, { full: 'all', replaceKey: 'absent-second' });
+    await called(done);
+    expect((done.mock.calls[0][0] as Map<string, Verdict>).get('ssd#2')?.findings.some((f) => f.rule === 17 && f.status === 'error')).toBe(true);
+    checker.dispose();
+  });
   it('answer = checkAll, trimmed to errors and warnings, through structured clone', () => {
     const a = structuredClone(answer(req));
     expect(a.id).toBe(7);

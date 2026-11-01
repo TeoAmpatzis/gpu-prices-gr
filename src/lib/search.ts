@@ -21,6 +21,17 @@ export const fold = (s: string) =>
     .normalize('NFD')
     .replace(/\p{M}/gu, '')
     .toLowerCase();
+
+/** Picker words may occur in any order; a number with a unit always matches the whole quantity. */
+export function pickerMatches(text: string, query: string): boolean {
+  const haystack = fold(text);
+  const tokens = fold(query).match(/\d+(?:\.\d+)?\s*(?:w|gb|tb|mm)\b|\S+/g) ?? [];
+  return tokens.every((token) => {
+    const unit = /^(\d+(?:\.\d+)?)\s*(w|gb|tb|mm)$/.exec(token);
+    if (!unit) return haystack.includes(token);
+    return new RegExp(`(?<![\\d.])${unit[1].replace('.', '\\.')}\\s*${unit[2]}(?![\\p{L}\\p{N}])`, 'u').test(haystack);
+  });
+}
 const words = (s: string) => fold(s).split(/[^\p{L}\p{N}]+/u).filter(Boolean);
 
 interface Entry {

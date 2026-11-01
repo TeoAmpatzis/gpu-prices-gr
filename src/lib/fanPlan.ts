@@ -75,6 +75,11 @@ export interface FanPlan {
   topUnknown: boolean;
 }
 
+/** Packs of the wanted sizes (the plan's, until the user picks) come first; other sizes remain available. */
+export const planPackOrder = (sizes: number[], size: number): number => (sizes.includes(size) ? 0 : 1);
+/** Quantity is packs, not individual fans. */
+export const fanShortfall = (plan: FanPlan, pack: number, quantity: number): number => Math.max(0, plan.total - pack * quantity);
+
 /** How many fans to add where, for the build's case (or a case of unknown layout when none is chosen). */
 export function fanPlan(b: Build, watts: number | null = null): FanPlan {
   const high = highPower(b, watts);

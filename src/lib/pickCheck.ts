@@ -29,15 +29,15 @@ export function hidingErrors(build: Part[], candidate: Part, ctx: Context): Find
 
 /**
  * Check a whole page's candidates for one slot. Unlike `hidingErrors` (whose `build` the caller has already
- * stripped), `checkAll` drops the slot itself: it replaces the candidate's WHOLE category in `build` (one part per
- * category, like today's builder; multi-part slots are Phase 4). Then each candidate is added in turn.
+ * stripped), `checkAll` normally replaces the candidate's whole category (category and product pages). The builder
+ * supplies `replaceKey` to replace one line, preserving the other drive. Then each candidate is added in turn.
  * `findings` = what the engine says about the candidate for its row: its own errors (clashes the build did not
  * already have, same filter as `candidateErrors`) plus every warning, note and unknown that names it. A clash that
  * existed without it (v1 C-01: a PSU too small for the card) is not shown as the candidate's own.
  * `hide` = at least one of its own errors is a hiding one (`hidingErrors`' rule).
  */
-export function checkAll(build: Part[], slot: PartCategory, candidates: Part[], ctx: Context): Map<string, Verdict> {
-  const base = build.filter((p) => p.category !== slot);
+export function checkAll(build: Part[], slot: PartCategory, candidates: Part[], ctx: Context, replaceKey?: string): Map<string, Verdict> {
+  const base = build.filter((p) => replaceKey === undefined ? p.category !== slot : p.category !== slot || p.key !== replaceKey);
   const before = evaluate(base, ctx).filter((f) => f.status === 'error');
   const out = new Map<string, Verdict>();
   for (const c of candidates) {
@@ -52,7 +52,7 @@ export function checkAll(build: Part[], slot: PartCategory, candidates: Part[], 
 /** The worker's whole job: one request → one answer (an engine error is an answer too, never a dead worker). */
 export function answer(req: CheckRequest): CheckAnswer {
   try {
-    return { id: req.id, ok: true, results: toResults(checkAll(req.build, req.slot, req.candidates, { ...PICK_CTX, ...req.ctx }), req.full) };
+    return { id: req.id, ok: true, results: toResults(checkAll(req.build, req.slot, req.candidates, { ...PICK_CTX, ...req.ctx }, req.replaceKey), req.full) };
   } catch (e) {
     return { id: req.id, ok: false, error: e instanceof Error ? e.message : String(e) };
   }

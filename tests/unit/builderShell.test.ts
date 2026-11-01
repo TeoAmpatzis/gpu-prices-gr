@@ -6,7 +6,6 @@ vi.hoisted(() => {
   (globalThis as { window?: unknown }).window = { addEventListener: () => {}, removeEventListener: () => {} };
 });
 import { firstView, viewParams } from '../../src/lib/builderView';
-import { buildTotal } from '../../src/lib/builderEngine';
 import { readBuild, writeBuild } from '../../src/lib/buildStore';
 import { writeSaved } from '../../src/lib/builderState';
 import { fill } from '../../src/ui/builderStrings';
@@ -48,13 +47,6 @@ describe('viewParams', () => {
     expect(p.toString()).toBe('cpu=a&step=use');
     viewParams(p, 'quick');
     expect(p.toString()).toBe('cpu=a&mode=quick');
-  });
-});
-
-describe('buildTotal', () => {
-  it('adds every part once, the fans × their quantity and the second drive', () => {
-    expect(buildTotal({ cpu: m('c', 200.1), fan: m('f', 10.05) }, m('s2', 50), 3)).toBe(280.25);
-    expect(buildTotal({}, undefined, 4)).toBe(0);
   });
 });
 

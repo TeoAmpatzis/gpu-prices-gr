@@ -11,7 +11,6 @@ import { SLOTS, type Slot } from '../../lib/builderData';
 import { ENGINE_TEXT, MISSING, buildStatus, isAdvice, missingSlots, notCheckedYet, shownFindings } from '../../lib/builderEngine';
 import type { AnyModel, BuilderState } from '../../lib/builderState';
 import { tr, useLang, type Text } from '../../lib/i18n';
-import { buildTotal } from '../../lib/builderEngine';
 import { BUILDER as B, fill } from '../../ui/builderStrings';
 import { plural } from '../../ui/strings';
 
@@ -22,8 +21,8 @@ const S = {
   summary: { el: 'Η σύνθεσή σου', en: 'Your build' },
   details: { el: 'Λεπτομέρειες', en: 'Details' },
   priceNote: {
-    el: 'Χαμηλότερη τιμή ανά προϊόν· τα μεταφορικά δεν περιλαμβάνονται, και κάθε εξάρτημα μπορεί να είναι από διαφορετικό κατάστημα.',
-    en: 'Lowest price per product; shipping not included, and each part may come from a different shop.',
+    el: 'Επιλεγμένη προσφορά ανά προϊόν· το σύνολο δεν περιλαμβάνει μεταφορικά. Τα γνωστά μεταφορικά εμφανίζονται ανά προϊόν.',
+    en: 'Selected offer per product; total excludes shipping. Known shipping is shown per product.',
   },
   budget: { el: 'Προϋπολογισμός', en: 'Budget' },
   left: { el: 'απομένουν', en: 'left' },
@@ -62,7 +61,7 @@ export default function Summary({ state, onSlot, back, next }: Props) {
   const { build, prefs, shared } = state;
 
   const chosen = [...SLOTS.filter((s) => build[s]).map((s) => build[s] as AnyModel), ...(state.storage2 ? [state.storage2] : [])];
-  const total = buildTotal(build, state.storage2, state.fanQty);
+  const total = state.resolvedTotal;
   // Saved parts whose step file hasn't arrived or failed (Review Focus 3): named, not counted as 0.
   const waiting = [...state.pending.map((s) => t(STEP_SHORT[s])), ...(state.pendingStorage2 ? [t(B.storage2)] : [])];
   const notLoaded = waiting.length > 0 && fill(t(B.notLoaded), { parts: waiting.join(', ') });
@@ -221,7 +220,7 @@ export default function Summary({ state, onSlot, back, next }: Props) {
                     <span className={`line-clamp-2 min-w-0 flex-1 [overflow-wrap:anywhere] ${m ? 'font-medium' : 'text-faint'}`}>
                       {m ? m.chip : '—'}
                     </span>
-                    {m && <span className="shrink-0 tabular-nums text-muted">{formatPrice(m.cheapest.price, lang)}</span>}
+                    {m && <span className="shrink-0 tabular-nums text-muted">{formatPrice(state.resolvedLines.find((r) => r.line === s)?.total ?? m.cheapest.price, lang)}</span>}
                   </button>
                 </li>
               );

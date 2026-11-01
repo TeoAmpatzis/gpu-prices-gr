@@ -17,6 +17,8 @@ import { afterLargestPaint } from './paint';
 import { MAX_FAN_QTY, onBuildChange, readBuild, writeBuild, type BuildChangeSource, type StoredBuild } from './buildStore';
 import { decodeShare, isShareParam } from './share';
 import { builderParams, writeBuilderParams } from './builderView';
+import { offersFor, offerSlug, resolveLine } from './builderOffers';
+import type { Line } from './buildStore';
 
 export type Models = { [S in Slot]: Model<SlotListing[S]>[] };
 export type AnyModel = Model<BaseListing>;
@@ -45,6 +47,7 @@ export interface Prefs {
 const EXTRA_DELAY = 5000; // ms after the index loads before the loaded steps' extra files are fetched unasked
 
 interface Saved {
+  offers?: StoredBuild['offers'];
   parts: Partial<Record<Slot, string>>;
   /** The second drive's key (answer 13). */
   storage2?: string;
@@ -62,7 +65,7 @@ const asPrefs = (b: StoredBuild): Prefs => ({
 function readSaved(): Saved {
   const b = readBuild();
   const parts = Object.fromEntries(SLOTS.filter((s) => b.parts[s]).map((s) => [s, b.parts[s]!.key]));
-  return { parts, storage2: b.storage2?.key, prefs: asPrefs(b) };
+  return { parts, storage2: b.storage2?.key, prefs: asPrefs(b), offers: b.offers };
 }
 
 /** Saved parts of steps whose file hasn't arrived yet: kept when the build is saved meanwhile. */
@@ -179,6 +182,9 @@ export function useBuilderState() {
   const [fanQty, setFanQtyState] = useState<number>(() => (sharedAtStart?.build ?? readBuild()).fanQty ?? 1);
   // Saved or shared parts whose step file hasn't arrived (or failed): the total leaves them out and says so.
   const [wanted, setWanted] = useState<Partial<Record<Slot, string>>>({});
+  const [offers, setOffers] = useState<NonNullable<StoredBuild['offers']>>(() => (sharedAtStart?.build ?? readBuild()).offers ?? {});
+  const [offerRows, setOfferRows] = useState<Record<string, BaseListing[]>>({});
+  const offerLoads = useRef(new Map<string, Promise<BaseListing[]>>());
   const [wanted2, setWanted2] = useState(false); // the same for the second drive
 
   const extraRef = useRef<(() => void) | null>(null);
@@ -309,6 +315,7 @@ export function useBuilderState() {
         }
       }
       setBuild(next);
+      setOffers(readBuild().offers ?? {});
       setPrefsState(saved.prefs);
       setFanQtyState(readBuild().fanQty ?? 1);
       setStorage2State(saved.storage2 ? findSaved('storage', models.storage as AnyModel[], saved.storage2) : undefined);
@@ -332,11 +339,13 @@ export function useBuilderState() {
     setWanted((w) => Object.fromEntries(Object.entries(w).filter(([s]) => !(s in b))));
     setBuild(b);
     writeSaved(b, prefs, shared ? sharedAtStart?.build : undefined);
+    setOffers(readBuild().offers ?? {});
     own();
   };
   const setPrefs = (p: Prefs) => {
     setPrefsState(p);
     writeSaved(build, p, shared ? sharedAtStart?.build : undefined);
+    setOffers(readBuild().offers ?? {});
     own();
   };
   /** Empties the build: every part, the second drive, and the fan quantity back to 1 (parts whose file is pending too). */
@@ -348,25 +357,72 @@ export function useBuilderState() {
     setStorage2State(undefined);
     setFanQtyState(1);
     writeSaved({}, prefs, shared ? sharedAtStart?.build : undefined, { storage2: null, fanQty: 1 });
+    setOffers(readBuild().offers ?? {});
     own();
   };
   const setStorage2 = (m: AnyModel | null) => {
     setWanted2(false);
     setStorage2State(m ?? undefined);
     writeSaved(build, prefs, shared ? sharedAtStart?.build : undefined, { storage2: m });
+    setOffers(readBuild().offers ?? {});
     own();
   };
   const setFanQty = (n: number) => {
     const q = Math.min(MAX_FAN_QTY, Math.max(1, Math.round(n)));
     setFanQtyState(q);
     writeSaved(build, prefs, shared ? sharedAtStart?.build : undefined, { fanQty: q });
+    setOffers(readBuild().offers ?? {});
     own();
   };
 
+  const loadOffers = (line: Line, model: AnyModel): Promise<BaseListing[]> => {
+    const slot = line === 'storage2' ? 'storage' : line;
+    const key = `${slot}:${model.key}`;
+    let pending = offerLoads.current.get(key);
+    if (!pending) {
+      pending = import('./modelData').then(({ loadModel }) => loadModel(slot, offerSlug(slot, model)))
+        .then((entry) => {
+          const rows = offersFor(slot, model, entry);
+          setOfferRows((prev) => ({ ...prev, [key]: rows }));
+          return rows;
+        }).catch((e: unknown) => { offerLoads.current.delete(key); throw e; });
+      offerLoads.current.set(key, pending);
+    }
+    return pending;
+  };
+  const chooseOffer = (line: Line, model: AnyModel, id: string) => {
+    const slot = line === 'storage2' ? 'storage' : line;
+    if (!offerRows[`${slot}:${model.key}`]?.some((row) => row.id === id)) return;
+    const nextBuild = line === 'storage2' ? build : { ...build, [line]: model };
+    writeSaved(nextBuild, prefs, shared ? sharedAtStart?.build : undefined, line === 'storage2' ? { storage2: model } : {});
+    const stored = readBuild();
+    ownWrite = true;
+    try { writeBuild({ ...stored, offers: { ...stored.offers, [line]: id } }); }
+    finally { ownWrite = false; }
+    setBuild(nextBuild);
+    if (line === 'storage2') setStorage2State(model);
+    setOffers(readBuild().offers ?? {});
+    own();
+  };
+  // Restore saved offer ids on demand after the selected product arrives; no catalogue chunks on an empty build.
+  useEffect(() => {
+    for (const line of [...SLOTS, 'storage2'] as Line[]) {
+      const model = line === 'storage2' ? storage2 : build[line];
+      if (model && offers[line]) void loadOffers(line, model as AnyModel).catch(() => {});
+    }
+  }, [build, storage2, offers]);
+  const resolvedLines = useMemo(() => ([...SLOTS, 'storage2'] as Line[]).flatMap((line) => {
+    const model = line === 'storage2' ? storage2 : build[line];
+    if (!model) return [];
+    const slot = line === 'storage2' ? 'storage' : line;
+    return [resolveLine(line, model as AnyModel, line === 'fan' ? fanQty : 1, offers[line], offerRows[`${slot}:${model.key}`])];
+  }), [build, storage2, fanQty, offers, offerRows]);
+  const resolvedTotal = Math.round(resolvedLines.reduce((sum, line) => sum + line.total, 0) * 100) / 100;
+
   // The engine's view of the build: the parts, the second drive, the fan quantity, the use and resolution.
   const active = useMemo<ActiveBuild>(
-    () => ({ parts: build, storage2: storage2 as ActiveBuild['storage2'], fanQty, offers: {}, use: prefs.use, res: prefs.res ?? null, budget: prefs.budget }),
-    [build, storage2, fanQty, prefs],
+    () => ({ parts: build, storage2: storage2 as ActiveBuild['storage2'], fanQty, offers, use: prefs.use, res: prefs.res ?? null, budget: prefs.budget }),
+    [build, storage2, fanQty, prefs, offers],
   );
   const parts = useMemo(() => toParts(active), [active]);
   // Chip length estimates (rule 6) and the use (rules 27–30): the same context pick mode and the product pages send.
@@ -437,6 +493,11 @@ export function useBuilderState() {
 
   return {
     models,
+    resolvedLines,
+    resolvedTotal,
+    loadOffers,
+    chooseOffer,
+    offers,
     coverage,
     error,
     loading: !models,
@@ -487,20 +548,22 @@ export type BuilderState = ReturnType<typeof useBuilderState>;
  * until the step's file and the first check are there. A part without a verdict (the check failed) is shown unlabelled
  * and never hidden.
  */
-export function useStepVerdicts(state: BuilderState, slot: Slot | null): { verdicts: Map<string, Verdict> | null; checking: boolean } {
+export function useStepVerdicts(state: BuilderState, slot: Slot | null, line: Line | null = slot): { verdicts: Map<string, Verdict> | null; checking: boolean } {
   const ready = slot != null && state.slotReady(slot);
   const models = ready ? (state.models?.[slot] as AnyModel[] | undefined) : undefined;
   const list = useMemo<Part[] | null>(
-    () => (slot && models ? candidates(slot, models as never).map((m) => partOf(slot, m as AnyModel)) : null),
-    [slot, models],
+    () => (slot && models ? candidates(slot, models as never).map((m) => partOf(slot, m as AnyModel, slot === 'fan' ? state.fanQty : 1, line === 'storage2' ? `${m.key}#2` : m.key)) : null),
+    [slot, models, line, state.fanQty],
   );
   const { checker, parts, engineCtx } = state;
   // parts + context by value: a re-render with the same build doesn't re-run the check.
-  const runKey = JSON.stringify([parts, engineCtx]);
+  const selected = line === 'storage2' ? state.storage2 : slot ? state.build[slot] : undefined;
+  const replaceKey = selected ? `${selected.key}${line === 'storage2' ? '#2' : ''}` : '__empty-builder-line__';
+  const runKey = JSON.stringify([parts, engineCtx, replaceKey]);
   const [res, setRes] = useState<{ of: Part[]; key: string; map: Map<string, Verdict> } | null>(null);
   useEffect(() => {
     if (!slot || !list || !checker) return;
-    return checker.run(slot, parts, list, (map) => setRes({ of: list, key: runKey, map }), { full: 'all', ctx: engineCtx });
+    return checker.run(slot, parts, list, (map) => setRes({ of: list, key: runKey, map }), { full: 'all', ctx: engineCtx, replaceKey });
     // eslint-disable-next-line react-hooks/exhaustive-deps -- runKey stands for parts and engineCtx
   }, [slot, list, runKey, checker]);
   const own = res && res.of === list ? res : null;

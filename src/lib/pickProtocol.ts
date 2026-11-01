@@ -22,6 +22,8 @@ export interface CheckRequest {
   candidates: Part[];
   /** Keep every finding but passes (notes and unknowns too): the product page's fit section (`keptFinding`); `'all'`: passes too. */
   full?: Keep;
+  /** Builder line being replaced; absent retains category-page/product-page whole-category behavior. */
+  replaceKey?: string;
   /** Chip length estimates (rule 6) and the use (rules 27–30), the same for pick mode, product pages and the builder. */
   ctx?: PostedContext;
 }
