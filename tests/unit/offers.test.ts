@@ -1,7 +1,7 @@
 // Product page offers (step 4, task 6): the shops table's order, the header's cheapest offer, the "checked" time and
 // the page's new strings in both languages.
 import { describe, expect, it } from 'vitest';
-import { availabilityOf, checkedAt, hasAvailability, offerTotal, sortOffers } from '../../src/lib/offers';
+import { availabilityOf, checkedAt, hasAvailability, isUnusual, offerTotal, sortOffers } from '../../src/lib/offers';
 import { isStale } from '../../src/ui/PriceCell';
 import { ago, UI } from '../../src/ui/strings';
 import type { BaseListing } from '../../src/types';
@@ -21,6 +21,17 @@ const offer = (price: number, shipping: number | null, extra: Partial<BaseListin
   total: shipping == null ? null : price + shipping,
   merchant: shipping == null ? null : 'Shop',
   ...extra,
+});
+
+describe('isUnusual (H7, price rule 4)', () => {
+  it('under 0.6 × the median of at least 4 offers', () => {
+    const offers = [offer(59, null), offer(100, null), offer(100, null), offer(120, null)];
+    const m = { listings: offers };
+    expect(isUnusual(m, offers[0])).toBe(true);
+    expect(isUnusual(m, offers[1])).toBe(false);
+    expect(isUnusual(m, offer(60, null))).toBe(false); // exactly 0.6 × 100 is not under it
+    expect(isUnusual({ listings: offers.slice(0, 3) }, offers[0])).toBe(false); // 3 offers are too few
+  });
 });
 
 describe('sortOffers', () => {

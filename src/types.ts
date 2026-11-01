@@ -279,6 +279,26 @@ export interface BuilderExtraFile {
   titles: Record<string, string>;
 }
 
+/**
+ * /data/builder/auto.json — the automatic build per use and budget (step 5 task 10, src/lib/autoBuild.ts), fetched
+ * when a budget is set. A budget between grid points uses the point below; above `grid.to` there is no automatic build.
+ */
+export interface AutoFile {
+  v: 1;
+  builtAt: string;
+  grid: { from: number; to: number; step: number };
+  /** The order of the part and price columns in `builds`. */
+  slots: Slot[];
+  /** Part keys, referenced by index. */
+  keys: string[];
+  /** One entry per distinct build: [fan quantity, a key index per slot (-1 = none), a price per slot (0 = none)]. */
+  builds: number[][];
+  /** Per use, per grid point (from, from + step, … to): an index into `builds`, -1 = under the use's minimum. */
+  uses: Record<BuilderUseKey, number[]>;
+  /** Per use, its cheapest build (index into `builds`, -1 = none): a budget at or above its total gets it, also below the next grid point. */
+  min: Record<BuilderUseKey, number>;
+}
+
 /** /data/aliases.json (build step: main's scraper/model_aliases.json, src/data/modelAliases.ts aliasFile). */
 export interface AliasFile {
   v: 1;

@@ -126,8 +126,9 @@ describe('list format version', () => {
 });
 
 describe('build output names', () => {
-  // The whole build's data step (~3.4 s here): its own timeout, so a slower machine can't make it flake.
-  it('writes the new format as list.v2.json and never as list.json', { timeout: 20_000 }, async () => {
+  // The whole build's data step (~11.5 s here since step 5 task 10's automatic builds, ~3.4 s before): its own
+  // timeout, so a slower or busy machine can't make it flake.
+  it('writes the new format as list.v2.json and never as list.json', { timeout: 60_000 }, async () => {
     const { derive } = await import('../../vite-plugin-data');
     const { files } = derive(BUILT);
     const paths = Object.keys(files);

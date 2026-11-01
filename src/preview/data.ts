@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from '../lib/categories';
 import { groupModels, loadData, mostCommon, type CategoryData, type Model } from '../lib/data';
 import { productImage, type ProductImage } from '../lib/images';
+import { isUnusual } from '../lib/offers';
 import { prepare, type PreparedIndex, type SearchIndexFile } from '../lib/search';
 import type { BaseListing, Category, DailyLow, SourceName } from '../types';
 import type { PriceInfo } from '../ui/PriceCell';
@@ -40,8 +41,6 @@ const median = (xs: number[]) => {
   return s.length % 2 ? s[(s.length - 1) / 2] : (s[s.length / 2 - 1] + s[s.length / 2]) / 2;
 };
 
-/** Far below the model's other offers: under 60% of the median of at least 4 listings. */
-export const isUnusual = (m: AnyModel, l: BaseListing) => m.listings.length >= 4 && l.price < 0.6 * median(m.listings.map((x) => x.price));
 
 export function priceInfo(d: PreviewData, cat: Category, m: AnyModel, l: BaseListing = m.cheapest): PriceInfo {
   return {

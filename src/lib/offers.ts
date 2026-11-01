@@ -2,6 +2,19 @@
 import type { BaseListing, Latest, SourceName } from '../types';
 import { ownTotal } from './data';
 
+const median = (xs: number[]) => {
+  const s = [...xs].sort((a, b) => a - b);
+  return s.length % 2 ? s[(s.length - 1) / 2] : (s[s.length / 2 - 1] + s[s.length / 2]) / 2;
+};
+
+/**
+ * Far below the model's other offers (H7, price rule 4): under 0.6 × the median of at least 4 offers. Shown with
+ * "Ασυνήθιστα χαμηλή, έλεγξε το κατάστημα", never hidden; the builder's rows (so Recommended and the automatic build)
+ * take the next offer (builderData.rowListing).
+ */
+export const isUnusual = (m: { listings: readonly { price: number }[] }, l: { price: number }): boolean =>
+  m.listings.length >= 4 && l.price < 0.6 * median(m.listings.map((x) => x.price));
+
 /** The shops table shows this many offers until "Show all N" is pressed. */
 export const FIRST_OFFERS = 20;
 
