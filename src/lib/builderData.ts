@@ -25,6 +25,7 @@ import type {
 } from '../types';
 import { BOARD_BY_CASE_SIZE, CATEGORIES, storageType, type CategoryConfig } from './categories';
 import { groupModels, mostCommon, ownTotal, type Model } from './data';
+import { isUnusual } from './offers';
 import { isSfxL, psuProductKey, psuProductName, psuRowKey } from './psuProduct';
 import type { Slot } from './slots';
 import { titleKey, titleOptions } from './titles';
@@ -405,7 +406,10 @@ export const junkCooler = (m: Model<CoolerListing>): boolean => ACCESSORY.test(m
 export function rowListing<L extends BaseListing>(listings: L[]): { listing: L; ship: number | null } {
   let best: L | null = null;
   let cost = Infinity;
+  const m = { listings };
+  // An unusual offer (offers.isUnusual, H7) is never the row: Recommended and the automatic build take the next one.
   for (const raw of listings) {
+    if (isUnusual(m, raw)) continue;
     const l = ownTotal(raw);
     const c = l.total ?? l.price;
     if (c < cost) [best, cost] = [l, c];

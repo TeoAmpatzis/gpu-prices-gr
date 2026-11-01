@@ -70,7 +70,9 @@ describe('builder files (one per step)', () => {
     expect(Object.keys(index.chipLengths).sort()).toEqual([...ctx.chips.keys()].sort());
     for (const [chip, c] of ctx.chips) expect(index.chipLengths[chip]).toEqual(c);
     expect(Object.keys(index.chipLengths).length).toBeGreaterThan(0);
-    expect(index.minimum).toEqual({});
+    // Task 10: each use's cheapest build ("costs at least X € today"), or null when nothing meets its minimums.
+    expect(Object.keys(index.minimum).sort()).toEqual(['creating', 'everyday', 'gaming-1080p', 'gaming-1440p', 'gaming-4k', 'unsure']);
+    for (const m of Object.values(index.minimum)) if (m) expect(m.total).toBeGreaterThan(0);
     expect(gzipSync(JSON.stringify(index)).length).toBeLessThanOrEqual(8 * 1024);
   });
 

@@ -1,5 +1,5 @@
 import { Fragment, lazy, Suspense, useEffect, useState, type ReactNode } from 'react';
-import { ChevronDown, ExternalLink, TrendingDown, TrendingUp, type LucideIcon } from 'lucide-react';
+import { ChevronDown, ExternalLink, TrendingDown, TrendingUp, TriangleAlert, type LucideIcon } from 'lucide-react';
 import type { BaseListing, Category, DailyLow, HistoryPoint } from '../types';
 import { formatPrice, loadDetails, type CategoryDetails, type Model } from '../lib/data';
 import { chartHistory, loadModel } from '../lib/modelData';
@@ -8,6 +8,8 @@ import { href } from '../shell/nav';
 import { groupName, type CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Lang } from '../lib/i18n';
 import { SOURCES } from '../lib/sources';
+import { isUnusual } from '../lib/offers';
+import { UI } from '../ui/strings';
 import SourceBadge from './SourceBadge';
 import { isExamplePhoto } from '../lib/examplePhoto';
 import ProductPhoto from './ProductPhoto';
@@ -59,6 +61,16 @@ interface Props<L extends BaseListing> {
 
 const DIM = 'opacity-50';
 
+/** Price rule 4 (H7): an offer far below the model's others is marked, never hidden; the markup of PriceCell's mark. */
+function UnusualMark({ lang }: { lang: Lang }) {
+  return (
+    <span className="ui-badge ui-badge--warning whitespace-normal py-0.5 text-left">
+      <TriangleAlert aria-hidden="true" />
+      {tr(lang, UI.unusualLow)}
+    </span>
+  );
+}
+
 /** All-time low, sale and source badges of a model's cheapest offer. */
 function PriceBadges<L extends BaseListing>({ m, lang }: { m: Model<L>; lang: Lang }) {
   return (
@@ -77,6 +89,7 @@ function PriceBadges<L extends BaseListing>({ m, lang }: { m: Model<L>; lang: La
         </span>
       )}
       <SourceBadge source={m.cheapest.source} />
+      {isUnusual(m, m.cheapest) && <UnusualMark lang={lang} />}
     </>
   );
 }
@@ -190,6 +203,7 @@ function ModelDetails<L extends BaseListing>({
                 <span className="flex shrink-0 items-center gap-1.5">
                   {l.drop != null && l.drop >= 5 && <span className="badge badge-sale">−{l.drop}%</span>}
                   <SourceBadge source={l.source} />
+                  {isUnusual(m, l) && <UnusualMark lang={lang} />}
                 </span>
                 <span className="line-clamp-2 min-w-0 text-fg-soft [overflow-wrap:anywhere] xl:line-clamp-1 xl:flex-1" title={l.title}>
                   {shorts[i]}

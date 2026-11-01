@@ -2,7 +2,7 @@
 // (src/lib/derive.ts) and refuses to publish data that looks broken.
 //
 // - `vite build`: writes data/<cat>/list.v2.json, data/<cat>/detail.json, data/builder/index.json,
-//   data/builder/<slot>.json + <slot>-extra.json (one per builder step), data/<cat>/model/000…255.json (product pages) and
+//   data/builder/<slot>.json + <slot>-extra.json (one per builder step), data/builder/auto.json, data/<cat>/model/000…255.json (product pages) and
 //   data/manifest.json into dist after comparing the counts with the live site's manifest. If a
 //   category is empty or lost more than derive.MAX_DROP of its models/listings, or a current model is not
 //   in exactly one model chunk, the build fails and Vercel keeps serving the previous deployment.
@@ -130,6 +130,7 @@ export function derive(
   console.log(`[data] conflicts (${VALIDATION_MODE}): ${conflictTotal ? `${conflictTotal} value(s) unknown or corrected — ${conflicted.join(', ')}` : 'none'}`);
   const builder = builderFiles(latest, builtAt, image);
   files['data/builder/index.json'] = JSON.stringify(builder.index);
+  files['data/builder/auto.json'] = JSON.stringify(builder.auto);
   for (const [slot, file] of Object.entries(builder.slots)) files[`data/builder/${slot}.json`] = JSON.stringify(file);
   for (const [slot, file] of Object.entries(builder.extras)) files[`data/builder/${slot}-extra.json`] = JSON.stringify(file);
   for (const [path, chunk] of Object.entries(compatFiles(latest, builtAt))) files[path] = JSON.stringify(chunk);

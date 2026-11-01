@@ -14,6 +14,7 @@
 // Pure functions only: vite-plugin-data.ts does the file reading and writing.
 
 import type {
+  AutoFile,
   BaseListing,
   BuilderExtraFile,
   BuilderIndex,
@@ -38,6 +39,7 @@ import type {
   RamListing,
   StorageListing,
 } from '../types';
+import { autoFiles, type AutoModels } from './autoBuild';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from './categories';
 import { psuBaseKey, psuRowKey } from './psuProduct';
 import { OTHER, storageType } from './categoryRules';
@@ -444,6 +446,8 @@ export interface BuilderFiles {
   index: BuilderIndex;
   slots: Record<Slot, BuilderSlotFile>;
   extras: Record<Slot, BuilderExtraFile>;
+  /** /data/builder/auto.json (step 5 task 10). */
+  auto: AutoFile;
 }
 
 /**
@@ -497,7 +501,10 @@ export function builderFiles(all: Partial<Record<Category, Latest>>, builtAt: st
   };
   // Rule 6 estimates: fitContext over the offered cards (the gpu step file's rows; the browser reads them from the index).
   const chipLengths = Object.fromEntries(fitContext(offeredGpus).chips);
-  return { index: { v: 2, builtAt, slots: counts, chipLengths, minimum: {}, coverage }, slots, extras };
+  // The automatic builds and each use's cheapest build (task 10), from the step files' rows grouped as the browser does.
+  const rowModels = Object.fromEntries(SLOTS.map((s) => [s, slotModels(s, fromColumns(slots[s]) as never[])])) as unknown as AutoModels;
+  const { file: auto, minimum } = autoFiles(rowModels, builtAt, { chipLengths });
+  return { index: { v: 2, builtAt, slots: counts, chipLengths, minimum, coverage }, slots, extras, auto };
 }
 
 export function manifest(

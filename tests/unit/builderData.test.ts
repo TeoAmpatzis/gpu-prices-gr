@@ -200,6 +200,12 @@ describe('the row listing: cheapest incl. shipping where known (answer 11)', () 
   it('the real Sparkle Arc A380 ELF on Skroutz: total 203.02 with free delivery → ship 0, never negative', () => {
     expect(rowListing([gpu('skroutz:46467832', 'Sparkle Arc A380 6GB ELF', 203.86, { shipping: 0, total: 203.02 })]).ship).toBe(0);
   });
+  it('an unusual offer (H7: under 0.6 × the median of ≥ 4 offers) is never the row: the next one is', () => {
+    const offers = [gpu('a:1', 'A', 40), gpu('b:1', 'B', 100), gpu('c:1', 'C', 105), gpu('d:1', 'D', 110)];
+    expect(rowListing(offers).listing.id).toBe('b:1');
+    // 3 offers are too few to call one unusual.
+    expect(rowListing(offers.slice(0, 3)).listing.id).toBe('a:1');
+  });
 });
 
 describe('junk coolers (finding #21)', () => {

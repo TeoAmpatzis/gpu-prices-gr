@@ -277,9 +277,15 @@ export const CPU_MEMORY: CpuMemoryRow[] = [
 
 const norm = (s: string) => s.toLowerCase().replace(/\s+/g, ' ').trim();
 
+/** Row per normalised model name, the first row naming it (as a scan would find it); built once (the automatic build calls this per check). */
+let byName: Map<string, CpuMemoryRow> | null = null;
+
 export function cpuRow(name: string): CpuMemoryRow | undefined {
-  const n = norm(name);
-  return CPU_MEMORY.find((r) => r.models.some((m) => norm(m) === n));
+  if (!byName) {
+    byName = new Map();
+    for (const r of CPU_MEMORY) for (const m of r.models) if (!byName.has(norm(m))) byName.set(norm(m), r);
+  }
+  return byName.get(norm(name));
 }
 
 /** sticks ≤ 2 → the 2-stick figure; more → the 4-stick figure; a missing value → null. */
