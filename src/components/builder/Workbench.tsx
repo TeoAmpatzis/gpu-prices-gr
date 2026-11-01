@@ -2,8 +2,13 @@
 // (step by step / part list) and the way back to the start screen, the measurement notice on one line (C9), then the
 // guided walk or the part list with the summary. Its own chunk, after the start screen (rule 11).
 
+import { useState } from 'react';
 import { ArrowLeft, Info, ListChecks, ListOrdered } from 'lucide-react';
 import type { View } from '../../lib/builderView';
+import type { Line } from '../../lib/buildStore';
+import { STEP_NAME } from '../../lib/wizard';
+import Review from './Review';
+import SavedBuildsMenu from './SavedBuildsMenu';
 import { useBuilderState } from '../../lib/builderState';
 import { tr, useLang, type Text } from '../../lib/i18n';
 import { ErrorState } from '../../ui/states';
@@ -17,6 +22,7 @@ export default function Workbench({ view, onView }: { view: Exclude<View, 'start
   const t = (x: Text) => tr(lang, x);
   const state = useBuilderState();
   const { coverage, error, wantExtra } = state;
+  const [openLine, setOpenLine] = useState<Line | null>(null);
 
   // A failed index load: the translated message, the detail folded, and a retry (UX-19). The loaders keep their
   // result for the session, so the retry reloads the page.
@@ -31,7 +37,7 @@ export default function Workbench({ view, onView }: { view: Exclude<View, 'start
 
   const header = (
     <>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <div role="radiogroup" aria-label={t(B.mode)} className="inline-flex rounded-lg bg-sunken p-1 ring-1 ring-inset ring-edge">
           {(['guided', 'quick'] as const).map((m) => {
             const Icon = m === 'guided' ? ListOrdered : ListChecks;
@@ -54,6 +60,7 @@ export default function Workbench({ view, onView }: { view: Exclude<View, 'start
         <button type="button" onClick={() => onView('start')} aria-label={t(B.useBudget)} title={t(B.useBudget)} className="tap-square inline-flex items-center gap-1 rounded-lg px-2 py-1.5 text-sm text-muted hover:bg-hover hover:text-fg">
           <ArrowLeft className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">{t(B.useBudget)}</span>
         </button>
+        <SavedBuildsMenu state={state} lang={lang} />
       </div>
       {collecting && (
         <details className="notice-warn px-3 text-sm">
@@ -85,7 +92,14 @@ export default function Workbench({ view, onView }: { view: Exclude<View, 'start
         <>
           <div className="flex min-w-0 flex-col gap-4">
             {header}
-            <PartList state={state} />
+            <PartList state={state} openLine={openLine} setOpen={setOpenLine} />
+            {/* One Review for both modes (task 13): a missing line opens its picker here. */}
+            <section aria-labelledby="review-title" className="card flex flex-col gap-3 p-3 sm:p-4">
+              <h2 id="review-title" className="text-lg font-semibold">
+                {t(STEP_NAME.review)}
+              </h2>
+              <Review state={state} lang={lang} onGo={setOpenLine} />
+            </section>
           </div>
           <Summary state={state} />
         </>

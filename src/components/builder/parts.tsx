@@ -24,6 +24,8 @@ import {
 import { LABEL_TEXT, type Label, type Rating } from '../../lib/fitLabel';
 import type { AnyModel } from '../../lib/builderState';
 import { storedImage } from '../../lib/images';
+import { psuText } from '../../lib/copyList';
+import { STEP_SHORT } from '../../lib/wizard';
 import { T, tr, type Lang, type Text } from '../../lib/i18n';
 
 export const S = {
@@ -50,13 +52,14 @@ const FIT_CLASS: Record<Label, string> = {
   no: 'badge badge-no',
 };
 
-/** A part's fit label against the parts already chosen; nothing when there was nothing to check. */
+/** A part's fit label against the parts already chosen, naming the other part when not "fits" (#19); nothing when there was nothing to check. */
 export function FitBadge({ rating, lang }: { rating: Rating; lang: Lang }) {
   if (!rating.fit) return null;
   const why = rating.reasons.map((r) => tr(lang, r)).join(' ');
   return (
     <span className={FIT_CLASS[rating.fit]} title={why || undefined}>
       {tr(lang, LABEL_TEXT[rating.fit])}
+      {rating.fit !== 'fits' && rating.other && ` · ${tr(lang, STEP_SHORT[rating.other])}`}
     </span>
   );
 }
@@ -149,17 +152,9 @@ export function specLine(slot: Slot, m: AnyModel, lang: Lang): string {
         .filter(Boolean)
         .join(' · ');
     }
-    case 'psu': {
-      const p = m as Model<SlotListing['psu']>;
-      return [
-        p.cheapest.formFactor,
-        p.cheapest.efficiency && `80+ ${p.cheapest.efficiency}`,
-        p.cheapest.modular && `${p.cheapest.modular} modular`,
-        p.cheapest.brand,
-      ]
-        .filter(Boolean)
-        .join(' · ');
-    }
+    case 'psu':
+      // The picker card's text (task 12 review #4): the name above it is the maker + model.
+      return psuText((m as Model<SlotListing['psu']>).cheapest, lang);
   }
 }
 

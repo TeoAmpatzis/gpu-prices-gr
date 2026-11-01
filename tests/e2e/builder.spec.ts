@@ -51,6 +51,27 @@ const foldUse = (page: Page) =>
     return card ? card.getBoundingClientRect().top + (bar?.getBoundingClientRect().height ?? 0) : null;
   });
 
+/** Start → gaming, 1500 € → "Build it for me": a real build in the part list (saved in `pcBuild`). */
+async function autoBuild(page: Page, lang: Lang) {
+  await fresh(page, lang, '/builder');
+  await page.getByRole('button', { name: new RegExp(`^${TEXT.gaming[lang]}`) }).click();
+  await page.getByRole('button', { name: '1500 €', exact: true }).click();
+  const auto = page.getByRole('button', { name: TEXT.buildForMe[lang] });
+  await expect(auto).toBeEnabled({ timeout: 20_000 });
+  await auto.click();
+  for (const line of ['cpu', 'mobo', 'ram', 'gpu', 'storage', 'case', 'psu']) {
+    await expect(page.locator(`[data-line=${line}] .font-semibold`).first()).toBeVisible({ timeout: 20_000 });
+  }
+}
+
+/** Review's total and the sum of its lines' shown prices. */
+const reviewSums = (page: Page) =>
+  page.evaluate(() => ({
+    total: Number(document.querySelector<HTMLElement>('[data-review-total]')?.dataset.reviewTotal),
+    sum: [...document.querySelectorAll<HTMLElement>('[data-review-line] [data-price]')].reduce((s, e) => s + Number(e.dataset.price), 0),
+  }));
+const stored = (page: Page) => page.evaluate(() => JSON.parse(localStorage.getItem('pcBuild') ?? '{}'));
+
 for (const size of [
   { width: 360, height: 780 },
   { width: 1366, height: 900 },
@@ -110,6 +131,29 @@ for (const size of [
         await expect(page.locator('#step-title')).toContainText(TEXT.review[lang]);
         await expect(page.locator('#step-title')).toContainText('9/9');
         expect(await noOverflow(page)).toBe(true);
+        expect(errors).toEqual([]);
+      });
+
+      test('one Review in both modes: every line, total = sum of the shown prices, messages, power; 44 px, no overflow', async ({ page }) => {
+        test.setTimeout(120_000);
+        const errors: string[] = [];
+        page.on('pageerror', (e) => errors.push(e.message));
+        await autoBuild(page, lang);
+        for (const url of ['/builder?mode=quick', '/builder?step=review']) {
+          if (url.includes('review')) await page.goto(url);
+          for (const line of ['cpu', 'mobo', 'ram', 'gpu', 'storage', 'case', 'psu']) {
+            await expect(page.locator(`[data-review-line=${line}] [data-price]`), `${url} ${line}`).toBeVisible({ timeout: 20_000 });
+          }
+          // The PSU is named by maker + model, then the picker card's specs (task 12 review #4).
+          await expect(page.locator('[data-review-line=psu]')).toContainText(/ · \d+ W · /);
+          await expect(page.locator('[data-messages]')).toBeVisible({ timeout: 20_000 });
+          await expect(page.locator('[data-power]')).toContainText(/≥ \d+ W/);
+          const { total, sum } = await reviewSums(page);
+          expect(Math.abs(total - sum), url).toBeLessThan(0.011);
+          await expect(page.locator('#share-link')).toHaveValue(/\/builder\?v=2&/);
+          expect(await noOverflow(page), url).toBe(true);
+          if (phone) expect(await shortControls(page), url).toEqual([]);
+        }
         expect(errors).toEqual([]);
       });
     });
@@ -250,4 +294,240 @@ test('CPU step pages by card: "Show more" counts the cards left and disappears o
     await more.click();
     await expect(cards).toHaveCount(before + Math.min(left, 24));
   }
+});
+
+for (const width of [360, 1366]) {
+  test.describe(`share link and reload ${width}`, () => {
+    test.use({ viewport: { width, height: 900 } });
+    test('the share link opens the same build in a fresh context (chosen offer, second drive, fan quantity); reload keeps it; Copy list', async ({ page, browser }) => {
+      test.setTimeout(180_000);
+      await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+      await autoBuild(page, 'en');
+      // A second drive, fans × 3 and another shop for the CPU.
+      await page.locator('[data-line=storage2]').getByRole('button', { name: 'Choose', exact: true }).click();
+      await page.getByRole('dialog').getByRole('button', { name: 'Choose', exact: true }).first().click();
+      await expect(page.locator('[data-line=storage2] .font-semibold').first()).toBeVisible({ timeout: 20_000 });
+      const fanChoose = page.locator('[data-line=fan]').getByRole('button', { name: 'Choose', exact: true });
+      if (await fanChoose.count()) {
+        await fanChoose.click();
+        await page.getByRole('dialog').locator('[data-picker=fan]').getByRole('button', { name: 'Choose', exact: true }).first().click();
+      }
+      for (let i = 0; i < 12 && (await stored(page)).fanQty !== 3; i++) {
+        const more = ((await stored(page)).fanQty ?? 1) < 3;
+        await page.locator('[data-line=fan]').getByRole('button', { name: more ? 'One pack more' : 'One pack fewer' }).click();
+      }
+      expect((await stored(page)).fanQty).toBe(3);
+      const choice = page.locator('[data-shop-choice=cpu]');
+      await choice.getByRole('button', { name: 'Other shop', exact: true }).click();
+      const offers = choice.locator('button[aria-pressed]');
+      await expect.poll(() => offers.count(), { timeout: 20_000 }).toBeGreaterThan(1);
+      await offers.last().click();
+      await expect(offers.last()).toHaveAttribute('aria-pressed', 'true');
+      const offerId = (await stored(page)).offers.cpu as string;
+      expect(offerId).toBeTruthy();
+
+      const review = async (p: typeof page) => {
+        await expect(p.locator('[data-review-line=storage2] [data-price]')).toBeVisible({ timeout: 20_000 });
+        await expect(p.locator('[data-review-line=fan]')).toContainText('3 ×');
+        await expect(p.locator('[data-review-line=cpu] [data-offer-notice]')).toHaveCount(0, { timeout: 20_000 });
+        return {
+          cpu: await p.locator('[data-review-line=cpu] [data-price]').getAttribute('data-price'),
+          ...(await reviewSums(p)),
+        };
+      };
+      const before = await review(page);
+      expect(Math.abs(before.total - before.sum)).toBeLessThan(0.011);
+      const link = await page.locator('#share-link').inputValue();
+      const q = new URL(link).searchParams;
+      expect(q.get('v')).toBe('2');
+      expect(q.get('o.cpu')).toBe(offerId);
+      expect(q.get('storage2')).toBeTruthy();
+      expect(q.get('fanQty')).toBe('3');
+      expect(q.get('use')).toBe('gaming');
+      expect(q.get('budget')).toBe('1500');
+      expect(q.get('n.cpu')).toBeTruthy();
+
+      // Copy list: one line per part, "Category: title — price — shop — URL", total, date, the share link last.
+      await page.locator('[data-copy=list]').click();
+      const text = await page.evaluate(() => navigator.clipboard.readText());
+      const lines = text.split(/\r?\n/); // the Windows clipboard gives CRLF
+      expect(lines[0]).toBe('BuildDraft.gr · My build');
+      for (const name of ['Processor', 'Motherboard', 'Graphics card', 'Storage', 'Second drive', 'Case', 'Power supply']) {
+        expect(lines.find((l) => l.startsWith(`${name}: `)), name).toMatch(/ — .+ — .+ — https?:\/\//);
+      }
+      expect(lines.find((l) => l.startsWith('Case fans: '))).toMatch(/^Case fans: 3 × /);
+      expect(lines.some((l) => l.startsWith('Total: '))).toBe(true);
+      expect(lines.some((l) => l.startsWith('Prices of '))).toBe(true);
+      expect(lines[lines.length - 1]).toBe(link);
+
+      // Reload: the same build.
+      await page.reload();
+      expect(await review(page)).toEqual(before);
+
+      // A fresh browser context: the same build from the link, the visitor's own saved build untouched.
+      const ctx = await browser.newContext({ viewport: { width, height: 900 } });
+      await ctx.addInitScript(() => localStorage.setItem('lang', 'en'));
+      const other = await ctx.newPage();
+      await other.goto(link);
+      expect(await review(other)).toEqual(before);
+      expect(await other.evaluate(() => localStorage.getItem('pcBuild'))).toBeNull();
+      expect(await noOverflow(other)).toBe(true);
+      if (width === 360) expect(await shortControls(other)).toEqual([]);
+      await ctx.close();
+    });
+  });
+}
+
+test('a chosen shop offer that is gone falls back to the cheapest with a notice; the total is the sum of the shown prices (Review Focus 5)', async ({ page }) => {
+  test.setTimeout(120_000);
+  await autoBuild(page, 'en');
+  await page.evaluate(() => {
+    const b = JSON.parse(localStorage.getItem('pcBuild') ?? '{}');
+    localStorage.setItem('pcBuild', JSON.stringify({ ...b, offers: { ...b.offers, case: 'skroutz:no-such-offer' } }));
+  });
+  await page.reload();
+  await expect(page.locator('[data-review-line=case] [data-offer-notice=missing]')).toBeVisible({ timeout: 20_000 });
+  const { total, sum } = await reviewSums(page);
+  expect(Math.abs(total - sum)).toBeLessThan(0.011);
+  // The saved choice is kept (not silently dropped).
+  expect((await stored(page)).offers.case).toBe('skroutz:no-such-offer');
+});
+
+test('a chosen shop offer whose product file fails says so with a retry, counts the cheapest, and the retry loads it (Review Focus 3)', async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.setViewportSize({ width: 360, height: 780 }); // the phone's 44 px rule for the retry
+  await autoBuild(page, 'en');
+  const cheapest = await page.locator('[data-review-line=case] [data-price]').getAttribute('data-price');
+  await page.evaluate(() => {
+    const b = JSON.parse(localStorage.getItem('pcBuild') ?? '{}');
+    localStorage.setItem('pcBuild', JSON.stringify({ ...b, offers: { ...b.offers, case: 'skroutz:no-such-offer' } }));
+  });
+  // The case's product chunk fails once; the retry gets the real file.
+  let fails = 1;
+  await page.route('**/data/case/model/*.json*', (route) => (fails-- > 0 ? route.abort() : route.fallback()));
+  await page.reload();
+  const line = page.locator('[data-review-line=case]');
+  await expect(line.locator('[data-offer-notice=failed]')).toContainText("Couldn't load the shop you chose", { timeout: 20_000 });
+  expect(await line.locator('[data-price]').getAttribute('data-price')).toBe(cheapest);
+  const { total, sum } = await reviewSums(page);
+  expect(Math.abs(total - sum)).toBeLessThan(0.011);
+  const retry = line.getByRole('button', { name: TEXT.retry.en });
+  expect((await retry.boundingBox())!.height).toBeGreaterThanOrEqual(43.5);
+  await retry.click();
+  // Loaded now: the made-up offer is not in it, so the line says it is gone (never while the file was failing).
+  await expect(line.locator('[data-offer-notice=missing]')).toBeVisible({ timeout: 20_000 });
+  expect((await stored(page)).offers.case).toBe('skroutz:no-such-offer');
+});
+
+test('a part the data no longer has is named, from a saved build and from a v2 link (finding #22)', async ({ page }) => {
+  await fresh(page, 'en', '/builder?mode=quick', { gpu: 'skroutz:no-such-card' });
+  await expect(page.locator('[data-gone]')).toContainText('No longer sold: skroutz:no-such-card (Graphics card)', { timeout: 20_000 });
+  await page.goto('/builder?v=2&gpu=skroutz:no-such-card&n.gpu=Old%20Card%208GB');
+  await expect(page.locator('[data-gone]')).toContainText('No longer sold: Old Card 8GB', { timeout: 20_000 });
+});
+
+test('saved builds: save, rename, duplicate, delete with confirmation; open asks when the current build is unsaved; "Build it for me" keeps a named build', async ({ page }) => {
+  test.setTimeout(120_000);
+  await autoBuild(page, 'en');
+  const dialog = page.getByRole('dialog');
+  const menu = () => page.locator('[data-saved-builds]').click();
+  const item = (name: string) => dialog.locator(`[data-saved-build="${name}"]`);
+  await menu();
+  await dialog.getByRole('button', { name: 'Save as new' }).click();
+  await dialog.getByLabel('Name').fill('Gaming A');
+  await dialog.getByRole('button', { name: 'Save', exact: true }).click();
+  await expect(page.getByText('Saved: Gaming A')).toBeVisible();
+  await menu();
+  await expect(item('Gaming A')).toContainText('open');
+  await item('Gaming A').getByRole('button', { name: 'Rename' }).click();
+  await dialog.getByLabel('Name').fill('Gaming B');
+  await dialog.getByRole('button', { name: 'Save', exact: true }).click();
+  await menu();
+  await item('Gaming B').getByRole('button', { name: 'Duplicate' }).click();
+  await menu();
+  await expect(dialog.locator('[data-saved-build]')).toHaveCount(2);
+  await item('Gaming B (2)').getByRole('button', { name: 'Delete' }).click();
+  await expect(dialog.locator('[data-confirm]')).toContainText('Gaming B (2)');
+  await dialog.getByRole('button', { name: 'Delete', exact: true }).click();
+  await expect(page.getByText('Deleted: Gaming B (2)')).toBeVisible();
+  // The current build (the deleted copy's) is no longer saved under a name: opening another asks first.
+  await menu();
+  await item('Gaming B').getByRole('button', { name: 'Open' }).click();
+  await expect(dialog.locator('[data-confirm]')).toBeVisible();
+  await dialog.getByRole('button', { name: 'Continue' }).click();
+  await expect(page.getByText('Opened: Gaming B')).toBeVisible();
+  const saved = () => page.evaluate(() => JSON.parse(localStorage.getItem('pcBuilds') ?? '{}'));
+  const named = Object.values((await saved()).builds as Record<string, { name: string; build: unknown }>);
+  expect(named.map((b) => b.name)).toEqual(['Gaming B']);
+  // "Build it for me" with a named build open: asked, then the named build stays as saved.
+  await page.getByRole('button', { name: 'Use and budget' }).click();
+  await page.getByRole('button', { name: '1000 €', exact: true }).click();
+  const auto = page.getByRole('button', { name: TEXT.buildForMe.en });
+  await expect(auto).toBeEnabled({ timeout: 20_000 });
+  // The budget picked just now is an edit of the open build; the automatic build must not change it any further.
+  const keep = JSON.stringify(Object.values((await saved()).builds as Record<string, { build: unknown }>)[0].build);
+  await auto.click();
+  await expect(dialog).toContainText('The parts of "Gaming B" stay saved');
+  await dialog.getByRole('button', { name: 'Continue' }).click();
+  await expect.poll(() => new URL(page.url()).search).toBe('?mode=quick');
+  const after = await saved();
+  expect(after.active).toBeNull();
+  expect(JSON.stringify(Object.values(after.builds as Record<string, { build: unknown }>)[0].build)).toBe(keep);
+  expect((await stored(page)).budget).toBe(1000);
+});
+test('"Build it for me" stops when the browser refuses to close the open named build, and says so', async ({ page }) => {
+  test.setTimeout(120_000);
+  await autoBuild(page, 'en');
+  const dialog = page.getByRole('dialog');
+  await page.locator('[data-saved-builds]').click();
+  await dialog.getByRole('button', { name: 'Save as new' }).click();
+  await dialog.getByRole('button', { name: 'Save', exact: true }).click();
+  await expect(page.getByText(/^Saved: /)).toBeVisible();
+  const before = await stored(page);
+  await page.getByRole('button', { name: 'Use and budget' }).click();
+  const auto = page.getByRole('button', { name: TEXT.buildForMe.en });
+  await expect(auto).toBeEnabled({ timeout: 20_000 });
+  // The named builds' store refuses writes from now on (storage full).
+  await page.evaluate(() => {
+    const set = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (k: string, v: string) {
+      if (k === 'pcBuilds') throw new DOMException('full', 'QuotaExceededError');
+      set.call(this, k, v);
+    };
+  });
+  await auto.click();
+  await dialog.getByRole('button', { name: 'Continue' }).click();
+  await expect(page.getByText("Your browser didn't allow saving")).toBeVisible();
+  expect(await stored(page)).toEqual(before);
+  expect(new URL(page.url()).search).not.toBe('?mode=quick');
+});
+
+test('"Save as new" in a shared view keeps a shared part the data no longer has', async ({ page }) => {
+  await fresh(page, 'en', '/builder?v=2&gpu=skroutz:no-such-card&n.gpu=Old%20Card%208GB');
+  await expect(page.locator('[data-gone]')).toContainText('No longer sold: Old Card 8GB', { timeout: 20_000 });
+  await page.locator('[data-saved-builds]').click();
+  const dialog = page.getByRole('dialog');
+  await dialog.getByRole('button', { name: 'Save as new' }).click();
+  await dialog.getByRole('button', { name: 'Save', exact: true }).click();
+  await expect(page.getByText(/^Saved: /)).toBeVisible();
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('pcBuilds') ?? '{}'));
+  const [b] = Object.values(saved.builds as Record<string, { build: { parts: Record<string, { key: string }> } }>);
+  expect(b.build.parts.gpu.key).toBe('skroutz:no-such-card');
+});
+
+test('Copy list waits for the shop links, and says when they failed', async ({ page }) => {
+  test.setTimeout(120_000);
+  let release: () => void = () => {};
+  const held = new Promise<void>((r) => (release = r));
+  await page.route('**/data/builder/*-extra.json*', async (route) => {
+    await held;
+    await route.abort();
+  });
+  await autoBuild(page, 'en');
+  const list = page.locator('[data-copy=list]');
+  await expect(page.locator('[data-links=loading]')).toHaveText('Loading shop links…', { timeout: 20_000 });
+  await expect(list).toBeDisabled();
+  release();
+  await expect(page.locator('[data-links=missing]')).toBeVisible({ timeout: 20_000 });
+  await expect(list).toBeEnabled();
 });

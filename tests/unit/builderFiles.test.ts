@@ -47,7 +47,8 @@ describe('builder files (one per step)', () => {
         const own = rowListing(m.listings as BaseListing[]);
         expect([m.key, m.chip, n.cheapest.id, n.cheapest.price, n.cheapest.url, n.cheapest.ship]).toEqual([m.key, n.chip, own.listing.id, own.listing.price, own.listing.url, own.ship]);
         expect(n.chip).toBe(m.chip);
-        expect(n.cheapest.title).toBe(slot === 'gpu' ? m.cheapest.title : [...new Set(m.listings.map((l) => l.title))].join(' | '));
+        // The row listing's own title first: Review and Copy list name that variant (task 13, Montech XR white/black).
+        expect(n.cheapest.title).toBe(slot === 'gpu' ? m.cheapest.title : [...new Set([own.listing.title, ...m.listings.map((l) => l.title)])].join(' | '));
       });
       // Every engine field the data has is a column (pick.PART_FIELDS: one source of truth with pick mode).
       const listings = (validated[slot as Category]?.listings ?? []) as unknown as Record<string, unknown>[];

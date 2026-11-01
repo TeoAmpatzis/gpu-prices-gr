@@ -13,7 +13,7 @@ export interface ResolvedLine {
   offer: BaseListing;
   total: number;
   requestedOffer?: string;
-  status: 'default' | 'pending' | 'chosen' | 'missing';
+  status: 'default' | 'pending' | 'failed' | 'chosen' | 'missing';
 }
 
 /** Builder keys differ from category keys for CPU versions, GPU cards and PSU products. */
@@ -36,12 +36,12 @@ export function offersFor(slot: Slot, m: AnyModel, entry: ModelEntry | null): Ba
   return entry.listings;
 }
 
-/** Undefined offers means not loaded; [] means loaded and absent. Missing selections keep their evidence. */
-export function resolveLine(line: Line, model: AnyModel, quantity: number, requestedOffer?: string, offers?: BaseListing[]): ResolvedLine {
+/** Undefined offers means not loaded (or `failed` to load); [] means loaded and absent. Missing selections keep their evidence. */
+export function resolveLine(line: Line, model: AnyModel, quantity: number, requestedOffer?: string, offers?: BaseListing[], failed = false): ResolvedLine {
   const selected = requestedOffer ? offers?.find((l) => l.id === requestedOffer) : undefined;
   const raw = selected ?? model.cheapest;
   const own = selected ? ownTotal(selected) : null;
   const offer = selected ? { ...raw, merchant: own?.merchant, ship: own?.shipping ?? null, total: own?.total ?? undefined, img: model.cheapest.img } : raw;
   return { line, model, quantity, offer, total: Math.round(offer.price * quantity * 100) / 100,
-    requestedOffer, status: !requestedOffer ? 'default' : selected ? 'chosen' : offers === undefined ? 'pending' : 'missing' };
+    requestedOffer, status: !requestedOffer ? 'default' : selected ? 'chosen' : offers === undefined ? (failed ? 'failed' : 'pending') : 'missing' };
 }

@@ -14,10 +14,11 @@ import { engineUse, partOf, toParts, withoutOptional, type ActiveBuild } from '.
 import type { Checker } from './pickChecker';
 import type { PostedContext, Verdict } from './pickProtocol';
 import { afterLargestPaint } from './paint';
-import { MAX_FAN_QTY, onBuildChange, readBuild, writeBuild, type BuildChangeSource, type StoredBuild } from './buildStore';
-import { decodeShare, isShareParam } from './share';
+import { LINES, MAX_FAN_QTY, onBuildChange, readBuild, writeBuild, type BuildChangeSource, type StoredBuild } from './buildStore';
+import { decodeShare, encodeShare, isShareParam, type ShareNames } from './share';
 import { builderParams, writeBuilderParams } from './builderView';
 import { offersFor, offerSlug, resolveLine } from './builderOffers';
+import { linesTotal } from './copyList';
 import type { Line } from './buildStore';
 
 export type Models = { [S in Slot]: Model<SlotListing[S]>[] };
@@ -54,6 +55,15 @@ interface Saved {
   prefs: Prefs;
   /** A shared link's whole build (second drive, fan quantity, shops, resolution): saved from it on the first edit. */
   build?: StoredBuild;
+  /** A v2 link's part names (`n.<line>`): a part the data no longer has is named by them (finding #22). */
+  names?: ShareNames;
+}
+
+/** A saved or shared part the data no longer has: named, never dropped silently (Review Focus 1, finding #22). */
+export interface GonePart {
+  line: Line;
+  key: string;
+  name?: string;
 }
 
 const asPrefs = (b: StoredBuild): Prefs => ({
@@ -143,13 +153,32 @@ export { builderParams, writeBuilderParams } from './builderView';
 /** A shared build became the user's own: its parameters (share.ts, v1 and v2 links) leave the builder's address. */
 export const clearShareParams = () => writeBuilderParams((p) => [...p.keys()].filter(isShareParam).forEach((k) => p.delete(k)));
 
-/** A build in a share link: one parameter per part (model keys hold "|", ":" and spaces). */
-export function shareLink(b: Build, p: Prefs): string {
-  const q = new URLSearchParams();
-  for (const s of SLOTS) if (b[s]) q.set(s, b[s]!.key);
-  if (p.use) q.set('use', p.use);
-  if (p.budget) q.set('budget', String(p.budget));
-  return `${location.origin}/builder?${q}`;
+/**
+ * The build's share link in the v2 form (share.ts): every part with its name, the second drive, the fan quantity, the
+ * chosen shop offers, the use, resolution and budget.
+ */
+export function shareLink(
+  b: Build,
+  p: Prefs,
+  lines: { storage2?: AnyModel; fanQty: number; offers: NonNullable<StoredBuild['offers']> },
+): string {
+  const stored: StoredBuild = { parts: {} };
+  const names: ShareNames = {};
+  const offers: NonNullable<StoredBuild['offers']> = {};
+  for (const l of LINES) {
+    const m = l === 'storage2' ? lines.storage2 : b[l];
+    if (!m) continue;
+    if (l === 'storage2') stored.storage2 = { key: m.key };
+    else stored.parts[l] = { key: m.key };
+    names[l] = m.chip;
+    if (lines.offers[l]) offers[l] = lines.offers[l];
+  }
+  if (Object.keys(offers).length) stored.offers = offers;
+  if (b.fan) stored.fanQty = lines.fanQty;
+  if (p.use) stored.use = p.use;
+  if (p.res) stored.res = p.res;
+  if (p.budget) stored.budget = p.budget;
+  return `${location.origin}${encodeShare(stored, names)}`;
 }
 
 function readShared(): Saved | null {
@@ -160,6 +189,7 @@ function readShared(): Saved | null {
     storage2: d.build.storage2?.key,
     prefs: asPrefs(d.build),
     build: d.build,
+    names: d.names,
   };
 }
 
@@ -176,6 +206,8 @@ export function useBuilderState() {
   const [prefs, setPrefsState] = useState<Prefs>(() => (sharedAtStart ?? readSaved()).prefs);
   const [shared, setShared] = useState(sharedAtStart != null);
   const [extraVersion, setExtraVersion] = useState(0);
+  // Per step: its extra file (shop links, titles) loaded (true) or failed (false); missing = not arrived yet.
+  const [extraState, setExtraState] = useState<Partial<Record<Slot, boolean>>>({});
   const [builtAt, setBuiltAt] = useState<string | null>(null);
   // The second drive (a storage row) and the fan quantity (packs), from the shared or the saved build.
   const [storage2, setStorage2State] = useState<AnyModel | undefined>(undefined);
@@ -185,7 +217,11 @@ export function useBuilderState() {
   const [offers, setOffers] = useState<NonNullable<StoredBuild['offers']>>(() => (sharedAtStart?.build ?? readBuild()).offers ?? {});
   const [offerRows, setOfferRows] = useState<Record<string, BaseListing[]>>({});
   const offerLoads = useRef(new Map<string, Promise<BaseListing[]>>());
+  // Product files that failed to load: the line says so and offers a retry (never marked gone).
+  const [offerFailed, setOfferFailed] = useState<Record<string, true>>({});
   const [wanted2, setWanted2] = useState(false); // the same for the second drive
+  // Saved or shared parts whose step file arrived without them (no longer sold): named in the summary and Review.
+  const [gone, setGone] = useState<GonePart[]>([]);
 
   const extraRef = useRef<(() => void) | null>(null);
   const extraTimer = useRef<number | undefined>(undefined);
@@ -228,8 +264,12 @@ export function useBuilderState() {
                   if (!row.title) row.title = extra.titles[row.id] ?? '';
                 }
                 setExtraVersion((v) => v + 1);
+                setExtraState((r) => ({ ...r, [slot]: true }));
               })
-              .catch(() => extraRequested.delete(slot)); // the builder still works; links and title search stay missing
+              .catch(() => {
+                extraRequested.delete(slot); // the builder still works; links and title search stay missing
+                setExtraState((r) => ({ ...r, [slot]: false }));
+              });
           };
           const requestedSlots = new Set<Slot>();
           slotRef.current = (slot) => {
@@ -243,12 +283,16 @@ export function useBuilderState() {
                 delete pendingLazy[slot];
                 setModels((prev) => (prev ? ({ ...prev, [slot]: ms } as Models) : prev));
                 const found = findSaved(slot, ms as AnyModel[], want);
+                const isGone = (line: Line, key: string) =>
+                  setGone((g) => [...g.filter((x) => x.line !== line), { line, key, ...(start.names?.[line] && { name: start.names[line] }) }]);
                 // Restored only if the user hasn't picked one meanwhile.
                 if (found) setBuild((b) => (b[slot] ? b : { ...b, [slot]: found }));
+                else if (want !== undefined) isGone(slot, want);
                 if (slot === 'storage' && start.storage2) {
                   setWanted2(false);
                   const second = findSaved('storage', ms as AnyModel[], start.storage2);
                   if (second) setStorage2State((d) => d ?? second);
+                  else isGone('storage2', start.storage2);
                 }
                 setWanted((w) => {
                   const { [slot]: _, ...rest } = w;
@@ -353,6 +397,7 @@ export function useBuilderState() {
     for (const s of SLOTS) delete pendingLazy[s];
     setWanted({});
     setWanted2(false);
+    setGone([]);
     setBuild({});
     setStorage2State(undefined);
     setFanQtyState(1);
@@ -380,12 +425,13 @@ export function useBuilderState() {
     const key = `${slot}:${model.key}`;
     let pending = offerLoads.current.get(key);
     if (!pending) {
+      setOfferFailed((prev) => { if (!prev[key]) return prev; const next = { ...prev }; delete next[key]; return next; });
       pending = import('./modelData').then(({ loadModel }) => loadModel(slot, offerSlug(slot, model)))
         .then((entry) => {
           const rows = offersFor(slot, model, entry);
           setOfferRows((prev) => ({ ...prev, [key]: rows }));
           return rows;
-        }).catch((e: unknown) => { offerLoads.current.delete(key); throw e; });
+        }).catch((e: unknown) => { offerLoads.current.delete(key); setOfferFailed((prev) => ({ ...prev, [key]: true })); throw e; });
       offerLoads.current.set(key, pending);
     }
     return pending;
@@ -415,9 +461,10 @@ export function useBuilderState() {
     const model = line === 'storage2' ? storage2 : build[line];
     if (!model) return [];
     const slot = line === 'storage2' ? 'storage' : line;
-    return [resolveLine(line, model as AnyModel, line === 'fan' ? fanQty : 1, offers[line], offerRows[`${slot}:${model.key}`])];
-  }), [build, storage2, fanQty, offers, offerRows]);
-  const resolvedTotal = Math.round(resolvedLines.reduce((sum, line) => sum + line.total, 0) * 100) / 100;
+    const key = `${slot}:${model.key}`;
+    return [resolveLine(line, model as AnyModel, line === 'fan' ? fanQty : 1, offers[line], offerRows[key], offerFailed[key])];
+  }), [build, storage2, fanQty, offers, offerRows, offerFailed]);
+  const resolvedTotal = linesTotal(resolvedLines);
 
   // The engine's view of the build: the parts, the second drive, the fan quantity, the use and resolution.
   const active = useMemo<ActiveBuild>(
@@ -462,12 +509,10 @@ export function useBuilderState() {
     () => (engine ? engine.evaluate(withoutOptional(parts), { ...engine.PICK_CTX, ...engineCtx }) : anyPart ? null : []),
     [engine, parts, engineCtx, anyPart],
   );
-  // The recommended PSU: the larger of the card maker's figure and the whole-build formula (rule 14's two figures).
-  const psuWatts = useMemo(() => {
-    if (!engine) return null;
-    const e = engine.powerEstimate(parts);
-    return Math.max(e.makerW ?? 0, e.formulaW ?? 0) || null;
-  }, [engine, parts]);
+  // The power estimate with its per-part breakdown (Review), and the recommended PSU: the larger of the card maker's
+  // figure and the whole-build formula (rule 14's two figures).
+  const power = useMemo(() => (engine ? engine.powerEstimate(parts) : null), [engine, parts]);
+  const psuWatts = power ? Math.max(power.makerW ?? 0, power.formulaW ?? 0) || null : null;
   // The pick worker's checker: its own chunk, loaded after the first paint (once the index is here), so the builder's
   // first-paint JS stays within rule 11.
   const [checker, setChecker] = useState<Checker | null>(null);
@@ -507,7 +552,12 @@ export function useBuilderState() {
     /** Findings of the build without card and cooler (builderEngine.optionalSlot); null while the engine loads. */
     optFindings,
     engineFailed,
+    power,
     psuWatts,
+    /** Saved or shared parts the data no longer has (and not replaced since): named, never dropped silently. */
+    gone: gone.filter((g) => !(g.line === 'storage2' ? storage2 : build[g.line])),
+    /** The build's v2 share link (share.ts): second drive, fan quantity and chosen offers included. */
+    shareUrl: shareLink(build, prefs, { storage2, fanQty, offers }),
     engineCtx,
     checker,
     checkerFailed,
@@ -527,6 +577,10 @@ export function useBuilderState() {
     setPrefs,
     shared,
     extraVersion,
+    /** A step's extra file: true loaded, false failed, undefined not arrived yet (Copy list waits for it). */
+    extraState,
+    /** The shared link's build as it arrived (gone parts included), while the shared view is on screen. */
+    sharedBuild: shared ? sharedAtStart?.build : undefined,
     /** When the site's data was built (the prices' date). */
     builtAt,
     /** Load the loaded steps' extra files now (first interaction); a no-op before the index has arrived. */
