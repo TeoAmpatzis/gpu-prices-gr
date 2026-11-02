@@ -2,7 +2,7 @@
 // 9 AIO radiator, 10 cooler socket, 16 PSU size, 19 3.5" bays, 26 RAM–cooler clearance.
 import { BOARD_BY_CASE_SIZE, BOARD_RANK, CHIP_ESTIMATE, MARGIN, MIN_AIR_COOLER_MM, type BoardSize } from '../tables';
 import type { Build, Context, Finding } from '../types';
-import { all, finding, fmtMm, keys, list, msg, num, one, str, unknown } from '../util';
+import { all, F, finding, fmtMm, keys, list, msg, nOf, num, one, str, unknown } from '../util';
 
 const mmEl = (v: number) => fmtMm(v).replace('.', ',');
 const rank = (s: string | null) => BOARD_RANK.indexOf(s as BoardSize);
@@ -59,9 +59,10 @@ export function rule7(b: Build): Finding[] {
   if (!gpu || !pc) return [];
   const ps = keys(gpu, pc), slots = num(gpu, 'slots'), room = num(pc, 'expansionSlots');
   if (slots === null || room === null) return [unknown(7, ps, msg('το πάχος της κάρτας: δεν ξέρουμε τις θέσεις της κάρτας ή τις θέσεις επέκτασης του κουτιού.', "the card's thickness: its slots or the case's expansion slots aren't known."))];
-  if (slots <= room) return [finding(7, 'pass', 'stated', ps, msg(`Κάρτα ${slots} θέσεων, το κουτί έχει ${room}.`, `A ${slots}-slot card; the case has ${room}.`))];
+  const ex = nOf(room, F.expansionSlot);
+  if (slots <= room) return [finding(7, 'pass', 'stated', ps, msg(`Κάρτα ${slots} ${slots === 1 ? 'θέσης' : 'θέσεων'}, το κουτί έχει ${room}.`, `A ${slots}-slot card; the case has ${room}.`))];
   return [finding(7, 'error', 'stated', ps,
-    msg(`Η κάρτα πιάνει ${slots} θέσεις, το κουτί έχει ${room} θέσεις επέκτασης.`, `The card takes ${slots} slots; the case has ${room} expansion slots.`),
+    msg(`Η κάρτα πιάνει ${nOf(slots, F.slot).el}, το κουτί έχει ${ex.el}.`, `The card takes ${nOf(slots, F.slot).en}; the case has ${ex.en}.`),
     msg('Διάλεξε λεπτότερη κάρτα ή κουτί με περισσότερες θέσεις επέκτασης.', 'Choose a thinner card or a case with more expansion slots.'))];
 }
 
@@ -191,11 +192,13 @@ export function rule19(b: Build): Finding[] {
   const ps = keys(pc, ...big), n = big.reduce((s, d) => s + d.quantity, 0);
   if (!n) return [finding(19, 'pass', 'stated', keys(pc), msg('Κανένας δίσκος 3.5".', 'No 3.5" drives.'))];
   const bays = num(pc, 'bays35');
-  if (bays === null) return [unknown(19, ps, msg(`αν χωράνε ${n} δίσκοι 3.5": το κουτί δεν δηλώνει θέσεις δίσκων.`, `whether ${n} 3.5" drive(s) fit: the case doesn't state its drive bays.`),
+  const d = nOf(n, F.hddDrive);
+  if (bays === null) return [unknown(19, ps, msg(`αν ${n === 1 ? 'χωράει' : 'χωράνε'} ${d.el}: το κουτί δεν δηλώνει θέσεις δίσκων.`, `whether ${d.en} ${n === 1 ? 'fits' : 'fit'}: the case doesn't state its drive bays.`),
     msg('Έλεγξε τις θέσεις 3.5" στη σελίδα του κουτιού.', `Check the 3.5" bays on the case's page.`))];
-  if (n <= bays) return [finding(19, 'pass', 'stated', ps, msg(`${n} δίσκοι 3.5" σε ${bays} θέσεις.`, `${n} 3.5" drive(s) in ${bays} bays.`))];
+  const by = nOf(bays, F.bay);
+  if (n <= bays) return [finding(19, 'pass', 'stated', ps, msg(`${d.el} σε ${by.el}.`, `${d.en} in ${by.en}.`))];
   return [finding(19, 'error', 'stated', ps,
-    msg(`${n} δίσκοι 3.5", το κουτί έχει ${bays} θέσεις.`, `${n} 3.5" drives; the case has ${bays} bays.`),
+    msg(`${d.el}, το κουτί έχει ${by.el}.`, `${d.en}; the case has ${by.en}.`),
     msg('Διάλεξε κουτί με περισσότερες θέσεις 3.5" ή λιγότερους δίσκους.', 'Choose a case with more 3.5" bays or fewer drives.'))];
 }
 

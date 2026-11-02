@@ -2,7 +2,7 @@
 // 13 BIOS, 24 front USB-C header, 25 memory speed.
 import type { Build, Context, Finding } from '../types';
 import { cpuRow, officialSpeed } from '../data/cpuMemory';
-import { all, bool, finding, keys, msg, num, one, str, total, unknown } from '../util';
+import { all, bool, F, finding, keys, msg, nOf, num, one, str, total, unknown } from '../util';
 
 export function rule1(b: Build): Finding[] {
   const cpu = one(b, 'cpu'), mobo = one(b, 'mobo');
@@ -34,16 +34,18 @@ export function rule3(b: Build): Finding[] {
   if (!mobo || !rams.length) return [];
   const ps = keys(mobo, ...rams), sticks = total(rams, 'modules'), slots = num(mobo, 'ramSlots');
   if (sticks === null) return [unknown(3, ps, msg('τις θέσεις μνήμης: δεν ξέρουμε πόσα στικ έχει το κιτ.', "the memory slots: the kit's stick count isn't known."))];
+  const st = nOf(sticks, F.stick);
   if (slots === null) {
     // Every desktop board has at least 2 slots, so up to 2 sticks always fit.
-    if (sticks <= 2) return [finding(3, 'pass', 'estimate', ps, msg(`${sticks} στικ: κάθε μητρική έχει τουλάχιστον 2 θέσεις.`, `${sticks} sticks: every board has at least 2 slots.`))];
-    return [unknown(3, ps, msg(`αν χωράνε ${sticks} στικ: η μητρική δεν δηλώνει θέσεις μνήμης.`, `whether ${sticks} sticks fit: the board doesn't state its memory slots.`),
+    if (sticks <= 2) return [finding(3, 'pass', 'estimate', ps, msg(`${st.el}: κάθε μητρική έχει τουλάχιστον 2 θέσεις.`, `${st.en}: every board has at least 2 slots.`))];
+    return [unknown(3, ps, msg(`αν χωράνε ${st.el}: η μητρική δεν δηλώνει θέσεις μνήμης.`, `whether ${st.en} fit: the board doesn't state its memory slots.`),
       msg('Έλεγξε τις θέσεις μνήμης στη σελίδα της μητρικής.', "Check the memory slots on the board's page."))];
   }
-  if (sticks <= slots) return [finding(3, 'pass', 'stated', ps, msg(`${sticks} στικ σε ${slots} θέσεις.`, `${sticks} sticks in ${slots} slots.`))];
+  const s = nOf(slots, F.slot), max = nOf(slots, F.stick);
+  if (sticks <= slots) return [finding(3, 'pass', 'stated', ps, msg(`${st.el} σε ${s.el}.`, `${st.en} in ${s.en}.`))];
   return [finding(3, 'error', 'stated', ps,
-    msg(`${sticks} στικ μνήμης, η μητρική έχει ${slots} θέσεις.`, `${sticks} memory sticks; the board has ${slots} slots.`),
-    msg(`Διάλεξε κιτ με έως ${slots} στικ ή μητρική με περισσότερες θέσεις.`, `Choose a kit of up to ${slots} sticks or a board with more slots.`))];
+    msg(`${nOf(sticks, F.memoryStick).el}, η μητρική έχει ${s.el}.`, `${nOf(sticks, F.memoryStick).en}; the board has ${s.en}.`),
+    msg(`Διάλεξε κιτ με έως ${max.el} ή μητρική με περισσότερες θέσεις.`, `Choose a kit of up to ${max.en} or a board with more slots.`))];
 }
 
 export function rule4(b: Build): Finding[] {
@@ -123,7 +125,7 @@ export function rule25(b: Build): Finding[] {
     if (!official) {
       const row = cpuRow(cpuName);
       return unknown(25, ps, row?.memory[type]
-        ? msg(`την ταχύτητα μνήμης: η σελίδα του κατασκευαστή δεν δίνει επίσημη ταχύτητα για ${sticks} μονάδες.`, `the memory speed: the maker's page gives no official speed for ${sticks} sticks.`)
+        ? msg(`την ταχύτητα μνήμης: η σελίδα του κατασκευαστή δεν δίνει επίσημη ταχύτητα για ${nOf(sticks, F.module).el}.`, `the memory speed: the maker's page gives no official speed for ${nOf(sticks, F.module).en}.`)
         : msg(`την ταχύτητα μνήμης: ο κατασκευαστής δεν δίνει επίσημη ταχύτητα ${type} για αυτόν τον επεξεργαστή.`, `the memory speed: the maker gives no official ${type} speed for this CPU.`));
     }
     const { mhz, sticks: n } = official;

@@ -3,7 +3,7 @@ import { cpuPowerRow } from '../data/cpuPower';
 import { gpuPowerRow } from '../data/gpuPower';
 import { MARGIN, POWER, V1_GPU_PSU, V1_HIGH_END_CPU, V1_HIGH_END_EXTRA_W } from '../tables';
 import type { Basis, Build, Finding, Msg, Part } from '../types';
-import { all, bool, finding, keys, msg, num, one, str, unknown } from '../util';
+import { all, bool, F, finding, keys, msg, nOf, num, one, str, unknown } from '../util';
 
 /**
  * The recommended PSU by v1's rule: the larger of the card's stated minimum and v1's chip table, plus 100 W
@@ -78,7 +78,7 @@ export function powerEstimate(b: Build): PowerEstimate {
     if (m === null) sticksKnown = false; else sticks += m * r.quantity;
   }
   if (!sticksKnown) missing.push(msg('τον αριθμό των μονάδων μνήμης', 'the number of memory sticks'));
-  else if (sticks) parts.push({ key: 'ram', label: msg(`Μνήμη (${sticks} μονάδες)`, `RAM (${sticks} sticks)`), watts: sticks * POWER.perStickW });
+  else if (sticks) parts.push({ key: 'ram', label: msg(`Μνήμη (${nOf(sticks, F.module).el})`, `RAM (${nOf(sticks, F.module).en})`), watts: sticks * POWER.perStickW });
 
   const drives = all(b, 'storage').reduce((n, d) => n + d.quantity, 0);
   if (drives) parts.push({ key: 'storage', label: msg(`Δίσκοι (${drives})`, `Drives (${drives})`), watts: drives * POWER.perDriveW });

@@ -6,7 +6,7 @@
 // build" (key, engine fields, data date), and the page stays where it is: a confirmation with a link to the builder.
 import { ArrowDown } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { addToBuild, cpuVersion, fitCandidates, fitView, mainCandidate, slotAction, type FitState } from '../../lib/buildFit';
+import { addToBuild, cpuVersion, fitCandidates, fitView, mainCandidate, slotAction, withVersion, type FitState } from '../../lib/buildFit';
 import { tr, useLang, type Text } from '../../lib/i18n';
 import type { Slot } from '../../lib/slots';
 import { useBuildCheck } from '../../lib/useBuildCheck';
@@ -25,13 +25,12 @@ export function useModelFit(slot: Slot, entry: ModelEntry, builtAt: string): Mod
   const parts = useMemo(() => cands.map((c) => c.part), [cands]);
   // No build: no check and no worker (no section); `full`: notes and unknowns too ("Fits" only when none is left).
   const { stored, status, verdicts, build, missing, unchecked } = useBuildCheck(slot, builtAt, parts, { full: true, skipEmpty: true });
-  const [added, setAdded] = useState<{ key: string; replaced: boolean; name: string } | null>(null);
+  const [added, setAdded] = useState<{ key: string; replaced: boolean; name: Text } | null>(null);
   const add = useCallback(
     (key: string) => {
       const c = cands.find((x) => x.key === key);
       if (!c?.offered) return;
-      const version = slot === 'cpu' ? cpuVersion(key) : null;
-      const name = c.part.name + (version === 'box' ? ' (Box)' : version === 'tray' ? ' (no cooler)' : '');
+      const name = slot === 'cpu' ? withVersion(c.part.name, key) : c.part.name;
       setAdded({ key, replaced: addToBuild(slot, c, builtAt) !== null, name });
     },
     [cands, slot, builtAt],
@@ -144,7 +143,7 @@ function BuildFitSection({ fit, slot, add }: { fit: ModelFit; slot: Slot; add: F
         {version && <p className="text-sm text-muted">{t(version === 'box' ? FIT.versionBox : FIT.versionTray)}</p>}
         {(a.kind === 'replace' || a.kind === 'switch') && a.name && (
           <p className="text-sm text-fg-soft [overflow-wrap:anywhere]">
-            {t(FIT.nowInBuild)} <span className="font-medium text-fg">{a.name}</span>
+            {t(FIT.nowInBuild)} <span className="font-medium text-fg">{t(a.name)}</span>
           </p>
         )}
         <Action p={ctx} keyOf={key} lang={lang} place="section" />

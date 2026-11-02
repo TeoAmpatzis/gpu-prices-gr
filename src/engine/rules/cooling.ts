@@ -1,7 +1,7 @@
 // Rules about cooling: 11 CPU cooler in the box, 21 fan positions, 22 a case without fans, 23 fan headers.
 import { TYPICAL_FAN_HEADERS } from '../tables';
 import type { Build, Finding, Part } from '../types';
-import { all, bool, finding, keys, list, msg, num, one, str, unknown } from '../util';
+import { all, bool, F, finding, keys, list, msg, nOf, num, one, str, unknown } from '../util';
 
 export function rule11(b: Build): Finding[] {
   const cpu = one(b, 'cpu');
@@ -32,7 +32,7 @@ export function rule21(b: Build): Finding[] {
   const ps = keys(pc, ...fans);
   const bySize = new Map<number | null, number>();
   for (const f of fans) bySize.set(num(f, 'size'), (bySize.get(num(f, 'size')) ?? 0) + fanCount(f));
-  const n = [...bySize.values()].reduce((s, v) => s + v, 0);
+  const n = [...bySize.values()].reduce((s, v) => s + v, 0), fn = nOf(n, F.fan);
   const mounts = list<Mount>(pc, 'fanMounts');
   if (mounts?.length) {
     const included = list<Mount>(pc, 'fansIncluded') ?? [];
@@ -42,18 +42,19 @@ export function rule21(b: Build): Finding[] {
       const free = mounts.filter((m) => m.size === size).reduce((s, m) => s + m.n, 0) - included.filter((m) => m.size === size).reduce((s, m) => s + m.n, 0);
       if (want > free) short.push(`${want} × ${size} mm / ${Math.max(free, 0)}`);
     }
-    if (!short.length) return [finding(21, 'pass', 'maker-list', ps, msg(`${n} ανεμιστήρες: ο κατασκευαστής του κουτιού δηλώνει αρκετές θέσεις.`, `${n} fans: the case maker lists enough positions.`))];
+    if (!short.length) return [finding(21, 'pass', 'maker-list', ps, msg(`${fn.el}: ο κατασκευαστής του κουτιού δηλώνει αρκετές θέσεις.`, `${fn.en}: the case maker lists enough positions.`))];
     return [finding(21, 'warning', 'maker-list', ps,
       msg(`Ο κατασκευαστής του κουτιού δηλώνει λιγότερες ελεύθερες θέσεις (${short.join(', ')}).`, `The case maker lists fewer free positions (${short.join(', ')}).`),
       msg('Έλεγξε τις θέσεις ανεμιστήρων στη σελίδα του κουτιού ή διάλεξε λιγότερους ανεμιστήρες.', "Check the fan positions on the case's page or choose fewer fans."))];
   }
   const slots = num(pc, 'fanSlots');
   if (slots !== null) {
+    const fp = nOf(slots, F.fanPosition), pos = nOf(slots, F.position), max = nOf(slots, F.fanAcc);
     if (n > slots) return [finding(21, 'error', 'stated', ps,
-      msg(`${n} ανεμιστήρες, το κουτί έχει ${slots} θέσεις ανεμιστήρων.`, `${n} fans; the case has ${slots} fan positions.`),
-      msg(`Διάλεξε έως ${slots} ανεμιστήρες ή κουτί με περισσότερες θέσεις.`, `Choose up to ${slots} fans or a case with more positions.`))];
-    if ([...bySize.keys()].every((s) => s === 120)) return [finding(21, 'note', 'estimate', ps,
-      msg(`Πιθανότατα χωράνε: ${n} ανεμιστήρες 120 mm, το κουτί έχει ${slots} θέσεις (χωρίς μεγέθη).`, `Probably fit: ${n} × 120 mm fans; the case has ${slots} positions (sizes not stated).`))];
+      msg(`${fn.el}, το κουτί έχει ${fp.el}.`, `${fn.en}; the case has ${fp.en}.`),
+      msg(`Διάλεξε έως ${max.el} ή κουτί με περισσότερες θέσεις.`, `Choose up to ${max.en} or a case with more positions.`))];
+    if ([...bySize.keys()].every((s) => s === 120)) { const f120 = nOf(n, F.fan120); return [finding(21, 'note', 'estimate', ps,
+      msg(`Πιθανότατα ${n === 1 ? 'χωράει' : 'χωράνε'}: ${f120.el}, το κουτί έχει ${pos.el} (χωρίς μεγέθη).`, `Probably ${n === 1 ? 'fits' : 'fit'}: ${f120.en}; the case has ${pos.en} (sizes not stated).`))]; }
   }
   return [unknown(21, ps, msg('αν χωράνε οι ανεμιστήρες: το κουτί δεν δηλώνει θέσεις ανά μέγεθος.', "whether the fans fit: the case doesn't state positions per size."),
     msg('Έλεγξε τις θέσεις ανεμιστήρων στη σελίδα του κουτιού.', "Check the fan positions on the case's page."))];
@@ -79,11 +80,13 @@ export function rule23(b: Build): Finding[] {
   const mobo = one(b, 'mobo'), n = fans.reduce((s, f) => s + fanCount(f), 0), headers = num(mobo, 'fanHeaders');
   const ps = keys(mobo, ...fans);
   const fix = msg('Χρησιμοποίησε hub ή splitter ανεμιστήρων.', 'Use a fan hub or splitter.');
+  const fn = nOf(n, F.fan);
   if (headers !== null) {
-    if (n <= headers) return [finding(23, 'pass', 'stated', ps, msg(`${n} ανεμιστήρες σε ${headers} headers.`, `${n} fans on ${headers} headers.`))];
-    return [finding(23, 'note', 'stated', ps, msg(`${n} ανεμιστήρες, η μητρική έχει ${headers} headers ανεμιστήρων.`, `${n} fans; the board has ${headers} fan headers.`), fix)];
+    const h = nOf(headers, F.header), fh = nOf(headers, F.fanHeader);
+    if (n <= headers) return [finding(23, 'pass', 'stated', ps, msg(`${fn.el} σε ${h.el}.`, `${fn.en} on ${h.en}.`))];
+    return [finding(23, 'note', 'stated', ps, msg(`${fn.el}, η μητρική έχει ${fh.el}.`, `${fn.en}; the board has ${fh.en}.`), fix)];
   }
-  if (n <= TYPICAL_FAN_HEADERS) return [finding(23, 'pass', 'estimate', ps, msg(`${n} ανεμιστήρες: οι περισσότερες μητρικές έχουν αρκετά headers.`, `${n} fans: most boards have enough headers.`))];
+  if (n <= TYPICAL_FAN_HEADERS) return [finding(23, 'pass', 'estimate', ps, msg(`${fn.el}: οι περισσότερες μητρικές έχουν αρκετά headers.`, `${fn.en}: most boards have enough headers.`))];
   return [finding(23, 'note', 'estimate', ps,
-    msg(`${n} ανεμιστήρες: πολλές μητρικές έχουν 2–4 headers ανεμιστήρων (η δική σου δεν το δηλώνει).`, `${n} fans: many boards have 2–4 fan headers (yours doesn't say).`), fix)];
+    msg(`${fn.el}: πολλές μητρικές έχουν 2–4 headers ανεμιστήρων (η δική σου δεν το δηλώνει).`, `${fn.en}: many boards have 2–4 fan headers (yours doesn't say).`), fix)];
 }

@@ -12,6 +12,20 @@ const EUR: Record<Lang, Intl.NumberFormat> = {
 };
 export const formatPrice = (n: number, lang: Lang) => EUR[lang].format(n);
 
+// Whole euros, same sign placement: "1.000 €" / "€1,000" (budgets, ranges).
+const WHOLE: Record<Lang, Intl.NumberFormat> = {
+  el: new Intl.NumberFormat('el-GR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 0 }),
+  en: new Intl.NumberFormat('en-IE', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 0 }),
+};
+export const formatWhole = (n: number, lang: Lang) => WHOLE[lang].format(n);
+
+/** A range in whole euros with one sign on the language's side: "245–315 €" / "€245–315". */
+export function formatPriceRange(lo: number, hi: number, lang: Lang): string {
+  const num = (n: number) => Math.round(n).toLocaleString(lang === 'el' ? 'el-GR' : 'en-IE');
+  const top = formatWhole(Math.round(hi), lang);
+  return num(lo) === num(hi) ? top : top.replace(num(hi), `${num(lo)}–${num(hi)}`);
+}
+
 const RELATIVE: Record<Lang, Intl.RelativeTimeFormat> = {
   el: new Intl.RelativeTimeFormat('el', { numeric: 'auto' }),
   en: new Intl.RelativeTimeFormat('en', { numeric: 'auto' }),

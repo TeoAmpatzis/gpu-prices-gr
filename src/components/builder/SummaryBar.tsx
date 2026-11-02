@@ -6,13 +6,13 @@
 import { useState, type ReactNode } from 'react';
 import { AlertTriangle, CheckCircle2, ChevronUp, Info } from 'lucide-react';
 import { formatPrice } from '../../lib/data';
+import { formatWhole } from '../../lib/format';
 import { STEP_SHORT } from '../../lib/wizard';
 import { SLOTS, type Slot } from '../../lib/builderData';
 import { ENGINE_TEXT, MISSING, buildStatus, isAdvice, missingSlots, notCheckedYet, shownFindings } from '../../lib/builderEngine';
 import type { AnyModel, BuilderState } from '../../lib/builderState';
-import { tr, useLang, type Text } from '../../lib/i18n';
+import { plural, tr, useLang, type Forms, type Text } from '../../lib/i18n';
 import { BUILDER as B, fill } from '../../ui/builderStrings';
-import { plural } from '../../ui/strings';
 
 const S = {
   total: { el: 'Σύνολο', en: 'Total' },
@@ -25,8 +25,6 @@ const S = {
     en: 'Selected offer per product; total excludes shipping. Known shipping is shown per product.',
   },
   budget: { el: 'Προϋπολογισμός', en: 'Budget' },
-  left: { el: 'απομένουν', en: 'left' },
-  over: { el: 'υπέρβαση', en: 'over' },
   allFit: { el: 'Όλα ταιριάζουν', en: 'Everything fits' },
   missing: { el: 'Λείπουν', en: 'Missing' },
   shared: {
@@ -43,7 +41,7 @@ const N = {
   unverified: { el: ['χωρίς επιβεβαίωση', 'χωρίς επιβεβαίωση'], en: ['not verified', 'not verified'] },
   check: { el: ['προς έλεγχο', 'προς έλεγχο'], en: ['to check', 'to check'] },
   clash: { el: ['ασύμβατο', 'ασύμβατα'], en: ['incompatible', 'incompatible'] },
-} satisfies Record<string, { el: [string, string]; en: [string, string] }>;
+} satisfies Record<string, Forms>;
 
 interface Props {
   state: BuilderState;
@@ -179,10 +177,10 @@ export default function Summary({ state, onSlot, back, next }: Props) {
           <div className="text-sm">
             <div className="flex justify-between gap-2">
               <span className="text-muted">
-                {t(S.budget)} {formatPrice(prefs.budget, lang)}
+                {t(S.budget)} {formatWhole(prefs.budget, lang)}
               </span>
               <span className={left < 0 ? 'font-semibold text-up' : 'text-muted'}>
-                {t(left < 0 ? S.over : S.left)} {formatPrice(Math.abs(left), lang)}
+                {fill(t(left < 0 ? B.over : B.left), { x: formatPrice(Math.abs(left), lang) })}
               </span>
             </div>
             <div className="mt-1 h-2 overflow-hidden rounded-full bg-sunken ring-1 ring-inset ring-line" aria-hidden="true">

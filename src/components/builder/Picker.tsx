@@ -13,21 +13,20 @@ import { pickerOrder, loadAuto } from '../../lib/recommend';
 import { toUseKey } from '../../lib/useMinimums';
 import { SORTS, sorter, type SortBy } from '../../lib/wizard';
 import { pickerMatches } from '../../lib/search';
-import { T, tr, type Lang, type Text } from '../../lib/i18n';
+import { T, plural, tr, type Forms, type Lang, type Text } from '../../lib/i18n';
 import { CaseFansLine } from './FanAdvice';
 import PartCard from './PartCard';
 import CpuCard from './CpuCard';
-import { plural } from '../../ui/strings';
 import { ErrorState } from '../../ui/states';
 import { BUILDER as B } from '../../ui/builderStrings';
 const PAGE = 24;
-const HIDDEN = { el: ['ασύμβατο κρυμμένο', 'ασύμβατα κρυμμένα'] as [string, string], en: ['incompatible hidden', 'incompatible hidden'] as [string, string] };
+const HIDDEN: Forms = { el: ['ασύμβατο κρυμμένο', 'ασύμβατα κρυμμένα'], en: ['incompatible hidden', 'incompatible hidden'] };
+const SHOWN: Forms = { el: ['εμφανίζεται', 'εμφανίζονται'], en: ['shown', 'shown'] };
 const G = {
   sort: { el: 'Ταξινόμηση', en: 'Sort' },
   onlyCompatible: { el: 'Μόνο συμβατά', en: 'Only compatible' },
   verifiedOnly: { el: 'Μόνο επιβεβαιωμένα', en: 'Verified only' },
   withinBudget: { el: 'Εντός προϋπολογισμού', en: 'Within budget' },
-  shown: { el: 'εμφανίζονται', en: 'shown' },
   airflowType: { el: 'Ροής αέρα', en: 'Airflow' },
   pressureType: { el: 'Στατικής πίεσης', en: 'Static pressure' },
   showMore: { el: 'Περισσότερα', en: 'Show more' },
@@ -226,7 +225,7 @@ export default function Picker({ slot, state, auto = null, lang, line = slot, on
             </Chip>
           ))}
         <span className={`shrink-0 whitespace-nowrap text-sm text-muted ${loading ? 'invisible' : ''}`}>
-          {shown.length} {t(G.shown)}
+          {plural(lang, shown.length, SHOWN)}
           {onlyCompatible && hidden > 0 && (
             <>
               {' '}

@@ -11,6 +11,9 @@ import type { CaseFans, CaseListing, CasePosition } from '../types';
 import type { Model } from './data';
 import { caseFanMounts, caseFansIncluded, gpuPsu, type Build } from './builderData';
 import type { Text } from './i18n';
+import { plural, type Forms } from './text';
+
+const FAN: Forms = { el: ['ανεμιστήρας', 'ανεμιστήρες'], en: ['fan', 'fans'] };
 
 export const POS_NAME: Record<CasePosition, { el: string; en: string }> = {
   front: { el: 'μπροστά', en: 'front' },
@@ -42,7 +45,7 @@ export function includedText(c: Model<CaseListing>): { text: Text; known: boolea
       if (one) return `${sum(inc)} × ${one} mm`;
       if (placed && sizes.every(Boolean)) return `${sum(inc)}: ${inc.map((f) => `${f.n} × ${f.size} mm ${pos(f)}`).join(', ')}`;
       if (sizes.every(Boolean)) return join(sizes.map((s) => `${sum(inc.filter((f) => f.size === s))} × ${s} mm`), el);
-      return `${sum(inc)} ${el ? 'ανεμιστήρες' : 'fans'}`;
+      return plural(el ? 'el' : 'en', sum(inc), FAN);
     };
     return { text: { el: `Περιλαμβάνει ${text(true)}`, en: `Includes ${text(false)}` }, known: true };
   }

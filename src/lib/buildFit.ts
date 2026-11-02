@@ -10,6 +10,7 @@ import { partOf, shownOffer, validStored } from './pickBuild';
 import { hides } from './pickHide';
 import { cpuVersion } from './slots';
 import type { Verdict } from './pickProtocol';
+import type { Text } from './text';
 
 export interface FitCandidate {
   /** The builder's key (builder.slotModels): what "Add" saves. */
@@ -119,14 +120,20 @@ export type SlotAction =
   | { kind: 'add' }
   | { kind: 'in-build' }
   /** `name`: the saved part's readable name when its stored data has one (a chip, or a readable key), else null. */
-  | { kind: 'replace'; name: string | null }
+  | { kind: 'replace'; name: Text | null }
   /** The build holds the other version (Box / Tray) of this same CPU: "Switch to the Box version". */
-  | { kind: 'switch'; name: string; to: 'box' | 'tray' | null };
+  | { kind: 'switch'; name: Text; to: 'box' | 'tray' | null };
 
-/** " (Box)" / " (no cooler)" after a CPU's name, from its key; nothing when the packaging isn't stated. */
-const versionSuffix = (key: string) => {
+/** " (Box)" / " (χωρίς ψύκτρα)" after a CPU's name, from its key, in both languages; '' when the packaging isn't stated. */
+export const versionSuffix = (key: string): Text => {
   const v = cpuVersion(key);
-  return v === 'box' ? ' (Box)' : v === 'tray' ? ' (no cooler)' : '';
+  return v === 'box' ? ' (Box)' : v === 'tray' ? { el: ' (χωρίς ψύκτρα)', en: ' (no cooler)' } : '';
+};
+
+/** A CPU's name with its version suffix, in both languages. */
+export const withVersion = (name: string, key: string): Text => {
+  const s = versionSuffix(key);
+  return typeof s === 'string' ? name + s : { el: name + s.el, en: name + s.en };
 };
 
 /**
@@ -142,7 +149,7 @@ export function slotAction(stored: StoredBuild, slot: Slot, key: string): SlotAc
   const fields = validStored(cur)?.fields ?? {};
   const chip = typeof fields.chip === 'string' && fields.chip.trim() ? fields.chip : null;
   if (slot === 'cpu') {
-    const name = (chip ?? partOf(slot, cur.key, fields).name) + versionSuffix(cur.key);
+    const name = withVersion(chip ?? partOf(slot, cur.key, fields).name, cur.key);
     const same = cur.key.slice(0, cur.key.lastIndexOf('|')) === key.slice(0, key.lastIndexOf('|'));
     return same ? { kind: 'switch', name, to: cpuVersion(key) } : { kind: 'replace', name };
   }

@@ -10,7 +10,7 @@ import { autoFor, loadAuto } from '../../lib/autoPick';
 import { loadIndex } from '../../lib/builderIndex';
 import type { View } from '../../lib/builderView';
 import { readBuild, writeBuild, type StoredBuild, type UseKind } from '../../lib/buildStore';
-import { formatPrice } from '../../lib/format';
+import { formatPrice, formatWhole } from '../../lib/format';
 import { tr, useLang, type Text } from '../../lib/i18n';
 import { afterLargestPaint } from '../../lib/paint';
 import { toUseKey } from '../../lib/useMinimums';
@@ -183,13 +183,14 @@ export default function Start({ onGo, onIntent }: { onGo: (v: Exclude<View, 'sta
               value={text}
               onChange={(e) => setBudget(e.target.value)}
               placeholder="1000"
-              className="field w-32 py-2 pl-3 pr-8 tabular-nums"
+              className={`field w-32 py-2 tabular-nums ${lang === 'en' ? 'pl-8 pr-3' : 'pl-3 pr-8'}`}
             />
-            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted">€</span>
+            {/* the sign on the language's side, as in the chips: "€1,000" / "1.000 €" */}
+            <span className={`pointer-events-none absolute ${lang === 'en' ? 'left-3' : 'right-3'} top-1/2 -translate-y-1/2 text-sm text-muted`}>€</span>
           </div>
           {BUDGETS.map((b) => (
             <button key={b} type="button" aria-pressed={prefs.budget === b} onClick={() => setBudget(prefs.budget === b ? '' : String(b))} className={pill(prefs.budget === b)}>
-              {b} €
+              {formatWhole(b, lang)}
             </button>
           ))}
         </div>
@@ -208,7 +209,7 @@ export default function Start({ onGo, onIntent }: { onGo: (v: Exclude<View, 'sta
             </button>
           </p>
         )}
-        {pick?.kind === 'above' && auto && <p className="text-sm text-muted">{fill(t(B.aboveRange), { max: formatPrice(auto.grid.to, lang) })}</p>}
+        {pick?.kind === 'above' && auto && <p className="text-sm text-muted">{fill(t(B.aboveRange), { max: formatWhole(auto.grid.to, lang) })}</p>}
         {autoFailed && (
           <p className="flex flex-wrap items-center gap-x-3 text-sm text-muted">
             {t(B.autoFailed)}

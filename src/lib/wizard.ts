@@ -43,7 +43,7 @@ export const STEP_SHORT: Record<StepId, Text> = {
 };
 /** The buying guide's text for each step (BuildGuide GUIDE_STEPS index). */
 export const GUIDE_INDEX: Partial<Record<StepId, number>> = {
-  cpu: 1, mobo: 1, ram: 2, gpu: 3, cooler: 4, storage: 5, case: 6, fan: 7, psu: 8,
+  cpu: 1, mobo: 9, ram: 2, gpu: 3, cooler: 4, storage: 5, case: 6, fan: 7, psu: 8,
 };
 
 export const isDone = (step: StepId, b: Build): boolean => step !== 'review' && b[step] != null;

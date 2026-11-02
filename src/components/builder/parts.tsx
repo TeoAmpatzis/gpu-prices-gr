@@ -26,18 +26,22 @@ import type { AnyModel } from '../../lib/builderState';
 import { storedImage } from '../../lib/images';
 import { psuText } from '../../lib/copyList';
 import { STEP_SHORT } from '../../lib/wizard';
-import { T, tr, type Lang, type Text } from '../../lib/i18n';
+import { T, plural, tr, type Forms, type Lang, type Text } from '../../lib/i18n';
+
+/** Counts on the cards, singular for 1 (#31). */
+const N = {
+  cores: { el: ['πυρήνας', 'πυρήνες'], en: ['core', 'cores'] },
+  slots: { el: ['υποδοχή', 'υποδοχές'], en: ['slot', 'slots'] },
+  fanPositions: { el: ['θέση ανεμ.', 'θέσεις ανεμ.'], en: ['fan position', 'fan positions'] },
+} satisfies Record<string, Forms>;
 
 export const S = {
-  cores: { el: 'πυρήνες', en: 'cores' },
-  slots: { el: 'υποδοχές', en: 'slots' },
   psu: { el: 'τροφ.', en: 'PSU' },
   upTo: { el: 'έως', en: 'up to' },
   withCooler: { el: 'με ψύκτρα', en: 'cooler included' },
   noCooler: { el: 'χωρίς ψύκτρα', en: 'no cooler' },
   coolerUnknown: { el: 'ψύκτρα: δεν αναφέρεται', en: 'cooler: not stated' },
   coolerShort: { el: 'ψύκτρα', en: 'cooler' },
-  fanPositions: { el: 'θέσεις ανεμ.', en: 'fan positions' },
   airflow: { el: 'για ροή αέρα', en: 'airflow type' },
   pressure: { el: 'για στατική πίεση', en: 'static pressure type' },
   dramLess: { el: 'χωρίς DRAM', en: 'DRAM-less' },
@@ -56,10 +60,12 @@ const FIT_CLASS: Record<Label, string> = {
 export function FitBadge({ rating, lang }: { rating: Rating; lang: Lang }) {
   if (!rating.fit) return null;
   const why = rating.reasons.map((r) => tr(lang, r)).join(' ');
+  // The other part's name sits beside the badge (the badge never wraps), so a long Greek label wraps instead of
+  // sticking out at 360 px (task 14 layout audit).
   return (
-    <span className={FIT_CLASS[rating.fit]} title={why || undefined}>
-      {tr(lang, LABEL_TEXT[rating.fit])}
-      {rating.fit !== 'fits' && rating.other && ` · ${tr(lang, STEP_SHORT[rating.other])}`}
+    <span className="inline-flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5" title={why || undefined}>
+      <span className={FIT_CLASS[rating.fit]}>{tr(lang, LABEL_TEXT[rating.fit])}</span>
+      {rating.fit !== 'fits' && rating.other && <span className="text-xs text-muted">· {tr(lang, STEP_SHORT[rating.other])}</span>}
     </span>
   );
 }
@@ -74,7 +80,7 @@ export function specLine(slot: Slot, m: AnyModel, lang: Lang): string {
       const cooler = cpuCooler(c);
       return [
         cpuSocket(c),
-        c.cheapest.cores && `${c.cheapest.cores} ${t(S.cores)}`,
+        c.cheapest.cores && plural(lang, c.cheapest.cores, N.cores),
         cpuHasIgpu(c) && 'iGPU',
         c.cheapest.tdp && `TDP ${c.cheapest.tdp} W`,
         t(cooler ? S.withCooler : cooler === false ? S.noCooler : S.coolerUnknown),
@@ -84,7 +90,7 @@ export function specLine(slot: Slot, m: AnyModel, lang: Lang): string {
     }
     case 'mobo': {
       const b = m as Model<SlotListing['mobo']>;
-      return [b.cheapest.chipset, moboSocket(b), moboForm(b), moboMemory(b), `${moboSlots(b)} ${t(S.slots)}`]
+      return [b.cheapest.chipset, moboSocket(b), moboForm(b), moboMemory(b), plural(lang, moboSlots(b), N.slots)]
         .filter(Boolean)
         .join(' · ');
     }
@@ -133,7 +139,7 @@ export function specLine(slot: Slot, m: AnyModel, lang: Lang): string {
         `${t(S.upTo)} ${caseBoard(c)}`,
         gpu != null && `GPU ≤ ${gpu} mm`,
         cooler != null && `${t(S.coolerShort)} ≤ ${cooler} mm`,
-        fans != null && `${fans} ${t(S.fanPositions)}`,
+        fans != null && plural(lang, fans, N.fanPositions),
       ]
         .filter(Boolean)
         .join(' · ');

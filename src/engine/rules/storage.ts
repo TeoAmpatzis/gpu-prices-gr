@@ -1,6 +1,6 @@
 // Rules about drives on the board: 17 M.2 slots, 18 SATA ports (and M.2/SATA sharing), 20 PCIe 5.0 drives.
 import type { Build, Finding, Part } from '../types';
-import { all, finding, keys, msg, num, one, str, unknown } from '../util';
+import { all, F, finding, keys, msg, nOf, num, one, str, unknown } from '../util';
 
 const isM2 = (d: Part) => /^M\.2/i.test(str(d, 'formFactor') ?? '');
 /** A drive on a SATA cable (2.5"/3.5"); an M.2 SATA drive sits in an M.2 slot instead. */
@@ -12,12 +12,13 @@ export function rule17(b: Build): Finding[] {
   if (!mobo || !drives.length) return [];
   const m2 = drives.filter(isM2), n = count(m2), ps = keys(mobo, ...m2);
   if (!n) return [finding(17, 'pass', 'stated', keys(mobo), msg('Κανένας δίσκος M.2.', 'No M.2 drives.'))];
-  const slots = num(mobo, 'm2Slots');
-  if (slots === null) return [unknown(17, ps, msg(`αν χωράνε ${n} δίσκοι M.2: η μητρική δεν δηλώνει θέσεις M.2.`, `whether ${n} M.2 drive(s) fit: the board doesn't state its M.2 slots.`),
+  const slots = num(mobo, 'm2Slots'), d = nOf(n, F.m2Drive);
+  if (slots === null) return [unknown(17, ps, msg(`αν ${n === 1 ? 'χωράει' : 'χωράνε'} ${d.el}: η μητρική δεν δηλώνει θέσεις M.2.`, `whether ${d.en} ${n === 1 ? 'fits' : 'fit'}: the board doesn't state its M.2 slots.`),
     msg('Έλεγξε τις θέσεις M.2 στη σελίδα της μητρικής.', "Check the M.2 slots on the board's page."))];
-  if (n <= slots) return [finding(17, 'pass', 'stated', ps, msg(`${n} δίσκοι M.2 σε ${slots} θέσεις.`, `${n} M.2 drive(s) in ${slots} slots.`))];
+  const s = nOf(slots, F.slot), has = nOf(slots, F.m2Slot);
+  if (n <= slots) return [finding(17, 'pass', 'stated', ps, msg(`${d.el} σε ${s.el}.`, `${d.en} in ${s.en}.`))];
   return [finding(17, 'error', 'stated', ps,
-    msg(`${n} δίσκοι M.2, η μητρική έχει ${slots} θέσεις M.2.`, `${n} M.2 drives; the board has ${slots} M.2 slots.`),
+    msg(`${d.el}, η μητρική έχει ${has.el}.`, `${d.en}; the board has ${has.en}.`),
     msg('Διάλεξε μητρική με περισσότερες θέσεις M.2 ή δίσκο SATA.', 'Choose a board with more M.2 slots or a SATA drive.'))];
 }
 
@@ -26,16 +27,17 @@ export function rule18(b: Build): Finding[] {
   if (!mobo || !drives.length) return [];
   const sata = drives.filter(onSataPort), n = count(sata), ps = keys(mobo, ...sata);
   if (!n) return [finding(18, 'pass', 'stated', keys(mobo), msg('Κανένας δίσκος σε θύρα SATA.', 'No drives on SATA ports.'))];
-  const ports = num(mobo, 'sataPorts');
-  if (ports === null) return [unknown(18, ps, msg(`αν φτάνουν οι θύρες SATA για ${n} δίσκους: η μητρική δεν τις δηλώνει.`, `whether there are enough SATA ports for ${n} drive(s): the board doesn't state them.`),
+  const ports = num(mobo, 'sataPorts'), d = nOf(n, F.sataDrive), acc = nOf(n, F.driveAcc);
+  if (ports === null) return [unknown(18, ps, msg(`αν φτάνουν οι θύρες SATA για ${acc.el}: η μητρική δεν τις δηλώνει.`, `whether there are enough SATA ports for ${acc.en}: the board doesn't state them.`),
     msg('Έλεγξε τις θύρες SATA στη σελίδα της μητρικής.', "Check the SATA ports on the board's page."))];
+  const p = nOf(ports, F.port), sp = nOf(ports, F.sataPort);
   if (n > ports) return [finding(18, 'error', 'stated', ps,
-    msg(`${n} δίσκοι SATA, η μητρική έχει ${ports} θύρες SATA.`, `${n} SATA drives; the board has ${ports} SATA ports.`),
+    msg(`${d.el}, η μητρική έχει ${sp.el}.`, `${d.en}; the board has ${sp.en}.`),
     msg('Διάλεξε μητρική με περισσότερες θύρες SATA ή λιγότερους δίσκους.', 'Choose a board with more SATA ports or fewer drives.'))];
   if (drives.some(isM2)) return [finding(18, 'note', 'stated', ps,
-    msg(`${n} δίσκοι SATA σε ${ports} θύρες, μαζί με δίσκο M.2: σε πολλές μητρικές μια θέση M.2 κλείνει κάποιες θύρες SATA.`, `${n} SATA drive(s) in ${ports} ports, with an M.2 drive: on many boards an M.2 slot disables some SATA ports.`),
+    msg(`${d.el} σε ${p.el}, μαζί με δίσκο M.2: σε πολλές μητρικές μια θέση M.2 κλείνει κάποιες θύρες SATA.`, `${d.en} in ${p.en}, with an M.2 drive: on many boards an M.2 slot disables some SATA ports.`),
     msg('Έλεγξε στο εγχειρίδιο της μητρικής ποιες θύρες μοιράζονται.', "Check in the board's manual which ports are shared."))];
-  return [finding(18, 'pass', 'stated', ps, msg(`${n} δίσκοι SATA σε ${ports} θύρες.`, `${n} SATA drive(s) in ${ports} ports.`))];
+  return [finding(18, 'pass', 'stated', ps, msg(`${d.el} σε ${p.el}.`, `${d.en} in ${p.en}.`))];
 }
 
 export function rule20(b: Build): Finding[] {
