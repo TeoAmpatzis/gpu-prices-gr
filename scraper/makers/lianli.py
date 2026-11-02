@@ -46,8 +46,11 @@ def catalogue(s) -> list[dict]:
 
 def norm(text: str) -> str:
     """Letters and digits, with the spellings shops mix normalised: "UNI FAN"/"UNIFAN"/"UNI" fans,
-    "SL-INF"/"SL INFINITY", "Reverse Blade"/"Reverse", and Lian Li's own "GA II" = "Galahad II"."""
+    "SL-INF"/"SL INFINITY", "Reverse Blade"/"Reverse", and Lian Li's own "GA II" = "Galahad II" and
+    "O11D" = "O11 Dynamic" (the case normalizer writes "O11 Dynamic" since Q6, so the page
+    /product/o11d-evo-rgb/ must read O11DYNAMICEVORGB to beat the plain EVO page's O11DYNAMICEVO)."""
     a = alnum(text).replace("UNIFAN", "UNI").replace("INFINITY", "INF").replace("REVERSEBLADE", "REVERSE")
+    a = re.sub(r"^O11D(?!YNAMIC)", "O11DYNAMIC", a)
     return re.sub(r"^GA(?=II)", "GALAHAD", a)
 
 

@@ -1,6 +1,7 @@
 """Tests for scraper/ranges.py (Q4: plausible ranges before specs.SAFER joins values). Real saved values:
 Spire U20M (BestPrice "3.502" mm beat Skroutz 350 through min()), a cooler with a fan's 25 mm thickness.
 Run from the repo root: venv/Scripts/python scripts/checks/test_ranges.py"""
+import os
 import re
 import sys
 from pathlib import Path
@@ -161,7 +162,8 @@ finally:
 expect("finish summary counts shop + maker drops", "values dropped as implausible: {\x27gpuMaxMm\x27: 3}" in buf.getvalue(), True)
 
 # 7. table equals v2's ranges.ts (when the sibling repo is there)
-V2 = Path(r"C:\Users\Teo\Desktop\PROJECTS\buildcraft-v2\src\data\validate\ranges.ts")
+V2 = Path(os.environ.get("V2_RANGES_TS") or
+          Path(__file__).resolve().parents[2].parent / "builddraft-v2" / "src/data/validate/ranges.ts")
 if V2.exists():
     text = V2.read_text(encoding="utf-8")
     v2 = {m.group(1): (m.group(2), m.group(3), float(m.group(4)), float(m.group(5))) for m in re.finditer(
@@ -171,7 +173,7 @@ if V2.exists():
     expect("table equals v2 (min/max/cat/field)", {k: v2[k] for k in ours}, ours)
     expect("seven ids", len(ours), 7)
 else:
-    print("SKIP table equality with v2 (ranges.ts not found)")
+    print(f"SKIP table equality with v2 (ranges.ts not found at {V2})")
 
 print(f"\n{ok} passed, {bad} failed")
 sys.exit(1 if bad else 0)

@@ -259,6 +259,8 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
             print(f"[{cat.name}/{name}] FAILED — keeping {len(old)} previous listings")
 
     out_dir.mkdir(parents=True, exist_ok=True)
+    if cat.settle:  # before any model key is used (photos, specs sharing, history)
+        cat.settle(listings)
     write_image_urls(out_dir, listings, cat.model_key)
     finish(cat, out_dir, listings)
     listings.sort(key=lambda l: (l["chip"], l["price"]))
