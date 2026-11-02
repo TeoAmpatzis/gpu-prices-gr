@@ -73,6 +73,21 @@ CHIPSET_SOCKET = [
     (re.compile(r"^(W790|C741)$"), "LGA4677"),
     (re.compile(r"^(TRX50|WRX90)$"), "sTR5"),
 ]
+# Chipsets made for one socket only: their socket beats a title's / slug's (Shopflix "PRIME H610M-A … AMD AM5
+# Socket", BestPrice "B840M-A-CSM …-amd-am4-socket"). Same table as v2's G5 (src/data/validate/conflicts.ts
+# SOCKET_OF); chipsets whose listings split between sockets (W890: LGA1851 / LGA4710) stay out.
+ONE_SOCKET = {c: s for s, cs in {
+    "AM4": ["A320", "B350", "B450", "X370", "X470", "A520", "B550", "X570"],
+    "AM5": ["A620", "B650", "B650E", "X670", "X670E", "B840", "B850", "X870", "X870E"],
+    "LGA1700": ["H610", "B660", "H670", "Q670", "Q670E", "W680", "Z690", "B760", "H770", "Z790", "C262", "C266"],
+    "LGA1851": ["H810", "B860", "Z890", "Q870", "W880"],
+    "LGA1200": ["H410", "W480", "Z590", "C252", "C256"],
+    "LGA1151": ["H110", "Q270"],
+    "LGA2066": ["X299"],
+    "LGA4677": ["W790"],
+    "sTR5": ["TRX50", "WRX90"],
+    "TR4": ["X399"],
+}.items() for c in cs}
 # Socket as the sites write it: "Socket: AMD AM5", "με Intel 1851 Socket", "intel-lga4677-socket".
 SOCKET = re.compile(
     r"\b(?:AMD|Intel)[\s-]+(?:LGA[\s-]?)?(AM[2-5]\+?|\d{3,4}|s?TRX?\d|sWRX\d|SP\d|TR\d|LGA\d{3,4})\b"
@@ -137,7 +152,7 @@ def make_listing(
 
     chip_m = CHIPSET.search(name)
     chipset = chip_m.group(1).upper() if chip_m else None
-    socket = _socket(f"{specs} {title} {slug}")
+    socket = ONE_SOCKET.get(chipset) or _socket(f"{specs} {title} {slug}")
     if socket is None and chipset:
         socket = next((s for pattern, s in CHIPSET_SOCKET if pattern.match(chipset)), None)
 

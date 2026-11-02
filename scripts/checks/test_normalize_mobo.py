@@ -52,5 +52,27 @@ expect("BestPrice 'H610M-HDV/M.2+ D5' as today",
              "https://www.bestprice.gr/item/2159016261/asrock-h610m-hdv-m-2-plus-d5-motherboard-micro-atx-me-intel-1700-socket.html"),
        ("ASRock H610M-HDV/M.2", "Micro ATX"))
 
+
+
+def socket(source, title, url):
+    l = normalize_mobo.make_listing(source=source, native_id="1", title=title, url=url, price=100.0,
+                                    shop_count=None, scraped_at="2026-10-04T00:00:00+00:00")
+    return (l.chip, l.chipset, l.socket) if l else None
+
+
+# --- Q-B5: a chipset made for one socket beats a wrong socket in the title / slug (same table as v2's G5)
+expect("Shopflix 'PRIME H610M-A … AMD AM5 Socket' is LGA1700",
+       socket("shopflix", "Asus PRIME H610M-A Motherboard ATX με AMD AM5 Socket 90MB1MJ0-M0EAY0",
+              "https://shopflix.gr/p/SF-200949516/asus-prime-h610m-a-motherboard-atx-me-amd-am5-socket-90mb1mj0-m0eay0"),
+       ("Asus PRIME H610M-A", "H610", "LGA1700"))
+expect("BestPrice 'Prime B840M-A-CSM' slug 'amd-am4-socket' is AM5",
+       socket("bestprice", "Asus Prime B840M-A-CSM",
+              "https://www.bestprice.gr/item/2160272434/asus-prime-b840m-a-csm-motherboard-micro-atx-me-amd-am4-socket.html"),
+       ("Asus Prime B840M-A-CSM", "B840", "AM5"))
+expect("a chipset that spans sockets keeps the title's socket (W890 -> LGA4710 as stated)",
+       socket("shopflix", "Asus Pro WS W890E-SAGE SE Extended ATX με Intel 4710 Socket",
+              "https://shopflix.gr/p/SF-1/asus-pro-ws-w890e-sage-se-extended-atx-me-intel-4710-socket"),
+       ("Asus Pro WS W890E-SAGE SE", "W890", "LGA4710"))
+
 print(f"\n{ok} passed, {bad} failed")
 sys.exit(1 if bad else 0)
