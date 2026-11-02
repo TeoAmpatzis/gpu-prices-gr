@@ -74,5 +74,23 @@ expect("a chipset that spans sockets keeps the title's socket (W890 -> LGA4710 a
               "https://shopflix.gr/p/SF-1/asus-pro-ws-w890e-sage-se-extended-atx-me-intel-4710-socket"),
        ("Asus Pro WS W890E-SAGE SE", "W890", "LGA4710"))
 
+# --- Q-B2: "-ITX" in the board name is Mini ITX even after an "M" chipset suffix (Shopflix / Snif titles)
+expect("Shopflix 'A520M-ITX / ac Mini ITX' is Mini ITX",
+       board("shopflix", "ASRock A520M-ITX / ac Mini ITX με AMD AM4 Socket",
+             "https://shopflix.gr/p/SF-11892236/metrike-karta-asrock-a520m-itx-ac-mini-itx-me-amd-am4-socket"),
+       ("ASRock A520M-ITX / ac", "Mini ITX"))
+expect("Snif 'A520M-ITX/ac AMD A520 Mini ITX' is Mini ITX",
+       board("snif", "Asrock A520M-ITX/ac AMD A520 Mini ITX με Socket AMD AM4",
+             "https://www.snif.gr/showproduct/40180768/asrock-a520m-itx-ac-amd-a520-mini-itx-me-socket-am"),
+       ("ASRock A520M-ITX/ac", "Mini ITX"))
+expect("Shopflix 'B550M-ITX / ac Mini ITX' is Mini ITX",
+       board("shopflix", "ASRock B550M-ITX / ac Mini ITX με AMD AM4 Socket",
+             "https://shopflix.gr/p/SF-10796611/metrike-karta-asrock-b550m-itx-ac-mini-itx-me-amd-am4-socket"),
+       ("ASRock B550M-ITX / ac", "Mini ITX"))
+expect("an 'M' board without '-ITX' stays Micro ATX",
+       board("snif", "Asrock B550M Pro4 AMD B550 Micro ATX με Socket AMD AM4",
+             "https://www.snif.gr/showproduct/1/asrock-b550m-pro4"),
+       ("ASRock B550M Pro4", "Micro ATX"))
+
 print(f"\n{ok} passed, {bad} failed")
 sys.exit(1 if bad else 0)
