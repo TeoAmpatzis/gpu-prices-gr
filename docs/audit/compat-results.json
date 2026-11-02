@@ -1390,7 +1390,7 @@
   },
   {
     "id": "S25",
-    "title": "Power supply exactly at the recommended wattage (650 W): warning",
+    "title": "Power supply exactly at the card maker's figure (650 W), formula below it: pass",
     "ui": {
       "parts": [
         {
@@ -1452,14 +1452,14 @@
     "rules": [
       {
         "rule": 14,
-        "expected": "warning",
+        "expected": "pass",
         "v1": "pass",
         "v1Says": "Fits (v1 recommends ≥ 650 W)",
-        "verdict": "gap",
-        "detail": "v1 has no margin warning (it passes)"
+        "verdict": "correct",
+        "detail": ""
       }
     ],
-    "verdict": "not checked by v1"
+    "verdict": "correct"
   },
   {
     "id": "S26",

@@ -1,4 +1,4 @@
-// Renders the tables of docs/audit/data-quality.md from the JSON outputs of the other scripts, so the
+// Renders the tables of the Phase 0 data-quality report (removed 2026-10-31, in git history) from the JSON outputs of the other scripts, so the
 // report's numbers are copied from computed files, not typed. Output: docs/audit/data/report-tables.md
 // with one "<!-- table:name -->" section per table (the report includes them verbatim).
 // Run after the other scripts: node scripts/audit/data-quality/report-tables.mjs

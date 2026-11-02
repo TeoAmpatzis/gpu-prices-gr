@@ -342,7 +342,7 @@ Partly:
 
 ## Files
 
-- Report and notes: `docs/phase1/gate.md` (this), `plan.md`, `glossary.md`, `stop2.md`, `stop2-handoff.md`.
+- Report and notes: `docs/phase1/gate.md` (this), `plan.md`, `glossary.md`, `stop2.md`.
 - Screenshots: `docs/phase1/shots/` (`node scripts/phase1/site-shots.mjs docs/phase1/shots`); the Stop 2 option shots stay in `docs/phase1/preview/`.
 - Measurements: `docs/phase1/perf/lighthouse.json` (3 runs per page and form factor), `perf/motion.json`, `perf/keyboard.json`.
 - Scripts: `scripts/phase1/{site-shots,keyboard-walk,perf-tables,preview-shots,check-no-preview}.mjs`, `scripts/checks/{layout-audit,motion-check}.mjs`, `scripts/audit/lighthouse-baseline.mjs`.

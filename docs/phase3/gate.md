@@ -1,7 +1,7 @@
 # Roadmap step 3 gate: "Pick for my build" + category-page fixes
 
 2026-10-17 · worktree `buildcraft-v2`, branch `v2` (local only, nothing pushed) · plan
-`docs/superpowers/plans/2026-10-12-step3-pick-mode.md` · data: `origin/main` of 2026-10-17 11:40 (merged into v2 as
+`2026-10-12-step3-pick-mode.md` (removed 2026-10-31, in git history) · data: `origin/main` of 2026-10-17 11:40 (merged into v2 as
 `93752f0`).
 
 This is the step 3 part of the Phase 3 gate. Phase 3 also holds step 4 (the product page), so the rest of the Phase 3

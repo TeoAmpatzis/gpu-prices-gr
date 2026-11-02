@@ -53,7 +53,7 @@ Coverage files: `docs/phase2/cpu-memory-coverage.md`, `cpu-power-coverage.md`, `
 
 ## Data coverage per field
 
-**Fields the rules and filters use** (audit script `scripts/audit/data-quality/coverage.mjs` on v2's data; full table `docs/phase2/gate/coverage.md`, Phase 0 baseline `docs/audit/data/coverage.md`). Main changes since Phase 0:
+**Fields the rules and filters use** (audit script `scripts/audit/data-quality/coverage.mjs` on v2's data; full table and Phase 0 baseline removed 2026-10-31, in git history). Main changes since Phase 0:
 - **Cooler sockets** (rule 10): 33.1% → **65.1%** of models.
 - **Card minimum PSU** (rule 14): 52.6% → 62.1% of models.
 - **CPU TDP**: 32.3% → 31.1% (models changed; most-listed quarter 83%).

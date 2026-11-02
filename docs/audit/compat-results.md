@@ -6,9 +6,9 @@ Do not edit by hand; `npx vitest run -u` rewrites it after an intended change.
 
 ## Totals
 
-- Scenarios: 64 — correct 45, wrong 5, not checked by v1 14.
+- Scenarios: 64 — correct 46, wrong 5, not checked by v1 13.
   (A scenario is "wrong" if any of its expected rules is wrong; "correct" if at least one rule is correct and the rest are not checked by v1.)
-- Expected rule results: 99 — correct 65, wrong 5, not checked by v1 29.
+- Expected rule results: 99 — correct 66, wrong 5, not checked by v1 28.
 
 ## How v1 answers are mapped to the plan’s levels
 
@@ -42,7 +42,7 @@ on a field v1 does not have, or the plan’s margin band (rules 6, 8, 14: a warn
 | 11 | build note: CPU cooler | S01 pass→correct, S06 error→correct, S18 warning→wrong, S39 error→correct, S40 pass→correct |
 | 12 | build note: integrated graphics | S01 pass→correct, S05 error→correct, S06 pass→correct, S18 pass→correct, S39 pass→correct, S40 error→correct |
 | 13 | none | S01 pass→not checked, S03 warning→not checked, S04 pass→not checked |
-| 14 | psu–gpu / psu–cpu check (recommended watts) | S12 error→correct, S25 warning→not checked, S26 error→correct, S27 pass→correct, S53 pass→correct, S59 warning→not checked, S62 warning→wrong, S63 pass→correct, S64 error→correct |
+| 14 | psu–gpu / psu–cpu check (recommended watts) | S12 error→correct, S25 pass→correct, S26 error→correct, S27 pass→correct, S53 pass→correct, S59 warning→not checked, S62 warning→wrong, S63 pass→correct, S64 error→correct |
 | 15 | none | S53 note→not checked |
 | 16 | psu–case check (only: SFF case → not verified) | S49 note→correct, S50 error→not checked, S60 pass→correct |
 | 17 | none | S30 note→not checked, S54 error→not checked |
@@ -84,7 +84,7 @@ on a field v1 does not have, or the plan’s margin band (rules 6, 8, 14: a warn
 | **S22** Air cooler 165 mm + case without a maximum cooler height: note | R8 note | R8: Fit not verified: The cooler's height or the case's maximum cooler height is not stated. | R8 correct |
 | **S23** Graphics card 340 mm + case that takes exactly 340 mm: warning | R6 warning | R6: Fits | R6 v1 does not check this (v1 has no margin warning (it passes)) |
 | **S24** Graphics card 241.5 mm + case that takes 330 mm: pass | R6 pass | R6: Fits | R6 correct |
-| **S25** Power supply exactly at the recommended wattage (650 W): warning | R14 warning | R14: Fits (v1 recommends ≥ 650 W) | R14 v1 does not check this (v1 has no margin warning (it passes)) |
+| **S25** Power supply exactly at the card maker's figure (650 W), formula below it: pass | R14 pass | R14: Fits (v1 recommends ≥ 650 W) | R14 correct |
 | **S26** Power supply just below the recommended wattage (600 W of 650 W): error | R14 error | R14: Incompatible: 600 W power supply; at least 650 W is needed. 600 W power supply; at least 650 W is needed. (v1 recommends ≥ 650 W) | R14 correct |
 | **S27** Power supply above the recommended wattage plus 10% (750 W of 650 W): pass | R14 pass | R14: Fits (v1 recommends ≥ 650 W) | R14 correct |
 | **S28** Two DDR5 2×16GB kits on a 4-slot board: pass<br>v1 cannot hold: 2 × DDR5 32GB (2×16GB) 6000MHz counted once | R2 pass<br>R3 pass | R2: —<br>R3: — | R2 v1 does not check this (v1 holds one ram; the scenario has 2)<br>R3 v1 does not check this (v1 holds one ram; the scenario has 2) |

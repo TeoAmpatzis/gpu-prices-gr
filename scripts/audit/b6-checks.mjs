@@ -2,7 +2,7 @@
 //   1. going back while choosing parts in the guided builder (in-page Back, browser/phone Back),
 //   3. the motherboard socket filters (pills, "Πλατφόρμα", "Socket": names, order, grouping, counts),
 //   4. the dual-core + RTX 5060 build (CPU step sorted by "Αξία για τα λεφτά", then the defaults).
-// Records texts, positions and screenshots; the judgement is in docs/audit-v1.md (B6).
+// Records texts, positions and screenshots; the judgement was in the v1 audit report (removed 2026-10-31, in git history).
 //
 //   node scripts/audit/b6-checks.mjs <baseUrl> <outDir>
 /* global document, window, location, history */

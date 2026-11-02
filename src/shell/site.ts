@@ -11,7 +11,6 @@ import { CATS } from './nav';
 import { afterFirstPaint } from '../lib/paint';
 import { loadManifest } from '../lib/manifest';
 
-export { loadManifest };
 
 export interface SiteInfo {
   builtAt: string;

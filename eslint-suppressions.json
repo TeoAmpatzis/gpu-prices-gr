@@ -27,30 +27,12 @@
       "count": 1
     }
   },
-  "src/components/FilterBar.tsx": {
-    "react-hooks/refs": {
-      "count": 1
-    }
-  },
   "src/components/builder/Guided.tsx": {
     "react-hooks/refs": {
       "count": 4
     },
     "react-hooks/set-state-in-effect": {
       "count": 3
-    }
-  },
-  "src/lib/data.ts": {
-    "@typescript-eslint/no-unused-vars": {
-      "count": 1
-    }
-  },
-  "src/lib/useFilterState.ts": {
-    "@typescript-eslint/no-unused-vars": {
-      "count": 2
-    },
-    "react-hooks/refs": {
-      "count": 1
     }
   }
 }

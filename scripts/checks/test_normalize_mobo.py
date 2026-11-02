@@ -1,4 +1,4 @@
-"""Unit tests for scraper/normalize_mobo.py, with real shop titles (v2 audit, docs/audit-v1.md D-05).
+"""Unit tests for scraper/normalize_mobo.py, with real shop titles (v2 Phase 0 audit, finding D-05).
 Run from the repo root: venv/Scripts/python scripts/checks/test_normalize_mobo.py"""
 import sys
 
