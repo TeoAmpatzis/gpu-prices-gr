@@ -7,6 +7,54 @@
    "source": "https://lian-li.com/product/o11d-evo-rgb/",
    "date": "2026-10-25",
    "note": "Lian Li O11 Dynamic EVO RGB (455.7 mm GPU, 167 mm cooler per Lian Li's own page). Since Q6 normalize_case keeps RGB in this name (one model for 'O11 Dynamic Evo RGB' and 'O11D EVO RGB'), but makers/__init__.apply matches by prefix, so the plain EVO page (o11-dynamic-evo, 426 mm) still matches O11DYNAMICEVORGB until the o11d-evo-rgb page is in public/data/makers/lianli.json (lianli.norm reads O11D as O11 Dynamic since Q6, so the next scrape ranks and fetches it). Remove this entry once that page is cached with gpuMaxMm 455.7."
+  },
+  {
+   "cat": "case",
+   "model": "nzxth9flow",
+   "set": {"gpuMaxMm": 459},
+   "source": "https://nzxt.com/en-intl/products/h9-flow",
+   "date": "2026-11-02",
+   "note": "NZXT H9 Flow (2025, CM-H92F…): GPU clearance up to 459 mm on NZXT's H9 Flow, H9 Flow RGB and H9 Flow RGB+ pages (410 mm only with a 56 mm thick 420 mm AIO at the front-right). The shops' 200 mm is the PSU length, so the builder hid every long card (test drive finding 9). Every shop page checked under this key names a CM-H92F part number (none the 2023 CM-H91F), and NZXT no longer lists the 2023 case. Remove once the shops/makers give this key gpuMaxMm 459."
+  },
+  {
+   "cat": "case",
+   "model": "corsair3200drs",
+   "set": {"gpuMaxMm": 375},
+   "source": "https://www.corsair.com/us/en/p/pc-cases/cc-9011334-ww/3200d-rs-mid-tower-pc-case-cc-9011334-ww",
+   "date": "2026-11-02",
+   "note": "Corsair 3200D RS / RS ARGB: '375mm GPU clearance (400mm with fans removed)' on Corsair's pages (CC-9011334-WW, CC-9011344-WW); the case ships with front fans, so 375. The shops' 180 mm hid most cards (test drive finding 12). Remove once the shops/makers give this key 375 (or 400) mm."
+  },
+  {
+   "cat": "case",
+   "model": "silverstonesugosg13bqcube",
+   "set": {"maxBoard": "Mini ITX"},
+   "source": "https://www.silverstonetek.com/en/product/info/computer-chassis/SG13/",
+   "date": "2026-11-02",
+   "note": "SilverStone Sugo SG13B-Q: Motherboard 'Mini-DTX, Mini-ITX' on SilverStone's SG13 page (SST-SG13B-Q listed there). The shops' 'ATX' let ATX boards show as fitting (test drive finding 12). Remove once the shops give maxBoard Mini ITX."
+  },
+  {
+   "cat": "cooler",
+   "model": ["deepcoolak400", "deepcoolak400wh", "deepcoolak400zerodark"],
+   "set": {"heightMm": 155},
+   "source": "https://www.deepcool.com/products/Cooling/cpuaircoolers/AK400-Performance-CPU-Cooler-1851-1700-AM5/2024/15222.shtml",
+   "date": "2026-11-02",
+   "note": "Deepcool AK400, AK400 WH and AK400 Zero Dark: Product Dimensions 127×97×155 mm (L×W×H) on each of DeepCool's pages (AK400 15222, AK400 WH 15223, AK400 ZERO DARK 16140). The shops' 97 mm is the depth, so the cooler showed as fitting 120 mm cases (test drive finding 12). Remove once the shops give heightMm 155."
+  },
+  {
+   "cat": "cooler",
+   "model": "deepcoolak400digitalpro",
+   "set": {"heightMm": 159},
+   "source": "https://www.deepcool.com/products/Cooling/cpuaircoolers/AK400-Digital-Pro-Cooler-With-Multi-line-Display-1851-1700-AM5/2024/18680.shtml",
+   "date": "2026-11-02",
+   "note": "Deepcool AK400 Digital Pro: Product Dimensions 126×97×159 mm (L×W×H) on DeepCool's page. The shops' 97 mm is the depth (test drive finding 12). Remove once the shops give heightMm 159."
+  },
+  {
+   "cat": "cooler",
+   "model": "thermalrightassassinx120refinedse",
+   "set": {"sockets": "AM4,AM5,LGA1150,LGA1151,LGA1155,LGA1156,LGA1200,LGA1700,LGA1851"},
+   "source": "https://www.thermalright.com/product/assassin-x-120-refined-se/",
+   "date": "2026-11-02",
+   "note": "Thermalright Assassin X 120 Refined SE and SE ARGB: 'Intel:115x/1200/1700/1851 AMD:AM4/AM5' on both Thermalright pages (also /assassin-x-120-refined-se-argb/); 115x written out as the shops do, format as specs._sockets. The shops' list lacked AM4, so the builder hid it on AM4 (test drive finding 10). Remove once the shops' sockets include AM4."
   }
  ]
 }
