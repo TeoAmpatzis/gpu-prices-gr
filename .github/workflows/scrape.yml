@@ -2,7 +2,7 @@ name: scrape
 
 on:
   schedule:
-    - cron: "17 */6 * * *"
+    - cron: "43 */6 * * *"
   workflow_dispatch:
     inputs:
       allow_history_shrink:
