@@ -70,6 +70,16 @@ SSD_WORDS = re.compile(
 )
 HDD_WORDS = re.compile(r"\bHDD\b|\d\s*rpm|\bSSHD\b|Σκληρ|Hard\s+(?:Disk|Drive)|Skliros", re.I)
 SAS = re.compile(r"\bSAS(?:[-\s]?\d(?:\.0)?)?\b", re.I)
+# SAS by the part number or the product line, beating a title's "SATA" (owner, 2026-10-26; shops copy "SATA III" onto
+# these): Seagate part numbers ending "SS" (Cheetah ST3600057SS, ST3300657SS); Seagate Enterprise Performance 10K /
+# 15K, SAS-only lines: Seagate's product manuals "Enterprise Performance 10K HDD v9" (100818015c, models incl.
+# ST600MM0099 / ST600MM0009 / ST1200MM0129: "Serial Attached SCSI") https://www.seagate.com/www-content/product-
+# content/enterprise-performance-savvio-fam/ent-perf-10k-hdd-v9-skybolt/en-us/docs/100818015c.pdf and "Enterprise
+# Performance 15K HDD v6" (100802255d, "SAS (Serial Attached SCSI)") https://www.seagate.com/content/dam/seagate/
+# migrated-assets/www-content/product-content/enterprise-performance-savvio-fam/enterprise-performance-15k-hdd/ent-
+# perf-15k-6/en-us/docs/100802255d.pdf, both read 2026-10-26. HP MSA drives (HP_MSA, HP / HPE only) are SAS too.
+SAS_PART_OR_LINE = re.compile(r"(?<![\w-])ST\d{4,}[A-Z0-9]*SS(?![\w-])|\bEnterp\w*\s+Performance\s+1[05]K\b", re.I)
+HP_MSA = re.compile(r"\bMSA\b", re.I)
 NVME = re.compile(r"NVMe|PCI\s*-?\s*Express|PCI-?e|PCle|\bU\.[23]\b", re.I)
 PCIE_GEN = re.compile(r"(?:PCI\s*-?\s*Express|PCI-?E|PCle|\bGen)\.?\s*(?:Gen\.?\s*)?([345])(?:[.\s]\d)?\b", re.I)
 M2_LENGTH = re.compile(r"(?<!\d)22(30|42|60|80|110)(?!\d)")
@@ -79,7 +89,9 @@ SERVER_NAMES = re.compile(
     r"\bExos\b|Ultrastar|\bU\.[23]\b|\bSAS\b|Enterprise|Data\s*Cent(?:er|re)|\bNytro\b|"
     r"(?:WD|Western\s+Digital)\s+(?:\S+\s+)?Gold\b|\bMG\d{2}|\bAL1\d[A-Z]{2}|"
     r"\bDC\s?\d{3,4}[A-Z]{0,3}\b|\bDC\s?(?:HC|SN|SA|ME)\d|"
-    r"\bP?M(?:8[89]\d|9[68]3|9A3|9D3|1[67]\d\d)\b|\bSM8\d3\b|Micron\s+[57]\d00|Solidigm\s+D\d|\bD[357]-[PS]\d{4}|"
+    # (Micron 7450 / 9550 and Samsung PM9D3a too: their M.2 and "PCIe card" listings are models of their own
+    # once U.2 drives are split off, and must stay data-centre drives.)
+    r"\bP?M(?:8[89]\d|9[68]3|9A3|9D3a?|1[67]\d\d)\b|\bSM8\d3\b|Micron\s+[5-9]\d\d0\b|Solidigm\s+D\d|\bD[357]-[PS]\d{4}|"
     r"Kioxia\s+(?:C[DM]\d|PM\d|XD\d)",
     re.I,
 )
@@ -96,6 +108,7 @@ HP_SERVER = re.compile(r"-B2\d\b|Hot[\s-]?Plug|\b[LS]FF\b|Midline|\bMDL\b|\bSAS\
 HEATSINK = re.compile(r"\b(?:with|w/)\s*Heatsink\b|\bHeatsink\b|με\s+Ψύκτρα|kai\s+PSyktra", re.I)
 NO_HEATSINK = re.compile(r"\b(?:w/o|without|no)\s*Heatsink\b|χωρίς\s+Ψύκτρα", re.I)
 RPM = re.compile(r"(\d[.,]?\d{3,4})\s*-?\s*rpm", re.I)
+FAST_RPM = 10000  # 10,000 / 15,000 rpm drives: 2.5" and SAS
 CACHE = re.compile(r"(?<![\w.])(\d{1,4})\s?(MB|GB)(?:\s+Cache|\s*,|\s*$)|(?<![\w.])(\d{1,4})\s?(MB|GB)\s*Cache", re.I)
 SPEEDS = re.compile(r"(\d[.,]?\d{2,3})\s*[-/]\s*(\d[.,]?\d{2,3})\s*MB/?s", re.I)
 DRAM = re.compile(r"DRAM[\s-]?less|\bHMB\b|\bDRAM\b", re.I)
@@ -126,12 +139,38 @@ SPEC = re.compile(
 PART_SHAPE = re.compile(r"^[A-Z]{1,3}\d{3,4}[A-Z]{0,3}$", re.I)  # series names like SN850X, DC600M, NM1090
 
 
+# Data-centre SSD sizes (multiples of 960GB). Shops round them in their titles ("1.9TB", "3.8TB", "7.6TB" /
+# "7.7TB", "15.3TB" / "15.4TB", "30.7TB"), so a capacity within 1.5% is that size: one model per drive.
+DC_SIZES = (1920, 3840, 7680, 15360, 30720, 61440, 122880)
+
+
 def _snap(gb: float) -> int:
-    """1024 -> 1000, 2048 -> 2000, 4.1TB -> 4000 (binary sizes written as decimal); 960 stays 960."""
+    """1024 -> 1000, 2048 -> 2000, 4.1TB -> 4000 (binary sizes written as decimal); 960 stays 960;
+    1900 -> 1920, 7700 -> 7680 (rounded data-centre sizes). "1920GB" and "1.92TB" are both 1920."""
     for tb in (1, 2, 4, 8, 16):
         if tb * 1000 < gb <= tb * 1000 * 1.05:
             return tb * 1000
+    for size in DC_SIZES:
+        if abs(gb - size) <= size * 0.015:
+            return size
     return round(gb)
+
+
+def _slug(url: str) -> str:
+    """The URL's last part as words ("...-SATA-III-10000rpm-...html" -> "... SATA III 10000rpm ...")."""
+    return re.sub(r"[-_/]+", " ", url.rsplit("/", 1)[-1].removesuffix(".html"))
+
+
+def _rpm(text: str) -> int | None:
+    m = RPM.search(text)
+    value = int(re.sub(r"[.,]", "", m.group(1))) if m else None
+    return value if value and 4000 <= value <= 15000 else None
+
+
+def _sas_named(title: str, slug: str, vendor: str) -> bool:
+    """SAS by a word in the title or URL, or by the part number / product line in the title (beats "SATA")."""
+    return bool(SAS.search(f"{title} {slug}") or SAS_PART_OR_LINE.search(title)
+                or (vendor in ("HP", "HPE") and HP_MSA.search(title)))
 
 
 def _capacity(text: str) -> int | None:
@@ -212,9 +251,14 @@ def _series(rest: str, vendor: str) -> str:
 
 def _form_factor(text: str, slug: str, media: str, iface: str | None) -> str | None:
     if media == "HDD":
-        size = re.search(r"(?<![\d.])(1\.8|2\.5|3\.5)", text) or re.search(r"(?:typou|diskos) ([123]) ([58])\b", slug, re.I)
+        # Not a capacity: "Toshiba Enterprise 1.8TB 2.5"" is a 2.5" drive.
+        size = (re.search(r"(?<![\d.])(1\.8|2\.5|3\.5)(?![\d.]|\s?(?:TB|GB|T\b))", text, re.I)
+                or re.search(r"(?:typou|diskos) ([123]) ([58])\b", slug, re.I))
         if not size:
-            return '3.5"'
+            # 10,000 / 15,000 rpm drives are 2.5" (a 3.5" one is the same drive in a carrier): a title
+            # that doesn't say joins the sites that write "2.5"" (BestPrice "Dell 400-BEGI 2.4TB ... 10000rpm").
+            rpm = _rpm(text)
+            return '2.5"' if rpm and rpm >= FAST_RPM else '3.5"'
         return f'{size.group(1)}"' if size.lastindex == 1 else f'{size.group(1)}.{size.group(2)}"'
     if re.search(r"\bU\.[23]\b", text):
         return "U.2"
@@ -230,7 +274,9 @@ def _form_factor(text: str, slug: str, media: str, iface: str | None) -> str | N
     if not size:
         size = re.search(r"(?:typou|diskos) ([123]) ([58])\b", slug, re.I)
     if size:
-        return f'{size.group(1)}"' if size.lastindex == 1 else f'{size.group(1)}.{size.group(2)}"'
+        inches = f'{size.group(1)}"' if size.lastindex == 1 else f'{size.group(1)}.{size.group(2)}"'
+        # A 2.5" NVMe drive is a U.2 / U.3 drive: the same product whichever word the site uses.
+        return "U.2" if iface == "NVMe" and inches == '2.5"' else inches
     if media == "HDD":
         return '3.5"'
     if iface == "NVMe":
@@ -241,7 +287,8 @@ def _form_factor(text: str, slug: str, media: str, iface: str | None) -> str | N
 
 
 def _tier(text: str, vendor: str, media: str, iface: str | None, form: str | None) -> str:
-    if SERVER_NAMES.search(text) or vendor in OEM_SERVER or (vendor == "HP" and HP_SERVER.search(text)):
+    # A SAS drive is a server drive however the site says so (also SAS only by its 10k / 15k rpm, or by settle()).
+    if SERVER_NAMES.search(text) or iface == "SAS" or vendor in OEM_SERVER or (vendor == "HP" and HP_SERVER.search(text)):
         return "Server"
     if iface == "NVMe" and form in ('2.5"', "U.2"):
         return "Server"  # a 2.5" NVMe drive is a U.2/U.3 data-centre drive
@@ -260,7 +307,7 @@ def make_listing(
 ) -> StorageListing | None:
     # e-shop writes "3,5''": decimal commas (between digits, no space) become points for parsing.
     title = re.sub(r"(?<=\d),(?=\d)", ".", re.sub(r"\s+", " ", title).strip())
-    slug = re.sub(r"[-_/]+", " ", url.rsplit("/", 1)[-1].removesuffix(".html"))
+    slug = _slug(url)
     text = f"{title} {slug}"
     if price <= 0 or EXCLUDE.search(title):
         return None
@@ -301,9 +348,23 @@ def make_listing(
     if not series:
         return None
 
+    rpm = _rpm(text) if media == "HDD" else None
     if media == "HDD":
-        iface = "SAS" if SAS.search(text) else "SATA"
-    elif SAS.search(text):
+        # Owner's rule (2026-10-25): an interface no word states is unknown, not SATA. SATA only when the title
+        # says it; a 10,000 / 15,000 rpm drive is SAS (those exist only as SAS); then Skroutz's URL ("...-SATA-III-
+        # ..."), which settle() may still overrule by part number; else None. A SAS part number / product line
+        # (SAS_PART_OR_LINE, HP MSA; owner 2026-10-26) counts as SAS stated.
+        if _sas_named(title, slug, vendor):
+            iface = "SAS"
+        elif re.search(r"SATA", title, re.I):
+            iface = "SATA"
+        elif rpm and rpm >= FAST_RPM:
+            iface = "SAS"
+        elif re.search(r"SATA", slug, re.I):
+            iface = "SATA"
+        else:
+            iface = None
+    elif _sas_named(title, slug, vendor):
         iface = "SAS"
     elif NVME.search(text):
         iface = "NVMe"
@@ -327,14 +388,17 @@ def make_listing(
         suffix = " M.2"
     elif iface == "NVMe" and form and form.startswith("M.2") and form != "M.2 2280":
         suffix = f" {form[4:]}"
+    elif iface == "NVMe" and form == "U.2":
+        suffix = " U.2"  # Samsung PM9A3, Micron 7450 Pro: M.2 (the default) and U.2 are two products
+    # SATA is the default interface; SAS drives are their own products (Exos 7E10 4TB: SATA ST4000NM000B,
+    # SAS ST4000NM025B).
+    if iface == "SAS" and not re.search(r"\bSAS\b", series, re.I):
+        suffix += " SAS"
     # From the title only: a Skroutz family card's URL can be the heatsink variant of a plain name.
     has_heatsink = bool(HEATSINK.search(title)) and not NO_HEATSINK.search(title)
     if has_heatsink and not re.search(r"heatsink", series, re.I):
         series += " Heatsink"
 
-    rpm = RPM.search(text) if media == "HDD" else None
-    if rpm and not 4000 <= int(re.sub(r"[.,]", "", rpm.group(1))) <= 15000:
-        rpm = None
     cache = None
     if media == "HDD":
         for c in [*CACHE.finditer(title), *CACHE.finditer(slug)]:
@@ -371,6 +435,109 @@ def make_listing(
         writeMBs=num(speeds.group(2)) if speeds else None,
         tbw=num(tbw.group(1)) if tbw else None,
         heatsink=True if has_heatsink else (False if NO_HEATSINK.search(title) else None),
-        rpm=num(rpm.group(1)) if rpm else None,
+        rpm=rpm,
         cacheMB=cache,
     )
+
+
+# Tokens that look like part numbers but never are: interface speeds ("12GB/S", "6GBPS"), cache sizes ("512CACHE",
+# "256MBCACHE"), inch words ("2.5INCHES") and Greek words glued to a code ("ΔΊΣΚΟΣM.2NVME256GB").
+NOT_PART = re.compile(r"\d+(?:GB|MB)(?:/S|PS)|\d+(?:MB)?CACHE|INCH(?:ES)?|[Α-Ωα-ωΆ-Ώά-ώ]", re.I)
+
+
+def _part_numbers(title: str) -> set[str]:
+    """The maker part numbers in a title, upper case without "-" and "/" ("161-BCBC" -> "161BCBC"). A part number
+    with a variant suffix also gives its head: Samsung "MZQL21T9HCJR-00A07" and "MZQL21T9HCJR-00W07" are the same
+    drive (MZQL21T9HCJR); the head counts only when it has letters and digits and 7+ characters, so HP "872487-B21"
+    or Dell "400-ASGS" give no head."""
+    out = set()
+    for tok in re.split(r"[\s,()]+", title):
+        t = tok.strip("()[],;:")
+        if not t or not _is_part_number(t) or NOT_PART.search(t):
+            continue
+        out.add(re.sub(r"[-/]", "", t.upper()))
+        head = t.split("-", 1)[0]
+        if head != t and len(head) >= 7 and re.search(r"\d", head) and re.search(r"[A-Za-z]", head):
+            out.add(head.upper())
+    return out
+
+
+def _base_key(chip: str, media: str) -> str:
+    """The drive without the " SAS" / " U.2" its interface or shape adds to the name."""
+    return names.model_key(f"{chip.removesuffix(' SAS').removesuffix(' U.2')} {media}")
+
+
+def settle(listings: list[dict]) -> None:
+    """The cross-listing half of owner's rule 2 (2026-10-25) and "same part number = same drive", run by
+    main.scrape_category before any model key is used. Within one drive (same name without " SAS" / " U.2"):
+    - an HDD/SSD whose title says SATA keeps a drive that is SAS only by its 10k / 15k rpm with it when they share a
+      part number (Shopflix "CoreParts SA600005I404 600GB ... SATA III 15000rpm" = Skroutz "CoreParts 600GB 3.5"
+      15000rpm SA600005I404"; the title's word beats the rpm guess) unless a SAS-worded listing has that part too;
+    - then a listing whose interface no word in its title states (unknown, or SATA only in Skroutz's URL) joins the
+      SAS model when it shares a part number with a listing there (Skroutz "Dell 2TB 3.5" 7200rpm 161-BCBC" =
+      BestPrice "Dell 161-BCBC 2TB HDD ... SAS");
+    - an NVMe drive that isn't U.2 by its own title joins the U.2 model when it shares a part number with a listing
+      there (Skroutz "Samsung PM9A3 1.9TB Blade MZQL21T9HCJR-00A07" = e-shop "... U.2 ... MZQL21T9HCJR-00W07").
+    Each step repeats until nothing changes (a listing that moves brings its other part numbers along). Every
+    listing starts again from its own title and URL (make_listing: name, interface, shape, tier), so settling twice
+    changes nothing and a moved listing goes back once the listing that moved it is gone. A kept listing whose
+    older name lacks only the " SAS" is taken up and renamed like a fresh one; any other name that doesn't come
+    from its title or from this step (changed by hand, or an older normalizer's capacity / U.2 / 2.5" name on a
+    kept listing) is left alone and lends no part numbers."""
+    own = {}
+    for l in listings:
+        src, native = l["id"].split(":", 1)
+        raw = make_listing(source=src, native_id=native, title=l["title"], url=l["url"], price=l["price"],
+                           shop_count=None, scraped_at="")
+        if raw is not None and l["chip"] in {raw.chip, raw.chip + " SAS", raw.chip.removesuffix(" SAS"),
+                                             raw.chip + " U.2"}:
+            own[id(l)] = raw
+
+    def kind(raw) -> str:
+        """u2 / nvme (NVMe, U.2 by its own title or not); sas (a word, a SAS part number or product line says SAS),
+        sata (the title says SATA), fast (SAS only from 10k/15k rpm), weak (no word)."""
+        if raw.iface == "NVMe":
+            return "u2" if raw.formFactor == "U.2" else "nvme"
+        if _sas_named(raw.title, _slug(raw.url), raw.brand):
+            return "sas"
+        if re.search(r"SATA", raw.title, re.I):
+            return "sata"
+        return "fast" if raw.iface == "SAS" else "weak"
+
+    groups: dict[str, list] = {}
+    for l in listings:
+        raw = own.get(id(l))
+        if raw is not None:
+            groups.setdefault(_base_key(raw.chip, raw.media), []).append((l, raw, kind(raw), _part_numbers(raw.title)))
+
+    def spread(rows, joiners, pool: set[str], blocked: set[str] = frozenset()) -> set[int]:
+        """Rows of kind `joiners` that share a part number with `pool` (and none with `blocked`), to a fixed point."""
+        moved: set[int] = set()
+        changed = True
+        while changed:
+            changed = False
+            for i, (_, _, k, mine) in enumerate(rows):
+                if k == joiners and i not in moved and mine & pool and not mine & blocked:
+                    moved.add(i)
+                    pool |= mine
+                    changed = True
+        return moved
+
+    for rows in groups.values():
+        of = lambda k: set().union(*(mine for _, _, kk, mine in rows if kk == k))  # noqa: E731
+        sas_words = of("sas")
+        demoted = spread(rows, "fast", of("sata"), sas_words)
+        joined_sas = spread(rows, "weak", sas_words | set().union(
+            *(mine for i, (_, _, k, mine) in enumerate(rows) if k == "fast" and i not in demoted)))
+        joined_u2 = spread(rows, "nvme", of("u2"))
+        for i, (l, raw, k, mine) in enumerate(rows):
+            chip, iface, form = raw.chip, raw.iface, raw.formFactor
+            if i in demoted:
+                chip = raw.chip.removesuffix(" SAS")
+                iface = "SATA" if re.search(r"SATA", _slug(raw.url), re.I) else None
+            elif i in joined_sas:
+                chip, iface = raw.chip + " SAS", "SAS"
+            elif i in joined_u2:
+                chip, form = raw.chip + " U.2", "U.2"
+            l["chip"], l["iface"], l["formFactor"] = chip, iface, form
+            l["tier"] = _tier(f"{raw.title} {_slug(raw.url)}", raw.brand, raw.media, iface, form)

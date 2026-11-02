@@ -26,19 +26,12 @@ VENDORS = {
 
 # Everything from "Motherboard" on is the spec tail (BestPrice); e-shop adds "RETAIL"/"BOX" and a size.
 TAIL = re.compile(r"\s(?:Motherboard|Mainboard|Μητρική)\b.*$", re.I)
-# Greek capitals typed for Latin ones in model names ("Χ870", "Ζ890", "WiFi ΙΙ", "(ΜΤΧ)"): a token of only
-# such letters (+ Latin/digits) is converted when it has a digit or Latin letter, or is a roman numeral /
-# size code (Greek words like "ΜΕ" stay Greek).
-LOOKALIKE = str.maketrans("ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ", "ABEZHIKMNOPTYX")
-LOOKALIKE_TOKEN = re.compile(r"(?<![\w-])[ΑΒΕΖΗΙΚΜΝΟΡΤΥΧA-Z0-9-]*[ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ][ΑΒΕΖΗΙΚΜΝΟΡΤΥΧA-Z0-9-]*(?![\w-])")
+# Greek capitals typed for Latin ones in model names ("Χ870", "Ζ890", "WiFi ΙΙ", "(ΜΤΧ)"): names.latin
+# (shared with the case, fan and cooler normalizers since Q6; capitals pass only, as before).
 
 
 def _latin(title: str) -> str:
-    def fix(m: re.Match) -> str:
-        tok = m.group()
-        latin = re.search(r"[A-Z0-9]", tok) or re.fullmatch(r"Ι+|[ΜΑΙ]ΤΧ", tok)
-        return tok.translate(LOOKALIKE) if latin else tok
-    return LOOKALIKE_TOKEN.sub(fix, title)
+    return names.latin(title, mixed=False)
 
 
 # The same spec tail without "Motherboard" (Shopflix, Snif, e-shop): from the first size word, "με",
