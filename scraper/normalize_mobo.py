@@ -161,6 +161,8 @@ def make_listing(
     tail = TAIL.search(title)
     stated = f"{specs} {tail.group() if tail else ''} {slug if 'motherboard' in slug.lower() else ''}"
     form = next((v for pattern, v in FORM if pattern.search(stated)), None)
+    if form is None and re.search(r"-ITX\b", name, re.I):  # "A520M-ITX/ac": the M is no Micro ATX here
+        form = "Mini ITX"
     if form is None and chip_m:
         suffix = name[chip_m.end(): chip_m.end() + 1].upper()
         form = {"M": "Micro ATX", "I": "Mini ITX", "N": "Mini ITX"}.get(suffix)
