@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { Check, RotateCcw, Search } from 'lucide-react';
 import type { BaseListing } from '../types';
 import { clearedFilters, type Filters, type SortKey } from '../lib/data';
@@ -109,7 +109,9 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
   // Search: the box updates at once, the results 150 ms after the last keystroke.
   const [query, setQuery] = useState(f.query);
   const latest = useRef({ f, onChange });
-  latest.current = { f, onChange };
+  useLayoutEffect(() => {
+    latest.current = { f, onChange };
+  });
   const sent = useRef(f.query);
   useEffect(() => {
     // A change that didn't come from typing here (reset, a removed chip, the URL) replaces the text.

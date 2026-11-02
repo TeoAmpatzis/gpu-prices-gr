@@ -13,7 +13,7 @@ Read this first; it is kept current so you don't need to re-explore the repo.
 - Κάθε εξάρτηση Python στο `scraper/requirements.txt` έχει **άνω όριο έκδοσης** (π.χ. `selectolax>=0.3,<1.0`), ώστε μια νέα major έκδοση να μη σπάσει ποτέ το scrape χωρίς επίβλεψη (περιστατικό 2026-10-03: το selectolax 1.0 έβγαλε το `selectolax.parser` και 3 scrapes απέτυχαν).
 
 ## v2 redesign (owner's ground rules, 2026-10-03 — apply to every v2 session)
-The approved plan is `docs/redesign-v2.md` (Greek). Phase 0 = audit of v1 → `docs/audit-v1.md` (+ raw results in `docs/audit/`, scripts in `scripts/audit/`).
+The approved plan is `docs/redesign-v2.md` (Greek). Phase 0 = audit of v1 (its reports were removed 2026-10-31, in git history; `docs/audit/compat-results.md` is still written by a test; scripts in `scripts/audit/`).
 1. All v2 work happens on branch **`v2`** (created from main 4c65539). `main` stays v1 and keeps receiving the scraper's data commits from GitHub Actions exactly as today.
 2. **Nothing from v2 is deployed to Vercel** until the owner says so. v2's `vercel.json` has `"git": {"deploymentEnabled": {"v2": false}}` (keep it; no other key changed). Pushing `v2` to GitHub is a backup only. Never run `vercel deploy` for v2. After a push, check there is no deployment: `gh api repos/TeoAmpatzis/gpu-prices-gr/deployments?ref=v2` (empty) and `gh api repos/TeoAmpatzis/gpu-prices-gr/commits/v2/status` (no Vercel status).
 3. The owner runs v2 on their Windows PC — both read the same `public/data` as main (after a merge):

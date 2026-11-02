@@ -1,4 +1,4 @@
-"""Unit tests for scraper/normalize_ram.py, with real shop titles (v2 audit, docs/audit-v1.md D-03/D-04).
+"""Unit tests for scraper/normalize_ram.py, with real shop titles (v2 Phase 0 audit, findings D-03/D-04).
 Run from the repo root: venv/Scripts/python scripts/checks/test_normalize_ram.py"""
 import sys
 

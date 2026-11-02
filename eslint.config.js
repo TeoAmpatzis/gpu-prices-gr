@@ -4,7 +4,7 @@
 //
 // Violations that existed when lint was added (v2 Phase 0, 2026-10-03) are recorded in
 // eslint-suppressions.json (ESLint's bulk suppressions) so `npm run lint` fails only on new ones;
-// `npm run lint:baseline` lists them all. Fixing them is later work (docs/audit-v1.md, Tooling baseline).
+// `npm run lint:baseline` lists them all. Fixing them is later work.
 
 import js from '@eslint/js';
 import { defineConfig, globalIgnores } from 'eslint/config';
@@ -38,5 +38,11 @@ export default defineConfig([
     // Build config, check scripts and test runners run in Node.
     files: ['*.{js,ts}', 'scripts/**/*.{js,mjs,mts,ts}', 'tests/**/*.{ts,mts}'],
     languageOptions: { globals: globals.node },
+  },
+  {
+    // A leading underscore marks a deliberately unused name; rest siblings drop fields from a copy.
+    rules: {
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_', ignoreRestSiblings: true }],
+    },
   },
 ]);

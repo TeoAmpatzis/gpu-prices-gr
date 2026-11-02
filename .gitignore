@@ -17,3 +17,10 @@ tsconfig.tsbuildinfo
 test-results/
 playwright-report/
 docs/audit/ux-full/
+
+docs/v2-pre-release-audit/
+docs/phase4/builder-test-drive/
+*.zip
+
+AGENTS.md
+

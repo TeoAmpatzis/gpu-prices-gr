@@ -411,4 +411,4 @@ export function applyFilters<L extends BaseListing>(
 }
 
 // Prices and ages are formatted in format.ts (small, so the site shell can use it without this module).
-export { formatPrice, shortAgo, timeAgo } from './format';
+export { formatPrice } from './format';

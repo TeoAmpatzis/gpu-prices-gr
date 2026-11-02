@@ -1,7 +1,7 @@
 // Smoke test of the production preview (`npm run e2e`): every category page shows product rows, the
 // builder's two modes show their first step, the text pages render, the home and 404 pages show — all at
 // their real addresses (Phase 1), with no uncaught page errors. It checks that pages load, not what they
-// say; the v1 audit (docs/audit-v1.md) covers behaviour.
+// say; other tests cover behaviour.
 import { expect, test, type Page } from '@playwright/test';
 
 const CATEGORIES = ['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler'];

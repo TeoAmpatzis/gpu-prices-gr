@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { BaseListing } from '../types';
 import type { CategoryConfig } from './categories';
 import { defaultFilters, type Filters } from './data';
@@ -18,7 +18,9 @@ export function useFilterState<L extends BaseListing>(cfg: CategoryConfig<L>) {
     return page === cfg.id && params ? decodeFilters(params, cfg) : defaultFilters(cfg.groups);
   });
   const ref = useRef(filters);
-  ref.current = filters;
+  useLayoutEffect(() => {
+    ref.current = filters;
+  });
 
   useEffect(() => {
     const onNavigate = () => {

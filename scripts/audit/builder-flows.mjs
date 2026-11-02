@@ -1,6 +1,6 @@
 // Phase 0 (v2 audit, B2): the v1 PC builder's flows in a real browser (Playwright, Chromium), in Greek
 // and English at 1366 and 360 px. Records facts — texts, numbers, localStorage, clipboard, console
-// errors — and screenshots; the judgement is written in docs/audit-v1.md.
+// errors — and screenshots; the judgement was in the v1 audit report (removed 2026-10-31, in git history).
 //
 //   node scripts/audit/builder-flows.mjs <baseUrl> <outDir> [flows]   (flows: comma list, default all)
 /* global document, window, location */
