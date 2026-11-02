@@ -42,7 +42,7 @@ describe('key specs', () => {
     for (const lang of ['el', 'en'] as const) {
       it(`${cat} (${lang}): no price, no maker column, no "€" value; four specs when the category has them`, () => {
         const banned = notSpecs(cat, lang);
-        let four = 0;
+        let sufficient = 0;
         for (const m of models) {
           const specs = keySpecs(cfg, m, lang);
           for (const s of specs) {
@@ -51,10 +51,11 @@ describe('key specs', () => {
             expect(s.value === '' || s.value === '—' || s.value == null).toBe(false);
           }
           expect(new Set(specs.map((s) => s.key)).size).toBe(specs.length);
-          if (specs.length >= MIN_SPECS) four++;
+          // An AIO's Type already includes its radiator: repeating it would invent a fourth spec.
+          const expected = cat === 'cooler' && (m.cheapest as CoolerListing).type === 'AIO' ? 3 : MIN_SPECS;
+          if (specs.length >= expected) sufficient++;
         }
-        // AIO coolers have three (Type names the radiator); every category reaches four on most popular models.
-        expect(four).toBeGreaterThan(models.length / 2);
+        expect(sufficient).toBeGreaterThan(models.length / 2);
       });
     }
 

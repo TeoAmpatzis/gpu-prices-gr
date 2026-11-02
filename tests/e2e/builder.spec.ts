@@ -268,7 +268,8 @@ test.describe('a step file that fails (Review Focus 3)', () => {
 
   test('part list: a saved case whose file fails is named, not counted as 0, and has a retry', async ({ page }) => {
     let fail = true;
-    await page.route('**/data/builder/case.json*', (route) => (fail ? route.abort() : route.fallback()));
+    // A restored case first tries its product chunk, then the catalogue fallback.
+    await page.route(/\/data\/(?:builder\/case\.json|case\/model\/\d+\.json)/, (route) => (fail ? route.abort() : route.fallback()));
     fail = false;
     // Find a case key through the builder itself: choose one in the part list, then reload with its file failing.
     await fresh(page, 'en', '/builder?mode=quick');
@@ -405,9 +406,10 @@ test('a chosen shop offer whose product file fails says so with a retry, counts 
     const b = JSON.parse(localStorage.getItem('pcBuild') ?? '{}');
     localStorage.setItem('pcBuild', JSON.stringify({ ...b, offers: { ...b.offers, case: 'skroutz:no-such-offer' } }));
   });
-  // The case's product chunk fails once; the retry gets the real file.
-  let fails = 1;
-  await page.route('**/data/case/model/*.json*', (route) => (fails-- > 0 ? route.abort() : route.fallback()));
+  // Keep the product chunk unavailable through sparse restoration and the chosen-offer load;
+  // the case catalogue still restores its cheapest row. Only the user's retry restores this route.
+  let fails = true;
+  await page.route('**/data/case/model/*.json*', (route) => (fails ? route.abort() : route.fallback()));
   await page.reload();
   const line = page.locator('[data-review-line=case]');
   await expect(line.locator('[data-offer-notice=failed]')).toContainText("Couldn't load the shop you chose", { timeout: 20_000 });
@@ -416,6 +418,7 @@ test('a chosen shop offer whose product file fails says so with a retry, counts 
   expect(Math.abs(total - sum)).toBeLessThan(0.011);
   const retry = line.getByRole('button', { name: TEXT.retry.en });
   expect((await retry.boundingBox())!.height).toBeGreaterThanOrEqual(43.5);
+  fails = false;
   await retry.click();
   // Loaded now: the made-up offer is not in it, so the line says it is gone (never while the file was failing).
   await expect(line.locator('[data-offer-notice=missing]')).toBeVisible({ timeout: 20_000 });

@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import type { BaseListing, CoolerListing, CpuListing, GpuListing, Latest, PsuListing } from '../../src/types';
 import {
+  caseBoard,
   cpuCards,
   gpuTwinFallback,
   gpuTwinKey,
@@ -370,5 +371,14 @@ describe('M2: the shipping note shows the stored total', () => {
   it('a row carries the total of its own offer', () => {
     const rows = fromColumns<GpuListing>(builderFiles({ gpu: { updatedAt: '', sources: {}, listings: [gpu('skroutz:46467832', 'Sparkle Arc A380 6GB ELF', 203.86, { shipping: 0, total: 203.02, minPsu: 300 })] } } as never, 'T').slots.gpu);
     expect([rows[0].ship, rows[0].total]).toEqual([0, 203.02]);
+  });
+});
+
+describe('task 16: the board size on a case card (H5, finding #12)', () => {
+  const caseModel = (size: string, maxBoard: string | null) => ({ cheapest: { size }, listings: [{ size, maxBoard }] }) as never;
+  it('stated wins; a known size gives the usual board; an unknown size ("Άλλο") gives nothing, not "up to ATX"', () => {
+    expect(caseBoard(caseModel('Άλλο', 'Micro ATX'))).toBe('Micro ATX');
+    expect(caseBoard(caseModel('Midi Tower', null))).toBe('ATX');
+    expect(caseBoard(caseModel('Άλλο', null))).toBeNull();
   });
 });

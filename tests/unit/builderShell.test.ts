@@ -51,6 +51,17 @@ describe('viewParams', () => {
 });
 
 describe('writeSaved: second drive, fan quantity, resolution', () => {
+  it('keeps shared parts and their shops while their step files are still loading', () => {
+    const shared = { parts: { cpu: { key: 'shared-cpu' }, mobo: { key: 'shared-board' } }, offers: { cpu: 'shop:cpu' } };
+    writeSaved({}, { use: 'gaming', budget: 1600 }, shared, {}, { cpu: 'shared-cpu', mobo: 'shared-board' });
+    expect(readBuild()).toMatchObject({ ...shared, budget: 1600 });
+    // A deliberate removal clears the pending key; it must not be resurrected by the shared base.
+    writeSaved({}, { use: 'gaming', budget: 1600 }, undefined, {}, { mobo: 'shared-board' });
+    expect(readBuild().parts.cpu).toBeUndefined();
+    expect(readBuild().offers?.cpu).toBeUndefined();
+    expect(readBuild().parts.mobo?.key).toBe('shared-board');
+  });
+
   it('writes them when given and keeps them when not', () => {
     writeBuild({ parts: { storage: { key: 's1' } }, storage2: { key: 'old' }, fanQty: 2, res: '1440p', offers: { storage2: 'x:1' } });
     writeSaved({ storage: m('s1') }, { use: 'gaming', budget: null });

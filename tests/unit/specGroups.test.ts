@@ -102,7 +102,8 @@ describe('GPU length estimate (builder.fitContext rule)', () => {
     const e = gpus.find((g) => g.lengthEstimate && !measured(g));
     expect(e, 'a real chip with an estimate').toBeTruthy();
     const dims = specGroups('gpu', e!.listings, 'en', e!.lengthEstimate).find((g) => g.id === 'dimensions')!;
-    expect(dims.items[0].value).toBe(`≈ ${e!.lengthEstimate!.min}–${e!.lengthEstimate!.max} mm`);
+    // The UI displays whole millimetres; current maker data can contain fractional measurements.
+    expect(dims.items[0].value).toBe(`≈ ${Math.round(e!.lengthEstimate!.min)}–${Math.round(e!.lengthEstimate!.max)} mm`);
     expect(dims.items[0].tag).toBe('estimate');
     expect(specGroups('gpu', e!.listings, 'el', e!.lengthEstimate).find((g) => g.id === 'dimensions')!.items[0].tag).toBe('εκτίμηση');
   });

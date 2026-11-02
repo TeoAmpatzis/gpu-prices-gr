@@ -90,7 +90,9 @@ export function specLine(slot: Slot, m: AnyModel, lang: Lang): string {
     }
     case 'mobo': {
       const b = m as Model<SlotListing['mobo']>;
-      return [b.cheapest.chipset, moboSocket(b), moboForm(b), moboMemory(b), plural(lang, moboSlots(b), N.slots)]
+      // groupName: the data's Greek "Άλλο" reads "Other" in English (H5).
+      const form = moboForm(b);
+      return [b.cheapest.chipset, moboSocket(b), form && groupName(form, lang), moboMemory(b), plural(lang, moboSlots(b), N.slots)]
         .filter(Boolean)
         .join(' · ');
     }
@@ -136,7 +138,7 @@ export function specLine(slot: Slot, m: AnyModel, lang: Lang): string {
       const fans = caseFanSlots(c);
       return [
         groupName(c.cheapest.size, lang),
-        `${t(S.upTo)} ${caseBoard(c)}`,
+        caseBoard(c) && `${t(S.upTo)} ${caseBoard(c)}`,
         gpu != null && `GPU ≤ ${gpu} mm`,
         cooler != null && `${t(S.coolerShort)} ≤ ${cooler} mm`,
         fans != null && plural(lang, fans, N.fanPositions),

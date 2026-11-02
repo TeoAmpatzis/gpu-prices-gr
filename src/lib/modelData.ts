@@ -8,6 +8,7 @@ import { fnv1a } from './compatChunks';
 import { loadAliases } from './aliases';
 import { loadManifest } from './manifest';
 import { slugLookup } from './slug';
+import { requireBuild } from './builderIndex';
 
 export const MODEL_CHUNKS = 256;
 
@@ -42,8 +43,8 @@ const loadChunk = (() => {
  * one, list files included), like detail/history (data.ts loadDetails), so a deploy in between can't mix two
  * builds; each chunk is fetched once per build.
  */
-export async function loadModel(cat: Category, slug: string): Promise<ModelEntry | null> {
-  return (await loadModelWithSources(cat, slug))?.entry ?? null;
+export async function loadModel(cat: Category, slug: string, expectedBuiltAt?: string): Promise<ModelEntry | null> {
+  return (await loadModelWithSources(cat, slug, expectedBuiltAt))?.entry ?? null;
 }
 
 /**
@@ -54,10 +55,11 @@ export async function loadModel(cat: Category, slug: string): Promise<ModelEntry
 async function loadModelWithSources(
   cat: Category,
   slug: string,
+  expectedBuiltAt?: string,
 ): Promise<{ entry: ModelEntry; sources: ModelChunk['sources']; builtAt: string } | null> {
-  const { builtAt } = await loadManifest();
+  const builtAt = expectedBuiltAt ?? (await loadManifest()).builtAt;
   const k = slugLookup(cat, slug);
-  const chunk = await loadChunk(`/${modelChunkPath(cat, modelChunkOf(k))}?v=${builtAt}`);
+  const chunk = requireBuild(await loadChunk(`/${modelChunkPath(cat, modelChunkOf(k))}?v=${builtAt}`), builtAt);
   return has(chunk.models, k) ? { entry: chunk.models[k], sources: chunk.sources, builtAt } : null;
 }
 

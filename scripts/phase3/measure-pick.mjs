@@ -60,7 +60,7 @@ for (const s of ['cpu', 'mobo', 'ram', 'gpu', 'psu']) {
   typical.compat[s] = { fields: PARTS[s].fields, builtAt };
 }
 const worst = Object.fromEntries(Object.entries(PARTS).map(([s, p]) => [s, p.key])); // keys only (old build)
-const BUILDS = { a: null, b: typical, c: worst };
+const BUILDS = { a: null, b: typical, c: worst, gate: process.env.GATE_BUILD ? JSON.parse(readFileSync(process.env.GATE_BUILD, 'utf8')) : null };
 
 // ---- helpers ------------------------------------------------------------------------------------------
 async function withStorage(ctx, build) {
@@ -157,6 +157,10 @@ if (MODE === 'bytes') {
     { id: 'case-pick-c', path: '/case?pick=1', build: 'c' },
     { id: 'storage', path: '/storage' },
     { id: 'builder-guided', path: '/builder' },
+    // Phase 4 gate (step 5 task 16): the builder with the gate's build b saved (GATE_BUILD = a file holding its
+    // `pcBuild` JSON, from scripts/phase4/drive.mjs) and a deep link into the case step.
+    { id: 'builder-gate-b', path: '/builder', build: 'gate' },
+    { id: 'builder-step-case', path: '/builder?step=case' },
     // Step 4 product pages: models listed by all five shops, then by most listings (from list.v2.json).
     { id: 'p-gpu', path: '/gpu/rtx-5060-8gb' },
     { id: 'p-case', path: '/case/corsair-3500x' },

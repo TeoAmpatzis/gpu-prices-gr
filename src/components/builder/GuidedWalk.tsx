@@ -2,7 +2,7 @@
 // "Βήμα 2/9 · Μητρική" with ‹ › and the step list on tap (C9), one line of guide text with "More" (C10), the step's
 // picker (task 12, shared with the part list), fans as a section of the case step, the summary (Back / Next in its phone bar).
 
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Check, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { AutoFile } from '../../types';
 import type { Slot } from '../../lib/builderData';
@@ -216,12 +216,25 @@ export default function GuidedWalk({ state, header }: { state: BuilderState; hea
 /** "Ανεμιστήρες κουτιού (προαιρετικό)": the fan plan, the fans' picker and their quantity, inside the case step. */
 function FansSection({ state, auto, lang }: { state: BuilderState; auto: AutoFile | null; lang: Lang }) {
   const t = (x: Text) => tr(lang, x);
-  // The fans' file after the case cards are painted (the step's largest paint; review I1). The case step's tall loading
-  // area keeps this section below the screen until then.
+  // This secondary picker is below the case cards. Load it when approached, so its catalogue
+  // and worker check cannot compete with the first screen of cases.
+  const section = useRef<HTMLElement>(null);
   const [ready, setReady] = useState(false);
-  useEffect(() => afterLargestPaint(() => setReady(true), 3000), []);
+  useEffect(() => {
+    const node = section.current;
+    if (!node) return;
+    if (typeof IntersectionObserver === 'undefined') return afterLargestPaint(() => setReady(true), 3000);
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        setReady(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: '200px' });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
   return (
-    <section aria-labelledby="fans-title" className="flex flex-col gap-3 border-t border-line pt-3">
+    <section ref={section} aria-labelledby="fans-title" className="flex flex-col gap-3 border-t border-line pt-3">
       <h3 id="fans-title" className="text-base font-semibold">
         {t(B.fansSection)}
       </h3>

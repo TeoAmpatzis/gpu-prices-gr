@@ -14,7 +14,7 @@ async function setup(models: Record<string, unknown>, slug: string, cat = 'gpu')
   const requests: string[] = [];
   const files: Record<string, unknown> = {
     '/data/manifest.json': { builtAt: BUILT },
-    [`/${modelChunkPath(cat, modelChunkOf(slugLookup(cat, slug)))}?v=${BUILT}`]: { models, sources: SOURCES },
+    [`/${modelChunkPath(cat, modelChunkOf(slugLookup(cat, slug)))}?v=${BUILT}`]: { builtAt: BUILT, models, sources: SOURCES },
   };
   vi.stubGlobal('fetch', async (url: string) => {
     requests.push(url);

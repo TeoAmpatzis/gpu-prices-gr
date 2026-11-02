@@ -23,9 +23,11 @@ import type {
   RamListing,
   StorageListing,
 } from '../types';
-import { BOARD_BY_CASE_SIZE, CATEGORIES, storageType, type CategoryConfig } from './categories';
-import { groupModels, mostCommon, ownTotal, type Model } from './data';
+import { CATEGORIES, storageType, type CategoryConfig } from './categories';
+import { BOARD_BY_CASE_SIZE as ENGINE_BOARD_BY_CASE_SIZE } from '../engine/tables';
+import { groupModels, mostCommon, ownTotal, saleOf, type Model } from './data';
 import { isUnusual } from './offers';
+import { POP_SCALE, popularityRaw } from './ranking';
 import { isSfxL, psuProductKey, psuProductName, psuRowKey } from './psuProduct';
 import type { Slot } from './slots';
 import { titleKey, titleOptions } from './titles';
@@ -166,8 +168,9 @@ export const moboSlots = (m: Model<MoboListing>) => moboSlotsStated(m) ?? 2;
 export const gpuLength = (m: Model<GpuListing>) => m.cheapest.lengthMm ?? null;
 /** Largest board size as stated by a site, null when not. */
 export const caseBoardStated = (m: Model<CaseListing>) => attr(m, (l) => l.maxBoard);
-/** Largest board size: as stated, else the usual one for the case's size (a guess). */
-export const caseBoard = (m: Model<CaseListing>) => caseBoardStated(m) ?? BOARD_BY_CASE_SIZE[m.cheapest.size];
+/** Largest board size: as stated, else the usual one for the case's size (a guess, the engine's table: no row for an
+ *  unknown size, H5), else null — the card then says nothing rather than "up to ATX" beside an "unknown" label. */
+export const caseBoard = (m: Model<CaseListing>): string | null => caseBoardStated(m) ?? ENGINE_BOARD_BY_CASE_SIZE[m.cheapest.size] ?? null;
 export const caseGpuMax = (m: Model<CaseListing>) => attr(m, (l) => l.gpuMaxMm);
 export const caseCoolerMax = (m: Model<CaseListing>) => attr(m, (l) => l.coolerMaxMm);
 export const caseFanSlots = (m: Model<CaseListing>) => attr(m, (l) => l.fanSlots);
@@ -418,4 +421,83 @@ export function rowListing<L extends BaseListing>(listings: L[]): { listing: L; 
   // The fee of the offer behind the total (its price may differ from the listing's by up to 2%: never below 0).
   const ship = l.total == null ? null : (l.shipping ?? Math.max(0, Math.round((l.total - l.price) * 100) / 100));
   return { listing: l, ship };
+}
+
+// Shared by build-time catalogues and on-demand selected-product restoration.
+/**
+ * One row per offered model: its cheapest listing by price + shipping where known (`rowListing`, owner answer 11;
+ * `ship` = its shipping, null = not known), with the values the rules take across all of the
+ * model's listings (most common socket, board size, measurements…) written onto it, so the
+ * builder's functions return the same thing for the one-row model as for the full one:
+ * - `title`: the model's distinct shop titles, the row's own first, for the picker search (graphics cards are one
+ *   listing each and show their title as their name, so theirs stays as it is);
+ * - `drop`: the model's sale (`saleOf`, the picker's "−N%"), which may come from another listing.
+ */
+export function builderRow<S extends Slot>(slot: S, m: Model<SlotListing[S]>): Record<string, unknown> {
+  const { listing, ship } = rowListing(m.listings);
+  const sale = saleOf(m.listings, listing);
+  // `pop`: the model's popularity (listings, shops, sites), the one input of the Recommended sort a
+  // one-row model can't recompute (src/lib/ranking.ts popularityRaw), as a small integer.
+  const row: Record<string, unknown> = { ...listing, ship, drop: sale?.pct ?? null, pop: Math.round(POP_SCALE * popularityRaw(m)) };
+  if (slot !== 'gpu') {
+    // The row listing's own title first: Review and Copy list name that variant (copyList.ownTitle).
+    row.title = [...new Set([listing.title, ...m.listings.map((l) => l.title)])].join(' | ');
+    // The model's name, whichever listing the row is (a power supply's is its product name; a card's chip is a rule input).
+    row.chip = m.chip;
+  }
+  return Object.assign(row, slotFields(slot, m));
+}
+
+/**
+ * The values the rules take across all of a model's listings (most common socket, board size,
+ * measurements…), per slot: written onto the builder's one-row model, and onto the engine part of
+ * the category pages' "pick" mode, so both see the same numbers.
+ */
+export function slotFields<S extends Slot>(slot: S, m: Model<SlotListing[S]>): Record<string, unknown> {
+  const most = <V>(get: (l: SlotListing[S]) => V | null | undefined) => mostCommon(m.listings.map(get));
+  const any = m as Model<never>;
+  switch (slot) {
+    case 'cpu':
+      return { socket: cpuSocket(any), igpu: cpuHasIgpu(any) };
+    case 'mobo':
+      return {
+        socket: moboSocket(any),
+        memory: moboMemory(any),
+        formFactor: moboForm(any),
+        ramSlots: most((l) => (l as MoboListing).ramSlots),
+      };
+    case 'case':
+      return {
+        // Only the stated size: the builder tells it apart from the guess by case size.
+        maxBoard: caseBoardStated(any),
+        gpuMaxMm: caseGpuMax(any),
+        coolerMaxMm: caseCoolerMax(any),
+        fanSlots: caseFanSlots(any),
+        radiatorMounts: caseRadiators(any),
+        fanMounts: caseFanMounts(any),
+        fansIncluded: caseFansIncluded(any),
+        hasFans: (any as Model<CaseListing>).listings.some((l) => l.hasFans) || null,
+        radiators: caseRadiatorSizes(any),
+      };
+    case 'cooler':
+      return { sockets: most((l) => (l as CoolerListing).sockets), heightMm: coolerHeight(any) };
+    case 'gpu':
+      // A merged card (twins on several sites, task 7) keeps a length any of them states (twinsAgree: at most one;
+      // the longer if not, as specs.SAFER) and the largest stated minimum PSU (review I2).
+      return {
+        lengthMm: maxOf(m.listings.map((l) => (l as GpuListing).lengthMm)),
+        minPsu: maxOf(m.listings.map((l) => (l as GpuListing).minPsu)),
+      };
+    case 'psu':
+      // SFX-L when a title says so (task 7): rule 16 tells it from SFX.
+      return { formFactor: psuForm(any as Model<PsuListing>) };
+    default:
+      return {};
+  }
+}
+
+/** The largest stated value, null when none is. */
+function maxOf(vs: (number | null | undefined)[]): number | null {
+  const known = vs.filter((v): v is number => v != null);
+  return known.length ? Math.max(...known) : null;
 }

@@ -7,7 +7,9 @@ import { fromColumns } from '../../src/lib/columns';
 import { builderFiles, checkData, manifest, mergeTwins } from '../../src/lib/derive';
 import { SLOTS, candidates, fitContext, rowListing, slotModels, type Slot } from '../../src/lib/builderData';
 import { PART_FIELDS } from '../../src/lib/pick';
-import { loadExtra, loadIndex, loadSlot, prefetchSlot } from '../../src/lib/builderFiles';
+import { loadExtra, loadIndex, loadSavedSlot, loadSlot, prefetchSlot } from '../../src/lib/builderFiles';
+import { modelChunkOf, modelChunkPath } from '../../src/lib/modelData';
+import { nameSlug, slugLookup } from '../../src/lib/slug';
 import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
 import { CATEGORY_IDS } from '../../src/lib/categories';
 import type { BaseListing, BuilderSlotFile, Category, Latest, Manifest } from '../../src/types';
@@ -109,10 +111,54 @@ describe('builder file loaders', () => {
     vi.unstubAllGlobals();
     vi.useRealTimers();
   });
-  const slotFile = (rows: unknown[][]): BuilderSlotFile => ({ v: 2, builtAt: 'b', cols: ['id', 'chip', 'brand', 'title', 'price', 'source', 'socket'], rows });
+  const slotFile = (rows: unknown[][], builtAt: string): BuilderSlotFile => ({ v: 2, builtAt, cols: ['id', 'chip', 'brand', 'title', 'price', 'source', 'socket'], rows });
   const ok = (body: unknown) => Promise.resolve(new Response(JSON.stringify(body), { status: 200 }));
   const fail = () => Promise.resolve(new Response('', { status: 503 }));
   const psuRow = ['skroutz:1', '850W Gold', 'Corsair', 'Corsair RM850e 850W', 99, 'skroutz', null];
+
+  for (const slot of SLOTS.filter((s) => s !== 'gpu' && s !== 'psu')) {
+    it(`${slot}: selected product chunks restore the same prices, links and engine fields as the full step`, async () => {
+      const at = `restore-${slot}`;
+      const wanted = full(slot).slice(0, 10);
+      const files: Record<string, { builtAt: string; models: Record<string, unknown> }> = {};
+      for (const model of wanted) {
+        const slug = slot === 'cpu' ? nameSlug(model.key.slice(0, model.key.lastIndexOf('|'))) : slot === 'ram' ? nameSlug(model.key) : model.key;
+        const k = slugLookup(slot, slug);
+        const url = `/${modelChunkPath(slot, modelChunkOf(k))}?v=${at}`;
+        const file = files[url] ??= { builtAt: at, models: {} };
+        // CPU versions share one product chunk entry; include every version's listings.
+        const listings = slot === 'cpu' ? wanted.filter((m) => m.chip === model.chip).flatMap((m) => m.listings) : model.listings;
+        file.models[k] = { key: model.key, photo: false, listings };
+      }
+      const fetch = vi.fn((url: string) => ok(files[url]));
+      vi.stubGlobal('fetch', fetch);
+      const restored = await loadSavedSlot(slot, wanted.map((m) => m.key), at);
+      expect(restored?.length).toBe(wanted.length);
+      const rows = fromColumns<BaseListing>(built.slots[slot]);
+      const extras = built.extras[slot];
+      for (const row of rows) { row.url = extras.urls[row.id]; row.title ||= extras.titles[row.id]; }
+      const catalogue = slotModels(slot, rows as never[]);
+      for (const m of restored ?? []) {
+        const expected = catalogue.find((n) => n.key === m.key)!;
+        for (const field of ['id', 'title', 'url', 'price', 'ship', ...PART_FIELDS[slot]]) {
+          expect([slot, m.key, field, (m.cheapest as unknown as Record<string, unknown>)[field] ?? null])
+            .toEqual([slot, m.key, field, (expected.cheapest as unknown as Record<string, unknown>)[field] ?? null]);
+        }
+      }
+      expect(fetch.mock.calls.every(([url]) => url.includes('/model/'))).toBe(true);
+    });
+  }
+
+  it('rejects a selected product chunk from a different deployment', async () => {
+    vi.stubGlobal('fetch', vi.fn(() => ok({ builtAt: 'another-build', models: {} })));
+    await expect(loadSavedSlot('case', ['some-case'], 'expected-build')).rejects.toThrow(/data changed/);
+  });
+
+  it('does not turn another deployment\'s step or shop links into this build\'s data', async () => {
+    vi.stubGlobal('fetch', vi.fn(() => ok({ ...slotFile([psuRow], 'deployment-b'), urls: {}, titles: {} })));
+    await expect(loadSlot('psu', 'deployment-a')).rejects.toThrow(/data changed/);
+    await expect(loadExtra('psu', 'deployment-a')).rejects.toThrow(/data changed/);
+  });
 
   it('loadIndex reads /data/builder/index.json', async () => {
     const fetch = vi.fn(() => ok({ v: 2, builtAt: 'x', slots: {}, chipLengths: {}, minimum: {} }));
@@ -122,7 +168,7 @@ describe('builder file loaders', () => {
   });
 
   it('loadSlot: one retry inside; a failed load rejects once, is not kept, and the next call succeeds', async () => {
-    const fetch = vi.fn().mockImplementationOnce(fail).mockImplementationOnce(fail).mockImplementation(() => ok(slotFile([psuRow])));
+    const fetch = vi.fn().mockImplementationOnce(fail).mockImplementationOnce(fail).mockImplementation(() => ok(slotFile([psuRow], 'b1')));
     vi.stubGlobal('fetch', fetch);
     await expect(loadSlot('psu', 'b1')).rejects.toThrow(/503/);
     expect(fetch).toHaveBeenCalledTimes(2); // the request and its one retry
@@ -135,7 +181,7 @@ describe('builder file loaders', () => {
   });
 
   it('loadSlot: a single failure is retried at once and resolves', async () => {
-    const fetch = vi.fn().mockImplementationOnce(fail).mockImplementation(() => ok(slotFile([psuRow])));
+    const fetch = vi.fn().mockImplementationOnce(fail).mockImplementation(() => ok(slotFile([psuRow], 'b2')));
     vi.stubGlobal('fetch', fetch);
     expect((await loadSlot('psu', 'b2')).length).toBe(1);
     expect(fetch).toHaveBeenCalledTimes(2);

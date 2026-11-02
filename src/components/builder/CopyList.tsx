@@ -33,6 +33,7 @@ export default function CopyList({ state, lang, date }: { state: BuilderState; l
   useEffect(() => () => window.clearTimeout(timer.current), []);
   const lines = state.resolvedLines;
   const link = state.shareUrl;
+  const restoring = state.pending.length > 0 || state.pendingStorage2;
   // The lines' shop links and titles come from each step's extra file: Copy list waits for it; a failed one is said.
   const extra = lines.map((r) => state.extraState[r.line === 'storage2' ? 'storage' : r.line]);
   const linksLoading = extra.includes(undefined);
@@ -49,7 +50,7 @@ export default function CopyList({ state, lang, date }: { state: BuilderState; l
     <button
       type="button"
       onClick={() => copy(what)}
-      disabled={!lines.length || (what === 'list' && linksLoading)}
+      disabled={!lines.length || restoring || (what === 'list' && linksLoading)}
       data-copy={what}
       className="tap inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-accent ring-1 ring-inset ring-accent/30 hover:bg-accent/10 disabled:cursor-not-allowed disabled:text-muted disabled:ring-line-strong disabled:hover:bg-transparent"
     >
@@ -73,7 +74,7 @@ export default function CopyList({ state, lang, date }: { state: BuilderState; l
           <label htmlFor="share-link" className="mb-1 block text-sm font-semibold">
             {t(B.link)}
           </label>
-          <input id="share-link" readOnly value={link} onFocus={(e) => e.currentTarget.select()} className="field w-full py-2 pl-3 pr-3 text-sm text-muted" />
+          <input id="share-link" readOnly disabled={restoring} value={restoring ? '' : link} onFocus={(e) => e.currentTarget.select()} className="field w-full py-2 pl-3 pr-3 text-sm text-muted" />
           <p className="mt-1 text-xs text-muted">{t(B.linkHint)}</p>
         </div>
       )}
