@@ -55,6 +55,168 @@
    "source": "https://www.thermalright.com/product/assassin-x-120-refined-se/",
    "date": "2026-11-02",
    "note": "Thermalright Assassin X 120 Refined SE and SE ARGB: 'Intel:115x/1200/1700/1851 AMD:AM4/AM5' on both Thermalright pages (also /assassin-x-120-refined-se-argb/); 115x written out as the shops do, format as specs._sockets. The shops' list lacked AM4, so the builder hid it on AM4 (test drive finding 10). Remove once the shops' sockets include AM4."
+  },
+  {
+   "cat": "case",
+   "model": "asusproartpa401",
+   "set": {"fansIncluded": [{"pos": "front", "size": 160, "n": 2}, {"pos": "rear", "size": 120, "n": 1}], "fanMounts": [{"pos": "front", "size": 160, "n": 2}, {"pos": "front", "size": 140, "n": 2}, {"pos": "top", "size": 140, "n": 2}, {"pos": "top", "size": 120, "n": 2}, {"pos": "rear", "size": 120, "n": 1}]},
+   "source": "https://www.asus.com/motherboards-components/cases/proart/proart-pa401-wood-edition-metal-panel/techspec/",
+   "date": "2026-11-02",
+   "note": "ASUS ProArt PA401 Wood Edition (Metal Panel and Tempered Glass Panel pages, same table): Pre-installed Fans (Front) 2 x 160 mm, (Rear) 1 x 120 mm; Cooling Support Front 2 x 160 / 2 x 140 mm, Top 2 x 140 / 2 x 120 mm, Rear 1 x 120 mm. The shops state no included fans, so the builder said 'not stated' (test drive finding 20, Q-B4). Remove once the shops/makers give this key fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "thermaltakethetower600",
+   "set": {"fansIncluded": [{"pos": "top", "size": 140, "n": 2}]},
+   "source": "https://www.thermaltake.com/the-tower-600-mid-tower-chassis.html",
+   "date": "2026-11-02",
+   "note": "Thermaltake The Tower 600: 'Two CT140 fans are pre-installed on the top of the case' on Thermaltake's page (all colours are the same chassis). Q-B4 (test drive finding 20). Remove once the shops/makers give this key fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "bequietpurebase600",
+   "set": {"fansIncluded": [{"pos": "front", "size": 140, "n": 1}, {"pos": "rear", "size": 120, "n": 1}]},
+   "source": "https://www.bequiet.com/en/case/937",
+   "date": "2026-11-02",
+   "note": "be quiet! Pure Base 600 and Pure Base 600 Window: '2 pre-installed Pure Wings 2 fans ... 120mm at the rear, 140mm at the front' on both be quiet! pages (case/936, case/937). Q-B4 (test drive finding 20). Remove once the shops/makers give this key fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "corsair3200drs",
+   "set": {"fansIncluded": [{"pos": null, "size": 120, "n": 3}], "fanMounts": [{"pos": "top", "size": 120, "n": 3}, {"pos": "top", "size": 140, "n": 2}, {"pos": "front", "size": 120, "n": 3}, {"pos": "front", "size": 140, "n": 2}, {"pos": "bottom", "size": 120, "n": 2}, {"pos": "rear", "size": 120, "n": 1}]},
+   "source": "https://www.corsair.com/us/en/p/pc-cases/cc-9011334-ww/3200d-rs-mid-tower-pc-case-cc-9011334-ww",
+   "date": "2026-11-02",
+   "note": "Corsair 3200D RS / RS ARGB: '3x RS120 Fans included' (RS ARGB page CC-9011344-WW: '3x RS120 ARGB Fans included'), position not stated; Fan Support Top 3x 120 / 2x 140, Front 3x 120 / 2x 140, Bottom 2x 120, Rear 1x 120 mm on both pages. Q-B4 (test drive finding 20). Remove once the shops/makers give this key fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "corsairframe5000drs",
+   "title": "^(?!.*\\bwood\\b)",
+   "set": {"fansIncluded": [{"pos": null, "size": 140, "n": 4}]},
+   "source": "https://www.corsair.com/us/en/p/pc-cases/cc-9011307-ww/frame-5000d-rs-high-airflow-mid-tower-pc-case-cc-9011307-ww",
+   "date": "2026-11-02",
+   "note": "Corsair FRAME 5000D RS and RS ARGB (not the WOOD RS): 'FOUR RS140 FANS INCLUDED' on Corsair's RS and RS ARGB pages (CC-9011307-WW, CC-9011309-WW), position not stated. The key also holds the WOOD RS (other fans, next entry), so this one skips titles with 'Wood'. Q-B4 (test drive finding 20). Remove once the shops/makers give these listings fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "corsairframe5000drs",
+   "title": "\\bwood\\b",
+   "set": {"fansIncluded": [{"pos": null, "size": 200, "n": 2}, {"pos": null, "size": 140, "n": 1}]},
+   "source": "https://www.corsair.com/us/en/p/pc-cases/cc-9011353-ww/frame-5000d-wood-rs-modular-mid-tower-pc-case-black-walnut-cc-9011353-ww",
+   "date": "2026-11-02",
+   "note": "Corsair FRAME 5000D WOOD RS: 'INCLUDED FANS 2x RS200 PWM fans, 1x RS140 PWM fan' ('200mm intake fans', '140mm exhaust fan'; no mount position named) on Corsair's page (CC-9011353-WW). Q-B4 (test drive finding 20). Remove once the shops/makers give these listings fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "corsair3500x",
+   "title": "^(?!.*\\bARGB\\b)",
+   "set": {"fansIncluded": []},
+   "source": "https://www.corsair.com/us/en/p/pc-cases/cc-9011276-ww/3500x-tempered-glass-mid-tower-pc-case-cc-9011276-ww",
+   "date": "2026-11-02",
+   "note": "Corsair 3500X (plain): 'Included Fans: No Fans Included' on Corsair's page (CC-9011276-WW). The key also holds the 3500X ARGB (next entry), so this one skips titles with 'ARGB'. Q-B4 (test drive finding 20). Remove once the shops/makers give these listings fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "corsair3500x",
+   "title": "\\bARGB\\b",
+   "set": {"fansIncluded": [{"pos": null, "size": 120, "n": 3}]},
+   "source": "https://www.corsair.com/us/en/p/pc-cases/cc-9011278-ww/3500x-argb-mid-tower-pc-case-cc-9011278-ww",
+   "date": "2026-11-02",
+   "note": "Corsair 3500X ARGB: '3x Pre-installed RS120 ARGB fans' on Corsair's page (CC-9011278-WW), position not stated. Q-B4 (test drive finding 20). Remove once the shops/makers give these listings fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "fractaldesignpopair",
+   "set": {"fansIncluded": [{"pos": "front", "size": 120, "n": 2}, {"pos": "rear", "size": 120, "n": 1}], "fanMounts": [{"pos": "front", "size": 120, "n": 2}, {"pos": "front", "size": 140, "n": 2}, {"pos": "top", "size": 120, "n": 2}, {"pos": "top", "size": 140, "n": 2}, {"pos": "rear", "size": 120, "n": 1}]},
+   "source": "https://www.fractal-design.com/products/cases/pop/pop-air/pop-air-rgb-black-tg-clear-tint/",
+   "date": "2026-11-02",
+   "note": "Fractal Design Pop Air (RGB TG, TG and Solid pages): 'Fans included 2x Aspect 12 (front), 1x Aspect 12 (rear)' (RGB TG: 'three of our 120 mm Aspect 12 RGB fans'); fan mounts Front 2x 120/140, Top 2x 120/140, Rear 1x 120 mm. Q-B4 (test drive finding 20). Remove once the shops/makers give this key fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "lianlilancool216",
+   "set": {"fansIncluded": [{"pos": "front", "size": 160, "n": 2}, {"pos": "rear", "size": 140, "n": 1}]},
+   "source": "https://lian-li.com/product/lancool-216/",
+   "date": "2026-11-02",
+   "note": "Lian Li LANCOOL 216 (White RGB / Black RGB / Black on one page): '2 x 160MM FRONT FANS AND 1 X 140MM REAR FAN INCLUDED'. Q-B4 (test drive finding 20). Remove once the shops/makers give this key fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "corsair3000dairflow",
+   "title": "\\bRGB\\b",
+   "set": {"fansIncluded": [{"pos": null, "size": 120, "n": 3}]},
+   "source": "https://www.corsair.com/us/en/p/pc-cases/cc-9011255-ww/3000d-rgb-tempered-glass-mid-tower-black-cc-9011255-ww",
+   "date": "2026-11-02",
+   "note": "Corsair 3000D RGB AIRFLOW: 'Includes 3x AR120 RGB fans' on Corsair's page (CC-9011255-WW), position not stated. The key also holds the plain 3000D AIRFLOW (next entry), split by 'RGB' in the title. Q-B4 (test drive finding 20). Remove once the shops/makers give these listings fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "corsair3000dairflow",
+   "title": "^(?!.*\\bRGB\\b)",
+   "set": {"fansIncluded": [{"pos": null, "size": 120, "n": 2}]},
+   "source": "https://www.corsair.com/us/en/p/pc-cases/cc-9011251-ww/3000d-tempered-glass-mid-tower-black-cc-9011251-ww",
+   "date": "2026-11-02",
+   "note": "Corsair 3000D AIRFLOW (no RGB): 'two pre-installed CORSAIR SP120 ELITE fans' on Corsair's page (CC-9011251-WW), position not stated. Q-B4 (test drive finding 20). Remove once the shops/makers give these listings fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "nzxth6flow",
+   "set": {"fansIncluded": [{"pos": "front", "size": 120, "n": 3}]},
+   "source": "https://nzxt.com/en-intl/products/h6-flow",
+   "date": "2026-11-02",
+   "note": "NZXT H6 Flow and H6 Flow RGB: 'Front-Right Fans 3 x 120 mm (3 included)' on both NZXT pages (h6-flow, h6-flow-rgb); 'Front-Right' read as front, as makers/common.py reads that label. Q-B4 (test drive finding 20). Remove once the shops/makers give this key fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "antecc8",
+   "title": "\\bARGB\\b",
+   "set": {"fansIncluded": [{"pos": "bottom", "size": 160, "n": 2}, {"pos": "rear", "size": 140, "n": 1}]},
+   "source": "https://www.antec.com/product/case/c8-argb.php",
+   "date": "2026-11-02",
+   "note": "Antec C8 ARGB: 'Included Fan(s) 2 x 160 x 35mm Tranquil Reverse ARGB PWM fans at bottom + 1 x 140 x 25mm Tranquil ARGB PWM fan at rear' on Antec's page. Only titles with 'ARGB': the key also holds the plain C8 and C8 Wood, whose Antec pages (c8.php, c8-wood.php) state no included fans. Q-B4 (test drive finding 20). Remove once the shops/makers give these listings fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "sharkoonrebelc50",
+   "title": "\\bRGB\\b",
+   "set": {"fansIncluded": [{"pos": "front", "size": 120, "n": 3}, {"pos": "rear", "size": 120, "n": 1}], "fanMounts": [{"pos": "front", "size": 120, "n": 3}, {"pos": "front", "size": 140, "n": 3}, {"pos": "side", "size": 120, "n": 4}, {"pos": "rear", "size": 120, "n": 1}, {"pos": "top", "size": 120, "n": 3}, {"pos": "top", "size": 140, "n": 2}]},
+   "source": "https://en.sharkoon.com/product/38244",
+   "date": "2026-11-02",
+   "note": "Sharkoon Rebel C50 RGB (Black 38244, White 38251): Front Panel '3x 120 mm Addressable RGB LED PWM Fan (Pre-Installed) or 3x 140 mm Fan (Optional)', Side 4x 120 mm, Rear '1x 120 mm ... (Pre-Installed)', Top 3x 120 or 2x 140 mm. The key also holds the plain Rebel C50 (next entry), split by 'RGB' in the title. Q-B4 (test drive finding 20). Remove once the shops/makers give these listings fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "sharkoonrebelc50",
+   "title": "^(?!.*\\bRGB\\b)",
+   "set": {"fansIncluded": [{"pos": "front", "size": 120, "n": 1}, {"pos": "rear", "size": 120, "n": 1}], "fanMounts": [{"pos": "front", "size": 120, "n": 3}, {"pos": "front", "size": 140, "n": 3}, {"pos": "side", "size": 120, "n": 4}, {"pos": "rear", "size": 120, "n": 1}, {"pos": "top", "size": 120, "n": 3}, {"pos": "top", "size": 140, "n": 2}]},
+   "source": "https://en.sharkoon.com/product/38220",
+   "date": "2026-11-02",
+   "note": "Sharkoon Rebel C50 (no RGB, Black 38220): Front Panel '1x 120 mm PWM Fan (Pre-installed) + 2x 120 mm Fan (Optional) or 3x 140 mm Fan (Optional)', Side 4x 120 mm, Rear '1x 120 mm PWM Fan (Pre-Installed)', Top 3x 120 or 2x 140 mm. Q-B4 (test drive finding 20). Remove once the shops/makers give these listings fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "fractaldesignnorthxl",
+   "set": {"fansIncluded": [{"pos": "front", "size": 140, "n": 3}]},
+   "source": "https://www.fractal-design.com/products/cases/north/north-xl/",
+   "date": "2026-11-02",
+   "note": "Fractal Design North XL: 'Fans included 3x Aspect 14 PWM (front)' on Fractal's page. Q-B4 (test drive finding 20). Remove once the shops/makers give this key fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "aerocoolcylon",
+   "title": "^(?!.*\\bmini\\b)",
+   "set": {"fansIncluded": [{"pos": "rear", "size": 120, "n": 1}], "fanMounts": [{"pos": "front", "size": 120, "n": 3}, {"pos": "top", "size": 120, "n": 1}, {"pos": "rear", "size": 120, "n": 1}]},
+   "source": "https://aerocool.io/product/cylon/",
+   "date": "2026-11-02",
+   "note": "Aerocool Cylon (mid tower): Air Cooling 'Front: 120mm x 3 (Optional) | Top: 120mm x 1 (Optional) | Rear: 120mm x 1 (Includes 120mm Fan)' on Aerocool's page. Skips titles with 'Mini' (the Cylon Mini is another case under this key). Q-B4 (test drive finding 20). Remove once the shops/makers give these listings fansIncluded."
+  },
+  {
+   "cat": "case",
+   "model": "sharkoonmsy1000",
+   "set": {"fansIncluded": [{"pos": "rear", "size": 80, "n": 1}, {"pos": "top", "size": 120, "n": 2}, {"pos": "bottom", "size": 120, "n": 1}], "fanMounts": [{"pos": "front", "size": 120, "n": 1}, {"pos": "rear", "size": 80, "n": 1}, {"pos": "top", "size": 120, "n": 2}, {"pos": "bottom", "size": 120, "n": 2}]},
+   "source": "https://en.sharkoon.com/product/35076",
+   "date": "2026-11-02",
+   "note": "Sharkoon MS-Y1000: Fan Configuration 'Front Panel 1x 120 mm Fan (Optional) | Rear Panel 1x 80 mm PWM Fan (Pre-Installed) | Top Panel 2x 120 mm PWM Fan (Pre-Installed) | Bottom Panel 1x 120 mm PWM Fan (Pre-Installed), 1x 120 mm Fan (Optional)' on Sharkoon's page. Q-B4 (test drive finding 20). Remove once the shops/makers give this key fansIncluded."
   }
  ]
 }
