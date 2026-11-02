@@ -38,7 +38,7 @@ export interface ModelFit {
   /** The candidate of the page's one button (every slot but graphics cards; a CPU's Box or Tray as in pick mode). */
   main: FitCandidate | undefined;
   /** The last add on this page (for the confirmation), while that part is still the one saved; `name` = its name. */
-  added: { key: string; replaced: boolean; name: string } | null;
+  added: { key: string; replaced: boolean; name: Text } | null;
   add: (key: string) => void;
 }
 
@@ -287,7 +287,7 @@ export function HeaderFit({ p }: { p: ProductFit }) {
       {body}
       {/* Always in the page, so screen readers announce an add made anywhere on it. */}
       <p role="status" className="sr-only">
-        {added ? tr(lang, added.replaced ? FIT.replacedNamed : FIT.addedNamed).replace('{name}', added.name) : ''}
+        {added ? tr(lang, added.replaced ? FIT.replacedNamed : FIT.addedNamed).replace('{name}', tr(lang, added.name)) : ''}
       </p>
     </>
   );

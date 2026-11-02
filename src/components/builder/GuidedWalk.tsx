@@ -137,7 +137,8 @@ export default function GuidedWalk({ state, header }: { state: BuilderState; hea
                   onClick={() => setList((v) => !v)}
                   className="tap flex w-full items-center justify-center gap-1.5 rounded-lg px-2 py-1 text-base font-semibold tracking-tight hover:bg-hover sm:text-lg"
                 >
-                  <span className="truncate">
+                  {/* Wraps on a phone (a long Greek name + "προαιρετικό" is wider than 360 px), never cut. */}
+                  <span className="min-w-0 text-balance">
                     {fill(t(B.stepOf), { n: index + 1, total: STEPS.length })} · {t(STEP_NAME[step])}
                     {opt.optional && <span className="text-sm font-normal text-faint"> · {t(G.optional)}</span>}
                   </span>
@@ -172,7 +173,7 @@ export default function GuidedWalk({ state, header }: { state: BuilderState; hea
             {/* One line of the buying guide, the rest behind "More" (C10). */}
             {guide && (
               <div className="mt-1 flex items-start gap-2 text-sm text-muted">
-                <p className={`min-w-0 flex-1 ${more ? '' : 'truncate'}`}>{t(guide)}</p>
+                <p className={`min-w-0 flex-1 ${more ? '' : 'line-clamp-1'}`}>{t(guide)}</p>
                 <button type="button" aria-expanded={more} onClick={() => setMore((v) => !v)} className="tap shrink-0 font-medium text-accent hover:underline">
                   {t(more ? B.less : B.more)}
                 </button>

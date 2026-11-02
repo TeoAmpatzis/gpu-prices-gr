@@ -13,6 +13,9 @@ const TEXT = {
   next: { el: /^\s*(Επόμενο|Παράλειψη)\s*$/, en: /^\s*(Next|Skip)\s*$/ },
   review: { el: 'Σύνοψη', en: 'Review' },
   retry: { el: 'Δοκιμή ξανά', en: 'Try again' },
+  // Budget chips in whole euros, the sign on the language's side (task 14, #30).
+  b1500: { el: '1.500 €', en: '€1,500' },
+  b1000: { el: '1.000 €', en: '€1,000' },
 } as const;
 
 async function fresh(page: Page, lang: Lang, url: string, build?: object) {
@@ -55,7 +58,7 @@ const foldUse = (page: Page) =>
 async function autoBuild(page: Page, lang: Lang) {
   await fresh(page, lang, '/builder');
   await page.getByRole('button', { name: new RegExp(`^${TEXT.gaming[lang]}`) }).click();
-  await page.getByRole('button', { name: '1500 €', exact: true }).click();
+  await page.getByRole('button', { name: TEXT.b1500[lang], exact: true }).click();
   const auto = page.getByRole('button', { name: TEXT.buildForMe[lang] });
   await expect(auto).toBeEnabled({ timeout: 20_000 });
   await auto.click();
@@ -86,7 +89,7 @@ for (const size of [
         page.on('pageerror', (e) => errors.push(e.message));
         await fresh(page, lang, '/builder');
         await page.getByRole('button', { name: new RegExp(`^${TEXT.gaming[lang]}`) }).click();
-        await page.getByRole('button', { name: '1500 €', exact: true }).click();
+        await page.getByRole('button', { name: TEXT.b1500[lang], exact: true }).click();
         // "Costs at least X € today" as soon as use and budget are set.
         await expect(page.locator('[data-minimum]')).toBeVisible({ timeout: 20_000 });
         const auto = page.getByRole('button', { name: TEXT.buildForMe[lang] });
@@ -461,7 +464,7 @@ test('saved builds: save, rename, duplicate, delete with confirmation; open asks
   expect(named.map((b) => b.name)).toEqual(['Gaming B']);
   // "Build it for me" with a named build open: asked, then the named build stays as saved.
   await page.getByRole('button', { name: 'Use and budget' }).click();
-  await page.getByRole('button', { name: '1000 €', exact: true }).click();
+  await page.getByRole('button', { name: TEXT.b1000.en, exact: true }).click();
   const auto = page.getByRole('button', { name: TEXT.buildForMe.en });
   await expect(auto).toBeEnabled({ timeout: 20_000 });
   // The budget picked just now is an edit of the open build; the automatic build must not change it any further.

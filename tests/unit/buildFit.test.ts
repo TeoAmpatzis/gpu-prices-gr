@@ -117,8 +117,9 @@ describe('CPUs keep the pick page key (chip + cooler in the box)', () => {
 
   it('the other version of the same CPU in the build: "Switch to the Box / Tray version", names with their version', () => {
     const b: StoredBuild = { parts: { cpu: { key: 'Ryzen 7 7700|false', fields: { chip: 'Ryzen 7 7700' }, builtAt: NOW } } };
-    expect(slotAction(b, 'cpu', 'Ryzen 7 7700|true')).toEqual({ kind: 'switch', name: 'Ryzen 7 7700 (no cooler)', to: 'box' });
-    expect(slotAction(b, 'cpu', 'Ryzen 7 7700|?')).toEqual({ kind: 'switch', name: 'Ryzen 7 7700 (no cooler)', to: null });
+    const tray = { el: 'Ryzen 7 7700 (χωρίς ψύκτρα)', en: 'Ryzen 7 7700 (no cooler)' };
+    expect(slotAction(b, 'cpu', 'Ryzen 7 7700|true')).toEqual({ kind: 'switch', name: tray, to: 'box' });
+    expect(slotAction(b, 'cpu', 'Ryzen 7 7700|?')).toEqual({ kind: 'switch', name: tray, to: null });
     const box: StoredBuild = { parts: { cpu: { key: 'Ryzen 7 7700|true' } } };
     expect(slotAction(box, 'cpu', 'Ryzen 7 7700|false')).toEqual({ kind: 'switch', name: 'Ryzen 7 7700 (Box)', to: 'tray' });
     // Another chip is a replace, still named with its version.
@@ -277,9 +278,9 @@ describe('replace names the part it replaces when the saved data names it', () =
 describe('CPU version labels (a Box CPU the maker says has no cooler is not "Tray")', () => {
   it('a |false key (a Box 7600X-like chip or a Tray one) is labelled by the cooler, never "Tray"', () => {
     const b: StoredBuild = { parts: { cpu: { key: 'Ryzen 5 7600X|false', fields: { chip: 'Ryzen 5 7600X' }, builtAt: NOW } } };
-    const a = slotAction(b, 'cpu', 'Ryzen 5 7600X|true') as { name: string };
-    expect(a.name).toBe('Ryzen 5 7600X (no cooler)');
-    expect(a.name).not.toMatch(/Tray/);
+    const a = slotAction(b, 'cpu', 'Ryzen 5 7600X|true') as { name: { el: string; en: string } };
+    expect(a.name).toEqual({ el: 'Ryzen 5 7600X (χωρίς ψύκτρα)', en: 'Ryzen 5 7600X (no cooler)' });
+    expect(`${a.name.el} ${a.name.en}`).not.toMatch(/Tray/);
   });
   it('the strings say "no cooler in the box" in both languages, with no Tray', () => {
     for (const t of [FIT.versionTray, FIT.switchTray]) expect(`${t.el} ${t.en}`).not.toMatch(/Tray/);

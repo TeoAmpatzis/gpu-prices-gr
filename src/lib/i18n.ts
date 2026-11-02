@@ -1,8 +1,8 @@
 import { useSyncExternalStore } from 'react';
-import { NO, tr, YES, type Lang, type Text } from './text';
+import { NO, plural, tr, YES, type Forms, type Lang, type Text } from './text';
 
-export { tr };
-export type { Lang, Text };
+export { plural, tr };
+export type { Forms, Lang, Text };
 
 const KEY = 'lang'; // also read by the inline script in index.html
 const listeners = new Set<() => void>();

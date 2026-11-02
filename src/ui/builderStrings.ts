@@ -76,6 +76,9 @@ export const BUILDER = {
   storage2: { el: 'Δεύτερος δίσκος', en: 'Second drive' },
   stepFailed: { el: 'Τα εξαρτήματα αυτού του βήματος δεν φορτώθηκαν.', en: "This step's parts didn't load." },
   notLoaded: { el: 'Η τιμή δεν φορτώθηκε ακόμη: {parts}', en: 'Price not loaded yet: {parts}' },
+  // The budget line of the summary (task 14, #30): {x} is formatPrice, "€22.02 left" in English.
+  left: { el: 'απομένουν {x}', en: '{x} left' },
+  over: { el: 'υπέρβαση {x}', en: '{x} over' },
   // Review, Copy list and the share link (task 13).
   myBuild: { el: 'Η σύνθεσή μου', en: 'My build' },
   total: { el: 'Σύνολο', en: 'Total' },

@@ -130,14 +130,19 @@ for (const width of WIDTHS) {
       if (builder && !page.includes('mode=quick')) {
         // Guided: the start screen (a use and a budget), "Step by step" to the CPU cards, then walk every
         // step choosing its first compatible part (Next / Skip) down to the Review.
-        states.push(['use', async () => { await click('button[aria-pressed="false"]', '/Gaming/'); return click('button[aria-pressed="false"]', '/^1000 €$/'); }]);
+        // Budget chips are whole euros with the sign on the language's side: "1.000 €" / "€1,000" (task 14).
+        states.push(['use', async () => { await click('button[aria-pressed="false"]', '/Gaming/'); return click('button[aria-pressed="false"]', '/^(1\\.000\\s€|€1,000)$/'); }]);
         states.push(['cards', async () => { await click('button', '/^\\s*(Βήμα-βήμα|Step by step)\\s*$/'); await sleep(1500); return true; }]);
+        // Every step is audited with its part chosen (task 14: start, every step, Review), not only the last one.
         states.push(['walk', async () => {
           for (let i = 0; i < 12; i++) {
             await click('li.card button:not([disabled])', '/^(Επιλογή|Choose)$/');
-            await sleep(300);
-            if (!(await click('button', '/^\\s*(Επόμενο|Next|Παράλειψη|Skip)\\s*$/'))) break;
             await sleep(600);
+            const step = await evaluate(`new URL(location.href).searchParams.get('step') || 'cpu'`);
+            record(`${width} ${lang} ${page} step-${step}`, await evaluate(AUDIT));
+            await screenshot(`${width}-${lang}-builder-step-${step}`);
+            if (!(await click('button', '/^\\s*(Επόμενο|Next|Παράλειψη|Skip)\\s*$/'))) break;
+            await sleep(1200);
           }
           return true;
         }]);
@@ -146,13 +151,17 @@ for (const width of WIDTHS) {
       if (builder && page.includes('mode=quick')) {
         states.push(['picker', async () => click('button', '/^(Επιλογή|Choose)$/')]);
         // Fill every slot with its first compatible part, then audit the full build.
+        // Since task 11 the picker opens in a sheet (role=dialog): choose its first card, for every empty line.
         states.push(['full-build', async () => {
-          for (let i = 0; i < 10; i++) {
-            const opened = await click('button', '/^(Επιλογή|Choose)$/');
+          await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape'}))`);
+          await sleep(300);
+          for (let i = 0; i < 12; i++) {
+            const opened = await click('[data-line] button', '/^(Επιλογή|Choose)$/');
             if (!opened) break;
-            await sleep(400);
-            await evaluate(`(() => { const b = document.querySelector('ul.max-h-80 li button'); if (b) b.click(); return !!b; })()`);
-            await sleep(400);
+            await sleep(1500);
+            const chose = await click('[role=dialog] li.card button:not([disabled])', '/^(Επιλογή|Choose)$/');
+            await sleep(600);
+            if (!chose) { await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape'}))`); break; }
           }
           return true;
         }]);

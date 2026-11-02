@@ -2,7 +2,7 @@ import type { Text } from '../lib/i18n';
 
 /** Short step-by-step guide to choosing parts, one line per step in the guided builder (task 11: the box above the
  * part list is gone): GUIDE_STEPS[i] — 0 budget/use, 1 CPU + board, 2 RAM, 3 GPU, 4 cooler, 5 storage, 6 case,
- * 7 fans, 8 PSU; wizard.GUIDE_INDEX). */
+ * 7 fans, 8 PSU, 9 the board step's own text (task 14, #29); wizard.GUIDE_INDEX). */
 export const GUIDE_STEPS: { title: Text; body: Text }[] = [
   {
     title: { el: 'Προϋπολογισμός και χρήση', en: 'Budget and use' },
@@ -65,6 +65,13 @@ export const GUIDE_STEPS: { title: Text; body: Text }[] = [
     body: {
       el: 'Το διαλέγουμε τελευταίο, όταν ξέρουμε τι θα τροφοδοτήσει. Ο builder δείχνει την ελάχιστη ισχύ· πάρε λίγο περισσότερη για περιθώριο. Προτίμησε 80 PLUS Gold από γνωστό κατασκευαστή — ένα φθηνό τροφοδοτικό μπορεί να καταστρέψει τα υπόλοιπα.',
       en: 'Pick it last, once you know what it has to power. The builder shows the minimum wattage; add some headroom. Prefer 80 PLUS Gold from a known brand — a cheap PSU can damage everything else.',
+    },
+  },
+  {
+    title: { el: 'Μητρική', en: 'Motherboard' },
+    body: {
+      el: 'Ο builder δείχνει μόνο μητρικές με το socket του επεξεργαστή. Το chipset ορίζει τις δυνατότητές της (π.χ. υποδοχές PCIe, θύρες USB, υπερχρονισμό) — δες τη σελίδα του κατασκευαστή. Το μέγεθος (ATX, Micro ATX, Mini ITX) πρέπει να χωράει στο κουτί. Μέτρησε τις υποδοχές M.2: μία για κάθε δίσκο NVMe. Για ασύρματο δίκτυο πάρε έκδοση με Wi-Fi· αλλιώς θέλεις καλώδιο Ethernet ή κάρτα Wi-Fi.',
+      en: "The builder only shows boards with the processor's socket. The chipset sets what the board can do (e.g. PCIe slots, USB ports, overclocking) — see the maker's page. The size (ATX, Micro ATX, Mini ITX) must fit the case. Count the M.2 slots: one per NVMe drive. For wireless networking get a Wi-Fi version; otherwise you need an Ethernet cable or a Wi-Fi card.",
     },
   },
 ];

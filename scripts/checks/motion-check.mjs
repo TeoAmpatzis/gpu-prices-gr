@@ -6,6 +6,7 @@
 // Interactions marked `report` are measured but outside the pass (v1 page work, Phase 3; plan A4).
 // Shell pages run on the production preview; the catalogue's sheet, dialog and toast exist only in
 // the dev server (React's development build, slower than production — a pass there is conservative).
+// B*: the same dialog and toast on /builder (its saved-builds menu), on the production preview.
 //
 //   node scripts/checks/motion-check.mjs <previewUrl> <devUrl> <outFile> [ids]
 /* global window, requestAnimationFrame */
@@ -21,6 +22,7 @@ const h1 = (p) => p.locator('main h1').first().waitFor({ timeout: 30_000 });
 const tiles = (p) => p.locator('main ul a[href="/gpu"]').first().waitFor({ timeout: 30_000 });
 const catalogue = (p) => p.locator('#overlays').waitFor({ timeout: 60_000 });
 const visible = (p, sel) => p.locator(sel).filter({ visible: true }).first();
+const savedMenu = (p) => p.locator('[data-saved-builds]').waitFor({ timeout: 30_000 });
 const phoneSearchOpen = async (p) => {
   await visible(p, 'header button:has(svg.lucide-search)').click();
   await p.locator('[role=dialog] input[role=combobox]').waitFor();
@@ -55,6 +57,10 @@ const INTERACTIONS = [
   { id: 'C3-open-dialog', form: 'desktop', dev: true, path: '/_preview', ready: catalogue, target: (p) => p.locator('#overlays button').filter({ hasText: /Άνοιγμα διαλόγου/ }) },
   { id: 'C4-close-dialog', form: 'desktop', dev: true, path: '/_preview', ready: catalogue, pre: async (p) => { await p.locator('#overlays button').filter({ hasText: /Άνοιγμα διαλόγου/ }).click(); await p.waitForTimeout(800); }, key: 'Escape' },
   { id: 'C5-show-toast', form: 'desktop', dev: true, path: '/_preview', ready: catalogue, target: (p) => p.locator('#overlays button').filter({ hasText: /Εμφάνιση toast/ }) },
+  // The dialog and the toast on a real page (backlog #15, Phase 4 gate): /builder's saved-builds menu, production build.
+  { id: 'B1-builder-open-dialog', form: 'desktop', path: '/builder?mode=quick', ready: savedMenu, target: (p) => p.locator('[data-saved-builds]') },
+  { id: 'B2-builder-close-dialog', form: 'desktop', path: '/builder?mode=quick', ready: savedMenu, pre: async (p) => { await p.locator('[data-saved-builds]').click(); await p.getByRole('dialog').waitFor(); await p.waitForTimeout(800); }, key: 'Escape' },
+  { id: 'B3-builder-save-toast', form: 'desktop', path: '/builder?mode=quick', ready: savedMenu, pre: async (p) => { await p.locator('[data-saved-builds]').click(); await p.getByRole('dialog').getByRole('button', { name: 'Αποθήκευση ως νέα' }).click(); await p.locator('#saved-build-input').waitFor(); await p.waitForTimeout(800); }, target: (p) => p.getByRole('dialog').getByRole('button', { name: 'Αποθήκευση', exact: true }) },
 ];
 
 const KEYS = { ArrowDown: 40, Enter: 13, Escape: 27 };

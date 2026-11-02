@@ -198,12 +198,8 @@ export const UI = {
 export const num = (lang: Lang, n: number, digits = 0) =>
   n.toLocaleString(lang === 'el' ? 'el-GR' : 'en-IE', { maximumFractionDigits: digits });
 
-/** "1 εξάρτημα" / "3 εξαρτήματα" — the right form for n in each language (UX-47). */
-export function plural(lang: Lang, n: number, forms: { el: [string, string]; en: [string, string] }): string {
-  const rule = new Intl.PluralRules(lang === 'el' ? 'el' : 'en').select(n);
-  const [one, other] = forms[lang];
-  return `${num(lang, n)}${NBSP}${rule === 'one' ? one : other}`;
-}
+/** "1 εξάρτημα" / "3 εξαρτήματα" (UX-47): the one helper lives in lib/text.ts (i18n.ts re-exports it). */
+export { plural } from '../lib/text';
 
 /** "πριν από 3 ώρ." / "3 h ago" (format.shortAgo inside the language's phrase); "—" when unknown. */
 export function ago(lang: Lang, iso: string | null | undefined): string {
