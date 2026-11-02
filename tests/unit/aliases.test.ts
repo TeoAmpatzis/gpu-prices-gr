@@ -225,7 +225,7 @@ describe('product-page addresses follow renames (modelData.resolveModel)', () =>
         ? { builtAt: BUILT }
         : url.startsWith('/data/aliases.json')
           ? aliasFile({ cooler: { oldcooler: 'newcooler' } }, BUILT, (_c, k, w) => (w === 'new' ? 'new-cooler' : k))
-          : { models: { newcooler: entry }, sources: {} };
+          : { builtAt: BUILT, models: { newcooler: entry }, sources: {} };
       return { ok: true, status: 200, json: async () => body };
     });
     vi.resetModules();

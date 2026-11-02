@@ -1,0 +1,4 @@
+﻿run 1: cpu 3625 · mobo 659 · ram 704 · gpu 798 · cooler 526 · storage 1034 · case 1442 · psu 1007 ms
+run 2: cpu 3625 · mobo 556 · ram 657 · gpu 842 · cooler 496 · storage 1006 · case 1418 · psu 1055 ms
+run 3: cpu 3591 · mobo 563 · ram 694 · gpu 706 · cooler 524 · storage 1008 · case 1434 · psu 1039 ms
+median (wait 0 ms): cpu 3625 · mobo 563 · ram 694 · gpu 798 · cooler 524 · storage 1008 · case 1434 · psu 1039 ms (cpu = first card after load)

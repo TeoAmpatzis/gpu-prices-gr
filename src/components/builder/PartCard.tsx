@@ -59,7 +59,7 @@ export default function PartCard({
         <ProductPhoto image={partImage(m)} size="md" icon={Icon} alt="" />
         <div className="min-w-0 flex-1">
           <div className="line-clamp-2 font-medium [overflow-wrap:anywhere]">{slot === 'gpu' && resolved?.offer.title ? resolved.offer.title : m.chip}</div>
-          <div className="mt-0.5 text-xs text-muted">{slot === 'psu' ? <PsuCard m={m} lang={lang} /> : specLine(slot, m, lang)}</div>
+          <div className="mt-0.5 text-xs text-muted [overflow-wrap:anywhere]">{slot === 'psu' ? <PsuCard m={m} lang={lang} /> : specLine(slot, m, lang)}</div>
         </div>
       </div>
       {children}

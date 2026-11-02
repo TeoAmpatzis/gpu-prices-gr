@@ -32,7 +32,6 @@ import type {
   Latest,
   ListFile,
   Manifest,
-  MoboListing,
   ModelChunk,
   ModelEntry,
   PsuListing,
@@ -59,32 +58,22 @@ import { allTimeLow, groupModels, mostCommon, saleOf, type Model } from './data'
 import { MODEL_CHUNKS, modelChunkOf } from './modelData';
 import { SLOT_OF, toPart } from './pick';
 import { modelSlug, nameSlug, slugLookup } from './slug';
-import { POP_SCALE, popularityRaw, recommendedScores } from './ranking';
+import { popularityRaw, recommendedScores } from './ranking';
 import type { SearchIndexFile, SearchModel } from './search';
 import {
   SLOTS,
+  builderRow,
   candidates,
-  caseBoardStated,
-  caseCoolerMax,
-  caseFanMounts,
-  caseFanSlots,
-  caseFansIncluded,
   caseGpuMax,
-  caseRadiatorSizes,
-  caseRadiators,
-  coolerHeight,
   coolerSockets,
-  cpuHasIgpu,
   cpuSocket,
   fitContext,
   gpuLength,
   gpuTwinKey,
   twinsAgree,
-  psuForm,
   rowListing,
   gpuWaterCooled,
   moboForm,
-  moboMemory,
   moboSocket,
   slotModels,
   type Slot,
@@ -340,77 +329,7 @@ export const detailFile = (latest: Latest): Record<string, string> =>
 // `total` stays: the "incl. shipping" note shows the stored total of the row's own offer (task 7, review M2).
 const BUILDER_SKIP = new Set(['scrapedAt', 'shopCount', 'shipping', 'merchant']);
 
-/**
- * One row per offered model: its cheapest listing by price + shipping where known (`rowListing`, owner answer 11;
- * `ship` = its shipping, null = not known), with the values the rules take across all of the
- * model's listings (most common socket, board size, measurements…) written onto it, so the
- * builder's functions return the same thing for the one-row model as for the full one:
- * - `title`: the model's distinct shop titles, the row's own first, for the picker search (graphics cards are one
- *   listing each and show their title as their name, so theirs stays as it is);
- * - `drop`: the model's sale (`saleOf`, the picker's "−N%"), which may come from another listing.
- */
-function builderRow<S extends Slot>(slot: S, m: Model<SlotListing[S]>): Record<string, unknown> {
-  const { listing, ship } = rowListing(m.listings);
-  const sale = saleOf(m.listings, listing);
-  // `pop`: the model's popularity (listings, shops, sites), the one input of the Recommended sort a
-  // one-row model can't recompute (src/lib/ranking.ts popularityRaw), as a small integer.
-  const row: Record<string, unknown> = { ...listing, ship, drop: sale?.pct ?? null, pop: Math.round(POP_SCALE * popularityRaw(m)) };
-  if (slot !== 'gpu') {
-    // The row listing's own title first: Review and Copy list name that variant (copyList.ownTitle).
-    row.title = [...new Set([listing.title, ...m.listings.map((l) => l.title)])].join(' | ');
-    // The model's name, whichever listing the row is (a power supply's is its product name; a card's chip is a rule input).
-    row.chip = m.chip;
-  }
-  return Object.assign(row, slotFields(slot, m));
-}
-
-/**
- * The values the rules take across all of a model's listings (most common socket, board size,
- * measurements…), per slot: written onto the builder's one-row model, and onto the engine part of
- * the category pages' "pick" mode, so both see the same numbers.
- */
-export function slotFields<S extends Slot>(slot: S, m: Model<SlotListing[S]>): Record<string, unknown> {
-  const most = <V>(get: (l: SlotListing[S]) => V | null | undefined) => mostCommon(m.listings.map(get));
-  const any = m as Model<never>;
-  switch (slot) {
-    case 'cpu':
-      return { socket: cpuSocket(any), igpu: cpuHasIgpu(any) };
-    case 'mobo':
-      return {
-        socket: moboSocket(any),
-        memory: moboMemory(any),
-        formFactor: moboForm(any),
-        ramSlots: most((l) => (l as MoboListing).ramSlots),
-      };
-    case 'case':
-      return {
-        // Only the stated size: the builder tells it apart from the guess by case size.
-        maxBoard: caseBoardStated(any),
-        gpuMaxMm: caseGpuMax(any),
-        coolerMaxMm: caseCoolerMax(any),
-        fanSlots: caseFanSlots(any),
-        radiatorMounts: caseRadiators(any),
-        fanMounts: caseFanMounts(any),
-        fansIncluded: caseFansIncluded(any),
-        hasFans: (any as Model<CaseListing>).listings.some((l) => l.hasFans) || null,
-        radiators: caseRadiatorSizes(any),
-      };
-    case 'cooler':
-      return { sockets: most((l) => (l as CoolerListing).sockets), heightMm: coolerHeight(any) };
-    case 'gpu':
-      // A merged card (twins on several sites, task 7) keeps a length any of them states (twinsAgree: at most one;
-      // the longer if not, as specs.SAFER) and the largest stated minimum PSU (review I2).
-      return {
-        lengthMm: maxOf(m.listings.map((l) => (l as GpuListing).lengthMm)),
-        minPsu: maxOf(m.listings.map((l) => (l as GpuListing).minPsu)),
-      };
-    case 'psu':
-      // SFX-L when a title says so (task 7): rule 16 tells it from SFX.
-      return { formFactor: psuForm(any as Model<PsuListing>) };
-    default:
-      return {};
-  }
-}
+export { builderRow, slotFields } from './builderData';
 
 /**
  * Graphics card twins (task 7, owner answer 9): the offered cards of one `gpuTwinKey` become one model (the same card
@@ -430,12 +349,6 @@ export function mergeTwins(cards: Model<GpuListing>[]): Model<GpuListing>[] {
     const lead = ms.find((m) => m.listings.some((l) => l.id === own.id))!;
     return { ...lead, listings, maxPrice: listings[listings.length - 1].price };
   });
-}
-
-/** The largest stated value, null when none is. */
-function maxOf(vs: (number | null | undefined)[]): number | null {
-  const known = vs.filter((v): v is number => v != null);
-  return known.length ? Math.max(...known) : null;
 }
 
 /** Share (%) of the parts whose measurements are known yet; the builder shows a notice under 90%. */

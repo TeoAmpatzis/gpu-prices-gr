@@ -15,6 +15,12 @@ const getJson = <T>(url: string): Promise<T> =>
 /** One retry at once: a phone's connection drops a request now and then. */
 export const getJsonRetry = <T>(url: string): Promise<T> => getJson<T>(url).catch(() => getJson<T>(url));
 
+/** A query parameter cannot make an old static file immutable. Never label another deployment's data as this one. */
+export function requireBuild<T extends { builtAt: string }>(file: T, builtAt: string): T {
+  if (file.builtAt !== builtAt) throw new Error('Product data changed; reload to use the current build.');
+  return file;
+}
+
 /** A promise per key that is forgotten if it fails, so the next call retries. */
 export function memo<V>(load: (k: string) => Promise<V>): (k: string) => Promise<V> {
   const cache = new Map<string, Promise<V>>();

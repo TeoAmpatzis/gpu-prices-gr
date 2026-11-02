@@ -3,12 +3,12 @@
 // shop links and search titles fetched only when needed. Fits come from the v2 engine (step 5 task 9): the build's own
 // findings from the engine's lazy chunk (pickCheck.ts), each step's candidates from the pick worker (`useStepVerdicts`).
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Finding, Part } from '../engine';
 import type { BaseListing, BuilderIndex } from '../types';
 import type { Model } from './data';
 import type { Res } from '../engine/data/tiers';
-import { loadExtra, loadIndex, loadSlot, prefetchSlot } from './builderFiles';
+import { loadExtra, loadIndex, loadSavedSlot, loadSlot } from './builderFiles';
 import { SLOTS, candidates, slotFallback, type Build, type Slot, type SlotListing } from './builderData';
 import { engineUse, partOf, toParts, withoutOptional, type ActiveBuild } from './builderEngine';
 import type { Checker } from './pickChecker';
@@ -78,9 +78,6 @@ function readSaved(): Saved {
   return { parts, storage2: b.storage2?.key, prefs: asPrefs(b), offers: b.offers };
 }
 
-/** Saved parts of steps whose file hasn't arrived yet: kept when the build is saved meanwhile. */
-const pendingLazy: Partial<Record<Slot, string>> = {};
-
 /**
  * Does the builder show a saved build that changed while it is open? Not its own saves; not a change of compat
  * fields only (a page saving fresh engine fields for the same parts); and a shared link on screen stays as it is
@@ -107,12 +104,12 @@ let ownWrite = false;
  * build store's other lines (second drive, fan quantity, resolution) are kept as they are: from the saved build, or
  * from `base` (the shared link on screen, whose first edit makes it the user's own).
  */
-export function writeSaved(b: Build, p: Prefs, base?: StoredBuild, lines: { storage2?: AnyModel | null; fanQty?: number } = {}) {
+export function writeSaved(b: Build, p: Prefs, base?: StoredBuild, lines: { storage2?: AnyModel | null; fanQty?: number } = {}, pending: Partial<Record<Slot, string>> = {}) {
   const prev = base ?? readBuild();
   const old = prev.parts;
   const offers = { ...prev.offers };
   const keys: Partial<Record<Slot, string>> = {
-    ...pendingLazy,
+    ...pending,
     ...Object.fromEntries(SLOTS.filter((s) => b[s]).map((s) => [s, b[s]!.key])),
   };
   const parts: StoredBuild['parts'] = {};
@@ -198,6 +195,11 @@ function readShared(): Saved | null {
 export function useBuilderState() {
   // A shared link is shown as it is; the saved build is left alone until the user changes something.
   const [sharedAtStart] = useState(readShared);
+  const [start] = useState(() => sharedAtStart ?? readSaved());
+  // The current restore request, owned by this hook. Clearing/removing/replacing a part invalidates it;
+  // a late response must never fall back to the build captured when the request started.
+  const pendingLazy = useRef({ ...start.parts });
+  const pendingSecond = useRef(start.storage2);
   const [models, setModels] = useState<Models | null>(null);
   const [coverage, setCoverage] = useState<BuilderIndex['coverage'] | null>(null);
   const [chipLengths, setChipLengths] = useState<BuilderIndex['chipLengths'] | null>(null);
@@ -213,13 +215,13 @@ export function useBuilderState() {
   const [storage2, setStorage2State] = useState<AnyModel | undefined>(undefined);
   const [fanQty, setFanQtyState] = useState<number>(() => (sharedAtStart?.build ?? readBuild()).fanQty ?? 1);
   // Saved or shared parts whose step file hasn't arrived (or failed): the total leaves them out and says so.
-  const [wanted, setWanted] = useState<Partial<Record<Slot, string>>>({});
+  const [wanted, setWanted] = useState<Partial<Record<Slot, string>>>(start.parts);
   const [offers, setOffers] = useState<NonNullable<StoredBuild['offers']>>(() => (sharedAtStart?.build ?? readBuild()).offers ?? {});
   const [offerRows, setOfferRows] = useState<Record<string, BaseListing[]>>({});
   const offerLoads = useRef(new Map<string, Promise<BaseListing[]>>());
   // Product files that failed to load: the line says so and offers a retry (never marked gone).
   const [offerFailed, setOfferFailed] = useState<Record<string, true>>({});
-  const [wanted2, setWanted2] = useState(false); // the same for the second drive
+  const [wanted2, setWanted2] = useState(!!start.storage2); // the same for the second drive
   // Saved or shared parts whose step file arrived without them (no longer sold): named in the summary and Review.
   const [gone, setGone] = useState<GonePart[]>([]);
 
@@ -229,35 +231,51 @@ export function useBuilderState() {
   // then restored into the build. true = loaded, false = failed, missing = not loaded yet.
   const [slotState, setSlotState] = useState<Partial<Record<Slot, boolean>>>({});
   const slotRef = useRef<((slot: Slot) => void) | null>(null);
+  const restoreRef = useRef<(() => void) | null>(null);
+  const restoreTimer = useRef<number | undefined>(undefined);
+  const [restoreLead, setRestoreLead] = useState<Slot[]>([]);
 
   useEffect(() => {
+    let live = true;
     // /data/builder/index.json (a few KiB): the build date, coverage and chip lengths; requested once the builder's
     // step text (the page's largest paint) is on screen: a download that finishes before that paint counts toward
     // it in Lighthouse's phone simulation (src/lib/paint.ts). The steps' files follow on demand.
     const cancel = afterLargestPaint(() => {
       loadIndex()
         .then((index) => {
+          if (!live) return;
+          // Another tab may have changed the saved build while the index was in flight. A shared
+          // link keeps its own snapshot; an ordinary restore always follows the current store.
+          if (!sharedAtStart) {
+            const saved = readSaved();
+            pendingLazy.current = { ...saved.parts };
+            pendingSecond.current = saved.storage2;
+            setWanted(saved.parts);
+            setWanted2(!!saved.storage2);
+            setPrefsState(saved.prefs);
+            setOffers(saved.offers ?? {});
+            setFanQtyState(readBuild().fanQty ?? 1);
+          }
           const at = index.builtAt;
           setCoverage(index.coverage);
           setChipLengths(index.chipLengths);
           setBuiltAt(at);
           setModels(Object.fromEntries(SLOTS.map((s) => [s, []])) as unknown as Models);
           // The shared or the saved build; parts that disappeared from the market are dropped.
-          const start = sharedAtStart ?? readSaved();
-          const parts = start.parts;
-          setWanted(parts);
-          setWanted2(!!start.storage2);
+          const parts = pendingLazy.current;
           const loaded: Partial<Record<Slot, AnyModel[]>> = {};
+          const fullSlots = new Set<Slot>();
           // Shop links and search titles (<slot>-extra.json), written onto each model's one row; `extraVersion`
           // makes searches and links pick them up. Per loaded step, once wanted (see extraRef below).
           let extraWanted = false;
           const extraRequested = new Set<Slot>();
           const fetchExtra = (slot: Slot) => {
             const ms = loaded[slot];
-            if (!ms || extraRequested.has(slot)) return;
+            if (!ms || !fullSlots.has(slot) || extraRequested.has(slot)) return;
             extraRequested.add(slot);
             loadExtra(slot, at)
               .then((extra) => {
+                if (!live) return;
                 for (const model of ms) {
                   const row = model.cheapest;
                   row.url = extra.urls[row.id] ?? row.url;
@@ -267,77 +285,114 @@ export function useBuilderState() {
                 setExtraState((r) => ({ ...r, [slot]: true }));
               })
               .catch(() => {
+                if (!live) return;
                 extraRequested.delete(slot); // the builder still works; links and title search stay missing
                 setExtraState((r) => ({ ...r, [slot]: false }));
               });
           };
           const requestedSlots = new Set<Slot>();
+          const accept = (slot: Slot, ms: AnyModel[], full: boolean) => {
+            if (!live) return;
+            loaded[slot] = ms;
+            if (full) fullSlots.add(slot);
+            // The part saved meanwhile (a category page's "Add to build") wins over the one at load.
+            const want = pendingLazy.current[slot];
+            delete pendingLazy.current[slot];
+            setModels((prev) => (prev ? ({ ...prev, [slot]: ms } as Models) : prev));
+            const found = findSaved(slot, ms as AnyModel[], want);
+            const isGone = (line: Line, key: string) =>
+              setGone((g) => [...g.filter((x) => x.line !== line), { line, key, ...(start.names?.[line] && { name: start.names[line] }) }]);
+            // Restored only if the user hasn't picked one meanwhile.
+            if (found) setBuild((b) => (b[slot] ? b : { ...b, [slot]: found }));
+            else if (want !== undefined) isGone(slot, want);
+            if (slot === 'storage' && pendingSecond.current) {
+              setWanted2(false);
+              const key = pendingSecond.current;
+              pendingSecond.current = undefined;
+              const second = findSaved('storage', ms as AnyModel[], key);
+              if (second) setStorage2State((d) => d ?? second);
+              else isGone('storage2', key);
+            }
+            setWanted((w) => {
+              const { [slot]: _, ...rest } = w;
+              return rest;
+            });
+            if (full) {
+              // Sparse selections already have links, but newly offered catalogue rows do not.
+              // Copy list must wait for this full step's extras after a replacement is chosen.
+              setExtraState((r) => { const next = { ...r }; delete next[slot]; return next; });
+              setSlotState((r) => ({ ...r, [slot]: true }));
+              if (extraWanted) fetchExtra(slot);
+            } else setExtraState((r) => ({ ...r, [slot]: true })); // product chunks already carry links and titles
+          };
           slotRef.current = (slot) => {
             if (requestedSlots.has(slot)) return;
             requestedSlots.add(slot);
             loadSlot(slot, at)
-              .then((ms) => {
-                loaded[slot] = ms as AnyModel[];
-                // The part saved meanwhile (a category page's "Add to build") wins over the one at load.
-                const want = pendingLazy[slot] ?? parts[slot];
-                delete pendingLazy[slot];
-                setModels((prev) => (prev ? ({ ...prev, [slot]: ms } as Models) : prev));
-                const found = findSaved(slot, ms as AnyModel[], want);
-                const isGone = (line: Line, key: string) =>
-                  setGone((g) => [...g.filter((x) => x.line !== line), { line, key, ...(start.names?.[line] && { name: start.names[line] }) }]);
-                // Restored only if the user hasn't picked one meanwhile.
-                if (found) setBuild((b) => (b[slot] ? b : { ...b, [slot]: found }));
-                else if (want !== undefined) isGone(slot, want);
-                if (slot === 'storage' && start.storage2) {
-                  setWanted2(false);
-                  const second = findSaved('storage', ms as AnyModel[], start.storage2);
-                  if (second) setStorage2State((d) => d ?? second);
-                  else isGone('storage2', start.storage2);
-                }
-                setWanted((w) => {
-                  const { [slot]: _, ...rest } = w;
-                  return rest;
-                });
-                setSlotState((r) => ({ ...r, [slot]: true }));
-                if (extraWanted) fetchExtra(slot);
-                // The next step's parts, in idle time once this step's cards (its largest paint) are on screen: a file
-                // that finishes before that paint counts toward it in Lighthouse's phone simulation (review I1).
-                const next = SLOTS[SLOTS.indexOf(slot) + 1];
-                if (next) afterLargestPaint(() => prefetchSlot(next, at), 3000);
-              })
+              .then((ms) => accept(slot, ms as AnyModel[], true))
               .catch(() => {
+                if (!live) return;
                 requestedSlots.delete(slot); // the next request retries
                 setSlotState((r) => ({ ...r, [slot]: false }));
               });
           };
-          for (const s of SLOTS) {
-            // Only the saved build is protected; a shared one isn't saved until changed (then it's the user's).
-            if (parts[s] && !sharedAtStart) pendingLazy[s] = parts[s];
-            if (parts[s] || (s === 'storage' && start.storage2)) slotRef.current(s);
-          }
-          // At once for a restored build (its parts need their links), else on the first interaction, or
-          // EXTRA_DELAY after the index loads, so a phone's first seconds download the first screen only.
+          const restore = (s: Slot) => {
+            if (!live) return;
+            const parts = pendingLazy.current;
+            const keys = [parts[s], ...(s === 'storage' ? [pendingSecond.current] : [])].filter((key): key is string => !!key);
+            if (!keys.length) return;
+            void loadSavedSlot(s, keys, at).then((ms) => {
+              // An opened picker owns the full catalogue; a slower restore must not replace it with one row.
+              if (!live || requestedSlots.has(s)) return;
+              if (ms) accept(s, ms as AnyModel[], false);
+              else slotRef.current?.(s);
+            }, () => { if (live) slotRef.current?.(s); });
+          };
+          const restoreSlots = SLOTS.filter((s) => parts[s] || (s === 'storage' && pendingSecond.current));
+          // Paint the first visible selected products before restoring the rest below them. A saved
+          // CPU must not compete with whole GPU/PSU catalogues for the first screen's connection.
+          const lead = restoreSlots.slice(0, 2);
+          setRestoreLead(lead);
+          restoreRef.current = () => {
+            window.clearTimeout(restoreTimer.current);
+            restoreRef.current = null;
+            for (const s of restoreSlots.slice(2)) restore(s);
+          };
+          // One stalled request must not prevent the rest of the saved build from loading.
+          restoreTimer.current = window.setTimeout(() => restoreRef.current?.(), EXTRA_DELAY);
+          for (const s of lead) restore(s);
+          // Shop links and search titles load on interaction or after the first screen has settled.
+          // A restored build needs its selected rows first, not every loaded step's extra catalogue.
           extraRef.current = () => {
             if (extraWanted) return;
             extraWanted = true;
             window.clearTimeout(extraTimer.current);
             for (const s of SLOTS) fetchExtra(s);
           };
-          if (SLOTS.some((s) => parts[s])) extraRef.current();
-          else extraTimer.current = window.setTimeout(() => extraRef.current?.(), EXTRA_DELAY);
+          extraTimer.current = window.setTimeout(() => extraRef.current?.(), EXTRA_DELAY);
         })
-        .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)));
+        .catch((e: unknown) => live && setError(e instanceof Error ? e.message : String(e)));
     });
     return () => {
+      live = false;
       cancel();
       window.clearTimeout(extraTimer.current);
+      window.clearTimeout(restoreTimer.current);
+      slotRef.current = null;
+      extraRef.current = null;
+      restoreRef.current = null;
     };
-  }, [sharedAtStart]);
+  }, [start, sharedAtStart]);
+
+  useEffect(() => {
+    if (!models || !restoreRef.current || restoreLead.some((s) =>
+      slotState[s] !== false && (wanted[s] !== undefined || (s === 'storage' && wanted2)))) return;
+    return afterLargestPaint(() => restoreRef.current?.(), 3000);
+  }, [models, restoreLead, wanted, wanted2, slotState]);
 
   // The builder stays mounted while other pages are open: when the saved build changes there (a category
   // page's "Add to build", v2 step 3) or in another tab, show that build (rules: `followSavedBuild`).
   useEffect(() => {
-    if (!models) return;
     let last = JSON.stringify(readSaved());
     return onBuildChange((source) => {
       const saved = readSaved();
@@ -347,22 +402,29 @@ export function useBuilderState() {
       const action = followSavedBuild({ ownWrite, changed, shared, source });
       if (action === 'ignore') return;
       const next: Build = {};
+      pendingLazy.current = {};
+      pendingSecond.current = saved.storage2;
       for (const s of SLOTS) {
         const key = saved.parts[s];
         if (!key) continue;
-        const found = findSaved(s, models[s] as AnyModel[], key);
+        const found = models ? findSaved(s, models[s] as AnyModel[], key) : undefined;
         if (found) (next as Record<Slot, AnyModel>)[s] = found;
         else {
           // Its step's file hasn't arrived (or doesn't have it): restored when it does.
-          pendingLazy[s] = key;
+          pendingLazy.current[s] = key;
           slotRef.current?.(s);
         }
       }
       setBuild(next);
+      setWanted({ ...pendingLazy.current });
+      const second = saved.storage2 && models ? findSaved('storage', models.storage as AnyModel[], saved.storage2) : undefined;
+      pendingSecond.current = second ? undefined : saved.storage2;
+      setWanted2(!!pendingSecond.current);
+      if (pendingSecond.current) slotRef.current?.('storage');
       setOffers(readBuild().offers ?? {});
       setPrefsState(saved.prefs);
       setFanQtyState(readBuild().fanQty ?? 1);
-      setStorage2State(saved.storage2 ? findSaved('storage', models.storage as AnyModel[], saved.storage2) : undefined);
+      setStorage2State(second);
       if (action === 'own') {
         // The same path as editing a shared build: it is the user's own now, and the link parameters go.
         setShared(false);
@@ -379,22 +441,25 @@ export function useBuilderState() {
   };
   const update = (b: Build) => {
     // A step the user empties or fills themselves is no longer pending.
-    for (const s of SLOTS) if (s in b) delete pendingLazy[s];
+    for (const s of SLOTS) if (s in b) delete pendingLazy.current[s];
     setWanted((w) => Object.fromEntries(Object.entries(w).filter(([s]) => !(s in b))));
     setBuild(b);
-    writeSaved(b, prefs, shared ? sharedAtStart?.build : undefined);
+    writeSaved(b, prefs, shared ? sharedAtStart?.build : undefined, {}, pendingLazy.current);
     setOffers(readBuild().offers ?? {});
     own();
   };
   const setPrefs = (p: Prefs) => {
     setPrefsState(p);
-    writeSaved(build, p, shared ? sharedAtStart?.build : undefined);
+    writeSaved(build, p, shared ? sharedAtStart?.build : undefined, {}, pendingLazy.current);
     setOffers(readBuild().offers ?? {});
     own();
   };
   /** Empties the build: every part, the second drive, and the fan quantity back to 1 (parts whose file is pending too). */
   const clear = () => {
-    for (const s of SLOTS) delete pendingLazy[s];
+    window.clearTimeout(restoreTimer.current);
+    restoreRef.current = null;
+    pendingLazy.current = {};
+    pendingSecond.current = undefined;
     setWanted({});
     setWanted2(false);
     setGone([]);
@@ -406,27 +471,28 @@ export function useBuilderState() {
     own();
   };
   const setStorage2 = (m: AnyModel | null) => {
+    pendingSecond.current = undefined;
     setWanted2(false);
     setStorage2State(m ?? undefined);
-    writeSaved(build, prefs, shared ? sharedAtStart?.build : undefined, { storage2: m });
+    writeSaved(build, prefs, shared ? sharedAtStart?.build : undefined, { storage2: m }, pendingLazy.current);
     setOffers(readBuild().offers ?? {});
     own();
   };
   const setFanQty = (n: number) => {
     const q = Math.min(MAX_FAN_QTY, Math.max(1, Math.round(n)));
     setFanQtyState(q);
-    writeSaved(build, prefs, shared ? sharedAtStart?.build : undefined, { fanQty: q });
+    writeSaved(build, prefs, shared ? sharedAtStart?.build : undefined, { fanQty: q }, pendingLazy.current);
     setOffers(readBuild().offers ?? {});
     own();
   };
 
-  const loadOffers = (line: Line, model: AnyModel): Promise<BaseListing[]> => {
+  const loadOffers = useCallback((line: Line, model: AnyModel): Promise<BaseListing[]> => {
     const slot = line === 'storage2' ? 'storage' : line;
     const key = `${slot}:${model.key}`;
     let pending = offerLoads.current.get(key);
     if (!pending) {
       setOfferFailed((prev) => { if (!prev[key]) return prev; const next = { ...prev }; delete next[key]; return next; });
-      pending = import('./modelData').then(({ loadModel }) => loadModel(slot, offerSlug(slot, model)))
+      pending = import('./modelData').then(({ loadModel }) => loadModel(slot, offerSlug(slot, model), builtAt ?? undefined))
         .then((entry) => {
           const rows = offersFor(slot, model, entry);
           setOfferRows((prev) => ({ ...prev, [key]: rows }));
@@ -435,12 +501,14 @@ export function useBuilderState() {
       offerLoads.current.set(key, pending);
     }
     return pending;
-  };
+  }, [builtAt]);
   const chooseOffer = (line: Line, model: AnyModel, id: string) => {
     const slot = line === 'storage2' ? 'storage' : line;
     if (!offerRows[`${slot}:${model.key}`]?.some((row) => row.id === id)) return;
     const nextBuild = line === 'storage2' ? build : { ...build, [line]: model };
-    writeSaved(nextBuild, prefs, shared ? sharedAtStart?.build : undefined, line === 'storage2' ? { storage2: model } : {});
+    if (line === 'storage2') pendingSecond.current = undefined;
+    else delete pendingLazy.current[line];
+    writeSaved(nextBuild, prefs, shared ? sharedAtStart?.build : undefined, line === 'storage2' ? { storage2: model } : {}, pendingLazy.current);
     const stored = readBuild();
     ownWrite = true;
     try { writeBuild({ ...stored, offers: { ...stored.offers, [line]: id } }); }
@@ -456,7 +524,7 @@ export function useBuilderState() {
       const model = line === 'storage2' ? storage2 : build[line];
       if (model && offers[line]) void loadOffers(line, model as AnyModel).catch(() => {});
     }
-  }, [build, storage2, offers]);
+  }, [build, storage2, offers, loadOffers]);
   const resolvedLines = useMemo(() => ([...SLOTS, 'storage2'] as Line[]).flatMap((line) => {
     const model = line === 'storage2' ? storage2 : build[line];
     if (!model) return [];
@@ -472,6 +540,7 @@ export function useBuilderState() {
     [build, storage2, fanQty, prefs, offers],
   );
   const parts = useMemo(() => toParts(active), [active]);
+  const restoring = Object.keys(wanted).length > 0 || wanted2;
   // Chip length estimates (rule 6) and the use (rules 27–30): the same context pick mode and the product pages send.
   const engineCtx = useMemo<PostedContext>(() => {
     const use = engineUse(active);
@@ -501,17 +570,17 @@ export function useBuilderState() {
     };
   }, [engine, anyPart, parts]);
   const findings = useMemo<Finding[] | null>(
-    () => (engine ? engine.evaluate(parts, { ...engine.PICK_CTX, ...engineCtx }) : anyPart ? null : []),
-    [engine, parts, engineCtx, anyPart],
+    () => (engine && !restoring ? engine.evaluate(parts, { ...engine.PICK_CTX, ...engineCtx }) : anyPart || restoring ? null : []),
+    [engine, parts, engineCtx, anyPart, restoring],
   );
   // The CPU's own rule 11 / 12 findings (the build without card and cooler), for which steps can be skipped.
   const optFindings = useMemo<Finding[] | null>(
-    () => (engine ? engine.evaluate(withoutOptional(parts), { ...engine.PICK_CTX, ...engineCtx }) : anyPart ? null : []),
-    [engine, parts, engineCtx, anyPart],
+    () => (engine && !restoring ? engine.evaluate(withoutOptional(parts), { ...engine.PICK_CTX, ...engineCtx }) : anyPart || restoring ? null : []),
+    [engine, parts, engineCtx, anyPart, restoring],
   );
   // The power estimate with its per-part breakdown (Review), and the recommended PSU: the larger of the card maker's
   // figure and the whole-build formula (rule 14's two figures).
-  const power = useMemo(() => (engine ? engine.powerEstimate(parts) : null), [engine, parts]);
+  const power = useMemo(() => (engine && !restoring ? engine.powerEstimate(parts) : null), [engine, parts, restoring]);
   const psuWatts = power ? Math.max(power.makerW ?? 0, power.formulaW ?? 0) || null : null;
   // The pick worker's checker: its own chunk, loaded after the first paint (once the index is here), so the builder's
   // first-paint JS stays within rule 11.

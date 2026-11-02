@@ -5,7 +5,7 @@
 // engine's messages in three groups with their fix and the "not checked yet" line (M1); the BIOS note (rule 13);
 // the power estimate per part and the recommended PSU; then Copy list and the share link.
 
-import { useEffect, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { AlertTriangle, ExternalLink, Info, XCircle } from 'lucide-react';
 import type { Category } from '../../types';
 import type { Finding } from '../../engine';
@@ -32,10 +32,9 @@ const slotOf = (l: Line): Slot => (l === 'storage2' ? 'storage' : l);
 
 export default function Review({ state, lang, onGo }: { state: BuilderState; lang: Lang; onGo: (s: Slot) => void }) {
   const t = (x: Text) => tr(lang, x);
-  const { builtAt, wantExtra } = state;
+  const { builtAt } = state;
   const findings = state.findings ?? [];
-  // The lines carry the shop links and the listings' titles (/data/builder/<slot>-extra.json).
-  useEffect(() => wantExtra(), [wantExtra]);
+  // Extra shop data follows the first screen, or a user's interaction (owned by useBuilderState).
   const date = builtAt ? new Date(builtAt).toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB') : null;
   const name = (l: Line) => t(l === 'storage2' ? B.storage2 : STEP_NAME[l]);
 
@@ -91,7 +90,7 @@ export default function Review({ state, lang, onGo }: { state: BuilderState; lan
                         {variant}
                       </div>
                     )}
-                    <div className="mt-1 empty:hidden">
+                    <div className="mt-1 min-h-6">
                       <FitBadge rating={ratingOf(findings, line === 'storage2' ? `${r.model.key}#2` : r.model.key, state.parts)} lang={lang} />
                     </div>
                     {notice && (
@@ -149,7 +148,7 @@ export default function Review({ state, lang, onGo }: { state: BuilderState; lan
                   <h3 className="mb-1 text-sm font-semibold">{t(g.title)}</h3>
                   <ul className="flex flex-col gap-1.5 text-sm">
                     {g.items.map((f, i) => (
-                      <li key={i} className="flex gap-2">
+                      <li key={i} className="flex gap-2" data-rule={f.rule} data-status={f.status}>
                         {g.icon}
                         <span>
                           {t(f.message)}

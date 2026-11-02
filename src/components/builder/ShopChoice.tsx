@@ -20,8 +20,8 @@ export default function ShopChoice({ state, line, model, lang }: { state: Builde
     state.wantExtra();
     void state.loadOffers(line, model).then(setRows, () => setFailed(true));
   };
-  return <div className="text-sm" data-shop-choice={line}>
-    <button type="button" className="tap px-2 text-accent hover:underline" aria-expanded={open} onClick={() => open ? setOpen(false) : load()}>{tr(lang, B.otherShop)}</button>
+  return <div className="flex min-h-11 min-w-0 flex-col text-sm" data-shop-choice={line}>
+    <button type="button" className="tap self-start px-2 text-accent hover:underline" aria-expanded={open} onClick={() => open ? setOpen(false) : load()}>{tr(lang, B.otherShop)}</button>
     {open && <div className="flex flex-col gap-1">
       {failed ? <button type="button" className="tap text-accent" onClick={load}>{tr(lang, B.offersRetry)}</button> : rows === null ? <p role="status">{tr(lang, T.loading)}</p> : rows.length === 0 ? <p>{tr(lang, B.noOffers)}</p> : rows.map((row) => {
         const resolved = resolveLine(line, model, line === 'fan' ? state.fanQty : 1, row.id, rows);

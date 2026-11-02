@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Check, Loader2, Search } from 'lucide-react';
-import type { AutoFile, BaseListing, CaseListing, Category, CpuListing, FanListing } from '../../types';
+import type { AutoFile, BaseListing, CaseListing, Category, CpuListing, FanListing, StorageListing } from '../../types';
 import { CATEGORIES } from '../../lib/categories';
 import type { Model } from '../../lib/data';
-import { candidates, cpuCards, type Slot } from '../../lib/builderData';
+import { SLOTS, candidates, cpuCards, type Slot } from '../../lib/builderData';
+import { prefetchSlot } from '../../lib/builderFiles';
+import { afterLargestPaint } from '../../lib/paint';
 import type { Line } from '../../lib/buildStore';
 import { ENGINE_TEXT } from '../../lib/builderEngine';
 import { fanPlan, planPackOrder } from '../../lib/fanPlan';
@@ -78,6 +80,19 @@ export default function Picker({ slot, state, auto = null, lang, line = slot, on
     // A failed file waits for the retry button; the state's callback changes on every render.
     // eslint-disable-next-line react-hooks/exhaustive-deps -- request only on opening a step or loading the index
   }, [slot, state.loading]);
+  // Preload only from an open picker, after its checked cards have committed. Restoring a saved
+  // build must not preload every neighbouring catalogue before its first screen can paint.
+  const ready = state.slotReady(slot) && verdicts !== null;
+  useEffect(() => {
+    const next = SLOTS[SLOTS.indexOf(slot) + 1];
+    if (!ready || !state.builtAt || !next) return;
+    const at = state.builtAt;
+    // Give the visible choices a short reading window before the speculative download uses
+    // a slow connection. Opening the next step still loads it immediately on demand.
+    let timer: number | undefined;
+    const cancel = afterLargestPaint(() => { timer = window.setTimeout(() => prefetchSlot(next, at), 2000); }, 3000);
+    return () => { cancel(); window.clearTimeout(timer); };
+  }, [ready, slot, state.builtAt]);
   const cfg = CATEGORIES[slot as Category];
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState<SortBy>('recommended');
@@ -137,10 +152,14 @@ export default function Picker({ slot, state, auto = null, lang, line = slot, on
     // "Fit not verified" after the verified parts (owner answers 1–4); clashes (shown when "Only compatible" is off)
     // go last, greyed out.
     const rank = (r: Rated) => (r.hide ? 2 : r.rating.fit === 'unverified' ? 1 : 0);
-    return { shown: [...list].sort((a, b) => rank(a) - rank(b) || (slot === 'fan' ? planPackOrder(sizes, (a.m.cheapest as FanListing).size) - planPackOrder(sizes, (b.m.cheapest as FanListing).size) : 0) || order(a, b)), hidden: clashes };
+    // The system drive's approved SSD-first rule precedes verification ranking. Unknown M.2
+    // counts must not recommend a mechanical system disk instead; its real fit label stays visible.
+    const systemDrive = (r: Rated) => slot === 'storage' && line !== 'storage2' && sort === 'recommended'
+      ? Number((r.m.cheapest as StorageListing).media === 'HDD') : 0;
+    return { shown: [...list].sort((a, b) => Number(a.hide) - Number(b.hide) || systemDrive(a) - systemDrive(b) || rank(a) - rank(b) || (slot === 'fan' ? planPackOrder(sizes, (a.m.cheapest as FanListing).size) - planPackOrder(sizes, (b.m.cheapest as FanListing).size) : 0) || order(a, b)), hidden: clashes };
     // extraVersion: search titles mutate existing rows later (/data/builder/<slot>-extra.json).
     // eslint-disable-next-line react-hooks/exhaustive-deps -- those row mutations require a search refresh
-  }, [rated, order, query, onlyCompatible, verifiedOnly, withinBudget, left, cfg, extraVersion, slot, sizes, fanType, picked, state.fanQty]);
+  }, [rated, order, query, onlyCompatible, verifiedOnly, withinBudget, left, cfg, extraVersion, slot, line, sort, sizes, fanType, picked, state.fanQty]);
   // Back to one page when the filters change.
   const filterKey = JSON.stringify([query, sort, onlyCompatible, verifiedOnly, withinBudget, sizes, fanType, picked]);
   const [paged, setPaged] = useState({ key: filterKey, n: PAGE });
@@ -257,7 +276,7 @@ export default function Picker({ slot, state, auto = null, lang, line = slot, on
         <div className="p-3 text-sm text-muted">{t(G.none)}</div>
       ) : (
         <>
-          <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {cpuGroups ? cpuGroups.slice(0, limit).map((group) => (
               <CpuCard key={group.chip} chip={group.chip}>{group.versions.map((m) => renderCard(shown.find((r) => r.m.key === m.key)!))}</CpuCard>
             )) : shown.slice(0, limit).map(renderCard)}

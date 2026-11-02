@@ -1,0 +1,397 @@
+{
+  "method": "Native clipboard; one separate browser process per worker, proven isolated before execution. First four runs reused from successful serial execution.",
+  "runs": [
+    {
+      "id": "a-guided-1366-el",
+      "problems": [],
+      "total": 1421.16,
+      "started": "2026-11-02T09:30:18.558Z",
+      "finished": "2026-11-02T09:30:47.422Z"
+    },
+    {
+      "id": "a-guided-1366-en",
+      "problems": [],
+      "total": 1421.16,
+      "started": "2026-11-02T09:30:47.424Z",
+      "finished": "2026-11-02T09:31:15.735Z"
+    },
+    {
+      "id": "a-guided-360-el",
+      "problems": [],
+      "total": 1421.16,
+      "started": "2026-11-02T09:31:15.738Z",
+      "finished": "2026-11-02T09:31:48.720Z"
+    },
+    {
+      "id": "a-guided-360-en",
+      "problems": [],
+      "total": 1421.16,
+      "started": "2026-11-02T09:31:48.722Z",
+      "finished": "2026-11-02T09:32:21.502Z"
+    },
+    {
+      "id": "a-quick-1366-el",
+      "problems": [],
+      "total": 1421.16,
+      "started": "2026-11-02T09:34:04.045Z",
+      "finished": "2026-11-02T09:34:32.081Z"
+    },
+    {
+      "id": "a-quick-1366-en",
+      "problems": [],
+      "total": 1421.16,
+      "started": "2026-11-02T09:34:04.053Z",
+      "finished": "2026-11-02T09:34:32.080Z"
+    },
+    {
+      "id": "a-quick-360-el",
+      "problems": [],
+      "total": 1421.16,
+      "started": "2026-11-02T09:34:04.064Z",
+      "finished": "2026-11-02T09:34:33.764Z"
+    },
+    {
+      "id": "a-quick-360-en",
+      "problems": [],
+      "total": 1421.16,
+      "started": "2026-11-02T09:34:32.084Z",
+      "finished": "2026-11-02T09:35:01.678Z"
+    },
+    {
+      "id": "b-guided-1366-el",
+      "problems": [],
+      "total": 2098.07,
+      "started": "2026-11-02T09:34:32.085Z",
+      "finished": "2026-11-02T09:34:58.578Z"
+    },
+    {
+      "id": "b-guided-1366-en",
+      "problems": [],
+      "total": 2098.07,
+      "started": "2026-11-02T09:34:33.766Z",
+      "finished": "2026-11-02T09:35:00.310Z"
+    },
+    {
+      "id": "b-guided-360-el",
+      "problems": [],
+      "total": 2098.07,
+      "started": "2026-11-02T09:34:58.580Z",
+      "finished": "2026-11-02T09:35:23.298Z"
+    },
+    {
+      "id": "b-guided-360-en",
+      "problems": [],
+      "total": 2098.07,
+      "started": "2026-11-02T09:35:00.313Z",
+      "finished": "2026-11-02T09:35:25.313Z"
+    },
+    {
+      "id": "b-quick-1366-el",
+      "problems": [],
+      "total": 2098.07,
+      "started": "2026-11-02T09:35:01.679Z",
+      "finished": "2026-11-02T09:35:27.978Z"
+    },
+    {
+      "id": "b-quick-1366-en",
+      "problems": [],
+      "total": 2098.07,
+      "started": "2026-11-02T09:35:23.300Z",
+      "finished": "2026-11-02T09:35:49.643Z"
+    },
+    {
+      "id": "b-quick-360-el",
+      "problems": [],
+      "total": 2098.07,
+      "started": "2026-11-02T09:35:25.315Z",
+      "finished": "2026-11-02T09:35:50.481Z"
+    },
+    {
+      "id": "b-quick-360-en",
+      "problems": [],
+      "total": 2098.07,
+      "started": "2026-11-02T09:35:27.981Z",
+      "finished": "2026-11-02T09:35:53.095Z"
+    },
+    {
+      "id": "c-guided-1366-el",
+      "problems": [],
+      "total": 7440.89,
+      "started": "2026-11-02T09:35:49.645Z",
+      "finished": "2026-11-02T09:36:19.893Z"
+    },
+    {
+      "id": "c-guided-1366-en",
+      "problems": [],
+      "total": 7440.89,
+      "started": "2026-11-02T09:35:50.483Z",
+      "finished": "2026-11-02T09:36:20.843Z"
+    },
+    {
+      "id": "c-guided-360-el",
+      "problems": [],
+      "total": 7440.89,
+      "started": "2026-11-02T09:35:53.098Z",
+      "finished": "2026-11-02T09:36:28.045Z"
+    },
+    {
+      "id": "c-guided-360-en",
+      "problems": [],
+      "total": 7440.89,
+      "started": "2026-11-02T09:36:19.895Z",
+      "finished": "2026-11-02T09:36:54.526Z"
+    },
+    {
+      "id": "c-quick-1366-el",
+      "problems": [],
+      "total": 7440.89,
+      "started": "2026-11-02T09:36:20.845Z",
+      "finished": "2026-11-02T09:36:50.777Z"
+    },
+    {
+      "id": "c-quick-1366-en",
+      "problems": [],
+      "total": 7440.89,
+      "started": "2026-11-02T09:36:28.047Z",
+      "finished": "2026-11-02T09:36:58.011Z"
+    },
+    {
+      "id": "c-quick-360-el",
+      "problems": [],
+      "total": 7440.89,
+      "started": "2026-11-02T09:36:50.780Z",
+      "finished": "2026-11-02T09:37:22.592Z"
+    },
+    {
+      "id": "c-quick-360-en",
+      "problems": [],
+      "total": 7440.89,
+      "started": "2026-11-02T09:36:54.529Z",
+      "finished": "2026-11-02T09:37:26.225Z"
+    },
+    {
+      "id": "d-guided-1366-el",
+      "problems": [],
+      "total": 1787.14,
+      "started": "2026-11-02T09:36:58.013Z",
+      "finished": "2026-11-02T09:37:25.907Z"
+    },
+    {
+      "id": "d-guided-1366-en",
+      "problems": [],
+      "total": 1787.14,
+      "started": "2026-11-02T09:37:22.594Z",
+      "finished": "2026-11-02T09:37:50.586Z"
+    },
+    {
+      "id": "d-guided-360-el",
+      "problems": [],
+      "total": 1787.14,
+      "started": "2026-11-02T09:37:25.909Z",
+      "finished": "2026-11-02T09:37:58.174Z"
+    },
+    {
+      "id": "d-guided-360-en",
+      "problems": [],
+      "total": 1787.14,
+      "started": "2026-11-02T09:37:26.227Z",
+      "finished": "2026-11-02T09:37:58.525Z"
+    },
+    {
+      "id": "d-quick-1366-el",
+      "problems": [],
+      "total": 1787.14,
+      "started": "2026-11-02T09:37:50.589Z",
+      "finished": "2026-11-02T09:38:18.237Z"
+    },
+    {
+      "id": "d-quick-1366-en",
+      "problems": [],
+      "total": 1787.14,
+      "started": "2026-11-02T09:37:58.176Z",
+      "finished": "2026-11-02T09:38:25.753Z"
+    },
+    {
+      "id": "d-quick-360-el",
+      "problems": [],
+      "total": 1787.14,
+      "started": "2026-11-02T09:37:58.527Z",
+      "finished": "2026-11-02T09:38:27.972Z"
+    },
+    {
+      "id": "d-quick-360-en",
+      "problems": [],
+      "total": 1787.14,
+      "started": "2026-11-02T09:38:18.239Z",
+      "finished": "2026-11-02T09:38:47.622Z"
+    },
+    {
+      "id": "e-guided-1366-el",
+      "problems": [],
+      "total": 647.51,
+      "started": "2026-11-02T09:38:25.755Z",
+      "finished": "2026-11-02T09:38:49.749Z"
+    },
+    {
+      "id": "e-guided-1366-en",
+      "problems": [],
+      "total": 647.51,
+      "started": "2026-11-02T09:38:27.975Z",
+      "finished": "2026-11-02T09:38:51.899Z"
+    },
+    {
+      "id": "e-guided-360-el",
+      "problems": [],
+      "total": 647.51,
+      "started": "2026-11-02T09:38:47.624Z",
+      "finished": "2026-11-02T09:39:15.984Z"
+    },
+    {
+      "id": "e-guided-360-en",
+      "problems": [],
+      "total": 647.51,
+      "started": "2026-11-02T09:38:49.751Z",
+      "finished": "2026-11-02T09:39:18.052Z"
+    },
+    {
+      "id": "e-quick-1366-el",
+      "problems": [],
+      "total": 647.51,
+      "started": "2026-11-02T09:38:51.902Z",
+      "finished": "2026-11-02T09:39:14.201Z"
+    },
+    {
+      "id": "e-quick-1366-en",
+      "problems": [],
+      "total": 647.51,
+      "started": "2026-11-02T09:39:14.203Z",
+      "finished": "2026-11-02T09:39:36.531Z"
+    },
+    {
+      "id": "e-quick-360-el",
+      "problems": [],
+      "total": 647.51,
+      "started": "2026-11-02T09:39:15.986Z",
+      "finished": "2026-11-02T09:39:40.285Z"
+    },
+    {
+      "id": "e-quick-360-en",
+      "problems": [],
+      "total": 647.51,
+      "started": "2026-11-02T09:39:18.054Z",
+      "finished": "2026-11-02T09:39:42.117Z"
+    },
+    {
+      "id": "f-guided-1366-el",
+      "problems": [],
+      "total": 3369.47,
+      "started": "2026-11-02T09:39:36.533Z",
+      "finished": "2026-11-02T09:40:01.620Z"
+    },
+    {
+      "id": "f-guided-1366-en",
+      "problems": [],
+      "total": 3369.47,
+      "started": "2026-11-02T09:39:40.288Z",
+      "finished": "2026-11-02T09:40:05.681Z"
+    },
+    {
+      "id": "f-guided-360-el",
+      "problems": [],
+      "total": 3369.47,
+      "started": "2026-11-02T09:39:42.120Z",
+      "finished": "2026-11-02T09:40:11.468Z"
+    },
+    {
+      "id": "f-guided-360-en",
+      "problems": [],
+      "total": 3369.47,
+      "started": "2026-11-02T09:40:01.622Z",
+      "finished": "2026-11-02T09:40:31.183Z"
+    },
+    {
+      "id": "f-quick-1366-el",
+      "problems": [],
+      "total": 3369.47,
+      "started": "2026-11-02T09:40:05.684Z",
+      "finished": "2026-11-02T09:40:30.487Z"
+    },
+    {
+      "id": "f-quick-1366-en",
+      "problems": [],
+      "total": 3369.47,
+      "started": "2026-11-02T09:40:11.474Z",
+      "finished": "2026-11-02T09:40:36.298Z"
+    },
+    {
+      "id": "f-quick-360-el",
+      "problems": [],
+      "total": 3369.47,
+      "started": "2026-11-02T09:40:30.489Z",
+      "finished": "2026-11-02T09:40:57.166Z"
+    },
+    {
+      "id": "f-quick-360-en",
+      "problems": [],
+      "total": 3369.47,
+      "started": "2026-11-02T09:40:31.185Z",
+      "finished": "2026-11-02T09:40:57.816Z"
+    },
+    {
+      "id": "g-guided-1366-el",
+      "problems": [],
+      "total": 1606.71,
+      "started": "2026-11-02T09:40:36.301Z",
+      "finished": "2026-11-02T09:41:05.845Z"
+    },
+    {
+      "id": "g-guided-1366-en",
+      "problems": [],
+      "total": 1606.71,
+      "started": "2026-11-02T09:40:57.169Z",
+      "finished": "2026-11-02T09:41:26.726Z"
+    },
+    {
+      "id": "g-guided-360-el",
+      "problems": [],
+      "total": 1606.71,
+      "started": "2026-11-02T09:40:57.819Z",
+      "finished": "2026-11-02T09:41:31.964Z"
+    },
+    {
+      "id": "g-guided-360-en",
+      "problems": [],
+      "total": 1606.71,
+      "started": "2026-11-02T09:41:05.848Z",
+      "finished": "2026-11-02T09:41:40.196Z"
+    },
+    {
+      "id": "g-quick-1366-el",
+      "problems": [],
+      "total": 1606.71,
+      "started": "2026-11-02T09:41:26.729Z",
+      "finished": "2026-11-02T09:41:56.143Z"
+    },
+    {
+      "id": "g-quick-1366-en",
+      "problems": [],
+      "total": 1606.71,
+      "started": "2026-11-02T09:41:31.966Z",
+      "finished": "2026-11-02T09:42:01.358Z"
+    },
+    {
+      "id": "g-quick-360-el",
+      "problems": [],
+      "total": 1606.71,
+      "started": "2026-11-02T09:41:40.202Z",
+      "finished": "2026-11-02T09:42:11.396Z"
+    },
+    {
+      "id": "g-quick-360-en",
+      "problems": [],
+      "total": 1606.71,
+      "started": "2026-11-02T09:41:56.146Z",
+      "finished": "2026-11-02T09:42:27.444Z"
+    }
+  ]
+}
