@@ -10,6 +10,15 @@ const model = (key: string, row: BaseListing): AnyModel => ({ key, chip: row.chi
 const entry = (listings: BaseListing[], parts: object): ModelEntry => ({ listings, parts } as ModelEntry);
 
 describe('builder offer ownership', () => {
+  it('resolves qualified collisions, rejects ambiguous legacy ids, and exposes no unresolved purchase URL', () => {
+    const a = listing('same', { source: 'skroutz' });
+    const b = listing('same', { source: 'bestprice', price: 70 });
+    expect(resolveLine('cpu', model('cpu', a), 1, 'bd1:bestprice:same', [a, b]).offer).toMatchObject({ source: 'bestprice', price: 70 });
+    expect(resolveLine('cpu', model('cpu', a), 1, 'same', [a, b]).status).toBe('missing');
+    for (const resolved of [resolveLine('cpu', model('cpu', a), 1, 'gone'), resolveLine('cpu', model('cpu', a), 1, 'gone', undefined, true), resolveLine('cpu', model('cpu', a), 1, 'gone', [])]) {
+      expect(resolved.offer.url).toBe('');
+    }
+  });
   it('looks up the category CPU, not the builder version key', () => {
     expect(offerSlug('cpu', model('Ryzen 5 7600|true', listing('box')))).toBe('ryzen-5-7600');
   });

@@ -125,11 +125,12 @@ export function writeBuild(b: StoredBuild): void {
 }
 
 /** Read-modify-write one slot (null removes it) and notify. A changed part drops the shop chosen for the old one. */
-export function setPart(slot: Slot, part: StoredPart | null): void {
+export function setPart(slot: Slot, part: StoredPart | null, offerChoice?: string): void {
   const b = readBuild();
   if (b.offers && b.parts[slot]?.key !== part?.key) delete b.offers[slot];
   if (part) b.parts[slot] = part;
   else delete b.parts[slot];
+  if (part && offerChoice !== undefined) b.offers = { ...b.offers, [slot]: offerChoice };
   writeBuild(b);
 }
 

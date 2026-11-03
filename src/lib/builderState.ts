@@ -10,7 +10,7 @@ import type { Model } from './data';
 import type { Res } from '../engine/data/tiers';
 import { loadExtra, loadIndex, loadSavedSlot, loadSlot } from './builderFiles';
 import { SLOTS, candidates, slotFallback, type Build, type Slot, type SlotListing } from './builderData';
-import { engineUse, partOf, toParts, withoutOptional, type ActiveBuild } from './builderEngine';
+import { engineUse, fieldsForListing, partOf, toParts, withoutOptional, type ActiveBuild } from './builderEngine';
 import type { Checker } from './pickChecker';
 import type { PostedContext, Verdict } from './pickProtocol';
 import { afterLargestPaint } from './paint';
@@ -20,6 +20,7 @@ import { builderParams, writeBuilderParams } from './builderView';
 import { offersFor, offerSlug, resolveLine } from './builderOffers';
 import { linesTotal } from './copyList';
 import type { Line } from './buildStore';
+import { encodeOfferChoice, resolveOfferChoice } from './productSelection';
 
 export type Models = { [S in Slot]: Model<SlotListing[S]>[] };
 export type AnyModel = Model<BaseListing>;
@@ -104,7 +105,7 @@ let ownWrite = false;
  * build store's other lines (second drive, fan quantity, resolution) are kept as they are: from the saved build, or
  * from `base` (the shared link on screen, whose first edit makes it the user's own).
  */
-export function writeSaved(b: Build, p: Prefs, base?: StoredBuild, lines: { storage2?: AnyModel | null; fanQty?: number } = {}, pending: Partial<Record<Slot, string>> = {}) {
+export function writeSaved(b: Build, p: Prefs, base?: StoredBuild, lines: { storage2?: AnyModel | null; fanQty?: number; offers?: StoredBuild['offers'] } = {}, pending: Partial<Record<Slot, string>> = {}) {
   const prev = base ?? readBuild();
   const old = prev.parts;
   const offers = { ...prev.offers };
@@ -127,6 +128,7 @@ export function writeSaved(b: Build, p: Prefs, base?: StoredBuild, lines: { stor
     else delete next.storage2;
   }
   if (lines.fanQty !== undefined) next.fanQty = lines.fanQty;
+  if (lines.offers) next.offers = { ...next.offers, ...lines.offers };
   delete next.use;
   delete next.budget;
   if (p.use) next.use = p.use;
@@ -341,7 +343,12 @@ export function useBuilderState() {
             const parts = pendingLazy.current;
             const keys = [parts[s], ...(s === 'storage' ? [pendingSecond.current] : [])].filter((key): key is string => !!key);
             if (!keys.length) return;
-            void loadSavedSlot(s, keys, at).then((ms) => {
+            const pins = (sharedAtStart?.build ?? readBuild()).offers;
+            const choices = Object.fromEntries(keys.flatMap((key) => {
+              const choice = key === pendingSecond.current && s === 'storage' ? pins?.storage2 : pins?.[s];
+              return choice ? [[key, choice]] : [];
+            }));
+            void loadSavedSlot(s, keys, at, choices).then((ms) => {
               // An opened picker owns the full catalogue; a slower restore must not replace it with one row.
               if (!live || requestedSlots.has(s)) return;
               if (ms) accept(s, ms as AnyModel[], false);
@@ -504,15 +511,16 @@ export function useBuilderState() {
   }, [builtAt]);
   const chooseOffer = (line: Line, model: AnyModel, id: string) => {
     const slot = line === 'storage2' ? 'storage' : line;
-    if (!offerRows[`${slot}:${model.key}`]?.some((row) => row.id === id)) return;
+    const row = resolveOfferChoice(offerRows[`${slot}:${model.key}`] ?? [], id);
+    if (!row) return;
+    const choice = encodeOfferChoice(row);
+    const prev = (shared ? sharedAtStart?.build : undefined) ?? readBuild();
+    const selectedPart = { key: model.key, fields: fieldsForListing(slot, row), ...(builtAt && { builtAt }) };
+    const base = line === 'storage2' ? { ...prev, storage2: selectedPart } : { ...prev, parts: { ...prev.parts, [line]: selectedPart } };
     const nextBuild = line === 'storage2' ? build : { ...build, [line]: model };
     if (line === 'storage2') pendingSecond.current = undefined;
     else delete pendingLazy.current[line];
-    writeSaved(nextBuild, prefs, shared ? sharedAtStart?.build : undefined, line === 'storage2' ? { storage2: model } : {}, pendingLazy.current);
-    const stored = readBuild();
-    ownWrite = true;
-    try { writeBuild({ ...stored, offers: { ...stored.offers, [line]: id } }); }
-    finally { ownWrite = false; }
+    writeSaved(nextBuild, prefs, base, { ...(line === 'storage2' ? { storage2: model } : {}), offers: { [line]: choice } }, pendingLazy.current);
     setBuild(nextBuild);
     if (line === 'storage2') setStorage2State(model);
     setOffers(readBuild().offers ?? {});
@@ -536,8 +544,8 @@ export function useBuilderState() {
 
   // The engine's view of the build: the parts, the second drive, the fan quantity, the use and resolution.
   const active = useMemo<ActiveBuild>(
-    () => ({ parts: build, storage2: storage2 as ActiveBuild['storage2'], fanQty, offers, use: prefs.use, res: prefs.res ?? null, budget: prefs.budget }),
-    [build, storage2, fanQty, prefs, offers],
+    () => ({ parts: build, storage2: storage2 as ActiveBuild['storage2'], fanQty, offers, resolvedOffers: Object.fromEntries(resolvedLines.filter((r) => r.requestedOffer).map((r) => [r.line, r.status === 'chosen' ? r.offer : null])), use: prefs.use, res: prefs.res ?? null, budget: prefs.budget }),
+    [build, storage2, fanQty, prefs, offers, resolvedLines],
   );
   const parts = useMemo(() => toParts(active), [active]);
   const restoring = Object.keys(wanted).length > 0 || wanted2;

@@ -6,7 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Part, PartCategory } from '../../src/engine';
 import { slotModels } from '../../src/lib/builderData';
 import { candidateKey, SLOTS } from '../../src/lib/slots';
-import { addToBuild, cpuVersion, fitCandidates, fitView, hasParts, mainCandidate, slotAction, type FitCandidate } from '../../src/lib/buildFit';
+import { addToBuild, candidateForSelection, cpuVersion, fitCandidates, fitView, hasParts, mainCandidate, slotAction, type FitCandidate } from '../../src/lib/buildFit';
 import { readBuild, type StoredBuild } from '../../src/lib/buildStore';
 import { CATEGORIES } from '../../src/lib/categories';
 import { groupModels } from '../../src/lib/data';
@@ -242,6 +242,32 @@ describe("the first paint's keys (slots.candidateKey, no builder code) equal the
 });
 
 describe('no build, no section', () => {
+  it('never refreshes a stale pinned selection from a family compatibility row', () => {
+    const stored: StoredBuild = { parts: { mobo: { key: 'board', fields: { socket: 'AM4' }, builtAt: OLD } }, offers: { mobo: 'bd1:bestprice:same' } };
+    const plan = planBuild(stored, 'cpu', NOW);
+    expect(plan.refresh).toEqual({});
+    expect(resolvePlan(plan, {}, NOW).result?.unchecked).toContainEqual({ slot: 'mobo', key: 'board' });
+  });
+  it('uses selected listing measurements without inheriting sibling verified fit', () => {
+    const listings = [
+      { id: 'same', source: 'skroutz', chip: 'Board', title: 'Board', socket: 'AM5', memory: 'DDR5', formFactor: 'ATX', price: 80 },
+      { id: 'same', source: 'bestprice', chip: 'Board', title: 'Board', socket: 'AM4', memory: 'DDR4', formFactor: 'ATX', price: 90 },
+    ] as unknown as BaseListing[];
+    const entry = { key: 'board', listings, parts: { board: { socket: 'AM5', memory: 'DDR5', m2Slots: 4 } } };
+    const c = candidateForSelection('mobo', entry, { source: 'bestprice', id: 'same' });
+    expect(c?.key).toBe('board');
+    expect(c?.part.fields).toMatchObject({ socket: 'AM4', memory: 'DDR4', m2Slots: null });
+    expect(candidateForSelection('mobo', entry, { source: 'snif', id: 'same' })).toBeUndefined();
+  });
+  it('same canonical part with a different exact offer replaces its pin', () => {
+    const c: FitCandidate = { key: 'board', part: part('mobo', { socket: 'AM4' }), offered: true, listings: ['same'] };
+    const selection = { source: 'bestprice' as const, id: 'same' };
+    stubStorage({ pcBuild: JSON.stringify({ mobo: 'board', offers: { mobo: 'bd1:skroutz:same' } }) });
+    expect(slotAction(readBuild(), 'mobo', c.key, selection).kind).toBe('replace');
+    expect(addToBuild('mobo', c, NOW, selection)).not.toBeNull();
+    expect(readBuild().offers?.mobo).toBe('bd1:bestprice:same');
+    expect(slotAction(readBuild(), 'mobo', c.key, selection).kind).toBe('in-build');
+  });
   it('hasParts is false for an empty or missing build, true with one part', () => {
     expect(hasParts(readBuild())).toBe(false);
     stubStorage({ pcBuild: JSON.stringify({ use: 'gaming' }) });

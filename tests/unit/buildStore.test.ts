@@ -59,6 +59,19 @@ describe('readBuild / writeBuild', () => {
 });
 
 describe('setPart / onBuildChange', () => {
+  it('writes an exact part and offer in one notification and one storage write', () => {
+    const data = stubStorage();
+    const original = localStorage.setItem;
+    const write = vi.fn(original);
+    localStorage.setItem = write;
+    const fn = vi.fn();
+    const off = onBuildChange(fn);
+    setPart('mobo', { key: 'board', fields: { socket: 'AM4' } }, 'bd1:bestprice:same');
+    expect(raw(data)).toMatchObject({ mobo: 'board', offers: { mobo: 'bd1:bestprice:same' } });
+    expect(write.mock.calls.filter(([k]) => k === 'pcBuild')).toHaveLength(1);
+    expect(fn).toHaveBeenCalledTimes(1);
+    off();
+  });
   it('sets and clears a part and notifies listeners until removed', () => {
     stubStorage({ pcBuild: JSON.stringify({ cpu: 'a', use: 'gaming' }) });
     const fn = vi.fn();

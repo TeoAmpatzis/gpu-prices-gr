@@ -20,6 +20,7 @@ import ShopChoice from './ShopChoice';
 import { BottomSheet } from '../../ui/overlays';
 import { UI } from '../../ui/strings';
 import { BUILDER as B } from '../../ui/builderStrings';
+import { lineNotice, lineTitle } from '../../lib/copyList';
 
 /** A line of the list: a slot, or the second drive (chosen from the storage step's parts). */
 type Line = Slot | 'storage2';
@@ -50,14 +51,15 @@ export default function PartList({ state, openLine, setOpen }: { state: BuilderS
           const Icon = cfg.icon;
           const m = (line === 'storage2' ? state.storage2 : build[slot]) as AnyModel | undefined;
           const resolved = state.resolvedLines.find((r) => r.line === line);
-          const display = m && resolved ? { ...m, cheapest: resolved.offer } : m;
+          const display = m && resolved ? { ...m, cheapest: resolved.offer, listings: [resolved.offer] } : m;
+          const notice = resolved && lineNotice(resolved);
           const isOpen = openLine === line;
           const waiting = line === 'storage2' ? state.pendingStorage2 : state.pending.includes(slot);
           const qty = slot === 'fan' ? state.fanQty : 1;
           return (
             <div key={line} className="p-3 sm:p-4" data-line={line}>
               <div className="grid grid-cols-[3.5rem_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[3.5rem_minmax(0,1fr)_auto]">
-                {m ? (
+                {m && (!resolved?.requestedOffer || resolved.status === 'chosen') ? (
                   // The chosen part's photo (the shop's own), the category icon if none.
                   <ProductPhoto image={partImage(m)} size="md" icon={Icon} alt={m.chip} />
                 ) : (
@@ -72,8 +74,8 @@ export default function PartList({ state, openLine, setOpen }: { state: BuilderS
                   </div>
                   {m ? (
                     <>
-                      <div className="min-h-12 font-semibold [overflow-wrap:anywhere] sm:min-h-6">{slot === 'gpu' && resolved?.offer.title ? resolved.offer.title : m.chip}</div>
-                      <div className="min-h-10 text-xs text-muted [overflow-wrap:anywhere] sm:min-h-5">{specLine(slot, m, lang)}</div>
+                      <div className="min-h-12 font-semibold [overflow-wrap:anywhere] sm:min-h-6">{resolved?.requestedOffer ? lineTitle(resolved, lang) : slot === 'gpu' && resolved?.offer.title ? resolved.offer.title : m.chip}</div>
+                      <div className="min-h-10 text-xs text-muted [overflow-wrap:anywhere] sm:min-h-5">{notice ? t(notice) : specLine(slot, display!, lang)}</div>
                       <div className="mt-1 min-h-12 sm:min-h-8">
                         <FitBadge rating={ratingOf(findings, line === 'storage2' ? `${m.key}#2` : m.key, state.parts)} lang={lang} />
                       </div>
@@ -94,7 +96,7 @@ export default function PartList({ state, openLine, setOpen }: { state: BuilderS
                   )}
                 </div>
                 <div className={`col-span-2 flex min-w-0 flex-wrap items-center justify-between gap-2 sm:col-span-1 sm:col-start-3 sm:row-start-1 sm:max-w-72 ${m || waiting ? 'min-h-14' : ''}`}>
-                {m ? (
+                {m && (!resolved?.requestedOffer || resolved.status === 'chosen') ? (
                   <a
                     href={display?.cheapest.url}
                     target="_blank"

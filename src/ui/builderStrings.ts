@@ -85,13 +85,13 @@ export const BUILDER = {
   pricesOf: { el: 'Τιμές της', en: 'Prices of' },
   noShipping: { el: 'χωρίς μεταφορικά', en: 'shipping not included' },
   offerGone: {
-    el: 'Η προσφορά που είχες διαλέξει δεν υπάρχει πια· δείχνουμε τη φθηνότερη του προϊόντος.',
-    en: "The offer you chose is no longer listed; showing the product's cheapest.",
+    el: 'Η προσφορά που διάλεξες δεν υπάρχει πια. Διάλεξε διαθέσιμη εναλλακτική.',
+    en: 'The offer you chose is no longer listed. Choose an available alternative.',
   },
   offerLoading: { el: 'Φόρτωση του καταστήματος που διάλεξες…', en: 'Loading the shop you chose…' },
   offerFailed: {
-    el: 'Δεν φορτώθηκε το κατάστημα που διάλεξες· δείχνουμε τη φθηνότερη του προϊόντος.',
-    en: "Couldn't load the shop you chose; showing the product's cheapest.",
+    el: 'Δεν φορτώθηκε η προσφορά που διάλεξες. Δοκίμασε ξανά.',
+    en: "Couldn't load the offer you chose. Try again.",
   },
   gone: { el: 'Δεν πωλείται πια: {name} ({step})', en: 'No longer sold: {name} ({step})' },
   missing: { el: 'Λείπει', en: 'Missing' },

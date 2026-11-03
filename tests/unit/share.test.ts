@@ -7,6 +7,10 @@ import type { StoredBuild } from '../../src/lib/buildStore';
 const params = (path: string) => new URLSearchParams(path.slice(path.indexOf('?') + 1));
 
 describe('encodeShare / decodeShare', () => {
+  it('preserves qualified offer choices as opaque o.line values', () => {
+    const build: StoredBuild = { parts: { mobo: { key: 'board' } }, offers: { mobo: 'bd1:bestprice:x%3A%2F%20%3F%26%25' } };
+    expect(decodeShare(params(encodeShare(build, {})))?.build).toEqual(build);
+  });
   const build: StoredBuild = {
     parts: { cpu: { key: 'Ryzen 7 7700|true' }, gpu: { key: 'skroutz:123' }, storage: { key: 's1' }, fan: { key: 'f' } },
     storage2: { key: 's2' },

@@ -23,6 +23,7 @@ import { plural, UI } from '../ui/strings';
 import { CategoryLayout, type LayoutProps, type PickSlots } from './CategoryView';
 import type { RowExtra } from './ModelRow';
 import { SkeletonFilters, SkeletonTable } from './Skeleton';
+import { encodeOfferChoice } from '../lib/productSelection';
 
 /** Findings shown on a row: at most this many, then "+N more". */
 const SHOWN = 2;
@@ -108,12 +109,12 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
 
   // "Only compatible" removes the hidden listings before every other filter, so the counts are right.
   const on = filters.compat && ready && pick.hidden.size > 0;
-  const listings = useMemo(() => (on ? all.filter((l) => !pick.hidden.has(l.id)) : all), [on, all, pick.hidden]);
+  const listings = useMemo(() => (on ? all.filter((l) => !pick.hidden.has(encodeOfferChoice(l))) : all), [on, all, pick.hidden]);
   // How many of the models the other filters show the switch hides (all their offers clash).
   const hiddenCount = useMemo(() => {
     if (!ready || !pick.hidden.size) return 0;
     return applyFilters(all, filters, cfg, data.history, data.imported, { sort: false }).filter((m) =>
-      m.listings.every((l) => pick.hidden.has(l.id)),
+      m.listings.every((l) => pick.hidden.has(encodeOfferChoice(l))),
     ).length;
   }, [ready, pick.hidden, all, filters, cfg, data]);
 
@@ -207,9 +208,9 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
       }
     : undefined;
 
-  const hiddenId = (id: string) => ready && pick.hidden.has(id);
+  const hiddenListing = (l: BaseListing) => ready && pick.hidden.has(encodeOfferChoice(l));
   const row = (m: Parameters<PickSlots<L>['row']>[0]): RowExtra<L> => {
-    const dim = m.listings.every((l) => hiddenId(l.id));
+    const dim = m.listings.every(hiddenListing);
     if (slot === 'gpu') {
       // Each card is its own part: the button is on every card of the open row.
       return {
@@ -220,7 +221,7 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
           <p className="mt-1 whitespace-normal text-sm text-muted">{t(PICK.pickCard)}</p>
         ),
         listing: (l) => {
-          const off = hiddenId(l.id);
+          const off = hiddenListing(l);
           return {
             dim: off,
             extra: (
@@ -233,7 +234,8 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
       };
     }
     // A CPU: the version (Box or Tray) of the cheapest offer that passes the filters and isn't hidden.
-    const offer = shownOffer(m.listings, hiddenId);
+    const allowed = m.listings.filter((l) => !hiddenListing(l));
+    const offer = shownOffer(allowed.length ? allowed : m.listings, () => false);
     return { dim, extra: <Candidate pick={pick} candidate={pick.keyOf(offer)} dim={dim} lang={lang} label={t(PICK.add)} /> };
   };
 

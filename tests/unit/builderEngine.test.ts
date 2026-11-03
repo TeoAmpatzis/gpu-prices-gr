@@ -15,6 +15,13 @@ const cpu7500f = model('Ryzen 5 7500F|false', { chip: 'Ryzen 5 7500F', socket: '
 const cpu8600g = model('Ryzen 5 8600G|true', { chip: 'Ryzen 5 8600G', socket: 'AM5', igpu: true, coolerIncluded: true, boxCooler: 'AMD Wraith Stealth' });
 
 describe('toParts', () => {
+  it('checks a pinned listing using its own fields and leaves unresolved choices unchecked', () => {
+    const board = model('board', { chip: 'Board', socket: 'AM5', memory: 'DDR5' });
+    const exact = { id: 'same', source: 'bestprice', chip: 'Board', title: 'Board', socket: 'AM4', memory: 'DDR4', price: 100 };
+    const b = active({ mobo: board } as never, { offers: { mobo: 'bd1:bestprice:same' }, resolvedOffers: { mobo: exact } } as unknown as Partial<ActiveBuild>);
+    expect(toParts(b)[0].fields).toMatchObject({ socket: 'AM4', memory: 'DDR4' });
+    expect(toParts({ ...b, resolvedOffers: {} })[0].fields).toEqual({});
+  });
   it('one part per chosen slot with the PART_FIELDS of its row; storage2 a part of its own; fans with their quantity', () => {
     const drive = model('ssd', { iface: 'NVMe', pcie: 4, formFactor: 'M.2 2280', price: 50 });
     const fans = model('fans', { size: 120, pack: 3 });

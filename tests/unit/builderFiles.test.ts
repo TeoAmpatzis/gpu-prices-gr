@@ -107,6 +107,16 @@ describe('builder files (one per step)', () => {
 });
 
 describe('builder file loaders', () => {
+  it('restores an exact usable listing before grouping conflicting family siblings', async () => {
+    const listings = [
+      { id: 'same', source: 'skroutz', chip: 'Board', title: 'Board AM5', socket: 'AM5', memory: 'DDR5', chipset: 'B650', formFactor: 'ATX', price: 80 },
+      { id: 'same', source: 'bestprice', chip: 'Board', title: 'Board AM4', socket: 'AM4', memory: 'DDR4', chipset: 'B550', formFactor: 'ATX', price: 90 },
+    ];
+    vi.stubGlobal('fetch', vi.fn(() => Promise.resolve(new Response(JSON.stringify({ builtAt: 'exact-restore', models: { board: { key: 'board', photo: false, listings } } }), { status: 200 }))));
+    const restored = await loadSavedSlot('mobo', ['board'], 'exact-restore', { board: 'bd1:bestprice:same' });
+    expect(restored?.[0].key).toBe('board');
+    expect(restored?.[0].cheapest).toMatchObject({ id: 'same', source: 'bestprice', socket: 'AM4', memory: 'DDR4', price: 90 });
+  });
   afterEach(() => {
     vi.unstubAllGlobals();
     vi.useRealTimers();

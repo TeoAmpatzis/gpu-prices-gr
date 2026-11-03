@@ -2,7 +2,7 @@
 // steps can be skipped, the build's status and the summary's "not checked yet" line. Types only from the engine: the
 // findings come from the pick worker (candidates) or the engine's lazy chunk (the build, builderState.ts).
 import type { Finding, Part, Resolution, RuleId, Use } from '../engine';
-import type { Build } from './builderData';
+import { slotFields, slotModels, type Build } from './builderData';
 import type { Model } from './data';
 import { labelOfFinding, type Label } from './fitLabel';
 import type { Text } from './i18n';
@@ -11,6 +11,8 @@ import type { BaseListing, StorageListing } from '../types';
 
 /** The builder's in-memory build (rows loaded from the step files). */
 export interface ActiveBuild {
+  /** Exact loaded choices only; a pinned line without its listing is not checked using a sibling. */
+  resolvedOffers?: Partial<Record<Slot | 'storage2', BaseListing | null>>;
   parts: Build;
   storage2?: Model<StorageListing>;
   fanQty: number;
@@ -31,11 +33,25 @@ export function partOf(slot: Slot, m: Model<BaseListing>, quantity = 1, key = m.
   return { category: slot, key, name: m.chip, quantity, fields };
 }
 
+/** The existing adapters applied to one exact listing, without borrowing sibling measurements. */
+export function fieldsForListing(slot: Slot, listing: BaseListing): Record<string, unknown> {
+  const model = slotModels(slot, [listing] as never[])[0];
+  const shared = slotFields(slot, model);
+  const own = listing as unknown as Record<string, unknown>;
+  return Object.fromEntries(PART_FIELDS[slot].map((f) => [f, f in shared ? shared[f] : own[f] ?? null]));
+}
+
 /** The build's parts in `SLOTS` order: fans with their quantity, the second drive a part of its own (key `<key>#2`). */
 export function toParts(b: ActiveBuild): Part[] {
   const out = SLOTS.filter((s) => b.parts[s]).map((s) => partOf(s, b.parts[s] as never, s === 'fan' ? b.fanQty : 1));
   if (b.storage2) out.push(partOf('storage', b.storage2 as never, 1, `${b.storage2.key}#2`));
-  return out;
+  return out.map((part) => {
+    const line = part.category === 'storage' && part.key.endsWith('#2') ? 'storage2' : part.category as Slot;
+    if (!b.offers[line]) return part;
+    const listing = b.resolvedOffers?.[line];
+    if (!listing) return { ...part, fields: {} };
+    return { ...part, fields: fieldsForListing(part.category as Slot, listing) };
+  });
 }
 
 /** The engine context the builder adds to the BIOS table (the worker adds that itself: a function can't be posted). */
