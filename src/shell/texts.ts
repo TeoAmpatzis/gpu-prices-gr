@@ -40,6 +40,14 @@ export const HOME = {
   categories: { el: 'Κατηγορίες', en: 'Categories' },
 };
 
+export const SHELL = {
+  information: { el: 'Πληροφορίες', en: 'Information' },
+  allCategories: { el: 'Όλες οι κατηγορίες', en: 'All categories' },
+  priceSources: { el: 'Τιμές από τις διαθέσιμες πηγές της ελληνικής αγοράς', en: 'Prices from available Greek market sources' },
+  privacy: { el: 'Πολιτική απορρήτου', en: 'Privacy policy' },
+  languageSelected: { el: 'Ελληνικά, επιλεγμένη γλώσσα', en: 'English, selected language' },
+};
+
 /**
  * Category page titles and subtitles. They live here, in the shell, so a category page's heading paints
  * with the first script instead of waiting for the category's own (lazy) code; src/lib/categories.tsx

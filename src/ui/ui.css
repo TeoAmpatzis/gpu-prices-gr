@@ -17,6 +17,39 @@
     outline-offset: 2px;
   }
 
+  /* Exported shell: flat panel menu, compact phone search and shared field treatment. */
+  .shell-menu {
+    left: 24px;
+    right: 24px;
+    max-width: 880px;
+  }
+  .shell-menu .ui-pop,
+  .header-search .ui-pop {
+    background: rgb(var(--panel));
+  }
+  .header-search .ui-pop {
+    width: min(640px, calc(100vw - 48px));
+  }
+  .header-search [role='option'][aria-selected='true'] {
+    background: rgb(var(--sunken));
+    color: rgb(var(--fg));
+  }
+  .shell-search-dialog {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow-y: auto;
+  }
+  @media (max-width: 700px) {
+    .shell-menu { left: 16px; right: 16px; }
+  }
+
   /* ---------- Button ---------- */
   .ui-btn {
     position: relative;

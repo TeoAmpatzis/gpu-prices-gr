@@ -1,7 +1,8 @@
 import { tr, useLang } from '../lib/i18n';
 import type { Category } from '../types';
 import { UI, plural } from '../ui/strings';
-import { BUILDER, CATS, GROUPS, TOOLS_TITLE, href } from './nav';
+import { CATS, GROUPS, href } from './nav';
+import { SHELL } from './texts';
 
 export type Current = Category | 'builder' | null;
 
@@ -16,13 +17,13 @@ function Item({ cat, current, counts, onPick }: { cat: Category; current: Curren
         href={href.category(cat)}
         onClick={onPick}
         aria-current={here ? 'page' : undefined}
-        className={`tap flex items-center gap-3 rounded-lg px-2 py-1.5 ${here ? 'bg-brand-subtle text-accent' : 'text-fg hover:bg-hover'}`}
+        className={`tap flex min-h-[66px] items-center gap-3 rounded-xl p-3 ${here ? 'bg-sunken text-fg' : 'text-fg hover:bg-sunken'}`}
       >
-        <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-md border ${here ? 'border-brand-subtle-line bg-panel' : 'border-line bg-sunken'}`}>
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-line bg-sunken text-accent">
           <c.icon className="h-[18px] w-[18px]" aria-hidden="true" />
         </span>
         <span className="min-w-0">
-          <span className="block text-sm font-medium">{tr(lang, c.name)}</span>
+          <span className="block text-sm font-semibold">{tr(lang, c.name)}</span>
           {counts?.[cat] != null && <span className="ui-num block text-xs text-muted">{plural(lang, counts[cat]!, UI.modelForms)}</span>}
         </span>
       </a>
@@ -38,31 +39,16 @@ function Item({ cat, current, counts, onPick }: { cat: Category; current: Curren
 export function MegaMenu({ id, current, counts, onPick }: { id?: string; current: Current; counts?: Partial<Record<Category, number>>; onPick?: () => void }) {
   const lang = useLang();
   return (
-    <div id={id} className="ui-pop grid gap-x-4 gap-y-3 p-4 md:grid-cols-[1fr_1fr_0.8fr]">
-      {GROUPS.map((g) => (
-        <section key={tr('en', g.title)} aria-label={tr(lang, g.title)}>
-          <h2 className="mb-1.5 px-2 text-xs font-semibold uppercase tracking-wide text-faint">{tr(lang, g.title)}</h2>
-          <ul className="flex flex-col gap-0.5">
-            {g.cats.map((c) => (
-              <Item key={c} cat={c} current={current} counts={counts} onPick={onPick} />
-            ))}
-          </ul>
-        </section>
-      ))}
-      <section aria-label={tr(lang, TOOLS_TITLE)}>
-        <h2 className="mb-1.5 px-2 text-xs font-semibold uppercase tracking-wide text-faint">{tr(lang, TOOLS_TITLE)}</h2>
-        <a
-          href={href.builder}
-          onClick={onPick}
-          aria-current={current === 'builder' ? 'page' : undefined}
-          className={`tap flex items-center gap-3 rounded-lg px-2 py-1.5 ${current === 'builder' ? 'bg-brand-subtle text-accent' : 'text-fg hover:bg-hover'}`}
-        >
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-brand-solid text-on-brand">
-            <BUILDER.icon className="h-[18px] w-[18px]" aria-hidden="true" />
-          </span>
-          <span className="text-sm font-medium">{tr(lang, BUILDER.name)}</span>
-        </a>
-      </section>
-    </div>
+    <nav id={id} aria-label={tr(lang, UI.parts)} className="ui-pop p-3">
+      <ul className="grid gap-1 md:grid-cols-3">
+        {GROUPS.flatMap((g) => g.cats).map((cat) => (
+          <Item key={cat} cat={cat} current={current} counts={counts} onPick={onPick} />
+        ))}
+      </ul>
+      <div className="mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-line px-3 pb-1 pt-3 text-sm">
+        <span className="text-muted">{tr(lang, SHELL.priceSources)}</span>
+        <a href={href.parts} onClick={onPick} className="tap inline-flex items-center rounded text-accent underline hover:text-fg">{tr(lang, SHELL.allCategories)}</a>
+      </div>
+    </nav>
   );
 }

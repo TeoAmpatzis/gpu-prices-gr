@@ -167,10 +167,10 @@ export default function App() {
 
   return (
     // On the builder, room at the bottom for its fixed summary bar on phones and tablets.
-    <div className={route.kind === 'builder' ? 'pb-32 lg:pb-0' : undefined}>
+    <div className={`site-shell${route.kind === 'builder' ? ' pb-32 lg:pb-0' : ''}`}>
       <Header current={current} search={SEARCH} counts={site?.counts} />
-      {/* Pages with data are at least a screen tall, so the footer starts below the fold while they load. */}
-      <main id="main" tabIndex={-1} className="mx-auto min-h-screen max-w-7xl px-4 py-6 outline-none sm:py-8">
+      {/* Reserve the first screen while data pages load; short pages use the flex frame's remaining space. */}
+      <main id="main" tabIndex={-1} className={`site-container site-main py-4 outline-none sm:py-8${route.kind === 'category' || route.kind === 'model' || route.kind === 'builder' ? ' min-h-screen' : ''}`}>
         <ErrorBoundary>
           <Suspense fallback={<PageSkeleton />}>
             {route.kind === 'home' && <Home counts={site?.counts} search={SEARCH} />}
