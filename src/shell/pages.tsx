@@ -8,12 +8,13 @@ import { UI, plural } from '../ui/strings';
 import { LangSwitch } from './controls';
 import type { Current } from './MegaMenu';
 import { CATS, GROUPS, href } from './nav';
+import { SHELL } from './texts';
 
 /** Category tiles: icon, name, model count; the current one is marked. Used by /parts, the home and 404. */
 export function Tiles({ current, counts, cats }: { current?: Current; counts?: Partial<Record<Category, number>>; cats: Category[] }) {
   const lang = useLang();
   return (
-    <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+    <ul className="grid grid-cols-1 gap-3 min-[480px]:grid-cols-2 lg:grid-cols-4">
       {cats.map((cat) => {
         const c = CATS[cat];
         const here = current === cat;
@@ -22,12 +23,12 @@ export function Tiles({ current, counts, cats }: { current?: Current; counts?: P
             <a
               href={href.category(cat)}
               aria-current={here ? 'page' : undefined}
-              className={`flex h-full min-h-[5.5rem] flex-col justify-between gap-2 rounded-xl border p-3 ${
+              className={`flex h-full min-h-20 items-center gap-3 rounded-xl border p-4 ${
                 here ? 'border-accent bg-brand-subtle text-accent' : 'border-edge bg-panel text-fg shadow-[var(--shadow-1)] hover:border-edge-hover hover:bg-hover'
               }`}
             >
-              <c.icon className="h-6 w-6" aria-hidden="true" />
-              <span>
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-line bg-sunken text-accent"><c.icon className="h-[18px] w-[18px]" aria-hidden="true" /></span>
+              <span className="min-w-0">
                 <span className="block text-sm font-semibold leading-5">{tr(lang, c.name)}</span>
                 {/* Always one line tall, so the tile keeps its size when the counts arrive (no layout shift). */}
                 <span className="ui-num block text-xs text-muted" aria-hidden={counts?.[cat] == null || undefined}>
@@ -86,13 +87,20 @@ export function NotFoundPage({ counts, search }: { counts?: Partial<Record<Categ
 export function Footer({ sources, staleIn }: { sources: SourceTimes; staleIn?: { source: SourceName; category: Text; updatedAt: string }[] }) {
   const lang = useLang();
   return (
-    <footer className="border-t border-line bg-panel">
-      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-6">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <nav aria-label={tr(lang, { el: 'Πληροφορίες', en: 'Information' })} className="flex flex-wrap gap-x-5 gap-y-1 text-sm">
+    <>
+      <div className="site-container mb-8 mt-4">
+        <div className="ui-card flex flex-col gap-2 px-5 py-4">
+          <StatusLine sources={sources} staleIn={staleIn} />
+          <p className="text-xs text-faint">{tr(lang, UI.notAffiliated)}</p>
+        </div>
+      </div>
+      <footer className="border-t border-line bg-panel">
+        <div className="site-container flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-5 text-sm">
+          <p className="text-muted">© 2026 BuildDraft.gr</p>
+          <nav aria-label={tr(lang, SHELL.information)} className="flex flex-wrap gap-x-4 gap-y-1">
             {(['about', 'contact', 'privacy'] as const).map((p) => (
-              <a key={p} href={`/${p}`} className="tap inline-flex items-center text-muted hover:text-fg hover:underline">
-                {tr(lang, UI[p])}
+              <a key={p} href={`/${p}`} className="tap inline-flex items-center rounded text-accent underline hover:text-fg">
+                {tr(lang, p === 'privacy' ? SHELL.privacy : UI[p])}
               </a>
             ))}
           </nav>
@@ -100,11 +108,7 @@ export function Footer({ sources, staleIn }: { sources: SourceTimes; staleIn?: {
             <LangSwitch wide />
           </div>
         </div>
-        <StatusLine sources={sources} staleIn={staleIn} />
-        <p className="text-xs text-faint">
-          © 2026 BuildDraft.gr · {tr(lang, UI.notAffiliated)}
-        </p>
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 }

@@ -1,6 +1,7 @@
 import { setLang, tr, useLang } from '../lib/i18n';
 import { Button } from '../ui/Button';
 import { UI } from '../ui/strings';
+import { SHELL } from './texts';
 
 /** Run a language change with every transition off for one frame (plan A4, rule 3). */
 export function withoutTransitions(change: () => void) {
@@ -14,6 +15,24 @@ export function withoutTransitions(change: () => void) {
 export function LangSwitch({ wide = false }: { wide?: boolean }) {
   const lang = useLang();
   const next = lang === 'el' ? 'en' : 'el';
+  if (!wide) return (
+    <div role="group" aria-label={tr(lang, UI.language)} className="flex gap-1">
+      {(['el', 'en'] as const).map((option) => (
+        <Button
+          key={option}
+          variant={lang === option ? 'secondary' : 'ghost'}
+          size="sm"
+          lang={option}
+          aria-pressed={lang === option}
+          aria-label={lang === option ? tr(option, SHELL.languageSelected) : tr(lang, UI.toEnglish)}
+          onClick={() => withoutTransitions(() => setLang(option))}
+          className="px-3"
+        >
+          {option === 'el' ? 'ΕΛ' : 'EN'}
+        </Button>
+      ))}
+    </div>
+  );
   return (
     <Button
       variant={wide ? 'secondary' : 'ghost'}

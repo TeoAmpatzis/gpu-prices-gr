@@ -140,6 +140,33 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Shared design-export frame, including its padding in the maximum width. */
+.site-container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+.site-shell {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  flex-direction: column;
+}
+.site-main {
+  flex: 1 0 auto;
+  min-width: 0;
+}
+@media (min-width: 1700px) {
+  .site-container { max-width: 1560px; }
+}
+@media (min-width: 2200px) {
+  .site-container { max-width: 1840px; }
+}
+@media (max-width: 700px) {
+  .site-container { padding-inline: 16px; }
+}
+
 /*
  * Touch screens — phones and tablets (< 1024px): no text under 14px and touch targets of at least 44px (WCAG 2.5.5).
  * Tailwind's small sizes are raised here once, instead of on every element; `.tap` marks

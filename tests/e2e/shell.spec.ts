@@ -23,17 +23,18 @@ test('desktop header: Tab order, visible focus on every stop', async ({ page }) 
   await page.goto('/');
   await page.locator('main h1').waitFor();
   const stops: { name: string; outline: boolean }[] = [];
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 8; i++) {
     await page.keyboard.press('Tab');
     stops.push(await focused(page));
   }
-  // Skip link, logo, Εξαρτήματα, search, PC Builder, language, then the page's own search.
+  // Skip link, logo, Εξαρτήματα, search, PC Builder, both languages, then the page's own search.
   expect(stops.map((s) => s.name)).toEqual([
     '#main',
     'BuildDraft.gr, αρχική σελίδα',
     'Εξαρτήματα',
     expect.stringMatching(/Αναζήτηση/),
     '/builder',
+    'Ελληνικά, επιλεγμένη γλώσσα',
     'Switch to English',
     expect.stringMatching(/Αναζήτηση/),
   ]);

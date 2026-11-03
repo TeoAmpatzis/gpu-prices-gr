@@ -31,16 +31,6 @@ export function BrandMark({ size, className = '', title }: { size: number; class
   );
 }
 
-/** The chip that stands for the dot of ".gr" (sized in em, sits on the baseline). */
-function ChipDot() {
-  return (
-    <svg viewBox="0 0 10 10" className="mx-[0.05em] inline-block h-[0.42em] w-[0.42em] align-[-0.02em]" aria-hidden="true">
-      <rect x="1.9" y="1.9" width="6.2" height="6.2" rx="0.7" fill="currentColor" />
-      <path d="M3.6 0v1.9M6.4 0v1.9M3.6 8.1V10M6.4 8.1V10M0 3.6h1.9M0 6.4h1.9M8.1 3.6H10M8.1 6.4H10" stroke="currentColor" strokeWidth={1} />
-    </svg>
-  );
-}
-
 /** The wordmark in the colour of the surrounding text (`className` sets size and colour). */
 export function Wordmark({ className = '' }: { className?: string }) {
   return (
@@ -48,8 +38,7 @@ export function Wordmark({ className = '' }: { className?: string }) {
       <span aria-hidden="true">
         <span className="font-bold">Build</span>
         <span className="font-light">Draft</span>
-        <ChipDot />
-        <span className="font-medium">gr</span>
+        <span className="font-medium text-accent">.gr</span>
       </span>
     </span>
   );
