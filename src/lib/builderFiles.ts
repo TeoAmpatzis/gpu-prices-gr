@@ -12,6 +12,7 @@ import { photoId } from './images';
 import { nameSlug } from './slug';
 import type { Model } from './data';
 import { getJsonRetry, memo, requireBuild } from './builderIndex';
+import { resolveOfferChoice } from './productSelection';
 
 export { INDEX_URL, loadIndex } from './builderIndex';
 export const slotUrl = (slot: Slot, builtAt: string) => `/data/builder/${slot}.json?v=${builtAt}`;
@@ -28,14 +29,15 @@ export const loadSlot = <S extends Slot>(slot: S, builtAt: string): Promise<Slot
 
 /** Restore selected products from their existing small product chunks, without downloading a
  * whole step. GPU listing ids and PSU product keys need their full step for legacy fallbacks. */
-export async function loadSavedSlot<S extends Slot>(slot: S, keys: string[], builtAt: string): Promise<SlotModels[S] | null> {
+export async function loadSavedSlot<S extends Slot>(slot: S, keys: string[], builtAt: string, choices: Record<string, string> = {}): Promise<SlotModels[S] | null> {
   if (slot === 'gpu' || slot === 'psu') return null;
   const { loadModel } = await import('./modelData');
   const selections = await Promise.all(keys.map(async (key) => {
     const slug = slot === 'cpu' ? nameSlug(key.slice(0, key.lastIndexOf('|'))) : slot === 'ram' ? nameSlug(key) : key;
     const entry = await loadModel(slot, slug, builtAt);
     if (!entry) return null;
-    const model = candidates(slot, slotModels(slot, entry.listings as SlotListing[S][])).find((m) => m.key === key);
+    const selected = choices[key] ? resolveOfferChoice(entry.listings, choices[key]) : null;
+    const model = candidates(slot, slotModels(slot, (selected ? [selected] : entry.listings) as SlotListing[S][])).find((m) => m.key === key);
     if (!model) return null;
     // Same shipping choice, shared measurements and name as the build-time step row.
     const row = builderRow(slot, model);

@@ -72,7 +72,7 @@ describe('Copy list names the variant and the PSU maker + model (#27, task 12 re
 });
 
 describe('a chosen offer that is gone (Review Focus 5)', () => {
-  it('falls back to the model\'s cheapest with a notice; Copy list names the shop actually used; total = sum of shown prices', () => {
+  it('keeps fallback estimates internal; Copy list shows the unresolved request without a purchase URL', () => {
     // The offers loaded, but the chosen listing is no longer among them.
     const gone = resolveLine('case', xr, 1, 'shopflix:gone', [black, white]);
     expect(gone.status).toBe('missing');
@@ -81,10 +81,12 @@ describe('a chosen offer that is gone (Review Focus 5)', () => {
     expect(tr('en', lineNotice(gone) ?? '')).toMatch(/no longer/i);
     const p = resolveLine('psu', psu, 1);
     const lines = [gone, p];
-    expect(linesTotal(lines)).toBe(79 + 119);
+    expect(linesTotal(lines)).toBe(119);
     const text = copyListText(lines, opts);
-    expect(text).toContain(`Case: Montech XR Gaming Midi Tower Black — ${eur(79)} — Skroutz — https://example.com/skroutz:1`);
-    expect(text).toContain(`Total: ${eur(198)}`);
+    expect(text).toContain('shopflix:gone');
+    expect(text).not.toContain(black.url);
+    expect(text).not.toContain('Black');
+    expect(text).toContain(`Total: ${eur(119)}`);
   });
 
   it('while the chosen offer loads the line says so (pending), and a found one has no notice', () => {

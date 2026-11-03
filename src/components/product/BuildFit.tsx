@@ -6,7 +6,8 @@
 // build" (key, engine fields, data date), and the page stays where it is: a confirmation with a link to the builder.
 import { ArrowDown } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { addToBuild, cpuVersion, fitCandidates, fitView, mainCandidate, slotAction, withVersion, type FitState } from '../../lib/buildFit';
+import { addToBuild, candidateForSelection, cpuVersion, fitCandidates, fitView, mainCandidate, slotAction, withVersion, type FitState } from '../../lib/buildFit';
+import type { ProductSelection } from '../../lib/productSelection';
 import { tr, useLang, type Text } from '../../lib/i18n';
 import type { Slot } from '../../lib/slots';
 import { useBuildCheck } from '../../lib/useBuildCheck';
@@ -20,20 +21,25 @@ import { plural, UI } from '../../ui/strings';
 import { Action, FIT_TITLE_ID, FitBadge, Findings, InBuild, OFFERS_TITLE_ID, WORD, type FitCtx, type ModelFit } from './fitUi';
 
 /** The check of the model's candidates against the saved build, as one memoised object per change. */
-export function useModelFit(slot: Slot, entry: ModelEntry, builtAt: string): ModelFit {
-  const cands = useMemo(() => fitCandidates(slot, entry), [slot, entry]);
+export function useModelFit(slot: Slot, entry: ModelEntry, builtAt: string, selection?: ProductSelection): ModelFit {
+  const cands = useMemo(() => {
+    if (!selection) return fitCandidates(slot, entry);
+    const candidate = candidateForSelection(slot, entry, selection);
+    return candidate ? [candidate] : [];
+  }, [slot, entry, selection]);
   const parts = useMemo(() => cands.map((c) => c.part), [cands]);
   // No build: no check and no worker (no section); `full`: notes and unknowns too ("Fits" only when none is left).
   const { stored, status, verdicts, build, missing, unchecked } = useBuildCheck(slot, builtAt, parts, { full: true, skipEmpty: true });
   const [added, setAdded] = useState<{ key: string; replaced: boolean; name: Text } | null>(null);
   const add = useCallback(
-    (key: string) => {
-      const c = cands.find((x) => x.key === key);
+    (key: string, chosen = selection) => {
+      const c = chosen ? candidateForSelection(slot, entry, chosen) : cands.find((x) => x.key === key);
+      if (c?.key !== key) return;
       if (!c?.offered) return;
       const name = slot === 'cpu' ? withVersion(c.part.name, key) : c.part.name;
-      setAdded({ key, replaced: addToBuild(slot, c, builtAt) !== null, name });
+      setAdded({ key, replaced: addToBuild(slot, c, builtAt, chosen) !== null, name });
     },
-    [cands, slot, builtAt],
+    [cands, slot, builtAt, selection, entry],
   );
   return useMemo(() => {
     // Saved parts this slot's rules read that couldn't be checked: never a plain "Fits" then.
@@ -48,12 +54,12 @@ export function useModelFit(slot: Slot, entry: ModelEntry, builtAt: string): Mod
       cands,
       candidate: (key: string) => cands.find((c) => c.key === key),
       view,
-      action: (key: string) => slotAction(stored, slot, key),
-      main: slot === 'gpu' ? undefined : mainCandidate(cands, entry.listings, (k) => view(k).state === 'blocked', stored.parts[slot]?.key),
+      action: (key: string, chosen = selection) => slotAction(stored, slot, key, chosen),
+      main: selection ? cands[0] : slot === 'gpu' ? undefined : mainCandidate(cands, entry.listings, (k) => view(k).state === 'blocked', stored.parts[slot]?.key),
       added: added && stored.parts[slot]?.key === added.key ? added : null,
       add,
     };
-  }, [status, verdicts, build, missing, unchecked, cands, stored, slot, entry.listings, added, add]);
+  }, [status, verdicts, build, missing, unchecked, cands, stored, slot, entry.listings, added, add, selection]);
 }
 
 /** The lazy part's root: runs the check, hands it to the page (header, offers) and renders the section. */
@@ -64,6 +70,7 @@ export default function FitRunner({
   show,
   onFit,
   add,
+  selection,
 }: {
   slot: Slot;
   entry: ModelEntry;
@@ -72,17 +79,18 @@ export default function FitRunner({
   onFit: (fit: ModelFit) => void;
   /** The page's add (fitUi.useProductFit: moves the focus to what replaces the clicked button). */
   add: FitCtx['add'];
+  selection?: ProductSelection;
 }) {
-  const fit = useModelFit(slot, entry, builtAt);
+  const fit = useModelFit(slot, entry, builtAt, selection);
   useEffect(() => onFit(fit), [fit, onFit]);
-  return show ? <BuildFitSection fit={fit} slot={slot} add={add} /> : null;
+  return show ? <BuildFitSection fit={fit} slot={slot} add={add} selection={selection} /> : null;
 }
 
 /** Part 4: the verdict against the saved build and the add / replace button. */
-function BuildFitSection({ fit, slot, add }: { fit: ModelFit; slot: Slot; add: FitCtx['add'] }) {
+function BuildFitSection({ fit, slot, add, selection }: { fit: ModelFit; slot: Slot; add: FitCtx['add']; selection?: ProductSelection }) {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
-  const ctx: FitCtx = { slot, stored: fit.stored, show: true, fit, add };
+  const ctx: FitCtx = { slot, stored: fit.stored, show: true, fit, add, selection };
   const status =
     fit.status === 'timeout'
       ? t(FIT.notFinished)
@@ -94,7 +102,7 @@ function BuildFitSection({ fit, slot, add }: { fit: ModelFit; slot: Slot; add: F
   const one = (s: Slot) => t(CATS[s].one ?? CATS[s].name);
 
   let body = null;
-  if (slot === 'gpu') {
+  if (slot === 'gpu' && !selection) {
     const counts = new Map<FitState, number>();
     for (const c of fit.cands) {
       const s = fit.view(c.key).state;

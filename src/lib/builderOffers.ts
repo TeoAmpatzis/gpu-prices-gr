@@ -5,6 +5,7 @@ import type { Line } from './buildStore';
 import { psuGroupKey, slotModels, type Slot } from './builderData';
 import { modelSlug, nameSlug } from './slug';
 import { ownTotal } from './data';
+import { resolveOfferChoice } from './productSelection';
 
 export interface ResolvedLine {
   line: Line;
@@ -38,10 +39,10 @@ export function offersFor(slot: Slot, m: AnyModel, entry: ModelEntry | null): Ba
 
 /** Undefined offers means not loaded (or `failed` to load); [] means loaded and absent. Missing selections keep their evidence. */
 export function resolveLine(line: Line, model: AnyModel, quantity: number, requestedOffer?: string, offers?: BaseListing[], failed = false): ResolvedLine {
-  const selected = requestedOffer ? offers?.find((l) => l.id === requestedOffer) : undefined;
+  const selected = requestedOffer && offers ? resolveOfferChoice(offers, requestedOffer) : undefined;
   const raw = selected ?? model.cheapest;
   const own = selected ? ownTotal(selected) : null;
-  const offer = selected ? { ...raw, merchant: own?.merchant, ship: own?.shipping ?? null, total: own?.total ?? undefined, img: model.cheapest.img } : raw;
+  const offer = selected ? { ...raw, merchant: own?.merchant, ship: own?.shipping ?? null, total: own?.total ?? undefined } : requestedOffer ? { ...raw, url: '' } : raw;
   return { line, model, quantity, offer, total: Math.round(offer.price * quantity * 100) / 100,
     requestedOffer, status: !requestedOffer ? 'default' : selected ? 'chosen' : offers === undefined ? (failed ? 'failed' : 'pending') : 'missing' };
 }

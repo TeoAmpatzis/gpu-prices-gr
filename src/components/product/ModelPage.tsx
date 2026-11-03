@@ -9,7 +9,8 @@ import { tr, useLang } from '../../lib/i18n';
 import type { Slot } from '../../lib/slots';
 import { guardMoved, resolveModel, type ModelResolution } from '../../lib/modelData';
 import { sortOffers } from '../../lib/offers';
-import { navigate } from '../../lib/router';
+import { navigate, onUrlChange } from '../../lib/router';
+import { hasProductSelection, readProductSelection, resolveProductSelection, type ProductSelection } from '../../lib/productSelection';
 import { CATS, href } from '../../shell/nav';
 import { PageTitle } from '../../shell/PageTitle';
 import type { BaseListing, Category, ModelChunk, ModelEntry } from '../../types';
@@ -33,6 +34,10 @@ export default function ModelPage({ cat, slug }: { cat: Category; slug: string }
   const id = `${cat}/${slug}`;
   const [state, setState] = useState<State>(null);
   const [attempt, setAttempt] = useState(0);
+  const [search, setSearch] = useState(() => location.search);
+  useEffect(() => onUrlChange(() => setSearch(location.search)), []);
+  const selection = useMemo(() => readProductSelection(search), [search]);
+  const requested = hasProductSelection(search);
   const left = useRef(new Set<string>()); // slugs of this address already left by a redirect (loop guard)
 
   useEffect(() => {
@@ -59,7 +64,7 @@ export default function ModelPage({ cat, slug }: { cat: Category; slug: string }
 
   // The tab title names the model once it is known (App leaves model pages' titles to this page); until then, and on
   // the gone / error states, the category's.
-  const name = mine && 'res' in mine && mine.res.kind === 'ok' ? mine.res.entry.chip : null;
+  const name = mine && 'res' in mine && mine.res.kind === 'ok' ? (selection && resolveProductSelection(mine.res.entry.listings, selection)?.title) || mine.res.entry.chip : null;
   useEffect(() => {
     document.title = `${name ?? catName} — BuildDraft.gr`; // the separator every other page uses
   }, [name, catName]);
@@ -90,10 +95,16 @@ export default function ModelPage({ cat, slug }: { cat: Category; slug: string }
         </div>
       );
     case 'ok':
+      if (requested && (!selection || !resolveProductSelection(res.entry.listings, selection))) return (
+        <div className="flex flex-col items-start gap-4" data-selection-unavailable>
+          <PageTitle crumbs={crumbs(res.entry.chip)} title={{ el: 'Η επιλογή προϊόντος δεν είναι διαθέσιμη', en: 'Product selection unavailable' }} subtitle={{ el: 'Η συγκεκριμένη καταχώριση δεν βρέθηκε. Μπορείς να δεις τις διαθέσιμες εναλλακτικές της οικογένειας.', en: 'This listing could not be found. You can view the available family alternatives.' }} />
+          <LinkButton href={`/${cat}/${res.entry.slug}`} variant="secondary">{tr(lang, { el: 'Προβολή οικογένειας προϊόντων', en: 'View product family' })}</LinkButton>
+        </div>
+      );
       return res.entry.parts ? (
-        <ProductWithFit cat={cat} entry={res.entry} sources={res.sources} builtAt={res.builtAt} crumbs={crumbs(res.entry.chip)} />
+        <ProductWithFit cat={cat} entry={res.entry} sources={res.sources} builtAt={res.builtAt} crumbs={crumbs(res.entry.chip)} selection={selection ?? undefined} />
       ) : (
-        <Product cat={cat} entry={res.entry} sources={res.sources} crumbs={crumbs(res.entry.chip)} fit={null} />
+        <Product cat={cat} entry={res.entry} sources={res.sources} crumbs={crumbs(res.entry.chip)} fit={null} selection={selection ?? undefined} />
       );
     default: {
       const never: never = res;
@@ -102,30 +113,32 @@ export default function ModelPage({ cat, slug }: { cat: Category; slug: string }
   }
 }
 
-type ProductProps = { cat: Category; entry: ModelEntry; sources: ModelChunk['sources']; crumbs: Crumb[] };
+type ProductProps = { cat: Category; entry: ModelEntry; sources: ModelChunk['sources']; crumbs: Crumb[]; selection?: ProductSelection };
 
 /** A builder part's page: the fit with the saved build (the nine categories are the builder's nine slots). */
 function ProductWithFit(props: ProductProps & { builtAt: string }) {
-  const fit = useProductFit(props.cat as Slot, props.entry, props.builtAt);
+  const fit = useProductFit(props.cat as Slot, props.entry, props.builtAt, props.selection);
   return <Product {...props} fit={fit} />;
 }
 
 /** The model's page proper: title, header, shops table, price history, fit with the build. */
-function Product({ cat, entry, sources, crumbs, fit }: ProductProps & { fit: ProductFit | null }) {
+function Product({ cat, entry, sources, crumbs, fit, selection }: ProductProps & { fit: ProductFit | null }) {
   const cfg = CATEGORIES[cat] as unknown as CategoryConfig<BaseListing>;
   // The model as the category page groups it (same ownTotal, same column values); every listing of the entry is this
   // one model, so the key is the entry's.
-  const model = useMemo(() => groupModels(entry.listings.map(ownTotal), { ...cfg, modelKey: () => entry.key })[0], [cfg, entry]);
+  const selected = selection ? resolveProductSelection(entry.listings, selection) : null;
+  const listings = useMemo(() => selected ? [selected] : entry.listings, [entry, selected]);
+  const model = useMemo(() => groupModels(listings.map(ownTotal), { ...cfg, modelKey: () => entry.key })[0], [cfg, entry, listings]);
   const offers = useMemo(() => sortOffers(entry.listings), [entry]);
   return (
     <>
-      <PageTitle crumbs={crumbs} title={{ el: entry.chip, en: entry.chip }} />
+      <PageTitle crumbs={crumbs} title={{ el: selected?.title ?? entry.chip, en: selected?.title ?? entry.chip }} />
       <div className="flex flex-col gap-8">
         <ProductHeader
           cfg={cfg}
-          model={{ ...model, chip: entry.chip }}
+          model={{ ...model, chip: selected?.title ?? entry.chip }}
           photo={entry.photo}
-          cheapest={offers[0]}
+          cheapest={selected ? ownTotal(selected) : offers[0]}
           action={fit && <HeaderFit p={fit} />}
         />
         <OffersTable
@@ -134,15 +147,16 @@ function Product({ cat, entry, sources, crumbs, fit }: ProductProps & { fit: Pro
           chip={entry.chip}
           offers={offers}
           sources={sources}
+          alternatives={!!selected}
           // Graphics cards: the builder picks a card (an offer), so each offer has its verdict and button.
-          fitLine={fit?.slot === 'gpu' ? (l) => <OfferFitLine p={fit} l={l} /> : undefined}
-          fitAction={fit?.slot === 'gpu' ? (l, short) => <OfferFitAction p={fit} l={l} short={short} /> : undefined}
+          fitLine={fit?.slot === 'gpu' && !selected ? (l) => <OfferFitLine p={fit} l={l} /> : undefined}
+          fitAction={fit?.slot === 'gpu' && !selected ? (l, short) => <OfferFitAction p={fit} l={l} short={short} /> : undefined}
         />
         <PriceHistory entry={entry} />
         {/* The check and the section (only with a saved build): a chunk loaded after the first paint. */}
         {fit?.runner}
         <Variants cat={cat} entry={entry} />
-        <SpecGroups cat={cat} listings={entry.listings} estimate={entry.lengthEstimate} />
+        <SpecGroups cat={cat} listings={listings} estimate={selected ? undefined : entry.lengthEstimate} />
         <Alternatives cat={cat} icon={cfg.icon} alternatives={entry.alternatives} />
         <ReportError name={entry.chip} />
       </div>

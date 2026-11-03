@@ -40,6 +40,8 @@ export function partOf(slot: Slot, key: string, fields: Record<string, unknown>)
 }
 
 export interface BuildPlan {
+  /** Exact choices with stale/missing fields cannot borrow a canonical family's compatibility row. */
+  unchecked?: { slot: Slot; key: string }[];
   /** Parts whose stored fields are valid and current. */
   ready: Part[];
   /** Slot → key of the parts to fetch from the compat chunks (no valid fields, or older data). */
@@ -56,7 +58,9 @@ export function planBuild(stored: StoredBuild, pageSlot: Slot, pageBuiltAt: stri
     if (!p) continue;
     const v = validStored(p);
     if (v && !isStale(v.builtAt, pageBuiltAt)) plan.ready.push(partOf(s, p.key, v.fields));
-    else {
+    else if (stored.offers?.[s]) {
+      (plan.unchecked ??= []).push({ slot: s, key: p.key });
+    } else {
       plan.refresh[s] = p.key;
       if (v) plan.fallback[s] = v.fields;
     }
@@ -109,7 +113,7 @@ export function resolvePlan(
   outcomes: Readonly<Record<string, Outcome>>,
   pageBuiltAt: string,
 ): { result: Refreshed | null; toFetch: { slot: Slot; key: string }[] } {
-  const out: Refreshed = { parts: [...plan.ready], missing: [], unchecked: [] };
+  const out: Refreshed = { parts: [...plan.ready], missing: [], unchecked: [...(plan.unchecked ?? [])] };
   const toFetch: { slot: Slot; key: string }[] = [];
   for (const s of (Object.keys(plan.refresh) as Slot[]).sort()) {
     const key = plan.refresh[s]!;

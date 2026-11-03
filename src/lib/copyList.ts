@@ -23,6 +23,7 @@ export const ownTitle = (title: string | undefined): string => (title ?? '').spl
 
 /** The line's name: the PSU's maker + model with its specs; else the title of the listing used (the variant). */
 export function lineTitle(r: ResolvedLine, lang: Lang): string {
+  if (r.requestedOffer && r.status !== 'chosen') return `${r.model.chip} (${r.requestedOffer})`;
   if (r.line === 'psu') return `${r.model.chip} · ${psuText(r.offer as PsuListing, lang)}`;
   return ownTitle(r.offer.title) || r.model.chip;
 }
@@ -36,11 +37,11 @@ export function lineNotice(r: ResolvedLine): Text | null {
 }
 
 /** The total: the sum of the lines' shown prices (fans × their quantity). */
-export const linesTotal = (lines: ResolvedLine[]): number => Math.round(lines.reduce((sum, r) => sum + r.total, 0) * 100) / 100;
+export const linesTotal = (lines: ResolvedLine[]): number => Math.round(lines.reduce((sum, r) => sum + (r.requestedOffer && r.status !== 'chosen' ? 0 : r.total), 0) * 100) / 100;
 
 /** The shop of the listing used: the site, and the shop behind it when known. */
 export const shopName = (r: ResolvedLine): string =>
-  `${SOURCES[r.offer.source]?.label ?? r.offer.source}${r.offer.merchant ? ` · ${r.offer.merchant}` : ''}`;
+  r.requestedOffer && r.status !== 'chosen' ? '' : `${SOURCES[r.offer.source]?.label ?? r.offer.source}${r.offer.merchant ? ` · ${r.offer.merchant}` : ''}`;
 
 export function copyListText(lines: ResolvedLine[], o: { lang: Lang; date: string | null; link: string }): string {
   const t = (x: Text) => tr(o.lang, x);
@@ -48,7 +49,8 @@ export function copyListText(lines: ResolvedLine[], o: { lang: Lang; date: strin
   for (const r of lines) {
     const cat = t(r.line === 'storage2' ? B.storage2 : STEP_NAME[r.line]);
     const qty = r.quantity > 1 ? `${r.quantity} × ` : '';
-    out.push([`${cat}: ${qty}${lineTitle(r, o.lang)}`, formatPrice(r.total, o.lang), shopName(r), r.offer.url].filter(Boolean).join(' — '));
+    const notice = lineNotice(r);
+    out.push([`${cat}: ${qty}${lineTitle(r, o.lang)}`, notice ? t(notice) : formatPrice(r.total, o.lang), shopName(r), r.offer.url].filter(Boolean).join(' — '));
   }
   out.push('', `${t(B.total)}: ${formatPrice(linesTotal(lines), o.lang)}`, o.date ? `${t(B.pricesOf)} ${o.date} · ${t(B.noShipping)}` : t(B.noShipping), o.link);
   return out.join('\n');

@@ -15,6 +15,7 @@ import { isStale, sellerLine } from '../../ui/PriceCell';
 import { ago, num, plural, UI } from '../../ui/strings';
 import SourceBadge from '../SourceBadge';
 import { SHOP_REL } from './ProductHeader';
+import { encodeOfferChoice } from '../../lib/productSelection';
 
 /** "—" for an unknown amount, with "Shipping: unknown" (glossary) for the pointer (title) and for screen readers. */
 function Unknown({ lang }: { lang: Lang }) {
@@ -72,6 +73,7 @@ function ShopLink({ l, lang, className = '' }: { l: BaseListing; lang: Lang; cla
 export function OffersTable({
   cat,
   chip,
+  alternatives = false,
   offers,
   sources,
   fitLine,
@@ -79,6 +81,7 @@ export function OffersTable({
 }: {
   cat: Category;
   chip: string;
+  alternatives?: boolean;
   /** Already in the table's order (lib/offers.sortOffers). */
   offers: BaseListing[];
   sources: Latest['sources'];
@@ -126,7 +129,7 @@ export function OffersTable({
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         {/* tabIndex −1: a graphics card's "Pick a card from the shops" (header) moves the focus here. */}
         <h2 id="offers-title" tabIndex={-1} className="text-lg font-semibold tracking-tight outline-none">
-          {tr(lang, UI.shopsTitle)}
+          {tr(lang, alternatives ? { el: 'Εναλλακτικές καταχωρίσεις της οικογένειας', en: 'Alternative family listings' } : UI.shopsTitle)}
         </h2>
         <span className="ui-num text-sm text-muted">{plural(lang, offers.length, UI.offerForms)}</span>
       </div>
@@ -163,7 +166,7 @@ export function OffersTable({
             </thead>
             <tbody>
               {shown.map((l, i) => (
-                <tr key={l.id} data-offer {...reveal(i)} className="border-t border-line align-middle hover:bg-hover">
+                <tr key={encodeOfferChoice(l)} data-offer {...reveal(i)} className="border-t border-line align-middle hover:bg-hover">
                   <td className="px-4 py-2.5">
                     <Seller l={l} short={shorts[i]} clamp="line-clamp-1" />
                     {fitLine?.(l)}
@@ -196,7 +199,7 @@ export function OffersTable({
             ];
             const a = availabilityOf(l);
             return (
-              <li key={l.id} data-offer {...reveal(i)} className="ui-card flex flex-col gap-3 p-3">
+              <li key={encodeOfferChoice(l)} data-offer {...reveal(i)} className="ui-card flex flex-col gap-3 p-3">
                 <div>
                   <Seller l={l} short={shorts[i]} clamp="line-clamp-2" />
                   {fitLine?.(l)}

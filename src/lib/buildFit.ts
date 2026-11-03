@@ -8,9 +8,11 @@ import { readBuild, setPart, type StoredBuild, type StoredPart } from './buildSt
 import { slotModels, usable, type Slot } from './builderData';
 import { partOf, shownOffer, validStored } from './pickBuild';
 import { hides } from './pickHide';
-import { cpuVersion } from './slots';
+import { candidateKey, cpuVersion } from './slots';
+import { toPart } from './pick';
 import type { Verdict } from './pickProtocol';
 import type { Text } from './text';
+import { decodeOfferChoice, encodeOfferChoice, resolveProductSelection, type ProductSelection } from './productSelection';
 
 export interface FitCandidate {
   /** The builder's key (builder.slotModels): what "Add" saves. */
@@ -39,6 +41,18 @@ export function fitCandidates(slot: Slot, entry: Pick<ModelEntry, 'listings' | '
     });
   }
   return out;
+}
+
+/** Use the selected listing's own measurements through the existing adapter, never its family siblings' fields. */
+export function candidateForSelection(slot: Slot, entry: Pick<ModelEntry, 'key' | 'listings' | 'parts'>, selection: ProductSelection): FitCandidate | undefined {
+  const listing = resolveProductSelection(entry.listings, selection);
+  if (!listing) return undefined;
+  const key = candidateKey(slot, listing, entry.key);
+  if (!entry.parts || !Object.prototype.hasOwnProperty.call(entry.parts, key)) return undefined;
+  const model = slotModels(slot, [listing] as never[])[0];
+  if (!model) return undefined;
+  const part = { ...toPart(slot, model), key };
+  return { key, part, offered: usable[slot](model as never), listings: [listing.id] };
 }
 
 /**
@@ -142,10 +156,15 @@ export const withVersion = (name: string, key: string): Text => {
  * (RAM "DDR5 32GB (2×16GB) 6000MHz Desktop", PSU "750W Gold ATX"); cases, coolers, fans and drives are saved under
  * letters-and-digits keys with no name, so they are named by slot.
  */
-export function slotAction(stored: StoredBuild, slot: Slot, key: string): SlotAction {
+export function slotAction(stored: StoredBuild, slot: Slot, key: string, selection?: ProductSelection): SlotAction {
   const cur = stored.parts[slot];
   if (!cur) return { kind: 'add' };
-  if (cur.key === key) return { kind: 'in-build' };
+  if (cur.key === key) {
+    if (!selection) return { kind: 'in-build' };
+    const saved = decodeOfferChoice(stored.offers?.[slot] ?? '');
+    if (saved.kind === 'qualified' && saved.selection.source === selection.source && saved.selection.id === selection.id) return { kind: 'in-build' };
+    return { kind: 'replace', name: null };
+  }
   const fields = validStored(cur)?.fields ?? {};
   const chip = typeof fields.chip === 'string' && fields.chip.trim() ? fields.chip : null;
   if (slot === 'cpu') {
@@ -160,10 +179,12 @@ export function slotAction(stored: StoredBuild, slot: Slot, key: string): SlotAc
  * Saves the candidate into the build, exactly as pick mode's "Add to build" does (key, its engine fields, the page's
  * data date), so /builder restores it. Returns the part it replaced (another key in that slot), if any.
  */
-export function addToBuild(slot: Slot, cand: FitCandidate, builtAt: string): StoredPart | null {
-  const before = readBuild().parts[slot];
-  setPart(slot, { key: cand.key, fields: cand.part.fields, builtAt });
-  return before && before.key !== cand.key ? before : null;
+export function addToBuild(slot: Slot, cand: FitCandidate, builtAt: string, selection?: ProductSelection): StoredPart | null {
+  const saved = readBuild();
+  const before = saved.parts[slot];
+  const changed = slotAction(saved, slot, cand.key, selection).kind !== 'in-build';
+  setPart(slot, { key: cand.key, fields: cand.part.fields, builtAt }, selection && encodeOfferChoice(selection));
+  return before && changed ? before : null;
 }
 
 /** The saved build has at least one part (the product page shows its fit section only then). */

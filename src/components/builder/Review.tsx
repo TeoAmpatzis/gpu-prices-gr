@@ -65,7 +65,7 @@ export default function Review({ state, lang, onGo }: { state: BuilderState; lan
           if (line === 'storage2' && !r) return null;
           const Icon = CATEGORIES[slot as Category].icon;
           const opt = optionalSlot(slot, state.optFindings);
-          const variant = r && ownTitle(r.offer.title);
+          const variant = r && (!r.requestedOffer || r.status === 'chosen') && ownTitle(r.offer.title);
           const notice = r && lineNotice(r);
           return (
             <li key={line} className="flex flex-wrap items-center gap-3 p-3" data-review-line={line}>
@@ -110,7 +110,7 @@ export default function Review({ state, lang, onGo }: { state: BuilderState; lan
                   </button>
                 )}
               </div>
-              {r && (
+              {r && (!r.requestedOffer || r.status === 'chosen') && (
                 <a
                   href={r.offer.url || undefined}
                   target="_blank"

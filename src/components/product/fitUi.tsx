@@ -16,6 +16,7 @@ import { Badge, CompatBadge, type CompatLevel } from '../../ui/Badge';
 import { Button, LinkButton } from '../../ui/Button';
 import { FIT, REPLACE } from '../../ui/fitStrings';
 import { PICK } from '../../ui/pickStrings';
+import { encodeOfferChoice, type ProductSelection } from '../../lib/productSelection';
 
 /** The section's heading: the header's "Add to build" moves the focus (and the page) there when a build exists. */
 export const FIT_TITLE_ID = 'build-fit-title';
@@ -34,12 +35,12 @@ export interface ModelFit {
   cands: FitCandidate[];
   candidate: (key: string) => FitCandidate | undefined;
   view: (key: string) => FitView;
-  action: (key: string) => SlotAction;
+  action: (key: string, selection?: ProductSelection) => SlotAction;
   /** The candidate of the page's one button (every slot but graphics cards; a CPU's Box or Tray as in pick mode). */
   main: FitCandidate | undefined;
   /** The last add on this page (for the confirmation), while that part is still the one saved; `name` = its name. */
   added: { key: string; replaced: boolean; name: Text } | null;
-  add: (key: string) => void;
+  add: (key: string, selection?: ProductSelection) => void;
 }
 
 /** Where an add was made: the element that replaces the clicked button there takes the focus (useFocusAfterAdd). */
@@ -64,6 +65,7 @@ export function useFocusAfterAdd(place: AddPlace, key: string) {
 const FitRunner = lazy(() => import('./BuildFit'));
 
 export interface ProductFit {
+  selection?: ProductSelection;
   slot: Slot;
   stored: StoredBuild;
   /** The saved build has a part: the section shows. */
@@ -78,61 +80,65 @@ export interface ProductFit {
   fit: ModelFit | null;
   /** Adds a candidate (waits for the check's code if it hasn't arrived yet: at most one queued add); `place` gets the
    * focus afterwards. */
-  add: (key: string, place: AddPlace) => void;
+  add: (key: string, place: AddPlace, selection?: ProductSelection) => void;
   /** The check, rendered where the section goes (after the first paint). */
   runner: ReactNode;
 }
 
 /** The page's fit state: the saved build now, the check's code after the first paint. */
-export function useProductFit(slot: Slot, entry: ModelEntry, builtAt: string): ProductFit {
+export function useProductFit(slot: Slot, entry: ModelEntry, builtAt: string, selection?: ProductSelection): ProductFit {
   const [stored, setStored] = useState(readBuild);
   useEffect(() => onBuildChange(() => setStored(readBuild())), []);
   const [go, setGo] = useState(false);
   useEffect(() => idle(() => setGo(true)), []);
-  const [fit, setFit] = useState<ModelFit | null>(null);
-  const queued = useRef<string | null>(null);
+  const selectionKey = selection ? encodeOfferChoice(selection) : 'family';
+  const [answer, setAnswer] = useState<{ entry: ModelEntry; selectionKey: string; fit: ModelFit } | null>(null);
+  const fit = answer?.entry === entry && answer.selectionKey === selectionKey ? answer.fit : null;
+  const setFit = useCallback((fit: ModelFit) => setAnswer({ entry, selectionKey, fit }), [entry, selectionKey]);
+  const queued = useRef<{ key: string; selection?: ProductSelection; entry: ModelEntry; scope: string } | null>(null);
   useEffect(() => {
     if (fit && queued.current) {
-      fit.add(queued.current);
+      if (queued.current.entry === entry && queued.current.scope === selectionKey) fit.add(queued.current.key, queued.current.selection);
       queued.current = null;
     }
-  }, [fit]);
+  }, [fit, entry, selectionKey]);
   const add = useCallback(
-    (key: string, place: AddPlace) => {
+    (key: string, place: AddPlace, chosen = selection) => {
       focusNext = `${place}:${key}`;
-      if (fit) fit.add(key);
-      else queued.current = key;
+      if (fit) fit.add(key, chosen);
+      else queued.current = { key, selection: chosen, entry, scope: selectionKey };
     },
-    [fit],
+    [fit, selection, entry, selectionKey],
   );
   const keyOf = useCallback((l: BaseListing) => candidateKey(slot, l as BaseListing & { coolerIncluded?: boolean | null }, entry.key), [slot, entry.key]);
   const show = Object.keys(stored.parts).length > 0;
   return {
+    selection,
     slot,
     stored,
     show,
     lines: show && CATEGORY_RULE_SLOTS[slot].some((s) => stored.parts[s]),
     keyOf,
-    firstKey: entry.listings.some((l) => keyOf(l) === stored.parts[slot]?.key) ? stored.parts[slot]!.key : keyOf(entry.listings[0]),
+    firstKey: selection ? (() => { const listing = entry.listings.find((l) => l.source === selection.source && l.id === selection.id); return listing ? keyOf(listing) : ''; })() : entry.listings.some((l) => keyOf(l) === stored.parts[slot]?.key) ? stored.parts[slot]!.key : keyOf(entry.listings[0]),
     fit,
     add,
     runner: go ? (
       <Suspense fallback={null}>
-        <FitRunner slot={slot} entry={entry} builtAt={builtAt} show={show} onFit={setFit} add={add} />
+        <FitRunner key={selection ? encodeOfferChoice(selection) : 'family'} slot={slot} entry={entry} builtAt={builtAt} show={show} onFit={setFit} add={add} selection={selection} />
       </Suspense>
     ) : null,
   };
 }
 
 /** What the buttons need: the page's (ProductFit) or, inside the section, the check's own. */
-export type FitCtx = Pick<ProductFit, 'slot' | 'stored' | 'show' | 'fit' | 'add'>;
+export type FitCtx = Pick<ProductFit, 'slot' | 'stored' | 'show' | 'fit' | 'add' | 'selection'>;
 
 /** Add, replace, switch version or already there: the check's answer, or the saved build's slot until it has loaded. */
 function kindOf(p: FitCtx, key: string): SlotAction['kind'] {
-  if (p.fit) return p.fit.action(key).kind;
+  if (p.fit) return p.fit.action(key, p.selection).kind;
   const cur = p.stored.parts[p.slot];
   if (!cur) return 'add';
-  if (cur.key === key) return 'in-build';
+  if (cur.key === key) return !p.selection || p.stored.offers?.[p.slot] === encodeOfferChoice(p.selection) ? 'in-build' : 'replace';
   const chip = (k: string) => k.slice(0, k.lastIndexOf('|'));
   return p.slot === 'cpu' && chip(cur.key) === chip(key) ? 'switch' : 'replace';
 }
@@ -147,7 +153,7 @@ function actionLabel(p: FitCtx, kind: SlotAction['kind'], key: string, card: boo
   return card ? PICK.addCard : PICK.add;
 }
 
-const offered = (p: FitCtx, key: string) => !p.fit || p.fit.candidate(key)?.offered !== false;
+const offered = (p: FitCtx, key: string) => !!key && (!p.fit || p.fit.candidate(key)?.offered === true);
 const CHECKING: FitView = { state: 'checking', findings: [], notes: [], canAdd: false };
 const viewOf = (p: FitCtx, key: string): FitView => (p.fit ? p.fit.view(key) : CHECKING);
 
@@ -255,7 +261,7 @@ export function HeaderFit({ p }: { p: ProductFit }) {
   const lang = useLang();
   const added = p.fit?.added;
   let body: ReactNode;
-  if (p.slot === 'gpu') {
+  if (p.slot === 'gpu' && !p.selection) {
     body =
       p.fit && !p.fit.cands.some((c) => c.offered) ? (
         <p className="max-w-xs text-sm text-muted">{tr(lang, PICK.notOffered)}</p>
@@ -332,9 +338,11 @@ export function OfferFitLine({ p, l }: { p: ProductFit; l: BaseListing }) {
 export function OfferFitAction({ p, l, short = false }: { p: ProductFit; l: BaseListing; short?: boolean }) {
   const lang = useLang();
   const key = p.keyOf(l);
-  if (!offered(p, key)) return null;
-  if (!short) return <Action p={p} keyOf={key} lang={lang} place="card" />;
-  const kind = kindOf(p, key);
+  const add = p.add;
+  const ctx: FitCtx = { ...p, selection: { source: l.source, id: l.id }, add: (key, place) => add(key, place, l) };
+  if (!offered(ctx, key)) return null;
+  if (!short) return <Action p={ctx} keyOf={key} lang={lang} place="card" />;
+  const kind = kindOf(ctx, key);
   if (kind === 'in-build') {
     return (
       <AfterAdd place="row" k={key}>
@@ -344,7 +352,7 @@ export function OfferFitAction({ p, l, short = false }: { p: ProductFit; l: Base
       </AfterAdd>
     );
   }
-  const v = viewOf(p, key);
+  const v = viewOf(ctx, key);
   const checking = p.show && v.state === 'checking';
   return (
     <Button
@@ -356,7 +364,7 @@ export function OfferFitAction({ p, l, short = false }: { p: ProductFit; l: Base
       loading={checking}
       data-fit-action={kind}
       aria-label={`${tr(lang, kind === 'replace' ? FIT.replaceCardLabel : FIT.addCardLabel)}: ${l.title}`}
-      onClick={() => p.add(key, 'row')}
+      onClick={() => ctx.add(key, 'row')}
     >
       {tr(lang, kind === 'replace' ? FIT.replaceShort : FIT.addShort)}
     </Button>
