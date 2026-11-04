@@ -17,7 +17,7 @@ export default function PowerBreakdown({ power, watts, lang }: { power: PowerEst
       <h3 id="power-title" className="text-sm font-semibold">
         {t(B.power)}
       </h3>
-      <ul className="flex flex-col gap-1 text-sm">
+      <ul className="flex flex-col divide-y divide-line text-sm [&>li]:py-2">
         {power.parts.map((p) => (
           <li key={p.key} className="flex justify-between gap-3">
             <span className="min-w-0 text-muted">{t(p.label)}</span>

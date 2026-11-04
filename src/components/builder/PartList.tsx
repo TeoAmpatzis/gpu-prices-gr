@@ -32,6 +32,7 @@ const S = {
   change: { el: 'Αλλαγή', en: 'Change' },
   remove: { el: 'Αφαίρεση', en: 'Remove' },
   optional: { el: 'προαιρετικό', en: 'optional' },
+  empty: { el: 'Δεν επιλέχθηκε', en: 'Not selected' },
 } satisfies Record<string, Text>;
 
 /** `openLine`: the line whose picker is open, held by the workbench so Review's missing lines can open it. */
@@ -44,21 +45,23 @@ export default function PartList({ state, openLine, setOpen }: { state: BuilderS
 
   return (
     <div className="flex min-w-0 flex-col gap-4">
-      <div className="card divide-y divide-line">
+      <div className="builder-parts card divide-y divide-line">
+        <div className="builder-table-head" aria-hidden="true"><span>{t({ el: 'Εξάρτημα', en: 'Part' })}</span><span>{t({ el: 'Επιλογή', en: 'Selection' })}</span><span>{t({ el: 'Τιμή / κατάστημα', en: 'Price / shop' })}</span><span>{t({ el: 'Ενέργειες', en: 'Actions' })}</span></div>
         {LINES.map((line) => {
           const slot = slotOf(line);
           const cfg = CATEGORIES[slot as Category];
           const Icon = cfg.icon;
           const m = (line === 'storage2' ? state.storage2 : build[slot]) as AnyModel | undefined;
           const resolved = state.resolvedLines.find((r) => r.line === line);
-          const display = resolved ? resolved.displayModel : m;
+          const display = resolved?.displayModel ?? (m && resolved ? { ...m, cheapest: resolved.offer } : m);
           const notice = resolved && lineNotice(resolved);
           const isOpen = openLine === line;
           const waiting = line === 'storage2' ? state.pendingStorage2 : state.pending.includes(slot);
           const qty = slot === 'fan' ? state.fanQty : 1;
           return (
-            <div key={line} className="p-3 sm:p-4" data-line={line}>
-              <div className="grid grid-cols-[3.5rem_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[3.5rem_minmax(0,1fr)_auto]">
+            <div key={line} className="builder-part p-3 sm:p-4" data-line={line}>
+              <div className="builder-part-main grid grid-cols-[3.5rem_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[3.5rem_minmax(0,1fr)_auto]">
+                <div className="builder-part-category">{line === 'storage2' ? t(B.storage2) : t(cfg.tab)}{(line === 'storage2' || slot === 'fan' || optionalSlot(slot, state.optFindings).optional) && <span className="block text-xs font-normal text-faint">{t(S.optional)}</span>}</div>
                 {display ? (
                   // The chosen part's photo (the shop's own), the category icon if none.
                   <ProductPhoto image={partImage(display)} size="md" icon={Icon} alt={display.chip} />
@@ -67,15 +70,11 @@ export default function PartList({ state, openLine, setOpen }: { state: BuilderS
                     <Icon className="h-4 w-4" />
                   </span>
                 )}
-                <div className="min-w-0">
-                  <div className="text-xs text-muted">
-                    {line === 'storage2' ? t(B.storage2) : t(cfg.tab)}
-                    {(line === 'storage2' || slot === 'fan' || optionalSlot(slot, state.optFindings).optional) && <span className="text-faint"> · {t(S.optional)}</span>}
-                  </div>
+                <div className="builder-part-selection min-w-0">
                   {m ? (
                     <>
-                      <div className="min-h-12 font-semibold [overflow-wrap:anywhere] sm:min-h-6">{resolved?.requestedOffer ? lineTitle(resolved, lang) : slot === 'gpu' && resolved?.offer.title ? resolved.offer.title : m.chip}</div>
-                      <div className="min-h-10 text-xs text-muted [overflow-wrap:anywhere] sm:min-h-5">{notice ? t(notice) : specLine(slot, display!, lang)}</div>
+                      <div className="min-h-12 font-semibold [overflow-wrap:anywhere] sm:min-h-6">{resolved && (slot === 'psu' || resolved.requestedOffer) ? lineTitle(resolved, lang) : slot === 'gpu' && resolved?.offer.title ? resolved.offer.title : m.chip}</div>
+                      <div className="min-h-10 text-xs text-muted [overflow-wrap:anywhere] sm:min-h-5">{notice ? <span data-offer-notice={resolved?.status}>{t(notice)}{resolved?.status === 'failed' && <button type="button" onClick={() => void state.loadOffers(line, m).catch(() => {})} className="tap ml-2 text-accent">{t(UI.retry)}</button>}</span> : slot === 'psu' ? null : specLine(slot, display!, lang)}</div>
                       <div className="mt-1 min-h-12 sm:min-h-8">
                         <FitBadge rating={ratingOf(findings, line === 'storage2' ? `${m.key}#2` : m.key, state.parts)} lang={lang} />
                       </div>
@@ -92,15 +91,16 @@ export default function PartList({ state, openLine, setOpen }: { state: BuilderS
                       <div className="mt-1 min-h-12 sm:min-h-8" />
                     </div>
                   ) : (
-                    <div className="text-sm text-faint">—</div>
+                    <div className="text-sm text-faint">— {t(S.empty)}</div>
                   )}
                 </div>
-                <div className={`col-span-2 flex min-w-0 flex-wrap items-center justify-between gap-2 sm:col-span-1 sm:col-start-3 sm:row-start-1 sm:max-w-72 ${m || waiting ? 'min-h-14' : ''}`}>
-                {display ? (
+                <div className={`builder-part-purchase col-span-2 flex min-w-0 flex-wrap items-center justify-between gap-2 sm:col-span-1 sm:col-start-3 sm:row-start-1 sm:max-w-72 ${m || waiting ? 'min-h-14' : ''}`}>
+                {display && (!resolved?.requestedOffer || resolved.status === 'chosen') ? (
                   <a
                     href={display?.cheapest.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-price={resolved?.total ?? display.cheapest.price * qty}
                     className="tap flex min-w-32 flex-1 flex-wrap items-center gap-x-2 gap-y-1"
                   >
                     <span className="font-semibold tabular-nums text-accent">
@@ -112,7 +112,7 @@ export default function PartList({ state, openLine, setOpen }: { state: BuilderS
                     <ExternalLink className="h-3.5 w-3.5 text-faint" />
                   </a>
                 ) : waiting ? <div className="ui-skeleton h-11 min-w-32 flex-1" /> : null}
-                <div className="flex gap-1">
+                <div className="builder-part-actions flex gap-1">
                   <button
                     type="button"
                     onClick={() => {
@@ -126,6 +126,7 @@ export default function PartList({ state, openLine, setOpen }: { state: BuilderS
                     <button
                       type="button"
                       onClick={() => pick(line, undefined)}
+                      aria-label={`${t(S.remove)} ${line === 'storage2' ? t(B.storage2) : t(cfg.tab)}`}
                       title={t(S.remove)}
                       className="tap-square grid place-items-center rounded-lg p-1.5 text-muted edge hover:bg-hover hover:text-fg dark:ring-0"
                     >

@@ -2,10 +2,12 @@
 // (step by step / part list) and the way back to the start screen, the measurement notice on one line (C9), then the
 // guided walk or the part list with the summary. Its own chunk, after the start screen (rule 11).
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Info, ListChecks, ListOrdered } from 'lucide-react';
 import type { View } from '../../lib/builderView';
-import type { Line } from '../../lib/buildStore';
+import { onBuildChange, readBuild, writeBuild, type Line, type StoredBuild } from '../../lib/buildStore';
+import { decodeShare, isShareParam } from '../../lib/share';
+import { builderParams, writeBuilderParams } from '../../lib/builderView';
 import { STEP_NAME } from '../../lib/wizard';
 import Review from './Review';
 import SavedBuildsMenu from './SavedBuildsMenu';
@@ -16,6 +18,14 @@ import { BUILDER as B } from '../../ui/builderStrings';
 import GuidedWalk from './GuidedWalk';
 import PartList from './PartList';
 import Summary from './SummaryBar';
+import CopyList from './CopyList';
+import StatusCards from './StatusCards';
+import PurchaseSummary from './PurchaseSummary';
+import PowerBreakdown from './PowerBreakdown';
+import { Dialog } from '../../ui/overlays';
+import { Button } from '../../ui/Button';
+import { UI } from '../../ui/strings';
+import './builder.css';
 
 export default function Workbench({ view, onView }: { view: Exclude<View, 'start'>; onView: (v: View) => void }) {
   const lang = useLang();
@@ -23,6 +33,30 @@ export default function Workbench({ view, onView }: { view: Exclude<View, 'start
   const state = useBuilderState();
   const { coverage, error, wantExtra } = state;
   const [openLine, setOpenLine] = useState<Line | null>(null);
+  const [clearing, setClearing] = useState(false);
+  const [undo, setUndo] = useState<StoredBuild | null>(null);
+  const last = useRef(readBuild());
+  const undoing = useRef(false);
+  useEffect(() => onBuildChange((source) => {
+    const next = readBuild();
+    if (source === 'tab' && !undoing.current && JSON.stringify(next) !== JSON.stringify(last.current)) setUndo(last.current);
+    last.current = next;
+  }), []);
+  const restoreUndo = () => {
+    if (!undo) return;
+    undoing.current = true;
+    writeBuild(undo);
+    undoing.current = false;
+    setUndo(null);
+  };
+  const params = builderParams();
+  const invalidLink = [...params.keys()].some(isShareParam) && !decodeShare(params);
+  const [recovered, setRecovered] = useState(false);
+  const recover = () => {
+    writeBuilderParams((p) => [...p.keys()].filter(isShareParam).forEach((k) => p.delete(k)));
+    setRecovered(true);
+    onView('quick');
+  };
 
   // A failed index load: the translated message, the detail folded, and a retry (UX-19). The loaders keep their
   // result for the session, so the retry reloads the page.
@@ -37,7 +71,8 @@ export default function Workbench({ view, onView }: { view: Exclude<View, 'start
 
   const header = (
     <>
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="builder-toolbar">
+        <button type="button" className="builder-action tap" disabled={!undo || state.shared} onClick={restoreUndo}>{t(UI.undo)}</button>
         <div role="radiogroup" aria-label={t(B.mode)} className="inline-flex rounded-lg bg-sunken p-1 ring-1 ring-inset ring-edge">
           {(['guided', 'quick'] as const).map((m) => {
             const Icon = m === 'guided' ? ListOrdered : ListChecks;
@@ -61,6 +96,8 @@ export default function Workbench({ view, onView }: { view: Exclude<View, 'start
           <ArrowLeft className="h-4 w-4" aria-hidden="true" /> <span className="hidden sm:inline">{t(B.useBudget)}</span>
         </button>
         <SavedBuildsMenu state={state} lang={lang} />
+        {view === 'quick' && <CopyList state={state} lang={lang} date={state.builtAt ? new Date(state.builtAt).toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB') : null} toolbar />}
+        <button type="button" className="builder-action tap" onClick={() => setClearing(true)}>{t({ el: 'Νέα λίστα', en: 'New list' })}</button>
       </div>
       {collecting && (
         <details className="notice-warn px-3 text-sm">
@@ -85,25 +122,38 @@ export default function Workbench({ view, onView }: { view: Exclude<View, 'start
 
   return (
     // Any click, tap or keyboard focus fetches the loaded steps' shop links and search titles (their extra files).
-    <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]" onPointerDownCapture={wantExtra} onFocusCapture={wantExtra}>
+    <div className="builder-workbench" onPointerDownCapture={wantExtra} onFocusCapture={wantExtra}>
+      {invalidLink && !recovered ? <section data-shared-recovery className="builder-recovery">
+        <h2 className="text-2xl font-semibold">{t({ el: 'Ο σύνδεσμος είναι ελλιπής ή μη έγκυρος', en: 'This build link is incomplete or invalid' })}</h2>
+        <p className="text-muted">{t({ el: 'Δεν περιέχει αναγνωρίσιμα εξαρτήματα. Ζήτησε ξανά ολόκληρο τον σύνδεσμο από τον αποστολέα.', en: 'It contains no recognizable parts. Ask the sender for the complete link.' })}</p>
+        <div className="flex flex-wrap justify-center gap-2"><Button variant="primary" onClick={recover}>{t({ el: 'Η τρέχουσα λίστα μου', en: 'Use my current list' })}</Button><SavedBuildsMenu state={state} lang={lang} /></div>
+      </section> : <>
+      <div className="builder-heading"><div><h1>PC Builder</h1><p>{t({ el: 'Η σύνθεσή σου · αποθήκευση σε αυτόν τον browser', en: 'Your build · saved in this browser' })}</p></div><div className="builder-header-controls">{header}</div></div>
+      {state.shared && <div className="notice-warn p-3 text-sm builder-shared-banner">{t({ el: 'Κοινόχρηστη σύνθεση. Οι τιμές είναι οι τρέχουσες. Η προσωπική σου λίστα διατηρείται μέχρι την πρώτη αλλαγή.', en: 'Shared build. Prices use current data. Your own list stays unchanged until you edit this build.' })}</div>}
+      {view === 'quick' && <StatusCards state={state} lang={lang} />}
+      <div className="builder-columns">
       {view === 'guided' ? (
-        <GuidedWalk state={state} header={header} />
+        <GuidedWalk state={state} header={null} />
       ) : (
         <>
           <div className="flex min-w-0 flex-col gap-4">
-            {header}
             <PartList state={state} openLine={openLine} setOpen={setOpenLine} />
             {/* One Review for both modes (task 13): a missing line opens its picker here. */}
-            <section aria-labelledby="review-title" className="card flex flex-col gap-3 p-3 sm:p-4">
+            <section aria-labelledby="review-title" className="builder-review flex flex-col gap-3">
               <h2 id="review-title" className="text-lg font-semibold">
                 {t(STEP_NAME.review)}
               </h2>
-              <Review state={state} lang={lang} onGo={setOpenLine} />
+              <Review state={state} lang={lang} onGo={setOpenLine} compact />
             </section>
           </div>
-          <Summary state={state} />
+          <div className="builder-sidebar"><Summary state={state} /><PurchaseSummary state={state} lang={lang} />{state.power && state.parts.length > 0 && <div className="card p-4"><PowerBreakdown power={state.power} watts={state.psuWatts} lang={lang} /></div>}</div>
         </>
       )}
+      </div>
+      </>}
+      <Dialog open={clearing} title={t({ el: 'Νέα λίστα;', en: 'Start a new list?' })} onClose={() => setClearing(false)} actions={<><Button onClick={() => setClearing(false)}>{t(UI.cancel)}</Button><Button variant="danger" onClick={() => { state.clear(); setClearing(false); }}>{t({ el: 'Νέα λίστα', en: 'New list' })}</Button></>}>
+        {t({ el: 'Θα αφαιρεθούν τα εξαρτήματα της τρέχουσας λίστας. Μπορείς να αναιρέσεις αμέσως μετά.', en: 'This removes the current list’s parts. You can undo this immediately afterwards.' })}
+      </Dialog>
     </div>
   );
 }

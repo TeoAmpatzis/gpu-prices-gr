@@ -7,8 +7,9 @@ import type { BuilderState } from '../../lib/builderState';
 import { copyListText } from '../../lib/copyList';
 import { tr, type Lang, type Text } from '../../lib/i18n';
 import { BUILDER as B } from '../../ui/builderStrings';
+import ShareDialog from './ShareDialog';
 
-async function copyText(text: string): Promise<boolean> {
+export async function copyText(text: string): Promise<boolean> {
   try {
     await navigator.clipboard.writeText(text);
     return true;
@@ -20,15 +21,14 @@ async function copyText(text: string): Promise<boolean> {
     ta.style.opacity = '0';
     document.body.appendChild(ta);
     ta.select();
-    const ok = document.execCommand('copy');
-    ta.remove();
-    return ok;
+    try { return document.execCommand('copy'); } catch { return false; } finally { ta.remove(); }
   }
 }
 
-export default function CopyList({ state, lang, date }: { state: BuilderState; lang: Lang; date: string | null }) {
+export default function CopyList({ state, lang, date, toolbar = false }: { state: BuilderState; lang: Lang; date: string | null; toolbar?: boolean }) {
   const t = (x: Text) => tr(lang, x);
   const [copied, setCopied] = useState<'list' | 'link' | null>(null);
+  const [failed, setFailed] = useState(false);
   const timer = useRef<number | undefined>(undefined);
   useEffect(() => () => window.clearTimeout(timer.current), []);
   const lines = state.resolvedLines;
@@ -40,11 +40,12 @@ export default function CopyList({ state, lang, date }: { state: BuilderState; l
   const linksMissing = !linksLoading && extra.includes(false);
   // Built when copied, so the shop links (which arrive later) are in it.
   const copy = async (what: 'list' | 'link') => {
+    setFailed(false);
     if (await copyText(what === 'list' ? copyListText(lines, { lang, date, link }) : link)) {
       setCopied(what);
       window.clearTimeout(timer.current);
       timer.current = window.setTimeout(() => setCopied(null), 2000);
-    }
+    } else setFailed(true);
   };
   const button = (what: 'list' | 'link', label: Text, Icon: typeof Link2) => (
     <button
@@ -59,18 +60,20 @@ export default function CopyList({ state, lang, date }: { state: BuilderState; l
     </button>
   );
   return (
-    <div className="flex flex-col gap-3">
+    <div className={toolbar ? 'builder-copy-toolbar' : 'flex flex-col gap-3'}>
       <div className="flex flex-wrap gap-2">
+        <ShareDialog link={link} lang={lang} disabled={restoring || (!lines.length && !state.sharedBuild)} copy={copyText} />
         {button('list', B.copyList, ClipboardCopy)}
         {button('link', B.copyLink, Link2)}
       </div>
+      {failed && <p role="alert" className="text-xs text-warn">{t({ el: 'Η αντιγραφή δεν επιτράπηκε. Αντέγραψε τον σύνδεσμο από την κοινοποίηση.', en: 'Copy was not allowed. Copy the link from the share dialog.' })}</p>}
       {lines.length > 0 && (linksLoading || linksMissing) && (
         <p className="-mt-1 text-xs text-muted" data-links={linksLoading ? 'loading' : 'missing'}>
           {t(linksLoading ? B.linksLoading : B.linksMissing)}
         </p>
       )}
       {lines.length > 0 && (
-        <div>
+        <div className={toolbar ? 'sr-only' : undefined}>
           <label htmlFor="share-link" className="mb-1 block text-sm font-semibold">
             {t(B.link)}
           </label>

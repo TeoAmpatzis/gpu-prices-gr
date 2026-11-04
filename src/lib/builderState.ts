@@ -160,20 +160,26 @@ export function shareLink(
   b: Build,
   p: Prefs,
   lines: { storage2?: AnyModel; fanQty: number; offers: NonNullable<StoredBuild['offers']> },
+  retained?: { build: StoredBuild; names: ShareNames },
 ): string {
-  const stored: StoredBuild = { parts: {} };
-  const names: ShareNames = {};
+  // Pending/gone keys are canonical selections too. Callers supply only unresolved lines, so an intentional
+  // removal can never reappear from an old snapshot. Loaded models below replace retained keys and names.
+  const stored: StoredBuild = { parts: { ...retained?.build.parts }, ...(retained?.build.storage2 && { storage2: retained.build.storage2 }) };
+  const names: ShareNames = { ...retained?.names };
   const offers: NonNullable<StoredBuild['offers']> = {};
   for (const l of LINES) {
     const m = l === 'storage2' ? lines.storage2 : b[l];
-    if (!m) continue;
+    if (!m) {
+      if ((l === 'storage2' ? stored.storage2 : stored.parts[l]) && lines.offers[l]) offers[l] = lines.offers[l];
+      continue;
+    }
     if (l === 'storage2') stored.storage2 = { key: m.key };
     else stored.parts[l] = { key: m.key };
     names[l] = m.chip;
     if (lines.offers[l]) offers[l] = lines.offers[l];
   }
   if (Object.keys(offers).length) stored.offers = offers;
-  if (b.fan) stored.fanQty = lines.fanQty;
+  if (stored.parts.fan) stored.fanQty = lines.fanQty;
   if (p.use) stored.use = p.use;
   if (p.res) stored.res = p.res;
   if (p.budget) stored.budget = p.budget;
@@ -544,9 +550,15 @@ export function useBuilderState() {
   useEffect(() => {
     for (const line of [...SLOTS, 'storage2'] as Line[]) {
       const model = line === 'storage2' ? storage2 : build[line];
-      if (model && offers[line]) void loadOffers(line, model as AnyModel).catch(() => {});
+      const slot = line === 'storage2' ? 'storage' : line;
+      if (model && offers[line]) {
+        const key = `${slot}:${model.key}`;
+        if (!offerFailed[key] && !offerRows[key]) {
+          void loadOffers(line, model as AnyModel).catch(() => {});
+        }
+      }
     }
-  }, [build, storage2, offers, loadOffers]);
+  }, [build, storage2, offers, loadOffers, offerFailed, offerRows]);
   const resolvedLines = useMemo(() => ([...SLOTS, 'storage2'] as Line[]).flatMap((line) => {
     const model = line === 'storage2' ? storage2 : build[line];
     if (!model) return [];
@@ -634,6 +646,7 @@ export function useBuilderState() {
     loadOffers,
     chooseOffer,
     offers,
+    offerRows,
     coverage,
     error,
     loading: !models,
@@ -648,7 +661,16 @@ export function useBuilderState() {
     /** Saved or shared parts the data no longer has (and not replaced since): named, never dropped silently. */
     gone: gone.filter((g) => !(g.line === 'storage2' ? storage2 : build[g.line])),
     /** The build's v2 share link (share.ts): second drive, fan quantity and chosen offers included. */
-    shareUrl: shareLink(build, prefs, { storage2, fanQty, offers }),
+    shareUrl: shareLink(build, prefs, { storage2, fanQty, offers }, {
+      build: {
+        parts: Object.fromEntries([
+          ...Object.entries(wanted).map(([s, key]) => [s, { key }]),
+          ...gone.filter((g) => g.line !== 'storage2' && !build[g.line]).map((g) => [g.line, { key: g.key }]),
+        ]),
+        ...(wanted2 ? { storage2: (shared ? sharedAtStart?.build : readBuild())?.storage2 } : !storage2 && gone.find((g) => g.line === 'storage2') ? { storage2: { key: gone.find((g) => g.line === 'storage2')!.key } } : {}),
+      },
+      names: { ...start.names, ...Object.fromEntries(gone.filter((g) => g.name).map((g) => [g.line, g.name])) },
+    }),
     engineCtx,
     checker,
     checkerFailed,
@@ -730,6 +752,6 @@ export function useStepVerdicts(state: BuilderState, slot: Slot | null, line: Li
     // eslint-disable-next-line react-hooks/exhaustive-deps -- runKey stands for parts and engineCtx
   }, [slot, list, runKey, checker]);
   const own = res && res.of === list ? res : null;
-  if (!own && list && state.checkerFailed) return { verdicts: new Map(), checking: false };
-  return { verdicts: own?.map ?? null, checking: !!list && own?.key !== runKey };
+  if (!res && list && state.checkerFailed) return { verdicts: new Map(), checking: false };
+  return { verdicts: res?.map ?? null, checking: !own || own.key !== runKey };
 }

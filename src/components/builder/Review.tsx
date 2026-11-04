@@ -30,7 +30,7 @@ import { BUILDER as B, fill } from '../../ui/builderStrings';
 const LINES: Line[] = SLOTS.flatMap((s): Line[] => (s === 'storage' ? ['storage', 'storage2'] : [s]));
 const slotOf = (l: Line): Slot => (l === 'storage2' ? 'storage' : l);
 
-export default function Review({ state, lang, onGo }: { state: BuilderState; lang: Lang; onGo: (s: Slot) => void }) {
+export default function Review({ state, lang, onGo, compact = false }: { state: BuilderState; lang: Lang; onGo: (s: Slot) => void; compact?: boolean }) {
   const t = (x: Text) => tr(lang, x);
   const { builtAt } = state;
   const findings = state.findings ?? [];
@@ -110,7 +110,7 @@ export default function Review({ state, lang, onGo }: { state: BuilderState; lan
                   </button>
                 )}
               </div>
-              {r && (!r.requestedOffer || r.status === 'chosen') && (
+              {r && (!r.requestedOffer || r.status === 'chosen') ? (
                 <a
                   href={r.offer.url || undefined}
                   target="_blank"
@@ -123,7 +123,9 @@ export default function Review({ state, lang, onGo }: { state: BuilderState; lan
                   <SourceBadge source={r.offer.source} />
                   <ExternalLink className="h-3.5 w-3.5 text-faint" aria-hidden="true" />
                 </a>
-              )}
+              ) : r ? (
+                <span data-price="0" className="sr-only">0</span>
+              ) : null}
             </li>
           );
         })}
@@ -177,8 +179,8 @@ export default function Review({ state, lang, onGo }: { state: BuilderState; lan
           )}
         </div>
       )}
-      {state.power && state.parts.length > 0 && <PowerBreakdown power={state.power} watts={state.psuWatts} lang={lang} />}
-      <CopyList state={state} lang={lang} date={date} />
+      {!compact && state.power && state.parts.length > 0 && <PowerBreakdown power={state.power} watts={state.psuWatts} lang={lang} />}
+      {!compact && <CopyList state={state} lang={lang} date={date} />}
     </div>
   );
 }

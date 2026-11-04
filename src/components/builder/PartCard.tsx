@@ -58,7 +58,7 @@ export default function PartCard({
       aria-disabled={clash || undefined}
     >
       <div className="flex gap-3">
-        <ProductPhoto image={partImage(m)} size="md" icon={Icon} alt="" />
+        <ProductPhoto image={display ? partImage(display) : null} size="md" icon={Icon} alt="" />
         <div className="min-w-0 flex-1">
           <div className="line-clamp-2 font-medium [overflow-wrap:anywhere]">{resolved ? lineTitle(resolved, lang) : m.chip}</div>
           <div className="mt-0.5 text-xs text-muted [overflow-wrap:anywhere]">{notice ? <span data-offer-notice={resolved?.status}>{t(notice)}</span> : display && (slot === 'psu' ? <PsuCard m={display} lang={lang} /> : specLine(slot, display, lang))}</div>

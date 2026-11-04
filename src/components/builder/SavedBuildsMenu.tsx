@@ -39,6 +39,12 @@ export default function SavedBuildsMenu({ state, lang }: { state: BuilderState; 
   const t = (x: Text) => tr(lang, x);
   const [mode, setMode] = useState<Mode | null>(null);
   const [toast, setToast] = useState<{ n: number; text: string } | null>(null);
+  const [, refresh] = useState(0);
+  useEffect(() => {
+    const changed = (e: StorageEvent) => { if (e.key === 'pcBuilds' || e.key === null) refresh((n) => n + 1); };
+    window.addEventListener('storage', changed);
+    return () => window.removeEventListener('storage', changed);
+  }, []);
   useEffect(() => {
     if (!toast) return;
     const id = window.setTimeout(() => setToast(null), 4000);
@@ -161,7 +167,8 @@ export default function SavedBuildsMenu({ state, lang }: { state: BuilderState; 
           </form>
         )}
         {mode?.kind === 'list' && (
-          <div className="flex flex-col gap-3">
+          <div className="builder-saved flex flex-col gap-3">
+            <p className="rounded-lg bg-sunken p-3 text-sm">{t({ el: 'Σε αυτή τη συσκευή μόνο. Οι συνθέσεις αποθηκεύονται στον browser σου. Για άλλη συσκευή, κοινοποίησε τον σύνδεσμο.', en: 'This device only. Builds are stored in your browser. To use another device, share the link.' })}</p>
             <Button variant="primary" onClick={() => setMode({ kind: 'name', value: fill(t(B.defaultName), { n: builds.length + 1 }) })}>
               {t(B.saveAs)}
             </Button>
@@ -170,7 +177,7 @@ export default function SavedBuildsMenu({ state, lang }: { state: BuilderState; 
             ) : (
               <ul className="flex max-h-[50vh] flex-col divide-y divide-line overflow-y-auto">
                 {builds.map(([id, b]) => (
-                  <li key={id} className="flex flex-col gap-1 py-2" data-saved-build={b.name}>
+                  <li key={id} className="builder-saved-row flex flex-col gap-1 py-2" data-saved-build={b.name}>
                     <div className="text-fg">
                       <span className="font-medium [overflow-wrap:anywhere]">{b.name}</span>
                       {saved.active === id && <span className="text-accent"> · {t(B.isOpen)}</span>}
