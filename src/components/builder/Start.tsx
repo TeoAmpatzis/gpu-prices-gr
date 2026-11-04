@@ -18,6 +18,7 @@ import type { Res } from '../../engine/data/tiers';
 import { BUILDER as B, PC_FOR, USE_TEXT, fill } from '../../ui/builderStrings';
 import { UI } from '../../ui/strings';
 import { Button } from '../../ui/Button';
+import './builder.css';
 
 // Only when "Build it for me" would replace an open named build: kept out of the first paint (rule 11).
 const Dialog = lazy(() => import('../../ui/overlays').then((m) => ({ default: m.Dialog })));
@@ -133,7 +134,8 @@ export default function Start({ onGo, onIntent }: { onGo: (v: Exclude<View, 'sta
   };
 
   return (
-    <div className="card flex flex-col gap-5 p-4 sm:p-5" onPointerDownCapture={onIntent} onFocusCapture={onIntent}>
+    <div className="builder-start card flex flex-col gap-5 p-4 sm:p-5" onPointerDownCapture={onIntent} onFocusCapture={onIntent}>
+      <div className="builder-start-heading"><span className="badge badge-unverified">PC Builder</span><h1>{t({ el: 'Φτιάξε τον δικό σου υπολογιστή', en: 'Build your own PC' })}</h1><p>{t({ el: 'Διάλεξε χρήση και προϋπολογισμό. Σύγκρινε πραγματικές τιμές και έλεγξε τη συμβατότητα των εξαρτημάτων.', en: 'Choose your use and budget. Compare real prices and check how your parts fit together.' })}</p></div>
       <fieldset>
         <legend className="mb-2 text-sm font-semibold">{t(B.useQ)}</legend>
         <div className="grid gap-2 sm:grid-cols-2">

@@ -3,7 +3,7 @@
 // the chosen parts in guided mode). Wide screens: a sticky card beside the steps. Phones and tablets (< lg): a bar fixed
 // to the bottom of the screen with the total (and Back / Next in guided mode); the details open from it.
 
-import { useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { AlertTriangle, CheckCircle2, ChevronUp, Info } from 'lucide-react';
 import { formatPrice } from '../../lib/data';
 import { formatWhole } from '../../lib/format';
@@ -57,6 +57,17 @@ export default function Summary({ state, onSlot, back, next }: Props) {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
   const [open, setOpen] = useState(false);
+  const summary = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const node = summary.current;
+    const root = node?.closest<HTMLElement>('.builder-workbench');
+    if (!node || !root) return;
+    const resize = () => root.style.setProperty('--builder-summary-height', `${node.getBoundingClientRect().height}px`);
+    const observer = new ResizeObserver(resize);
+    observer.observe(node);
+    resize();
+    return () => { observer.disconnect(); root.style.removeProperty('--builder-summary-height'); };
+  }, []);
   const { build, prefs, shared } = state;
 
   const chosen = [...SLOTS.filter((s) => build[s]).map((s) => build[s] as AnyModel), ...(state.storage2 ? [state.storage2] : [])];
@@ -118,11 +129,11 @@ export default function Summary({ state, onSlot, back, next }: Props) {
   );
 
   return (
-    <aside className="fixed inset-x-0 bottom-0 z-30 flex flex-col gap-3 rounded-t-2xl bg-panel px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-4px_20px_rgb(0_0_0/0.12)] ring-1 ring-edge lg:card lg:sticky lg:top-4 lg:inset-auto lg:z-auto lg:p-4">
+    <aside ref={summary} data-builder-summary className="builder-summary fixed inset-x-0 bottom-0 z-30 flex flex-col gap-3 rounded-t-2xl bg-panel px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-4px_20px_rgb(0_0_0/0.12)] ring-1 ring-edge min-[961px]:card min-[961px]:sticky min-[961px]:top-4 min-[961px]:inset-auto min-[961px]:z-auto min-[961px]:p-4">
       {/* Keep the desktop summary still while restored parts/checks arrive. Intermediate
           missing/fit findings are not a verdict on the whole saved build. Clear stays usable. */}
       {checking && (
-        <div className="hidden lg:absolute lg:inset-x-4 lg:top-4 lg:flex lg:flex-col lg:gap-3" role="status" aria-label={t(T.loading)}>
+        <div className="hidden min-[961px]:absolute min-[961px]:inset-x-4 min-[961px]:top-4 min-[961px]:flex min-[961px]:flex-col min-[961px]:gap-3" role="status" aria-label={t(T.loading)}>
           <div className="flex items-center justify-between">
             <span className="text-sm font-semibold">{t(S.summary)}</span>
             <button type="button" onClick={state.clear} className="tap text-sm text-muted hover:text-fg">{t(S.clear)}</button>
@@ -132,7 +143,7 @@ export default function Summary({ state, onSlot, back, next }: Props) {
           <div className="ui-skeleton h-5 w-full" />
         </div>
       )}
-      <div className="flex items-center gap-2 lg:hidden">
+      <div className="flex items-center gap-2 min-[961px]:hidden">
         {back}
         <button
           type="button"
@@ -160,7 +171,7 @@ export default function Summary({ state, onSlot, back, next }: Props) {
         {next}
       </div>
       <div
-        className={`${open ? 'flex' : 'hidden'} ${checking ? 'lg:invisible' : ''} max-h-[60vh] flex-col gap-3 overflow-y-auto border-t border-line pt-3 lg:flex lg:max-h-none lg:overflow-visible lg:border-0 lg:pt-0`}
+        className={`${open ? 'flex' : 'hidden'} ${checking ? 'min-[961px]:invisible' : ''} max-h-[60vh] flex-col gap-3 overflow-y-auto border-t border-line pt-3 min-[961px]:flex min-[961px]:max-h-none min-[961px]:overflow-visible min-[961px]:border-0 min-[961px]:pt-0`}
       >
         <div className="flex items-center justify-between">
           <span className="text-sm font-semibold">{t(S.summary)}</span>
@@ -172,10 +183,10 @@ export default function Summary({ state, onSlot, back, next }: Props) {
         </div>
         {shared && <div className="notice-warn p-2.5 text-xs">{t(S.shared)}</div>}
         <div>
-          <div className="hidden text-xs text-muted lg:block">
+          <div className="hidden text-xs text-muted min-[961px]:block">
             {t(S.total)} · {plural(lang, chosen.length, N.parts)}
           </div>
-          <div className="hidden text-3xl font-semibold tabular-nums text-accent lg:block">
+          <div className="hidden text-3xl font-semibold tabular-nums text-accent min-[961px]:block">
             {formatPrice(total, lang)}
             {notLoaded && ' + …'}
           </div>

@@ -13,13 +13,22 @@ import { encodeOfferChoice, resolveOfferChoice } from '../../lib/productSelectio
 
 export default function ShopChoice({ state, line, model, lang }: { state: BuilderState; line: Line; model: AnyModel; lang: Lang }) {
   const [open, setOpen] = useState(false);
-  const [rows, setRows] = useState<BaseListing[] | null>(null);
+  const key = `${line === 'storage2' ? 'storage' : line}:${model.key}`;
+  const [localRows, setLocalRows] = useState<BaseListing[] | null>(null);
   const [failed, setFailed] = useState(false);
+  const rows = state.offerRows[key] ?? localRows;
   const load = () => {
     setOpen(true);
     setFailed(false);
     state.wantExtra();
-    void state.loadOffers(line, model).then(setRows, () => setFailed(true));
+    void state.loadOffers(line, model).then(
+      (r) => {
+        setLocalRows(r);
+      },
+      () => {
+        setFailed(true);
+      },
+    );
   };
   return <div className="flex min-h-11 min-w-0 flex-col text-sm" data-shop-choice={line}>
     <button type="button" className="tap self-start px-2 text-accent hover:underline" aria-expanded={open} onClick={() => open ? setOpen(false) : load()}>{tr(lang, B.otherShop)}</button>

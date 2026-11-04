@@ -90,8 +90,8 @@ export const BUILDER = {
   },
   offerLoading: { el: 'Φόρτωση του καταστήματος που διάλεξες…', en: 'Loading the shop you chose…' },
   offerFailed: {
-    el: 'Δεν φορτώθηκε η προσφορά που διάλεξες. Δοκίμασε ξανά.',
-    en: "Couldn't load the offer you chose. Try again.",
+    el: 'Δεν φορτώθηκε το κατάστημα που διάλεξες. Δοκίμασε ξανά.',
+    en: "Couldn't load the shop you chose. Try again.",
   },
   gone: { el: 'Δεν πωλείται πια: {name} ({step})', en: 'No longer sold: {name} ({step})' },
   missing: { el: 'Λείπει', en: 'Missing' },

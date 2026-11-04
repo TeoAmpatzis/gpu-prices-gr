@@ -13,7 +13,7 @@ const loadWorkbench = () => import('./builder/Workbench');
 const Workbench = lazy(loadWorkbench);
 
 export default function Builder() {
-  const [view, setView] = useState<View>(() => firstView(builderParams(), Object.keys(readBuild().parts).length > 0));
+  const [view, setView] = useState<View>(() => builderParams().has('v') ? 'quick' : firstView(builderParams(), Object.keys(readBuild().parts).length > 0));
   const go = (v: View) => {
     setView(v);
     writeBuilderParams((p) => viewParams(p, v, v === 'guided' ? 'cpu' : undefined));

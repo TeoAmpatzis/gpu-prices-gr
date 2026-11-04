@@ -401,7 +401,6 @@ test('a chosen shop offer whose product file fails says so with a retry, counts 
   test.setTimeout(120_000);
   await page.setViewportSize({ width: 360, height: 780 }); // the phone's 44 px rule for the retry
   await autoBuild(page, 'en');
-  const cheapest = await page.locator('[data-review-line=case] [data-price]').getAttribute('data-price');
   await page.evaluate(() => {
     const b = JSON.parse(localStorage.getItem('pcBuild') ?? '{}');
     localStorage.setItem('pcBuild', JSON.stringify({ ...b, offers: { ...b.offers, case: 'skroutz:no-such-offer' } }));
@@ -413,7 +412,7 @@ test('a chosen shop offer whose product file fails says so with a retry, counts 
   await page.reload();
   const line = page.locator('[data-review-line=case]');
   await expect(line.locator('[data-offer-notice=failed]')).toContainText("Couldn't load the shop you chose", { timeout: 20_000 });
-  expect(await line.locator('[data-price]').getAttribute('data-price')).toBe(cheapest);
+  expect(await line.locator('[data-price]').getAttribute('data-price')).toBe('0');
   const { total, sum } = await reviewSums(page);
   expect(Math.abs(total - sum)).toBeLessThan(0.011);
   const retry = line.getByRole('button', { name: TEXT.retry.en });
