@@ -56,6 +56,10 @@ export function encodeFilters<L extends BaseListing>(f: Filters, cfg: CategoryCo
   if (f.saleOnly) p.set('sale', '1');
   if (f.lowOnly) p.set('low', '1');
   if (f.maxPrice != null) p.set('max', String(f.maxPrice));
+  if (f.minPrice != null) p.set('min', String(f.minPrice));
+  if (f.numericMin != null) p.set('specMin', String(f.numericMin));
+  if (f.numericMax != null) p.set('specMax', String(f.numericMax));
+  if (f.includeUnknown === false) p.set('unknown', '0');
   if (f.sort !== d.sort) p.set('sort', f.sort);
   if (f.page !== d.page) p.set('page', String(f.page));
   if (f.per !== d.per) p.set('per', String(f.per));
@@ -72,12 +76,12 @@ export function decodeFilters<L extends BaseListing>(p: URLSearchParams, cfg: Ca
   if (groups != null) {
     const wanted = new Set(groups.split(','));
     const picked = cfg.groups.filter((g) => wanted.has(groupSlug(g)));
-    if (picked.length) f.groups = picked;
+    if (picked.length || groups === '') f.groups = picked;
   }
   const src = p.get('src');
   if (src != null) {
     const picked = SOURCE_NAMES.filter((s) => src.split(',').includes(s));
-    if (picked.length) f.sources = picked;
+    if (picked.length || src === '') f.sources = picked;
   }
   const seg = p.get('seg');
   if (seg && segmentsOf(cfg).includes(seg)) f.segment = seg;
@@ -88,7 +92,12 @@ export function decodeFilters<L extends BaseListing>(p: URLSearchParams, cfg: Ca
   f.saleOnly = p.get('sale') === '1';
   f.lowOnly = p.get('low') === '1';
   const max = Number(p.get('max'));
-  if (p.get('max') && Number.isFinite(max) && max > 0) f.maxPrice = max;
+  if (p.get('max') && Number.isFinite(max) && max >= 0) f.maxPrice = max;
+  for (const [param, key] of [['min', 'minPrice'], ['specMin', 'numericMin'], ['specMax', 'numericMax']] as const) {
+    const value = Number(p.get(param));
+    if (p.get(param) && Number.isFinite(value) && value >= 0) f[key] = value;
+  }
+  if (p.get('unknown') === '0') f.includeUnknown = false;
   const sort = p.get('sort') as SortKey | null;
   if (sort && SORTS.includes(sort) && (sort !== 'per-tb' || cfg.capacityTb)) f.sort = sort;
   const page = Number(p.get('page'));

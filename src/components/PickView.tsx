@@ -6,7 +6,7 @@ import { useMemo, type MouseEvent, type ReactNode } from 'react';
 import { ArrowLeft, Plus } from 'lucide-react';
 import type { Finding, Part } from '../engine';
 import { shownLevel } from '../engine/util';
-import { applyFilters, type CategoryData } from '../lib/data';
+import { type CategoryData } from '../lib/data';
 import { tr, useLang, type Lang } from '../lib/i18n';
 import { SLOT_OF, hides } from '../lib/pick';
 import { shownOffer } from '../lib/pickBuild';
@@ -24,6 +24,7 @@ import { CategoryLayout, type LayoutProps, type PickSlots } from './CategoryView
 import type { RowExtra } from './ModelRow';
 import { SkeletonFilters, SkeletonTable } from './Skeleton';
 import { encodeOfferChoice } from '../lib/productSelection';
+import { filterCatalogue } from '../lib/catalogueFilters';
 
 /** Findings shown on a row: at most this many, then "+N more". */
 const SHOWN = 2;
@@ -58,24 +59,10 @@ function Findings({ list, lang }: { list: Finding[]; lang: Lang }) {
  * What a candidate shows: greyed → the reasons it would be hidden, no button; otherwise the errors that don't
  * hide and the warnings (notes and unknowns stay off the list, step2-plan section 4), and the button.
  */
-function Candidate({
-  pick,
-  candidate,
-  dim,
-  label,
-  lang,
-}: {
-  pick: PickState;
-  candidate: string | undefined;
-  dim: boolean;
-  label: string;
-  lang: Lang;
-}) {
+function Candidate({ pick, candidate, dim, label, lang }: { pick: PickState; candidate: string | undefined; dim: boolean; label: string; lang: Lang }) {
   const part: Part | undefined = candidate ? pick.part(candidate) : undefined;
   const v = candidate ? pick.verdicts?.get(candidate) : undefined;
-  const findings = (v?.findings ?? []).filter((f) =>
-    dim ? hides(f, pick.build) : !hides(f, pick.build) && (f.status === 'error' || f.status === 'warning'),
-  );
+  const findings = (v?.findings ?? []).filter((f) => (dim ? hides(f, pick.build) : !hides(f, pick.build) && (f.status === 'error' || f.status === 'warning')));
   return (
     <div onClick={stop} className="mt-2 flex flex-col items-start gap-2 whitespace-normal">
       <Findings list={findings} lang={lang} />
@@ -113,9 +100,7 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
   // How many of the models the other filters show the switch hides (all their offers clash).
   const hiddenCount = useMemo(() => {
     if (!ready || !pick.hidden.size) return 0;
-    return applyFilters(all, filters, cfg, data.history, data.imported, { sort: false }).filter((m) =>
-      m.listings.every((l) => pick.hidden.has(encodeOfferChoice(l))),
-    ).length;
+    return filterCatalogue(all, filters, cfg, data.history, data.imported).filter((p) => pick.hidden.has(p.key)).length;
   }, [ready, pick.hidden, all, filters, cfg, data]);
 
   const one = CATS[cfg.id].one ?? CATS[cfg.id].name;
@@ -211,9 +196,14 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
   const hiddenListing = (l: BaseListing) => ready && pick.hidden.has(encodeOfferChoice(l));
   const row = (m: Parameters<PickSlots<L>['row']>[0]): RowExtra<L> => {
     const dim = m.listings.every(hiddenListing);
+    const key = pick.keyOf(m.cheapest);
+    const findings = key ? pick.verdicts?.get(key)?.findings : undefined;
+    const status = findings?.some((f) => f.status === 'error') ? 'error' : findings?.some((f) => f.status === 'warning') ? 'warning' : 'note';
+    const badge = pick.build.length > 0 ? <CompatBadge level={status} word={status === 'note' ? UI.compatUnverified : undefined} /> : undefined;
     if (slot === 'gpu') {
       // Each card is its own part: the button is on every card of the open row.
       return {
+        badge,
         dim,
         extra: dim ? (
           <Candidate pick={pick} candidate={pick.keyOf(m.cheapest)} dim lang={lang} label="" />
@@ -226,7 +216,7 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
             dim: off,
             extra: (
               <div className="px-3 pb-3">
-                <Candidate pick={pick} candidate={pick.keyOf(l)} dim={off} lang={lang} label={t(PICK.addCard)} />
+                <Candidate pick={pick} candidate={pick.keyOf(l)} dim={off} lang={lang} label={t(UI.catalogueAdd)} />
               </div>
             ),
           };
@@ -236,7 +226,11 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
     // A CPU: the version (Box or Tray) of the cheapest offer that passes the filters and isn't hidden.
     const allowed = m.listings.filter((l) => !hiddenListing(l));
     const offer = shownOffer(allowed.length ? allowed : m.listings, () => false);
-    return { dim, extra: <Candidate pick={pick} candidate={pick.keyOf(offer)} dim={dim} lang={lang} label={t(PICK.add)} /> };
+    return {
+      dim,
+      badge,
+      extra: <Candidate pick={pick} candidate={pick.keyOf(offer)} dim={dim} lang={lang} label={t(UI.catalogueAdd)} />,
+    };
   };
 
   return (
@@ -246,7 +240,22 @@ export default function PickView<L extends BaseListing>({ cfg, data, filters, se
       filters={filters}
       setFilters={setFilters}
       listings={listings}
-      pick={{ bar, toggle, row, empty, pending }}
+      pick={{
+        bar,
+        toggle,
+        row,
+        empty,
+        pending,
+        hiddenKeys: pick.hidden,
+        draftToggle: (draft, change) => (
+          <Toggle
+            label={ready ? `${t(PICK.onlyCompatible)} (${plural(lang, hiddenCount, PICK.hiddenForms)})` : t(PICK.onlyCompatible)}
+            hint={ready ? undefined : t(timeout ? PICK.notFinishedShort : PICK.checking)}
+            checked={draft.compat}
+            onChange={(compat) => change({ ...draft, compat })}
+          />
+        ),
+      }}
     />
   );
 }

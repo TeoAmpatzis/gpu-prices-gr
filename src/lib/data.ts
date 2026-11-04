@@ -275,6 +275,10 @@ export interface Filters {
   sources: SourceName[];
   segment: Segment;
   maxPrice: number | null;
+  minPrice?: number | null;
+  numericMin?: number | null;
+  numericMax?: number | null;
+  includeUnknown?: boolean;
   sort: SortKey;
   /** Category-specific filters (`CategoryConfig.extraFilters`) by key; '' or missing = any. */
   extra: Record<string, string>;
@@ -329,6 +333,8 @@ export function activeFilterCount(f: Filters, groups: string[]): number {
     (f.sources.length !== d.sources.length ? 1 : 0) +
     (f.segment !== d.segment ? 1 : 0) +
     (f.maxPrice != null ? 1 : 0) +
+    (f.minPrice != null ? 1 : 0) +
+    (f.numericMin != null || f.numericMax != null ? 1 : 0) +
     Object.values(f.extra).filter(Boolean).length +
     (f.saleOnly ? 1 : 0) +
     (f.lowOnly ? 1 : 0)
