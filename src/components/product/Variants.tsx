@@ -5,16 +5,16 @@ import { useMemo } from 'react';
 import { formatPrice } from '../../lib/data';
 import { tr, useLang } from '../../lib/i18n';
 import type { Category, ModelEntry } from '../../types';
-import { UI } from '../../ui/strings';
 import { variantChips } from './variantChips';
+import { PRODUCT } from './productStrings';
 
 export function Variants({ cat, entry }: { cat: Category; entry: ModelEntry }) {
   const lang = useLang();
   const chips = useMemo(() => variantChips(entry), [entry]);
   if (entry.variants.length === 0) return null;
   return (
-    <section aria-label={tr(lang, UI.variantsTitle)} data-variants className="flex flex-col gap-2">
-      <h2 className="text-lg font-semibold tracking-tight">{tr(lang, UI.variantsTitle)}</h2>
+    <section aria-label={tr(lang, PRODUCT.variants)} data-variants className="flex flex-col gap-2">
+      <h2 className="text-lg font-semibold tracking-tight">{tr(lang, PRODUCT.variants)}</h2>
       <ul className="flex flex-wrap gap-2">
         {chips.map((c) => (
           <li key={c.slug ?? 'current'}>

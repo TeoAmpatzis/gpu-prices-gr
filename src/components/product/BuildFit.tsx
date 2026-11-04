@@ -87,12 +87,15 @@ export default function FitRunner({
 }
 
 /** Part 4: the verdict against the saved build and the add / replace button. */
-function BuildFitSection({ fit, slot, add, selection }: { fit: ModelFit; slot: Slot; add: FitCtx['add']; selection?: ProductSelection }) {
+export function BuildFitSection({ fit, slot, add, selection }: { fit: ModelFit; slot: Slot; add: FitCtx['add']; selection?: ProductSelection }) {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
   const ctx: FitCtx = { slot, stored: fit.stored, show: true, fit, add, selection };
+  const unsupported = !!selection && !fit.main?.offered;
   const status =
-    fit.status === 'timeout'
+    unsupported
+      ? t(PICK.notOffered)
+      : fit.status === 'timeout'
       ? t(FIT.notFinished)
       : fit.status !== 'ready'
         ? t(PICK.checking)
@@ -135,7 +138,7 @@ function BuildFitSection({ fit, slot, add, selection }: { fit: ModelFit; slot: S
         )}
       </>
     );
-  } else if (fit.main) {
+  } else if (fit.main && !unsupported) {
     const key = fit.main.key;
     const v = fit.view(key);
     const a = fit.action(key);

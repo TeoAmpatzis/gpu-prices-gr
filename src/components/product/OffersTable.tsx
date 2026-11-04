@@ -15,7 +15,8 @@ import { isStale, sellerLine } from '../../ui/PriceCell';
 import { ago, num, plural, UI } from '../../ui/strings';
 import SourceBadge from '../SourceBadge';
 import { SHOP_REL } from './ProductHeader';
-import { encodeOfferChoice } from '../../lib/productSelection';
+import { encodeOfferChoice, productHref } from '../../lib/productSelection';
+import { PRODUCT } from './productStrings';
 
 /** "—" for an unknown amount, with "Shipping: unknown" (glossary) for the pointer (title) and for screen readers. */
 function Unknown({ lang }: { lang: Lang }) {
@@ -74,6 +75,8 @@ export function OffersTable({
   cat,
   chip,
   alternatives = false,
+  selectedSource = false,
+  familySlug,
   offers,
   sources,
   fitLine,
@@ -82,6 +85,8 @@ export function OffersTable({
   cat: Category;
   chip: string;
   alternatives?: boolean;
+  selectedSource?: boolean;
+  familySlug?: string;
   /** Already in the table's order (lib/offers.sortOffers). */
   offers: BaseListing[];
   sources: Latest['sources'];
@@ -105,7 +110,7 @@ export function OffersTable({
 
   const price = (n: number) => formatPrice(n, lang);
   const avail = hasAvailability(offers);
-  const shorts = shortTitles(
+  const shorts = alternatives || selectedSource ? offers.map((l) => l.title) : shortTitles(
     offers.map((l) => l.title),
     chip,
     titleOptions(cat),
@@ -123,16 +128,21 @@ export function OffersTable({
     return t == null ? <Unknown lang={lang} /> : price(t);
   };
   const iso = (l: BaseListing) => checkedAt(sources, l.source);
+  const titleId = selectedSource ? 'selected-source-title' : 'offers-title';
+  const link = (l: BaseListing) => alternatives && familySlug ? (
+    <LinkButton variant="secondary" size="sm" href={productHref(cat, familySlug, l)} className="tap">{tr(lang, PRODUCT.view)}</LinkButton>
+  ) : <ShopLink l={l} lang={lang} />;
 
   return (
-    <section aria-labelledby="offers-title" className="flex flex-col gap-3">
+    <section aria-labelledby={titleId} className="product-offers flex flex-col gap-3" data-selected-source={selectedSource || undefined} data-family-listings={alternatives || undefined}>
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         {/* tabIndex −1: a graphics card's "Pick a card from the shops" (header) moves the focus here. */}
-        <h2 id="offers-title" tabIndex={-1} className="text-lg font-semibold tracking-tight outline-none">
-          {tr(lang, alternatives ? { el: 'Εναλλακτικές καταχωρίσεις της οικογένειας', en: 'Alternative family listings' } : UI.shopsTitle)}
+        <h2 id={titleId} tabIndex={-1} className="text-lg font-semibold tracking-tight outline-none">
+          {tr(lang, selectedSource ? PRODUCT.selected : alternatives ? PRODUCT.siblings : UI.shopsTitle)}
         </h2>
         <span className="ui-num text-sm text-muted">{plural(lang, offers.length, UI.offerForms)}</span>
       </div>
+      {alternatives && <p className="text-sm text-muted">{tr(lang, PRODUCT.siblingsNote)}</p>}
 
       {wide ? (
         <div className="ui-card overflow-x-auto">
@@ -180,7 +190,7 @@ export function OffersTable({
                   </td>
                   <td className="whitespace-nowrap px-4 py-2.5 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <ShopLink l={l} lang={lang} />
+                      {link(l)}
                       {fitAction?.(l, true)}
                     </div>
                   </td>
@@ -221,7 +231,7 @@ export function OffersTable({
                   <span className="text-xs text-faint">
                     <Checked iso={iso(l)} lang={lang} label />
                   </span>
-                  <ShopLink l={l} lang={lang} />
+                  {link(l)}
                 </div>
                 {fitAction && <div className="empty:hidden">{fitAction(l, false)}</div>}
               </li>

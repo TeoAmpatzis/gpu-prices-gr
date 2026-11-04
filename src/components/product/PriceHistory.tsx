@@ -8,6 +8,7 @@ import { tr, useLang, type Text } from '../../lib/i18n';
 import { DEFAULT_RANGE, lowSentence, medianSummary, RANGES, rangeStart, type HistoryRange } from '../../lib/priceSummary';
 import type { ModelEntry } from '../../types';
 import { UI } from '../../ui/strings';
+import { PRODUCT } from './productStrings';
 
 const PriceChart = lazy(() => import('../PriceChart'));
 
@@ -30,10 +31,10 @@ export function PriceHistory({ entry }: { entry: ModelEntry }) {
       : tr(lang, summary.dir === 'below' ? UI.medianBelow : summary.dir === 'above' ? UI.medianAbove : UI.medianEqual).replace('{n}', String(summary.pct));
 
   return (
-    <section aria-labelledby={titleId} className="flex flex-col gap-3" data-price-history>
+    <section aria-labelledby={titleId} className="product-history flex min-w-0 flex-col gap-3" data-price-history>
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <h2 id={titleId} className="text-lg font-semibold tracking-tight">
-          {tr(lang, UI.historyTitle)}
+          {tr(lang, PRODUCT.history)}
         </h2>
         <div role="group" aria-label={tr(lang, UI.historyRanges)} className="flex gap-0.5 rounded-lg bg-hover p-0.5 ring-1 ring-inset ring-edge">
           {RANGES.map((r) => (
@@ -52,6 +53,7 @@ export function PriceHistory({ entry }: { entry: ModelEntry }) {
           ))}
         </div>
       </div>
+      <div className="product-history-card ui-card">
       <p data-median className="text-sm font-medium text-fg">
         {sentence}
       </p>
@@ -63,6 +65,8 @@ export function PriceHistory({ entry }: { entry: ModelEntry }) {
           {lowText}
         </p>
       )}
+      <p className="text-sm text-muted">{entry.chip}: {tr(lang, PRODUCT.historyNote)}</p>
+      </div>
     </section>
   );
 }

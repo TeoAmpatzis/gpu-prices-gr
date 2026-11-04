@@ -18,6 +18,8 @@ import { UI } from '../../ui/strings';
 import ProductPhoto from '../ProductPhoto';
 import SourceBadge from '../SourceBadge';
 import { keySpecs } from './keySpecs';
+import { PRODUCT } from './productStrings';
+import { ago } from '../../ui/strings';
 
 /** A shop link: new tab, no opener, no referrer (as the category page's offer links), not followed by search engines. */
 export const SHOP_REL = 'nofollow noopener noreferrer';
@@ -28,6 +30,9 @@ export function ProductHeader({
   photo,
   cheapest,
   action,
+  selected = false,
+  variants,
+  checked,
 }: {
   cfg: CategoryConfig<BaseListing>;
   model: Model<BaseListing>;
@@ -37,6 +42,9 @@ export function ProductHeader({
   cheapest: BaseListing;
   /** "Add to build" (task 8, BuildFit.HeaderFit), next to the shop link; none for a category that is no builder slot. */
   action?: ReactNode;
+  selected?: boolean;
+  variants?: ReactNode;
+  checked?: string | null;
 }) {
   const lang = useLang();
   const specs = keySpecs(cfg, model, lang);
@@ -46,60 +54,64 @@ export function ProductHeader({
   const seller = sellerLine(lang, cheapest.source, cheapest.merchant);
 
   return (
-    <section data-product-header className="ui-card flex flex-col gap-4 p-4 sm:flex-row sm:p-5">
-      <div className="shrink-0">
+    <section data-product-header className="product-hero">
+      <div className="product-hero-photo">
         {/* The page's largest element (its LCP): loaded at once, not lazily as in the lists. */}
         <ProductPhoto
           image={productImage(cfg.id, model.key, photo)}
           size="lg"
           icon={cfg.icon}
-          alt={model.chip}
-          hint={example ? tr(lang, T.examplePhoto) : undefined}
+          alt={tr(lang, PRODUCT.photo)}
+          hint={tr(lang, PRODUCT.photoNote)}
           eager
         />
-        {example && <p className="mt-1 max-w-40 text-xs text-faint">{tr(lang, T.examplePhoto)}</p>}
+        <p className="mt-2 text-xs text-faint">{tr(lang, photo ? PRODUCT.photo : PRODUCT.noPhoto)}</p>
+        {example && <span className="sr-only">{tr(lang, T.examplePhoto)}</span>}
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+      <div className="product-hero-main">
+        <h1 className="text-2xl font-semibold leading-8 tracking-tight [overflow-wrap:anywhere]">{model.chip}</h1>
         {specs.length > 0 && (
-          <dl aria-label={tr(lang, UI.keySpecs)} className="grid min-w-0 grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3 lg:max-w-xl">
+          <dl aria-label={tr(lang, UI.keySpecs)} className="product-spec-chips">
             {specs.map((s) => (
               <div key={s.key} data-spec className="min-w-0">
-                <dt className="text-xs text-faint">{s.label}</dt>
-                <dd className="ui-num text-sm font-medium text-fg [overflow-wrap:anywhere]">{s.value}</dd>
+                <dt className="text-muted">{s.label}</dt>
+                <dd className="ui-num font-semibold text-fg [overflow-wrap:anywhere]">{s.value}</dd>
               </div>
             ))}
           </dl>
         )}
 
-        <div className="flex min-w-0 flex-col items-start gap-1.5 lg:items-end lg:text-right">
-          <span className="text-xs text-muted">{tr(lang, UI.lowestTotal)}</span>
-          <div className="flex flex-wrap items-center gap-2 lg:justify-end">
+        <div className="flex flex-wrap items-center gap-3">
+          <LinkButton variant="primary" icon={ExternalLink} href={cheapest.url} target="_blank" rel={SHOP_REL} className="tap">
+            {tr(lang, UI.toShop)}
+            <span className="sr-only">{` (${seller}, ${tr(lang, UI.newTab)})`}</span>
+          </LinkButton>
+          {action}
+        </div>
+        {variants}
+      </div>
+        <div className="product-price-card ui-card">
+          <span className="text-sm text-muted">{tr(lang, selected ? PRODUCT.price : UI.lowestTotal)}</span>
+          <div className="flex flex-wrap items-center gap-2">
             {sale && (
               <span className="badge badge-sale" title={`${tr(lang, T.saleBy)} ${SOURCES[sale.source].label}`}>
                 −{sale.pct}%
               </span>
             )}
-            <span data-lowest className="ui-num text-2xl font-semibold leading-8 text-fg">
+            <span data-lowest className="ui-num text-[32px] font-bold leading-10 tracking-tight text-fg">
               {formatPrice(total ?? cheapest.price, lang)}
             </span>
           </div>
           <span className={`text-sm ${total != null ? 'text-muted' : 'text-faint'}`}>
             {tr(lang, total != null ? UI.withShipping : UI.noShipping)}
           </span>
-          <span className="flex flex-wrap items-center gap-1.5 text-sm text-fg-soft lg:justify-end">
+          <span className="flex flex-wrap items-center gap-1.5 text-sm text-fg-soft">
             <SourceBadge source={cheapest.source} />
             <span className="[overflow-wrap:anywhere]">{seller}</span>
           </span>
-          <div className="mt-2 flex flex-wrap items-center gap-2 lg:justify-end">
-            <LinkButton variant="primary" icon={ExternalLink} href={cheapest.url} target="_blank" rel={SHOP_REL} className="tap">
-              {tr(lang, UI.toShop)}
-              <span className="sr-only">{` (${seller}, ${tr(lang, UI.newTab)})`}</span>
-            </LinkButton>
-            {action}
-          </div>
+          <span className="text-xs text-muted">{tr(lang, UI.offerChecked)} {ago(lang, checked ?? null)}</span>
         </div>
-      </div>
     </section>
   );
 }
