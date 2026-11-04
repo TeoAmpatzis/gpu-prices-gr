@@ -1,6 +1,10 @@
 import type { ReactNode } from 'react';
-import { ABOUT, CONTACT, PRIVACY, type InfoPageContent } from '../content/pages';
+import { ABOUT, CONTACT, PRIVACY, HOW_PRICES, type InfoPageContent } from '../content/pages';
 import { tr, useLang } from '../lib/i18n';
+import { CONTACT_EMAIL } from '../lib/site';
+import { useSite } from '../shell/site';
+import { StatusLine } from '../ui/nav';
+import './info.css';
 
 // Inline markup allowed in page text: [label](url), **bold**, `code`.
 const INLINE = /\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*|`([^`]+)`/g;
@@ -42,7 +46,7 @@ function inline(text: string): ReactNode[] {
   return out;
 }
 
-const CONTENT: Record<'about' | 'contact' | 'privacy', InfoPageContent> = { about: ABOUT, contact: CONTACT, privacy: PRIVACY };
+const CONTENT: Record<'about' | 'contact' | 'privacy' | 'how-prices', InfoPageContent> = { about: ABOUT, contact: CONTACT, privacy: PRIVACY, 'how-prices': HOW_PRICES };
 
 /**
  * A text page (About, Contact, Privacy): sections of paragraphs and bullet lists on a card. Loaded
@@ -50,12 +54,18 @@ const CONTENT: Record<'about' | 'contact' | 'privacy', InfoPageContent> = { abou
  */
 export default function InfoPage({ page }: { page: keyof typeof CONTENT }) {
   const lang = useLang();
+  const site = useSite();
   const content = CONTENT[page];
   return (
-    <article className="card max-w-3xl p-5 sm:p-8">
-      <div className="flex flex-col gap-7">
-        {content.sections.map((s) => (
-          <section key={tr('en', s.heading)} className="flex flex-col gap-2.5">
+    <article className={`info-page info-page--${page}`}>
+      {page === 'about' && <div className="info-stats"><div className="ui-card"><strong>5</strong><span>{tr(lang, { el: 'πηγές τιμών', en: 'price sources' })}</span></div><div className="ui-card"><strong>9</strong><span>{tr(lang, { el: 'κατηγορίες', en: 'categories' })}</span></div><div className="ui-card"><strong>{site ? Object.values(site.counts).reduce((a, b) => a + (b ?? 0), 0).toLocaleString(lang) : '—'}</strong><span>{tr(lang, { el: 'οικογένειες μοντέλων', en: 'model families' })}</span></div></div>}
+      {page === 'contact' && <a className="ui-btn ui-btn--primary info-mail" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>}
+      {page === 'how-prices' && <div className="ui-card p-4 mb-8"><StatusLine sources={site?.sources ?? {}} staleIn={site?.staleIn} /></div>}
+      <div className={page === 'privacy' ? 'info-with-contents' : ''}>
+      {page === 'privacy' && <nav className="info-contents" aria-label={tr(lang, { el: 'Περιεχόμενα', en: 'Contents' })}><p className="text-muted mb-3">{tr(lang, { el: 'Περιεχόμενα', en: 'Contents' })}</p>{content.sections.map((s, i) => <a key={i} href={`#info-${i}`}>{i + 1}. {tr(lang, s.heading)}</a>)}</nav>}
+      <div className="flex min-w-0 flex-col gap-8">
+        {content.sections.map((s, i) => (
+          <section id={`info-${i}`} key={tr('en', s.heading)} className="info-section flex flex-col gap-3">
             <h2 className="text-lg font-semibold tracking-tight">{tr(lang, s.heading)}</h2>
             {s.paragraphs?.map((p, i) => (
               <p key={i} className="leading-relaxed text-fg-soft">
@@ -75,6 +85,13 @@ export default function InfoPage({ page }: { page: keyof typeof CONTENT }) {
           <p className="border-t border-line pt-4 text-sm text-muted">{tr(lang, content.footnote)}</p>
         )}
       </div>
+      </div>
+      {page !== 'contact' && (
+        <div className="info-actions ui-card">
+          <a className="ui-btn ui-btn--secondary" href="/how-prices">{tr(lang, { el: 'Πώς βγάζουμε τις τιμές', en: 'How prices work' })}</a>
+          <a className="ui-btn ui-btn--primary" href="/contact">{tr(lang, { el: 'Επικοινωνία', en: 'Contact' })}</a>
+        </div>
+      )}
     </article>
   );
 }

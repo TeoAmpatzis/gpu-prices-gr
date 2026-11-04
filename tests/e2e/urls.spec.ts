@@ -67,7 +67,7 @@ test('an old filter link applies its filters', async ({ page }) => {
   expect(new URL(page.url()).searchParams.get('vram')).toBe('16');
 });
 
-for (const deep of ['/gpu?vram=16', '/ram?type=ddr5&cap=32', '/builder?step=case', '/storage?seg=nas', '/about', '/parts']) {
+for (const deep of ['/gpu?vram=16', '/ram?type=ddr5&cap=32', '/builder?step=case', '/storage?seg=nas', '/about', '/parts', '/search?q=rtx&cat=gpu&sort=price-asc&page=2', '/how-prices']) {
   test(`deep link ${deep} opens directly`, async ({ page }) => {
     const response = await page.goto(deep);
     expect(response?.status()).toBe(200);

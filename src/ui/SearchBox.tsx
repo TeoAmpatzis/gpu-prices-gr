@@ -119,7 +119,7 @@ export function SearchBox({
       if (!flat.length) return;
       setActive((a) => (e.key === 'ArrowDown' ? (a + 1) % flat.length : a <= 0 ? flat.length - 1 : a - 1));
     } else if (e.key === 'Enter') {
-      const target = activeOpt ?? flat.find((o) => o.kind !== 'section') ?? flat[0];
+      const target = activeOpt ?? (q.trim() ? { href: `/search?q=${encodeURIComponent(q.trim())}` } : null);
       if (target) {
         e.preventDefault();
         setOpen(false);
@@ -217,6 +217,7 @@ export function SearchBox({
               </li>
             ))}
           </ul>
+          <a href={`/search?q=${encodeURIComponent(q.trim())}`} tabIndex={-1} className="tap flex items-center justify-between rounded-md px-2.5 py-3 text-sm font-semibold text-accent" onClick={() => setOpen(false)}>{tr(lang, { el: 'Όλα τα αποτελέσματα', en: 'View all results' })}<ArrowRight className="h-4 w-4" aria-hidden="true" /></a>
           {!index && <p className="px-2.5 py-2 text-sm text-faint">{tr(lang, UI.searchLoading)}</p>}
           {index && !flat.length && (
             <p className="px-2.5 py-2 text-sm text-muted">

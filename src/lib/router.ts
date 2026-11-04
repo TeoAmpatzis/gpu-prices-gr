@@ -18,6 +18,8 @@ function subscribe(l: () => void) {
 
 /** The current pathname; re-renders only when it changes (not when a query string does). */
 export const usePath = () => useSyncExternalStore(subscribe, () => location.pathname);
+/** Search pages restore controls on query navigation and Back/Forward. */
+export const useQuery = () => useSyncExternalStore(subscribe, () => location.search);
 
 /** Re-render subscribers after the URL was changed with history.replaceState / pushState directly. */
 export const notifyUrl = emit;

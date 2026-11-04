@@ -67,18 +67,21 @@ export function PartsPage({ current, counts, search }: { current?: Current; coun
 }
 
 /** 404 (UX-08: v1 showed graphics cards for any unknown address): search, the categories, home. */
-export function NotFoundPage({ counts, search }: { counts?: Partial<Record<Category, number>>; search: SearchSetup }) {
+export function NotFoundPage({ search }: { counts?: Partial<Record<Category, number>>; search: SearchSetup }) {
   const lang = useLang();
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-5 py-6">
-      <p className="ui-num text-sm font-semibold text-accent">404</p>
-      <h1 className="-mt-3 text-2xl font-semibold tracking-tight">{tr(lang, UI.notFoundTitle)}</h1>
-      <p className="-mt-2 text-muted">{tr(lang, UI.notFoundText)}</p>
-      <SearchBox setup={search} variant="large" />
-      <Tiles counts={counts} cats={GROUPS.flatMap((g) => g.cats)} />
-      <LinkButton variant="secondary" icon={House} href={href.home} className="self-start">
-        {tr(lang, UI.home)}
-      </LinkButton>
+    <div className="mx-auto flex max-w-[672px] flex-col items-center gap-5 pb-14 pt-10 text-center sm:pt-14">
+      <p className="ui-mono text-[56px] font-semibold leading-[60px] text-accent">404</p>
+      <h1 className="text-2xl font-semibold tracking-tight">{tr(lang, UI.notFoundTitle)}</h1>
+      <p className="max-w-[480px] text-sm leading-5 text-muted">{tr(lang, UI.notFoundText)}</p>
+      <div className="w-full max-w-[480px] text-left"><SearchBox setup={search} variant="large" /></div>
+      <nav aria-label={tr(lang, UI.categories)} className="flex max-w-[560px] flex-wrap justify-center gap-2">
+        {GROUPS.flatMap((g) => g.cats).map((cat) => <a key={cat} className="ui-chip text-accent" href={href.category(cat)}>{tr(lang, CATS[cat].name)}</a>)}
+      </nav>
+      <div className="flex flex-wrap justify-center gap-2">
+        <LinkButton variant="secondary" icon={House} href={href.home}>{tr(lang, UI.home)}</LinkButton>
+        <LinkButton variant="primary" icon={Wrench} href={href.builder}>PC Builder</LinkButton>
+      </div>
     </div>
   );
 }
@@ -98,6 +101,7 @@ export function Footer({ sources, staleIn }: { sources: SourceTimes; staleIn?: {
         <div className="site-container flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-5 text-sm">
           <p className="text-muted">© 2026 BuildDraft.gr</p>
           <nav aria-label={tr(lang, SHELL.information)} className="flex flex-wrap gap-x-4 gap-y-1">
+            <a href="/how-prices" className="tap inline-flex items-center rounded text-accent underline hover:text-fg">{tr(lang, { el: 'Πώς βγάζουμε τις τιμές', en: 'How prices work' })}</a>
             {(['about', 'contact', 'privacy'] as const).map((p) => (
               <a key={p} href={`/${p}`} className="tap inline-flex items-center rounded text-accent underline hover:text-fg">
                 {tr(lang, p === 'privacy' ? SHELL.privacy : UI[p])}

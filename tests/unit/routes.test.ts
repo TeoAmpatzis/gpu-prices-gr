@@ -17,6 +17,8 @@ describe('routes', () => {
     ['/gpu/rtx-5070-12gb', { kind: 'model', cat: 'gpu', slug: 'rtx-5070-12gb' }],
     ['/builder', { kind: 'builder' }],
     ['/parts', { kind: 'parts' }],
+    ['/search', { kind: 'search' }],
+    ['/how-prices', { kind: 'info', page: 'how-prices' }],
     ['/about', { kind: 'info', page: 'about' }],
     ['/contact', { kind: 'info', page: 'contact' }],
     ['/privacy', { kind: 'info', page: 'privacy' }],

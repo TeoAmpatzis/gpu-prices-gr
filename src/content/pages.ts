@@ -19,6 +19,17 @@ export interface InfoPageContent {
 const mail = `[${CONTACT_EMAIL}](mailto:${CONTACT_EMAIL})`;
 const updated = PRIVACY_UPDATED.split('-').reverse().join('/');
 
+export const HOW_PRICES: InfoPageContent = {
+  sections: [
+    { heading: { el: 'Πηγές και οικογένειες μοντέλων', en: 'Sources and model families' }, paragraphs: [{ el: 'Διαβάζουμε δημόσιες σελίδες από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr. Οι εγγραφές πηγών εμφανίζονται χωριστά. Μια οικογένεια μοντέλων μπορεί να περιλαμβάνει διαφορετικές εκδόσεις· παρόμοια ονόματα δεν αποδεικνύουν ίδιο προϊόν.', en: 'We read public pages from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr. Source listings remain separate. A model family can include different variants; similar names do not prove an exact product match.' }] },
+    { heading: { el: 'Τιμή και μεταφορικά', en: 'Price and shipping' }, paragraphs: [{ el: 'Η τιμή προϊόντος δεν περιλαμβάνει μεταφορικά. Όπου γνωρίζουμε μεταφορικά, η συνολική τιμή εμφανίζεται χωριστά. Άγνωστα μεταφορικά δεν σημαίνουν δωρεάν. Έλεγξε τελικό ποσό και διαθεσιμότητα στην πηγή πριν αγοράσεις.', en: 'Item price excludes shipping. When shipping is known, the total is shown separately. Unknown shipping does not mean free shipping. Check the final amount and availability at the source before buying.' }] },
+    { heading: { el: 'Ενημέρωση τιμών', en: 'Price updates' }, paragraphs: [{ el: 'Η συλλογή προγραμματίζεται κάθε 6 ώρες. Αποτυχημένη συλλογή μπορεί να αφήσει παλιότερα στοιχεία. Δες τις πραγματικές ώρες ενημέρωσης των πηγών και τις προειδοποιήσεις στο site.', en: 'Collection is scheduled every 6 hours. A failed collection can leave older data. Check the actual source update times and warnings on the site.' }] },
+    { heading: { el: 'Ιστορικό και πτώσεις', en: 'History and price drops' }, paragraphs: [{ el: 'Το ιστορικό αφορά οικογένειες μοντέλων, όχι απαραίτητα συγκεκριμένο προϊόν. Οι πτώσεις στην αρχική συγκρίνονται με τη διάμεση τιμή 90 ημερών, χωρίς μεταφορικά, μόνο με επαρκή πρόσφατα στοιχεία.', en: 'History describes model families, not necessarily one exact product. Homepage drops compare against the 90-day median item price, excluding shipping, only with sufficient recent data.' }] },
+    { heading: { el: 'Χαρακτηριστικά και συμβατότητα', en: 'Specifications and compatibility' }, paragraphs: [{ el: 'Χαρακτηριστικά προέρχονται από πηγές και κατασκευαστές. Όσα λείπουν παραμένουν άγνωστα. Ο builder διακρίνει επιβεβαιωμένη συμβατότητα, εκτιμήσεις, μη επαληθευμένα στοιχεία και ασυμβατότητα. Η κατανάλωση είναι εκτίμηση.', en: 'Specifications come from sources and manufacturers. Missing values remain unknown. The builder distinguishes verified fit, estimates, unverified data and incompatibility. Power usage is an estimate.' }] },
+    { heading: { el: 'Ανεξαρτησία και διορθώσεις', en: 'Independence and corrections' }, paragraphs: [{ el: `Οι σύνδεσμοι δεν είναι affiliate. Δεν χρηματοδοτούμαστε από τις πηγές. Για λάθος τιμή ή χαρακτηριστικό, στείλε τους συνδέσμους προϊόντος και πηγής στο ${mail}.`, en: `Links are not affiliate links. We are not funded by the sources. For an incorrect price or specification, send the product and source links to ${mail}.` }] },
+  ],
+};
+
 export const ABOUT: InfoPageContent = {
   sections: [
     {

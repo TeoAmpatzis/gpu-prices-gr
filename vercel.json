@@ -7,7 +7,7 @@
   },
   "rewrites": [
     {
-      "source": "/:page(gpu|cpu|mobo|ram|storage|psu|case|fan|cooler|builder|parts|about|contact|privacy)",
+      "source": "/:page(gpu|cpu|mobo|ram|storage|psu|case|fan|cooler|builder|parts|search|about|contact|privacy|how-prices)",
       "destination": "/index.html"
     },
     {
