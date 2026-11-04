@@ -5,6 +5,7 @@ import { tr, useLang } from '../../lib/i18n';
 import { usePath } from '../../lib/router';
 import { CONTACT_EMAIL } from '../../lib/site';
 import { UI } from '../../ui/strings';
+import { PRODUCT } from './productStrings';
 
 /** mailto:<site mailbox>?subject=<model name> — <page URL>, URL-encoded. */
 export const reportHref = (name: string, url: string) => `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`${name} — ${url}`)}`;
@@ -17,18 +18,19 @@ export function ReportError({ name }: { name: string }) {
     e.currentTarget.href = reportHref(name, location.href);
   };
   return (
-    <p>
+    <section aria-label={tr(lang, PRODUCT.correction)} className="product-correction ui-card">
+      <p className="text-sm text-muted">{tr(lang, PRODUCT.correction)}</p>
       <a
         href={reportHref(name, location.href)}
         onPointerEnter={refresh}
         onFocus={refresh}
         onClick={refresh}
         data-report-error
-        className="tap inline-flex items-center gap-2 text-sm font-medium text-muted underline-offset-4 hover:text-fg hover:underline"
+        className="ui-btn ui-btn--secondary tap"
       >
         <Mail aria-hidden="true" className="size-4" />
         {tr(lang, UI.reportError)}
       </a>
-    </p>
+    </section>
   );
 }

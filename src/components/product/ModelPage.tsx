@@ -8,14 +8,14 @@ import { groupModels, ownTotal } from '../../lib/data';
 import { tr, useLang } from '../../lib/i18n';
 import type { Slot } from '../../lib/slots';
 import { guardMoved, resolveModel, type ModelResolution } from '../../lib/modelData';
-import { sortOffers } from '../../lib/offers';
+import { checkedAt, sortOffers } from '../../lib/offers';
 import { navigate, onUrlChange } from '../../lib/router';
 import { hasProductSelection, readProductSelection, resolveProductSelection, type ProductSelection } from '../../lib/productSelection';
 import { CATS, href } from '../../shell/nav';
 import { PageTitle } from '../../shell/PageTitle';
 import type { BaseListing, Category, ModelChunk, ModelEntry } from '../../types';
 import { LinkButton } from '../../ui/Button';
-import type { Crumb } from '../../ui/nav';
+import { Breadcrumbs, type Crumb } from '../../ui/nav';
 import { ErrorState, SkeletonRows } from '../../ui/states';
 import { UI } from '../../ui/strings';
 import { Alternatives } from './Alternatives';
@@ -26,6 +26,7 @@ import { ProductHeader } from './ProductHeader';
 import { ReportError } from './ReportError';
 import { SpecGroups } from './SpecGroups';
 import { Variants } from './Variants';
+import './product.css';
 
 type State = { for: string; res: ModelResolution } | { for: string; error: string } | null;
 
@@ -130,9 +131,10 @@ function Product({ cat, entry, sources, crumbs, fit, selection }: ProductProps &
   const listings = useMemo(() => selected ? [selected] : entry.listings, [entry, selected]);
   const model = useMemo(() => groupModels(listings.map(ownTotal), { ...cfg, modelKey: () => entry.key })[0], [cfg, entry, listings]);
   const offers = useMemo(() => sortOffers(entry.listings), [entry]);
+  const siblings = selected ? offers.filter((l) => l.source !== selected.source || l.id !== selected.id) : [];
   return (
-    <>
-      <PageTitle crumbs={crumbs} title={{ el: selected?.title ?? entry.chip, en: selected?.title ?? entry.chip }} />
+    <div className="product-page">
+      <Breadcrumbs items={selected ? [...crumbs.slice(0, -1), { label: entry.chip, href: `/${cat}/${entry.slug}` }, { label: selected.title }] : crumbs} />
       <div className="flex flex-col gap-8">
         <ProductHeader
           cfg={cfg}
@@ -140,26 +142,33 @@ function Product({ cat, entry, sources, crumbs, fit, selection }: ProductProps &
           photo={entry.photo}
           cheapest={selected ? ownTotal(selected) : offers[0]}
           action={fit && <HeaderFit p={fit} />}
+          selected={!!selected}
+          checked={checkedAt(sources, (selected ?? offers[0]).source)}
+          variants={<Variants cat={cat} entry={entry} />}
         />
+        {selected && <OffersTable cat={cat} chip={entry.chip} offers={[selected]} sources={sources} selectedSource />}
+        {(!selected || siblings.length > 0) &&
         <OffersTable
           key={entry.key}
           cat={cat}
           chip={entry.chip}
-          offers={offers}
+          offers={selected ? siblings : offers}
           sources={sources}
           alternatives={!!selected}
+          familySlug={entry.slug}
           // Graphics cards: the builder picks a card (an offer), so each offer has its verdict and button.
           fitLine={fit?.slot === 'gpu' && !selected ? (l) => <OfferFitLine p={fit} l={l} /> : undefined}
           fitAction={fit?.slot === 'gpu' && !selected ? (l, short) => <OfferFitAction p={fit} l={l} short={short} /> : undefined}
-        />
+        />}
+        <div className={`product-analysis ${fit?.show ? 'product-analysis-with-fit' : ''}`}>
         <PriceHistory entry={entry} />
         {/* The check and the section (only with a saved build): a chunk loaded after the first paint. */}
         {fit?.runner}
-        <Variants cat={cat} entry={entry} />
+        </div>
         <SpecGroups cat={cat} listings={listings} estimate={selected ? undefined : entry.lengthEstimate} />
         <Alternatives cat={cat} icon={cfg.icon} alternatives={entry.alternatives} />
-        <ReportError name={entry.chip} />
+        <ReportError name={selected?.title ?? entry.chip} />
       </div>
-    </>
+    </div>
   );
 }
