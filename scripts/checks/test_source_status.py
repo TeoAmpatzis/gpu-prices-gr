@@ -18,6 +18,32 @@ import main as mn  # noqa: E402
 
 
 class SourceStatusTests(unittest.TestCase):
+    def test_suspicious_skroutz_snapshot_retains_source_but_publishes_other_store(self):
+        for duplicate in (False, True):
+            with self.subTest(duplicate=duplicate), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                out = root / "cpu"
+                out.mkdir()
+                old_at, run_at = "2026-11-03T00:00:00Z", "2026-11-04T00:00:00Z"
+                old = [{"id": f"skroutz:{n}", "source": "skroutz", "chip": "old", "price": 100} for n in range(10)]
+                incoming = old[:6] if not duplicate else old[:9] + [old[0]]
+                fresh = {"id": "bestprice:2", "source": "bestprice", "chip": "fresh", "price": 110}
+                (out / "latest.json").write_text(json.dumps({"sources": {"skroutz": {"count": 10, "ok": True, "updatedAt": old_at}}, "listings": old}), encoding="utf-8")
+                def wrap(rows):
+                    return [SimpleNamespace(to_dict=lambda row=row: dict(row)) for row in rows]
+                sources = {"skroutz": lambda _: wrap(incoming), "bestprice": lambda _: wrap([fresh])}
+                cat = SimpleNamespace(name="cpu", settle=None, model_key=lambda row: row["chip"])
+                with patch.object(mn, "DATA_DIR", root), patch.object(mn, "SOURCES", sources), \
+                        patch.object(mn, "now_iso", return_value=run_at), patch.object(mn, "write_image_urls"), \
+                        patch.object(mn, "finish"), patch.object(mn, "write_history", return_value={}) as history, \
+                        contextlib.redirect_stdout(io.StringIO()):
+                    self.assertTrue(mn.scrape_category(cat, None, with_shipping=False))
+                data = json.loads((out / "latest.json").read_text(encoding="utf-8"))
+                self.assertEqual([row for row in data["listings"] if row["source"] == "skroutz"], old)
+                self.assertEqual(data["sources"]["skroutz"], {"count": 10, "ok": False, "updatedAt": old_at})
+                self.assertEqual(data["sources"]["bestprice"]["updatedAt"], run_at)
+                self.assertEqual(history.call_args.args[4], [fresh])
+
     def test_failed_and_empty_sources_preserve_data_and_exclude_stale_history(self):
         for fails_with_exception in (True, False):
             with self.subTest(exception=fails_with_exception), tempfile.TemporaryDirectory() as tmp:
