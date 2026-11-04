@@ -126,6 +126,27 @@ class SourceStatusTests(unittest.TestCase):
             self.assertEqual(data["sources"]["bestprice"], meta)
             self.assertIn(old, data["listings"])
 
+    def test_targeted_failure_does_not_reuse_unselected_success_for_exit_status(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            out = root / "cpu"
+            out.mkdir()
+            old = {"id": "bestprice:1", "source": "bestprice", "chip": "old", "price": 100}
+            meta = {"count": 1, "ok": True, "updatedAt": "2026-11-03T00:00:00Z"}
+            (out / "latest.json").write_text(json.dumps({"sources": {"bestprice": meta}, "listings": [old]}))
+            cat = SimpleNamespace(name="cpu", settle=None, model_key=lambda row: row["chip"])
+            sources = {"skroutz": lambda _: [],
+                       "bestprice": lambda _: self.fail("unselected source was fetched")}
+            with patch.object(mn, "DATA_DIR", root), patch.object(mn, "SOURCES", sources), \
+                    patch.object(mn, "finish"), patch.object(mn, "write_image_urls"), \
+                    patch.object(mn, "report_sources"), patch.object(mn, "write_history", return_value={}) as history, \
+                    contextlib.redirect_stdout(io.StringIO()):
+                self.assertFalse(mn.scrape_category(cat, ["skroutz"], with_shipping=False))
+            self.assertEqual(history.call_args.args[4], [])
+            data = json.loads((out / "latest.json").read_text())
+            self.assertEqual(data["sources"]["bestprice"], meta)
+            self.assertIn(old, data["listings"])
+
 
 if __name__ == "__main__":
     unittest.main()
