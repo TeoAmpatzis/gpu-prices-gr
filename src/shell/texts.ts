@@ -4,7 +4,9 @@ import type { Text } from '../lib/i18n';
 import type { InfoPage } from '../lib/routes';
 import type { Category } from '../types';
 
-export const PAGE: Record<'home' | 'builder' | 'parts' | 'notFound' | InfoPage, { title: Text; subtitle?: Text }> = {
+export const PAGE: Record<'home' | 'builder' | 'parts' | 'search' | 'notFound' | InfoPage, { title: Text; subtitle?: Text }> = {
+  search: { title: { el: 'Αναζήτηση', en: 'Search' } },
+  'how-prices': { title: { el: 'Πώς βγάζουμε τις τιμές', en: 'How prices work' } },
   home: {
     title: { el: 'Τιμές εξαρτημάτων PC στην Ελλάδα', en: 'PC part prices in Greece' },
     subtitle: {

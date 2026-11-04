@@ -7,6 +7,30 @@ import { shortAgo } from '../lib/format';
 export const NBSP = String.fromCharCode(0xa0);
 
 export const UI = {
+  catalogueClear: { el: "Καθαρισμός φίλτρων", en: "Clear filters" },
+  catalogueView: { el: "Δες προϊόν", en: "View product" },
+  catalogueAdd: { el: 'Στο build', en: 'Add to build' },
+  catalogueModel: { el: "Μοντέλο", en: "Model" },
+  cataloguePrice: { el: "Τιμή", en: "Price" },
+  catalogueAction: { el: "Ενέργεια", en: "Action" },
+  catalogueMissing: { el: "Δεν δηλώνεται", en: "Not stated" },
+  catalogueProducts: { el: "προϊόντα", en: "products" },
+  catalogueTable: { el: "Πίνακας", en: "Table" },
+  catalogueCards: { el: "Κάρτες", en: "Cards" },
+  catalogueFrom: { el: "Από", en: "From" },
+  catalogueTo: { el: "Έως", en: "To" },
+  catalogueUnknown: {
+    el: "Και όσα δεν έχουν δεδομένα",
+    en: "Include missing data",
+  },
+  catalogueCoverage: { el: "Γνωστό για", en: "Known for" },
+  catalogueFamilyLow: {
+    el: "Χαμηλό οικογένειας μοντέλου",
+    en: "Model-family low",
+  },
+  catalogueCancel: { el: "Ακύρωση", en: "Cancel" },
+  catalogueShowing: { el: "Εμφάνιση", en: "Showing" },
+
   // Compatibility (glossary): colour + icon + word
   compatError: { el: 'Ασύμβατο', en: 'Incompatible' },
   compatWarning: { el: 'Θέλει προσοχή', en: 'Needs attention' },

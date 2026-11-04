@@ -1,0 +1,76 @@
+.home-page { display: flex; flex-direction: column; gap: 40px; padding: 28px 0; }
+.home-hero { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 32px; align-items: start; }
+.home-hero-copy { min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+.home-search { width: 100%; max-width: 640px; }
+.home-hero h1 { font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -.02em; }
+.home-hero-copy > div:first-child > p { margin-top: 12px; font-size: 16px; line-height: 24px; color: rgb(var(--muted)); }
+.home-popular, .home-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.home-actions { gap: 12px; }
+.home-query { display: inline-flex; align-items: center; min-height: 32px; border: 1px solid rgb(var(--line-strong)); border-radius: 999px; padding: 4px 12px; font-size: 14px; background: rgb(var(--panel)); }
+.home-query:hover { color: rgb(var(--accent)); border-color: rgb(var(--accent)); }
+.home-freshness, .home-category, .home-deals-panel, .home-build, .home-method, .home-error { background: rgb(var(--panel)); border: 1px solid rgb(var(--line)); border-radius: 12px; }
+.home-freshness { padding: 20px; }
+.home-section-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; }
+.home-section-heading h2 { font-size: 18px; line-height: 28px; font-weight: 600; }
+.home-section-heading > span { color: rgb(var(--muted)); font-size: 14px; }
+.home-section-heading > a, .home-method a { color: rgb(var(--accent)); text-decoration: underline; }
+.home-freshness .home-section-heading { gap: 8px; margin-bottom: 12px; }
+.home-freshness h2 { font-size: 16px; line-height: 24px; }
+.home-freshness .home-section-heading > span { font-size: 12px; }
+.home-freshness li { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgb(var(--line)); gap: 8px; padding: 10px 0; }
+.home-freshness li > div { display: flex; align-items: center; gap: 8px; }
+.home-freshness time { font-size: 12px; color: rgb(var(--muted)); white-space: nowrap; }
+.home-freshness > p { margin-top: 12px; color: rgb(var(--faint)); font-size: 12px; line-height: 16px; }
+.home-categories, .home-deals, .home-builds { display: flex; flex-direction: column; gap: 16px; }
+.home-category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; list-style: none; padding: 0; margin: 0; }
+.home-category { display: flex; align-items: center; min-width: 0; gap: 14px; padding: 16px; font-size: 14px; line-height: 20px; }
+.home-category:hover { border-color: rgb(var(--accent)); }
+.home-category-icon { display: grid; place-items: center; width: 44px; height: 44px; flex: none; border-radius: 50%; border: 1px solid rgb(var(--line)); background: rgb(var(--page)); color: rgb(var(--accent)); }
+.home-category > span:not(.home-category-icon) { display: flex; min-width: 0; flex-direction: column; }
+.home-category strong { font-weight: 600; }
+.home-category .text-muted { font-size: 12px; }
+.home-category-price { margin-left: auto; text-align: right; flex-shrink: 0; }
+.home-category-price small { color: rgb(var(--faint)); font-size: 12px; }
+.home-deals-panel { overflow: hidden; min-height: 268px; }
+.home-deals li { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; padding: 14px 16px; border-top: 1px solid rgb(var(--line)); }
+.home-deals li:first-child { border-top: 0; }
+.home-deals li > a { flex: 1 1 280px; font-weight: 500; }
+.home-deals li > a:hover { color: rgb(var(--accent)); }
+.home-deals li > .ui-num { flex: 0 0 96px; text-align: right; }
+.home-old-price { color: rgb(var(--faint)); }
+.home-empty-drops { display: grid; place-content: center; min-height: 268px; color: rgb(var(--muted)); padding: 24px; text-align: center; }
+.home-build-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.home-build { min-width: 0; display: flex; flex-direction: column; padding: 20px; gap: 14px; min-height: 420px; }
+.home-build-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.home-build h3 { font-size: 24px; line-height: 32px; font-weight: 600; white-space: nowrap; }
+.home-build-heading > span, .home-build-total > span { color: rgb(var(--muted)); font-size: 14px; }
+.home-build ul { display: flex; flex-direction: column; gap: 6px; flex: 1; font-size: 14px; overflow-wrap: anywhere; }
+.home-build-total { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 12px; border-top: 1px solid rgb(var(--line)); }
+.home-build-notice, .home-preview-note { color: rgb(var(--muted)); font-size: 12px; line-height: 18px; }
+.home-build > .ui-btn { margin-top: auto; }
+.home-method { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 16px 20px; font-size: 14px; }
+.home-method > span:last-child { color: rgb(var(--muted)); }
+.home-loading-line { height: 20px; background: rgb(var(--line)); border-radius: 4px; }
+.home-error { min-height: 720px; display: flex; gap: 12px; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
+@media (max-width: 1100px) {
+  .home-category-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .home-category { gap: 10px; padding: 12px; }
+  .home-category-icon { width: 36px; height: 36px; }
+  .home-build-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 959px) {
+  .home-hero { grid-template-columns: 1fr; gap: 24px; }
+  .home-category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .home-page { padding: 12px 0; gap: 32px; }
+  .home-hero h1 { font-size: 28px; line-height: 36px; }
+  .home-category-grid, .home-build-grid { grid-template-columns: 1fr; }
+  .home-category { padding: 16px; }
+  .home-category-icon { width: 44px; height: 44px; }
+  .home-query { min-height: 44px; }
+  .home-freshness { padding: 16px; }
+  .home-deals li > a { flex-basis: 100%; }
+  .home-deals li > .ui-num { flex-basis: auto; }
+  .home-deals-panel, .home-empty-drops { min-height: 420px; }
+}
