@@ -13,6 +13,7 @@ import { ENGINE_TEXT, MISSING, buildStatus, isAdvice, missingSlots, notCheckedYe
 import type { AnyModel, BuilderState } from '../../lib/builderState';
 import { T, plural, tr, useLang, type Forms, type Text } from '../../lib/i18n';
 import { BUILDER as B, fill } from '../../ui/builderStrings';
+import { lineNotice } from '../../lib/copyList';
 
 const S = {
   total: { el: 'Σύνολο', en: 'Total' },
@@ -219,6 +220,8 @@ export default function Summary({ state, onSlot, back, next }: Props) {
           <ul className="flex flex-col border-t border-line pt-2 text-sm">
             {SLOTS.map((s) => {
               const m = build[s] as AnyModel | undefined;
+              const resolved = state.resolvedLines.find((r) => r.line === s);
+              const notice = resolved && lineNotice(resolved);
               return (
                 <li key={s}>
                   <button
@@ -228,10 +231,11 @@ export default function Summary({ state, onSlot, back, next }: Props) {
                   >
                     <span className="w-24 shrink-0 truncate text-xs text-muted">{t(STEP_SHORT[s])}</span>
                     <span className={`line-clamp-2 min-w-0 flex-1 [overflow-wrap:anywhere] ${m ? 'font-medium' : 'text-faint'}`}>
-                      {m ? m.chip : '—'}
+                      {resolved?.displayModel?.chip ?? (m ? m.chip : '—')}
                     </span>
-                    {m && <span className="shrink-0 tabular-nums text-muted">{formatPrice(state.resolvedLines.find((r) => r.line === s)?.total ?? m.cheapest.price, lang)}</span>}
+                    {resolved?.displayModel && <span className="shrink-0 tabular-nums text-muted">{formatPrice(resolved.total, lang)}</span>}
                   </button>
+                  {notice && <p className="text-xs text-muted" data-offer-notice={resolved?.status}>{t(notice)}</p>}
                 </li>
               );
             })}

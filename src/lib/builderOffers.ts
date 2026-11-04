@@ -10,6 +10,8 @@ import { resolveOfferChoice } from './productSelection';
 export interface ResolvedLine {
   line: Line;
   model: AnyModel;
+  /** Selected evidence for presentation; null while a requested offer is unresolved. */
+  displayModel: AnyModel | null;
   quantity: number;
   offer: BaseListing;
   total: number;
@@ -43,6 +45,7 @@ export function resolveLine(line: Line, model: AnyModel, quantity: number, reque
   const raw = selected ?? model.cheapest;
   const own = selected ? ownTotal(selected) : null;
   const offer = selected ? { ...raw, merchant: own?.merchant, ship: own?.shipping ?? null, total: own?.total ?? undefined } : requestedOffer ? { ...raw, url: '' } : raw;
-  return { line, model, quantity, offer, total: Math.round(offer.price * quantity * 100) / 100,
+  const displayModel = selected ? { ...model, chip: selected.title || model.chip, cheapest: offer, listings: [offer], maxPrice: offer.price } : requestedOffer ? null : model;
+  return { line, model, displayModel, quantity, offer, total: displayModel ? Math.round(offer.price * quantity * 100) / 100 : 0,
     requestedOffer, status: !requestedOffer ? 'default' : selected ? 'chosen' : offers === undefined ? (failed ? 'failed' : 'pending') : 'missing' };
 }

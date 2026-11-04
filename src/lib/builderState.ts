@@ -17,7 +17,7 @@ import { afterLargestPaint } from './paint';
 import { LINES, MAX_FAN_QTY, onBuildChange, readBuild, writeBuild, type BuildChangeSource, type StoredBuild } from './buildStore';
 import { decodeShare, encodeShare, isShareParam, type ShareNames } from './share';
 import { builderParams, writeBuilderParams } from './builderView';
-import { offersFor, offerSlug, resolveLine } from './builderOffers';
+import { offersFor, offerSlug, resolveLine, type ResolvedLine } from './builderOffers';
 import { linesTotal } from './copyList';
 import type { Line } from './buildStore';
 import { encodeOfferChoice, resolveOfferChoice } from './productSelection';
@@ -202,6 +202,7 @@ export function useBuilderState() {
   // a late response must never fall back to the build captured when the request started.
   const pendingLazy = useRef({ ...start.parts });
   const pendingSecond = useRef(start.storage2);
+  const pendingOffers = useRef((sharedAtStart?.build ?? start).offers ?? {});
   const [models, setModels] = useState<Models | null>(null);
   const [coverage, setCoverage] = useState<BuilderIndex['coverage'] | null>(null);
   const [chipLengths, setChipLengths] = useState<BuilderIndex['chipLengths'] | null>(null);
@@ -233,6 +234,7 @@ export function useBuilderState() {
   // then restored into the build. true = loaded, false = failed, missing = not loaded yet.
   const [slotState, setSlotState] = useState<Partial<Record<Slot, boolean>>>({});
   const slotRef = useRef<((slot: Slot) => void) | null>(null);
+  const savedSlotRef = useRef<((slot: Slot) => void) | null>(null);
   const restoreRef = useRef<(() => void) | null>(null);
   const restoreTimer = useRef<number | undefined>(undefined);
   const [restoreLead, setRestoreLead] = useState<Slot[]>([]);
@@ -252,6 +254,7 @@ export function useBuilderState() {
             const saved = readSaved();
             pendingLazy.current = { ...saved.parts };
             pendingSecond.current = saved.storage2;
+            pendingOffers.current = saved.offers ?? {};
             setWanted(saved.parts);
             setWanted2(!!saved.storage2);
             setPrefsState(saved.prefs);
@@ -293,21 +296,23 @@ export function useBuilderState() {
               });
           };
           const requestedSlots = new Set<Slot>();
-          const accept = (slot: Slot, ms: AnyModel[], full: boolean) => {
+          const accept = (slot: Slot, ms: AnyModel[], full: boolean, restoreLine?: Line) => {
             if (!live) return;
-            loaded[slot] = ms;
+            const catalogue = !full && loaded[slot] ? [...loaded[slot]!, ...ms.filter((m) => !loaded[slot]!.some((old) => old.key === m.key))] : ms;
+            loaded[slot] = catalogue;
             if (full) fullSlots.add(slot);
             // The part saved meanwhile (a category page's "Add to build") wins over the one at load.
-            const want = pendingLazy.current[slot];
-            delete pendingLazy.current[slot];
-            setModels((prev) => (prev ? ({ ...prev, [slot]: ms } as Models) : prev));
+            const canRestore = restoreLine === slot || (restoreLine === undefined && !pendingOffers.current[slot]);
+            const want = canRestore ? pendingLazy.current[slot] : undefined;
+            if (canRestore) delete pendingLazy.current[slot];
+            setModels((prev) => (prev ? ({ ...prev, [slot]: catalogue } as Models) : prev));
             const found = findSaved(slot, ms as AnyModel[], want);
             const isGone = (line: Line, key: string) =>
               setGone((g) => [...g.filter((x) => x.line !== line), { line, key, ...(start.names?.[line] && { name: start.names[line] }) }]);
             // Restored only if the user hasn't picked one meanwhile.
             if (found) setBuild((b) => (b[slot] ? b : { ...b, [slot]: found }));
             else if (want !== undefined) isGone(slot, want);
-            if (slot === 'storage' && pendingSecond.current) {
+            if (slot === 'storage' && pendingSecond.current && (restoreLine === 'storage2' || (restoreLine === undefined && !pendingOffers.current.storage2))) {
               setWanted2(false);
               const key = pendingSecond.current;
               pendingSecond.current = undefined;
@@ -316,6 +321,7 @@ export function useBuilderState() {
               else isGone('storage2', key);
             }
             setWanted((w) => {
+              if (!canRestore) return w;
               const { [slot]: _, ...rest } = w;
               return rest;
             });
@@ -340,21 +346,28 @@ export function useBuilderState() {
           };
           const restore = (s: Slot) => {
             if (!live) return;
-            const parts = pendingLazy.current;
-            const keys = [parts[s], ...(s === 'storage' ? [pendingSecond.current] : [])].filter((key): key is string => !!key);
-            if (!keys.length) return;
-            const pins = (sharedAtStart?.build ?? readBuild()).offers;
-            const choices = Object.fromEntries(keys.flatMap((key) => {
-              const choice = key === pendingSecond.current && s === 'storage' ? pins?.storage2 : pins?.[s];
-              return choice ? [[key, choice]] : [];
-            }));
-            void loadSavedSlot(s, keys, at, choices).then((ms) => {
-              // An opened picker owns the full catalogue; a slower restore must not replace it with one row.
-              if (!live || requestedSlots.has(s)) return;
-              if (ms) accept(s, ms as AnyModel[], false);
-              else slotRef.current?.(s);
-            }, () => { if (live) slotRef.current?.(s); });
+            // Each drive owns its request, even when both drives share a family but pin different offers.
+            const lines: Line[] = s === 'storage' ? ['storage', 'storage2'] : [s];
+            for (const line of lines) {
+              const pendingKey = () => line === 'storage2' ? pendingSecond.current : pendingLazy.current[s];
+              const key = pendingKey();
+              if (!key) continue;
+              const choice = pendingOffers.current[line];
+              const current = () => live && pendingKey() === key && pendingOffers.current[line] === choice;
+              const fallback = () => {
+                void loadSlot(s, at).then((ms) => {
+                  if (current()) accept(s, ms as AnyModel[], true, line);
+                }, () => { if (current()) setSlotState((r) => ({ ...r, [s]: false })); });
+              };
+              void loadSavedSlot(s, [key], at, choice ? { [key]: choice } : {}).then((ms) => {
+                // A newer key or offer owns restoration. Sparse evidence may supplement an open full catalogue.
+                if (!current()) return;
+                if (ms) accept(s, ms as AnyModel[], false, line);
+                else fallback();
+              }, () => { if (current()) fallback(); });
+            }
           };
+          savedSlotRef.current = restore;
           const restoreSlots = SLOTS.filter((s) => parts[s] || (s === 'storage' && pendingSecond.current));
           // Paint the first visible selected products before restoring the rest below them. A saved
           // CPU must not compete with whole GPU/PSU catalogues for the first screen's connection.
@@ -386,6 +399,7 @@ export function useBuilderState() {
       window.clearTimeout(extraTimer.current);
       window.clearTimeout(restoreTimer.current);
       slotRef.current = null;
+      savedSlotRef.current = null;
       extraRef.current = null;
       restoreRef.current = null;
     };
@@ -411,23 +425,23 @@ export function useBuilderState() {
       const next: Build = {};
       pendingLazy.current = {};
       pendingSecond.current = saved.storage2;
+      pendingOffers.current = saved.offers ?? {};
       for (const s of SLOTS) {
         const key = saved.parts[s];
         if (!key) continue;
         const found = models ? findSaved(s, models[s] as AnyModel[], key) : undefined;
-        if (found) (next as Record<Slot, AnyModel>)[s] = found;
+        if (found && !saved.offers?.[s]) (next as Record<Slot, AnyModel>)[s] = found;
         else {
           // Its step's file hasn't arrived (or doesn't have it): restored when it does.
           pendingLazy.current[s] = key;
-          slotRef.current?.(s);
         }
       }
       setBuild(next);
       setWanted({ ...pendingLazy.current });
-      const second = saved.storage2 && models ? findSaved('storage', models.storage as AnyModel[], saved.storage2) : undefined;
+      const second = saved.storage2 && models && !saved.offers?.storage2 ? findSaved('storage', models.storage as AnyModel[], saved.storage2) : undefined;
       pendingSecond.current = second ? undefined : saved.storage2;
       setWanted2(!!pendingSecond.current);
-      if (pendingSecond.current) slotRef.current?.('storage');
+      for (const s of SLOTS) if (pendingLazy.current[s] || (s === 'storage' && pendingSecond.current)) savedSlotRef.current?.(s);
       setOffers(readBuild().offers ?? {});
       setPrefsState(saved.prefs);
       setFanQtyState(readBuild().fanQty ?? 1);
@@ -663,7 +677,10 @@ export function useBuilderState() {
     /** Load the loaded steps' extra files now (first interaction); a no-op before the index has arrived. */
     wantExtra: () => extraRef.current?.(),
     /** Load a step's file now; a no-op once requested (until it fails). */
-    wantSlot: (slot: Slot) => slotRef.current?.(slot),
+    wantSlot: (slot: Slot) => {
+      if (slotState[slot] === false && (pendingLazy.current[slot] || (slot === 'storage' && pendingSecond.current))) savedSlotRef.current?.(slot);
+      slotRef.current?.(slot);
+    },
     /** False while a step's parts haven't arrived (or failed). */
     slotReady: (slot: Slot) => slotState[slot] === true,
     /** True after a step's file failed (twice: one retry inside); `wantSlot` asks again. */
@@ -672,6 +689,20 @@ export function useBuilderState() {
 }
 
 export type BuilderState = ReturnType<typeof useBuilderState>;
+
+/** One candidate owner for guided display and checks, including a selected product absent from the family catalogue. */
+export function stepCandidates(slot: Slot, models: AnyModel[], selected?: ResolvedLine, quantity = 1, line: Line = slot): { model: AnyModel; part: Part }[] {
+  const rows = candidates(slot, models as never) as AnyModel[];
+  const choices = selected ? [...rows.filter((m) => m.key !== selected.model.key), selected.displayModel ?? selected.model] : rows;
+  return choices.map((model) => {
+    const key = `${model.key}${line === 'storage2' ? '#2' : ''}`;
+    const part = partOf(slot, model, quantity, key);
+    if (selected?.model.key === model.key && selected.requestedOffer) {
+      part.fields = selected.displayModel ? fieldsForListing(slot, selected.offer) : {};
+    }
+    return { model, part };
+  });
+}
 
 /**
  * The engine's verdict on every part a step can offer, from the pick worker (`full: 'all'`: passes kept, so a label
@@ -682,9 +713,10 @@ export type BuilderState = ReturnType<typeof useBuilderState>;
 export function useStepVerdicts(state: BuilderState, slot: Slot | null, line: Line | null = slot): { verdicts: Map<string, Verdict> | null; checking: boolean } {
   const ready = slot != null && state.slotReady(slot);
   const models = ready ? (state.models?.[slot] as AnyModel[] | undefined) : undefined;
+  const resolved = state.resolvedLines.find((r) => r.line === line);
   const list = useMemo<Part[] | null>(
-    () => (slot && models ? candidates(slot, models as never).map((m) => partOf(slot, m as AnyModel, slot === 'fan' ? state.fanQty : 1, line === 'storage2' ? `${m.key}#2` : m.key)) : null),
-    [slot, models, line, state.fanQty],
+    () => (slot && models ? stepCandidates(slot, models, resolved, slot === 'fan' ? state.fanQty : 1, line ?? slot).map((m) => m.part) : null),
+    [slot, models, line, state.fanQty, resolved],
   );
   const { checker, parts, engineCtx } = state;
   // parts + context by value: a re-render with the same build doesn't re-run the check.

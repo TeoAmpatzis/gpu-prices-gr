@@ -77,7 +77,7 @@ describe('a chosen offer that is gone (Review Focus 5)', () => {
     const gone = resolveLine('case', xr, 1, 'shopflix:gone', [black, white]);
     expect(gone.status).toBe('missing');
     expect(gone.offer.id).toBe(black.id);
-    expect(gone.total).toBe(79);
+    expect(gone.total).toBe(0);
     expect(tr('en', lineNotice(gone) ?? '')).toMatch(/no longer/i);
     const p = resolveLine('psu', psu, 1);
     const lines = [gone, p];

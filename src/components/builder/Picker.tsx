@@ -3,14 +3,14 @@ import { Check, Loader2, Search } from 'lucide-react';
 import type { AutoFile, BaseListing, CaseListing, Category, CpuListing, FanListing, StorageListing } from '../../types';
 import { CATEGORIES } from '../../lib/categories';
 import type { Model } from '../../lib/data';
-import { SLOTS, candidates, cpuCards, type Slot } from '../../lib/builderData';
+import { SLOTS, cpuCards, type Slot } from '../../lib/builderData';
 import { prefetchSlot } from '../../lib/builderFiles';
 import { afterLargestPaint } from '../../lib/paint';
 import type { Line } from '../../lib/buildStore';
 import { ENGINE_TEXT } from '../../lib/builderEngine';
 import { fanPlan, planPackOrder } from '../../lib/fanPlan';
 import { ratingOf, stepReason, LABEL_TEXT, type Rating } from '../../lib/fitLabel';
-import { useStepVerdicts, type AnyModel, type BuilderState } from '../../lib/builderState';
+import { stepCandidates, useStepVerdicts, type AnyModel, type BuilderState } from '../../lib/builderState';
 import { pickerOrder, loadAuto } from '../../lib/recommend';
 import { toUseKey } from '../../lib/useMinimums';
 import { SORTS, sorter, type SortBy } from '../../lib/wizard';
@@ -115,12 +115,12 @@ export default function Picker({ slot, state, auto = null, lang, line = slot, on
   const rated: Rated[] = useMemo(() => {
     if (!models || !verdicts) return [];
     // A part without a verdict (the check failed) is shown unlabelled, never hidden.
-    return (candidates(slot, models[slot] as never) as AnyModel[]).map((m) => {
+    return stepCandidates(slot, models[slot] as AnyModel[], state.resolvedLines.find((r) => r.line === line)).map(({ model: m }) => {
       const key = line === 'storage2' ? `${m.key}#2` : m.key;
       const v = verdicts.get(key);
       return { m, rating: v ? ratingOf(v.findings, key, state.parts) : NO_RATING, hide: v?.hide ?? false };
     });
-  }, [models, slot, verdicts, state.parts, line]);
+  }, [models, slot, verdicts, state.parts, state.resolvedLines, line]);
   // The one "not verified" reason of the step (#14), said above the cards instead of on each.
   const reason = useMemo(() => (verdicts ? stepReason(verdicts) : null), [verdicts]);
   // Recommended: by the use and the budget left (recommend.ts, task 10); Price and Value as before.
@@ -144,7 +144,7 @@ export default function Picker({ slot, state, auto = null, lang, line = slot, on
     const search = cfg as unknown as { searchText: (l: BaseListing) => string };
     let list = rated.filter((r) => !q || r.m.listings.some((l) => pickerMatches(search.searchText(l), q)));
     const clashes = list.filter((r) => r.hide).length;
-    if (onlyCompatible) list = list.filter((r) => !r.hide);
+    if (onlyCompatible) list = list.filter((r) => !r.hide || r.m.key === current?.model.key);
     if (verifiedOnly) list = list.filter((r) => r.rating.fit !== 'unverified');
     if (withinBudget && left != null) list = list.filter((r) => r.m.cheapest.price * (slot === 'fan' ? state.fanQty : 1) <= left);
     if (slot === 'fan' && picked && sizes.length) list = list.filter((r) => sizes.includes((r.m as Model<FanListing>).cheapest.size));
@@ -156,10 +156,10 @@ export default function Picker({ slot, state, auto = null, lang, line = slot, on
     // counts must not recommend a mechanical system disk instead; its real fit label stays visible.
     const systemDrive = (r: Rated) => slot === 'storage' && line !== 'storage2' && sort === 'recommended'
       ? Number((r.m.cheapest as StorageListing).media === 'HDD') : 0;
-    return { shown: [...list].sort((a, b) => Number(a.hide) - Number(b.hide) || systemDrive(a) - systemDrive(b) || rank(a) - rank(b) || (slot === 'fan' ? planPackOrder(sizes, (a.m.cheapest as FanListing).size) - planPackOrder(sizes, (b.m.cheapest as FanListing).size) : 0) || order(a, b)), hidden: clashes };
+    return { shown: [...list].sort((a, b) => Number(b.m.key === current?.model.key) - Number(a.m.key === current?.model.key) || Number(a.hide) - Number(b.hide) || systemDrive(a) - systemDrive(b) || rank(a) - rank(b) || (slot === 'fan' ? planPackOrder(sizes, (a.m.cheapest as FanListing).size) - planPackOrder(sizes, (b.m.cheapest as FanListing).size) : 0) || order(a, b)), hidden: clashes };
     // extraVersion: search titles mutate existing rows later (/data/builder/<slot>-extra.json).
     // eslint-disable-next-line react-hooks/exhaustive-deps -- those row mutations require a search refresh
-  }, [rated, order, query, onlyCompatible, verifiedOnly, withinBudget, left, cfg, extraVersion, slot, line, sort, sizes, fanType, picked, state.fanQty]);
+  }, [rated, order, query, onlyCompatible, verifiedOnly, withinBudget, left, cfg, extraVersion, slot, line, sort, sizes, fanType, picked, state.fanQty, current]);
   // Back to one page when the filters change.
   const filterKey = JSON.stringify([query, sort, onlyCompatible, verifiedOnly, withinBudget, sizes, fanType, picked]);
   const [paged, setPaged] = useState({ key: filterKey, n: PAGE });
