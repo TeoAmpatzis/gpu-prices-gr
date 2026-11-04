@@ -6,6 +6,7 @@ so one broken scraper never blanks the site."""
 
 import argparse
 import json
+import os
 import sys
 import time
 import traceback
@@ -207,6 +208,29 @@ def collect_specs(cats: list[Category], budget: dict[str, int], makers_budget: i
         (DATA_DIR / cat.name / "latest.json").write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
+def report_sources(category: str, sources: dict[str, dict], attempted: list[str]) -> None:
+    """Expose failed sources in Actions while preserving the scrape's partial-success policy."""
+    rows = []
+    for name in attempted:
+        meta = sources[name]
+        last_success = meta.get("updatedAt") or "never"
+        count = meta["count"]
+        status = "fresh" if meta["ok"] else "failed; retained"
+        rows.append(f"| {name} | {status} | {count} | {last_success} |")
+        if not meta["ok"] and os.environ.get("GITHUB_ACTIONS") == "true":
+            message = (f"{category}/{name}: scrape failed; retained {count} previous listings; "
+                       f"last successful update: {last_success}")
+            message = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+            print(f"::warning::{message}")
+    summary = os.environ.get("GITHUB_STEP_SUMMARY")
+    if summary and rows:
+        with Path(summary).open("a", encoding="utf-8") as out:
+            out.write(f"\n### {category} source results\n\n"
+                      "| Source | Result | Listings | Last successful update |\n"
+                      "| --- | --- | ---: | --- |\n"
+                      + "\n".join(rows) + "\n")
+
+
 def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool = True) -> bool:
     """Scrape one category and write its JSON files. Returns True if any source succeeded."""
     out_dir = DATA_DIR / cat.name
@@ -265,21 +289,31 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
     finish(cat, out_dir, listings)
     listings.sort(key=lambda l: (l["chip"], l["price"]))
     if with_shipping:
-        print(f"[{cat.name}] best totals (price + shipping)…")
-        http_client.set_label(f"{cat.name}/shipping")
-        start = time.monotonic()
-        shipping.enrich(out_dir, listings, cat.model_key)
-        print(http_client.summary(f"{cat.name} shipping", {f"{cat.name}/shipping": time.monotonic() - start}))
-        http_client.set_label(None)
+        enrich_shipping(cat, listings)
     latest_path.write_text(
         json.dumps({"updatedAt": run_at, "sources": sources_meta, "listings": listings}, ensure_ascii=False, indent=1),
         encoding="utf-8",
     )
-    fresh = [l for l in listings if sources_meta.get(l["source"], {}).get("ok")]
+    fresh = [l for l in listings if l["source"] in results and sources_meta[l["source"]]["ok"]]
     history = write_history(cat.name, cat.model_key, out_dir, listings, fresh, run_at[:10])
     print(f"[{cat.name}] wrote {len(listings)} listings, {len(history)} models in history")
     print(http_client.summary(f"{cat.name} sources", seconds))
+    report_sources(cat.name, sources_meta, wanted)
     return any(m["ok"] for m in sources_meta.values())
+
+
+
+def enrich_shipping(cat: Category, listings: list[dict]) -> None:
+    """Refresh shipping after listing retries, or apply cached totals when its budget is zero."""
+    print(f"[{cat.name}] best totals (price + shipping)...")
+    label = f"{cat.name}/shipping"
+    http_client.set_label(label)
+    start = time.monotonic()
+    try:
+        shipping.enrich(DATA_DIR / cat.name, listings, cat.model_key)
+    finally:
+        print(http_client.summary(f"{cat.name} shipping", {label: time.monotonic() - start}))
+        http_client.set_label(None)
 
 
 def main() -> int:
@@ -314,8 +348,23 @@ def main() -> int:
     cats = run_order(cats)
     print("order: " + ", ".join(cat.name for cat in cats))
     start = time.monotonic()
-    ok = [scrape_category(cat, args.only) for cat in cats]
+    # Listings get the shared retry allowance before optional shipping requests consume it.
+    ok = [scrape_category(cat, args.only, with_shipping=False) for cat in cats]
+    if not args.only or "skroutz" in args.only:
+        # A challenge can clear later in the same run. One fresh-session pass over failed
+        # categories keeps the existing retry allowance; successful categories are not repeated.
+        for cat in cats:
+            data = load_json(DATA_DIR / cat.name / "latest.json", {})
+            if data.get("sources", {}).get("skroutz", {}).get("ok") is False:
+                print(f"[{cat.name}/skroutz] retrying after the listing pass...")
+                ok.append(scrape_category(cat, ["skroutz"], with_shipping=False))
     lists = time.monotonic() - start
+    for cat in cats:
+        path = DATA_DIR / cat.name / "latest.json"
+        data = load_json(path, None)
+        if data:
+            enrich_shipping(cat, data["listings"])
+            path.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     collect_specs(cats, budget, args.makers_budget)
     rest = time.monotonic() - start - lists
     print(f"[timing] run: lists {lists:.0f}s, specs + makers {rest:.0f}s, total {lists + rest:.0f}s")
