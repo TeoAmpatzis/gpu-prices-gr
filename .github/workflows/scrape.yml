@@ -25,7 +25,11 @@ concurrency:
 
 jobs:
   scrape:
-    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+    runs-on: [self-hosted, Windows, X64, builddraft-scrape]
+    defaults:
+      run:
+        shell: bash
     # A full run (8 categories + the shipping refresh) takes ~40 min; the rest is headroom.
     timeout-minutes: 90
     steps:
@@ -43,10 +47,20 @@ jobs:
 
       - run: pip install -r scraper/requirements.txt
 
+      - name: Snapshot Skroutz coverage before collection
+        id: before
+        run: python scripts/checks/validate_skroutz.py snapshot "$RUNNER_TEMP/skroutz-before.json"
+
       - name: Scrape
         run: python scraper/main.py
 
+      - name: Record collection window
+        id: finished
+        if: always() && steps.before.outcome == 'success'
+        run: python scripts/checks/validate_skroutz.py finish "$RUNNER_TEMP/skroutz-before.json"
+
       - name: Commit data
+        id: publish
         env:
           ALLOW_SHRINK: ${{ inputs.allow_history_shrink && '--allow-shrink' || '' }}
           DROP_TAG: ${{ inputs.allow_data_drop && ' [allow-data-drop]' || '' }}
@@ -60,6 +74,7 @@ jobs:
           git add public/data
           if git diff --cached --quiet; then
             echo "No changes"
+            echo "data_commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git commit -m "chore(data): update prices $(date -u +'%Y-%m-%d %H:%M')${DROP_TAG}"
@@ -68,8 +83,24 @@ jobs:
           for attempt in 1 2 3; do
             git pull --rebase -X theirs origin main
             python scraper/merge_history.py check origin/main $ALLOW_SHRINK
-            if git push origin HEAD:main; then exit 0; fi
+            if git push origin HEAD:main; then
+              echo "data_commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
             echo "main moved during the push (attempt $attempt); retrying"
             sleep 10
           done
           exit 1
+
+      - name: Require nine fresh complete Skroutz categories in the published commit
+        if: always() && steps.publish.outcome == 'success' && steps.finished.outcome == 'success'
+        env:
+          DATA_COMMIT: ${{ steps.publish.outputs.data_commit }}
+        run: python scripts/checks/validate_skroutz.py check "$RUNNER_TEMP/skroutz-before.json" --ref "$DATA_COMMIT"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: skroutz-validation-${{ github.run_id }}
+          path: skroutz-validation.json
+          if-no-files-found: warn
