@@ -1,0 +1,52 @@
+name: Skroutz diagnostics
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: scrape
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install baseline dependencies
+        run: pip install -r scraper/requirements.txt curl_cffi==0.16.3 selectolax==0.4.13
+      - name: Test probe
+        run: python scripts/checks/test_probe_skroutz.py
+      - name: Collect three bounded probes
+        shell: python
+        run: |
+          import json, subprocess, sys, time
+          from pathlib import Path
+          results = []
+          for index in range(3):
+              if index:
+                  time.sleep(30)
+              run = subprocess.run([sys.executable, "scripts/checks/probe_skroutz.py"], capture_output=True, text=True)
+              if run.stdout.strip():
+                  print(run.stdout.strip(), flush=True)
+              try:
+                  result = json.loads(run.stdout)
+              except ValueError:
+                  result = {"result": "probe_error", "exit_code": run.returncode}
+              results.append(result)
+          Path("skroutz-probes.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
+          sys.exit(0 if all(row["result"] == "ok" for row in results) else 1)
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: skroutz-probes-${{ github.run_id }}
+          path: skroutz-probes.json
+          if-no-files-found: warn
