@@ -289,10 +289,11 @@
 }
 .catalogue-slider {
   position: relative;
-  height: 20px;
+  height: 44px;
   display: flex;
   align-items: center;
-  margin: 0 4px;
+  /* The native thumb centres travel between the visible track endpoints. */
+  margin: 0 22px;
 }
 .catalogue-slider-track {
   position: absolute;
@@ -311,8 +312,9 @@
 }
 .catalogue-slider-input {
   position: absolute;
-  inset: 0;
-  width: 100%;
+  top: 0;
+  left: -22px;
+  width: calc(100% + 44px);
   height: 100%;
   margin: 0;
   background: none;
@@ -323,54 +325,49 @@
 .catalogue-slider-input::-webkit-slider-thumb {
   pointer-events: auto;
   -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 44px;
+  height: 44px;
+  box-sizing: border-box;
   border-radius: 50%;
-  background: rgb(var(--panel));
-  border: 2px solid rgb(var(--brand-solid));
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  /* Keep the visible knob small while its transparent hit area stays 44px. */
+  background: radial-gradient(circle, rgb(var(--panel)) 0 7px, rgb(var(--brand-solid)) 7px 9px, transparent 9.5px);
+  border: 0;
   cursor: grab;
-  transition: transform 0.15s ease, border-color 0.15s ease;
 }
 .catalogue-slider-input::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
-  border-color: rgb(var(--accent));
+  background: radial-gradient(circle, rgb(var(--panel)) 0 8px, rgb(var(--accent)) 8px 10px, transparent 10.5px);
 }
 .catalogue-slider-input::-webkit-slider-thumb:active {
   cursor: grabbing;
-  transform: scale(1.15);
-  background: rgb(var(--brand-solid));
+  background: radial-gradient(circle, rgb(var(--brand-solid)) 0 8px, rgb(var(--accent)) 8px 10px, transparent 10.5px);
 }
 .catalogue-slider-input::-moz-range-thumb {
   pointer-events: auto;
-  width: 16px;
-  height: 16px;
+  width: 44px;
+  height: 44px;
+  box-sizing: border-box;
   border-radius: 50%;
-  background: rgb(var(--panel));
-  border: 2px solid rgb(var(--brand-solid));
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  background: radial-gradient(circle, rgb(var(--panel)) 0 7px, rgb(var(--brand-solid)) 7px 9px, transparent 9.5px);
+  border: 0;
   cursor: grab;
-  transition: transform 0.15s ease, border-color 0.15s ease;
 }
 .catalogue-slider-input::-moz-range-thumb:hover {
-  transform: scale(1.15);
-  border-color: rgb(var(--accent));
+  background: radial-gradient(circle, rgb(var(--panel)) 0 8px, rgb(var(--accent)) 8px 10px, transparent 10.5px);
 }
 .catalogue-slider-input::-moz-range-thumb:active {
   cursor: grabbing;
-  transform: scale(1.15);
-  background: rgb(var(--brand-solid));
+  background: radial-gradient(circle, rgb(var(--brand-solid)) 0 8px, rgb(var(--accent)) 8px 10px, transparent 10.5px);
 }
 .catalogue-slider-input:focus-visible {
   outline: none;
 }
 .catalogue-slider-input:focus-visible::-webkit-slider-thumb {
   outline: 2px solid rgb(var(--focus));
-  outline-offset: 2px;
+  outline-offset: -4px;
 }
 .catalogue-slider-input:focus-visible::-moz-range-thumb {
   outline: 2px solid rgb(var(--focus));
-  outline-offset: 2px;
+  outline-offset: -4px;
 }
 
 /* Number inputs below slider */
@@ -480,14 +477,6 @@
 .catalogue-sheet-filters .catalogue-range input,
 .catalogue-sheet-filters .catalogue-range-field input {
   height: 44px;
-}
-.catalogue-sheet-filters .catalogue-slider-input::-webkit-slider-thumb {
-  width: 22px;
-  height: 22px;
-}
-.catalogue-sheet-filters .catalogue-slider-input::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
 }
 .catalogue-filter-button {
   display: inline-flex;
