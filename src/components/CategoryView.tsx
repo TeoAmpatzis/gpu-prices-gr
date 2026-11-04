@@ -186,6 +186,34 @@ export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setF
   const coverage = data.latest.listings.length
     ? Math.round((100 * data.latest.listings.filter((l) => numericValue(l, cfg.id) != null).length) / data.latest.listings.length)
     : 0;
+  const bounds = useMemo(() => {
+    if (!data.latest.listings.length) return undefined;
+    let minP = Infinity;
+    let maxP = -Infinity;
+    let minN = Infinity;
+    let maxN = -Infinity;
+    const prices: number[] = [];
+    for (const l of data.latest.listings) {
+      if (typeof l.price === 'number' && Number.isFinite(l.price) && l.price > 0) {
+        prices.push(l.price);
+        if (l.price < minP) minP = l.price;
+        if (l.price > maxP) maxP = l.price;
+      }
+      const n = numericValue(l, cfg.id);
+      if (n != null && n > 0) {
+        if (n < minN) minN = n;
+        if (n > maxN) maxN = n;
+      }
+    }
+    prices.sort((a, b) => a - b);
+    const p98 = prices.length ? prices[Math.floor(prices.length * 0.98)] : maxP;
+    const effectiveMaxPrice = Math.max(300, Math.ceil((p98 || maxP) / 50) * 50);
+
+    return {
+      price: [0, effectiveMaxPrice] as [number, number],
+      numeric: minN <= maxN ? [Math.floor(minN), Math.ceil(maxN)] as [number, number] : undefined,
+    };
+  }, [data.latest.listings, cfg.id]);
   const openSheet = () => {
     setDraft({
       ...filters,
@@ -222,6 +250,7 @@ export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setF
             top={pick?.toggle}
             onSkip={skipToResults}
             coverage={coverage}
+            bounds={bounds}
           />
         )}
       </aside>
@@ -261,6 +290,7 @@ export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setF
           counts={counts}
           top={pick?.draftToggle?.(draft, setDraft)}
           coverage={coverage}
+          bounds={bounds}
         />
       </BottomSheet>
       <div ref={top} className="catalogue-results" id="results">
