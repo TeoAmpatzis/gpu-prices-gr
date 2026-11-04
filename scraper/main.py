@@ -271,6 +271,11 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
                 sources_meta[name] = prev["sources"][name]
             continue
         got = results[name]
+        if name == "skroutz" and got:
+            errors = skroutz.snapshot_errors(got, len(prev_by_source.get(name, [])))
+            if errors:
+                print(f"[{cat.name}/{name}] rejected snapshot: {'; '.join(errors)}")
+                got = []
         if got:
             listings += got
             sources_meta[name] = {"count": len(got), "ok": True, "updatedAt": run_at}
