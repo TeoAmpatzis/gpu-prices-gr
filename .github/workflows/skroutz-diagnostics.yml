@@ -8,6 +8,11 @@ on:
         type: choice
         options: [probe, listings, connections]
         default: probe
+      probe_runner:
+        description: Hosted runner for read-only probes; production is unchanged
+        type: choice
+        options: [ubuntu-latest, windows-latest]
+        default: ubuntu-latest
 
 permissions:
   contents: read
@@ -19,7 +24,7 @@ concurrency:
 jobs:
   probe:
     if: github.event_name == 'workflow_dispatch' && inputs.mode == 'probe'
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.probe_runner || 'ubuntu-latest' }}
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
