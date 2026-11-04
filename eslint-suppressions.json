@@ -22,11 +22,6 @@
       "count": 1
     }
   },
-  "scripts/checks/site-check.mjs": {
-    "no-empty": {
-      "count": 1
-    }
-  },
   "src/components/builder/Guided.tsx": {
     "react-hooks/refs": {
       "count": 4

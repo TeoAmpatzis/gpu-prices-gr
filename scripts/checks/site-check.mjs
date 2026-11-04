@@ -1,132 +1,134 @@
-// End-to-end health check of the site in headless Chrome (live or a local `vite preview`).
+// End-to-end health check of the site in headless Chromium (live or a local `vite preview`).
 //   node scripts/checks/site-check.mjs [https://gpu-prices-gr.vercel.app]
-// Every tab: products listed, no error, photos in view load; the first product opens with shop links,
-// a price chart and its large photo; the PC builder offers parts; the text pages render; the data and
-// photo files are served with the expected cache headers; the newest data is under 12 hours old, and
-// every source of every category is under 24 hours old (warning over 12; source-age.mjs).
-// Exit code 1 if anything fails.
+// Data and photo files must be served; deployed list files need the expected cache headers.
+// The newest data is under 12 hours old, and every source of every category is under
+// 24 hours old (warning over 12; source-age.mjs). Existing Playwright smoke and URL suites
+// verify the real routes, product details, builder, text pages and legacy redirects.
+// Exit code 1 if anything fails. Importing this module only exposes the pure data checks.
 import { spawn } from 'node:child_process';
-import { existsSync, mkdtempSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { mkdtempSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { FAIL_H, WARN_H, sourceAges } from './source-age.mjs';
 
-const BASE = (process.argv[2] || 'https://gpu-prices-gr.vercel.app').replace(/\/$/, '');
 const CATS = ['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler'];
-const chromePath = ['C:/Program Files/Google/Chrome/Application/chrome.exe', `${process.env.LOCALAPPDATA}/Google/Chrome/Application/chrome.exe`, '/usr/bin/google-chrome'].find((p) => p && existsSync(p));
-const chrome = spawn(chromePath, ['--headless=new', '--disable-gpu', '--remote-debugging-port=9345', `--user-data-dir=${mkdtempSync(join(tmpdir(), 'site-check-'))}`, 'about:blank'], { stdio: 'ignore' });
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-let failures = 0;
-const check = (ok, what, detail = '') => {
-  if (!ok) failures++;
-  console.log(`${ok ? 'PASS' : 'FAIL'} ${what}${detail ? `  (${detail})` : ''}`);
-};
 
-let wsUrl;
-for (let i = 0; i < 50 && !wsUrl; i++) {
-  await sleep(200);
-  try { wsUrl = (await (await fetch('http://127.0.0.1:9345/json/list')).json()).find((t) => t.type === 'page')?.webSocketDebuggerUrl; } catch {}
-}
-const ws = new WebSocket(wsUrl);
-await new Promise((r) => ws.addEventListener('open', r));
-let id = 0;
-const pending = new Map();
-ws.addEventListener('message', (e) => { const m = JSON.parse(e.data); if (m.id && pending.has(m.id)) { pending.get(m.id)(m); pending.delete(m.id); } });
-const send = (method, params = {}) => new Promise((r) => { const i = ++id; pending.set(i, r); ws.send(JSON.stringify({ id: i, method, params })); });
-const evaluate = async (expr) => (await send('Runtime.evaluate', { expression: expr, awaitPromise: true, returnByValue: true })).result?.result?.value;
-const waitFor = async (expr, ms = 15000) => { for (let t = 0; t < ms; t += 250) { if (await evaluate(expr)) return true; await sleep(250); } return false; };
-const open = async (hash) => { await send('Page.navigate', { url: 'about:blank' }); await sleep(100); await send('Page.navigate', { url: `${BASE}/#${hash}` }); };
-
-await send('Page.enable');
-await send('Runtime.enable');
-await send('Emulation.setDeviceMetricsOverride', { width: 1366, height: 900, deviceScaleFactor: 1, mobile: false });
-
-// ---- files and headers
-const head = async (path) => { const r = await fetch(BASE + path, { method: 'GET' }); return { ok: r.ok, type: r.headers.get('content-type') ?? '', cache: r.headers.get('cache-control') ?? '', body: r }; };
-const man = await head('/data/manifest.json');
-const manifest = man.ok ? await man.body.json() : null;
-check(!!manifest, 'manifest.json served', manifest ? `built ${manifest.builtAt}` : '');
-for (const cat of CATS) {
-  const c = manifest?.cats?.[cat];
-  check(!!c && c.models > 0 && c.listings > 0, `${cat}: data`, c ? `${c.models} models, ${c.listings} listings, ${c.historyPoints ?? '?'} history points, updated ${c.updatedAt}` : 'missing');
-}
-// Scrapes run every 6 hours: newest data older than 12 hours means scheduled runs are failing
-// (2026-10-03: selectolax 1.0 broke three runs in a row and nobody noticed for ~15 hours).
-const MAX_AGE_H = 12;
-const newest = Math.max(0, ...CATS.map((cat) => Date.parse(manifest?.cats?.[cat]?.updatedAt ?? '') || 0));
-const ageH = (Date.now() - newest) / 36e5;
-check(newest > 0 && ageH <= MAX_AGE_H, `newest data under ${MAX_AGE_H} h old`, newest ? `${ageH.toFixed(1)} h since ${new Date(newest).toISOString()}` : 'no updatedAt in the manifest');
-// Per source (backlog #8): a source that keeps failing keeps its old listings, so its prices age while
-// the newest data above looks fresh (2026-10-04: Skroutz storage 35 h old, the check above green).
-const lists = Object.fromEntries(await Promise.all(CATS.map(async (cat) => {
-  const r = await fetch(`${BASE}/data/${cat}/list.v2.json`);
-  return [cat, r.ok ? await r.json() : null];
-})));
-const ages = sourceAges(lists);
-for (const r of ages.filter((r) => r.level === 'warn')) console.log(`WARN ${r.cat}/${r.source} data ${r.ageH} h old (over ${WARN_H} h; fails over ${FAIL_H} h)`);
-const old = ages.filter((r) => r.level === 'fail');
-check(ages.length > 0 && old.length === 0, `every source's data under ${FAIL_H} h old`,
-  old.length ? old.map((r) => `${r.cat}/${r.source} ${r.ageH ?? 'never'} h`).join(', ') : `${ages.length} category × source pairs, oldest ${Math.max(...ages.map((r) => r.ageH))} h`);
-const list = await head('/data/gpu/list.v2.json');
-check(list.ok && /max-age=300/.test(list.cache), 'list.v2.json cached 5 min', list.cache);
-
-// ---- every tab
-let samplePhoto = null;
-for (const cat of CATS) {
-  await open(cat);
-  const loaded = await waitFor(`!!document.querySelector('main tbody tr button[aria-expanded]') && !document.querySelector('.skeleton')`);
-  const error = await evaluate(`!!document.querySelector('.notice-danger')`);
-  const rows = await evaluate(`document.querySelectorAll('main tbody tr button[aria-expanded]').length`);
-  await waitFor(`[...document.querySelectorAll('main img')].filter(i => { const r = i.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight; }).every(i => i.complete)`, 8000);
-  const photos = await evaluate(`(() => { const v = [...document.querySelectorAll('main img')].filter(i => { const r = i.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight; }); return { inView: v.length, loaded: v.filter(i => i.naturalWidth > 0).length, src: v[0]?.getAttribute('src') ?? null }; })()`);
-  samplePhoto ??= photos.src;
-  check(loaded && !error && rows > 0 && photos.loaded === photos.inView, `#${cat}: products and photos`, `${rows} rows on page 1, photos in view ${photos.loaded}/${photos.inView}`);
+/** Pure manifest/list validation, shared by the CLI and its negative-control tests. */
+export function dataChecks(manifest, lists, now = Date.now()) {
+  const checks = [];
+  const check = (ok, what, detail = '') => checks.push({ ok: !!ok, what, detail });
+  check(manifest && typeof manifest === 'object', 'manifest.json served', manifest ? `built ${manifest.builtAt}` : 'missing');
+  for (const cat of CATS) {
+    const c = manifest?.cats?.[cat];
+    check(c && c.models > 0 && c.listings > 0, `${cat}: data`, c ? `${c.models} models, ${c.listings} listings, ${c.historyPoints ?? '?'} history points, updated ${c.updatedAt}` : 'missing');
+    check(Array.isArray(lists[cat]?.rows) && lists[cat].rows.length > 0, `${cat}: list.v2.json has listings`);
+    check(Object.keys(lists[cat]?.sources ?? {}).length > 0, `${cat}: source timestamps present`);
+  }
+  // Scrapes run every 6 hours: newest data older than 12 hours means scheduled runs are failing
+  // (2026-10-03: selectolax 1.0 broke three runs in a row and nobody noticed for ~15 hours).
+  const MAX_AGE_H = 12;
+  const newest = Math.max(0, ...CATS.map((cat) => Date.parse(manifest?.cats?.[cat]?.updatedAt ?? '') || 0));
+  const ageH = (now - newest) / 36e5;
+  check(newest > 0 && ageH <= MAX_AGE_H, `newest data under ${MAX_AGE_H} h old`, newest ? `${ageH.toFixed(1)} h since ${new Date(newest).toISOString()}` : 'no updatedAt in the manifest');
+  // Per source (backlog #8): a source that keeps failing keeps its old listings, so its prices age while
+  // the newest data above looks fresh (2026-10-04: Skroutz storage 35 h old, the check above green).
+  const ages = sourceAges(lists, now);
+  // sourceAges rounds display ages; enforce the actual 24-hour boundary before rounding, too.
+  const old = ages.filter((r) => r.level === 'fail' || now - Date.parse(r.updatedAt) > FAIL_H * 36e5);
+  check(ages.length > 0 && old.length === 0, `every source's data under ${FAIL_H} h old`,
+    old.length ? old.map((r) => `${r.cat}/${r.source} ${r.ageH ?? 'never'} h`).join(', ') : `${ages.length} category × source pairs, oldest ${Math.max(...ages.map((r) => r.ageH))} h`);
+  return checks;
 }
 
-// ---- product details (graphics cards)
-await open('gpu');
-await waitFor(`!!document.querySelector('main tbody tr button[aria-expanded]')`);
-await evaluate(`document.querySelector('main tbody tr button[aria-expanded="false"]').click(); true`);
-const details = await waitFor(`[...document.querySelectorAll('main tbody ul a')].some(a => a.getAttribute('href')) && !!document.querySelector('main tbody [role=img] svg path')`, 10000);
-const d = await evaluate(`({ offers: document.querySelectorAll('main tbody ul a').length, links: [...document.querySelectorAll('main tbody ul a')].filter(a => a.getAttribute('href')).length, photo: [...document.querySelectorAll('main tbody img')].some(i => i.width >= 150 && i.naturalWidth > 0) })`);
-check(details && d.links === d.offers && d.photo, 'product details: shop links, chart, large photo', `${d.links}/${d.offers} links, photo ${d.photo}`);
-
-// ---- PC builder: Quick list (the first part's picker) and Guided (the processor step's cards)
-await open('builder?mode=quick');
-const builder = await waitFor(`[...document.querySelectorAll('main button')].some(b => /^(Επιλογή|Choose)$/.test(b.textContent.trim()))`);
-await evaluate(`[...document.querySelectorAll('main button')].find(b => /^(Επιλογή|Choose)$/.test(b.textContent.trim())).click(); true`);
-// The page shows before builder.json arrives; the picker fills in when it has.
-await waitFor(`document.querySelectorAll('main ul.max-h-80 li').length > 0`, 10000);
-const options = await evaluate(`document.querySelectorAll('main ul.max-h-80 li').length`);
-check(builder && options > 0, 'PC builder (Quick list) offers parts', `${options} options for the first slot`);
-await open('builder?step=cpu');
-const guided = await waitFor(`document.querySelectorAll('main li.card').length > 0`);
-const cards = await evaluate(`document.querySelectorAll('main li.card').length`);
-check(guided && cards > 0, 'PC builder (Guided) shows part cards', `${cards} cards on the processor step`);
-// Storage rows live in their own file (builder.LAZY_SLOTS), fetched only when the step opens.
-const lazyEarly = await evaluate(`performance.getEntriesByType('resource').some(e => /builder-storage\\.json/.test(e.name))`);
-check(!lazyEarly, 'builder-storage.json not loaded with the builder', lazyEarly ? 'requested on a step without storage' : '');
-await open('builder?step=storage');
-const storage = await waitFor(`document.querySelectorAll('main li.card').length > 0`);
-const storageCards = await evaluate(`document.querySelectorAll('main li.card').length`);
-check(storage && storageCards > 0, 'PC builder (Guided) storage step shows drives', `${storageCards} cards`);
-
-// ---- text pages
-for (const page of ['about', 'contact', 'privacy']) {
-  await open(page);
-  const ok = await waitFor(`!!document.querySelector('main article h2')`);
-  check(ok, `#${page} renders`);
-}
-const footer = await evaluate(`[...document.querySelectorAll('footer nav a')].map(a => a.getAttribute('href')).join(' ')`);
-check(!/credits/.test(footer), 'footer has no image-credits link (removed 2026-10-01)', footer);
-
-// ---- photo file through /img (Vercel → images repo)
-if (samplePhoto) {
-  const p = await head(samplePhoto);
-  check(p.ok && p.type.includes('image/webp'), 'photos served under /img', `${samplePhoto} ${p.type} ${p.cache}`);
+// The photo bitset indexes sorted hist keys (src/lib/columns.ts); photos use the same
+// sha1("<cat>\0<model key>") id as src/lib/images.ts and scraper/images.py.
+function samplePhoto(lists) {
+  for (const cat of CATS) {
+    const list = lists[cat];
+    const bits = Buffer.from(list?.photos ?? '', 'base64');
+    const key = Object.keys(list?.hist ?? {}).sort().find((_, i) => bits[i >> 3] & (1 << (i & 7)));
+    if (key !== undefined) {
+      const id = createHash('sha1').update(`${cat}\0${key}`).digest('hex').slice(0, 12);
+      return `/img/${cat}/${id}-96.webp`;
+    }
+  }
+  return null;
 }
 
-console.log(failures ? `\n${failures} FAILED` : '\nall checks passed');
-ws.close();
-chrome.kill();
-process.exit(failures ? 1 : 0);
+async function main(base) {
+  let failures = 0;
+  const check = (ok, what, detail = '') => {
+    if (!ok) failures++;
+    console.log(`${ok ? 'PASS' : 'FAIL'} ${what}${detail ? `  (${detail})` : ''}`);
+  };
+  const get = async (path) => {
+    try {
+      const response = await fetch(new URL(path, base), { signal: AbortSignal.timeout(30_000) });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response;
+    } catch (error) {
+      check(false, `${path} served`, error.message);
+      return null;
+    }
+  };
+  const json = async (path) => {
+    const response = await get(path);
+    try {
+      return { response, data: response ? await response.json() : null };
+    } catch (error) {
+      check(false, `${path} valid JSON`, error.message);
+      return { response, data: null };
+    }
+  };
+
+  // ---- files and headers
+  const { data: manifest } = await json('/data/manifest.json');
+  const files = await Promise.all(CATS.map(async (cat) => [cat, await json(`/data/${cat}/list.v2.json`)]));
+  const lists = Object.fromEntries(files.map(([cat, file]) => [cat, file.data]));
+  for (const result of dataChecks(manifest, lists)) check(result.ok, result.what, result.detail);
+  for (const r of sourceAges(lists).filter((r) => r.level === 'warn')) {
+    console.log(`WARN ${r.cat}/${r.source} data ${r.ageH} h old (over ${WARN_H} h; fails over ${FAIL_H} h)`);
+  }
+  const cache = files.find(([cat]) => cat === 'gpu')[1].response?.headers.get('cache-control') ?? '';
+  const local = ['localhost', '127.0.0.1', '[::1]'].includes(new URL(base).hostname);
+  if (local) console.log('SKIP list.v2.json cached 5 min: localhost Vite preview does not implement hosting cache headers');
+  else check(/(?:^|,)\s*max-age=300\s*(?:,|$)/i.test(cache), 'list.v2.json cached 5 min', cache);
+
+  // ---- photo file through /img (Vercel → images repo)
+  const photo = samplePhoto(lists);
+  if (photo) {
+    const response = await get(photo);
+    const type = response?.headers.get('content-type') ?? '';
+    const bytes = response ? (await response.arrayBuffer()).byteLength : 0;
+    check(response && type.includes('image/webp') && bytes > 0, 'photos served under /img', `${photo} ${type}, ${bytes} bytes`);
+  } else console.log('SKIP photo served check: dataset advertises no model photos');
+
+  // Reuse maintained v2 route tests instead of maintaining a second set of UI selectors.
+  // Keep artifacts outside the shared test-results directory: another local suite may be active.
+  const output = mkdtempSync(join(tmpdir(), 'builddraft-site-check-'));
+  console.log(`Playwright artifacts: ${output}`);
+  const require = createRequire(import.meta.url);
+  const code = await new Promise((done, reject) => {
+    const child = spawn(process.execPath, [require.resolve('@playwright/test/cli'), 'test', 'tests/e2e/smoke.spec.ts', 'tests/e2e/urls.spec.ts', '--max-failures=1', '--output', output], {
+      cwd: fileURLToPath(new URL('../../', import.meta.url)),
+      env: { ...process.env, E2E_BASE_URL: base },
+      stdio: 'inherit',
+    });
+    child.once('error', reject);
+    child.once('exit', (status) => done(status ?? 1));
+  });
+  check(code === 0, 'Playwright smoke and URL suites', `exit ${code}`);
+  console.log(failures ? `\n${failures} FAILED` : '\nall checks passed');
+  return failures ? 1 : 0;
+}
+
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const base = (process.argv[2] || 'https://gpu-prices-gr.vercel.app').replace(/\/$/, '');
+  main(base).then((code) => { process.exitCode = code; }).catch((error) => {
+    console.error(`FAIL site check: ${error.stack ?? error.message}`);
+    process.exitCode = 1;
+  });
+}
