@@ -7,11 +7,13 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { CATEGORIES, CATEGORY_IDS, segmentOptions, type CategoryConfig } from '../../src/lib/categories';
-import { applyFilters, decodeList, defaultFilters, type CategoryData, type Filters, type Model, type Segment } from '../../src/lib/data';
+import { decodeList, defaultFilters, type CategoryData, type Filters, type Segment } from '../../src/lib/data';
 import { listFile } from '../../src/lib/derive';
 import { createFacetHandler, facetCounts, type FacetAnswer, type FacetCounts, type FacetRequest } from '../../src/lib/facets';
 import { createFacetsClient, type FacetWorkerLike } from '../../src/lib/facetsClient';
 import type { Schedule } from '../../src/lib/pickBuild';
+import { filterCatalogue } from '../../src/lib/catalogueFilters';
+import { encodeOfferChoice } from '../../src/lib/productSelection';
 import { SOURCE_NAMES } from '../../src/lib/sources';
 import type { BaseListing, Category, DailyLow, History, Imported, Latest, ListFile, SourceName } from '../../src/types';
 
@@ -34,7 +36,15 @@ function fileOf(cat: Category): ListFile | null {
       latest &&
         (JSON.parse(
           JSON.stringify(
-            listFile(cat, { latest, history: read<History>(cat, 'history.json', {}), imported: read<Imported>(cat, 'history_imported.json', {}) }, BUILT),
+            listFile(
+              cat,
+              {
+                latest,
+                history: read<History>(cat, 'history.json', {}),
+                imported: read<Imported>(cat, 'history_imported.json', {}),
+              },
+              BUILT,
+            ),
           ),
         ) as ListFile),
     );
@@ -42,10 +52,9 @@ function fileOf(cat: Category): ListFile | null {
   return files.get(cat)!;
 }
 const cfgOf = (cat: Category) => CATEGORIES[cat] as unknown as CategoryConfig<BaseListing>;
-const optionsOf = (cfg: CategoryConfig<BaseListing>, ls: BaseListing[]) =>
-  Object.fromEntries(cfg.extraFilters.map((x) => [x.key, x.options(ls)]));
+const optionsOf = (cfg: CategoryConfig<BaseListing>, ls: BaseListing[]) => Object.fromEntries(cfg.extraFilters.map((x) => [x.key, x.options(ls)]));
 
-/** facetCounts as it was before the worker (commit 84fddc6), verbatim: the reference. */
+/** Listing-count reference: straightforward per-option counts also verify worker/client parity. */
 function referenceCounts<L extends BaseListing>(
   all: L[],
   f: Filters,
@@ -55,24 +64,26 @@ function referenceCounts<L extends BaseListing>(
   options: Record<string, { value: string }[]>,
 ): FacetCounts {
   const d = defaultFilters(cfg.groups);
-  const run = (without: Partial<Filters>) => applyFilters(all, { ...f, ...without }, cfg, history, imported, { sort: false });
-  const withinPrice = (l: L) => f.maxPrice == null || l.price <= f.maxPrice;
-  const countModels = (models: Model<L>[], test: (l: L) => boolean) =>
-    models.reduce((n, m) => n + (m.listings.some((l) => test(l) && withinPrice(l)) ? 1 : 0), 0);
-  const groupModels = run({ groups: d.groups });
-  const groups = Object.fromEntries(cfg.groups.map((g) => [g, groupModels.filter((m) => m.group === g).length]));
-  const sourceModels = run({ sources: d.sources });
-  const sources = Object.fromEntries(SOURCE_NAMES.map((s) => [s, countModels(sourceModels, (l) => l.source === s)])) as Record<SourceName, number>;
-  const segmentModels = run({ segment: 'all' });
-  const segment: Record<Segment, number> = { main: 0, pro: 0, all: segmentModels.length };
+  const run = (without: Partial<Filters>) => filterCatalogue(all, { ...f, ...without }, cfg, history, imported);
+  const count = (products: ReturnType<typeof run>, test: (l: L) => boolean) => products.filter((p) => test(p.listing)).length;
+  const groupProducts = run({ groups: d.groups });
+  const groups = Object.fromEntries(cfg.groups.map((g) => [g, count(groupProducts, (l) => cfg.group(l) === g)]));
+  const sourceProducts = run({ sources: d.sources });
+  const sources = Object.fromEntries(SOURCE_NAMES.map((source) => [source, count(sourceProducts, (l) => l.source === source)])) as Record<SourceName, number>;
+  const segmentProducts = run({ segment: 'all' });
+  const segment: Record<Segment, number> = {
+    main: 0,
+    pro: 0,
+    all: segmentProducts.length,
+  };
   for (const s of cfg.segments?.middle ?? []) segment[s.value] = 0;
-  for (const m of segmentModels) segment[m.segment] = (segment[m.segment] ?? 0) + 1;
-  const sale = run({ saleOnly: false }).filter((m) => m.sale).length;
-  const low = run({ lowOnly: false }).filter((m) => m.low).length;
+  for (const p of segmentProducts) segment[p.family.segment] = (segment[p.family.segment] ?? 0) + 1;
+  const sale = run({ saleOnly: true }).length;
+  const low = run({ lowOnly: true }).length;
   const extra: FacetCounts['extra'] = {};
   for (const x of cfg.extraFilters) {
-    const models = run({ extra: { ...f.extra, [x.key]: '' } });
-    extra[x.key] = Object.fromEntries((options[x.key] ?? []).map((o) => [o.value, countModels(models, (l) => x.test(l, o.value))]));
+    const products = run({ extra: { ...f.extra, [x.key]: '' } });
+    extra[x.key] = Object.fromEntries((options[x.key] ?? []).map((o) => [o.value, count(products, (l) => x.test(l, o.value))]));
   }
   return { groups, sources, segment, sale, low, extra };
 }
@@ -97,7 +108,9 @@ function randomFilters(r: () => number, cfg: CategoryConfig<BaseListing>, all: B
   if (cfg.segments) f.segment = pickOne(segmentOptions(cfg).map((s) => s.value));
   if (r() < 0.3) {
     // a word of a listing's name, so searches find something
-    const words = pickOne(all).chip.split(/\s+/).filter((w) => w.length > 1);
+    const words = pickOne(all)
+      .chip.split(/\s+/)
+      .filter((w) => w.length > 1);
     if (words.length) f.query = pickOne(words).toLowerCase();
   }
   if (r() < 0.3) f.maxPrice = Math.round(pickOne(all).price * (0.5 + r()));
@@ -131,16 +144,32 @@ describe('worker handler = facetCounts = the pre-worker counts (20 random filter
           const f = randomFilters(r, cfg, all, options);
           const ref = referenceCounts(all, f, cfg, data.history, data.imported, options);
           expect(facetCounts(all, f, cfg, data.history, data.imported, options)).toEqual(ref);
-          const req: FacetRequest = structuredClone({ id: i + 1, cat, version: file.builtAt, filters: f, hidden: null });
+          const req: FacetRequest = structuredClone({
+            id: i + 1,
+            cat,
+            version: file.builtAt,
+            filters: f,
+            hidden: null,
+          });
           const a = structuredClone(await handle(req));
           expect(a).toEqual({ id: i + 1, ok: true, counts: ref });
         }
         // Pick mode: the page counts without the hidden listings; the worker gets their ids.
-        const hidden = all.filter((_, i) => i % 7 === 0).map((l) => l.id);
+        const hidden = all.filter((_, i) => i % 7 === 0).map(encodeOfferChoice);
         const shown = all.filter((_, i) => i % 7 !== 0);
         const f = randomFilters(r, cfg, all, options);
-        const a = await handle({ id: 99, cat, version: file.builtAt, filters: f, hidden });
-        expect(a).toEqual({ id: 99, ok: true, counts: referenceCounts(shown, f, cfg, data.history, data.imported, options) });
+        const a = await handle({
+          id: 99,
+          cat,
+          version: file.builtAt,
+          filters: f,
+          hidden,
+        });
+        expect(a).toEqual({
+          id: 99,
+          ok: true,
+          counts: referenceCounts(shown, f, cfg, data.history, data.imported, options),
+        });
         expect(loads).toBe(1); // the list file is read once
       },
       120_000,
@@ -150,7 +179,13 @@ describe('worker handler = facetCounts = the pre-worker counts (20 random filter
   it('a list file of another build than the page is an error answer (the page falls back), not wrong counts', async () => {
     const file = fileOf('gpu')!;
     const handle = createFacetHandler(async () => structuredClone(file));
-    const a = await handle({ id: 1, cat: 'gpu', version: 'another build', filters: defaultFilters(CATEGORIES.gpu.groups), hidden: null });
+    const a = await handle({
+      id: 1,
+      cat: 'gpu',
+      version: 'another build',
+      filters: defaultFilters(CATEGORIES.gpu.groups),
+      hidden: null,
+    });
     expect(a).toMatchObject({ id: 1, ok: false, mismatch: true });
   });
 
@@ -161,13 +196,33 @@ describe('worker handler = facetCounts = the pre-worker counts (20 random filter
     let loads = 0;
     const handle = createFacetHandler(async () => (loads++ === 0 ? structuredClone(old) : structuredClone(file)));
     const f = defaultFilters(CATEGORIES.gpu.groups);
-    expect(await handle({ id: 1, cat: 'gpu', version: file.builtAt, filters: f, hidden: null })).toMatchObject({ ok: false, mismatch: true });
+    expect(
+      await handle({
+        id: 1,
+        cat: 'gpu',
+        version: file.builtAt,
+        filters: f,
+        hidden: null,
+      }),
+    ).toMatchObject({ ok: false, mismatch: true });
     expect(loads).toBe(1);
-    const a = await handle({ id: 2, cat: 'gpu', version: file.builtAt, filters: f, hidden: null });
+    const a = await handle({
+      id: 2,
+      cat: 'gpu',
+      version: file.builtAt,
+      filters: f,
+      hidden: null,
+    });
     expect(loads).toBe(2);
     expect(a.ok).toBe(true);
     // A matching file stays cached.
-    await handle({ id: 3, cat: 'gpu', version: file.builtAt, filters: f, hidden: null });
+    await handle({
+      id: 3,
+      cat: 'gpu',
+      version: file.builtAt,
+      filters: f,
+      hidden: null,
+    });
     expect(loads).toBe(2);
   });
 
@@ -179,8 +234,28 @@ describe('worker handler = facetCounts = the pre-worker counts (20 random filter
       return structuredClone(file);
     });
     const f = defaultFilters(CATEGORIES.gpu.groups);
-    expect((await handle({ id: 1, cat: 'gpu', version: file.builtAt, filters: f, hidden: null })).ok).toBe(false);
-    expect((await handle({ id: 2, cat: 'gpu', version: file.builtAt, filters: f, hidden: null })).ok).toBe(true);
+    expect(
+      (
+        await handle({
+          id: 1,
+          cat: 'gpu',
+          version: file.builtAt,
+          filters: f,
+          hidden: null,
+        })
+      ).ok,
+    ).toBe(false);
+    expect(
+      (
+        await handle({
+          id: 2,
+          cat: 'gpu',
+          version: file.builtAt,
+          filters: f,
+          hidden: null,
+        })
+      ).ok,
+    ).toBe(true);
   });
 });
 
@@ -195,14 +270,18 @@ const gpuFilters = () => defaultFilters(CATEGORIES.gpu.groups);
 const gpuCounts = (f: Filters, hidden: string[] | null = null) => {
   const d = gpuData();
   const cfg = cfgOf('gpu');
-  const all = hidden ? d.latest.listings.filter((l) => !hidden.includes(l.id)) : d.latest.listings;
+  const all = hidden ? d.latest.listings.filter((l) => !hidden.includes(encodeOfferChoice(l))) : d.latest.listings;
   return referenceCounts(all, f, cfg, d.history, d.imported, optionsOf(cfg, d.latest.listings));
 };
 
 /** A worker that answers like facets.worker.ts (structured clone both ways), when `release` is called or at once. */
 function fakeWorker(reply: (r: FacetRequest) => Promise<FacetAnswer | 'crash' | 'silent'>, manual = false) {
   const queue: (() => void)[] = [];
-  const w: FacetWorkerLike & { posted: FacetRequest[]; terminated: boolean; release: () => Promise<void> } = {
+  const w: FacetWorkerLike & {
+    posted: FacetRequest[];
+    terminated: boolean;
+    release: () => Promise<void>;
+  } = {
     posted: [],
     terminated: false,
     onmessage: null,
@@ -236,11 +315,15 @@ describe('facetsClient', () => {
   it('answers from the worker; the list file version and pick mode hidden ids reach it', async () => {
     const h = handler();
     const w = fakeWorker(h);
-    const client = createFacetsClient({ makeWorker: () => w, loadMain, schedule: now });
+    const client = createFacetsClient({
+      makeWorker: () => w,
+      loadMain,
+      schedule: now,
+    });
     const f = gpuFilters();
     const v = fileOf('gpu')!.builtAt;
     expect(await client.request('gpu', f, v)).toEqual(gpuCounts(f));
-    const hidden = gpuData().latest.listings.slice(0, 50).map((l) => l.id);
+    const hidden = gpuData().latest.listings.slice(0, 50).map(encodeOfferChoice);
     expect(await client.request('gpu', f, v, hidden)).toEqual(gpuCounts(f, hidden));
     expect(w.posted.map((p) => [p.version, p.hidden?.length ?? null])).toEqual([
       [v, null],
@@ -251,7 +334,11 @@ describe('facetsClient', () => {
   it('a superseded request returns null; only the newest answer is used', async () => {
     const h = handler();
     const w = fakeWorker(h, true);
-    const client = createFacetsClient({ makeWorker: () => w, loadMain, schedule: now });
+    const client = createFacetsClient({
+      makeWorker: () => w,
+      loadMain,
+      schedule: now,
+    });
     const v = fileOf('gpu')!.builtAt;
     const f1 = gpuFilters();
     const f2 = { ...gpuFilters(), saleOnly: true };
@@ -267,7 +354,11 @@ describe('facetsClient', () => {
     const cpuFile = fileOf('cpu')!;
     const h = createFacetHandler(async (c) => structuredClone(c === 'gpu' ? file : cpuFile));
     const w = fakeWorker(h);
-    const client = createFacetsClient({ makeWorker: () => w, loadMain, schedule: now });
+    const client = createFacetsClient({
+      makeWorker: () => w,
+      loadMain,
+      schedule: now,
+    });
     const [a, b] = await Promise.all([
       client.request('gpu', gpuFilters(), file.builtAt),
       client.request('cpu', defaultFilters(CATEGORIES.cpu.groups), cpuFile.builtAt),
@@ -283,23 +374,37 @@ describe('facetsClient', () => {
       slices.push(++n);
       return now(fn);
     };
-    const client = createFacetsClient({ makeWorker: null, loadMain, schedule: counting });
+    const client = createFacetsClient({
+      makeWorker: null,
+      loadMain,
+      schedule: counting,
+    });
     const f = gpuFilters();
     expect(await client.request('gpu', f, fileOf('gpu')!.builtAt)).toEqual(gpuCounts(f));
     expect(slices.length).toBeGreaterThan(1); // one pass per option group, each in its own task
   });
 
   it('the main-thread fallback counts pick mode without the hidden listings', async () => {
-    const client = createFacetsClient({ makeWorker: null, loadMain, schedule: now });
+    const client = createFacetsClient({
+      makeWorker: null,
+      loadMain,
+      schedule: now,
+    });
     const f = gpuFilters();
-    const hidden = gpuData().latest.listings.filter((_, i) => i % 3 === 0).map((l) => l.id);
+    const hidden = gpuData()
+      .latest.listings.filter((_, i) => i % 3 === 0)
+      .map(encodeOfferChoice);
     expect(await client.request('gpu', f, fileOf('gpu')!.builtAt, hidden)).toEqual(gpuCounts(f, hidden));
   });
 
   it('a crashed worker: the main thread counts, and later requests skip the worker', async () => {
     const w = fakeWorker(async () => 'crash');
     let made = 0;
-    const client = createFacetsClient({ makeWorker: () => (made++, w), loadMain, schedule: now });
+    const client = createFacetsClient({
+      makeWorker: () => (made++, w),
+      loadMain,
+      schedule: now,
+    });
     const f = gpuFilters();
     const v = fileOf('gpu')!.builtAt;
     expect(await client.request('gpu', f, v)).toEqual(gpuCounts(f));
@@ -309,8 +414,16 @@ describe('facetsClient', () => {
   });
 
   it('an error answer (e.g. another build) falls back for that request', async () => {
-    const w = fakeWorker(async (r) => ({ id: r.id, ok: false, error: 'version' }));
-    const client = createFacetsClient({ makeWorker: () => w, loadMain, schedule: now });
+    const w = fakeWorker(async (r) => ({
+      id: r.id,
+      ok: false,
+      error: 'version',
+    }));
+    const client = createFacetsClient({
+      makeWorker: () => w,
+      loadMain,
+      schedule: now,
+    });
     const f = gpuFilters();
     expect(await client.request('gpu', f, fileOf('gpu')!.builtAt)).toEqual(gpuCounts(f));
   });
@@ -322,7 +435,11 @@ describe('facetsClient', () => {
     // The worker can only get another build of the GPU list (e.g. a deploy in between); the CPU list is fine.
     const h = createFacetHandler(async (c) => (c === 'gpu' ? (gpuLoads++, { ...structuredClone(file), builtAt: 'newer build' }) : structuredClone(cpuFile)));
     const w = fakeWorker(h);
-    const client = createFacetsClient({ makeWorker: () => w, loadMain, schedule: now });
+    const client = createFacetsClient({
+      makeWorker: () => w,
+      loadMain,
+      schedule: now,
+    });
     const f = gpuFilters();
     const gpuPosts = () => w.posted.filter((p) => p.cat === 'gpu').length;
     expect(await client.request('gpu', f, file.builtAt)).toEqual(gpuCounts(f)); // fallback
@@ -339,7 +456,12 @@ describe('facetsClient', () => {
 
   it('no answer in time: the worker is given up and the main thread counts', async () => {
     const w = fakeWorker(async () => 'silent');
-    const client = createFacetsClient({ makeWorker: () => w, loadMain, schedule: now, timeout: 30 });
+    const client = createFacetsClient({
+      makeWorker: () => w,
+      loadMain,
+      schedule: now,
+      timeout: 30,
+    });
     const f = gpuFilters();
     expect(await client.request('gpu', f, fileOf('gpu')!.builtAt)).toEqual(gpuCounts(f));
     expect(w.terminated).toBe(true);
@@ -363,7 +485,11 @@ describe('facetsClient', () => {
       pending.push(fn);
       return () => {};
     };
-    const client = createFacetsClient({ makeWorker: null, loadMain, schedule: later });
+    const client = createFacetsClient({
+      makeWorker: null,
+      loadMain,
+      schedule: later,
+    });
     const v = fileOf('gpu')!.builtAt;
     const first = client.request('gpu', gpuFilters(), v);
     await new Promise((r) => setTimeout(r, 0));

@@ -1,0 +1,145 @@
+import type { BaseListing } from '../../types';
+import type { ReactNode } from 'react';
+import type { CategoryConfig } from '../../lib/categories';
+import type { CatalogueRecord } from '../../lib/catalogueFilters';
+import { formatPrice } from '../../lib/data';
+import { productHref } from '../../lib/productSelection';
+import { tr, useLang } from '../../lib/i18n';
+import { SOURCES } from '../../lib/sources';
+import { UI } from '../../ui/strings';
+import type { RowPick } from '../ModelRow';
+import { productSpecs } from './specs';
+import './catalogue.css';
+
+interface Props<L extends BaseListing> {
+  cfg: CategoryConfig<L>;
+  products: CatalogueRecord<L>[];
+  cards: boolean;
+  pick?: RowPick<L>;
+  onReset: () => void;
+  emptyExtra?: ReactNode;
+}
+export default function ProductList<L extends BaseListing>({ cfg, products, cards, pick, onReset, emptyExtra }: Props<L>) {
+  const lang = useLang();
+  const t = (text: { el: string; en: string }) => tr(lang, text);
+  if (!products.length)
+    return (
+      <div className="catalogue-empty">
+        <p>{tr(lang, cfg.empty)}</p>
+        {emptyExtra}
+        <button className="ui-btn ui-btn--secondary" onClick={onReset}>
+          {t(UI.catalogueClear)}
+        </button>
+      </div>
+    );
+  const details = (p: CatalogueRecord<L>) => {
+    const l = p.listing;
+    const href = productHref(cfg.id, p.familySlug, l);
+    const singleton = { ...p.family, listings: [l], cheapest: l };
+    const row = pick?.(singleton);
+    const extra = row?.listing?.(l) ?? row;
+    const specs = productSpecs(cfg.id, l, lang);
+    const measured = specs
+      .filter((s) => s.value)
+      .slice(0, 3)
+      .map((s) => s.value)
+      .join(' · ');
+    const gpu = l as BaseListing & { vram?: number; memType?: string | null };
+    const known = [cfg.id === 'gpu' && gpu.vram ? `${gpu.vram} GB ${gpu.memType ?? ''}`.trim() : '', measured].filter(Boolean).join(' · ');
+    return {
+      href,
+      extra,
+      specs,
+      known,
+      name: (
+        <div className="catalogue-product-name">
+          <span className="catalogue-photo" aria-hidden="true">
+            <cfg.icon size={24} />
+          </span>
+          <div>
+            <a data-product-link href={href}>
+              {l.title || l.chip}
+            </a>
+            <p>{known || t(UI.catalogueMissing)}</p>
+            {known && specs[0]?.value == null && <span className="catalogue-missing">{tr(lang, specs[0].label)}: {t(UI.catalogueMissing)}</span>}
+            <span className="catalogue-source">{SOURCES[l.source].label}</span>
+            {row?.badge}
+          </div>
+        </div>
+      ),
+      price: (
+        <div className="catalogue-price">
+          <strong>{formatPrice(l.price, lang)}</strong>
+          <span>
+            {l.merchant && l.merchant !== SOURCES[l.source].label ? `${l.merchant} · ` : ''}
+            {SOURCES[l.source].label} ·{' '}
+            {l.shipping == null ? t(UI.noShipping) : l.shipping === 0 ? t(UI.freeShipping) : `+${formatPrice(l.shipping, lang)} ${t(UI.shippingPlus)}`}
+          </span>
+        </div>
+      ),
+      action: extra?.extra ?? (
+        <a className="ui-btn ui-btn--primary ui-btn--sm" href={href}>
+          {t(UI.catalogueView)}
+        </a>
+      ),
+    };
+  };
+  if (cards)
+    return (
+      <ul className="catalogue-cards">
+        {products.map((p) => {
+          const d = details(p);
+          return (
+            <li className={`catalogue-card ${d.extra?.dim ? 'opacity-50' : ''}`} key={p.key} data-product-key={p.key}>
+              {d.name}
+              <div className="catalogue-card-footer">
+                {d.price}
+                <div className="catalogue-action">{d.action}</div>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    );
+  const columns = productSpecs(cfg.id, products[0].listing, lang);
+  return (
+    <div className="catalogue-table-wrap">
+      <table className="catalogue-table">
+        <caption className="sr-only">{tr(lang, cfg.title)}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{t(UI.catalogueModel)}</th>
+            {columns.map((s, i) => (
+              <th scope="col" key={i} className={`catalogue-spec spec-${i} ${s.hide ? 'spec-optional' : ''}`}>
+                {tr(lang, s.label)}
+              </th>
+            ))}
+            <th scope="col" className="catalogue-price-heading">
+              {t(UI.cataloguePrice)}
+            </th>
+            <th scope="col">
+              <span className="sr-only">{t(UI.catalogueAction)}</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {products.map((p) => {
+            const d = details(p);
+            return (
+              <tr key={p.key} data-product-key={p.key} className={d.extra?.dim ? 'opacity-50' : ''}>
+                <th scope="row">{d.name}</th>
+                {d.specs.map((s, i) => (
+                  <td key={i} className={`catalogue-spec spec-${i} ${s.hide ? 'spec-optional' : ''}`}>
+                    {s.value ?? <span className="text-muted">{t(UI.catalogueMissing)}</span>}
+                  </td>
+                ))}
+                <td>{d.price}</td>
+                <td className="catalogue-action">{d.action}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}

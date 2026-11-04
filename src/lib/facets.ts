@@ -1,15 +1,17 @@
-// Faceted counts: for every filter option, how many models the page would show if it were picked,
+// Faceted counts: for every filter option, how many source products the page would show if it were picked,
 // given all the *other* active filters (the option's own group is left out, as shops usually do).
-// One filter pass per group (not per option), then the options are counted on its result. The passes share
-// the models' all-time lows (data.LowMemo). Since step 4 task 3 the page asks the facet worker for them
+// One filter pass per group (not per option), then the options are counted on its result. Family history stays
+// family-scoped. Since step 4 task 3 the page asks the facet worker for these listing counts
 // (facets.worker.ts → createFacetHandler, through facetsClient.ts) after its first paint; the main thread runs
 // the same passes in idle slices only when no worker can.
 
 import type { BaseListing, Category, DailyLow, Imported, ListFile, SourceName } from '../types';
 import type { CategoryRules, ExtraFilter } from './categoryRules';
 import { rulesOf } from './categoryRules';
-import { decodeList, defaultFilters, filterModels, type CategoryData, type Filters, type LowMemo, type Model, type Segment } from './data';
+import { decodeList, defaultFilters, type CategoryData, type Filters, type Segment } from './data';
 import { SOURCE_NAMES } from './sources';
+import { filterCatalogue } from './catalogueFilters';
+import { encodeOfferChoice } from './productSelection';
 
 export interface FacetCounts {
   groups: Record<string, number>;
@@ -35,52 +37,44 @@ export function facetPasses<L extends BaseListing>(
   options: Record<string, { value: string }[]>,
 ): { counts: FacetCounts; passes: (() => void)[] } {
   const d = defaultFilters(cfg.groups);
-  const lows: LowMemo = new Map();
-  const run = (without: Partial<Filters>) => filterModels(all, { ...f, ...without }, cfg, history, imported, lows);
-  // A listing counts for an option only if it would also pass the max-price filter.
-  const withinPrice = (l: L) => f.maxPrice == null || l.price <= f.maxPrice;
-  const countModels = (models: Model<L>[], test: (l: L) => boolean) =>
-    models.reduce((n, m) => n + (m.listings.some((l) => test(l) && withinPrice(l)) ? 1 : 0), 0);
-  /** Per option, the models with a listing that matches it: by each listing's one value where the filter has one. */
-  const countOptions = (models: Model<L>[], x: ExtraFilter<L>, opts: { value: string }[]) => {
-    const value = x.matchValue;
-    if (!value) return Object.fromEntries(opts.map((o) => [o.value, countModels(models, (l) => x.test(l, o.value))]));
-    const out = new Map(opts.map((o) => [o.value, 0]));
-    const seen = new Set<string>();
-    for (const m of models) {
-      seen.clear();
-      for (const l of m.listings) {
-        if (!withinPrice(l)) continue;
-        const v = value(l);
-        if (v != null && out.has(v)) seen.add(v);
-      }
-      for (const v of seen) out.set(v, out.get(v)! + 1);
-    }
-    return Object.fromEntries(out);
-  };
+  const run = (without: Partial<Filters>) => filterCatalogue(all, { ...f, ...without }, cfg, history, imported);
+  // Each option counts individual qualifying source products, never a sibling's price or specifications.
+  const countOptions = (products: ReturnType<typeof run>, x: ExtraFilter<L>, opts: { value: string }[]) =>
+    Object.fromEntries(opts.map((o) => [o.value, products.filter((p) => x.test(p.listing, o.value)).length]));
 
-  const counts: FacetCounts = { groups: {}, sources: {} as Record<SourceName, number>, segment: {}, sale: 0, low: 0, extra: {} };
+  const counts: FacetCounts = {
+    groups: {},
+    sources: {} as Record<SourceName, number>,
+    segment: {},
+    sale: 0,
+    low: 0,
+    extra: {},
+  };
   const passes = [
     () => {
       const models = run({ groups: d.groups });
-      counts.groups = Object.fromEntries(cfg.groups.map((g) => [g, models.filter((m) => m.group === g).length]));
+      counts.groups = Object.fromEntries(cfg.groups.map((g) => [g, models.filter((m) => cfg.group(m.listing) === g).length]));
     },
     () => {
       const models = run({ sources: d.sources });
-      counts.sources = Object.fromEntries(SOURCE_NAMES.map((s) => [s, countModels(models, (l) => l.source === s)])) as Record<SourceName, number>;
+      counts.sources = Object.fromEntries(SOURCE_NAMES.map((s) => [s, models.filter((p) => p.listing.source === s).length])) as Record<SourceName, number>;
     },
     () => {
       const models = run({ segment: 'all' });
-      const segment: Record<Segment, number> = { main: 0, pro: 0, all: models.length };
+      const segment: Record<Segment, number> = {
+        main: 0,
+        pro: 0,
+        all: models.length,
+      };
       for (const s of cfg.segments?.middle ?? []) segment[s.value] = 0;
-      for (const m of models) segment[m.segment] = (segment[m.segment] ?? 0) + 1;
+      for (const m of models) segment[m.family.segment] = (segment[m.family.segment] ?? 0) + 1;
       counts.segment = segment;
     },
     () => {
-      counts.sale = run({ saleOnly: false }).filter((m) => m.sale).length;
+      counts.sale = run({ saleOnly: true }).length;
     },
     () => {
-      counts.low = run({ lowOnly: false }).filter((m) => m.low).length;
+      counts.low = run({ lowOnly: true }).length;
     },
     ...cfg.extraFilters.map((x) => () => {
       const models = run({ extra: { ...f.extra, [x.key]: '' } });
@@ -108,11 +102,11 @@ export function facetCounts<L extends BaseListing>(
 export const optionsOf = <L extends BaseListing>(cfg: CategoryRules<L>, listings: L[]) =>
   Object.fromEntries(cfg.extraFilters.map((x) => [x.key, x.options(listings)]));
 
-/** The listings the page counts: pick mode removes the ones "Only compatible" hides (by listing id). */
+/** The listings the page counts: pick mode removes the ones "Only compatible" hides by qualified source/id. */
 export function shownListings<L extends BaseListing>(all: L[], hidden: string[] | null): L[] {
   if (!hidden) return all;
   const out = new Set(hidden);
-  return all.filter((l) => !out.has(l.id));
+  return all.filter((l) => !out.has(encodeOfferChoice(l)));
 }
 
 // ---- the worker's protocol ------------------------------------------------------------------------------------
@@ -124,7 +118,7 @@ export interface FacetRequest {
   /** The page's list file (`builtAt`): counts from another build would not match the page's rows. */
   version: string;
   filters: Filters;
-  /** Pick mode: ids of the listings "Only compatible" hides (not counted); null = count every listing. */
+  /** Pick mode: qualified keys of listings "Only compatible" hides; null = count every listing. */
   hidden: string[] | null;
 }
 
@@ -168,12 +162,25 @@ export function createFacetHandler(
       if (!current(req)) return { id: req.id, ok: false, error: 'superseded' };
       if (data.builtAt !== req.version) {
         cache.delete(req.cat);
-        return { id: req.id, ok: false, error: `list file ${data.builtAt}, page ${req.version}`, mismatch: true };
+        return {
+          id: req.id,
+          ok: false,
+          error: `list file ${data.builtAt}, page ${req.version}`,
+          mismatch: true,
+        };
       }
       const listings = shownListings(data.latest.listings, req.hidden);
-      return { id: req.id, ok: true, counts: facetCounts(listings, req.filters, rulesOf(req.cat), data.history, data.imported, options) };
+      return {
+        id: req.id,
+        ok: true,
+        counts: facetCounts(listings, req.filters, rulesOf(req.cat), data.history, data.imported, options),
+      };
     } catch (e) {
-      return { id: req.id, ok: false, error: e instanceof Error ? e.message : String(e) };
+      return {
+        id: req.id,
+        ok: false,
+        error: e instanceof Error ? e.message : String(e),
+      };
     }
   };
 }

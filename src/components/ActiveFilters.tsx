@@ -4,6 +4,8 @@ import { clearedFilters, defaultFilters, formatPrice, type Filters } from '../li
 import { groupName, segmentOptions, type CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Text } from '../lib/i18n';
 import { SOURCES } from '../lib/sources';
+import { RANGE_FIELDS } from '../lib/catalogueFilters';
+import { UI } from '../ui/strings';
 
 interface Props<L extends BaseListing> {
   cfg: CategoryConfig<L>;
@@ -28,9 +30,23 @@ export default function ActiveFilters<L extends BaseListing>({ cfg, filters: f, 
     });
   const segment = segmentOptions(cfg).find((s) => s.value === f.segment);
   if (f.segment !== d.segment && segment)
-    chips.push({ id: 'segment', label: `${t(T.segment)}: ${t(segment.label)}`, clear: { segment: d.segment } });
-  if (f.saleOnly) chips.push({ id: 'sale', label: t(T.saleOnly), clear: { saleOnly: false } });
-  if (f.lowOnly) chips.push({ id: 'low', label: t(T.lowOnly), clear: { lowOnly: false } });
+    chips.push({
+      id: 'segment',
+      label: `${t(T.segment)}: ${t(segment.label)}`,
+      clear: { segment: d.segment },
+    });
+  if (f.saleOnly)
+    chips.push({
+      id: 'sale',
+      label: t(T.saleOnly),
+      clear: { saleOnly: false },
+    });
+  if (f.lowOnly)
+    chips.push({
+      id: 'low',
+      label: t(UI.catalogueFamilyLow),
+      clear: { lowOnly: false },
+    });
   if (f.sources.length !== d.sources.length)
     chips.push({
       id: 'sources',
@@ -48,7 +64,24 @@ export default function ActiveFilters<L extends BaseListing>({ cfg, filters: f, 
     });
   }
   if (f.maxPrice != null)
-    chips.push({ id: 'max', label: `≤ ${formatPrice(f.maxPrice, lang)}`, clear: { maxPrice: null } });
+    chips.push({
+      id: 'max',
+      label: `≤ ${formatPrice(f.maxPrice, lang)}`,
+      clear: { maxPrice: null },
+    });
+  if (f.minPrice != null)
+    chips.push({
+      id: 'min',
+      label: `≥ ${formatPrice(f.minPrice, lang)}`,
+      clear: { minPrice: null },
+    });
+  const range = RANGE_FIELDS[cfg.id as keyof typeof RANGE_FIELDS];
+  if (range && (f.numericMin != null || f.numericMax != null))
+    chips.push({
+      id: 'range',
+      label: `${t(range.label)}: ${f.numericMin ?? '—'}–${f.numericMax ?? '—'}`,
+      clear: { numericMin: null, numericMax: null, includeUnknown: true },
+    });
 
   if (!chips.length) return null;
   return (

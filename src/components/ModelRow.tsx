@@ -39,6 +39,8 @@ function totalHint(l: BaseListing, lang: Lang): string {
 
 /** Pick mode (`?pick=1`, src/components/PickView.tsx): what a model's row adds. */
 export interface RowExtra<L extends BaseListing> {
+  /** Conservative exact-listing fit badge; absent outside pick mode. */
+  badge?: ReactNode;
   /** Greyed: "Only compatible" is off and the model would be hidden (its reason is in `extra`). */
   dim: boolean;
   /** Findings and the "Add to build" button, under the name. */

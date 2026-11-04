@@ -1,7 +1,7 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type ComponentType, type ReactNode } from 'react';
 import { SlidersHorizontal } from 'lucide-react';
 import type { BaseListing } from '../types';
-import { DEFAULT_PER, PER_PAGE, activeFilterCount, applyFilters, clearedFilters, loadData, type CategoryData, type Filters } from '../lib/data';
+import { DEFAULT_PER, activeFilterCount, clearedFilters, loadData, type CategoryData, type Filters } from '../lib/data';
 import type { CategoryConfig } from '../lib/categories';
 import type { FacetCounts } from '../lib/facets';
 import { facetsClient } from '../lib/facetsClient';
@@ -10,9 +10,11 @@ import { useFilterState } from '../lib/useFilterState';
 import ActiveFilters from './ActiveFilters';
 import BottomSheet from './BottomSheet';
 import FilterBar from './FilterBar';
-import ModelTable from './ModelTable';
+import ProductList from './catalogue/ProductList';
+import { filterCatalogue, sortCatalogue, numericValue } from '../lib/catalogueFilters';
+import { encodeOfferChoice } from '../lib/productSelection';
+import { UI } from '../ui/strings';
 import type { RowPick } from './ModelRow';
-import Pagination from './Pagination';
 import Skeleton from './Skeleton';
 import { useMedia } from '../lib/useMedia';
 import { afterFirstPaint } from '../lib/paint';
@@ -25,6 +27,8 @@ export interface PickSlots<L extends BaseListing> {
   bar: ReactNode;
   /** "Μόνο συμβατά (N κρυμμένα)", at the top of the filters. */
   toggle: ReactNode;
+  draftToggle?: (filters: Filters, onChange: (filters: Filters) => void) => ReactNode;
+  hiddenKeys?: Set<string>;
   /** Per model: greyed or not, its findings and "Add" button, and per card for graphics cards. */
   row: RowPick<L>;
   /** In the empty state, when "Only compatible" hid everything: how many, and a button to turn it off. */
@@ -97,7 +101,12 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
   if (!filters.pick) return <CategoryLayout cfg={cfg} data={data} filters={filters} setFilters={setFilters} />;
   // Pick mode: its code was requested with the data, so the placeholder rarely shows (and the page's
   // filtering doesn't run twice).
-  const props = { cfg, data, filters, setFilters } as unknown as LayoutProps<BaseListing>;
+  const props = {
+    cfg,
+    data,
+    filters,
+    setFilters,
+  } as unknown as LayoutProps<BaseListing>;
   return (
     <Suspense fallback={loading}>
       <PickView {...props} />
@@ -108,35 +117,46 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
 /** The page itself: filter sidebar (sheet below lg), status, active filters, table and pager. */
 export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setFilters, listings = data.latest.listings, pick }: LayoutProps<L>) {
   const lang = useLang();
-  // Phones and tablets (< lg): the filters open in a bottom sheet.
+  const t = (text: { el: string; en: string }) => tr(lang, text);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [draft, setDraft] = useState(filters);
+  const [cards, setCards] = useState(false);
+  const wide = useMedia('(min-width: 1024px)');
   const closeSheet = useCallback(() => setSheetOpen(false), []);
-  const top = useRef<HTMLDivElement>(null); // the results column (pager scrolls back to it)
-
-  const pending = pick?.pending;
-  const waiting = pending !== undefined;
-  const models = useMemo(
-    () => (waiting ? [] : applyFilters(listings, filters, cfg, data.history, data.imported)),
-    [waiting, listings, data, filters, cfg],
+  const top = useRef<HTMLDivElement>(null);
+  const waiting = pick?.pending !== undefined;
+  const products = useMemo(
+    () => (waiting ? [] : sortCatalogue(filterCatalogue(listings, filters, cfg, data.history, data.imported), filters, cfg)),
+    [waiting, listings, filters, cfg, data],
   );
-  const options = useMemo(
-    () => Object.fromEntries(cfg.extraFilters.map((x) => [x.key, x.options(data.latest.listings)])),
-    [data, cfg],
+  const draftListings = useMemo(
+    () => (pick?.hiddenKeys ? data.latest.listings.filter((l) => !draft.compat || !pick.hiddenKeys?.has(encodeOfferChoice(l))) : listings),
+    [pick, data, draft.compat, listings],
   );
-  // Facet counts (step 4 task 3): a dozen filter runs over every listing, so the facet worker does them after the
-  // first paint (facetsClient.ts; the main thread in idle slices only without a worker). They depend on the filters
-  // but not on the page, results per page or sort: those changes ask for nothing. Pick mode counts without the
-  // hidden listings (their ids go to the worker). Until the counts for the current filters arrive (the first ones,
-  // or newer ones after a change) the options show no numbers and nothing is greyed: older counts are never shown.
-  // FilterBar's counts keep their width empty, so nothing moves when the numbers fill in.
-  const countKey = JSON.stringify({ ...filters, page: 1, per: DEFAULT_PER, sort: 'model' });
+  const draftCount = useMemo(
+    () => (!sheetOpen || waiting ? 0 : filterCatalogue(draftListings, draft, cfg, data.history, data.imported).length),
+    [sheetOpen, waiting, draftListings, draft, cfg, data],
+  );
+  const options = useMemo(() => Object.fromEntries(cfg.extraFilters.map((x) => [x.key, x.options(data.latest.listings)])), [data, cfg]);
+  const countKey = JSON.stringify({
+    ...(sheetOpen ? draft : filters),
+    page: 1,
+    per: DEFAULT_PER,
+    sort: 'model',
+  });
   const countFilters = useMemo(() => JSON.parse(countKey) as Filters, [countKey]);
   const hidden = useMemo(() => {
-    if (listings === data.latest.listings) return null;
-    const shown = new Set(listings.map((l) => l.id));
-    return data.latest.listings.filter((l) => !shown.has(l.id)).map((l) => l.id);
-  }, [listings, data]);
-  const [facets, setFacets] = useState<{ filters: Filters; hidden: string[] | null; data: CategoryData<L>; counts: FacetCounts } | null>(null);
+    const counted = sheetOpen ? draftListings : listings;
+    if (counted === data.latest.listings) return null;
+    const shown = new Set(counted.map(encodeOfferChoice));
+    return data.latest.listings.filter((l) => !shown.has(encodeOfferChoice(l))).map(encodeOfferChoice);
+  }, [listings, data, sheetOpen, draftListings]);
+  const [facets, setFacets] = useState<{
+    filters: Filters;
+    hidden: string[] | null;
+    data: CategoryData<L>;
+    counts: FacetCounts;
+  } | null>(null);
   useEffect(() => {
     if (waiting) return;
     let live = true;
@@ -151,104 +171,193 @@ export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setF
     };
   }, [waiting, cfg.id, countFilters, data, hidden]);
   const counts = facets && facets.filters === countFilters && facets.hidden === hidden && facets.data === data ? facets.counts : undefined;
-
   const active = activeFilterCount(filters, cfg.groups);
-  // A page number from an old link may be past the end now: show the last page instead.
-  const pages = Math.max(1, Math.ceil(models.length / filters.per));
+  const pages = Math.max(1, Math.ceil(products.length / filters.per));
   const page = Math.min(filters.page, pages);
   const reset = () => setFilters(clearedFilters(filters, cfg.groups, true));
-  // The sidebar's skip link: focus goes to the first product's name (else the results area itself).
   const skipToResults = () => {
-    const box = top.current;
-    const first = box?.querySelector<HTMLElement>('a[data-product-link]');
+    const first = top.current?.querySelector<HTMLElement>('a[data-product-link]');
     if (first) first.focus();
-    else if (box) {
-      box.tabIndex = -1;
-      box.focus();
+    else if (top.current) {
+      top.current.tabIndex = -1;
+      top.current.focus();
     }
   };
+  const coverage = data.latest.listings.length
+    ? Math.round((100 * data.latest.listings.filter((l) => numericValue(l, cfg.id) != null).length) / data.latest.listings.length)
+    : 0;
+  const openSheet = () => {
+    setDraft({
+      ...filters,
+      extra: { ...filters.extra },
+      groups: [...filters.groups],
+      sources: [...filters.sources],
+    });
+    setSheetOpen(true);
+  };
+  const sortOptions = [
+    ['model', T.sortModel],
+    ['price-asc', T.sortPriceAsc],
+    ['price-desc', T.sortPriceDesc],
+    ['offers', T.sortOffers],
+    ['discount', T.sortDiscount],
+    ...(cfg.capacityTb ? [['per-tb', T.sortPerTb]] : []),
+  ] as const;
+  const goPage = (next: number) => {
+    setFilters({ ...filters, page: next });
+    if ((top.current?.getBoundingClientRect().top ?? 0) < 0) top.current?.scrollIntoView({ block: 'start' });
+  };
   return (
-    // Filters in a left sidebar (sticky) on wide screens; below lg they open in a bottom sheet.
-    <div className="grid items-start gap-4 lg:grid-cols-[17rem_minmax(0,1fr)]">
-      <button
-        type="button"
-        aria-haspopup="dialog"
-        aria-expanded={sheetOpen}
-        onClick={() => setSheetOpen(true)}
-        className="tap card flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold transition-colors duration-150 hover:bg-hover hover:ring-edge-hover lg:hidden"
-      >
-        <SlidersHorizontal className="h-4 w-4 text-accent" />
-        {tr(lang, T.filters)}
-        {active > 0 && <span className="tabular-nums">({active})</span>}
-      </button>
-      <aside className="hidden flex-col gap-2 lg:sticky lg:top-4 lg:flex lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto scrollbar-none">
-        {pending ? pending.filters : <FilterBar cfg={cfg} filters={filters} onChange={setFilters} options={options} counts={counts} top={pick?.toggle} onSkip={skipToResults} />}
+    <div className="catalogue-layout">
+      <aside className="catalogue-sidebar">
+        {pick?.pending ? (
+          pick.pending.filters
+        ) : (
+          <FilterBar
+            cfg={cfg}
+            filters={filters}
+            onChange={setFilters}
+            options={options}
+            counts={sheetOpen ? undefined : counts}
+            top={pick?.toggle}
+            onSkip={skipToResults}
+            coverage={coverage}
+          />
+        )}
       </aside>
       <BottomSheet
         open={sheetOpen}
         onClose={closeSheet}
-        title={`${tr(lang, T.filters)}${active > 0 ? ` (${active})` : ''}`}
+        title={tr(lang, T.filters)}
+        headerAction={
+          <button type="button" className="ui-btn ui-btn--ghost ui-btn--sm" onClick={() => setDraft(clearedFilters(draft, cfg.groups, true))}>
+            {tr(lang, T.reset)}
+          </button>
+        }
         footer={
-          <div className="flex gap-2">
-            {active > 0 && (
-              <button
-                type="button"
-                onClick={reset}
-                className="tap rounded-xl px-4 py-2.5 text-sm font-semibold text-muted ring-1 ring-inset ring-line-strong transition-colors duration-150 hover:bg-hover hover:text-fg hover:ring-muted dark:hover:ring-line-strong"
-              >
-                {tr(lang, T.clearAll)}
-              </button>
-            )}
+          <div className="flex flex-col gap-2">
             <button
+              className="ui-btn ui-btn--primary w-full"
               type="button"
-              onClick={closeSheet}
-              className="tap flex-1 rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-page transition-opacity duration-150 hover:opacity-90"
+              onClick={() => {
+                setFilters(draft);
+                closeSheet();
+              }}
             >
-              {tr(lang, T.showResults)} <span className="tabular-nums">{pending ? '…' : models.length}</span> {tr(lang, T.results)}
+              {tr(lang, T.showResults)} {waiting ? '\u2026' : draftCount} {t(UI.catalogueProducts)}
+            </button>
+            <button type="button" className="ui-btn ui-btn--ghost w-full" onClick={closeSheet}>
+              {t(UI.catalogueCancel)}
             </button>
           </div>
         }
       >
-        <FilterBar bare cfg={cfg} filters={filters} onChange={setFilters} options={options} counts={counts} top={pick?.toggle} />
+        <FilterBar
+          bare
+          cfg={cfg}
+          filters={draft}
+          onChange={setDraft}
+          options={options}
+          counts={counts}
+          top={pick?.draftToggle?.(draft, setDraft)}
+          coverage={coverage}
+        />
       </BottomSheet>
-      <div ref={top} className="flex min-w-0 scroll-mt-4 flex-col gap-3">
+      <div ref={top} className="catalogue-results" id="results">
         {pick?.bar}
-        <div className="flex flex-wrap items-center justify-between gap-2 px-1 text-sm text-muted">
-          <span>
-            <span className="font-semibold text-fg">{pending ? '…' : models.length}</span> {tr(lang, T.models)}
-          </span>
-          {/* Every source with its own last update; older than 24 hours is marked (UX-04, backlog #9). */}
-          <StatusLine sources={data.latest.sources as SourceTimes} />
+        <div className="catalogue-toolbar">
+          <button
+            type="button"
+            className="ui-btn ui-btn--secondary ui-btn--sm catalogue-filter-button"
+            aria-haspopup="dialog"
+            aria-expanded={sheetOpen}
+            onClick={openSheet}
+          >
+            <SlidersHorizontal size={16} />
+            {tr(lang, T.filters)}
+            {active > 0 ? ` \u00b7 ${active}` : ''}
+          </button>
+          <strong className="catalogue-count-desktop" aria-live="polite">
+            {waiting ? '\u2026' : products.length} {t(UI.catalogueProducts)}
+          </strong>
+          <select
+            className="catalogue-sort"
+            aria-label={tr(lang, T.sortLabel)}
+            value={filters.sort}
+            onChange={(e) =>
+              setFilters({
+                ...filters,
+                sort: e.target.value as Filters['sort'],
+              })
+            }
+          >
+            {sortOptions.map(([value, label]) => (
+              <option value={value as string} key={value as string}>
+                {tr(lang, label as Parameters<typeof tr>[1])}
+              </option>
+            ))}
+          </select>
+          <div className="catalogue-view">
+            <button
+              type="button"
+              className={`ui-btn ui-btn--sm ${!cards ? 'ui-btn--secondary' : 'ui-btn--ghost'}`}
+              aria-pressed={!cards}
+              onClick={() => setCards(false)}
+            >
+              {t(UI.catalogueTable)}
+            </button>
+            <button
+              type="button"
+              className={`ui-btn ui-btn--sm ${cards ? 'ui-btn--secondary' : 'ui-btn--ghost'}`}
+              aria-pressed={cards}
+              onClick={() => setCards(true)}
+            >
+              {t(UI.catalogueCards)}
+            </button>
+          </div>
         </div>
         <ActiveFilters cfg={cfg} filters={filters} onChange={setFilters} options={options} />
-        {/* Filters, counts and sorting run on every model; only the rows of one page are rendered. */}
-        {pending ? (
-          pending.results
+        <strong className="catalogue-count-mobile" aria-live="polite">{waiting ? '…' : products.length} {t(UI.catalogueProducts)}</strong>
+        {pick?.pending ? (
+          pick.pending.results
         ) : (
-          <ModelTable
+          <ProductList
             cfg={cfg}
-            models={models.slice((page - 1) * filters.per, page * filters.per)}
-            history={data.history}
-            photos={data.photos}
-            onReset={reset}
+            products={products.slice((page - 1) * filters.per, page * filters.per)}
+            cards={!wide || cards}
             pick={pick?.row}
+            onReset={reset}
             emptyExtra={pick?.empty}
           />
         )}
-        {models.length > PER_PAGE[0] && (
-          <Pagination
-            page={page}
-            pages={pages}
-            per={filters.per}
-            total={models.length}
-            onPage={(p) => {
-              setFilters({ ...filters, page: p });
-              // Start the new page from its first row, like turning a page.
-              if ((top.current?.getBoundingClientRect().top ?? 0) < 0) top.current?.scrollIntoView({ block: 'start' });
-            }}
-            onPer={(per) => setFilters({ ...filters, per })}
-          />
-        )}
+        <div className="catalogue-pagination">
+          <span>
+            {t(UI.catalogueShowing)} {products.length ? (page - 1) * filters.per + 1 : 0}
+            {String.fromCharCode(8211)}
+            {Math.min(page * filters.per, products.length)} / {products.length}
+          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <select
+              className="catalogue-sort"
+              aria-label={tr(lang, T.perPage)}
+              value={filters.per}
+              onChange={(e) => setFilters({ ...filters, per: Number(e.target.value) })}
+            >
+              {[20, 50, 100].map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
+            <button type="button" className="ui-btn ui-btn--secondary ui-btn--sm" disabled={page <= 1} onClick={() => goPage(page - 1)}>
+              {tr(lang, T.prevPage)}
+            </button>
+            <button type="button" className="ui-btn ui-btn--secondary ui-btn--sm" disabled={page >= pages} onClick={() => goPage(page + 1)}>
+              {tr(lang, T.nextPage)}
+            </button>
+          </div>
+        </div>
+        <StatusLine sources={data.latest.sources as SourceTimes} />
       </div>
     </div>
   );

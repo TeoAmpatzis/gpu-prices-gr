@@ -46,8 +46,8 @@ async function waitChecked(page: Page) {
   await expect(status).not.toHaveText(/Checking compatibility|Έλεγχος συμβατότητας/, { timeout: 20_000 });
 }
 
-const rows = (page: Page) => page.locator('main tbody tr button[aria-expanded]:visible');
-const addButtons = (page: Page) => page.locator('main button:visible').filter({ hasText: /^(Add to build|Πρόσθεσε στο build)$/ });
+const rows = (page: Page) => page.locator('main [data-product-key]:visible');
+const addButtons = (page: Page) => page.locator('main button:visible').filter({ hasText: /^(Add to build|Πρόσθεσε στο build|Στο build)$/ });
 const onlyCompatible = (page: Page) => page.locator('main aside [role=switch]');
 const am5Build = async (page: Page) => ({ cpu: AM5_CPU, compat: { cpu: { fields: AM5_FIELDS, builtAt: await listBuiltAt(page, 'mobo') } } });
 
@@ -71,13 +71,13 @@ test('AM5 CPU in the build: /mobo?pick=1 hides AM4 boards; switched off they are
   const first = page.locator('main tbody tr:visible').first();
   await expect(first).toContainText('Incompatible');
   await expect(first).toContainText(/AM4/);
-  await expect(first.locator('button.opacity-50')).toHaveCount(1); // the name is greyed
+  await expect(first).toHaveClass(/opacity-50/); // the row is greyed
   await expect(addButtons(page)).toHaveCount(0);
 
   // pick=1 and compat=0 survive a filter change, a sort change and a page change.
-  await page.locator('main aside select[aria-label]').first().selectOption('price-desc');
+  await page.locator('main select.catalogue-sort').first().selectOption('price-desc');
   await expect.poll(() => new URL(page.url()).searchParams.get('sort')).toBe('price-desc');
-  await page.locator('main aside input[aria-label]').first().fill('b550 asus');
+  await page.locator('main aside input[type=search]').first().fill('b550 asus');
   await expect.poll(() => new URL(page.url()).searchParams.get('q')).toBe('b550 asus');
   const p = new URL(page.url()).searchParams;
   expect([p.get('pick'), p.get('compat')]).toEqual(['1', '0']);
@@ -109,18 +109,15 @@ test('"Add to build" saves the board with its fields and opens the builder; Back
   expect(errors).toEqual([]);
 });
 
-test('a graphics card is added per card, from the open row', async ({ page }) => {
+test('a graphics card is added per card, from the catalogue', async ({ page }) => {
   const errors = trackErrors(page);
   await withBuild(page, null, '/gpu?pick=1');
   await waitChecked(page);
   await expect(page.locator('main [data-pick=bar] [role=status]')).toHaveText(/Your build is empty/);
-  // The row itself has no button, only the hint; the cards in the open row have one each.
-  await expect(addButtons(page)).toHaveCount(0);
-  await rows(page).first().click();
-  const card = page.locator('main tbody ul li:visible').filter({ has: page.getByRole('button', { name: 'Add this card' }) }).first();
+  const card = page.locator('main [data-product-key]:visible').filter({ has: page.getByRole('button', { name: /^Add to build$/ }) }).first();
   await expect(card).toBeVisible({ timeout: 10_000 });
-  const title = await card.locator('span.text-fg-soft[title]').first().getAttribute('title');
-  await card.getByRole('button', { name: 'Add this card' }).click();
+  const title = (await card.locator('a[data-product-link]').innerText()).trim();
+  await card.getByRole('button', { name: /^Add to build$/ }).click();
   await expect.poll(() => new URL(page.url()).pathname).toBe('/builder');
   await expect(page.locator('main').getByText(title!, { exact: false }).filter({ visible: true }).first()).toBeVisible({ timeout: 20_000 });
   const saved = await savedBuild(page);
@@ -224,7 +221,7 @@ test('everything hidden: the empty state says how many and turns "Only compatibl
   await page.goto('/about');
   await withBuild(page, await am5Build(page), '/mobo?pick=1&sock=am4&q=b550');
   await waitChecked(page);
-  const empty = page.locator('main .card:visible').filter({ hasText: /hidden by "Only compatible"/ });
+  const empty = page.locator('main :is(.card, .catalogue-empty):visible').filter({ hasText: /hidden by "Only compatible"/ });
   await expect(empty).toContainText(/\d[\d,]*\u00a0hidden by "Only compatible"/);
   await empty.getByRole('button', { name: 'Turn off "Only compatible"' }).click();
   await expect.poll(() => new URL(page.url()).searchParams.get('compat')).toBe('0');
@@ -267,7 +264,7 @@ test('a phone at 360 px: no sideways scroll, the buttons are at least 44 px tall
   await page.goto('/about');
   await withBuild(page, await am5Build(page), '/mobo?pick=1', 'el');
   await waitChecked(page);
-  const add = page.locator('main button:visible').filter({ hasText: /^Πρόσθεσε στο build$/ }).first();
+  const add = page.locator('main button:visible').filter({ hasText: /^(Πρόσθεσε στο build|Στο build)$/ }).first();
   await expect(add).toBeVisible();
   expect((await add.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   const back = page.locator('main [data-pick=bar] a[href="/builder"]');
@@ -335,7 +332,7 @@ for (const vp of [
     expect(requests.some((p) => /\/assets\/pick\.worker-[\w-]+\.js$/.test(p))).toBe(true);
     expect(requests.some((p) => /\/assets\/pickCheck-/.test(p))).toBe(false); // the engine only in the worker
     if (vp.name === 'phone') {
-      await expect(page.locator('main li.card:visible').first()).toBeVisible();
+      await expect(page.locator('main [data-product-key]:visible').first()).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(360);
       expect(errors).toEqual([]);
       return;
@@ -343,12 +340,12 @@ for (const vp of [
     // "Only compatible" on: something is hidden, and no visible row is greyed.
     await expect(onlyCompatible(page)).toContainText(/Only compatible \(\d[\d,]*\u00a0hidden\)/);
     await expect(rows(page).first()).toBeVisible();
-    await expect(page.locator('main tbody tr:visible button[aria-expanded].opacity-50')).toHaveCount(0);
+    await expect(page.locator('main tbody tr.opacity-50:visible')).toHaveCount(0);
     // Off: the hidden cases come back greyed, with the reason (the card is longer than the case allows).
     await onlyCompatible(page).click();
     await expect.poll(() => new URL(page.url()).searchParams.get('compat')).toBe('0');
     await page.locator('main aside input[aria-label]').first().fill('mini');
-    const greyed = page.locator('main tbody tr:visible').filter({ has: page.locator('button[aria-expanded].opacity-50') });
+    const greyed = page.locator('main tbody tr.opacity-50:visible');
     await expect(greyed.first()).toBeVisible();
     await expect(greyed.first()).toContainText('Incompatible');
     await expect(greyed.first().locator('button').filter({ hasText: /^Add to build$/ })).toHaveCount(0);
@@ -385,7 +382,7 @@ test('/case?pick=1 without Worker support: the main-thread fallback hides the sa
   expect(requests.some((p) => /pick\.worker/.test(p))).toBe(false);
   expect(requests.some((p) => /\/assets\/pickCheck-/.test(p))).toBe(true); // the engine, loaded for the fallback
   expect(await hiddenCount()).toBe(withWorker);
-  await expect(page.locator('main tbody tr:visible button[aria-expanded].opacity-50')).toHaveCount(0);
+  await expect(page.locator('main tbody tr.opacity-50:visible')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 
@@ -399,7 +396,7 @@ test('a compat chunk that never answers: after the deadline the rows show, nothi
   await expect(status).toHaveText("The compatibility check didn't finish: nothing is hidden.", { timeout: 30_000 }); // PENDING_DEADLINE 15 s
   await expect(rows(page).first()).toBeVisible();
   await expect(addButtons(page).first()).toBeVisible();
-  await expect(page.locator('main tbody tr:visible button[aria-expanded].opacity-50')).toHaveCount(0);
+  await expect(page.locator('main tbody tr.opacity-50:visible')).toHaveCount(0);
   await expect(onlyCompatible(page)).toContainText("The check didn't finish");
   expect(errors).toEqual([]);
 });
