@@ -227,7 +227,7 @@ function checkReview(run, r, log) {
   for (const n of ex.need ?? []) if (!r.findings.some((f) => f.rule === n.rule && f.status === n.status)) log.problems.push(`missing expected finding: rule ${n.rule} ${n.status}`);
   if (run.build === 'd') {
     const psu = r.lines.find((l) => l.line === 'psu');
-    if (psu && psu.label === 'fits' && !/SFX/.test(`${psu.name} ${psu.variant ?? ''}`)) log.problems.push('d: an ATX PSU is labelled "fits" in the Terra');
+    if (psu && psu.label === 'fits' && !/SFX/.test(`${psu.name} ${psu.variant ?? ''}`)) log.problems.push('d: an ATX PSU is labelled "fits" in the SFX-only case');
   }
 }
 
