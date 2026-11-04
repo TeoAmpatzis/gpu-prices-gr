@@ -5,7 +5,7 @@ import type { Category } from '../types';
 
 /** v1's category ids, kept as the URL segments (owner, 2026-10-04). Same order as categories.tsx. */
 export const CATEGORY_LIST: Category[] = ['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler'];
-export const INFO_PAGES = ['about', 'contact', 'privacy'] as const;
+export const INFO_PAGES = ['about', 'contact', 'privacy', 'how-prices'] as const;
 export type InfoPage = (typeof INFO_PAGES)[number];
 
 export type Route =
@@ -15,6 +15,7 @@ export type Route =
   | { kind: 'model'; cat: Category; slug: string }
   | { kind: 'builder' }
   | { kind: 'parts' }
+  | { kind: 'search' }
   | { kind: 'info'; page: InfoPage }
   | { kind: 'notFound' };
 
@@ -31,12 +32,13 @@ export function matchRoute(pathname: string): Route {
   if (second) return { kind: 'notFound' };
   if (first === 'builder') return { kind: 'builder' };
   if (first === 'parts') return { kind: 'parts' };
+  if (first === 'search') return { kind: 'search' };
   if (isInfo(first)) return { kind: 'info', page: first };
   return { kind: 'notFound' };
 }
 
 /** First path segments the app serves (vercel.json rewrites exactly these to index.html; the rest is a 404). */
-export const APP_SEGMENTS = [...CATEGORY_LIST, 'builder', 'parts', ...INFO_PAGES];
+export const APP_SEGMENTS = [...CATEGORY_LIST, 'builder', 'parts', 'search', ...INFO_PAGES];
 
 /**
  * An old v1 link ("/#ram?type=ddr5&cap=32", "/#builder?cpu=…&use=gaming", "/#about") → its new address

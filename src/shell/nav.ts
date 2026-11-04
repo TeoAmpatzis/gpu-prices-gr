@@ -42,7 +42,7 @@ export const href = {
   category: (c: Category) => `/${c}`,
   /** A model's page: /<category>/<slug> (the slug comes with the search hit / lib/slug.modelSlug). */
   model: (c: Category, slug: string) => `/${c}/${slug}`,
-  search: (c: Category, q: string) => `/${c}?q=${encodeURIComponent(q.trim())}`,
+  search: (c: Category, q: string) => `/search?q=${encodeURIComponent(q.trim())}&cat=${c}`,
   maker: (c: Category, maker: string) =>
     `/${c}?${c === 'gpu' ? 'partner' : 'brand'}=${encodeURIComponent(maker.toLowerCase().replace(/[^\p{L}\p{N}.+×]+/gu, '-'))}`,
 };

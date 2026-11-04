@@ -151,7 +151,7 @@ export function Header({
         }}
         onKeyDownCapture={(e) => {
           if (e.key === 'Tab') {
-            const controls = [...e.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled), input, a[href]')];
+            const controls = [...e.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled), input, a[href]:not([tabindex="-1"])')];
             const first = controls[0];
             const last = controls[controls.length - 1];
             if (e.shiftKey && document.activeElement === first || !e.shiftKey && document.activeElement === last) {
