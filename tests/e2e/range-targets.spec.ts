@@ -5,7 +5,7 @@ async function expectLargeTargets(sliders: Locator) {
   expect(count).toBeGreaterThan(0);
   for (const slider of await sliders.all()) {
     await expect(slider).toBeVisible();
-    await expect(slider).toHaveAttribute('aria-label', /.+ slider$/);
+    await expect(slider).toHaveAttribute('aria-label', /.+/);
     const target = await slider.evaluate((el) => {
       const thumb = getComputedStyle(el, '::-webkit-slider-thumb');
       return {
@@ -20,18 +20,16 @@ async function expectLargeTargets(sliders: Locator) {
   }
 }
 
-test.beforeEach(async ({ page }) => {
-  await page.addInitScript(() => localStorage.setItem('lang', 'en'));
-});
-
 test('desktop range targets support pointer, keyboard, and synchronized price values', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('lang', 'en'));
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/case');
   await expect(page.locator('[data-product-key]').first()).toBeVisible({ timeout: 20_000 });
   const sidebar = page.locator('.catalogue-sidebar');
   await expectLargeTargets(sidebar.getByRole('slider'));
-  const minimum = sidebar.getByRole('slider', { name: 'Price From slider', exact: true });
-  const maximum = sidebar.getByRole('slider', { name: 'Maximum price slider', exact: true });
+  await expect(sidebar.getByRole('slider').first()).toHaveAccessibleName('Price From');
+  const minimum = sidebar.getByRole('slider', { name: 'Price From', exact: true });
+  const maximum = sidebar.getByRole('slider', { name: 'Maximum price', exact: true });
   const minimumNumber = sidebar.getByRole('spinbutton', { name: 'Price From', exact: true });
   const maximumNumber = sidebar.getByRole('spinbutton', { name: 'Maximum price', exact: true });
   const initialMin = Number(await minimum.inputValue());
@@ -65,6 +63,7 @@ test('desktop range targets support pointer, keyboard, and synchronized price va
 });
 
 test('mobile filter ranges retain large targets without horizontal overflow', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('lang', 'en'));
   await page.setViewportSize({ width: 360, height: 900 });
   await page.goto('/case');
   await expect(page.locator('[data-product-key]').first()).toBeVisible({ timeout: 20_000 });
@@ -79,4 +78,14 @@ test('mobile filter ranges retain large targets without horizontal overflow', as
     expect(box.x).toBeGreaterThanOrEqual(0);
     expect(box.x + box.width).toBeLessThanOrEqual(360);
   }
+});
+
+test('Greek range labels remain localized without an English control suffix', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('lang', 'el'));
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('/case');
+  await expect(page.locator('[data-product-key]').first()).toBeVisible({ timeout: 20_000 });
+  const sidebar = page.locator('.catalogue-sidebar');
+  await expect(sidebar.getByRole('slider').first()).toHaveAccessibleName('Τιμή Από');
+  await expect(sidebar.getByRole('slider', { name: 'Μέγιστη τιμή', exact: true })).toBeVisible();
 });

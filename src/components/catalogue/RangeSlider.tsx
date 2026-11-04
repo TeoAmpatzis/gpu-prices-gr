@@ -72,7 +72,7 @@ export function RangeSlider({
           max={effectiveMaxBound}
           step={step}
           value={currentMin}
-          aria-label={`${minAriaLabel} slider`}
+          aria-label={minAriaLabel}
           className="catalogue-slider-input"
           style={{ zIndex: activeThumb === 'min' || currentMin > effectiveMaxBound - span * 0.15 ? 3 : 1 }}
           onPointerDown={() => setActiveThumb('min')}
@@ -85,7 +85,7 @@ export function RangeSlider({
           max={effectiveMaxBound}
           step={step}
           value={currentMax}
-          aria-label={`${maxAriaLabel} slider`}
+          aria-label={maxAriaLabel}
           className="catalogue-slider-input"
           style={{ zIndex: activeThumb === 'max' ? 3 : 2 }}
           onPointerDown={() => setActiveThumb('max')}
