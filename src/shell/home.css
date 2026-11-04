@@ -72,5 +72,6 @@
   .home-freshness { padding: 16px; }
   .home-deals li > a { flex-basis: 100%; }
   .home-deals li > .ui-num { flex-basis: auto; }
-  .home-deals-panel, .home-empty-drops { min-height: 420px; }
+  /* The bounded feed contains up to five rows; mobile titles and metadata wrap onto separate lines. */
+  .home-deals-panel, .home-empty-drops { min-height: 600px; }
 }
