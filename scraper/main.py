@@ -299,7 +299,7 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
     print(f"[{cat.name}] wrote {len(listings)} listings, {len(history)} models in history")
     print(http_client.summary(f"{cat.name} sources", seconds))
     report_sources(cat.name, sources_meta, wanted)
-    return any(m["ok"] for m in sources_meta.values())
+    return any(sources_meta[name]["ok"] for name in wanted)
 
 
 
