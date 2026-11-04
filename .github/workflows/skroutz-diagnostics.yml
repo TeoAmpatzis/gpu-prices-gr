@@ -6,7 +6,7 @@ on:
       mode:
         description: Read-only probe or full Skroutz listing validation
         type: choice
-        options: [probe, listings, connections]
+        options: [probe, listings, connections, browser]
         default: probe
       probe_runner:
         description: Hosted runner for read-only probes; production is unchanged
@@ -22,6 +22,29 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  browser:
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'browser'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Read one category through Chromium
+        run: node scripts/checks/probe_skroutz_browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: skroutz-browser-${{ github.run_id }}
+          path: skroutz-browser.json
+          if-no-files-found: warn
+
   probe:
     if: github.event_name == 'workflow_dispatch' && inputs.mode == 'probe'
     runs-on: ${{ inputs.probe_runner || 'ubuntu-latest' }}
