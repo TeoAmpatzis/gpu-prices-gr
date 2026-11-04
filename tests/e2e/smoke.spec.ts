@@ -78,7 +78,7 @@ test('home shows search, PC Builder and the category tiles', async ({ page }) =>
   await page.goto('/');
   await expect(page.locator('main input[role=combobox]')).toBeVisible();
   await expect(page.locator('main a[href="/builder"]')).toBeVisible();
-  await expect(page.locator('main ul a[href^="/"]')).toHaveCount(9);
+  await expect(page.locator('main [data-home-category]')).toHaveCount(9);
   expect(errors).toEqual([]);
 });
 
