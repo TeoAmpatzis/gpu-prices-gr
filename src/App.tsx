@@ -35,6 +35,8 @@ const loadModelPage = () => import('./components/product/ModelPage');
 const ModelPage = lazy(loadModelPage);
 const Builder = lazy(loadBuilderView);
 const InfoPage = lazy(loadInfoView);
+const loadSearchPage = () => import('./components/search/SearchPage');
+const SearchPage = lazy(loadSearchPage);
 
 /** Start loading a page's code and data before it opens (link hover, focus or touch; and the first page). */
 function prefetchPath(path: string) {
@@ -46,6 +48,7 @@ function prefetchPath(path: string) {
     // Its first screen's small index (/data/builder/index.json); each step's parts load when the step opens.
     void import('./lib/builderIndex').then((m) => m.loadIndex()).catch(() => {});
   } else if (r.kind === 'info') void loadInfoView();
+  else if (r.kind === 'search') { void loadSearchPage(); void loadSearchIndex().catch(() => {}); }
 }
 
 /**
@@ -170,29 +173,29 @@ export default function App() {
     <div className={`site-shell${route.kind === 'builder' ? ' pb-32 lg:pb-0' : ''}`}>
       <Header current={current} search={SEARCH} counts={site?.counts} />
       {/* Reserve the first screen while data pages load; short pages use the flex frame's remaining space. */}
-      <main id="main" tabIndex={-1} className={`site-container site-main py-4 outline-none sm:py-8${route.kind === 'category' || route.kind === 'model' || route.kind === 'builder' ? ' min-h-screen' : ''}`}>
+      <main id="main" tabIndex={-1} className={`site-container site-main py-4 outline-none sm:py-5${route.kind === 'category' || route.kind === 'model' || route.kind === 'builder' ? ' min-h-screen' : ''}`}>
         <ErrorBoundary>
           <Suspense fallback={<PageSkeleton />}>
             {route.kind === 'home' && <Home counts={site?.counts} search={SEARCH} />}
             {visited.map((c) => (
               <div key={c} hidden={activeCat !== c}>
-                <PageTitle crumbs={crumbs(CATS[c].name)} title={CAT_PAGE[c].title} subtitle={CAT_PAGE[c].subtitle} />
+                <PageTitle compact crumbs={crumbs(CATS[c].name)} title={CAT_PAGE[c].title} subtitle={CAT_PAGE[c].subtitle} />
                 {later(<CategoryPage cat={c} />)}
               </div>
             ))}
             {route.kind === 'model' && later(<ModelPage cat={route.cat} slug={route.slug} />)}
             {builderSeen && (
               <div hidden={route.kind !== 'builder'}>
-                <PageTitle crumbs={crumbs(PAGE.builder.title)} title={PAGE.builder.title} subtitle={PAGE.builder.subtitle} />
                 {later(<Builder />)}
               </div>
             )}
             {route.kind === 'parts' && <PartsPage counts={site?.counts} search={SEARCH} />}
+            {route.kind === 'search' && later(<SearchPage />)}
             {route.kind === 'info' && (
-              <>
+              <div className="mx-auto max-w-[1032px]">
                 <PageTitle crumbs={crumbs(PAGE[route.page].title)} title={PAGE[route.page].title} subtitle={PAGE[route.page].subtitle} />
                 {later(<InfoPage page={route.page} />)}
-              </>
+              </div>
             )}
             {route.kind === 'notFound' && notFound}
           </Suspense>

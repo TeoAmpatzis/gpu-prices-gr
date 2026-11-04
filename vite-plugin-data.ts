@@ -25,6 +25,7 @@ import { photoId } from './src/lib/images';
 import { aliasFile, type AliasSource, type SlugOf } from './src/data/modelAliases';
 import { nameSlug } from './src/lib/slug';
 import { modelChunkPath } from './src/lib/modelData';
+import { homeFile } from './src/lib/homeFile';
 
 const DATA_DIR = join(process.cwd(), 'public', 'data');
 const LIVE_SITE = 'https://gpu-prices-gr.vercel.app';
@@ -136,6 +137,7 @@ export function derive(
   for (const [path, chunk] of Object.entries(compatFiles(latest, builtAt))) files[path] = JSON.stringify(chunk);
   files['data/aliases.json'] = aliasesJson(models, builtAt, readJson<AliasSource>(ALIASES_PATH, {}));
   files['data/search.json'] = JSON.stringify(searchFile(latest, builtAt));
+  files['data/home.json'] = JSON.stringify(homeFile(latest, models, builder.auto, builder.slots, builtAt));
   const m = manifest(latest, builder.slots, builtAt, history);
   files['data/manifest.json'] = JSON.stringify(m);
   return { files, manifest: m, models };
