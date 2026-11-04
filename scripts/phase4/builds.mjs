@@ -79,9 +79,10 @@ const D = {
     gpu: P('RTX 5060', 'RTX 5060(?! ?Ti)', { sort: 'price' }),
     cooler: P('NH-L9', 'NH-L9a-AM5', { sort: 'price', fallback: 'NH-L9' }),
     storage: P('NV3 1TB', '^Kingston NV3 1TB \\|'),
-    case: P('Terra', '^Fractal Design Terra'),
-    // #1/#2: SFX units are offered; an ATX unit is never "fits" in the Terra.
-    psu: P('SFX', '\\b(650|750|850)W.*· SFX', { sort: 'price', probe: [{ name: 'atx-in-terra', query: '650W', check: 'noAtxFits' }, { name: 'atx-in-terra-all', query: '650W', all: true, check: 'noAtxFits' }] }),
+    // Terra is absent from current inventory. Era 2 has the same verified SFX/SFX-L-only PSU constraint.
+    case: P('Era 2', '^Fractal Design Era 2( \\||$)'),
+    // #1/#2: SFX units are offered; an ATX unit is never "fits" in the Era 2.
+    psu: P('SFX', '\\b(650|750|850)W.*· SFX', { sort: 'price', probe: [{ name: 'atx-in-small-case', query: '650W', check: 'noAtxFits' }, { name: 'atx-in-small-case-all', query: '650W', all: true, check: 'noAtxFits' }] }),
     fan: { skip: true },
   },
   expect: { warnings: [] },
