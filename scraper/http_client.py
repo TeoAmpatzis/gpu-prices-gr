@@ -10,7 +10,7 @@ import threading
 import time
 from pathlib import Path
 
-from curl_cffi import requests
+from curl_cffi import CurlOpt, requests
 
 DEBUG_DIR = Path(__file__).parent / "debug"
 debug = False
@@ -106,10 +106,15 @@ def _block(r) -> str | None:
 def get(s: requests.Session, url: str, **kwargs) -> requests.Response:
     """GET that waits and retries a blocked response (403/429/5xx, Cloudflare challenge).
 
-    Cookies are cleared before a retry, so it starts fresh. Raises like `raise_for_status` (or
+    Cookies are cleared and the challenged connection is replaced before a retry. Raises like `raise_for_status` (or
     RuntimeError for a challenge page) once the retries or the run's retry allowance run out.
     """
     for attempt in range(len(RETRY_WAITS) + 1):
+        if attempt:
+            # Clearing cookies leaves pooled connections intact. Evict the challenged connection
+            # when opening its replacement; Session resets these thread-local options afterward.
+            s.curl.setopt(CurlOpt.MAXCONNECTS, 1)
+            s.curl.setopt(CurlOpt.FRESH_CONNECT, 1)
         r = s.get(url, **kwargs)
         why = _block(r)
         if why is None:

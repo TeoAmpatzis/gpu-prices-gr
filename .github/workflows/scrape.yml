@@ -5,6 +5,10 @@ on:
     - cron: "43 */6 * * *"
   workflow_dispatch:
     inputs:
+      recover_skroutz:
+        description: "Recover only failed Skroutz categories on a fresh runner; keep other sources and skip enrichment reads"
+        type: boolean
+        default: false
       allow_history_shrink:
         description: "Planned data change (e.g. merging duplicate products): let history points disappear in this run only (they are logged)"
         type: boolean
@@ -44,7 +48,24 @@ jobs:
       - run: pip install -r scraper/requirements.txt
 
       - name: Scrape
-        run: python scraper/main.py
+        env:
+          RECOVER_SKROUTZ: ${{ inputs.recover_skroutz && 'true' || 'false' }}
+        run: |
+          if [ "$RECOVER_SKROUTZ" = true ]; then
+            python - <<'PY'
+          import subprocess, sys
+          sys.path.insert(0, "scraper")
+          from main import CATEGORIES, DATA_DIR, load_json
+          failed = [cat for cat in CATEGORIES if load_json(DATA_DIR / cat / "latest.json", {}).get("sources", {}).get("skroutz", {}).get("ok") is not True]
+          command = [sys.executable, "scraper/main.py", "--only", "skroutz", "--no-shipping", "--specs-budget", "0", "--makers-budget", "0"]
+          for cat in failed:
+              command.extend(["--category", cat])
+          print("Skroutz recovery categories: " + (", ".join(failed) or "none"), flush=True)
+          raise SystemExit(subprocess.call(command) if failed else 0)
+          PY
+          else
+            python scraper/main.py
+          fi
 
       - name: Commit data
         env:

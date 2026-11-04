@@ -6,7 +6,7 @@ on:
       mode:
         description: Read-only probe or full Skroutz listing validation
         type: choice
-        options: [probe, listings]
+        options: [probe, listings, connections]
         default: probe
 
 permissions:
@@ -56,6 +56,33 @@ jobs:
         with:
           name: skroutz-probes-${{ github.run_id }}
           path: skroutz-probes.json
+          if-no-files-found: warn
+
+  connections:
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'connections'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r scraper/requirements.txt curl_cffi==0.16.3 selectolax==0.4.13
+      - name: Prove challenged-connection recovery locally
+        run: python scripts/checks/test_http_recovery.py
+      - name: Fetch trusted released control client
+        run: |
+          git fetch --no-tags --depth=1 origin b6c234f82fe01f96738247369ed89f08ed8979f0
+          git show b6c234f82fe01f96738247369ed89f08ed8979f0:scraper/http_client.py > control-http.py
+      - name: Compare retry connections on category first pages
+        run: python -u scripts/checks/probe_skroutz_connections.py control-http.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: skroutz-connections-${{ github.run_id }}
+          path: skroutz-connections.json
           if-no-files-found: warn
 
   listings:
