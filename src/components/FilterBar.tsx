@@ -5,8 +5,21 @@ import type { FacetCounts } from '../lib/facets';
 import { groupName, segmentOptions, type CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Text } from '../lib/i18n';
 import { SOURCES, SOURCE_NAMES } from '../lib/sources';
-import { RANGE_FIELDS } from '../lib/catalogueFilters';
+import { RANGE_FIELDS, RANGE_UNITS } from '../lib/catalogueFilters';
+import { RangeSlider } from './catalogue/RangeSlider';
 import { UI } from '../ui/strings';
+
+const DEFAULT_BOUNDS: Record<string, { price: [number, number]; numeric?: [number, number]; step?: number }> = {
+  gpu: { price: [0, 3000], numeric: [120, 380], step: 5 },
+  cpu: { price: [0, 1500], numeric: [35, 350], step: 5 },
+  mobo: { price: [0, 800] },
+  ram: { price: [0, 1000], numeric: [1600, 8400], step: 100 },
+  storage: { price: [0, 1500], numeric: [128, 8000], step: 128 },
+  case: { price: [0, 500], numeric: [150, 500], step: 5 },
+  psu: { price: [0, 600], numeric: [300, 1600], step: 50 },
+  cooler: { price: [0, 400], numeric: [30, 190], step: 2 },
+  'case-fan': { price: [0, 150] },
+};
 
 interface Props<L extends BaseListing> {
   cfg: CategoryConfig<L>;
@@ -18,14 +31,19 @@ interface Props<L extends BaseListing> {
   top?: ReactNode;
   onSkip?: () => void;
   coverage?: number;
+  bounds?: {
+    price?: [number, number];
+    numeric?: [number, number];
+  };
 }
 /** A source-product filter sidebar; sheet edits use the parent's isolated draft. */
-export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onChange, options, counts, bare, top, onSkip, coverage }: Props<L>) {
+export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onChange, options, counts, bare, top, onSkip, coverage, bounds }: Props<L>) {
   const lang = useLang();
   const t = (x: Text) => tr(lang, x);
   const set = <K extends keyof Filters>(key: K, value: Filters[K]) => onChange({ ...f, [key]: value });
   const toggle = <V,>(values: V[], value: V) => (values.includes(value) ? values.filter((v) => v !== value) : [...values, value]);
   const range = RANGE_FIELDS[cfg.id as keyof typeof RANGE_FIELDS];
+  const fallback = DEFAULT_BOUNDS[cfg.id];
   const check = (label: string, checked: boolean, change: () => void, count?: number, withCount = true) => (
     <label className="catalogue-filter-option" key={label}>
       <input type="checkbox" checked={checked} onChange={change} disabled={count === 0 && !checked} />
@@ -39,17 +57,7 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
       <div className="catalogue-filter-options">{children}</div>
     </details>
   );
-  const endpoint = (key: 'minPrice' | 'maxPrice' | 'numericMin' | 'numericMax', label: string) => (
-    <input
-      type="number"
-      min="0"
-      step="any"
-      aria-label={label}
-      placeholder={key.endsWith('Min') || key === 'minPrice' ? t(UI.catalogueFrom) : t(UI.catalogueTo)}
-      value={f[key] ?? ''}
-      onChange={(e) => set(key, e.target.value === '' ? null : Math.max(0, Number(e.target.value)))}
-    />
-  );
+
   return (
     <div className={`catalogue-filters ${bare ? 'catalogue-sheet-filters' : ''}`}>
       {!bare && (
@@ -104,22 +112,37 @@ export default function FilterBar<L extends BaseListing>({ cfg, filters: f, onCh
           )}
         {section(
           t(UI.cataloguePrice),
-          <div className="catalogue-range">
-            {endpoint('minPrice', `${t(UI.cataloguePrice)} ${t(UI.catalogueFrom)}`)}
-            <span>–</span>
-            {endpoint('maxPrice', t(T.maxPriceLabel))}
-            <span>€</span>
-          </div>,
+          <RangeSlider
+            minBound={bounds?.price?.[0] ?? fallback?.price[0] ?? 0}
+            maxBound={bounds?.price?.[1] ?? fallback?.price[1] ?? 2000}
+            step={5}
+            unit="€"
+            minValue={f.minPrice}
+            maxValue={f.maxPrice}
+            onChange={(min, max) => onChange({ ...f, minPrice: min, maxPrice: max })}
+            minAriaLabel={`${t(UI.cataloguePrice)} ${t(UI.catalogueFrom)}`}
+            maxAriaLabel={t(T.maxPriceLabel)}
+            fromPlaceholder={t(UI.catalogueFrom)}
+            toPlaceholder={t(UI.catalogueTo)}
+          />,
         )}
         {range &&
           section(
             t(range.label),
             <>
-              <div className="catalogue-range">
-                {endpoint('numericMin', `${t(range.label)} ${t(UI.catalogueFrom)}`)}
-                <span>–</span>
-                {endpoint('numericMax', `${t(range.label)} ${t(UI.catalogueTo)}`)}
-              </div>
+              <RangeSlider
+                minBound={bounds?.numeric?.[0] ?? fallback?.numeric?.[0] ?? 0}
+                maxBound={bounds?.numeric?.[1] ?? fallback?.numeric?.[1] ?? 1000}
+                step={fallback?.step ?? 5}
+                unit={RANGE_UNITS[cfg.id] ?? ''}
+                minValue={f.numericMin}
+                maxValue={f.numericMax}
+                onChange={(min, max) => onChange({ ...f, numericMin: min, numericMax: max })}
+                minAriaLabel={`${t(range.label)} ${t(UI.catalogueFrom)}`}
+                maxAriaLabel={`${t(range.label)} ${t(UI.catalogueTo)}`}
+                fromPlaceholder={t(UI.catalogueFrom)}
+                toPlaceholder={t(UI.catalogueTo)}
+              />
               {coverage != null && (
                 <p className="catalogue-coverage">
                   {t(UI.catalogueCoverage)} {coverage}%

@@ -27,6 +27,16 @@ export const RANGE_FIELDS = {
     label: { el: 'Ύψος αερόψυκτρας (mm)', en: 'Air cooler height (mm)' },
   },
 } as const;
+
+export const RANGE_UNITS: Record<string, string> = {
+  gpu: 'mm',
+  cpu: 'W',
+  ram: 'MT/s',
+  storage: 'GB',
+  case: 'mm',
+  psu: 'W',
+  cooler: 'mm',
+};
 export function numericValue(l: BaseListing, cat: string): number | null {
   const range = RANGE_FIELDS[cat as keyof typeof RANGE_FIELDS];
   if (!range) return null;
