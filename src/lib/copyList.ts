@@ -37,7 +37,7 @@ export function lineNotice(r: ResolvedLine): Text | null {
 }
 
 /** The total: the sum of the lines' shown prices (fans × their quantity). */
-export const linesTotal = (lines: ResolvedLine[]): number => Math.round(lines.reduce((sum, r) => sum + (r.requestedOffer && r.status !== 'chosen' ? 0 : r.total), 0) * 100) / 100;
+export const linesTotal = (lines: ResolvedLine[]): number => Math.round(lines.reduce((sum, r) => sum + r.total, 0) * 100) / 100;
 
 /** The shop of the listing used: the site, and the shop behind it when known. */
 export const shopName = (r: ResolvedLine): string =>

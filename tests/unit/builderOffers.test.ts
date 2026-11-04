@@ -45,6 +45,19 @@ describe('builder offer ownership', () => {
   it('marks a saved offer pending until its chunk arrives', () => {
     expect(resolveLine('cpu', model('cpu', listing('base')), 1, 'saved').status).toBe('pending');
   });
+  it('gives unresolved requested lines no display model or budget contribution', () => {
+    const m = model('cpu', listing('base'));
+    for (const r of [resolveLine('cpu', m, 1, 'gone'), resolveLine('cpu', m, 1, 'gone', [], false), resolveLine('cpu', m, 1, 'gone', undefined, true)]) {
+      expect(r.total).toBe(0);
+      expect(r.displayModel).toBeNull();
+    }
+  });
+  it('presents only the chosen listing measurements and name', () => {
+    const sibling = listing('base', { socket: 'AM5', memory: 'DDR5' });
+    const exact = listing('chosen', { title: 'Exact AM4 board', socket: 'AM4', memory: 'DDR4', price: 149 });
+    const r = resolveLine('mobo', model('board', sibling), 1, exact.id, [sibling, exact]);
+    expect(r.displayModel).toMatchObject({ key: 'board', chip: 'Exact AM4 board', cheapest: { socket: 'AM4', memory: 'DDR4', price: 149 }, listings: [r.offer] });
+  });
   it('does not attach another merchant’s shipping total to the selected listing', () => {
     const row = listing('offer', { price: 50, shipping: 4, total: 90, merchant: 'Different offer' });
     expect(resolveLine('cpu', model('cpu', row), 1, row.id, [row]).offer).toMatchObject({ price: 50, ship: null, merchant: null });

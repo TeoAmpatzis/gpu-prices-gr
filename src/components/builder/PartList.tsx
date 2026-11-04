@@ -51,7 +51,7 @@ export default function PartList({ state, openLine, setOpen }: { state: BuilderS
           const Icon = cfg.icon;
           const m = (line === 'storage2' ? state.storage2 : build[slot]) as AnyModel | undefined;
           const resolved = state.resolvedLines.find((r) => r.line === line);
-          const display = m && resolved ? { ...m, cheapest: resolved.offer, listings: [resolved.offer] } : m;
+          const display = resolved ? resolved.displayModel : m;
           const notice = resolved && lineNotice(resolved);
           const isOpen = openLine === line;
           const waiting = line === 'storage2' ? state.pendingStorage2 : state.pending.includes(slot);
@@ -59,9 +59,9 @@ export default function PartList({ state, openLine, setOpen }: { state: BuilderS
           return (
             <div key={line} className="p-3 sm:p-4" data-line={line}>
               <div className="grid grid-cols-[3.5rem_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[3.5rem_minmax(0,1fr)_auto]">
-                {m && (!resolved?.requestedOffer || resolved.status === 'chosen') ? (
+                {display ? (
                   // The chosen part's photo (the shop's own), the category icon if none.
-                  <ProductPhoto image={partImage(m)} size="md" icon={Icon} alt={m.chip} />
+                  <ProductPhoto image={partImage(display)} size="md" icon={Icon} alt={display.chip} />
                 ) : (
                   <span className={`grid w-14 shrink-0 place-items-center rounded-lg bg-accent/10 text-accent ${waiting ? 'h-14' : 'h-9'}`}>
                     <Icon className="h-4 w-4" />
@@ -96,7 +96,7 @@ export default function PartList({ state, openLine, setOpen }: { state: BuilderS
                   )}
                 </div>
                 <div className={`col-span-2 flex min-w-0 flex-wrap items-center justify-between gap-2 sm:col-span-1 sm:col-start-3 sm:row-start-1 sm:max-w-72 ${m || waiting ? 'min-h-14' : ''}`}>
-                {m && (!resolved?.requestedOffer || resolved.status === 'chosen') ? (
+                {display ? (
                   <a
                     href={display?.cheapest.url}
                     target="_blank"

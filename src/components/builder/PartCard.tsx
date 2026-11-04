@@ -14,6 +14,7 @@ import { FitBadge, ShipNote, partImage, specLine } from './parts';
 import PsuCard from './PsuCard';
 import ShopChoice from './ShopChoice';
 import { BUILDER as B } from '../../ui/builderStrings';
+import { lineNotice, lineTitle } from '../../lib/copyList';
 const G = { chosen: { el: 'Επιλέχθηκε', en: 'Chosen' }, choose: { el: 'Επιλογή', en: 'Choose' }, remove: { el: 'Αφαίρεση', en: 'Remove' } };
 export default function PartCard({
   slot,
@@ -47,8 +48,9 @@ export default function PartCard({
   const clash = hide;
   const reasons = rating.reasons.filter((r) => !reason || tr('en', r) !== tr('en', reason));
   const resolved = chosen ? state.resolvedLines.find((r) => r.line === line) : undefined;
-  const display = resolved ? { ...m, cheapest: resolved.offer } : m;
-  const sale = saleOf(m.listings, m.cheapest);
+  const display = resolved ? resolved.displayModel : m;
+  const notice = resolved && lineNotice(resolved);
+  const sale = display && saleOf(display.listings, display.cheapest);
   const Icon = CATEGORIES[slot as Category].icon;
   return (
     <li
@@ -58,12 +60,12 @@ export default function PartCard({
       <div className="flex gap-3">
         <ProductPhoto image={partImage(m)} size="md" icon={Icon} alt="" />
         <div className="min-w-0 flex-1">
-          <div className="line-clamp-2 font-medium [overflow-wrap:anywhere]">{slot === 'gpu' && resolved?.offer.title ? resolved.offer.title : m.chip}</div>
-          <div className="mt-0.5 text-xs text-muted [overflow-wrap:anywhere]">{slot === 'psu' ? <PsuCard m={m} lang={lang} /> : specLine(slot, m, lang)}</div>
+          <div className="line-clamp-2 font-medium [overflow-wrap:anywhere]">{resolved ? lineTitle(resolved, lang) : m.chip}</div>
+          <div className="mt-0.5 text-xs text-muted [overflow-wrap:anywhere]">{notice ? <span data-offer-notice={resolved?.status}>{t(notice)}</span> : display && (slot === 'psu' ? <PsuCard m={display} lang={lang} /> : specLine(slot, display, lang))}</div>
         </div>
       </div>
       {children}
-      {slot === 'storage' && line === 'storage' && (m.cheapest as StorageListing).media === 'HDD' && <p className="notice-warn p-2 text-xs">{t(B.hddSystem)}</p>}
+      {slot === 'storage' && line === 'storage' && (display?.cheapest as StorageListing | undefined)?.media === 'HDD' && <p className="notice-warn p-2 text-xs">{t(B.hddSystem)}</p>}
       {(rating.fit || sale) && (
         <div className="flex flex-wrap items-center gap-2">
           <FitBadge rating={rating} lang={lang} />
@@ -72,9 +74,9 @@ export default function PartCard({
       )}
       {rating.fit && rating.fit !== 'fits' && reasons[0] && <p className="line-clamp-3 text-xs text-muted">{reasons.map((r) => t(r)).join(' ')}</p>}
       <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
-        <span className="font-semibold tabular-nums">{formatPrice(display.cheapest.price, lang)}</span>
+        {display && <><span className="font-semibold tabular-nums">{formatPrice(display.cheapest.price, lang)}</span>
         <SourceBadge source={display.cheapest.source} />
-        <ShipNote m={display} lang={lang} />
+        <ShipNote m={display} lang={lang} /></>}
         {chosen ? (
           <span className="ml-auto flex items-center gap-1">
             <span className="inline-flex items-center gap-1 text-sm font-semibold text-accent">
