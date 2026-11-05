@@ -42,8 +42,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: pip
-          cache-dependency-path: scraper/requirements.txt
 
       - run: pip install -r scraper/requirements.txt
 
@@ -52,7 +50,7 @@ jobs:
         run: python scripts/checks/validate_skroutz.py snapshot "$RUNNER_TEMP/skroutz-before.json"
 
       - name: Scrape
-        run: python scraper/main.py
+        run: python -u scraper/main.py
 
       - name: Record collection window
         id: finished
