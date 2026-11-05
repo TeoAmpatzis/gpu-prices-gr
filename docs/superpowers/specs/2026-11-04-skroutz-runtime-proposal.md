@@ -1,6 +1,6 @@
 # Proposed Skroutz execution environment
 
-Status: reviewable proposal only. No runner has been registered or installed.
+Status: owner explicitly approved this setup. Repository-scoped `BuildDraftScrape` is installed as the described hidden process, with no service/startup/power change. First full production run passed; a scheduled run was later abandoned when the PC slept. Runner connectivity recovered after wake. The availability boundary below remains a real operating constraint.
 
 ## Evidence and choice
 
@@ -18,7 +18,7 @@ Recommendation: use the working local network for the existing scrape workflow, 
 - Route only the existing production scrape job to its exact self-hosted/Windows/X64/custom label set. Production job accepts scheduled/manual events on trusted `main`; diagnostic and PR jobs remain hosted.
 - Retain the existing Python setup, 90-minute limit, shared history concurrency, latest-main checkout, data-only commits/rebase, history guard and new exact-commit Skroutz verification.
 - Use the same approximately six-hour schedule. The PC and runner process must remain on and connected; a sleeping/offline machine cannot meet that schedule. Other sources can have different local access behavior and must be validated in the first full run.
-- Initial installation has no new paid-service subscription. Local electricity, network use and the owner's uptime/maintenance responsibility remain.
+- Initial installation has no new paid-service subscription. [GitHub documents self-hosted runners as free to use](https://docs.github.com/en/actions/concepts/runners/self-hosted-runners); local electricity, network use and the owner's uptime/maintenance responsibility remain.
 
 An offline self-hosted runner leaves jobs queued; the 90-minute job timeout does not bound that queue wait. The shared scrape/history concurrency group can therefore delay hosted history collection too. The owner must monitor runner availability and queued runs; GitHub failure emails do not provide an immediate offline alert. This setup is unsuitable if that availability responsibility cannot be met.
 
