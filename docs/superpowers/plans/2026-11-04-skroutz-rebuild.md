@@ -28,12 +28,12 @@
 
 ## Task 1 — Prove the collection environment
 
-- [ ] Record exact baseline commit, counts, IDs and source timestamps in ignored diagnostic output.
-- [ ] Run CPU/GPU/case/storage first-page probes locally with the released client. One attempt per category, spaced 30 seconds. Stop that candidate if access is not usable; no identical repeated batch.
-- [ ] If all pass, run read-only full collection for all categories; compare counts/IDs and record per-page completion evidence. No generated listings go into production files.
-- [ ] Stop the full candidate after two category failures; investigate their failure class before choosing a different method.
-- [ ] Repeat a passing full collection in a separate window before accepting runtime suitability.
-- [ ] Consult official Skroutz API documentation. Distinguish merchant-write APIs from an authorized read-price feed; do not invent access.
+- [x] Record exact baseline commit, counts, IDs and source timestamps in ignored diagnostic output.
+- [x] Run CPU/GPU/case/storage first-page probes locally with the released client. One attempt per category, spaced 30 seconds. Stop that candidate if access is not usable; no identical repeated batch.
+- [x] If all pass, run read-only full collection for all categories; compare counts/IDs and record per-page completion evidence. No generated listings go into production files.
+- [x] Stop the full candidate after two category failures; investigate their failure class before choosing a different method.
+- [x] Repeat a passing full collection in a separate window before accepting runtime suitability.
+- [x] Consult official Skroutz API documentation. Distinguish merchant-write APIs from an authorized read-price feed; do not invent access.
 
 Output: evidence for runtime selection, or a specific access blocker. Parser safety work can proceed offline while a runtime decision remains pending.
 
@@ -43,29 +43,30 @@ Output: evidence for runtime selection, or a specific access blocker. Parser saf
 
 **Interface:** Preserve `parse(html, scraped_at, cat) -> (listings, has_next)` and `fetch(cat) -> list`; add a focused internal pagination helper only where needed. Incomplete collection raises, allowing existing main fallback.
 
-- [ ] Write RED tests for exact variant prices, JSON-LD variants/malformed data, challenge/empty pages, next-link attribute ordering, invalid/off-host/other-category next URLs, duplicates, cycles, cap exhaustion, later-page/subpath failure and session cleanup.
-- [ ] Run `python scripts/checks/test_skroutz_collector.py`; inspect intended failures.
-- [ ] Implement robust native HTML extraction and same-host/category pagination validation. Honor actual next URLs; reject ambiguous incomplete traversals. Keep lowest-priced sponsored duplicates.
-- [ ] Preserve normalization, ID/URL/price contracts. Distinguish raw product cards from normalized listings so a fully filtered page is not mistaken for a network failure or end marker.
-- [ ] Run collector tests plus probe/source-status/HTTP/validator/history suites; obtain focused review and commit.
+- [x] Write RED tests for exact variant prices, JSON-LD variants/malformed data, challenge/empty pages, next-link attribute ordering, invalid/off-host/other-category next URLs, duplicates, cycles, cap exhaustion, later-page/subpath failure and session cleanup.
+- [x] Run `python scripts/checks/test_skroutz_collector.py`; inspect intended failures.
+- [x] Implement robust native HTML extraction and same-host/category pagination validation. Honor actual next URLs; reject ambiguous incomplete traversals. Keep lowest-priced sponsored duplicates.
+- [x] Preserve normalization, ID/URL/price contracts. Distinguish raw product cards from normalized listings so a fully filtered page is not mistaken for a network failure or end marker.
+- [x] Run collector tests plus probe/source-status/HTTP/validator/history suites; obtain focused review and commit.
 
 ## Task 3 — Production acceptance and truthful CI
 
 **Files:** `scraper/main.py`; `scripts/checks/validate_skroutz.py`; existing tests; `.github/workflows/scrape.yml`.
 
-- [ ] Write RED regressions for rejected suspicious snapshots, partial-success publication, retained-source timestamps/history and required-source outcome.
-- [ ] Reuse source validation at the responsible acceptance boundary. Enforce unique IDs, counts, completeness and reviewed coverage without contaminating other-source updates.
-- [ ] Add a required Skroutz gate after safe publication. Pin checks to the exact commit and this run's time window, including an upper bound. Gate failure must not prevent safe other-store publication.
-- [ ] Verify no-history-loss, concurrency and latest-main rebase guards remain mandatory.
-- [ ] Run source/validator/recovery/HTTP/alias/history tests and required lint/build checks; review and commit.
+- [x] Write RED regressions for rejected suspicious snapshots, partial-success publication, retained-source timestamps/history and required-source outcome.
+- [x] Reuse source validation at the responsible acceptance boundary. Enforce unique IDs, counts, completeness and reviewed coverage without contaminating other-source updates.
+- [x] Add a required Skroutz gate after safe publication. Pin checks to the exact commit and this run's time window, including an upper bound. Gate failure must not prevent safe other-store publication.
+- [x] Verify no-history-loss, concurrency and latest-main rebase guards remain mandatory.
+- [x] Run source/validator/recovery/HTTP/alias/history tests and required lint/build checks; review and commit.
 
 ## Task 4 — Runtime decision, cutover and sustained verification
 
-- [ ] Present demonstrated runtime choice, cost, machine availability and credential/code-execution boundary. Obtain any required setup decision before installation or publication.
-- [ ] Validate new collector read-only in that intended production environment across all configured paths, with reviewed count/ID differences.
-- [ ] Release only the reviewed scraper changes; retain rollback to the previous collector and all diagnostics.
-- [ ] Verify one full production scrape and two consecutive scheduled full scrapes using actual published source metadata, coverage and history logs. Never substitute a targeted repair for this gate.
-- [ ] Sync verified remote data into the local website through the existing normal merge path, then finish its previously outstanding browser/health checks.
+- [x] Present demonstrated runtime choice, cost, machine availability and credential/code-execution boundary. Obtain any required setup decision before installation or publication.
+- [x] Validate new collector read-only in that intended production environment across all configured paths, with reviewed count/ID differences.
+- [x] Release only the reviewed scraper changes; retain rollback to the previous collector and all diagnostics.
+- [x] Verify one full production scrape using actual published metadata, coverage and history: run 41896086713, data 6a171b8, nine categories, 10,863 listings, zero errors.
+- [ ] Verify two consecutive scheduled full scrapes with the same checks. Scheduled 41902862054 was abandoned after PC sleep; the bounded read-only monitor retains that failure and is awaiting two consecutive passes.
+- [x] Sync verified remote data into the local website through the existing normal merge path, then finish its previously outstanding browser/health checks.
 
 ## Execution ledger
 
