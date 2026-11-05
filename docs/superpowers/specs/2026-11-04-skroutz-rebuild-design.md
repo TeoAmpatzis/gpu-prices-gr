@@ -1,6 +1,6 @@
 # Skroutz rebuild: problems, options and pass gates
 
-Status: planning proposal. No replacement code, runner installation or production changes are authorized by this document alone.
+Status: owner approved the rebuild and subsequently approved the concrete PC runner proposal. Collector `743977b` and runtime `ad60469` are released. Full production data `6a171b8` passed all nine categories; two consecutive scheduled passes remain pending. The November 5 follow-up records a PC-sleep interruption separately from scraper correctness.
 
 ## Intent
 
@@ -119,8 +119,8 @@ All are required:
 
 No scraper can guarantee uninterrupted access to a third-party site. Passing means demonstrated collection plus safe and visible failure behavior.
 
-## 7. Decision still needed
+## 7. Runtime decision and remaining operational gate
 
-Where may collection run unattended? The existing GitHub-hosted environment has not passed the access gate. A trusted machine is a concrete candidate, but no always-on machine or runner setup has been approved. Authorized feed/API availability is also unknown. This decision determines the eventual runtime configuration; parser and safety contracts remain the same.
+Owner approved the concrete repository-scoped runner on this PC after reviewing its separate checkout, current-account code-execution boundary, fork approvals and availability responsibility. The first full production run passed. A scheduled run then lost communication while the PC slept, confirming that an awake, connected machine is required. No service, startup task or power change was authorized or installed. If this machine cannot remain available, a dedicated always-on environment is a new operational decision; no alternate feed/API access is assumed.
 
-Builder review: no material unanswered questions beyond this explicitly pending runtime/access decision. No implementation began during planning.
+Builder review found no material unanswered questions beyond the runtime decision, which was resolved by that subsequent explicit approval. Two consecutive scheduled full passes remain pending; source fallback and history safety do not depend on treating that gate as complete.
