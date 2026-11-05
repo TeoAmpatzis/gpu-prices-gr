@@ -41,7 +41,7 @@ Also written into the phases table of `docs/redesign-v2.md`.
 
 Also in `docs/redesign-v2.md` under "Σειρά υλοποίησης". v2 does not deploy until every item is checked.
 
-- [ ] **`scripts/checks/site-check.mjs` tests v2's real addresses**: `/gpu`, `/builder?…`, home, 404, and old `#` links redirecting. **v2 does not deploy until the health check tests the new addresses and has been seen to fail on a broken page.** From #13.
+- [x] **`scripts/checks/site-check.mjs` tests v2's real addresses**: `/gpu`, `/builder?…`, home, 404, and old `#` links redirecting. Verified November 5: all 71 maintained smoke/URL checks, source freshness and served photo passed. A deliberately broken `/gpu` proxy was detected before handoff. See `docs/local-review-2026-11-04.md`. Owner approval is still required before v2 deployment. From #13.
 
 ## Phase 2: data validation layer — notes
 

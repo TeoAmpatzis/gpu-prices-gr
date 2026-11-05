@@ -3,8 +3,11 @@
 **Date:** 2026-11-04  
 **Branch:** `design/claude-v2`  
 **Base Commit:** `362c43a` (`chore(data): sync latest scraper price update into v2`)  
-**Status:** **PASSED ALL CHECKS — READY FOR LOCAL ACCEPTANCE**  
+**Status:** **LOCAL FUNCTIONAL VERIFICATION PASSED — OWNER REVIEW PENDING**
+
 **Server:** `http://127.0.0.1:4173/` (`vite preview --host 127.0.0.1 --port 4173 --strictPort`)  
+
+**Latest verification (2026-11-05):** [Current local review report](local-review-2026-11-04.md) supersedes the aggregate counts below: 1,499 unit tests, 261 browser tests, 71 real-route health checks, all 45 source timestamps and a served WebP passed on published data `6a171b8`. The recorded heaviest-category mobile Lighthouse score is 89 and remains a performance limitation. The sections below preserve the initial gate record; v2 remains local for owner review.
 
 ---
 
