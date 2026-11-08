@@ -11,7 +11,7 @@ const series = (days: number, price: (age: number) => number) => Array.from({ le
 
 describe('dealOf', () => {
   it('keeps the numbers of the design', () => {
-    expect([DEAL_THRESHOLD, LOWEST_MARGIN, REFERENCE_DAYS, MIN_POINTS, MIN_SHOPS]).toEqual([0.07, 0.03, 30, 10, 2]);
+    expect([DEAL_THRESHOLD, LOWEST_MARGIN, REFERENCE_DAYS, MIN_POINTS, MIN_SHOPS]).toEqual([0.07, 0.03, 30, 10, 1]);
   });
 
   it('a price flat for 30 days is no deal, whatever a shop claims', () => {
@@ -28,12 +28,13 @@ describe('dealOf', () => {
     expect(dealOf(points, 93, 3, TODAY)?.pct).toBe(7);
   });
 
-  it('needs at least 10 history points, and at least 2 shops', () => {
+  it('needs at least 10 history points; one shop is enough (audit 2026-11-08: recall 57% -> 90%, precision 97% -> 96%)', () => {
     expect(dealOf(series(9, () => 100), 80, 3, TODAY)).toBeNull();
     expect(dealOf(series(10, () => 100), 80, 3, TODAY)?.pct).toBe(20);
     expect(dealOf(undefined, 80, 3, TODAY)).toBeNull();
     expect(dealOf([], 80, 3, TODAY)).toBeNull();
-    expect(dealOf(series(30, () => 100), 80, 1, TODAY)).toBeNull();
+    expect(dealOf(series(30, () => 100), 80, 1, TODAY)?.pct).toBe(20);
+    expect(dealOf(series(30, () => 100), 80, 0, TODAY)).toBeNull();
   });
 
   it('a one-day spike does not move the median, so going back to normal is no deal', () => {

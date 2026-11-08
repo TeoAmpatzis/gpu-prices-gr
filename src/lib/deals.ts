@@ -13,8 +13,8 @@ export const LOWEST_MARGIN = 0.03;
 export const REFERENCE_DAYS = 30;
 /** Daily lows needed in the window before a reference means anything. */
 export const MIN_POINTS = 10;
-/** Distinct shops that must list the model today. */
-export const MIN_SHOPS = 2;
+/** Distinct shops that must list the model today (1: the history audit shows a single shop's deals are as reliable). */
+export const MIN_SHOPS = 1;
 /** History needed before "lowest" means something (as before: src/lib/data.ts LOW_MIN_DAYS). */
 const LOWEST_MIN_DAYS = 60;
 
