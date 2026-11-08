@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { CATEGORIES, type CategoryConfig } from '../../lib/categories';
 import { groupModels, ownTotal } from '../../lib/data';
 import { tr, useLang } from '../../lib/i18n';
+import { applyMeta, pageMeta, productJsonLd } from '../../lib/pageMeta';
 import type { Slot } from '../../lib/slots';
 import { guardMoved, resolveModel, type ModelResolution } from '../../lib/modelData';
 import { checkedAt, sortOffers } from '../../lib/offers';
@@ -66,9 +67,18 @@ export default function ModelPage({ cat, slug }: { cat: Category; slug: string }
   // The tab title names the model once it is known (App leaves model pages' titles to this page); until then, and on
   // the gone / error states, the category's.
   const name = mine && 'res' in mine && mine.res.kind === 'ok' ? (selection && resolveProductSelection(mine.res.entry.listings, selection)?.title) || mine.res.entry.chip : null;
+  const listings = mine && 'res' in mine && mine.res.kind === 'ok' ? mine.res.entry.listings : null;
   useEffect(() => {
-    document.title = `${name ?? catName} — BuildDraft.gr`; // the separator every other page uses
-  }, [name, catName]);
+    if (!name || !listings?.length) {
+      applyMeta(pageMeta(`/${cat}`, lang)); // until the model is known, and on the gone / error states, the category's
+      return;
+    }
+    const prices = listings.map((l) => l.price);
+    const data = { name, low: Math.min(...prices), high: Math.max(...prices), shops: new Set(listings.map((l) => l.source)).size };
+    const meta = pageMeta(`/${cat}/${slug}`, lang, data);
+    applyMeta(meta, productJsonLd(meta, data));
+    return () => document.head.querySelector('script[data-jsonld]')?.remove();
+  }, [name, listings, cat, slug, lang]);
 
   if (!mine) return <SkeletonRows />;
   if ('error' in mine) {
