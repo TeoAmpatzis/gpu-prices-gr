@@ -10,6 +10,7 @@ import re
 import threading
 import time
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from curl_cffi import requests
 
@@ -23,6 +24,13 @@ RETRY_WAITS = (20.0, 60.0, 120.0)  # seconds before the 1st, 2nd and 3rd retry
 RETRY_CAP = 12 * 60.0
 _retry_waited = 0.0
 _retry_lock = threading.Lock()
+
+# Circuit breaker, per host: after this many requests in a row that stayed blocked even after all their
+# retries, `get` raises at once for that host. A challenged IP is not hammered; the run fails loudly
+# (the nine-category check) and the previous data stays. Any usable response resets the count.
+BREAKER_FAILURES = 2
+_failed_in_a_row: dict[str, int] = {}
+_breaker_lock = threading.Lock()
 
 
 def _reserve_wait(seconds: float) -> bool:
@@ -112,10 +120,16 @@ def get(s: requests.Session, url: str, **kwargs) -> requests.Response:
     Cookies are cleared before a retry, so it starts fresh. Raises like `raise_for_status` (or
     RuntimeError for a challenge page) once the retries or the run's retry allowance run out.
     """
+    host = urlsplit(url).netloc
+    with _breaker_lock:
+        if _failed_in_a_row.get(host, 0) >= BREAKER_FAILURES:
+            raise RuntimeError(f"circuit open for {host}: {BREAKER_FAILURES} requests in a row stayed blocked")
     for attempt in range(len(RETRY_WAITS) + 1):
         r = s.get(url, **kwargs)
         why = _block(r)
         if why is None:
+            with _breaker_lock:
+                _failed_in_a_row[host] = 0
             r.raise_for_status()
             return r
         detail = f"{why} cf-mitigated={r.headers.get('cf-mitigated', '-')} server={r.headers.get('server', '-')}"
@@ -126,6 +140,8 @@ def get(s: requests.Session, url: str, **kwargs) -> requests.Response:
         print(f"  blocked: {detail} {url[:90]} — retry {attempt + 1} in {wait:.0f}s")
         s.cookies.clear()
         time.sleep(wait)
+    with _breaker_lock:  # the retries ran out: one more failure in a row for this host
+        _failed_in_a_row[host] = _failed_in_a_row.get(host, 0) + 1
     if r.status_code >= 400:
         r.raise_for_status()
     raise RuntimeError("Cloudflare challenge")
