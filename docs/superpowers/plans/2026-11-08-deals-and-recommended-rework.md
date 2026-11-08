@@ -10,6 +10,22 @@
 
 **Spec:** `docs/superpowers/specs/2026-11-08-deals-and-recommended-rework-design.md`
 
+## Progress (updated 2026-11-08, end of session)
+
+| Task | Status |
+|---|---|
+| 1 Readable sort control | done, deployed (origin/main 9c7e142) |
+| 2 Filters empty = all | done, deployed. The two motherboard Socket lists are labelled "Main sockets" / "All sockets"; the merge into one list was tried and dropped (it broke builder-gate f-guided-1366-en, cause unknown) |
+| 3 Tap targets | done, deployed |
+| 4 Sanity guard | done, committed locally (66bbcb6), not deployed. Limits are 25% / 5x (design said 40% / 3x; 40% flagged 1.2% of real data) |
+| 5 Deal engine | done, committed locally (304248f, 4407119), not deployed. No list-format bump was needed (optional columns) |
+| 6 Recommended v2 | done, committed locally (c89a143), not deployed. "Best deals" is still the old "Biggest discount" sort |
+| 7 Quick build RAM | NOT started |
+| 8 SEO phases 1-2 | NOT started |
+| 9 Audit script | done, deployed. After tasks 4-6: deals 97%, lowest 100%, recall 57% (target 60%), 0 suspect in top 40 |
+
+**Continue here:** ask the owner to deploy tasks 4-6 (merge `origin/main`, push `design/deals-rework:main`, verify the live site), then do Task 7, then Task 8, then re-run `npx tsx scripts/checks/deal-audit.mts` after a build.
+
 ## Global Constraints
 
 - Initial data <= 300 KB gzip; JS <= 110 KB gzip; home feed <= 20 KiB gzip (spec section 3).
