@@ -26,6 +26,7 @@ jobs:
       - run: python scripts/checks/probe_strategies.py --impersonate ${{ matrix.profile }}
 
   warp:
+    if: false # experiment 2 done: 3/3 requests returned listings through WARP
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -48,3 +49,50 @@ jobs:
           warp-cli --accept-tos status
           curl -s --socks5-hostname 127.0.0.1:40000 https://www.cloudflare.com/cdn-cgi/trace | head -12
       - run: python scripts/checks/probe_strategies.py --impersonate chrome --proxy socks5h://127.0.0.1:40000
+
+  # Experiment 3: the whole Skroutz listing collection through WARP, validated but never published.
+  listings-warp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r scraper/requirements.txt
+      - name: Snapshot source data
+        run: |
+          echo "BASE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+          python scripts/checks/validate_skroutz.py snapshot skroutz-baseline.json
+      - name: Cloudflare WARP in proxy mode (only the scraper uses it)
+        run: |
+          curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
+          sudo apt-get update -q && sudo apt-get install -y -q cloudflare-warp
+          sudo systemctl start warp-svc || true
+          sleep 5
+          warp-cli --accept-tos registration new
+          warp-cli --accept-tos mode proxy
+          warp-cli --accept-tos connect
+          sleep 8
+          warp-cli --accept-tos status
+          curl -s --socks5-hostname 127.0.0.1:40000 https://www.cloudflare.com/cdn-cgi/trace | head -12
+      - name: Scrape Skroutz listings without publishing
+        env:
+          SCRAPER_PROXY: socks5h://127.0.0.1:40000
+        run: python -u scraper/main.py --only skroutz --no-shipping --specs-budget 0 --makers-budget 0 | tee skroutz-scrape.log
+      - name: Require fresh, complete Skroutz results
+        if: always()
+        run: python scripts/checks/validate_skroutz.py check skroutz-baseline.json
+      - name: Preserve history
+        if: always()
+        run: python scraper/merge_history.py check "$BASE_SHA"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: skroutz-warp-listings-${{ github.run_id }}
+          path: |
+            skroutz-baseline.json
+            skroutz-validation.json
+            skroutz-scrape.log
+          if-no-files-found: warn
