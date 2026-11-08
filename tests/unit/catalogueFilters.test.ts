@@ -69,9 +69,10 @@ describe('individual catalogue records', () => {
     expect(decodeFilters(new URLSearchParams(encodeFilters(f, cfg)), cfg)).toEqual(f);
   });
   it('never lends a sibling discount or measurement to a product', () => {
+    // The build marks every listing of a model at a deal; only the offer that is itself under the typical price is one.
     const siblings = [
-      { ...all[0], drop: 20 },
-      { ...all[1], drop: null },
+      { ...all[0], dealPct: 14, dealRef: 350 },
+      { ...all[1], dealPct: 14, dealRef: 350 },
     ];
     expect(filterCatalogue(siblings, { ...defaultFilters(cfg.groups), saleOnly: true }, cfg).map((p) => p.key)).toEqual([encodeOfferChoice(siblings[0])]);
     expect(productSpecs('gpu', siblings[0], 'en')[0].value).toBe('250 mm');

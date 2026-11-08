@@ -40,6 +40,16 @@ for (const cat of CATEGORIES) {
   });
 }
 
+test('/case?sale=1: every listed row shows a deal badge, with its reference price in the tooltip', async ({ page }) => {
+  await page.goto('/case?sale=1');
+  await page.locator('main [data-product-key]:visible').first().waitFor();
+  const rows = page.locator('main [data-product-key]:visible');
+  const total = await rows.count();
+  expect(total).toBeGreaterThan(0);
+  await expect(page.locator('main [data-product-key]:visible .badge-sale')).toHaveCount(total);
+  expect(await page.locator('main [data-product-key]:visible .badge-sale').first().getAttribute('title')).toMatch(/30-day typical price: .*€|τυπική τιμή 30 ημερών: .*€/);
+});
+
 test('/mobo: the two socket lists are told apart, and an old link naming one socket still narrows', async ({ page }) => {
   await page.goto('/mobo');
   await page.locator('main [data-product-key]:visible').first().waitFor();

@@ -11,6 +11,7 @@ import type {
 import type { CategoryConfig } from './categories';
 import type { CategoryRules } from './categoryRules';
 import { recommendedScores } from './ranking';
+import { DEAL_THRESHOLD } from './deals';
 import { isDipPrice, untrustedPoints } from './dips';
 import { assertListFormat, decodeHist, decodePhotos, fromColumns, listUrl } from './columns';
 
@@ -112,22 +113,20 @@ export interface Model<L extends BaseListing> {
   low?: AllTimeLow | null;
 }
 
-/** A discount the site itself announces: Skroutz/BestPrice price-drop badge, Shopflix "Προσφορά", e-shop RRP. */
+/** A deal decided from our own price history (src/lib/deals.ts), not from a shop's label. */
 export interface Sale {
-  pct: number; // e.g. 12 for −12%
-  source: SourceName;
+  pct: number; // e.g. 12 for −12% against the model's 30-day typical price
+  source: SourceName; // the shop with the cheapest offer
+  reference?: number; // that typical price
 }
 
-/** The model's own offers at (about) its lowest price that the site marks as a price drop. */
-export function saleOf<L extends BaseListing>(ls: L[], cheapest: L): Sale | null {
-  let best: Sale | null = null;
-  for (const l of ls) {
-    // Only offers within 2% of the cheapest count: a discounted offer that is still dearer isn't a deal.
-    if (l.drop != null && l.drop >= 5 && l.price <= cheapest.price * 1.02 && (!best || l.drop > best.pct)) {
-      best = { pct: l.drop, source: l.source };
-    }
-  }
-  return best;
+/** The model's deal: the build marks every listing of a model at a deal (`dealPct`); the cheapest one carries the answer. */
+export function saleOf<L extends BaseListing>(_ls: L[], cheapest: L): Sale | null {
+  const ref = cheapest.dealRef;
+  if (!cheapest.dealPct || ref == null || ref <= 0) return null;
+  // The listing's own price against the model's typical price: a dearer offer of a model at a deal is not a deal.
+  const pct = Math.round((1 - cheapest.price / ref) * 100);
+  return pct >= DEAL_THRESHOLD * 100 ? { pct, source: cheapest.source, reference: ref } : null;
 }
 
 export interface AllTimeLow {
@@ -352,9 +351,9 @@ export function filterModels<L extends BaseListing>(
   all: L[],
   f: Filters,
   cfg: CategoryRules<L>,
-  history: Record<string, DailyLow[]> = {},
-  imported: Imported = {},
-  lows?: LowMemo,
+  _history: Record<string, DailyLow[]> = {},
+  _imported: Imported = {},
+  _lows?: LowMemo,
 ): Model<L>[] {
   const q = f.query.trim().toLowerCase();
   const listings = all.filter(
@@ -365,12 +364,10 @@ export function filterModels<L extends BaseListing>(
       // Per listing, so a model's price is that of a listing that matches (e.g. the CL30 kit).
       cfg.extraFilters.every((x) => !f.extra[x.key] || x.test(l, f.extra[x.key])),
   );
-  const lowOf = (m: Model<L>) => {
-    if (!lows) return allTimeLow(history[m.key], imported[m.key], m.cheapest.price);
-    const k = `${m.key}\n${m.cheapest.price}`;
-    let low = lows.get(k);
-    if (low === undefined) lows.set(k, (low = allTimeLow(history[m.key], imported[m.key], m.cheapest.price)));
-    return low;
+  // "Lowest": decided at build time from the full history (src/lib/deals.ts lowestOf) and carried on the model's listings.
+  const lowOf = (m: Model<L>): AllTimeLow | null => {
+    const since = m.cheapest.lowestSince ?? m.listings.find((l) => l.lowestSince)?.lowestSince;
+    return since ? { since } : null;
   };
   const grouped = groupModels(listings, cfg, all).map((m) => ({
     ...m,
