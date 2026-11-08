@@ -121,4 +121,12 @@ describe('autoFiles: auto.json and the minimum per use', () => {
     expect(minimum['gaming-4k']).toBeNull();
     expect(file.uses['gaming-4k'].every((b) => b === -1)).toBe(true);
   });
+  it('RAM: a dual-channel kit within 15% of the cheapest single stick per GB beats the single stick', () => {
+    const single = model('DDR5 16GB (1×16GB) 6000MHz', 40, { type: 'DDR5', capacity: 16, modules: 1, speed: 6000, formFactor: 'Desktop' });
+    const dual = model('DDR5 16GB (2×8GB) 6000MHz', 45, { type: 'DDR5', capacity: 16, modules: 2, speed: 6000, formFactor: 'Desktop' });
+    const pricey = model('DDR5 16GB (2×8GB) 7200MHz', 60, { type: 'DDR5', capacity: 16, modules: 2, speed: 7200, formFactor: 'Desktop' });
+    const pick = (ram: typeof models.ram) => cheapestPick(autoCandidates({ ...models, ram }, 'everyday'))!.parts.ram;
+    expect(pick([single, dual])).toBe(dual.key);
+    expect(pick([single, pricey])).toBe(single.key);
+  });
 });
