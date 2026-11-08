@@ -103,6 +103,13 @@ test('sort control options are readable', async ({ page }) => {
   expect(colours.ratio).toBeGreaterThanOrEqual(4.5);
 });
 
+test('product title links are at least 24px tall on a phone', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/psu');
+  const box = await page.locator('a[data-product-link]:visible').first().boundingBox();
+  expect(box!.height).toBeGreaterThanOrEqual(24);
+});
+
 test('an unknown address shows the 404 page', async ({ page }) => {
   await page.goto('/gpus');
   await expect(page.locator('main h1')).toHaveText(/Η σελίδα δεν βρέθηκε|Page not found/);
