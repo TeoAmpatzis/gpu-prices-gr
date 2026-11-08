@@ -72,6 +72,13 @@
 
 /* Colours: src/ui/tokens.css (v1's colour names are roles or aliases there). */
 
+/* Every native select's pop-up list: opaque theme colours, so light text never sits on the browser's white. */
+select option,
+select optgroup {
+  background-color: rgb(var(--panel));
+  color: rgb(var(--fg));
+}
+
 @layer components {
   /* Raised container (cards, tables, popovers): 1px border + a very light shadow in light mode. */
   .card {
