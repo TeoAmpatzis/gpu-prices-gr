@@ -18,6 +18,7 @@ import type { Plugin } from 'vite';
 import type { Category, History, Imported, Latest, Manifest, ModelChunk } from './src/types';
 import { CATEGORIES, CATEGORY_IDS } from './src/lib/categories';
 import { listingKey, suspectListings, type Suspect } from './src/lib/sanity';
+import { withDeals } from './src/lib/deals';
 import { VALIDATION_MODE, validateLatest } from './src/data/validate';
 import { conflicts } from './src/data/validate/conflicts';
 import { compatFiles } from './src/lib/compatBuild';
@@ -129,7 +130,10 @@ export function derive(
     if (suspects.size) suspectReport[cat] = [...suspects.values()];
     suspectTotal += suspects.size;
     listingTotal += withMakers.listings.length;
-    const checked = suspects.size ? { ...withMakers, listings: withMakers.listings.filter((l) => !suspects.has(listingKey(l))) } : withMakers;
+    const clean = suspects.size ? { ...withMakers, listings: withMakers.listings.filter((l) => !suspects.has(listingKey(l))) } : withMakers;
+    // Deals and "lowest" from the full history (design WS2): carried on every listing of the model.
+    const key = CATEGORIES[cat].modelKey as (x: (typeof clean.listings)[number]) => string;
+    const checked = { ...clean, listings: withDeals(clean.listings, key, input.history, input.imported, builtAt.slice(0, 10)) };
     latest[cat] = checked;
     history[cat] = input.history;
     files[`data/${cat}/list.v2.json`] = JSON.stringify(listFile(cat, { ...input, latest: checked }, builtAt, image));
