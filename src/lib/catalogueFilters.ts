@@ -1,7 +1,7 @@
 import type { BaseListing, DailyLow, Imported } from '../types';
 import type { CategoryRules } from './categoryRules';
 import type { CategoryConfig } from './categories';
-import { filterModels, type Filters, type Model, saleOf } from './data';
+import { defaultFilters, filterModels, type Filters, type Model, saleOf } from './data';
 import { catalogueProducts, type CatalogueProduct } from './catalogueProducts';
 import { recommendedScores } from './ranking';
 
@@ -44,6 +44,19 @@ export function numericValue(l: BaseListing, cat: string): number | null {
   return typeof value === 'number' && Number.isFinite(value) ? value : null;
 }
 /** Family ranking/history remain family evidence; every price/spec/source gate is listing-local. */
+/** Recommended scores over the whole segment of the category, once per listings array: a filter never changes a model's score. */
+const segmentScores = new WeakMap<object, Map<string, Map<string, number>>>();
+function stableScores<L extends BaseListing>(all: L[], f: Filters, cfg: CategoryRules<L>): Map<string, number> {
+  let bySegment = segmentScores.get(all);
+  if (!bySegment) segmentScores.set(all, (bySegment = new Map()));
+  const id = `${cfg.id}|${f.segment}`;
+  let scores = bySegment.get(id);
+  if (!scores) {
+    const models = filterModels(all, { ...defaultFilters([]), segment: f.segment }, cfg);
+    bySegment.set(id, (scores = recommendedScores(models, cfg.id, (cfg as { value?: (m: Model<L>) => number | null }).value)));
+  }
+  return scores;
+}
 export function filterCatalogue<L extends BaseListing>(
   all: L[],
   f: Filters,
@@ -51,7 +64,9 @@ export function filterCatalogue<L extends BaseListing>(
   history: Record<string, DailyLow[]> = {},
   imported: Imported = {},
 ): CatalogueRecord<L>[] {
+  const scores = f.sort === 'model' ? stableScores(all, f, cfg) : null;
   const families = filterModels(all, { ...f, maxPrice: null, saleOnly: false, lowOnly: false }, cfg, history, imported);
+  if (scores) for (const family of families) family.score = scores.get(family.key);
   return families.flatMap((family) =>
     catalogueProducts(cfg.id, [family])
       .filter(({ listing: l }) => {
@@ -69,7 +84,9 @@ export function filterCatalogue<L extends BaseListing>(
 }
 export function sortCatalogue<L extends BaseListing>(products: CatalogueRecord<L>[], f: Filters, cfg: CategoryConfig<L>): CatalogueRecord<L>[] {
   const families = [...new Map(products.map((p) => [p.familyKey, p.family])).values()];
-  const scores = f.sort === 'model' ? recommendedScores(families, cfg.id, cfg.value) : new Map<string, number>();
+  // The scores filterCatalogue attached (stable over the whole category); computed here only for a caller that sorts its own list.
+  const scores = f.sort === 'model' && families.some((m) => m.score === undefined) ? recommendedScores(families, cfg.id, cfg.value) : new Map<string, number>();
+  const scoreOf = (p: CatalogueRecord<L>) => p.family.score ?? scores.get(p.familyKey) ?? 0;
   const ratio = (p: CatalogueRecord<L>) => {
     const tb = cfg.capacityTb?.(p.listing);
     return tb ? p.listing.price / tb : Infinity;
@@ -83,7 +100,7 @@ export function sortCatalogue<L extends BaseListing>(products: CatalogueRecord<L
     if (f.sort === 'discount') return (saleOf([b.listing], b.listing)?.pct ?? 0) - (saleOf([a.listing], a.listing)?.pct ?? 0) || price;
     return (
       Number(a.family.pro) - Number(b.family.pro) ||
-      (scores.get(b.familyKey) ?? 0) - (scores.get(a.familyKey) ?? 0) ||
+      scoreOf(b) - scoreOf(a) ||
       cfg.tierScore(b.family) - cfg.tierScore(a.family) ||
       a.familyKey.localeCompare(b.familyKey) ||
       price

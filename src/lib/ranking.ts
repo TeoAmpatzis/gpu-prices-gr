@@ -24,6 +24,7 @@ import type {
   StorageListing,
 } from '../types';
 import type { Model } from './data';
+import { GPU_PERF_MAX, gpuPerf } from './value';
 
 export interface RankConfig {
   weights: { popularity: number; modern: number; price: number; value: number };
@@ -32,21 +33,24 @@ export interface RankConfig {
   saleBoost: number;
 }
 
+/** A real deal (src/lib/deals.ts) adds at most this much to a score: a tie-break, never the main driver. The "lowest ever" flag adds nothing. */
+export const DEAL_BOOST = 1.03;
+
 export const RANKING: Record<Category, RankConfig> = {
-  gpu: { weights: { popularity: 0.3, modern: 0.3, price: 0.15, value: 0.25 }, priceBand: [0.25, 0.8], saleBoost: 1.1 },
-  cpu: { weights: { popularity: 0.4, modern: 0.35, price: 0.25, value: 0 }, priceBand: [0.2, 0.8], saleBoost: 1.1 },
-  mobo: { weights: { popularity: 0.4, modern: 0.35, price: 0.25, value: 0 }, priceBand: [0.2, 0.8], saleBoost: 1.1 },
-  ram: { weights: { popularity: 0.3, modern: 0.4, price: 0.15, value: 0.15 }, priceBand: [0.25, 0.8], saleBoost: 1.1 },
-  storage: { weights: { popularity: 0.35, modern: 0.3, price: 0.1, value: 0.25 }, priceBand: [0.2, 0.8], saleBoost: 1.1 },
+  // GPU: quality = generation + measured performance (so a 5090 is not buried for costing a lot); only a small price-fit weight, to temper halo cards.
+  gpu: { weights: { popularity: 0.25, modern: 0.5, price: 0.1, value: 0.15 }, priceBand: [0.25, 0.8], saleBoost: DEAL_BOOST },
+  cpu: { weights: { popularity: 0.4, modern: 0.4, price: 0.1, value: 0 }, priceBand: [0.2, 0.8], saleBoost: DEAL_BOOST },
+  mobo: { weights: { popularity: 0.4, modern: 0.35, price: 0.25, value: 0 }, priceBand: [0.2, 0.8], saleBoost: DEAL_BOOST },
+  ram: { weights: { popularity: 0.3, modern: 0.4, price: 0.15, value: 0.15 }, priceBand: [0.25, 0.8], saleBoost: DEAL_BOOST },
+  storage: { weights: { popularity: 0.35, modern: 0.3, price: 0.1, value: 0.25 }, priceBand: [0.2, 0.8], saleBoost: DEAL_BOOST },
   psu: {
     weights: { popularity: 0.35, modern: 0.35, price: 0.15, value: 0.15 },
     priceBand: [0.25, 0.8],
-    saleBoost: 1.1,
+    saleBoost: DEAL_BOOST,
   },
-  // Cases and fans: smaller sale boost — some Shopflix sellers mark whole ranges as "Προσφορά".
-  case: { weights: { popularity: 0.6, modern: 0.1, price: 0.3, value: 0 }, priceBand: [0.2, 0.8], saleBoost: 1.02 },
-  fan: { weights: { popularity: 0.45, modern: 0.3, price: 0.15, value: 0.1 }, priceBand: [0.2, 0.8], saleBoost: 1.03 },
-  cooler: { weights: { popularity: 0.55, modern: 0.15, price: 0.3, value: 0 }, priceBand: [0.2, 0.8], saleBoost: 1.1 },
+  case: { weights: { popularity: 0.6, modern: 0.1, price: 0.3, value: 0 }, priceBand: [0.2, 0.8], saleBoost: DEAL_BOOST },
+  fan: { weights: { popularity: 0.45, modern: 0.3, price: 0.15, value: 0.1 }, priceBand: [0.2, 0.8], saleBoost: DEAL_BOOST },
+  cooler: { weights: { popularity: 0.55, modern: 0.15, price: 0.3, value: 0 }, priceBand: [0.2, 0.8], saleBoost: DEAL_BOOST },
 };
 
 // ---------- "modern" tables (0–1) ----------
@@ -83,7 +87,11 @@ const EFFICIENCY: Record<string, number> = {
 const CASE_SIZE: Record<string, number> = { 'Midi Tower': 1, 'Full Tower': 0.8, 'Mini Tower': 0.7, 'SFF / Cube': 0.7 };
 
 const MODERN: { [C in Category]: (m: Model<never>) => number } = {
-  gpu: (m) => gpuGeneration((m as Model<GpuListing>).cheapest.chip),
+  gpu: (m) => {
+    const chip = (m as Model<GpuListing>).cheapest.chip;
+    const perf = gpuPerf(chip);
+    return perf == null ? gpuGeneration(chip) : 0.4 * gpuGeneration(chip) + 0.6 * (perf / GPU_PERF_MAX);
+  },
   cpu: (m) => socketScore((m as Model<CpuListing>).cheapest.socket),
   mobo: (m) => {
     const l = (m as Model<MoboListing>).cheapest;
@@ -195,7 +203,7 @@ export function recommendedScores<L extends BaseListing>(
       w.modern * MODERN[category](m as Model<never>) +
       w.price * priceFit(m.cheapest.price, lo, hi) +
       w.value * (v == null ? 0 : (valueOf.get(v) ?? 0));
-    scores.set(m.key, (parts / total) * (m.sale || m.low ? rc.saleBoost : 1));
+    scores.set(m.key, (parts / total) * (m.sale ? rc.saleBoost : 1));
   });
   return scores;
 }

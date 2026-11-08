@@ -23,6 +23,11 @@ const GPU_PERF: Record<string, number> = {
   'Arc B580': 105, 'Arc B570': 92, 'Arc A770': 90, 'Arc A750': 82, 'Arc A580': 75, 'Arc A380': 35, 'Arc A310': 25,
 };
 
+/** Relative performance of a GPU chip (RTX 4060 = 100), or null when the chip is not in the table. */
+export const gpuPerf = (chip: string): number | null => GPU_PERF[chip] ?? null;
+/** The fastest chip in the table, the 1.0 of the performance scale. */
+export const GPU_PERF_MAX = Math.max(...Object.values(GPU_PERF));
+
 export const gpuValue = (m: Model<GpuListing>): number | null => {
   const perf = GPU_PERF[m.cheapest.chip];
   return perf ? perf / m.cheapest.price : null;
