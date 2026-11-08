@@ -55,6 +55,19 @@ export interface AutoPick {
 
 const price = (m: AnyModel) => m.cheapest.price;
 const byPrice = <M extends AnyModel>(ms: M[]) => [...ms].sort((a, b) => price(a) - price(b));
+/**
+ * RAM in pick order: from 16 GB up, a 2-module (dual-channel) kit within 15% of the cheapest single module's price per GB
+ * comes first, cheapest first; every other kit follows in price order. Suspect prices are already left out of the data.
+ */
+function dualChannelFirst(ms: AnyModel[]): AnyModel[] {
+  const l = (m: AnyModel) => m.cheapest as RamListing;
+  const perGb = (m: AnyModel) => price(m) / l(m).capacity;
+  const singles = ms.filter((m) => l(m).modules === 1).map(perGb);
+  if (!singles.length) return ms;
+  const limit = Math.min(...singles) * 1.15;
+  const dual = (m: AnyModel) => l(m).modules === 2 && l(m).capacity >= 16 && perGb(m) <= limit;
+  return [...ms.filter(dual), ...ms.filter((m) => !dual(m))];
+}
 const cents = (n: number) => Math.round(n * 100) / 100;
 
 /** No error or warning anywhere; with `strict` also no "not verified" physical fit about `key`. */
@@ -124,7 +137,7 @@ export function autoCandidates(models: AutoModels, use: UseKey, ctx: Context = {
   const cache = new Map<string, unknown>();
   for (const p of PLATFORMS) {
     const boards = byPrice(models.mobo.filter((m) => moboSocket(m as Model<MoboListing>) === p.socket && moboMemory(m as Model<MoboListing>) === p.memory));
-    const sticks = ram.filter((m) => (m.cheapest as RamListing).type === p.memory);
+    const sticks = dualChannelFirst(ram.filter((m) => (m.cheapest as RamListing).type === p.memory));
     const cpus = perTier(
       models.cpu.filter((m) => {
         const l = m.cheapest as CpuListing;
