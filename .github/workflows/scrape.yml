@@ -6,7 +6,7 @@ name: scrape
 # Skroutz paths that robots.txt disallows.
 on:
   schedule:
-    - cron: "13 */6 * * *"
+    - cron: "13 */12 * * *" # twice a day: fewer requests from the shared WARP IP, prices rarely need more
   workflow_dispatch:
     inputs:
       allow_history_shrink:
@@ -28,8 +28,37 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Cooldown: a scheduled run is skipped when the last completed run failed less than 24 h ago, so a
+  # challenged IP is not retried every cycle. A skipped run counts as a success, so the run after it goes ahead.
+  # A manual run always goes ahead.
+  gate:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    outputs:
+      run: ${{ steps.cooldown.outputs.run }}
+    steps:
+      - id: cooldown
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT" != "schedule" ]; then echo "run=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          last=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow scrape.yml --status completed --limit 1 \
+            --json conclusion,updatedAt --jq '.[0] | "\(.conclusion) \(.updatedAt)"' || true)
+          conclusion=${last%% *}; ended=${last#* }
+          if [ "$conclusion" = "failure" ] && [ $(( $(date +%s) - $(date -d "$ended" +%s) )) -lt 86400 ]; then
+            echo "::warning::Skipping this Skroutz run: the last run failed at $ended (24 h cooldown)"
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
   scrape:
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+    needs: gate
+    if: needs.gate.outputs.run == 'true' && github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     # A full Skroutz run (9 categories) took about 12 minutes through WARP; the rest is headroom.
     timeout-minutes: 90
