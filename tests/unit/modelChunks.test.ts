@@ -12,7 +12,7 @@ import { checkData, listFile, manifest, modelChunks, sameKind, searchFile, type 
 import { importGlitches, sharedImportedDays, sharedImportedLows, untrustedPoints } from '../../src/lib/dips';
 import { photoId } from '../../src/lib/images';
 import { MODEL_CHUNKS, loadModel, modelChunkOf, modelChunkPath } from '../../src/lib/modelData';
-import { SLOT_OF, toPart } from '../../src/lib/pick';
+import { SLOT_OF, slotOf, toPart } from '../../src/lib/pick';
 import { recommendedScores } from '../../src/lib/ranking';
 import { modelSlug, nameSlug, slugLookup } from '../../src/lib/slug';
 import { psuProductKey } from '../../src/lib/psuProduct';
@@ -207,7 +207,7 @@ describe('model chunks over today\'s data', () => {
     });
 
     it(`${cat}: engine parts by the builder's key (slotModels + toPart)`, () => {
-      const slot = SLOT_OF[cat];
+      const slot = slotOf(cat)!; // the categories built here are all builder parts
       const step = Math.max(1, Math.floor(entries.length / 30));
       for (const e of entries.filter((_, i) => i % step === 0)) {
         const want = slotModels(slot, byKey.get(e.key)!.listings as never[]).map((p) => [p.key, toPart(slot, p as never).fields]);

@@ -32,7 +32,7 @@ class SourceStatusTests(unittest.TestCase):
                 def wrap(rows):
                     return [SimpleNamespace(to_dict=lambda row=row: dict(row)) for row in rows]
                 sources = {"skroutz": lambda _: wrap(incoming), "bestprice": lambda _: wrap([fresh])}
-                cat = SimpleNamespace(name="cpu", settle=None, model_key=lambda row: row["chip"])
+                cat = SimpleNamespace(name="cpu", settle=None, rejects=False, images=True, model_key=lambda row: row["chip"])
                 with patch.object(mn, "DATA_DIR", root), patch.object(mn, "SOURCES", sources), \
                         patch.object(mn, "now_iso", return_value=run_at), patch.object(mn, "write_image_urls"), \
                         patch.object(mn, "finish"), patch.object(mn, "write_history", return_value={}) as history, \
@@ -66,7 +66,7 @@ class SourceStatusTests(unittest.TestCase):
 
                 sources = {"skroutz": skroutz,
                            "bestprice": lambda _: [SimpleNamespace(to_dict=lambda: dict(fresh))]}
-                cat = SimpleNamespace(name="cpu", settle=None, model_key=lambda row: row["chip"])
+                cat = SimpleNamespace(name="cpu", settle=None, rejects=False, images=True, model_key=lambda row: row["chip"])
                 summary = root / "summary.md"
                 captured = io.StringIO()
                 with patch.dict(os.environ, {"GITHUB_ACTIONS": "true", "GITHUB_STEP_SUMMARY": str(summary)}), \
@@ -139,7 +139,7 @@ class SourceStatusTests(unittest.TestCase):
             fresh = {"id": "skroutz:2", "source": "skroutz", "chip": "fresh", "price": 110}
             meta = {"count": 1, "ok": True, "updatedAt": "2026-11-03T00:00:00Z"}
             (out / "latest.json").write_text(json.dumps({"sources": {"bestprice": meta}, "listings": [old]}))
-            cat = SimpleNamespace(name="cpu", settle=None, model_key=lambda row: row["chip"])
+            cat = SimpleNamespace(name="cpu", settle=None, rejects=False, images=True, model_key=lambda row: row["chip"])
             sources = {"skroutz": lambda _: [SimpleNamespace(to_dict=lambda: fresh)],
                        "bestprice": lambda _: self.fail("unselected source was fetched")}
             with patch.object(mn, "DATA_DIR", root), patch.object(mn, "SOURCES", sources), \
@@ -160,7 +160,7 @@ class SourceStatusTests(unittest.TestCase):
             old = {"id": "bestprice:1", "source": "bestprice", "chip": "old", "price": 100}
             meta = {"count": 1, "ok": True, "updatedAt": "2026-11-03T00:00:00Z"}
             (out / "latest.json").write_text(json.dumps({"sources": {"bestprice": meta}, "listings": [old]}))
-            cat = SimpleNamespace(name="cpu", settle=None, model_key=lambda row: row["chip"])
+            cat = SimpleNamespace(name="cpu", settle=None, rejects=False, images=True, model_key=lambda row: row["chip"])
             sources = {"skroutz": lambda _: [],
                        "bestprice": lambda _: self.fail("unselected source was fetched")}
             with patch.object(mn, "DATA_DIR", root), patch.object(mn, "SOURCES", sources), \

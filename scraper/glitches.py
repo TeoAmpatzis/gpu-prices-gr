@@ -39,13 +39,15 @@ from collections import Counter
 from datetime import date, datetime, timezone
 from pathlib import Path
 
+from category_ids import CATEGORY_IDS
+
 # The same numbers as v2 src/lib/dips.ts.
 SHARED_LOW_MODELS = 3
 GLITCH_MAX_DAYS = 3
 GLITCH_RISE = 1.05
 
 EVIDENCE_FILE = "import_glitches.json"
-CATEGORIES = ["gpu", "cpu", "mobo", "ram", "storage", "psu", "case", "fan", "cooler"]
+CATEGORIES = list(CATEGORY_IDS)
 DATA_DIR = Path(__file__).resolve().parent.parent / "public" / "data"
 
 

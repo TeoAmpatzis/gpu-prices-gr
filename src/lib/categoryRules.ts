@@ -11,6 +11,7 @@ import type {
   FanListing,
   GpuListing,
   MoboListing,
+  MonitorListing,
   PsuListing,
   RamListing,
   StorageListing,
@@ -450,9 +451,24 @@ export const STORAGE_RULES: CategoryRules<StorageListing> = {
   ],
 };
 
+// Monitors (hidden until Phase 3 designs the real filters): pills by diagonal, a model is the scraper's `chip`
+// (scraper/normalize_monitor.py settle names it "<brand> <code>", plus size/panel/refresh when a code has several).
+const monitorGroup = (l: MonitorListing) =>
+  l.size == null ? OTHER : l.size <= 24.5 ? '≤24"' : l.size <= 27.5 ? '25–27"' : l.size <= 32.5 ? '28–32"' : '34"+';
+
+export const MONITOR_RULES: CategoryRules<MonitorListing> = {
+  id: 'monitor',
+  groups: ['≤24"', '25–27"', '28–32"', '34"+', OTHER],
+  group: monitorGroup,
+  modelKey: (l) => l.chip,
+  isPro: () => false,
+  searchText: (l) => `${l.chip} ${l.title}`,
+  extraFilters: [vendorFilter()],
+};
+
 export const RULES = {
   gpu: GPU_RULES, cpu: CPU_RULES, mobo: MOBO_RULES, ram: RAM_RULES, storage: STORAGE_RULES, psu: PSU_RULES,
-  case: CASE_RULES, fan: FAN_RULES, cooler: COOLER_RULES,
+  case: CASE_RULES, fan: FAN_RULES, cooler: COOLER_RULES, monitor: MONITOR_RULES,
 } as const;
 
 /** A category's rules for code that handles every category alike (the facet worker and its fallback). */

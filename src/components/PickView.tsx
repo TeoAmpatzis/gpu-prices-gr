@@ -8,7 +8,8 @@ import type { Finding, Part } from '../engine';
 import { shownLevel } from '../engine/util';
 import { type CategoryData } from '../lib/data';
 import { tr, useLang, type Lang } from '../lib/i18n';
-import { SLOT_OF, hides } from '../lib/pick';
+import { hides, slotOf } from '../lib/pick';
+import type { Slot } from '../lib/slots';
 import { shownOffer } from '../lib/pickBuild';
 import { useMedia } from '../lib/useMedia';
 import { usePick, type PickState } from '../lib/usePick';
@@ -88,7 +89,7 @@ function Candidate({ pick, candidate, dim, label, lang }: { pick: PickState; can
 export default function PickView<L extends BaseListing>({ cfg, data, filters, setFilters }: LayoutProps<L>) {
   const lang = useLang();
   const t = (x: Parameters<typeof tr>[1]) => tr(lang, x);
-  const slot = SLOT_OF[cfg.id];
+  const slot = slotOf(cfg.id) as Slot; // CategoryView renders PickView only for builder parts
   const pick = usePick(slot, data as unknown as CategoryData);
   const ready = pick.status === 'ready';
   const wide = useMedia('(min-width: 1024px)');

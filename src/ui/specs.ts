@@ -13,6 +13,7 @@ import type {
   FanListing,
   GpuListing,
   MoboListing,
+  MonitorListing,
   PsuListing,
   RamListing,
   StorageListing,
@@ -152,6 +153,17 @@ const SPECS: { [C in Category]: (ls: BaseListing[], lang: Lang) => Spec[] } = {
         ? { label: w(lang, 'ψυγείο', 'radiator'), value: labelled(w(lang, 'ψυγείο', 'radiator'), mm(lang, pick(ls, (l) => l.radiator))) }
         : { label: w(lang, 'ύψος', 'height'), value: labelled(w(lang, 'ύψος', 'height'), mm(lang, pick(ls, (l) => l.heightMm))) },
       { label: 'sockets', value: sockets?.length ? sockets.join(', ') : null },
+    ];
+  },
+  monitor: (raw, lang) => {
+    const ls = raw as L<MonitorListing>;
+    const size = pick(ls, (l) => l.size);
+    const height = pick(ls, (l) => l.height);
+    const hz = pick(ls, (l) => l.hz);
+    return [
+      { label: w(lang, 'διαγώνιος', 'diagonal'), value: size == null ? null : `${num(lang, size)}"` },
+      { label: w(lang, 'ανάλυση', 'resolution'), value: height == null ? null : `${height}p` },
+      { label: w(lang, 'ανανέωση', 'refresh'), value: hz == null ? null : `${hz} Hz` },
     ];
   },
 };
@@ -340,6 +352,19 @@ const FULL: { [C in Category]: (ls: BaseListing[], lang: Lang, est?: Estimate) =
         ? ['dimensions', w(lang, 'Ψυγείο', 'Radiator'), mm(lang, pick(ls, (l) => l.radiator))]
         : ['dimensions', w(lang, 'Ύψος', 'Height'), mm(lang, pick(ls, (l) => l.heightMm))],
       ['connections', 'Sockets', sockets?.length ? sockets.join(', ') : null],
+    ];
+  },
+  monitor: (raw, lang) => {
+    const ls = raw as L<MonitorListing>;
+    const size = pick(ls, (l) => l.size);
+    const height = pick(ls, (l) => l.height);
+    const width = pick(ls, (l) => l.width);
+    const hz = pick(ls, (l) => l.hz);
+    return [
+      ['general', w(lang, 'Διαγώνιος', 'Diagonal'), size == null ? null : `${num(lang, size)}"`],
+      ['general', w(lang, 'Ανάλυση', 'Resolution'), height == null ? null : width == null ? `${height}p` : `${width} × ${height}`],
+      ['general', w(lang, 'Ρυθμός ανανέωσης', 'Refresh rate'), hz == null ? null : `${hz} Hz`],
+      ['general', 'Panel', pick(ls, (l) => l.panel)],
     ];
   },
 };

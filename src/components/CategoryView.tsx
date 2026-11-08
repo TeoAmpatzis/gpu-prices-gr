@@ -6,6 +6,7 @@ import type { CategoryConfig } from '../lib/categories';
 import type { FacetCounts } from '../lib/facets';
 import { facetsClient } from '../lib/facetsClient';
 import { T, tr, useLang } from '../lib/i18n';
+import { slotOf } from '../lib/registry';
 import { useFilterState } from '../lib/useFilterState';
 import ActiveFilters from './ActiveFilters';
 import BottomSheet from './BottomSheet';
@@ -69,9 +70,12 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
       .then(setData)
       .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)));
   }, [cfg.id, attempt]);
+  // `pick=1` only means something for a builder part; on other categories the page stays normal and the
+  // picker chunk is never requested.
+  const picking = filters.pick && slotOf(cfg.id) !== null;
   useEffect(() => {
-    if (filters.pick) void loadPick().catch(() => {}); // a failure shows when PickView renders (error boundary)
-  }, [filters.pick]);
+    if (picking) void loadPick().catch(() => {}); // a failure shows when PickView renders (error boundary)
+  }, [picking]);
   const wide = useMedia('(min-width: 1024px)');
 
   // A failed load: the translated message and a retry, the technical detail folded (UX-19).
@@ -98,7 +102,7 @@ export default function CategoryView<L extends BaseListing>({ cfg }: { cfg: Cate
     <SkeletonCards cards={4} />
   );
   if (!data) return loading;
-  if (!filters.pick) return <CategoryLayout cfg={cfg} data={data} filters={filters} setFilters={setFilters} />;
+  if (!picking) return <CategoryLayout cfg={cfg} data={data} filters={filters} setFilters={setFilters} />;
   // Pick mode: its code was requested with the data, so the placeholder rarely shows (and the page's
   // filtering doesn't run twice).
   const props = {

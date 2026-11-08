@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Box, CircuitBoard, Cpu, Fan, HardDrive, MemoryStick, Microchip, Plug, Snowflake, type LucideIcon } from 'lucide-react';
+import { Box, CircuitBoard, Cpu, Fan, HardDrive, MemoryStick, Microchip, Monitor, Plug, Snowflake, type LucideIcon } from 'lucide-react';
 import type {
   BaseListing,
   CaseListing,
@@ -9,6 +9,7 @@ import type {
   FanListing,
   GpuListing,
   MoboListing,
+  MonitorListing,
   PsuListing,
   RamListing,
   StorageListing,
@@ -26,6 +27,7 @@ import {
   GROUP_NAMES,
   MEMORY,
   MOBO_RULES,
+  MONITOR_RULES,
   NO_RATING,
   OTHER,
   PSU_RULES,
@@ -36,6 +38,7 @@ import {
   VENDOR,
   type CategoryRules,
 } from './categoryRules';
+import { REGISTRY } from './registry';
 import { fanValue, gpuValue, psuValue, ramValue, storageValue } from './value';
 import { CAT_PAGE } from '../shell/texts';
 
@@ -433,7 +436,34 @@ export const STORAGE: CategoryConfig<StorageListing> = {
   ],
 };
 
+// ---------- Monitors ----------
+// Hidden (registry: enabled false, visible false) until the monitor data passes its gates and Phase 3 designs the
+// page: this is the smallest valid config, so the type system and the data build know the category.
+const SIZE_GROUP: Text = { el: 'Διαγώνιος', en: 'Diagonal' };
+
+export const MONITOR: CategoryConfig<MonitorListing> = {
+  ...MONITOR_RULES,
+  tab: { el: 'Οθόνες', en: 'Monitors' },
+  title: CAT_PAGE.monitor.title,
+  subtitle: CAT_PAGE.monitor.subtitle,
+  icon: Monitor,
+  empty: noResults('οθόνες', 'monitors'),
+  searchPlaceholder: search('G50F, AW2725DM'),
+  groupLabel: SIZE_GROUP,
+  groupParam: 'size',
+  groupDot: { '≤24"': 'bg-idle', '25–27"': 'bg-idle', '28–32"': 'bg-idle', '34"+': 'bg-idle', [OTHER]: 'bg-idle' },
+  sortByGroup: false,
+  tierScore: (m) => m.listings.length,
+  before: [
+    { header: SIZE_GROUP, className: 'hidden sm:table-cell', numeric: true, cell: (m) => (m.cheapest.size ? `${m.cheapest.size}"` : '—') },
+    { header: { el: 'Ανάλυση', en: 'Resolution' }, className: 'hidden sm:table-cell', cell: (m) => (m.cheapest.height ? `${m.cheapest.height}p` : '—') },
+  ],
+  after: [{ header: { el: 'Hz', en: 'Hz' }, className: 'hidden sm:table-cell', numeric: true, cell: (m) => m.cheapest.hz ?? '—' }],
+};
+
 export const CATEGORIES = {
   gpu: GPU, cpu: CPU, mobo: MOBO, ram: RAM, storage: STORAGE, psu: PSU, case: CASE, fan: FAN, cooler: COOLER,
+  monitor: MONITOR,
 } as const;
-export const CATEGORY_IDS = Object.keys(CATEGORIES) as Category[];
+/** The categories the site builds data for: those the registry has switched on. A hidden category stays out of the build. */
+export const CATEGORY_IDS = (Object.keys(CATEGORIES) as Category[]).filter((id) => REGISTRY[id].enabled);

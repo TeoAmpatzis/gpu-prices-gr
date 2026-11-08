@@ -2,7 +2,9 @@
 import type { AliasRecord } from './data/modelAliases';
 import type { Slot } from './lib/slots';
 
-export type Category = 'gpu' | 'cpu' | 'mobo' | 'ram' | 'storage' | 'psu' | 'case' | 'fan' | 'cooler';
+import type { Category } from './lib/registry';
+
+export type { Category };
 export type Brand = 'NVIDIA' | 'AMD' | 'Intel';
 export type BoardSize = 'E-ATX' | 'ATX' | 'Micro ATX' | 'Mini ITX';
 export type SourceName = 'skroutz' | 'bestprice' | 'eshop' | 'shopflix' | 'snif';
@@ -84,6 +86,19 @@ export interface RamListing extends BaseListing {
   speed: number | null; // MHz
   cas?: number | null; // CAS latency (CL)
   formFactor: 'Desktop' | 'Laptop' | 'Server';
+}
+
+// A monitor offer (scraper/models.py MonitorListing). Every spec is what THIS listing states; null = not stated.
+// Never a builder part: peripherals do not feed the compatibility engine.
+export interface MonitorListing extends BaseListing {
+  code: string | null; // manufacturer model code, e.g. "S30GD"
+  size: number | null; // diagonal, inches
+  height: number | null; // pixel rows (1080, 1440, 2160 ...)
+  width: number | null;
+  hz: number | null;
+  panel: 'IPS' | 'VA' | 'TN' | 'OLED' | null;
+  colour: 'black' | 'white' | 'silver' | 'grey' | null;
+  revision: string | null; // model-year token such as "2026"
 }
 
 export interface PsuListing extends BaseListing {

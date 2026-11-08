@@ -33,6 +33,7 @@ def setup(tmp: Path) -> Path:
     git(tmp, "clone", str(origin), str(seed))
     (seed / "scraper").mkdir()
     shutil.copy(REPO / "scraper" / "merge_history.py", seed / "scraper")
+    shutil.copy(REPO / "scraper" / "category_ids.py", seed / "scraper")  # merge_history takes its categories from it
     shutil.copy(REPO / "scraper" / "aliases.py", seed / "scraper")  # check reads the model aliases
     shutil.copy(REPO / "scraper" / "model_aliases.json", seed / "scraper")
     shutil.copy(REPO / ".gitattributes", seed)

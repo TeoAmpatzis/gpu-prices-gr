@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { fromColumns } from '../../src/lib/columns';
 import { builderFiles } from '../../src/lib/derive';
 import { SLOTS, slotModels, usable as builderUsable, type Slot } from '../../src/lib/builderData';
-import { PART_FIELDS, SLOT_OF, toPart, usable } from '../../src/lib/pick';
+import { PART_FIELDS, SLOT_OF, slotOf, toPart, usable } from '../../src/lib/pick';
 import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
 import { CATEGORY_IDS } from '../../src/lib/categories';
 import type { BaseListing, Category, Latest } from '../../src/types';
@@ -21,7 +21,8 @@ const sample = <T,>(xs: T[], n: number) => xs.filter((_, i) => i % Math.max(1, M
 
 describe('pick parts', () => {
   it('SLOT_OF is the identity for the nine categories', () => {
-    for (const c of CATEGORY_IDS) expect(SLOT_OF[c]).toBe(c);
+    for (const c of CATEGORY_IDS) expect(slotOf(c)).toBe(c);
+    expect(Object.keys(SLOT_OF).sort()).toEqual([...CATEGORY_IDS].sort());
   });
 
   for (const slot of SLOTS) {

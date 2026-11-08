@@ -28,10 +28,12 @@ import subprocess
 import sys
 from pathlib import Path
 
+from category_ids import CATEGORY_IDS
+
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "public" / "data"
 KEEP = 365  # main.HISTORY_DAYS = site_history.KEEP_DAYS
-CATEGORIES = ["gpu", "cpu", "mobo", "ram", "psu", "case", "fan", "cooler", "storage"]
+CATEGORIES = list(CATEGORY_IDS)
 
 
 # ---------- history.json ----------
