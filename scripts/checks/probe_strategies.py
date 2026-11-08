@@ -29,7 +29,7 @@ def parsed(html: str, at: str) -> dict:
     return {"result": "ok" if listings else "empty", "listings": len(listings)}
 
 
-def main(profile: str) -> int:
+def main(profile: str, proxy: str | None = None) -> int:
     from curl_cffi import requests
 
     rows = []
@@ -37,9 +37,10 @@ def main(profile: str) -> int:
         if i:
             time.sleep(GAP)
         at = datetime.now(timezone.utc).isoformat()
-        row = {"profile": profile, "at": at}
+        row = {"profile": profile, "proxy": bool(proxy), "at": at}
         try:
-            s = requests.Session(impersonate=profile, headers={"Accept-Language": "el-GR,el;q=0.9,en;q=0.8"}, timeout=30)
+            s = requests.Session(impersonate=profile, headers={"Accept-Language": "el-GR,el;q=0.9,en;q=0.8"}, timeout=30,
+                                 proxies={"https": proxy, "http": proxy} if proxy else None)
             r = s.get(URL)
             row.update(status=r.status_code, cf_mitigated=r.headers.get("cf-mitigated"))
             row.update(parsed(r.text, at) if r.status_code == 200 else {"result": "blocked"})
@@ -53,4 +54,6 @@ def main(profile: str) -> int:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--impersonate", default="chrome")
-    sys.exit(main(ap.parse_args().impersonate))
+    ap.add_argument("--proxy")
+    a = ap.parse_args()
+    sys.exit(main(a.impersonate, a.proxy))
