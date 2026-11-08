@@ -82,6 +82,27 @@ test('home shows search, PC Builder and the category tiles', async ({ page }) =>
   expect(errors).toEqual([]);
 });
 
+test('sort control options are readable', async ({ page }) => {
+  await page.goto('/gpu');
+  const colours = await page.locator('select.catalogue-sort').first().evaluate((select) => {
+    const option = select.querySelector('option')!;
+    const s = getComputedStyle(option);
+    const lum = (css: string) => {
+      const [r, g, b] = (css.match(/\d+(\.\d+)?/g) ?? ['0', '0', '0']).slice(0, 3).map(Number).map((v) => {
+        const c = v / 255;
+        return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+      });
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    };
+    const [a, b] = [lum(s.backgroundColor), lum(s.color)].sort((x, y) => y - x);
+    return { bg: s.backgroundColor, fg: s.color, ratio: (a + 0.05) / (b + 0.05) };
+  });
+  // Opaque: a transparent option lets the browser paint its own white pop-up behind light text.
+  expect(colours.bg).toMatch(/^rgb\(/);
+  expect(colours.bg).not.toBe('rgb(255, 255, 255)');
+  expect(colours.ratio).toBeGreaterThanOrEqual(4.5);
+});
+
 test('an unknown address shows the 404 page', async ({ page }) => {
   await page.goto('/gpus');
   await expect(page.locator('main h1')).toHaveText(/Η σελίδα δεν βρέθηκε|Page not found/);

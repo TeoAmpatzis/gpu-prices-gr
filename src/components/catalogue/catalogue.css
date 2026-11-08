@@ -448,6 +448,9 @@
 .catalogue-sort {
   width: auto;
   max-width: 210px;
+  /* Opaque, not transparent: the browser's own pop-up list takes this colour, light text on white otherwise. */
+  background-color: rgb(var(--panel));
+  color: rgb(var(--fg));
 }
 .catalogue-sheet-filters .catalogue-filter-card {
   background: transparent;
