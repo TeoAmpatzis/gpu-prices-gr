@@ -6,6 +6,8 @@ import { formatPrice } from '../../lib/data';
 import { productHref } from '../../lib/productSelection';
 import { tr, useLang } from '../../lib/i18n';
 import { SOURCES } from '../../lib/sources';
+import { productImage } from '../../lib/images';
+import { Photo } from '../../ui/Photo';
 import { UI } from '../../ui/strings';
 import type { RowPick } from '../ModelRow';
 import { productSpecs } from './specs';
@@ -18,8 +20,10 @@ interface Props<L extends BaseListing> {
   pick?: RowPick<L>;
   onReset: () => void;
   emptyExtra?: ReactNode;
+  /** Keys of the models that have a photo (list.v2.json `photos`); without it every row shows the category icon. */
+  photos?: Set<string>;
 }
-export default function ProductList<L extends BaseListing>({ cfg, products, cards, pick, onReset, emptyExtra }: Props<L>) {
+export default function ProductList<L extends BaseListing>({ cfg, products, cards, pick, onReset, emptyExtra, photos }: Props<L>) {
   const lang = useLang();
   const t = (text: { el: string; en: string }) => tr(lang, text);
   if (!products.length)
@@ -53,9 +57,7 @@ export default function ProductList<L extends BaseListing>({ cfg, products, card
       known,
       name: (
         <div className="catalogue-product-name">
-          <span className="catalogue-photo" aria-hidden="true">
-            <cfg.icon size={24} />
-          </span>
+          <Photo image={productImage(cfg.id, p.family.key, photos?.has(p.family.key) ?? false)} size={cards ? 'md' : 'sm'} icon={cfg.icon} alt="" />
           <div>
             <a data-product-link href={href}>
               {l.title || l.chip}

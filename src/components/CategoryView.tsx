@@ -358,6 +358,7 @@ export function CategoryLayout<L extends BaseListing>({ cfg, data, filters, setF
             pick={pick?.row}
             onReset={reset}
             emptyExtra={pick?.empty}
+            photos={data.photos}
           />
         )}
         <div className="catalogue-pagination">
