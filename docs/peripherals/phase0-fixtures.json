@@ -1,0 +1,1361 @@
+{
+ "_note": "Phase 0 recon sample, 2026-11-08. Raw list-page titles, first pages only (BestPrice p1-3, Skroutz p1-3, Snif p1-3, e-shop p1). No prices. Not a reviewed matching corpus. Shopflix not sampled (see PHASE0_REPORT.md).",
+ "sources": {
+  "bestprice": [
+   {
+    "id": "2163455282",
+    "title": "Samsung Odyssey G5 G50SF OLED HDR Gaming Monitor 27\" 2560x1440 QHD 180Hz 0.03ms"
+   },
+   {
+    "id": "2160331925",
+    "title": "Samsung Essential S3 S30GD IPS HDR Monitor 24\" 1920x1080 FHD 100Hz 5ms"
+   },
+   {
+    "id": "2160331924",
+    "title": "Samsung Essential S3 S30GD IPS HDR Monitor 27\" 1920x1080 FHD 100Hz 5ms"
+   },
+   {
+    "id": "2159903255",
+    "title": "Xiaomi G Pro 27i IPS HDR Gaming Monitor 27\" 2560x1440 QHD 180Hz 1ms"
+   },
+   {
+    "id": "2159326196",
+    "title": "Samsung Odyssey G5 LS27CG552EU VA HDR Curved Gaming Monitor 27\" 2560x1440 QHD 165Hz 1ms"
+   },
+   {
+    "id": "2163629679",
+    "title": "Gigabyte MO32U2 QD-OLED HDR Gaming Monitor 31.5\" 3840x2160 4K UHD 240Hz 0.03ms"
+   },
+   {
+    "id": "2163689592",
+    "title": "Xiaomi A24i 2026 IPS Monitor 23.8\" 1920x1080 FHD 144Hz 6ms"
+   },
+   {
+    "id": "2163375863",
+    "title": "Xiaomi G27i 2026 IPS HDR Gaming Monitor 27\" 1920x1080 FHD 200Hz 1ms"
+   },
+   {
+    "id": "2160831868",
+    "title": "Samsung M80D LS32FM801 VA HDR Smart Monitor 32\" 3840x2160 4K UHD 60Hz 4ms"
+   },
+   {
+    "id": "2160075655",
+    "title": "AOC Q27G4XF IPS HDR Gaming Monitor 27\" 2560x1440 QHD 180Hz 0.5ms"
+   },
+   {
+    "id": "2159326195",
+    "title": "Samsung Odyssey G5 LS32CG552EU VA HDR Curved Gaming Monitor 31.5\" 2560x1440 QHD 165Hz 1ms"
+   },
+   {
+    "id": "2162575395",
+    "title": "Dell Alienware AW2725D QD-OLED HDR Gaming Monitor 27\" 2560x1440 QHD 280Hz 0.03ms"
+   },
+   {
+    "id": "2159870576",
+    "title": "AOC CQ32G4VE VA HDR Curved Gaming Monitor 31.5\" 2560x1440 QHD 180Hz 0.5ms"
+   },
+   {
+    "id": "2159812185",
+    "title": "Dell Alienware AW3225QF QD-OLED HDR Curved Gaming Monitor 31.6\" 3840x2160 4K UHD 240Hz 0.03ms"
+   },
+   {
+    "id": "2160150952",
+    "title": "Gigabyte Aorus FO32U OLED HDR Gaming Monitor 32\" 3840x2160 4K UHD 165Hz 0.03ms"
+   },
+   {
+    "id": "2164461759",
+    "title": "Samsung Essential Monitor G3 G31H IPS Gaming Monitor 24\" 1920x1080 FHD 144Hz 1ms"
+   },
+   {
+    "id": "2163438721",
+    "title": "LG UltraGear 27G810A-B IPS HDR Gaming Monitor 27\" 3840x2160 4K UHD 180Hz 1ms"
+   },
+   {
+    "id": "2162733509",
+    "title": "LG UltraGear 27G610A-B IPS HDR Gaming Monitor 27\" 2560x1440 QHD 200Hz 1ms"
+   },
+   {
+    "id": "2162565874",
+    "title": "Samsung Odyssey G6 G60SF OLED HDR Gaming Monitor 27\" 2560x1440 QHD 500Hz 0.03ms"
+   },
+   {
+    "id": "2160831853",
+    "title": "Dell UltraSharp U3225QE IPS Monitor 31.5\" 3840x2160 4K UHD 120Hz 8ms"
+   },
+   {
+    "id": "2159430363",
+    "title": "Dell Alienware AW2725DF QD-OLED HDR Gaming Monitor 26.7\" 2560x1440 QHD 360Hz 0.03ms"
+   },
+   {
+    "id": "2159359754",
+    "title": "AOC CU34G2XP Ultrawide VA Curved Gaming Monitor 34\" 3440x1440 QHD 180Hz 1ms"
+   },
+   {
+    "id": "2163388510",
+    "title": "Samsung Odyssey G5 G50F IPS HDR Gaming Monitor 27\" 2560x1440 QHD 180Hz 1ms"
+   },
+   {
+    "id": "2159430365",
+    "title": "Asus Rog Swift PG32UCDM Gen3 OLED HDR Gaming Monitor 31.5\" 3840x2160 4K UHD 240Hz 0.3ms"
+   },
+   {
+    "id": "2164461760",
+    "title": "Samsung Odyssey G3 G30H IPS HDR Gaming Monitor 24\" 1920x1080 FHD 200Hz 1ms"
+   },
+   {
+    "id": "2163636825",
+    "title": "Samsung LS27HG612SUXEN OLED HDR Gaming Monitor 27\" 2560x1440 QHD 240Hz 0.03ms"
+   },
+   {
+    "id": "2160831852",
+    "title": "Dell UltraSharp U2725QE IPS HDR Monitor 27\" 3840x2160 4K UHD 120Hz 8ms"
+   },
+   {
+    "id": "2162733506",
+    "title": "LG UltraGear 32GX850A-B OLED HDR Gaming Monitor 32\" 3840x2160 4K UHD 165Hz 0.03ms"
+   },
+   {
+    "id": "2160658077",
+    "title": "Dell Plus S2725QC IPS HDR Monitor 27\" 3840x2160 4K UHD 120Hz 8ms"
+   },
+   {
+    "id": "2163451459",
+    "title": "Samsung Odyssey G7 G70F IPS HDR Gaming Monitor 27\" 3840x2160 4K UHD 180Hz 1ms"
+   },
+   {
+    "id": "2163388509",
+    "title": "Samsung Odyssey G5 G50F IPS HDR Gaming Monitor 32\" 2560x1440 QHD 180Hz 1ms"
+   },
+   {
+    "id": "2160831866",
+    "title": "Dell Alienware AW2725DM IPS HDR Gaming Monitor 27\" 2560x1440 QHD 180Hz 4ms"
+   },
+   {
+    "id": "2159712581",
+    "title": "Philips Evnia 27M2N3500NL VA HDR Gaming Monitor 27\" 2560x1440 QHD 180Hz 1ms"
+   },
+   {
+    "id": "2162733510",
+    "title": "LG UltraGear 32G600A-B VA HDR Curved Gaming Monitor 32\" 2560x1440 QHD 180Hz 1ms"
+   },
+   {
+    "id": "2162575393",
+    "title": "Gigabyte MO27Q2A QD-OLED HDR Gaming Monitor 27\" 2560x1440 QHD 280Hz 0.03ms"
+   },
+   {
+    "id": "2160871637",
+    "title": "Dell Pro Plus P3425WE Ultrawide IPS Curved Monitor 34\" 3440x1440 QHD 100Hz 8ms"
+   },
+   {
+    "id": "2158368346",
+    "title": "Samsung Odyssey G5 LC34G55TWWP Ultrawide VA HDR Curved Gaming Monitor 34\" 3440x1440 QHD 165Hz 1ms"
+   },
+   {
+    "id": "2164012825",
+    "title": "Dell Alienware AW2726DM QD-OLED HDR Gaming Monitor 26.5\" 2560x1440 QHD 240Hz 0.03ms"
+   },
+   {
+    "id": "2162555251",
+    "title": "Gigabyte G34WQC2 Ultrawide VA HDR Curved Gaming Monitor 34\" 3440x1440 QHD 200Hz 1ms"
+   },
+   {
+    "id": "2160831856",
+    "title": "Dell Pro Plus P3225QE IPS Monitor 31.5\" 3840x2160 4K UHD 100Hz 8ms"
+   },
+   {
+    "id": "2160831845",
+    "title": "Dell Alienware AW3425DWM Ultrawide VA HDR Curved Gaming Monitor 34\" 3440x1440 QHD 180Hz 4ms"
+   },
+   {
+    "id": "2160630531",
+    "title": "AOC C24G42E VA HDR Curved Gaming Monitor 23.6\" 1920x1080 FHD 180Hz 4ms"
+   },
+   {
+    "id": "2160332998",
+    "title": "Samsung Odyssey G7 G70D LS27DG702 IPS HDR Smart Gaming Monitor 27\" 3840x2160 4K UHD 144Hz 1ms"
+   },
+   {
+    "id": "2160331920",
+    "title": "Samsung Odyssey G8 LS34DG850SU Ultrawide OLED HDR Curved Smart Gaming Monitor 34\" 3440x1440 QHD 175Hz 0.03ms"
+   },
+   {
+    "id": "2164124358",
+    "title": "Gigabyte GO27Q24A QD-OLED HDR Gaming Monitor 27\" 2560x1440 QHD 240Hz 0.03ms"
+   },
+   {
+    "id": "2163092930",
+    "title": "Lenovo Legion Pro 32UD-10 QD-OLED HDR Gaming Monitor 31.5\" 3840x2160 4K UHD 240Hz 0.03ms"
+   },
+   {
+    "id": "2162374039",
+    "title": "LG 29U511A Ultrawide IPS HDR Monitor 29\" 2560x1080 FHD 100Hz 5ms"
+   },
+   {
+    "id": "2164207519",
+    "title": "LG UltraGear 32G620B-B IPS HDR Gaming Monitor 31.5\" 2560x1440 QHD 200Hz 1ms"
+   }
+  ],
+  "skroutz": [
+   {
+    "id": "55626136",
+    "title": "Arzopa Z1RC 16\" IPS HDR QHD 2560x1600"
+   },
+   {
+    "id": "57679561",
+    "title": "Samsung Odyssey G5 G55C VA HDR Curved QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 165Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "65821794",
+    "title": "HTVA ViewGo S16 15.6\" IPS FHD 1920x1080",
+    "specs": "Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "59677667",
+    "title": "AOC Q27G42XE 27\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "65821938",
+    "title": "IPS HTVA ViewGo S19 15.6\" IPS FHD 1920x1080"
+   },
+   {
+    "id": "49382380",
+    "title": "Samsung Odyssey G5 G55C VA HDR Curved QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 165Hz"
+   },
+   {
+    "id": "61045964",
+    "title": "Xiaomi A27Ui 27\" IPS HDR 4K 3840x2160"
+   },
+   {
+    "id": "60992307",
+    "title": "MSI MAG 271QP X24 27\" QD-OLED HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "50778202",
+    "title": "MSI G244F E2 23.8\" IPS FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "54678142",
+    "title": "MSI MAG 27C6X 27\" VA HDR Curved FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 250Hz"
+   },
+   {
+    "id": "65472034",
+    "title": "Xiaomi G27Qi 2026 27\" IPS QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 200Hz"
+   },
+   {
+    "id": "60797127",
+    "title": "AOC Q27G42ZE 27\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "55717745",
+    "title": "Xiaomi G Pro 27i 27\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "55390540",
+    "title": "AOC C27G4ZXE 27\" VA HDR Curved FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 280Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "65272799",
+    "title": "Asus ROG Strix OLED XG27AQDMG Gen2 26.5\" OLED HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "58820782",
+    "title": "Samsung Odyssey G6 G61SD 27\" OLED HDR QHD 2560x1440",
+    "specs": "Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "54020349",
+    "title": "LG 24GS60F 24\" IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "54202152",
+    "title": "Xiaomi A24i 23.8\" IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 6ms"
+   },
+   {
+    "id": "61044125",
+    "title": "Philips 27E2N1110 27\" IPS FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 120Hz, Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "48625775",
+    "title": "Dell Ultrasharp U2724D 27\" IPS QHD 2560x1440",
+    "specs": "Ρυθμός Ανανέωσης: 120Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "65996213",
+    "title": "Xiaomi A24i 2026 23.8\" IPS FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 144Hz"
+   },
+   {
+    "id": "63927641",
+    "title": "LG UltraGear 24G411A-B IPS FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 120Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "64068654",
+    "title": "LG UltraGear 27G610A-B 27\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 200Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "64828188",
+    "title": "Samsung Odyssey G5 G50F IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "55701038",
+    "title": "Philips 27M2C5200W 27\" VA HDR Curved FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 280Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "65858187",
+    "title": "Xiaomi A27Qi 2026 27\" IPS QHD 2560x1440",
+    "specs": "Ρυθμός Ανανέωσης: 120Hz, Χρόνος Απόκρισης: 6ms"
+   },
+   {
+    "id": "67011234",
+    "title": "Xiaomi Pro 27Qi 2026 27\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "64189870",
+    "title": "Xiaomi G24i 2026 OM4FE-EU 23.8\" IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 200Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "65559802",
+    "title": "Dell IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz"
+   },
+   {
+    "id": "55358413",
+    "title": "LG 27MS550-B 27\" Nano IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "40748019",
+    "title": "HP E24t G5 23.8\" IPS Touch FHD 1920x1080",
+    "specs": "Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "66123945",
+    "title": "MSI MAG 274QPF E20 27\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 200Hz, Χρόνος Απόκρισης: 0.5ms"
+   },
+   {
+    "id": "51215393",
+    "title": "AOC 24B3HA2 23.8\" IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz"
+   },
+   {
+    "id": "63954563",
+    "title": "LG UltraGear WQHD 34\" Ultrawide VA HDR Curved QHD 3440x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "49014398",
+    "title": "Arzopa A1M 17.3\" IPS HDR FHD 1920x1080"
+   },
+   {
+    "id": "29404051",
+    "title": "Dell VA FHD 1920x1080"
+   },
+   {
+    "id": "58431560",
+    "title": "Samsung Essential S3 S30GD 24\" IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "39882270",
+    "title": "Asus VG34VQEL1A 34\" Ultrawide VA HDR Curved QHD 3440x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 100Hz"
+   },
+   {
+    "id": "63927608",
+    "title": "Samsung S33GF 24\" VA FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "40292827",
+    "title": "MSI MP341CQ 34\" Ultrawide VA Curved QHD 3440x1440",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "48764285",
+    "title": "Lenovo Legion R27fc-30 27\" VA HDR Curved FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 0.5ms"
+   },
+   {
+    "id": "61784989",
+    "title": "MSI MAG 244F 23.8\" IPS FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 200Hz, Χρόνος Απόκρισης: 0.5ms"
+   },
+   {
+    "id": "64190449",
+    "title": "LG 32GX850A-B 32\" 4K 3840x2160",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 165Hz"
+   },
+   {
+    "id": "66503511",
+    "title": "Samsung Odyssey G6 G61SH 27\" OLED HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "61045412",
+    "title": "AOC CU34G4 34\" Ultrawide VA HDR Curved QHD 3440x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "55626136",
+    "title": "Arzopa Z1RC 16\" IPS HDR QHD 2560x1600"
+   },
+   {
+    "id": "54766691",
+    "title": "LG UltraGear VA HDR Curved QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "59806868",
+    "title": "Dell Plus 27\" IPS 4K 3840x2160",
+    "specs": "Ρυθμός Ανανέωσης: 120Hz, Χρόνος Απόκρισης: 8ms"
+   },
+   {
+    "id": "26876330",
+    "title": "AOC 24B2XHM2 23.8\" VA FHD 1920x1080",
+    "specs": "Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "55029927",
+    "title": "AOC CQ32G4VE 32\" VA HDR Curved QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "56586427",
+    "title": "MSI MAG 32C6X 32\" VA Curved FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 250Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "54020349",
+    "title": "LG UltraGear IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "65996213",
+    "title": "Xiaomi A24i 2026 23.8\" IPS FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 144Hz"
+   },
+   {
+    "id": "61044125",
+    "title": "Philips 27E2N1110 27\" IPS FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 120Hz, Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "64068654",
+    "title": "LG UltraGear 27G610A-B 27\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 200Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "61045964",
+    "title": "Xiaomi A27Ui 27\" IPS HDR 4K 3840x2160"
+   },
+   {
+    "id": "49014398",
+    "title": "Arzopa A1M 17.3\" IPS HDR FHD 1920x1080"
+   },
+   {
+    "id": "58431560",
+    "title": "Samsung Essential S3 S30GD IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "63927608",
+    "title": "Samsung S33GF 24\" VA FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "51215393",
+    "title": "AOC IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz"
+   },
+   {
+    "id": "59806868",
+    "title": "Dell Plus 27\" IPS 4K 3840x2160",
+    "specs": "Ρυθμός Ανανέωσης: 120Hz, Χρόνος Απόκρισης: 8ms"
+   },
+   {
+    "id": "40761547",
+    "title": "Samsung Odyssey G5 G55T 34\" Ultrawide VA HDR Curved QHD 3440x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 165Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "56586427",
+    "title": "MSI MAG 32C6X 32\" VA Curved FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 250Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "54754199",
+    "title": "Xiaomi G34WQi 34\" Ultrawide VA HDR Curved QHD 3440x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz"
+   },
+   {
+    "id": "64189870",
+    "title": "Xiaomi G24i 2026 OM4FE-EU 23.8\" IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 200Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "49723576",
+    "title": "AOC CU34G2XP 34\" Ultrawide VA HDR Curved QHD 3440x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "37417427",
+    "title": "Samsung Odyssey G4 25\" IPS FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "64187323",
+    "title": "Xiaomi G27i 27\" IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 165Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "56584951",
+    "title": "LG UltraGear VA HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "28463955",
+    "title": "Dell UltraSharp U2422H 23.8\" IPS FHD 1920x1080",
+    "specs": "Χρόνος Απόκρισης: 8ms"
+   },
+   {
+    "id": "21106316",
+    "title": "Philips B-Line 346B1C 34\" Ultrawide VA Curved QHD 3440x1440",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "55358342",
+    "title": "LG UltraGear 27GS75Q-B 27\" Nano IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "49454956",
+    "title": "Xiaomi G27i 27\" IPS FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 165Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "65089742",
+    "title": "Samsung Odyssey G5 G50SF 27\" OLED HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "48746923",
+    "title": "Xiaomi A27i 27\" IPS HDR FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 6ms"
+   },
+   {
+    "id": "62934335",
+    "title": "LG UltraWide 29\" Ultrawide IPS FHD 2560x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "40748019",
+    "title": "HP E24t G5 23.8\" IPS Touch FHD 1920x1080",
+    "specs": "Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "65327094",
+    "title": "Dell Pro IPS FHD 1920x1080"
+   },
+   {
+    "id": "61423624",
+    "title": "Dell Alienware AW3425DW 34.2\" Ultrawide QD-OLED HDR Curved QHD 3440x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "55027529",
+    "title": "Dell AW3225QF 32\" QD-OLED HDR Curved 4K 3840x2160",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "62540460",
+    "title": "Dell Alienware AW2525HM 24.5\" IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 320Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "67009092",
+    "title": "Samsung Essential Monitor S3 24\" VA FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 120Hz"
+   },
+   {
+    "id": "59809760",
+    "title": "Dell Alienware Gaming AW3425DWM 34\" Ultrawide VA HDR Curved QHD 3440x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "24394099",
+    "title": "Philips S Line 242S1AE IPS FHD 1920x1080",
+    "specs": "Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "61318222",
+    "title": "AOC IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 120Hz, Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "69062290",
+    "title": "LG UltraGear G4 IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 144Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "60987556",
+    "title": "Dell Alienware AW2725DM 27\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "66274571",
+    "title": "MSI Pro MP275 E14L 27\" IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 144Hz, Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "52340631",
+    "title": "Dell χωρίς Βάση IPS FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 100Hz"
+   },
+   {
+    "id": "55702022",
+    "title": "Samsung Odyssey G3 G30D 27\" VA FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "61349687",
+    "title": "AOC Q27G4ZR 27\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "39270811",
+    "title": "AOC 25G3ZM/BK 24.5\" VA FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "57042275",
+    "title": "AOC AG326UD 31.5\" QD-OLED HDR 4K 3840x2160",
+    "specs": "Ρυθμός Ανανέωσης: 165Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "57041622",
+    "title": "AOC Q27G4XF 27\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "26876330",
+    "title": "AOC 24B2XHM2 23.8\" VA FHD 1920x1080",
+    "specs": "Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "38412255",
+    "title": "Dell VA FHD 1920x1080",
+    "specs": "Χρόνος Απόκρισης: 8ms"
+   },
+   {
+    "id": "62967253",
+    "title": "MSI MAG242F 24\" IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 200Hz, Χρόνος Απόκρισης: 0.5ms"
+   },
+   {
+    "id": "57043231",
+    "title": "Xiaomi G27Qi 27\" IPS QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "51209237",
+    "title": "BenQ GW2790 27\" IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "49016123",
+    "title": "AOC Q27G3XMN/BK 27\" VA HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "60437222",
+    "title": "AOC IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 200Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "33307844",
+    "title": "Samsung Odyssey G32A 24\" VA FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 165Hz"
+   },
+   {
+    "id": "55511278",
+    "title": "AOC Agon AG276QZD2 26.7\" OLED HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz"
+   },
+   {
+    "id": "65821794",
+    "title": "HTVA ViewGo S16 15.6\" IPS FHD 1920x1080",
+    "specs": "Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "57821927",
+    "title": "LG 32GS95UV-B 32\" OLED HDR 4K 3840x2160",
+    "specs": "Ρυθμός Ανανέωσης: 240Hz"
+   },
+   {
+    "id": "64720135",
+    "title": "Samsung Odyssey G5 G53F 27\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 200Hz"
+   },
+   {
+    "id": "56704279",
+    "title": "LG 34WR50QK-B 34\" Ultrawide VA HDR Curved QHD 3440x1440",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "63261948",
+    "title": "Asus ROG Strix XG32UCWMG 32\" OLED HDR 4K 3840x2160",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "57450656",
+    "title": "Samsung Essential Monitor 24\" VA HDR Curved FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "60367313",
+    "title": "Philips 24E2N1110 23.8\" IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 120Hz, Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "65010825",
+    "title": "AOC Q27G4SRU 27\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 320Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "59848525",
+    "title": "LG 27U421A-B 27\" VA HDR Curved FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "40300856",
+    "title": "Samsung Odyssey G6 G65B VA HDR Curved QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "60195942",
+    "title": "AOC 25G4SXU 24.5\" IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 300Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "60674802",
+    "title": "Dell Pro E2425HSM 24\" IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 8ms"
+   },
+   {
+    "id": "51209237",
+    "title": "BenQ GW2790 IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "57962027",
+    "title": "Samsung Odyssey G9 G93SD 49\" Ultrawide OLED HDR Curved 5120x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "48764757",
+    "title": "Arzopa S1 TABLE 15.6\" IPS HDR FHD 1920x1080"
+   },
+   {
+    "id": "37417427",
+    "title": "Samsung Odyssey G4 IPS FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "57042275",
+    "title": "AOC AG326UD 31.5\" QD-OLED HDR 4K 3840x2160",
+    "specs": "Ρυθμός Ανανέωσης: 165Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "30924213",
+    "title": "Dell S2722DC 27\" IPS QHD 2560x1440",
+    "specs": "Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "62967253",
+    "title": "MSI MAG242F 24\" IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 200Hz, Χρόνος Απόκρισης: 0.5ms"
+   },
+   {
+    "id": "67009092",
+    "title": "Samsung Essential Monitor S3 24\" VA FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 120Hz"
+   },
+   {
+    "id": "67045320",
+    "title": "Dell SE2726D 27\" IPS QHD 2560x1440",
+    "specs": "Ρυθμός Ανανέωσης: 144Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "45753493",
+    "title": "MSI PRO MP273A 27\" IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "46772223",
+    "title": "Samsung ViewFinity S65VC 34\" Ultrawide VA HDR Curved QHD 3440x1440",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "67419571",
+    "title": "Dell Alienware AW2726DM 27\" QD-OLED HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "60465711",
+    "title": "Samsung G8 G81SF OLED HDR 4K 3840x2160",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "42433037",
+    "title": "Asus ProArt IPS HDR 4K 3840x2160",
+    "specs": "Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "54660029",
+    "title": "Philips Evnia 27M2N3500NL 27\" VA HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz"
+   },
+   {
+    "id": "59276180",
+    "title": "Dell IPS HDR 4K 3840x2160",
+    "specs": "Ρυθμός Ανανέωσης: 120Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "62390643",
+    "title": "Philips Envia IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 144Hz, Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "63116399",
+    "title": "Philips 2000 Series 27\" IPS QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 120Hz"
+   },
+   {
+    "id": "55002714",
+    "title": "Asus ROG Strix OLED XG27AQDMG 26.5\" OLED HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "47839281",
+    "title": "LG 27MR400-B 27\" IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "61481800",
+    "title": "Dell Alienware AW2725Q 27\" QD-OLED HDR 4K 3840x2160",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "58755232",
+    "title": "Samsung Essential S4 S40GD 24\" IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "61423624",
+    "title": "Dell Alienware AW3425DW 34.2\" Ultrawide QD-OLED HDR Curved QHD 3440x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "40846730",
+    "title": "Verbatim PMT-15 15.6\" IPS HDR Touch FHD 1920x1080",
+    "specs": "Χρόνος Απόκρισης: 6ms"
+   },
+   {
+    "id": "58613103",
+    "title": "AOC IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "61318222",
+    "title": "AOC 27B31H 27\" IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 120Hz, Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "63769646",
+    "title": "LG 27U411A-B 27\" IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 120Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "60471876",
+    "title": "AOC U27G4R Dual Frame 27\" IPS HDR 4K 3840x2160",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 160Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "63211305",
+    "title": "Lenovo Legion R27qe 27\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 200Hz"
+   },
+   {
+    "id": "60917309",
+    "title": "AOC Q24G4RE 23.8\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "54628935",
+    "title": "Samsung Odyssey G5 G50D 27\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "52340109",
+    "title": "Dell P2425E 24.07\" IPS FHD 1920x1200",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz"
+   },
+   {
+    "id": "24684021",
+    "title": "AOC C32G2ZE 31.5\" VA Curved FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "59789470",
+    "title": "Dell Pro Plus IPS QHD 2560x1440",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "65996445",
+    "title": "AOC 24G4ZRE 23.8\" IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 260Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "59718227",
+    "title": "Arzopa A3C Pro 13.3\" OLED HDR FHD 1920x1080"
+   },
+   {
+    "id": "50437140",
+    "title": "LG Ultragear 27GS95QE-B 27\" OLED HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "56289903",
+    "title": "Samsung Odyssey G8 G80SD 32\" OLED HDR 4K 3840x2160",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "59807150",
+    "title": "Dell PLUS 27\" IPS 4K 3840x2160",
+    "specs": "Ρυθμός Ανανέωσης: 120Hz, Χρόνος Απόκρισης: 8ms"
+   },
+   {
+    "id": "44427438",
+    "title": "HP OMEN 27q 27\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 165Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "55606508",
+    "title": "Samsung Odyssey G3 G30D VA HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "33307844",
+    "title": "Samsung Odyssey G32A 24\" VA FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 165Hz"
+   },
+   {
+    "id": "64860486",
+    "title": "Arzopa Z1FC 16.1\" IPS HDR FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 144Hz"
+   },
+   {
+    "id": "55511278",
+    "title": "AOC Agon AG276QZD2 26.7\" OLED HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz"
+   },
+   {
+    "id": "48626519",
+    "title": "Dell Ultrasharp U2724DE 27\" IPS QHD 2560x1440",
+    "specs": "Ρυθμός Ανανέωσης: 120Hz"
+   },
+   {
+    "id": "59576113",
+    "title": "Dell Pro Plus IPS QHD 2560x1440",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "51118362",
+    "title": "Dell AW2725DF 26.7\" QD-OLED HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 360Hz, Χρόνος Απόκρισης: 0.03ms"
+   },
+   {
+    "id": "45220264",
+    "title": "Samsung ViewFinity S65UC 34\" Ultrawide VA HDR Curved QHD 3440x1440",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "62950927",
+    "title": "AOC Q27B35E 27\" IPS HDR QHD 2560x1440",
+    "specs": "Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "33567598",
+    "title": "Lenovo ThinkVision P24h-2L 23.8\" IPS QHD 2560x1440",
+    "specs": "Χρόνος Απόκρισης: 6ms"
+   },
+   {
+    "id": "62540460",
+    "title": "Dell Alienware AW2525HM 24.5\" IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 320Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "59809760",
+    "title": "Dell Alienware Gaming AW3425DWM 34\" Ultrawide VA HDR Curved QHD 3440x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 180Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "65088894",
+    "title": "LG UltraGear 27G440A-B 27\" IPS HDR FHD 1920x1080",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz, Χρόνος Απόκρισης: 1ms"
+   },
+   {
+    "id": "54018530",
+    "title": "Samsung 27DM500 27\" VA FHD 1920x1080",
+    "specs": "Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "64068530",
+    "title": "Dell Plus S2725DSM 27\" IPS QHD 2560x1440",
+    "specs": "Ρυθμός Ανανέωσης: 144Hz, Χρόνος Απόκρισης: 8ms"
+   },
+   {
+    "id": "64892582",
+    "title": "Arzopa Z3FC 16.1\" IPS QHD 2560x1440",
+    "specs": "Ρυθμός Ανανέωσης: 180Hz"
+   },
+   {
+    "id": "30924213",
+    "title": "Dell S2722DC 27\" IPS QHD 2560x1440",
+    "specs": "Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "48561931",
+    "title": "LG 32MR50C-B 32\" VA Curved FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "63701259",
+    "title": "LG 24U411A-B 24\" IPS HDR FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 120Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "49465225",
+    "title": "Xiaomi A22i 21.5\" VA FHD 1920x1080"
+   },
+   {
+    "id": "64068815",
+    "title": "Dell Plus S2725DC 27\" IPS QHD 2560x1440",
+    "specs": "Ρυθμός Ανανέωσης: 144Hz, Χρόνος Απόκρισης: 8ms"
+   },
+   {
+    "id": "45753493",
+    "title": "MSI PRO MP273A 27\" IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 4ms"
+   },
+   {
+    "id": "63700900",
+    "title": "Lenovo 27Q-10 27\" IPS HDR QHD 2560x1440",
+    "specs": "Gaming, Ρυθμός Ανανέωσης: 240Hz"
+   },
+   {
+    "id": "58755232",
+    "title": "Samsung Essential S4 S40GD IPS FHD 1920x1080",
+    "specs": "Ρυθμός Ανανέωσης: 100Hz, Χρόνος Απόκρισης: 5ms"
+   },
+   {
+    "id": "40846730",
+    "title": "Verbatim PMT IPS HDR Touch FHD 1920x1080",
+    "specs": "Χρόνος Απόκρισης: 6ms"
+   }
+  ],
+  "snif": [
+   {
+    "id": "37078488",
+    "title": "Οθόνη 17 inch HP 1740 HSTND-2B03 - Flat panel display - TFT - 17\" - 1280 x 1024 VGA, DVI, USB 2 Hub, Grade A, με καλώδιο"
+   },
+   {
+    "id": "27452617",
+    "title": "ΒΟΗΘΗΤΙΚΟ ΡΑΦΑΚΙ ΤΗΛΕΟΡΑΣΗΣ SCREEN TOP SHELF"
+   },
+   {
+    "id": "14213264",
+    "title": "Οθόνη TFT NEC LCD2170NX (Ανακατασκευασμένη)"
+   },
+   {
+    "id": "14577727",
+    "title": "IIYAMA PROLITE E2273HDS 22 ιντσών οθόνη (MTX)"
+   },
+   {
+    "id": "40204389",
+    "title": "Οθόνη Lenovo 27'' ThinkCentre Tiny-In-One QHD IPS 11JHRAT1EU"
+   },
+   {
+    "id": "18922693",
+    "title": "Samsung SyncMaster B1940MR - LCD monitor - 19 (REBURBISHED)"
+   },
+   {
+    "id": "37079886",
+    "title": "Φορτιστής για Acer Οθόνες AL1703 SM (ΟΕΜ)"
+   },
+   {
+    "id": "30847167",
+    "title": "Οθόνη LG W1942S-SF (MTX)"
+   },
+   {
+    "id": "16990008",
+    "title": "HP P4831 - 2025 20 ιντσών οθόνη (MTX)"
+   },
+   {
+    "id": "18313635",
+    "title": "Κυρτή Οθόνη HP Omen X Led VA 35\" X3W57AA"
+   },
+   {
+    "id": "30483678",
+    "title": "Dell UltraSharp U2211H 21.5 REF"
+   },
+   {
+    "id": "26272471",
+    "title": "Οθόνη Gaming Curved AOC 31.5\" Led FHD VA 240Hz C32G2ZE"
+   },
+   {
+    "id": "36173308",
+    "title": "Οθόνη Samsung ViewFinity S6 LS34C652UAUXEN 34\" Curved VA Ultra WQHD HDR10 KVM 100Hz AMD FreeSync"
+   },
+   {
+    "id": "37444294",
+    "title": "Οθόνη Dell Ultrasharp U4025QW 39.7\" Curved 5K IPS-Black Thunderbolt Hub VESA DisplayHDR600 210-BMDV"
+   },
+   {
+    "id": "37542971",
+    "title": "Οθόνη Philips V-Line 21.5\" VA Full HD Black 221V8/00"
+   },
+   {
+    "id": "35189217",
+    "title": "Οθόνη Dell UltraSharp U4924DW 49\" Curved 5K IPS 210-BGTX"
+   },
+   {
+    "id": "40204901",
+    "title": "Οθόνη Lenovo Thinkvision P40w-20 39.7'' Curved IPS WUHD with Camera 62DDGAT6EU"
+   },
+   {
+    "id": "37470624",
+    "title": "Οθόνη Philips Evnia 5000 27M2C5500W 27\" Curved Quad HD VA DisplayHDR 400"
+   },
+   {
+    "id": "34958375",
+    "title": "Οθόνη Dell UltraSharp U3223QE 31.5'' 4K IPS USB-C Hub"
+   },
+   {
+    "id": "26887819",
+    "title": "Οθόνη ViewSonic Multi-Touch 22'' TD2223 FHD"
+   },
+   {
+    "id": "34835218",
+    "title": "Lenovo ThinkVision P27u-20 27 UHD IPS 60Hz 4ms"
+   },
+   {
+    "id": "29884313",
+    "title": "Οθόνη Dell E2722H 27'' FHD IPS 210-BBRO"
+   },
+   {
+    "id": "35189735",
+    "title": "Οθόνη Dell UltraSharp U3824DW 38\" Curved IPS WQHD+ USB-C Hub Monitor Silver 210-BHXB"
+   },
+   {
+    "id": "31967948",
+    "title": "Οθόνη Viewsonic VX3276-2K-MHD-2 31.5\" QHD IPS with Speakers"
+   },
+   {
+    "id": "43448247",
+    "title": "LG 24U411B-B Monitor 23.8 FHD IPS Flat 144Hz 1ms"
+   },
+   {
+    "id": "36375177",
+    "title": "Οθόνη Lenovo ThinkVision P24h-30 23.8\" QHD IPS HDR10 60Hz 63B3GAT6EU"
+   },
+   {
+    "id": "36068442",
+    "title": "Οθόνη Dell UltraSharp U2424HE 24\" IPS FHD USB-C Hub Platinum Silver 210-BKJF"
+   },
+   {
+    "id": "35071442",
+    "title": "Οθόνη Samsung Odyssey G6 LS27BG650EUXEN 27\" Curved QHD 240Hz VESA DisplayHDR 600 AMD FreeSync Premium Pro"
+   },
+   {
+    "id": "42795340",
+    "title": "MSI Gaming Monitor MAG274QPF Quad HD IPS Flat 200Hz 0.5 ms"
+   },
+   {
+    "id": "38313969",
+    "title": "Οθόνη Viewsonic VA3209-2K-MHD 31.5\" 2K QHD 75Hz HDR10"
+   },
+   {
+    "id": "31930292",
+    "title": "Διαδραστικός Πίνακας Classboard 78.9” IB-82T"
+   },
+   {
+    "id": "39913932",
+    "title": "Lenovo ThinkVision E24-30 Monitor 23.8 FHD IPS Flat 100Hz 6ms"
+   },
+   {
+    "id": "29817188",
+    "title": "Οθόνη HP P34HC G4 Curved 34\" WQHD LED 21Y56AA"
+   },
+   {
+    "id": "37075391",
+    "title": "Asus ProArt PA278CV 27 IPS Flat 75 Hz 5 ms"
+   },
+   {
+    "id": "30229690",
+    "title": "Οθόνη Lenovo ThinkVision P27u-20 27'' IPS 4K 62CBRAT6EU"
+   },
+   {
+    "id": "41254512",
+    "title": "Διαδραστικός Πίνακας Classboard 60.4” ΙΒ-63Τ"
+   },
+   {
+    "id": "42457256",
+    "title": "Οθόνη Dell 27 Plus S2725HSM 27\" IPS Full HD 144Hz 210-BSZF"
+   },
+   {
+    "id": "43649280",
+    "title": "DELL Monitor S2726HS 27&amp;apos;&amp;apos; FHD IPS 165Hz, HDMI, Height Adjustable, 3YearsW"
+   },
+   {
+    "id": "35188570",
+    "title": "Οθόνη AOC Q27G2E/BK 27\" VA QHD AMD FreeSync Premium"
+   },
+   {
+    "id": "26512464",
+    "title": "Οθόνη Philips V-Line Led 27\" FHD VA 271V8L/00"
+   },
+   {
+    "id": "43200929",
+    "title": "Gigabyte Gaming Monitor MO34WQC36 34 Quad HD Oled 360Hz Curved 0.03ms"
+   },
+   {
+    "id": "37939910",
+    "title": "Οθόνη Philips 1000 Series 23.8\" IPS Full HD 100Hz 24E1N1100A/00"
+   },
+   {
+    "id": "39542992",
+    "title": "LG Signage 110UM5J 110 4K UHD IPS Flat 120Hz 8ms"
+   },
+   {
+    "id": "36101992",
+    "title": "Οθόνη AOC Gaming CU34G2XE/BK UltraWide 34\" Curved WQHD 144Hz HDR10"
+   },
+   {
+    "id": "43649972",
+    "title": "Blackview SCM5 Φορητή Οθόνη 14 FHD IPS 60 Hz"
+   },
+   {
+    "id": "43082760",
+    "title": "HP Series 5 Pro 524pm 23.8 IPS Flat 100Hz 5 ms"
+   },
+   {
+    "id": "41909146",
+    "title": "LG UltraGear 34GX900A-B Gaming Monitor 34 WQHD OLED Curved 240Hz 0.03ms"
+   },
+   {
+    "id": "36451530",
+    "title": "Οθόνη AOC CU34G2XP/BK 34\" Curved UltraWide VA Quad HD Vesa DisplayHDR 400"
+   },
+   {
+    "id": "43467050",
+    "title": "Οθόνη Philips Evnia 3000 24M2N3201PL/00 23.8\" IPS FHD 260Hz HDR"
+   },
+   {
+    "id": "36068441",
+    "title": "Οθόνη Dell UltraSharp U2424H 24\" IPS FHD Platinum Silver 210-BKTZ"
+   },
+   {
+    "id": "36068444",
+    "title": "Οθόνη Dell UltraSharp U2724DE 27\" IPS QHD Thunderbolt Hub Platinum Silver 210-BKTV"
+   },
+   {
+    "id": "20512787",
+    "title": "ACER RG240YBMIIX 24\" Monitor"
+   },
+   {
+    "id": "25432063",
+    "title": "Οθόνη Gaming Curved AOC 34\" QHD Wide LED VA 144Hz FreeSync CU34G2X"
+   },
+   {
+    "id": "36101975",
+    "title": "Οθόνη Philips Evnia 5000 27M1C5200W 27\" Curved VA Full HD"
+   },
+   {
+    "id": "37166439",
+    "title": "Οθόνη Philips 1000 24E1N1300A/00 23.8\" FHD IPS USB-C AMD FreeSync with Speakers"
+   },
+   {
+    "id": "36173336",
+    "title": "Οθόνη Dell P3424WEB 34\" Curved Ultrawide IPS QHD Video Conference WebCam"
+   },
+   {
+    "id": "36101927",
+    "title": "Οθόνη Philips Evnia 3000 27M1N3200ZS 27\" IPS Full HD AMD FreeSync Premium"
+   }
+  ],
+  "eshop": [
+   {
+    "id": "PER.245445",
+    "title": "ΟΘΟΝΗ XIAOMI GAMING MONITOR G27I 2026 ELA6370EU"
+   },
+   {
+    "id": "PER.263522",
+    "title": "ΟΘΟΝΗ GIGABYTE G25F2 24.5'' FHD GAMING 200HZ"
+   },
+   {
+    "id": "PER.290702",
+    "title": "ΦΟΡΗΤΗ ΟΘΟΝΗ BLACKVIEW 14' SINGLE LAPTOP SCREEN EXTENDER LCD 60HZ 1080P BLACK SCM5"
+   },
+   {
+    "id": "PER.274504",
+    "title": "ΦΟΡΗΤΗ ΟΘΟΝΗ BLACKVIEW 14'' SINGLE LAPTOP SCREEN EXTENDER LCD 16:9 60HZ 1080P BLACK/GREY SCM6"
+   },
+   {
+    "id": "PER.274069",
+    "title": "ΟΘΟΝΗ LG 27BA550 27'' IPS FHD 100HZ BLACK"
+   },
+   {
+    "id": "PER.259068",
+    "title": "ΟΘΟΝΗ ASUS ZENSCREEN MB16AHV 15.6'' LED FHD 5MS IPS PORTABLE USB MONITOR USB-C HDMI"
+   },
+   {
+    "id": "PER.300084",
+    "title": "ΟΘΟΝΗ DAHUA DHI-LM34-E330CA 34'' CURVED LED QHD 200HZ BLACK"
+   },
+   {
+    "id": "PER.274085",
+    "title": "ΟΘΟΝΗ LG 32U631A-B 32'' IPS QHD HDR 100HZ BLACK"
+   },
+   {
+    "id": "PER.156198",
+    "title": "ΟΘΟΝΗ SAMSUNG LU32J590UQPXEN 31.5'' LED 4K ULTRA HD BLACK"
+   },
+   {
+    "id": "PER.273091",
+    "title": "ΟΘΟΝΗ ASUS TUF GAMING VG27AQL5A  27\" FAST IPS QHD LED 0.3MS"
+   }
+  ]
+ }
+}
