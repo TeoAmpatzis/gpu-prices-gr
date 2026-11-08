@@ -233,14 +233,19 @@ after the audit meets its acceptance numbers.
   should be confirmed.
 - Format change to `list.v2.json` touches the decoder, derive and tests together; do it in one change set.
 
-## 9. Open decisions for the owner
+## 9. Decisions
 
-1. Show shops' own discount claims anywhere (small "shop says" note), or hide them completely?
-2. Deal threshold: 7% (my call), 5% (PriceSpy) or 10%?
-3. Keep the name "Recommended", or call it "Popular" until it passes the golden fixtures?
-4. Source filter: also empty-means-all (my recommendation, consistent), or keep all-ticked?
-5. SEO depth: stop at meta/sitemap/structured data, or also prerender key pages (more build time, more moving parts)?
-6. Quick build: two-module kits by default (my call), or cheapest only?
+Answered by the owner (2026-11-08):
+1. Shops' own discount claims: **show** them, as a small "shop says" note on the offer row (never as the main badge).
+2. SEO depth: **left to me**. My call: phases 1 and 2 only (titles, descriptions, canonical, sitemap, structured data);
+   prerendering is deferred until Search Console shows indexing problems, because it adds build time and moving parts.
+3. Source filter: **empty means all**, like the other filters.
+
+My calls, not yet confirmed by the owner: deal threshold 7%; 30-day window; guard limits 40% and 3x; quick build prefers
+two-module kits; "Recommended" keeps its name only if it passes the golden fixtures.
+
+Added by the owner after testing: the "Recommended" sort control is unreadable (white, visible only on hover). Fix with the
+small UI items (WS7).
 
 ## 10. What is left to the builder
 
