@@ -7,7 +7,6 @@ import { modelSlug } from '../lib/slug';
 import { href } from '../shell/nav';
 import { groupName, type CategoryConfig } from '../lib/categories';
 import { T, tr, useLang, type Lang } from '../lib/i18n';
-import { SOURCES } from '../lib/sources';
 import { isUnusual } from '../lib/offers';
 import { UI } from '../ui/strings';
 import SourceBadge from './SourceBadge';
@@ -86,7 +85,7 @@ function PriceBadges<L extends BaseListing>({ m, lang }: { m: Model<L>; lang: La
         </span>
       )}
       {m.sale && (
-        <span className="badge badge-sale" title={`${tr(lang, T.saleBy)} ${SOURCES[m.sale.source].label}`}>
+        <span className="badge badge-sale" title={`${tr(lang, T.saleBy)}${m.sale.reference != null ? `: ${formatPrice(m.sale.reference, lang)}` : ''}`}>
           −{m.sale.pct}%
         </span>
       )}
@@ -203,7 +202,11 @@ function ModelDetails<L extends BaseListing>({
                   line. Either way a row never gets wider than its box. */}
               <span className="flex min-w-0 flex-1 flex-col items-start gap-0.5 xl:flex-row xl:items-center xl:gap-3">
                 <span className="flex shrink-0 items-center gap-1.5">
-                  {l.drop != null && l.drop >= 5 && <span className="badge badge-sale">−{l.drop}%</span>}
+                  {l.drop != null && l.drop >= 5 && (
+                    <span className="badge text-muted" title={tr(lang, T.shopSays)}>
+                      {tr(lang, T.shopSaysShort)} −{l.drop}%
+                    </span>
+                  )}
                   <SourceBadge source={l.source} />
                   {isUnusual(m, l) && <UnusualMark lang={lang} />}
                 </span>

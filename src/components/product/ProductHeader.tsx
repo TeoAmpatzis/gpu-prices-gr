@@ -10,7 +10,6 @@ import { isExamplePhoto } from '../../lib/examplePhoto';
 import { T, tr, useLang } from '../../lib/i18n';
 import { productImage } from '../../lib/images';
 import { offerTotal } from '../../lib/offers';
-import { SOURCES } from '../../lib/sources';
 import type { BaseListing } from '../../types';
 import { LinkButton } from '../../ui/Button';
 import { sellerLine } from '../../ui/PriceCell';
@@ -95,7 +94,7 @@ export function ProductHeader({
           <span className="text-sm text-muted">{tr(lang, selected ? PRODUCT.price : UI.lowestTotal)}</span>
           <div className="flex flex-wrap items-center gap-2">
             {sale && (
-              <span className="badge badge-sale" title={`${tr(lang, T.saleBy)} ${SOURCES[sale.source].label}`}>
+              <span className="badge badge-sale" title={`${tr(lang, T.saleBy)}${sale.reference != null ? `: ${formatPrice(sale.reference, lang)}` : ''}`}>
                 −{sale.pct}%
               </span>
             )}

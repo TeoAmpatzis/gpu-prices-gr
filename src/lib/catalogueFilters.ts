@@ -1,7 +1,7 @@
 import type { BaseListing, DailyLow, Imported } from '../types';
 import type { CategoryRules } from './categoryRules';
 import type { CategoryConfig } from './categories';
-import { filterModels, type Filters, type Model, allTimeLow, saleOf } from './data';
+import { filterModels, type Filters, type Model, saleOf } from './data';
 import { catalogueProducts, type CatalogueProduct } from './catalogueProducts';
 import { recommendedScores } from './ranking';
 
@@ -62,7 +62,7 @@ export function filterCatalogue<L extends BaseListing>(
             if (f.includeUnknown === false) return false;
           } else if ((f.numericMin != null && v < f.numericMin) || (f.numericMax != null && v > f.numericMax)) return false;
         }
-        return (!f.saleOnly || saleOf([l], l) != null) && (!f.lowOnly || allTimeLow(history[family.key], imported[family.key], l.price) != null);
+        return (!f.saleOnly || saleOf([l], l) != null) && (!f.lowOnly || (l.lowestSince != null && l.price <= family.cheapest.price + 0.005));
       })
       .map((p) => ({ ...p, family })),
   );

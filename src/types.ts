@@ -22,7 +22,11 @@ export interface BaseListing {
   shipping?: number | null;
   total?: number | null;
   merchant?: string | null; // shop with that best total
-  drop?: number | null; // discount (%) the site itself shows for this offer
+  drop?: number | null; // discount (%) the shop itself shows for this offer: shown as "the shop says", never used to decide a deal
+  // Set at build time on every listing of a model that is at a deal / its lowest price (src/lib/deals.ts withDeals):
+  dealPct?: number | null; // whole percent under the model's 30-day typical price
+  dealRef?: number | null; // that typical price (median of the daily lows of the 30 days before the build)
+  lowestSince?: string | null; // the model is at its lowest price in all the history since this day
   img?: string | null; // builder step file rows only: the model's stored photo ("<cat>/<id>")
   ship?: number | null; // builder step file rows only (task 7): the row's shipping (0 = free), null = not known
   pop?: number | null; // builder step file rows only: the model's popularity × POP_SCALE (src/lib/ranking.ts popularityRaw)

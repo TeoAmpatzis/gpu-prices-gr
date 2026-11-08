@@ -2,9 +2,9 @@ import type { BaseListing } from '../../types';
 import type { ReactNode } from 'react';
 import type { CategoryConfig } from '../../lib/categories';
 import type { CatalogueRecord } from '../../lib/catalogueFilters';
-import { formatPrice } from '../../lib/data';
+import { formatPrice, saleOf } from '../../lib/data';
 import { productHref } from '../../lib/productSelection';
-import { tr, useLang } from '../../lib/i18n';
+import { T, tr, useLang } from '../../lib/i18n';
 import { SOURCES } from '../../lib/sources';
 import { productImage } from '../../lib/images';
 import { Photo } from '../../ui/Photo';
@@ -42,6 +42,9 @@ export default function ProductList<L extends BaseListing>({ cfg, products, card
     const singleton = { ...p.family, listings: [l], cheapest: l };
     const row = pick?.(singleton);
     const extra = row?.listing?.(l) ?? row;
+    // A deal and "lowest" come from the model's price history (src/lib/deals.ts); only the offer at that price shows them.
+    const sale = saleOf([l], l);
+    const lowest = l.lowestSince != null && l.price <= p.family.cheapest.price + 0.005;
     const specs = productSpecs(cfg.id, l, lang);
     const measured = specs
       .filter((s) => s.value)
@@ -71,7 +74,19 @@ export default function ProductList<L extends BaseListing>({ cfg, products, card
       ),
       price: (
         <div className="catalogue-price">
-          <strong>{formatPrice(l.price, lang)}</strong>
+          <strong>
+            {formatPrice(l.price, lang)}
+            {sale && (
+              <span className="badge badge-sale ml-1.5 align-middle" title={`${t(T.saleBy)}${sale.reference != null ? `: ${formatPrice(sale.reference, lang)}` : ''}`}>
+                −{sale.pct}%
+              </span>
+            )}
+            {lowest && (
+              <span className="badge badge-low ml-1 align-middle" title={`${t(T.allTimeLowHint)} ${new Date(l.lowestSince!).toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB')}`}>
+                {t(T.allTimeLow)}
+              </span>
+            )}
+          </strong>
           <span>
             {l.merchant && l.merchant !== SOURCES[l.source].label ? `${l.merchant} · ` : ''}
             {SOURCES[l.source].label} ·{' '}
