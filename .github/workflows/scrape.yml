@@ -1,8 +1,8 @@
 name: scrape
 
+# Skroutz only, manual: Cloudflare blocks GitHub's IPs, so this needs the self-hosted runner.
+# The other four sources run on GitHub's own runners in scrape-shops.yml.
 on:
-  schedule:
-    - cron: "43 */6 * * *"
   workflow_dispatch:
     inputs:
       allow_history_shrink:
@@ -50,7 +50,7 @@ jobs:
         run: python scripts/checks/validate_skroutz.py snapshot "$RUNNER_TEMP/skroutz-before.json"
 
       - name: Scrape
-        run: python -u scraper/main.py
+        run: python -u scraper/main.py --only skroutz --makers-budget 0
 
       - name: Record collection window
         id: finished
