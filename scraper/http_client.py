@@ -4,6 +4,7 @@ what gets us past Cloudflare (Skroutz) and the TLS reset (BestPrice).
 From GitHub Actions runners Skroutz answers single requests with 403 now and then (the next
 request often passes), so Skroutz requests go through `get`, which waits and retries them."""
 
+import os
 import random
 import re
 import threading
@@ -76,10 +77,12 @@ class _CountingSession(requests.Session):
 
 
 def session() -> requests.Session:
+    proxy = os.environ.get("SCRAPER_PROXY")  # opt-in, e.g. socks5h://127.0.0.1:40000; unset = direct
     return _CountingSession(
         impersonate="chrome",
         headers={"Accept-Language": "el-GR,el;q=0.9,en;q=0.8"},
         timeout=30,
+        proxies={"https": proxy, "http": proxy} if proxy else None,
     )
 
 
