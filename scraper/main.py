@@ -338,6 +338,11 @@ def main() -> int:
 
     if args.no_shipping:
         shipping.BUDGET = {src: 0 for src in shipping.BUDGET}
+    if args.only:  # a run limited to some sources makes no shipping/spec requests to the others
+        for budget in (shipping.BUDGET, specs.BUDGET):
+            for site in budget:
+                if site not in args.only:
+                    budget[site] = 0
     cats = [cat for name, cat in CATEGORIES.items() if not args.category or name in args.category]
     if args.history_only:
         for cat in cats:
