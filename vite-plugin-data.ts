@@ -11,6 +11,7 @@
 //   are logged and the build publishes. DATA_CHECK_BASE overrides the live site address.
 // - `vite` (dev): serves the same files from memory, re-derived when the scraper's files change.
 
+import { sitemaps } from './src/lib/sitemap';
 import { existsSync, readdirSync, readFileSync, rmdirSync, rmSync, statSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { join, resolve } from 'node:path';
@@ -262,6 +263,7 @@ export default function dataFiles(): Plugin {
       } else {
         this.info(live ? 'data check passed against the live manifest' : 'data check passed (no live manifest: minimum counts)');
       }
+      for (const [fileName, source] of Object.entries(sitemaps(models, builtAt))) this.emitFile({ type: 'asset', fileName, source });
       generated = new Set(Object.keys(files));
       for (const [fileName, source] of Object.entries(files)) this.emitFile({ type: 'asset', fileName, source });
       const sizes = Object.entries(files)

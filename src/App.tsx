@@ -16,6 +16,7 @@ import { BUILDER, CATS, href } from './shell/nav';
 import { Footer, NotFoundPage, PartsPage } from './shell/pages';
 import { PageTitle } from './shell/PageTitle';
 import { loadSearchIndex, useSite } from './shell/site';
+import { applyMeta, pageMeta } from './lib/pageMeta';
 import { CAT_PAGE, PAGE } from './shell/texts';
 import type { SearchSetup } from './ui/SearchBox';
 import { useMedia } from './lib/useMedia';
@@ -142,18 +143,10 @@ export default function App() {
 
   const home = tr(lang, UI.home);
   const crumbs = (label: Text) => [{ label: home, href: '/' }, { label: tr(lang, label) }];
-  const title: Text =
-    route.kind === 'category' || route.kind === 'model'
-      ? CATS[route.cat].name
-      : route.kind === 'info'
-        ? PAGE[route.page].title
-        : route.kind === 'home'
-          ? PAGE.home.title
-          : PAGE[route.kind].title;
   useEffect(() => {
     if (route.kind === 'model') return; // the model page names the model (components/product/ModelPage)
-    document.title = route.kind === 'home' ? `BuildDraft.gr — ${tr(lang, title)}` : `${tr(lang, title)} — BuildDraft.gr`;
-  }, [route, title, lang]);
+    applyMeta(pageMeta(path, lang));
+  }, [route, path, lang]);
 
   // After an in-site navigation, focus moves to the new page's content (screen readers announce it).
   const firstRender = useRef(true);
