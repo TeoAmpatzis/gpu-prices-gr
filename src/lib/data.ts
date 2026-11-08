@@ -111,6 +111,8 @@ export interface Model<L extends BaseListing> {
   sale?: Sale | null;
   /** At its lowest price in all the history we have (set by applyFilters). */
   low?: AllTimeLow | null;
+  /** Recommended score over the whole category segment, not the filtered set (set by filterCatalogue): filters never reorder two models. */
+  score?: number;
 }
 
 /** A deal decided from our own price history (src/lib/deals.ts), not from a shop's label. */
