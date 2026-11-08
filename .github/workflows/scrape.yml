@@ -1,8 +1,12 @@
 name: scrape
 
-# Skroutz only, manual: Cloudflare blocks GitHub's IPs, so this needs the self-hosted runner.
-# The other four sources run on GitHub's own runners in scrape-shops.yml.
+# Skroutz only. Cloudflare challenges GitHub's own IPs, so the scraper's requests go through Cloudflare
+# WARP in proxy mode (SCRAPER_PROXY); a full run passed with 0 blocked requests on 2026-11-08.
+# The other four sources run in scrape-shops.yml. No shipping, specs or price history here: those use
+# Skroutz paths that robots.txt disallows.
 on:
+  schedule:
+    - cron: "13 */6 * * *"
   workflow_dispatch:
     inputs:
       allow_history_shrink:
@@ -26,11 +30,8 @@ concurrency:
 jobs:
   scrape:
     if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
-    runs-on: [self-hosted, Windows, X64, builddraft-scrape]
-    defaults:
-      run:
-        shell: bash
-    # A full run (8 categories + the shipping refresh) takes ~40 min; the rest is headroom.
+    runs-on: ubuntu-latest
+    # A full Skroutz run (9 categories) took about 12 minutes through WARP; the rest is headroom.
     timeout-minutes: 90
     steps:
       # The latest main when the job starts, not the commit of the moment it was triggered: a run
@@ -49,8 +50,23 @@ jobs:
         id: before
         run: python scripts/checks/validate_skroutz.py snapshot "$RUNNER_TEMP/skroutz-before.json"
 
+      - name: Cloudflare WARP in proxy mode (only the scraper uses it)
+        run: |
+          curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
+          sudo apt-get update -q && sudo apt-get install -y -q cloudflare-warp
+          sudo systemctl start warp-svc || true
+          sleep 5
+          warp-cli --accept-tos registration new
+          warp-cli --accept-tos mode proxy
+          warp-cli --accept-tos connect
+          sleep 8
+          warp-cli --accept-tos status | grep -q Connected
+
       - name: Scrape
-        run: python -u scraper/main.py --only skroutz --makers-budget 0
+        env:
+          SCRAPER_PROXY: socks5h://127.0.0.1:40000
+        run: python -u scraper/main.py --only skroutz --no-shipping --specs-budget 0 --makers-budget 0
 
       - name: Record collection window
         id: finished
