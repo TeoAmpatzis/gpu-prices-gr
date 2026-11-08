@@ -1,0 +1,25 @@
+name: Skroutz experiments
+
+# Read-only: three spaced requests to one Skroutz category per browser profile, to see whether any
+# profile gets listings from GitHub's runners. Writes no data. Delete this file when done.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  profiles:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [chrome, safari, firefox, edge]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r scraper/requirements.txt
+      - run: python scripts/checks/probe_strategies.py --impersonate ${{ matrix.profile }}
