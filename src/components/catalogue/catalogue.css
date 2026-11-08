@@ -87,6 +87,11 @@
 .catalogue-product-name a {
   font-weight: 600;
   overflow-wrap: anywhere;
+  /* A 24px touch target (WCAG 2.5.8); the link was 17px tall. */
+  display: inline-block;
+  min-height: 24px;
+  padding-block: 4px;
+  box-sizing: border-box;
 }
 .catalogue-product-name a:hover {
   text-decoration: underline;
