@@ -21,9 +21,10 @@ test('/case: listing facet counts arrive from the worker and follow source/spec 
     .toBe(true);
   expect(workers.some((w) => w.includes('facets.worker'))).toBe(true);
   const before = await counts(page);
+  // Filters start empty (empty = all), so ticking a size is the change that narrows the other counts.
   await side(page)
     .getByRole('checkbox', { name: /^Midi Tower/ })
-    .uncheck();
+    .check();
   await expect.poll(() => counts(page)).not.toEqual(before);
   const selected = side(page).locator('input:checked');
   await side(page).getByRole('searchbox').fill('zzqqxx-no-such-case');
@@ -91,7 +92,7 @@ test('/case: changed filters hide stale counts until the new worker answer', asy
   });
   await side(page)
     .getByRole('checkbox', { name: /^Midi Tower/ })
-    .uncheck();
+    .check();
   await expect.poll(async () => (await counts(page)).every((n) => n === '')).toBe(true);
   await expect(side(page).locator('input:disabled')).toHaveCount(0);
   await page.evaluate(() => (window as unknown as { releaseFacets: () => void }).releaseFacets());

@@ -242,7 +242,7 @@ export const MOBO_RULES: CategoryRules<MoboListing> = {
   searchText: (l) => `${l.chip} ${l.title} ${l.chipset ?? ''} ${l.socket ?? ''} ${l.formFactor}`,
   extraFilters: [
     oneOf('platform', { el: 'Πλατφόρμα', en: 'Platform' }, (l) => moboPlatform(l.socket), { fixed: ['AMD', 'Intel'] }),
-    oneOf('socket', 'Socket', (l) => l.socket, { rank: socketRank }),
+    oneOf('socket', { el: 'Όλα τα socket', en: 'All sockets' }, (l) => l.socket, { rank: socketRank }),
     oneOf('chipset', 'Chipset', (l) => l.chipset),
     oneOf('formFactor', SIZE, (l) => l.formFactor, { fixed: BOARD_SIZES }),
     oneOf('memory', MEMORY, (l) => l.memory, { fixed: ['DDR5', 'DDR4'] }),

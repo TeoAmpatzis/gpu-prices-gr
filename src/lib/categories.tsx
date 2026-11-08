@@ -195,7 +195,8 @@ export const MOBO: CategoryConfig<MoboListing> = {
   icon: Microchip,
   empty: noResults('μητρικές', 'motherboards'),
   searchPlaceholder: search('B850, Tomahawk'),
-  groupLabel: 'Socket',
+  // The four common sockets as quick picks; the full list is the "All sockets" filter below it.
+  groupLabel: { el: 'Κύρια socket', en: 'Main sockets' },
   groupParam: 'sock',
   groupDot: {
     AM5: 'bg-idle', AM4: 'bg-idle', LGA1851: 'bg-idle', LGA1700: 'bg-idle', [OTHER]: 'bg-idle',

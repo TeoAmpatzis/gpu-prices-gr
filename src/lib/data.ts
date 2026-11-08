@@ -8,7 +8,6 @@ import type {
   ListFile,
   SourceName,
 } from '../types';
-import { SOURCE_NAMES } from './sources';
 import type { CategoryConfig } from './categories';
 import type { CategoryRules } from './categoryRules';
 import { recommendedScores } from './ranking';
@@ -298,11 +297,12 @@ export const PER_PAGE = [20, 50, 100] as const;
 export const DEFAULT_PER = 50;
 
 /** The defaults; in pick mode the sort is "Price ↑" (step2-plan section 2) and stays in pick mode. */
-export function defaultFilters(groups: string[], pick = false): Filters {
+export function defaultFilters(_groups: string[], pick = false): Filters {
   return {
     query: '',
-    groups,
-    sources: [...SOURCE_NAMES],
+    // Empty means "all" (design 2026-11-08 WS4): nothing is ticked at first; ticking narrows to what is ticked.
+    groups: [],
+    sources: [],
     segment: 'main',
     maxPrice: null,
     sort: pick ? 'price-asc' : 'model',
@@ -359,8 +359,8 @@ export function filterModels<L extends BaseListing>(
   const q = f.query.trim().toLowerCase();
   const listings = all.filter(
     (l) =>
-      f.groups.includes(cfg.group(l)) &&
-      f.sources.includes(l.source) &&
+      (f.groups.length === 0 || f.groups.includes(cfg.group(l))) &&
+      (f.sources.length === 0 || f.sources.includes(l.source)) &&
       (!q || cfg.searchText(l).toLowerCase().includes(q)) &&
       // Per listing, so a model's price is that of a listing that matches (e.g. the CL30 kit).
       cfg.extraFilters.every((x) => !f.extra[x.key] || x.test(l, f.extra[x.key])),
