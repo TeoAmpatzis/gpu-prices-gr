@@ -16,7 +16,8 @@ import { gzipSync } from 'node:zlib';
 import { join, resolve } from 'node:path';
 import type { Plugin } from 'vite';
 import type { Category, History, Imported, Latest, Manifest, ModelChunk } from './src/types';
-import { CATEGORY_IDS } from './src/lib/categories';
+import { CATEGORIES, CATEGORY_IDS } from './src/lib/categories';
+import { listingKey, suspectListings, type Suspect } from './src/lib/sanity';
 import { VALIDATION_MODE, validateLatest } from './src/data/validate';
 import { conflicts } from './src/data/validate/conflicts';
 import { compatFiles } from './src/lib/compatBuild';
@@ -106,6 +107,9 @@ export function derive(
   let rejectedTotal = 0;
   const conflicted: string[] = [];
   let conflictTotal = 0;
+  const suspectReport: Partial<Record<Category, Suspect[]>> = {};
+  let suspectTotal = 0;
+  let listingTotal = 0;
   for (const cat of CATEGORY_IDS) {
     const input = inputs[cat];
     if (!input) continue;
@@ -118,7 +122,14 @@ export function derive(
     const c = conflicts(cat, v.latest, input.specs ?? {}, VALIDATION_MODE);
     conflictTotal += c.conflicts.length;
     if (c.conflicts.length) conflicted.push(`${cat} ${c.conflicts.length}`);
-    const checked = withMakerTables(cat, c.latest);
+    const withMakers = withMakerTables(cat, c.latest);
+    // A price far from the other listings of its own model is a probable wrong price (design WS1): left out of every
+    // derived file below, so it cannot set a model's cheapest price, its ranking or a builder pick; listed in the report.
+    const suspects = suspectListings(withMakers.listings, (l) => (CATEGORIES[cat].modelKey as (x: typeof l) => string)(l));
+    if (suspects.size) suspectReport[cat] = [...suspects.values()];
+    suspectTotal += suspects.size;
+    listingTotal += withMakers.listings.length;
+    const checked = suspects.size ? { ...withMakers, listings: withMakers.listings.filter((l) => !suspects.has(listingKey(l))) } : withMakers;
     latest[cat] = checked;
     history[cat] = input.history;
     files[`data/${cat}/list.v2.json`] = JSON.stringify(listFile(cat, { ...input, latest: checked }, builtAt, image));
@@ -129,6 +140,9 @@ export function derive(
   }
   console.log(`[data] validation (${VALIDATION_MODE}): ${rejectedTotal ? `${rejectedTotal} value(s) out of range — ${rejected.join(', ')}` : 'none'}`);
   console.log(`[data] conflicts (${VALIDATION_MODE}): ${conflictTotal ? `${conflictTotal} value(s) unknown or corrected — ${conflicted.join(', ')}` : 'none'}`);
+  console.log(`[data] suspect prices: ${suspectTotal ? `${suspectTotal} of ${listingTotal} listing(s) left out — ${Object.entries(suspectReport).map(([k, v]) => `${k} ${v.length}`).join(', ')}` : 'none'}`);
+  if (suspectTotal > listingTotal * 0.005) console.warn(`[data] WARNING: more than 0.5% of listings look mispriced (${suspectTotal}); check data/suspect-prices.json`);
+  files['data/suspect-prices.json'] = JSON.stringify({ builtAt, total: suspectTotal, categories: suspectReport });
   const builder = builderFiles(latest, builtAt, image);
   files['data/builder/index.json'] = JSON.stringify(builder.index);
   files['data/builder/auto.json'] = JSON.stringify(builder.auto);

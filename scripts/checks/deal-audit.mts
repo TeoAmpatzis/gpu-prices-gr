@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- a dev check script on dynamically imported modules and JSON */
 // Audit of the deal ("on sale"), "lowest ever" and Recommended signals against the site's own price history
 // (design 2026-11-08 section 7). Needs a build (`npm run build`) for dist/data and the scraper's full history in
 // public/data/<cat>/history.json. Run from the repo root: npx tsx scripts/checks/deal-audit.mts [--strict]
@@ -39,11 +40,12 @@ for (const cat of CATEGORY_IDS) {
     if (isLow(m)) { lows++; if (u != null && u >= 3) lowsReal++; }
     if (u != null && recent(m.key).length >= 10 && u >= 8) { genuine++; if (isDeal(m) || isLow(m)) flagged++; }
   }
-  // Top 40 of Recommended: a model at under 40% of the median price of its own group would be a wrong price.
+  // Top 40 of Recommended: a model whose cheapest listing is under 25% of the median of its own other listings
+  // (3 or more) is a wrong price that got through (src/lib/sanity.ts leaves those out of the build).
   let suspect = 0;
   for (const m of (models as any[]).slice(0, 40)) {
-    const peers = (models as any[]).filter((x) => x.group === m.group).map((x) => x.cheapest.price);
-    if (peers.length >= 10 && m.cheapest.price < 0.4 * median(peers)) suspect++;
+    const others = m.listings.filter((l: any) => l !== m.cheapest).map((l: any) => l.price);
+    if (others.length >= 3 && m.cheapest.price < 0.25 * median(others)) suspect++;
   }
   Object.assign(t, { deals: t.deals + deals, dealsReal: t.dealsReal + dealsReal, lows: t.lows + lows, lowsReal: t.lowsReal + lowsReal, genuine: t.genuine + genuine, flagged: t.flagged + flagged, top40Suspect: t.top40Suspect + suspect });
   rows.push(`${cat.padEnd(8)} deals ${String(deals).padStart(3)} (real ${String(dealsReal).padStart(3)}) | lows ${String(lows).padStart(3)} (real ${String(lowsReal).padStart(3)}) | genuine drops ${String(genuine).padStart(3)}, flagged ${String(flagged).padStart(3)} | top-40 suspect ${suspect}`);
