@@ -43,9 +43,11 @@ export function threadsByRule(chip: string, cores: number | null): number | null
   // (G69xx is left out: the shops use the name for a Celeron.)
   const pentium = /^Pentium G(\d{4})[A-Z]{0,2}$/.exec(chip);
   if (pentium) return /^(4560|5\d{3}|6[0-8]\d{2}|7\d{3})$/.test(pentium[1]) ? smt : null;
-  if (/^Celeron G\d{4}/.test(chip)) return cores;
+  // Celeron G3930, G59xx, G6900: 2 cores / 2 threads. (The shops also use "Celeron G6600", which is a Pentium Gold.)
+  if (/^Celeron G(39\d{2}|59\d{2}|6900)$/.test(chip)) return cores;
 
   // Xeon.
+  if (/^Xeon Bronze /.test(chip)) return cores; // Bronze has Hyper-Threading off (3508U: 8 cores / 8 threads)
   if (/^Xeon (Silver|Gold|Platinum) /.test(chip)) return smt;
   if (/^Xeon [4-6]\d{3}E$/.test(chip)) return cores; // Xeon 6 with efficiency cores
   if (/^Xeon [4-6]\d{3}(P|Y|PX)?$/.test(chip)) return smt;

@@ -46,13 +46,16 @@ describe('threadsByRule', () => {
     ['Xeon Gold 6126', 12, 24],
     ['Xeon 6756E', 128, 128],
     ['Xeon E-2324G', 4, 4],
+    ['Xeon Bronze 3508U', 8, 8],
+    ['Xeon 6325P', 4, 8],
+    ['Celeron G6900', 2, 2],
     ['EPYC 9654', 96, 192],
     ['Threadripper PRO 7995WX', 96, 192],
   ])('%s with %i cores has %i threads', (chip, cores, threads) => expect(threadsByRule(chip, cores)).toBe(threads));
 
   it('is null, never a guess, when cores are unknown or the line is not covered', () => {
     expect(threadsByRule('Core i3-4130', null)).toBeNull();
-    expect(threadsByRule('Xeon Bronze 3508U', 8)).toBeNull();
+    expect(threadsByRule('Celeron G6600', 2)).toBeNull(); // really a Pentium Gold (2/4): the name is the shops' slip
     expect(threadsByRule('Pentium G6900', 2)).toBeNull();
     expect(threadsByRule('Processor 300', 2)).toBeNull();
     expect(threadsByRule('Core i7-12700', 4)).toBeNull(); // fewer cores than performance cores: bad data
