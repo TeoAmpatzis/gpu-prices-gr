@@ -1,5 +1,6 @@
 import type { BaseListing, Category } from '../../types';
 import type { Lang, Text } from '../../lib/i18n';
+import { cpuThreads } from '../../lib/cpuThreads';
 
 interface Spec {
   label: Text;
@@ -25,7 +26,7 @@ export function productSpecs(cat: Category, listing: BaseListing, lang: Lang): S
     case 'cpu':
       return [
         spec('Socket', 'Socket', word('socket')),
-        spec('Πυρήνες / νήματα', 'Cores / threads', number('cores') ? `${number('cores')} / —` : null),
+        spec('Πυρήνες / νήματα', 'Cores / threads', number('cores') ? `${number('cores')} / ${cpuThreads(String(l.chip), l.cores as number, [String(l.title ?? '')]) ?? '—'}` : null),
         spec('Boost', 'Boost', null),
         spec('TDP', 'TDP', number('tdp', ' W'), true),
         spec('Γραφικά', 'Graphics', yes('igpu'), true),

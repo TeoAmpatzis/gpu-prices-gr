@@ -4,6 +4,7 @@
 // listings (as v1's builder takes them).
 import type { Lang } from '../lib/i18n';
 import { mostCommon } from '../lib/data';
+import { cpuThreads } from '../lib/cpuThreads';
 import type {
   BaseListing,
   Category,
@@ -28,6 +29,8 @@ export interface Spec {
 
 type L<T> = T[];
 const pick = <T, V>(ls: L<T>, f: (l: T) => V | null | undefined) => mostCommon(ls.map(f));
+/** A CPU model's threads (src/lib/cpuThreads.ts): its listings' titles, else the chip's line and the model's cores. */
+const threadsOf = (ls: CpuListing[], cores: number | null) => (ls.length ? cpuThreads(ls[0].chip, cores, ls.map((l) => l.title)) : null);
 const w = (lang: Lang, el: string, en: string) => (lang === 'el' ? el : en);
 const mm = (lang: Lang, n: number | null) => (n == null ? null : `${num(lang, n)} mm`);
 /** "μήκος 300 mm": a labelled value, or null when unknown. */
@@ -48,10 +51,11 @@ const SPECS: { [C in Category]: (ls: BaseListing[], lang: Lang) => Spec[] } = {
   cpu: (raw, lang) => {
     const ls = raw as L<CpuListing>;
     const cores = pick(ls, (l) => l.cores);
+    const threads = threadsOf(ls, cores);
     const igpu = pick(ls, (l) => l.igpu);
     const tdp = pick(ls, (l) => l.tdp);
     return [
-      { label: w(lang, 'πυρήνες', 'cores'), value: cores == null ? null : `${cores} ${w(lang, 'πυρήνες', 'cores')}` },
+      { label: w(lang, 'πυρήνες', 'cores'), value: cores == null ? null : `${cores} ${w(lang, 'πυρήνες', 'cores')}${threads == null ? '' : ` / ${threads} ${w(lang, 'νήματα', 'threads')}`}` },
       { label: 'socket', value: pick(ls, (l) => l.socket) },
       { label: w(lang, 'γραφικά', 'graphics'), value: igpu == null ? null : igpu ? w(lang, 'με γραφικά', 'with graphics') : w(lang, 'χωρίς γραφικά', 'no graphics') },
       { label: 'TDP', value: tdp == null ? null : `TDP ${tdp} W` },
@@ -216,8 +220,10 @@ const FULL: { [C in Category]: (ls: BaseListing[], lang: Lang, est?: Estimate) =
     const ls = raw as L<CpuListing>;
     const tdp = pick(ls, (l) => l.tdp);
     const cores = pick(ls, (l) => l.cores);
+    const threads = threadsOf(ls, cores);
     return [
       ['general', w(lang, 'Πυρήνες', 'Cores'), cores == null ? null : String(cores)],
+      ['general', w(lang, 'Νήματα', 'Threads'), threads == null ? null : String(threads)],
       ['general', w(lang, 'Συσκευασία', 'Packaging'), pick(ls, (l) => l.packaging)],
       ['general', w(lang, 'Ενσωματωμένα γραφικά', 'Integrated graphics'), yesNo(lang, pick(ls, (l) => l.igpu))],
       ['general', w(lang, 'Ψύκτρα στο κουτί', 'Cooler in the box'), yesNo(lang, pick(ls, (l) => l.coolerIncluded))],

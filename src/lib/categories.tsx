@@ -14,6 +14,7 @@ import type {
   RamListing,
   StorageListing,
 } from '../types';
+import { cpuThreads } from './cpuThreads';
 import { formatPrice, mostCommon, type Model } from './data';
 import { T, tr, type Lang, type Text } from './i18n';
 import {
@@ -144,6 +145,7 @@ export const GPU: CategoryConfig<GpuListing> = {
 
 const cpuSocket = (m: Model<CpuListing>) => mostCommon(m.listings.map((l) => l.socket));
 const cpuCores = (m: Model<CpuListing>) => mostCommon(m.listings.map((l) => l.cores));
+const cpuThreadCount = (m: Model<CpuListing>) => cpuThreads(m.listings[0].chip, cpuCores(m), m.listings.map((l) => l.title));
 
 // Earlier = higher rank. Desktop and server lines never share a list unless "all" is picked.
 const CPU_FAMILIES = [
@@ -177,6 +179,7 @@ export const CPU: CategoryConfig<CpuListing> = {
   tierScore: (m) => cpuTierScore(m.chip),
   before: [
     { header: { el: 'Πυρήνες', en: 'Cores' }, numeric: true, cell: (m) => cpuCores(m) ?? '—' },
+    { header: { el: 'Νήματα', en: 'Threads' }, numeric: true, cell: (m) => cpuThreadCount(m) ?? '—' },
     { header: 'Socket', className: 'hidden sm:table-cell', cell: (m) => cpuSocket(m) ?? '—' },
   ],
   after: [],
