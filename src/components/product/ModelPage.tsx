@@ -23,6 +23,7 @@ import { Alternatives } from './Alternatives';
 import { HeaderFit, OfferFitAction, OfferFitLine, useProductFit, type ProductFit } from './fitUi';
 import { OffersTable } from './OffersTable';
 import { PriceHistory } from './PriceHistory';
+import { CompareButton } from '../compare/CompareButton';
 import { ProductHeader } from './ProductHeader';
 import { ReportError } from './ReportError';
 import { SpecGroups } from './SpecGroups';
@@ -151,7 +152,12 @@ function Product({ cat, entry, sources, crumbs, fit, selection }: ProductProps &
           model={{ ...model, chip: selected?.title ?? entry.chip }}
           photo={entry.photo}
           cheapest={selected ? ownTotal(selected) : offers[0]}
-          action={fit && <HeaderFit p={fit} />}
+          action={
+            <>
+              {fit && <HeaderFit p={fit} />}
+              <CompareButton item={{ cat, slug: entry.slug, ...(selected ? { selection: { source: selected.source, id: selected.id } } : {}) }} name={selected?.title ?? entry.chip} />
+            </>
+          }
           selected={!!selected}
           checked={checkedAt(sources, (selected ?? offers[0]).source)}
           variants={<Variants cat={cat} entry={entry} />}

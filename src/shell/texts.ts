@@ -4,7 +4,7 @@ import type { Text } from '../lib/i18n';
 import type { InfoPage } from '../lib/routes';
 import type { Category } from '../types';
 
-export const PAGE: Record<'home' | 'builder' | 'parts' | 'search' | 'notFound' | InfoPage, { title: Text; subtitle?: Text }> = {
+export const PAGE: Record<'home' | 'builder' | 'parts' | 'search' | 'compare' | 'notFound' | InfoPage, { title: Text; subtitle?: Text }> = {
   search: { title: { el: 'Αναζήτηση', en: 'Search' } },
   'how-prices': { title: { el: 'Πώς βγάζουμε τις τιμές', en: 'How prices work' } },
   home: {
@@ -22,6 +22,10 @@ export const PAGE: Record<'home' | 'builder' | 'parts' | 'search' | 'notFound' |
     },
   },
   parts: { title: { el: 'Εξαρτήματα', en: 'Parts' } },
+  compare: {
+    title: { el: 'Σύγκριση προϊόντων', en: 'Compare products' },
+    subtitle: { el: 'Δες τα χαρακτηριστικά και τις τιμές δίπλα δίπλα. Μέχρι 4 προϊόντα της ίδιας κατηγορίας.', en: 'See specs and prices side by side. Up to 4 products of the same category.' },
+  },
   notFound: { title: { el: 'Η σελίδα δεν βρέθηκε', en: 'Page not found' } },
   about: {
     title: { el: 'Σχετικά', en: 'About' },

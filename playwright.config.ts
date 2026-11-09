@@ -4,6 +4,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const external = process.env.E2E_BASE_URL;
+// The comparison feature is off in production builds until approved (src/lib/compare/flag.ts): the e2e build turns it on.
+process.env.VITE_COMPARE ??= '1';
 const PORT = 4174;
 
 export default defineConfig({

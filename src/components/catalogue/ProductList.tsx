@@ -4,6 +4,7 @@ import type { CategoryConfig } from '../../lib/categories';
 import type { CatalogueRecord } from '../../lib/catalogueFilters';
 import { formatPrice, saleOf } from '../../lib/data';
 import { productHref } from '../../lib/productSelection';
+import { CompareButton } from '../compare/CompareButton';
 import { T, tr, useLang } from '../../lib/i18n';
 import { SOURCES } from '../../lib/sources';
 import { productImage } from '../../lib/images';
@@ -95,9 +96,13 @@ export default function ProductList<L extends BaseListing>({ cfg, products, card
         </div>
       ),
       action: extra?.extra ?? (
-        <a className="ui-btn ui-btn--primary ui-btn--sm" href={href}>
-          {t(UI.catalogueView)}
-        </a>
+        <span className="inline-flex items-center gap-1.5">
+          <a className="ui-btn ui-btn--primary ui-btn--sm" href={href}>
+            {t(UI.catalogueView)}
+          </a>
+          {/* Not in the builder's picker (`pick`): there the action is "Add to build". */}
+          {!pick && <CompareButton iconOnly item={{ cat: cfg.id, slug: p.familySlug, selection: { source: l.source, id: l.id } }} name={l.title || l.chip} />}
+        </span>
       ),
     };
   };

@@ -203,6 +203,10 @@ export const PRIVACY: InfoPageContent = {
           el: '`pcBuilds`: οι συνθέσεις που αποθηκεύεις με όνομα (έως 30): για καθεμία το όνομα, τα εξαρτήματα όπως στο `pcBuild` και η ώρα της τελευταίας αλλαγής, και ποια είναι ανοιχτή. Μένουν μόνο στον browser σου· σβήνονται αν καθαρίσεις τα δεδομένα του site στον browser.',
           en: "`pcBuilds`: the builds you save under a name (up to 30): for each, its name, the parts as in `pcBuild` and the time of the last change, and which one is open. They stay only in your browser; clearing the site's data in your browser deletes them.",
         },
+        {
+          el: '`bdCompare:v1`: τα προϊόντα που πρόσθεσες στη σύγκριση (έως 4 ανά κατηγορία, σε έως 3 κατηγορίες) και ποια κατηγορία είναι ανοιχτή· μόνο τα ονόματα-διευθύνσεις των προϊόντων, όχι τιμές. Μένουν μόνο στον browser σου· σβήνονται αν καθαρίσεις τα δεδομένα του site στον browser. Ο σύνδεσμος κοινοποίησης μιας σύγκρισης περιέχει μόνο αυτές τις διευθύνσεις προϊόντων, στη διεύθυνση της σελίδας (`/compare?v=1&cat=…&items=…`)· όπως κάθε διεύθυνση που ανοίγεις, εμφανίζεται στα αρχεία καταγραφής της φιλοξενίας (Vercel).',
+          en: "`bdCompare:v1`: the products you added to the comparison (up to 4 per category, in up to 3 categories) and which category is open: only the products' page addresses, not prices. They stay only in your browser; clearing the site's data in your browser deletes them. A comparison's share link holds only those product addresses, in the page address (`/compare?v=1&cat=…&items=…`); like any address you open, it appears in the hosting provider's logs (Vercel).",
+        },
       ],
     },
     {

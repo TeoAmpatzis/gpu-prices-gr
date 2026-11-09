@@ -15,6 +15,8 @@ export type Route =
   | { kind: 'model'; cat: Category; slug: string }
   | { kind: 'builder' }
   | { kind: 'parts' }
+  /** /compare: the saved comparison, or a shared one (?v=1&cat=…&items=…); shown only while lib/compare/flag is on. */
+  | { kind: 'compare' }
   | { kind: 'search' }
   | { kind: 'info'; page: InfoPage }
   | { kind: 'notFound' };
@@ -32,13 +34,14 @@ export function matchRoute(pathname: string): Route {
   if (second) return { kind: 'notFound' };
   if (first === 'builder') return { kind: 'builder' };
   if (first === 'parts') return { kind: 'parts' };
+  if (first === 'compare') return { kind: 'compare' };
   if (first === 'search') return { kind: 'search' };
   if (isInfo(first)) return { kind: 'info', page: first };
   return { kind: 'notFound' };
 }
 
 /** First path segments the app serves (vercel.json rewrites exactly these to index.html; the rest is a 404). */
-export const APP_SEGMENTS = [...CATEGORY_LIST, 'builder', 'parts', 'search', ...INFO_PAGES];
+export const APP_SEGMENTS = [...CATEGORY_LIST, 'builder', 'parts', 'search', 'compare', ...INFO_PAGES];
 
 /**
  * An old v1 link ("/#ram?type=ddr5&cap=32", "/#builder?cpu=…&use=gaming", "/#about") → its new address

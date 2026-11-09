@@ -9,6 +9,8 @@ import { afterFirstPaint } from './lib/paint';
 import { navigate, notifyUrl, useLinkNavigation, usePath } from './lib/router';
 import { CATEGORY_LIST, matchRoute, redirectLegacyLink } from './lib/routes';
 import type { Category } from './types';
+import { CompareTray } from './components/compare/CompareTray';
+import { COMPARE_ENABLED } from './lib/compare/flag';
 import { ErrorBoundary } from './shell/ErrorBoundary';
 import { Header } from './shell/Header';
 import { Home } from './shell/Home';
@@ -38,6 +40,7 @@ const Builder = lazy(loadBuilderView);
 const InfoPage = lazy(loadInfoView);
 const loadSearchPage = () => import('./components/search/SearchPage');
 const SearchPage = lazy(loadSearchPage);
+const ComparePage = lazy(() => import('./components/compare/ComparePage'));
 
 /** Start loading a page's code and data before it opens (link hover, focus or touch; and the first page). */
 function prefetchPath(path: string) {
@@ -184,17 +187,24 @@ export default function App() {
             )}
             {route.kind === 'parts' && <PartsPage counts={site?.counts} search={SEARCH} />}
             {route.kind === 'search' && later(<SearchPage />)}
+            {route.kind === 'compare' && COMPARE_ENABLED && (
+              <div className="mx-auto max-w-[1032px]">
+                <PageTitle crumbs={crumbs(PAGE.compare.title)} title={PAGE.compare.title} subtitle={PAGE.compare.subtitle} />
+                {later(<ComparePage />)}
+              </div>
+            )}
             {route.kind === 'info' && (
               <div className="mx-auto max-w-[1032px]">
                 <PageTitle crumbs={crumbs(PAGE[route.page].title)} title={PAGE[route.page].title} subtitle={PAGE[route.page].subtitle} />
                 {later(<InfoPage page={route.page} />)}
               </div>
             )}
-            {route.kind === 'notFound' && notFound}
+            {(route.kind === 'notFound' || (route.kind === 'compare' && !COMPARE_ENABLED)) && notFound}
           </Suspense>
         </ErrorBoundary>
       </main>
       <Footer sources={site?.sources ?? {}} staleIn={site?.staleIn} />
+      <CompareTray hidden={route.kind === 'builder' || route.kind === 'compare'} />
     </div>
   );
 }
