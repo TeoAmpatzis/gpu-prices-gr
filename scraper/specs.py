@@ -54,8 +54,9 @@ MAX_FAILURES = 3  # errors in a row before a site stops for this run
 SAVE_EVERY = 25
 
 
-def page_specs(s, url: str) -> dict[str, str]:
-    return labels(http.get(s, url).text)
+def page_specs(s, url: str, cat: str = "") -> dict[str, str]:
+    html = http.get(s, url).text
+    return {**jsonld_labels(html), **labels(html)} if cat == "monitor" else labels(html)
 
 
 def labels(html: str) -> dict[str, str]:
@@ -253,15 +254,81 @@ def parse_storage(sp: dict[str, str]) -> dict:
     }
 
 
+def jsonld_labels(html: str) -> dict[str, str]:
+    """BestPrice monitor pages keep most of the spec table only in the page's JSON-LD Product
+    (`additionalProperty`, plus `gtin13`, the EAN). Returned as {"ld:<label>": value} so the other
+    categories' parsers, which read plain labels, never see them. Booleans read "true" / "false"."""
+    out: dict[str, str] = {}
+    for sc in HTMLParser(html).css('script[type="application/ld+json"]'):
+        try:
+            data = json.loads(sc.text())
+        except ValueError:
+            continue
+        for item in data if isinstance(data, list) else [data]:
+            if not isinstance(item, dict) or item.get("@type") != "Product":
+                continue
+            if item.get("gtin13"):
+                out["ld:gtin13"] = str(item["gtin13"])
+            for p in item.get("additionalProperty") or []:
+                if isinstance(p, dict) and p.get("name") and p.get("value") is not None:
+                    v = p["value"]
+                    out[f"ld:{p['name']}"] = ("true" if v else "false") if isinstance(v, bool) else re.sub(r"\s+", " ", str(v)).strip()
+    return out
+
+
+def _bool(v: str | None) -> bool | None:
+    return {"true": True, "false": False}.get(v or "")
+
+
+def _list(v: str | None) -> list[str] | None:
+    items = [x.strip() for x in re.split(r"[•,]", v or "") if x.strip()]
+    return items or None
+
+
+def parse_monitor(sp: dict[str, str]) -> dict:
+    """What a BestPrice monitor page states, as observations. Names start with `pg` (page) so they never
+    overwrite what the listing's own title gave (size, hz, panel…): the identity step compares the two.
+    None = not stated, never guessed. Only the shop's own page is read (Skroutz specs stay off, capabilities.py)."""
+    get = lambda label: sp.get(f"ld:{label}") or sp.get(label)  # noqa: E731
+    size = re.search(r"(\d+(?:[.,]\d+)?)", get("Μέγεθος Οθόνης") or "")
+    res = re.search(r"(\d{3,5})\s*[x×]\s*(\d{3,5})", get("Μέγιστη Ανάλυση") or "")
+    hz = re.search(r"(\d+)\s*Hz", get("Συχνότητα Ανανέωσης Εικόνας") or "", re.I)
+    ms = re.search(r"(\d+(?:[.,]\d+)?)\s*ms", get("Χρόνος Απόκρισης") or "", re.I)
+    nits = re.search(r"(\d+)\s*cd", get("Φωτεινότητα Οθόνης") or "")
+    contrast = re.match(r"\s*(\d+)\s*:\s*1", get("Λόγος Αντίθεσης") or "")
+    gtin = sp.get("ld:gtin13")
+    return {
+        "gtin": gtin if gtin and gtin.isdigit() else None,
+        "pgSize": float(size.group(1).replace(",", ".")) if size else None,
+        "pgWidth": int(res.group(1)) if res else None,
+        "pgHeight": int(res.group(2)) if res else None,
+        "pgHz": int(hz.group(1)) if hz else None,
+        "pgResponseMs": float(ms.group(1).replace(",", ".")) if ms else None,
+        "pgNits": int(nits.group(1)) if nits else None,
+        "pgContrast": int(contrast.group(1)) if contrast else None,
+        "pgPanel": get("Τύπος Panel"),
+        "pgAspect": get("Aspect Ratio"),
+        "pgHdr": _bool(get("HDR")),
+        "pgUltrawide": _bool(get("Ultrawide")),
+        "pgCurved": _bool(get("Κυρτή")),
+        "pgVesa": get("VESA Mount"),
+        "pgConnectors": _list(get("Συνδεσιμότητα")),
+        "pgFeatures": _list(get("Επιπλέον Δυνατότητες")),
+        "pgEnergy": get("Νέα Ενεργειακή Κλάση"),
+        "pgColour": get("Χρώμα"),
+    }
+
+
 PARSERS: dict[str, Callable[[dict[str, str]], dict]] = {
     "gpu": parse_gpu, "cpu": parse_cpu, "case": parse_case, "cooler": parse_cooler, "fan": parse_fan,
-    "storage": parse_storage, "mobo": parse_mobo,
+    "storage": parse_storage, "mobo": parse_mobo, "monitor": parse_monitor,
 }
-EMPTY = {cat: parse({}) for cat, parse in PARSERS.items()}
+EMPTY = {cat: ({} if cat == "monitor" else parse({})) for cat, parse in PARSERS.items()}
 # Sites per category, in order of preference (BestPrice states nothing about a CPU's cooler).
 SITES = {"gpu": ("skroutz", "bestprice"), "cpu": ("skroutz",), "case": ("skroutz", "bestprice"),
          "cooler": ("skroutz", "bestprice"), "fan": ("skroutz", "bestprice"), "storage": ("skroutz", "bestprice"),
-         "mobo": ("skroutz", "bestprice")}
+         "mobo": ("skroutz", "bestprice"),
+         "monitor": ("bestprice",)}  # Skroutz specs are off for monitors (capabilities.py)
 # New page reads a site may not make yet: the owner approves a Skroutz budget before Skroutz reads
 # any new kind of page (v2 Phase 2 plan, 2026-10-10). Until then these categories go to the next site.
 PAUSED = {"skroutz": {"mobo"}}
@@ -274,7 +341,7 @@ REREAD_SITES = ("bestprice",)
 # storage: SSDs only — an HDD's title already gives its speed and cache).
 NEEDED = {"gpu": ("lengthMm",), "cpu": ("coolerIncluded",), "case": ("gpuMaxMm", "coolerMaxMm"),
           "cooler": ("sockets",), "fan": ("connector",), "storage": ("readMBs",),
-          "mobo": ("m2Slots", "sataPorts", "maxMemoryGB")}
+          "mobo": ("m2Slots", "sataPorts", "maxMemoryGB"), "monitor": ("gtin",)}
 # Measurements the builder checks, and which of two disagreeing values is the safe one to assume
 # (sites, or a site and the maker): the longer card / taller cooler / higher PSU minimum, the
 # smaller case clearance.
@@ -373,7 +440,7 @@ def collect(cats: list[tuple[str, Path, list[dict], Callable]], budget: dict[str
             if i:
                 time.sleep(random.uniform(*PAUSE))
             try:
-                entry = PARSERS[name](page_specs(s, l["url"]))
+                entry = PARSERS[name](page_specs(s, l["url"], name))
             except Exception as e:
                 failures += 1
                 print(f"  specs {site}/{name}: {type(e).__name__}: {str(e)[:120]}")

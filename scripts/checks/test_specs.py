@@ -123,5 +123,40 @@ with tempfile.TemporaryDirectory() as d:
     expect("apply copies the fields and leaves the version marker out", (ls[0]["bays35"], ls[0]["usbCFront"], "v" in ls[0], "checked" in ls[0]),
            (1, True, False, False))
 
+# --- BestPrice monitor pages: spec table in JSON-LD, EAN (gtin13), page observations kept apart (pg*)
+def monitor(name: str) -> dict:
+    html = (FIXTURES / f"bestprice-monitor-{name}.html").read_text(encoding="utf-8")
+    return specs.parse_monitor({**specs.jsonld_labels(html), **specs.labels(html)})
+
+
+g50f = monitor("samsung-odyssey-g50f")
+expect("monitor: Odyssey G5 G50F identity and display", (g50f["gtin"], g50f["pgSize"], g50f["pgWidth"], g50f["pgHeight"], g50f["pgHz"], g50f["pgPanel"]),
+       ("8806097817796", 27.0, 2560, 1440, 180, "IPS"))
+expect("monitor: G50F response, brightness, contrast, aspect", (g50f["pgResponseMs"], g50f["pgNits"], g50f["pgContrast"], g50f["pgAspect"]),
+       (1.0, 300, 1000, "16:9"))
+expect("monitor: G50F explicit false stays False, HDR True", (g50f["pgHdr"], g50f["pgUltrawide"], g50f["pgCurved"]), (True, False, False))
+expect("monitor: G50F connectors, features, VESA, energy", (g50f["pgConnectors"], g50f["pgFeatures"], g50f["pgVesa"], g50f["pgEnergy"]),
+       (["HDMI", "DisplayPort"], ["FreeSync", "G-Sync"], "100x100", "E"))
+dell = monitor("dell-p2425")
+expect("monitor: Dell P2425 decimal comma size, 16:10 panel, no HDR", (dell["gtin"], dell["pgSize"], dell["pgHeight"], dell["pgAspect"], dell["pgHdr"]),
+       ("5397184821671", 24.07, 1200, "8:5", False))
+expect("monitor: Dell connectors keep USB-C and VGA", dell["pgConnectors"], ["HDMI", "VGA", "USB", "USB-C", "DisplayPort"])
+lg = monitor("lg-ultragear-24g411a")
+expect("monitor: LG 24G411A 144 Hz FHD", (lg["gtin"], lg["pgSize"], lg["pgWidth"], lg["pgHz"], lg["pgResponseMs"]), ("8806096571583", 24.0, 1920, 144, 5.0))
+nothing = specs.parse_monitor({})
+expect("monitor: an empty page states nothing (all None, never guessed)", {v for v in nothing.values()}, {None})
+expect("monitor: a non-numeric EAN is dropped", specs.parse_monitor({"ld:gtin13": "n/a"})["gtin"], None)
+expect("monitor: JSON-LD labels never leak into the other categories' parsers",
+       specs.parse_gpu({**specs.jsonld_labels((FIXTURES / "bestprice-monitor-dell-p2425.html").read_text(encoding="utf-8"))}), specs.parse_gpu({}))
+expect("monitor: pg* names do not collide with a listing's own title fields",
+       set(nothing) & {"size", "height", "width", "hz", "panel", "colour", "code", "brand", "revision"}, set())
+expect("monitor: BestPrice is the only spec site (Skroutz specs are off for monitors)", specs.SITES["monitor"], ("bestprice",))
+ls = [{"id": "bestprice:1", "source": "bestprice", "size": 27.0, "hz": 165}]
+with tempfile.TemporaryDirectory() as d:
+    Path(d, "specs.json").write_text(json.dumps({"bestprice:1": {**g50f, "checked": "x"}}), encoding="utf-8")
+    specs.apply("monitor", Path(d), ls)
+expect("monitor: apply adds page observations beside the title's, overwriting none of them",
+       (ls[0]["size"], ls[0]["hz"], ls[0]["pgSize"], ls[0]["pgHz"]), (27.0, 165, 27.0, 180))
+
 print(f"\n{ok} passed, {bad} failed")
 sys.exit(1 if bad else 0)
