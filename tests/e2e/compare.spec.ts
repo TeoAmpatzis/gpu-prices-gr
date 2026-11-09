@@ -92,3 +92,70 @@ test('works with blocked storage (this tab only)', async ({ page }) => {
   await add(page, 0);
   await expect(page.locator(tray)).toContainText('(1)');
 });
+
+test('another tab sees the change at once (storage event)', async ({ page, context }) => {
+  await page.goto('/gpu');
+  await expect(page.locator(rows).first()).toBeVisible({ timeout: 20_000 });
+  const other = await context.newPage();
+  await other.goto('/cpu');
+  await expect(other.locator(rows).first()).toBeVisible({ timeout: 20_000 });
+  await expect(other.locator(tray)).toHaveCount(0);
+  await add(page, 0);
+  await expect(other.locator(tray)).toContainText('Graphics cards', { timeout: 5_000 });
+  await page.locator('[data-compare-tray] button', { hasText: 'Clear' }).click();
+  await expect(other.locator(tray)).toHaveCount(0, { timeout: 5_000 });
+});
+
+test('keyboard: Enter on a Compare button toggles it; the table is reachable by Tab', async ({ page }) => {
+  await page.goto('/gpu');
+  await expect(page.locator(rows).first()).toBeVisible({ timeout: 20_000 });
+  const button = page.locator(`${rows} [data-compare-ref]`).first();
+  await button.focus();
+  await page.keyboard.press('Enter');
+  await expect(button).toHaveAttribute('aria-pressed', 'true');
+  await page.keyboard.press('Enter');
+  await expect(button).toHaveAttribute('aria-pressed', 'false');
+  await page.keyboard.press('Space');
+  await expect(button).toHaveAttribute('aria-pressed', 'true');
+  await page.locator('[data-compare-open]').focus();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/\/compare$/);
+  const hide = page.getByRole('button', { name: 'Hide identical' });
+  await hide.focus();
+  await page.keyboard.press('Enter');
+  await expect(hide).toHaveAttribute('aria-pressed', 'true');
+});
+
+test('saving a shared comparison puts it in the saved group', async ({ page }) => {
+  await page.goto('/gpu');
+  await expect(page.locator(rows).first()).toBeVisible({ timeout: 20_000 });
+  const refs = await page.locator(`${rows} [data-compare-ref]`).evaluateAll((els) => els.slice(0, 2).map((e) => e.getAttribute('data-compare-ref')));
+  await page.goto(`/compare?v=1&cat=gpu&items=${encodeURIComponent(refs.join(','))}`);
+  await page.locator('[data-compare-save]').click();
+  await expect(page).toHaveURL(/\/compare$/);
+  await expect(page.getByText('Shared comparison')).toHaveCount(0);
+  expect(JSON.parse((await stored(page))!).groups.gpu).toHaveLength(2);
+});
+
+for (const cat of ['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler']) {
+  for (const lang of ['el', 'en']) {
+    test(`${cat} (${lang}): two products compare, no sideways scroll at 1440 and 360`, async ({ page }) => {
+      await page.addInitScript((l) => localStorage.setItem('lang', l), lang);
+      for (const width of [1440, 360]) {
+        await page.setViewportSize({ width, height: 900 });
+        await page.goto(`/${cat}`);
+        await expect(page.locator(rows).first()).toBeVisible({ timeout: 20_000 });
+        await page.evaluate(() => localStorage.removeItem('bdCompare:v1'));
+        await page.reload();
+        await expect(page.locator(rows).first()).toBeVisible({ timeout: 20_000 });
+        await add(page, 0);
+        await add(page, 1);
+        await page.locator('[data-compare-open]').click();
+        await expect(page.locator('[data-compare-table] thead th')).toHaveCount(3, { timeout: 20_000 });
+        await expect(page.locator('[data-compare-row]').first()).toBeVisible();
+        expect(await page.locator('[data-compare-row="price:price"]').count()).toBe(1);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      }
+    });
+  }
+}

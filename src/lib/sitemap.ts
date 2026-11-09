@@ -1,6 +1,7 @@
 // sitemap.xml (an index) and one sitemap per category plus one for the fixed pages, from the built model chunks.
 import { CATEGORY_LIST, INFO_PAGES } from './routes';
 import { SITE } from './pageMeta';
+import { COMPARE_DEFAULT } from './compare/flagDefault';
 import type { ModelChunk } from '../types';
 
 const MAX_URLS = 50_000; // the sitemap protocol's limit per file
@@ -14,7 +15,7 @@ const urlset = (paths: string[], lastmod: string) =>
 export function sitemaps(models: Record<string, ModelChunk[]>, builtAt: string): Record<string, string> {
   const lastmod = builtAt.slice(0, 10);
   const files: Record<string, string> = {
-    'sitemap-pages.xml': urlset(['/', ...CATEGORY_LIST.map((c) => `/${c}`), '/builder', ...INFO_PAGES.map((p) => `/${p}`)], lastmod),
+    'sitemap-pages.xml': urlset(['/', ...CATEGORY_LIST.map((c) => `/${c}`), '/builder', ...(COMPARE_DEFAULT || process.env.VITE_COMPARE === '1' ? ['/compare'] : []), ...INFO_PAGES.map((p) => `/${p}`)], lastmod),
   };
   for (const cat of CATEGORY_LIST) {
     const slugs = (models[cat] ?? []).flatMap((c) => Object.values(c.models).map((e) => `/${cat}/${e.slug}`)).sort();

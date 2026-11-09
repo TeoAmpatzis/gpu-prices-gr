@@ -12,6 +12,9 @@ describe('sitemaps', () => {
     expect(out['sitemap-cpu.xml']).toContain('/cpu/ryzen-5-7600');
     expect(out['sitemap-pages.xml']).toContain('<loc>https://gpu-prices-gr.vercel.app/</loc>');
   });
+  it('lists /compare only while comparison is switched on', () => {
+    expect(out['sitemap-pages.xml'].includes('/compare</loc>')).toBe(process.env.VITE_COMPARE === '1');
+  });
   it('the index points at every file', () => {
     for (const f of Object.keys(out).filter((k) => k !== 'sitemap.xml')) expect(out['sitemap.xml']).toContain(`/${f}</loc>`);
   });

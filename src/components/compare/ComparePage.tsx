@@ -6,11 +6,11 @@ import { Fragment, useMemo, useState } from 'react';
 import { CATEGORIES } from '../../lib/categories';
 import { T, tr, useLang, type Lang, type Text } from '../../lib/i18n';
 import { parseShare, shareSearch, type CompareRef } from '../../lib/compare/refs';
-import { compareActivate, compareRemove, useCompare } from '../../lib/compare/session';
+import { compareActivate, compareAdd, compareRemove, useCompare } from '../../lib/compare/session';
 import { CMP } from '../../lib/compare/strings';
 import { buildTable, visibleRows, type CompareRow } from '../../lib/compare/table';
 import { useCompareItems, type ItemState } from '../../lib/compare/useCompareItems';
-import { useQuery } from '../../lib/router';
+import { navigate, useQuery } from '../../lib/router';
 import { useMedia } from '../../lib/useMedia';
 import { CATS } from '../../shell/nav';
 import type { Category } from '../../types';
@@ -58,6 +58,7 @@ function Table({ cat, refs, shared }: { cat: Category; refs: CompareRef[]; share
   const [hideUnknown, setHideUnknown] = useState(false);
   const [slots, setSlots] = useState<[number, number]>([0, 1]);
   const [copied, setCopied] = useState(false);
+  const [saveFailed, setSaveFailed] = useState<Text | null>(null);
 
   const ok = states.filter((s): s is OkState => s.status === 'ok');
   const rows = buildTable(cat, ok.map((s) => s.item), lang).rows;
@@ -78,11 +79,26 @@ function Table({ cat, refs, shared }: { cat: Category; refs: CompareRef[]; share
     }
   };
 
+  /** Adds the shared items to the saved group (never evicting): all of them fit and it opens as the saved comparison, or it says why not. */
+  const save = () => {
+    const results = refs.map(compareAdd);
+    if (results.every((r) => r === 'added' || r === 'duplicate')) navigate('/compare', { replace: true });
+    else setSaveFailed(results.includes('groups-full') ? CMP.groupsFull : CMP.full);
+  };
+
   return (
     <section data-compare-page className="flex flex-col gap-4">
       {shared ? (
         <p role="note" className="rounded-lg bg-sunken px-3 py-2 text-sm text-muted">
           <strong className="text-fg">{tr(lang, CMP.shared)}.</strong> {tr(lang, CMP.sharedNote)}
+          <Button size="sm" onClick={save} className="ml-2 align-middle" data-compare-save>
+            {tr(lang, CMP.save)}
+          </Button>
+          {saveFailed && (
+            <span role="alert" className="mt-1 block text-warn-fg">
+              {tr(lang, saveFailed)}
+            </span>
+          )}
         </p>
       ) : (
         groups.length > 1 && (
@@ -167,7 +183,7 @@ function Table({ cat, refs, shared }: { cat: Category; refs: CompareRef[]; share
                         </div>
                       </div>
                       {!shared && (
-                        <Button size="sm" variant="ghost" icon={X} onClick={() => compareRemove(s.ref)} className="self-start">
+                        <Button size="sm" variant="ghost" icon={X} iconOnly={!wide} title={tr(lang, CMP.remove)} onClick={() => compareRemove(s.ref)} className="self-start">
                           {tr(lang, CMP.remove)}
                         </Button>
                       )}
@@ -219,7 +235,7 @@ function Table({ cat, refs, shared }: { cat: Category; refs: CompareRef[]; share
 function RowView({ row, columns, lang }: { row: CompareRow; columns: number[]; lang: Lang }) {
   return (
     <tr className="border-t border-line align-top" data-compare-row={row.id} data-status={row.status}>
-      <th scope="row" className="sticky left-0 z-10 bg-panel p-2 text-left text-xs font-medium text-muted [overflow-wrap:anywhere]">
+      <th scope="row" className="sticky left-0 z-10 bg-panel p-1.5 text-left text-[12px] font-medium text-muted sm:p-2 sm:text-xs [overflow-wrap:anywhere]">
         {row.label}
         {row.status === 'differs' && (
           <span className="ml-1 rounded bg-hover px-1 py-0.5 text-[10px] font-semibold text-fg" title={tr(lang, CMP.differs)}>

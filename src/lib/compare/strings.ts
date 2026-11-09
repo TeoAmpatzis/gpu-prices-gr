@@ -32,6 +32,7 @@ export const CMP = {
   copied: { el: 'Ο σύνδεσμος αντιγράφηκε', en: 'Link copied' },
   shared: { el: 'Κοινή σύγκριση', en: 'Shared comparison' },
   sharedNote: { el: 'Αυτή είναι μια σύγκριση από σύνδεσμο. Δεν αλλάζει τη δική σου.', en: 'This comparison comes from a link. It does not change yours.' },
+  save: { el: 'Αποθήκευση στη δική μου σύγκριση', en: 'Save to my comparison' },
   invalid: { el: 'Ο σύνδεσμος σύγκρισης δεν είναι έγκυρος.', en: 'This comparison link is not valid.' },
   showing: { el: 'Εμφανίζονται', en: 'Showing' },
   column: { el: 'Στήλη', en: 'Column' },

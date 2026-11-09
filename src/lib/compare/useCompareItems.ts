@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { loadManifest } from '../manifest';
-import { loadModel } from '../modelData';
+import { loadModel, resolveModel } from '../modelData';
 import { resolveProductSelection } from '../productSelection';
 import { productImage, type ProductImage } from '../images';
 import { encodeRef, type CompareRef } from './refs';
@@ -42,7 +42,12 @@ export function useCompareItems(refs: CompareRef[]) {
       await Promise.all(
         list.map(async (ref) => {
           try {
-            const entry = await loadModel(ref.cat, ref.slug, builtAt);
+            let entry = await loadModel(ref.cat, ref.slug, builtAt);
+            if (!entry) {
+              // Renamed since it was added: follow the alias, inside the same build.
+              const moved = await resolveModel(ref.cat, ref.slug);
+              if (moved.kind === 'moved') entry = await loadModel(ref.cat, moved.slug, builtAt);
+            }
             const exact = entry && ref.selection ? resolveProductSelection(entry.listings, ref.selection) : null;
             if (!entry || (ref.selection && !exact)) return put({ ref, status: 'gone' });
             const listings = exact ? [exact] : entry.listings;
