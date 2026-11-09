@@ -135,6 +135,14 @@ def write_image_urls(out_dir: Path, listings: list[dict], model_key) -> None:
     path.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
 
+def drop_images(listings: list[dict]) -> None:
+    """A category without a photo job (Category.images False): its listings must not keep the shop's photo URL,
+    or it rides along in latest.json and every list file (about 40% of the monitor list's size)."""
+    for l in listings:
+        l.pop("image", None)
+        l.pop("photoSku", None)
+
+
 def update_history(history: dict, listings: list[dict], day: str, model_key, model_aliases: dict | None = None) -> dict:
     """One point per model per day: the lowest price seen that day across runs. Renamed models
     (scraper/model_aliases.json) first move their points to the new key (aliases.fold_history, idempotent)."""
@@ -325,6 +333,8 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
         stage(out_dir, listings, sources_meta, run_at)
     if cat.images:
         write_image_urls(out_dir, listings, cat.model_key)
+    else:
+        drop_images(listings)
     finish(cat, out_dir, listings)
     listings.sort(key=lambda l: (l["chip"], l["price"]))
     if with_shipping:

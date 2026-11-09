@@ -412,5 +412,19 @@ class EanTests(unittest.TestCase):
         self.assertEqual(json.dumps(rows, sort_keys=True), once)
 
 
+class DataSizeTests(unittest.TestCase):
+    def test_a_category_without_photos_keeps_no_image_url_on_its_listings(self):
+        import main as mn
+        rows = [dict(listing("bestprice", "1", 'Dell U2724DE IPS Monitor 27" 2560x1440 QHD 120Hz'), image="https://cdn/x.jpg", photoSku="A"),
+                dict(listing("skroutz", "2", 'Dell U2724DE 27" IPS QHD 2560x1440'))]
+        mn.drop_images(rows)
+        self.assertTrue(all("image" not in r and "photoSku" not in r for r in rows))
+        self.assertEqual(rows[0]["code"], "U2724DE")  # nothing else is touched
+
+    def test_the_monitor_category_has_no_photo_job(self):
+        from categories import CATEGORIES
+        self.assertFalse(CATEGORIES["monitor"].images)
+
+
 if __name__ == "__main__":
     unittest.main()
