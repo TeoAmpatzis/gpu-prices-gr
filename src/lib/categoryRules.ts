@@ -456,6 +456,11 @@ export const STORAGE_RULES: CategoryRules<StorageListing> = {
 const monitorGroup = (l: MonitorListing) =>
   l.size == null ? OTHER : l.size <= 24.5 ? '≤24"' : l.size <= 27.5 ? '25–27"' : l.size <= 32.5 ? '28–32"' : '34"+';
 
+// Resolution by pixel height (the name shops use); a height not listed here is "Other" (e.g. 1024p, 768p).
+const MONITOR_RES: Record<number, string> = { 1080: 'FHD', 1200: 'WUXGA', 1440: 'QHD', 1600: 'WQXGA', 2160: '4K', 2880: '5K' };
+const monitorRes = (l: MonitorListing) => (l.height == null ? null : (MONITOR_RES[l.height] ?? 'Other'));
+const MONITOR_HZ = [60, 75, 100, 120, 144, 165, 240];
+
 export const MONITOR_RULES: CategoryRules<MonitorListing> = {
   id: 'monitor',
   groups: ['≤24"', '25–27"', '28–32"', '34"+', OTHER],
@@ -463,7 +468,17 @@ export const MONITOR_RULES: CategoryRules<MonitorListing> = {
   modelKey: (l) => l.chip,
   isPro: () => false,
   searchText: (l) => `${l.chip} ${l.title}`,
-  extraFilters: [vendorFilter()],
+  // Launch filters read only what the title (and Skroutz's list spec line) states, so an unknown value never matches.
+  // Page-based filters (HDR, ports, curvature…) come later, tri-state, once enough models state them.
+  extraFilters: [
+    vendorFilter(),
+    oneOf('res', { el: 'Ανάλυση', en: 'Resolution' }, monitorRes, {
+      fixed: [...Object.values(MONITOR_RES), 'Other'],
+      fmt: (v) => (v === 'Other' ? GROUP_NAMES[OTHER] : v),
+    }),
+    threshold('hz', atLeastLabel({ el: 'Ρυθμός ανανέωσης', en: 'Refresh rate' }), (l) => l.hz, (v) => `≥ ${v} Hz`, { fixed: MONITOR_HZ }),
+    oneOf('panel', { el: 'Τύπος πάνελ', en: 'Panel type' }, (l) => l.panel, { fixed: ['IPS', 'VA', 'TN', 'OLED'] }),
+  ],
 };
 
 export const RULES = {

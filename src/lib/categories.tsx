@@ -458,7 +458,10 @@ export const MONITOR: CategoryConfig<MonitorListing> = {
     { header: SIZE_GROUP, className: 'hidden sm:table-cell', numeric: true, cell: (m) => (m.cheapest.size ? `${m.cheapest.size}"` : '—') },
     { header: { el: 'Ανάλυση', en: 'Resolution' }, className: 'hidden sm:table-cell', cell: (m) => (m.cheapest.height ? `${m.cheapest.height}p` : '—') },
   ],
-  after: [{ header: { el: 'Hz', en: 'Hz' }, className: 'hidden sm:table-cell', numeric: true, cell: (m) => m.cheapest.hz ?? '—' }],
+  after: [
+    { header: { el: 'Πάνελ', en: 'Panel' }, className: 'hidden md:table-cell', cell: (m) => m.cheapest.panel ?? '—' },
+    { header: { el: 'Hz', en: 'Hz' }, className: 'hidden sm:table-cell', numeric: true, cell: (m) => m.cheapest.hz ?? '—' },
+  ],
 };
 
 export const CATEGORIES = {
