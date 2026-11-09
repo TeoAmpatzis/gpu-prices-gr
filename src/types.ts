@@ -99,6 +99,14 @@ export interface MonitorListing extends BaseListing {
   panel: 'IPS' | 'VA' | 'TN' | 'OLED' | null;
   colour: 'black' | 'white' | 'silver' | 'grey' | null;
   revision: string | null; // model-year token such as "2026"
+  // What the shop's own product page states (scraper/specs.py parse_monitor), kept beside the title's values: only
+  // for models whose page has been read, so every one may be missing.
+  gtin?: string | null; // EAN
+  pgSize?: number | null; pgWidth?: number | null; pgHeight?: number | null; pgHz?: number | null;
+  pgResponseMs?: number | null; pgNits?: number | null; pgContrast?: number | null;
+  pgPanel?: string | null; pgAspect?: string | null; pgVesa?: string | null; pgEnergy?: string | null; pgColour?: string | null;
+  pgHdr?: boolean | null; pgUltrawide?: boolean | null; pgCurved?: boolean | null;
+  pgConnectors?: string[] | null; pgFeatures?: string[] | null;
 }
 
 export interface PsuListing extends BaseListing {

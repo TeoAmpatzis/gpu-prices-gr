@@ -89,6 +89,9 @@ const V2_ONLY = [
   'm2Slots', 'm2Gen', 'sataPorts', 'maxMemoryGB', 'biosFlashback', 'atx3', 'bays35', 'bays25', 'usbCFront', 'socketsTitle',
   // Build-time engine fields from the makers' tables (task 5a): the boxed cooler's name, the case's PSU sizes and own power.
   'boxCooler', 'psuFormFactors', 'psuIncluded',
+  // Monitors: what the shop page states (EAN, pg*) and the scraper's own reject marker: model chunks only.
+  'gtin', 'pgSize', 'pgWidth', 'pgHeight', 'pgHz', 'pgResponseMs', 'pgNits', 'pgContrast', 'pgPanel', 'pgAspect', 'pgVesa',
+  'pgEnergy', 'pgColour', 'pgHdr', 'pgUltrawide', 'pgCurved', 'pgConnectors', 'pgFeatures', 'reject',
 ];
 // 'formConflict' stays in list.v2.json on purpose: the pick view runs `usable` on those listings (a few dozen boards).
 const LIST_SKIP = new Set([...DETAIL_ONLY, 'fanMounts', 'fansIncluded', 'radiators', 'airflowCfm', 'pressureMm', ...V2_ONLY]);

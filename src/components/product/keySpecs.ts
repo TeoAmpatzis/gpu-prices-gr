@@ -43,7 +43,7 @@ export const FILL: Record<Category, (number | 'group' | 'rgb')[]> = {
   fan: [0, 2, 3],
   cooler: [1, 2, 'rgb'],
   storage: [0, 1, 2, 3],
-  monitor: [], // hidden until Phase 3 decides the key specs
+  monitor: [0, 1, 2], // diagonal, resolution, refresh rate
 };
 
 /** Categories whose header takes no table column, only the FILL entries (storage: one composite Type cell). */

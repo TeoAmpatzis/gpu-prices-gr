@@ -356,15 +356,39 @@ const FULL: { [C in Category]: (ls: BaseListing[], lang: Lang, est?: Estimate) =
   },
   monitor: (raw, lang) => {
     const ls = raw as L<MonitorListing>;
-    const size = pick(ls, (l) => l.size);
-    const height = pick(ls, (l) => l.height);
-    const width = pick(ls, (l) => l.width);
-    const hz = pick(ls, (l) => l.hz);
+    const page = w(lang, 'από τη σελίδα του καταστήματος', 'from the shop page');
+    // The title's value wins; what the title does not state is filled from the shop page, and tagged so.
+    const both = <V,>(title: (l: MonitorListing) => V | null | undefined, pg: (l: MonitorListing) => V | null | undefined): [V | null, string | undefined] => {
+      const t = pick(ls, title);
+      if (t != null) return [t, undefined];
+      const p = pick(ls, pg);
+      return p == null ? [null, undefined] : [p, page];
+    };
+    const [size, sizeTag] = both((l) => l.size, (l) => l.pgSize);
+    const [height, heightTag] = both((l) => l.height, (l) => l.pgHeight);
+    const [width, widthTag] = both((l) => l.width, (l) => l.pgWidth);
+    const [hz, hzTag] = both((l) => l.hz, (l) => l.pgHz);
+    const [panel, panelTag] = both((l) => l.panel as string | null, (l) => l.pgPanel);
+    const list = (get: (l: MonitorListing) => string[] | null | undefined) => pick(ls, (l) => get(l)?.join(', '));
+    const ms = pick(ls, (l) => l.pgResponseMs);
+    const nits = pick(ls, (l) => l.pgNits);
+    const contrast = pick(ls, (l) => l.pgContrast);
     return [
-      ['general', w(lang, 'Διαγώνιος', 'Diagonal'), size == null ? null : `${num(lang, size)}"`],
-      ['general', w(lang, 'Ανάλυση', 'Resolution'), height == null ? null : width == null ? `${height}p` : `${width} × ${height}`],
-      ['general', w(lang, 'Ρυθμός ανανέωσης', 'Refresh rate'), hz == null ? null : `${hz} Hz`],
-      ['general', 'Panel', pick(ls, (l) => l.panel)],
+      ['general', w(lang, 'Διαγώνιος', 'Diagonal'), size == null ? null : `${num(lang, size)}"`, sizeTag],
+      ['general', w(lang, 'Ανάλυση', 'Resolution'), height == null ? null : width == null ? `${height}p` : `${width} × ${height}`, heightTag ?? widthTag],
+      ['general', w(lang, 'Ρυθμός ανανέωσης', 'Refresh rate'), hz == null ? null : `${hz} Hz`, hzTag],
+      ['general', 'Panel', panel, panelTag],
+      ['general', w(lang, 'Χρόνος απόκρισης', 'Response time'), ms == null ? null : `${num(lang, ms)} ms`],
+      ['general', w(lang, 'Φωτεινότητα', 'Brightness'), nits == null ? null : `${num(lang, nits)} cd/m²`],
+      ['general', w(lang, 'Αντίθεση', 'Contrast'), contrast == null ? null : `${num(lang, contrast)}:1`],
+      ['general', 'HDR', yesNo(lang, pick(ls, (l) => l.pgHdr))],
+      ['general', w(lang, 'Καμπυλωτή', 'Curved'), yesNo(lang, pick(ls, (l) => l.pgCurved))],
+      ['general', 'Ultrawide', yesNo(lang, pick(ls, (l) => l.pgUltrawide))],
+      ['general', w(lang, 'Λόγος διαστάσεων', 'Aspect ratio'), pick(ls, (l) => l.pgAspect)],
+      ['dimensions', w(lang, 'Βάση VESA', 'VESA mount'), pick(ls, (l) => l.pgVesa)],
+      ['power', w(lang, 'Ενεργειακή κλάση', 'Energy class'), pick(ls, (l) => l.pgEnergy)],
+      ['connections', w(lang, 'Θύρες', 'Ports'), list((l) => l.pgConnectors)],
+      ['connections', w(lang, 'Λειτουργίες', 'Features'), list((l) => l.pgFeatures)],
     ];
   },
 };
