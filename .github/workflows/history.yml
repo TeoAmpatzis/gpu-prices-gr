@@ -3,9 +3,10 @@ name: history
 # Imports Skroutz's own price history for models not imported yet (scraper/site_history.py),
 # a slow batch per day so Skroutz isn't flooded. Shares the "scrape" concurrency group so it never
 # runs at the same time as a price scrape (both commit public/data).
+# PAUSED 2026-11-09 (owner approved): the Skroutz price_graph path is disallowed by its robots.txt and
+# this job has no WARP proxy, so every run is Cloudflare-blocked and imports nothing. Scheduled runs are
+# off; restore_from below still works by hand. Re-enable the cron only after the robots question is settled.
 on:
-  schedule:
-    - cron: "37 3 * * *"
   workflow_dispatch:
     inputs:
       restore_from:
