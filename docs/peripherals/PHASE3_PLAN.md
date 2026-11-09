@@ -36,6 +36,16 @@ Date: 2026-11-09. Branch `feat/monitor-ui` (from `main` 1af6d60). Based on `FINA
 - Performance: JS 110 KB, initial data 300 KB gzip, home feed 20 KiB; no new requests on the builder.
 - Existing nine categories unchanged on frozen data.
 
+## Progress (2026-11-09, branch feat/monitor-ui)
+Decisions given by Teo: route `/monitor`; image strip approved; launch with title-derived filters.
+- [x] 1 Data size: `drop_images` in `scraper/main.py` (commit 667686a). Sample monitor list 305 KB -> 185 KB gzip.
+- [x] 2 Filter engine: **not needed for launch.** The launch filters use the existing `oneOf`/`threshold` builders, where an unknown value never matches. The tri-state predicate and the typed range come with the page-based filters (HDR, ports, curvature), once enough models state them.
+- [x] 3 Config: brand, resolution, refresh rate, panel filters; panel column (71a68d2). Colour dropped: only 1% of listings state it.
+- [x] 4 Model page: spec groups from title and shop page (page-only values tagged "from the shop page"), key specs diagonal/resolution/refresh, page fields kept out of the list file (36c13cc).
+- [ ] 5 Wiring (nav group, search, sitemap, pageMeta, structured data, `vercel.json` rewrites for `/monitor` and `/monitor/:slug`, routes): done together with 7, because everything switches on with `visible: true`.
+- [ ] 6 Tests: unit tests added with each task; e2e, layout audit (360/1440) and Lighthouse come with 7.
+- [ ] 7 Enable with real data, then `visible: true` after Teo approves.
+
 ## Decisions I need from Teo
 1. **Route name:** `/monitor` or Greek `/othones`? Existing routes are English (`/gpu`, `/ram`). Recommendation: `/monitor`.
 2. **Task 1 is a scraper change** (removes the image URL from monitor listings in `latest.json`). OK to do?
