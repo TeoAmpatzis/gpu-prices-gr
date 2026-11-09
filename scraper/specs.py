@@ -332,6 +332,9 @@ SITES = {"gpu": ("skroutz", "bestprice"), "cpu": ("skroutz",), "case": ("skroutz
 # New page reads a site may not make yet: the owner approves a Skroutz budget before Skroutz reads
 # any new kind of page (v2 Phase 2 plan, 2026-10-10). Until then these categories go to the next site.
 PAUSED = {"skroutz": {"mobo"}}
+# Categories whose identity step (settle) reads page observations: their cached pages are applied before it,
+# not only in finish(). apply() is idempotent, so the second call changes nothing.
+EARLY = {"monitor"}
 # Parser version per category (1 when not listed). A cached page read by an older version lacks the
 # newer fields; such products are read again, after every product without a page, and only on
 # REREAD_SITES (Skroutz re-reads wait for the owner's Skroutz budget too). Cases v2: drive bays, USB-C.

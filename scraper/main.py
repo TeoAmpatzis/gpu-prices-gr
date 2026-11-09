@@ -317,6 +317,8 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
             print(f"[{cat.name}/{name}] FAILED — keeping {len(old)} previous listings")
 
     out_dir.mkdir(parents=True, exist_ok=True)
+    if cat.name in specs.EARLY:  # identity needs the cached page observations (EAN, pg*) before it is decided
+        specs.apply(cat.name, out_dir, listings)
     if cat.settle:  # before any model key is used (photos, specs sharing, history)
         cat.settle(listings)
     if cat.rejects:

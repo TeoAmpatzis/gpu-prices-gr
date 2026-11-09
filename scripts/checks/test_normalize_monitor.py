@@ -318,5 +318,99 @@ class CategoryTests(unittest.TestCase):
             self.assertTrue(capabilities.supports(source, "gpu", capabilities.LISTS))
 
 
+class EanTests(unittest.TestCase):
+    """BestPrice page observations (scraper/specs.py parse_monitor): the EAN (`gtin`) and `pg*` values.
+    The barcode places or tie-breaks a listing; it never merges two models whose stated specs disagree,
+    and an absent barcode (None) never matches another absent one."""
+
+    G50F = 'Samsung Odyssey G5 G50F IPS HDR Gaming Monitor {}" 2560x1440 QHD 180Hz'
+
+    def test_a_barcode_rescues_a_listing_without_a_code(self):
+        a = listing("bestprice", "1", 'Dell U2724DE IPS Monitor 27" 2560x1440 QHD 120Hz')
+        b = listing("bestprice", "2", 'Dell UltraSharp IPS Monitor 27" 2560x1440 QHD 120Hz')
+        a["gtin"] = b["gtin"] = "5397184000001"
+        nm.settle([a, b])
+        self.assertEqual((b["reject"], b["chip"], b["code"]), (None, "Dell U2724DE", "U2724DE"))
+
+    def test_without_a_shared_barcode_it_stays_unplaced(self):
+        a = listing("bestprice", "1", 'Dell U2724DE IPS Monitor 27" 2560x1440 QHD 120Hz')
+        b = listing("bestprice", "2", 'Dell UltraSharp IPS Monitor 27" 2560x1440 QHD 120Hz')
+        a["gtin"], b["gtin"] = "5397184000001", "5397184000002"
+        nm.settle([a, b])
+        self.assertEqual((b["reject"], b["chip"]), ("no-identity", ""))
+        c = listing("bestprice", "3", 'Dell UltraSharp IPS Monitor 27" 2560x1440 QHD 120Hz')
+        nm.settle([a, c])  # c has no barcode: None never matches
+        self.assertEqual(c["reject"], "no-identity")
+
+    def test_a_barcode_never_adopts_across_makers(self):
+        a = listing("bestprice", "1", 'Dell U2724DE IPS Monitor 27" 2560x1440 QHD 120Hz')
+        b = listing("bestprice", "2", 'LG UltraSharp IPS Monitor 27" 2560x1440 QHD 120Hz')
+        a["gtin"] = b["gtin"] = "5397184000001"
+        nm.settle([a, b])
+        self.assertEqual(b["reject"], "no-identity")
+
+    def test_a_barcode_picks_the_one_model_an_unknown_size_belongs_to(self):
+        a, b = listing("bestprice", "1", self.G50F.format(27)), listing("bestprice", "2", self.G50F.format(32))
+        c = listing("bestprice", "3", "Samsung Odyssey G5 G50F IPS HDR QHD 2560x1440")
+        a["gtin"], b["gtin"], c["gtin"] = "8806097817796", "8806097810000", "8806097810000"
+        nm.settle([a, b, c])
+        self.assertEqual((c["reject"], c["chip"]), (None, 'Samsung G50F 32"'))
+        d = listing("bestprice", "4", "Samsung Odyssey G5 G50F IPS HDR QHD 2560x1440")  # no barcode: still ambiguous
+        nm.settle([a, b, d])
+        self.assertEqual(d["reject"], "ambiguous")
+
+    def test_a_page_size_anchors_a_title_without_one(self):
+        a, b = listing("bestprice", "1", self.G50F.format(27)), listing("bestprice", "2", self.G50F.format(32))
+        c = listing("bestprice", "3", "Samsung Odyssey G5 G50F IPS HDR QHD 2560x1440")
+        c["pgSize"] = 27.0
+        nm.settle([a, b, c])
+        self.assertEqual((c["reject"], c["chip"]), (None, 'Samsung G50F 27"'))
+
+    def test_the_title_wins_when_the_page_disagrees(self):
+        a, b = listing("bestprice", "1", self.G50F.format(27)), listing("bestprice", "2", self.G50F.format(32))
+        a["pgSize"] = 32.0
+        nm.settle([a, b])
+        self.assertEqual((a["chip"], b["chip"]), ('Samsung G50F 27"', 'Samsung G50F 32"'))
+
+    def test_one_barcode_does_not_bridge_models_whose_specs_disagree(self):
+        a, b = listing("bestprice", "1", self.G50F.format(27)), listing("bestprice", "2", self.G50F.format(32))
+        a["gtin"] = b["gtin"] = "8806097817796"  # a data error on one page must not merge a 27" and a 32"
+        nm.settle([a, b])
+        self.assertNotEqual(a["chip"], b["chip"])
+
+    def test_page_panel_and_refresh_fill_what_the_title_lacks(self):
+        a = listing("bestprice", "1", 'Dell U2724DE Monitor 27" 2560x1440 QHD')
+        a["pgPanel"], a["pgHz"] = "IPS", 120
+        b = listing("bestprice", "2", 'Dell U2724DE Monitor 27" 2560x1440 QHD 60Hz')
+        nm.settle([a, b])
+        self.assertEqual(nm._of(a).panel, "IPS")
+        self.assertEqual(nm._of(a).hz, 120)
+        self.assertEqual(len({a["chip"], b["chip"]}), 2)  # 120 Hz vs 60 Hz: two models
+
+    def test_cached_page_observations_reach_settle_through_apply(self):
+        import tempfile
+        import specs
+        a = listing("bestprice", "1", 'Dell U2724DE IPS Monitor 27" 2560x1440 QHD 120Hz')
+        b = listing("bestprice", "2", 'Dell UltraSharp IPS Monitor 27" 2560x1440 QHD 120Hz')
+        cache = {"bestprice:1": {"gtin": "5397184000001", "checked": "x"}, "bestprice:2": {"gtin": "5397184000001", "pgSize": 27.0, "checked": "x"}}
+        with tempfile.TemporaryDirectory() as d:
+            Path(d, "specs.json").write_text(json.dumps(cache), encoding="utf-8")
+            rows = [a, b]
+            specs.apply("monitor", Path(d), rows)
+            specs.apply("monitor", Path(d), rows)  # the finish() call after settle: idempotent
+        nm.settle(rows)
+        self.assertEqual((b["reject"], b["chip"], b["gtin"]), (None, "Dell U2724DE", "5397184000001"))
+
+    def test_settle_with_barcodes_twice_is_settle_once(self):
+        a = listing("bestprice", "1", 'Dell U2724DE IPS Monitor 27" 2560x1440 QHD 120Hz')
+        b = listing("bestprice", "2", 'Dell UltraSharp IPS Monitor 27" 2560x1440 QHD 120Hz')
+        a["gtin"] = b["gtin"] = "5397184000001"
+        rows = [a, b]
+        nm.settle(rows)
+        once = json.dumps(rows, sort_keys=True)
+        nm.settle(rows)
+        self.assertEqual(json.dumps(rows, sort_keys=True), once)
+
+
 if __name__ == "__main__":
     unittest.main()

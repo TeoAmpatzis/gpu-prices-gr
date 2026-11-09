@@ -15,7 +15,7 @@ against 206 BestPrice barcodes):
 import html
 import re
 import unicodedata
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 # Brand -> display name. Order matters only for multi-word names.
 BRANDS = {
@@ -63,6 +63,7 @@ class Parsed:
     colour: str | None
     revision: str | None  # model-year token ("2026"); a different year is a different product
     reject: str | None  # reason the listing is not a launchable monitor, else None
+    gtin: str | None = None  # EAN from a BestPrice product page (specs.parse_monitor); places or tie-breaks, never bridges
 
 
 def plain(text: str) -> str:
@@ -176,6 +177,21 @@ def group(items: list[tuple[str, Parsed]]):
     """items: (listing id, Parsed). Returns (models, ambiguous, unidentified):
     models = list of (brand, code, [ids]); ambiguous = ids that fit more than one model or none of the
     complete ones; unidentified = ids without a usable brand + code (rejects included)."""
+    # A barcode places a listing that has no usable brand + code on the one brand + code whose listings carry the
+    # same barcode (same maker only). A missing barcode never matches another missing one.
+    owners: dict[str, set[tuple[str, str]]] = {}
+    for _, p in items:
+        if p.gtin and has_identity(p):
+            owners.setdefault(p.gtin, set()).add((p.brand, p.code))
+    placed = []
+    for lid, p in items:
+        owner = owners.get(p.gtin) if p.gtin else None
+        if owner and len(owner) == 1 and p.reject is None and not has_identity(p):
+            brand, code = next(iter(owner))
+            if p.brand is None or re.sub(r"[^a-z0-9]", "", p.brand.lower()) == re.sub(r"[^a-z0-9]", "", brand.lower()):
+                p = replace(p, brand=brand, code=code)
+        placed.append((lid, p))
+    items = placed
     by: dict[tuple[str, str], list[tuple[str, Parsed]]] = {}
     unidentified = []
     # Clustering is first-fit and `compatible` is not transitive (144 Hz ~ unknown ~ 165 Hz), so the order decides
@@ -202,6 +218,8 @@ def group(items: list[tuple[str, Parsed]]):
                 clusters.append([m])
         for m in partial:
             fits = [c for c in clusters if all(compatible(m[1], o[1]) for o in c)]
+            if len(fits) > 1 and m[1].gtin:  # the one model that holds this barcode, if exactly one does
+                fits = [c for c in fits if any(o[1].gtin == m[1].gtin for o in c)] or fits
             if len(fits) == 1:
                 fits[0].append(m)
             elif not clusters:
@@ -234,8 +252,10 @@ def make_listing(*, source: str, native_id: str, title: str, url: str, price: fl
 
 
 def _of(l: dict) -> Parsed:
-    return Parsed(None if l["brand"] == "Other" else l["brand"], l["code"], l["size"], l["height"], l["width"],
-                  l["hz"], l["panel"], l["colour"], l["revision"], l.get("reject"))
+    page_panel = _panel(fold(l["pgPanel"])) if l.get("pgPanel") else None
+    return Parsed(None if l["brand"] == "Other" else l["brand"], l["code"], l["size"] or l.get("pgSize"),
+                  l["height"] or l.get("pgHeight"), l["width"] or l.get("pgWidth"), l["hz"] or l.get("pgHz"),
+                  l["panel"] or page_panel, l["colour"], l["revision"], l.get("reject"), l.get("gtin"))
 
 
 def _mode(values):
@@ -259,7 +279,8 @@ def settle(listings: list[dict]) -> None:
     for l in listings:  # what an earlier settle decided is decided again below
         if l.get("reject") in SETTLE_REJECTS:
             l["reject"] = None
-    models, ambiguous, unidentified = group([(l["id"], _of(l)) for l in listings])
+    parsed = {l["id"]: _of(l) for l in listings}
+    models, ambiguous, unidentified = group(list(parsed.items()))
     for lid in unidentified:
         l = by_id[lid]
         l["chip"] = ""
@@ -274,9 +295,9 @@ def settle(listings: list[dict]) -> None:
         ms.sort(key=lambda m: min(m[2]))  # a stable order, so numbered names do not swap between runs
         info = []
         for _, _, ids in ms:
-            rows = [by_id[i] for i in ids]
-            info.append({"size": _size_label(_mode(r["size"] for r in rows)), "panel": _mode(r["panel"] for r in rows),
-                         "hz": _mode(r["hz"] for r in rows), "revision": _mode(r["revision"] for r in rows)})
+            rows = [parsed[i] for i in ids]
+            info.append({"size": _size_label(_mode(r.size for r in rows)), "panel": _mode(r.panel for r in rows),
+                         "hz": _mode(r.hz for r in rows), "revision": _mode(r.revision for r in rows)})
         names = [f"{brand} {code}"] * len(ms)
         if len(ms) > 1:
             # Only the fields that tell this code's models apart go into the name, in a fixed order.
@@ -291,9 +312,11 @@ def settle(listings: list[dict]) -> None:
                 seen[n] = seen.get(n, 0) + 1
                 if total[n] > 1:
                     names[k] = f"{n} #{seen[n]}"
-        for name, (_, _, ids) in zip(names, ms):
+        for name, (brand_, code_, ids) in zip(names, ms):
             for i in ids:
                 by_id[i]["chip"] = name
+                if by_id[i]["brand"] == "Other" or not by_id[i]["code"]:  # placed by its barcode
+                    by_id[i]["brand"], by_id[i]["code"] = brand_, code_
     # The site files a model under its letters and digits only (src/lib/slug.ts slugLookup): two different names with
     # one such form would share an address and the build refuses to publish. Number the later one.
     form = lambda name: re.sub(r"[^a-z0-9]", "", name.lower())
