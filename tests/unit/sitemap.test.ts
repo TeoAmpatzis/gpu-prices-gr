@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { COMPARE_DEFAULT } from '../../src/lib/compare/flagDefault';
 import { sitemaps } from '../../src/lib/sitemap';
 import type { ModelChunk } from '../../src/types';
 
@@ -13,7 +14,7 @@ describe('sitemaps', () => {
     expect(out['sitemap-pages.xml']).toContain('<loc>https://gpu-prices-gr.vercel.app/</loc>');
   });
   it('lists /compare only while comparison is switched on', () => {
-    expect(out['sitemap-pages.xml'].includes('/compare</loc>')).toBe(process.env.VITE_COMPARE === '1');
+    expect(out['sitemap-pages.xml'].includes('/compare</loc>')).toBe(COMPARE_DEFAULT || process.env.VITE_COMPARE === '1');
   });
   it('the index points at every file', () => {
     for (const f of Object.keys(out).filter((k) => k !== 'sitemap.xml')) expect(out['sitemap.xml']).toContain(`/${f}</loc>`);
