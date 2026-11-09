@@ -44,7 +44,7 @@ export default function ComparePage() {
     </LinkButton>
   );
 
-  if (isShare && !shared) return <EmptyState title={tr(lang, CMP.invalid)} text={tr(lang, CMP.emptyText)} action={browse} />;
+  if (isShare && !shared) return <EmptyState title={tr(lang, CMP.invalid)} text={tr(lang, CMP.invalidText)} action={browse} />;
   if (!cat || refs.length === 0) return <EmptyState icon={Scale} title={tr(lang, CMP.empty)} text={tr(lang, CMP.emptyText)} action={browse} />;
   return <Table cat={cat} refs={refs} shared={isShare} />;
 }
@@ -89,9 +89,11 @@ function Table({ cat, refs, shared }: { cat: Category; refs: CompareRef[]; share
   return (
     <section data-compare-page className="flex flex-col gap-4">
       {shared ? (
-        <p role="note" className="rounded-lg bg-sunken px-3 py-2 text-sm text-muted">
-          <strong className="text-fg">{tr(lang, CMP.shared)}.</strong> {tr(lang, CMP.sharedNote)}
-          <Button size="sm" onClick={save} className="ml-2 align-middle" data-compare-save>
+        <p role="note" className="flex flex-col items-start gap-2 rounded-lg bg-sunken px-3 py-2 text-sm text-muted">
+          <span>
+            <strong className="text-fg">{tr(lang, CMP.shared)}.</strong> {tr(lang, CMP.sharedNote)}
+          </span>
+          <Button size="sm" onClick={save} data-compare-save>
             {tr(lang, CMP.save)}
           </Button>
           {saveFailed && (
