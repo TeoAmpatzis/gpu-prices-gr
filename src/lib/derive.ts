@@ -56,7 +56,8 @@ import {
 } from './dips';
 import { allTimeLow, groupModels, mostCommon, saleOf, type Model } from './data';
 import { MODEL_CHUNKS, modelChunkOf } from './modelData';
-import { SLOT_OF, toPart } from './pick';
+import { slotOf, toPart } from './pick';
+import { REGISTRY } from './registry';
 import { modelSlug, nameSlug, slugLookup } from './slug';
 import { popularityRaw, recommendedScores } from './ranking';
 import type { SearchIndexFile, SearchModel } from './search';
@@ -563,7 +564,7 @@ export function modelChunks(cat: Category, input: CategoryInput, builtAt: string
   const family = FAMILY[cat];
   const kind = SAME_KIND[cat];
   const cheaperKind = CHEAPER_KIND[cat];
-  const slot = (SLOT_OF as Partial<Record<Category, Slot>>)[cat];
+  const slot = slotOf(cat) ?? undefined;
   const day = builtAt.slice(0, 10);
   // As the category page has them for its Recommended sort (data.filterModels): the site's sale and the all-time low,
   // the low from what the page gets (listFile: the reduced history without the dips and import glitches, `imported`
@@ -736,6 +737,7 @@ export const MIN_MODELS: Record<Category, number> = {
   fan: 1003, // of 2006
   cooler: 1059, // of 2118
   storage: 1115, // of 2231 (first storage scrape 2026-10-03, re-normalized without OEM laptop M.2 drives)
+  monitor: 500, // of 3012 (first monitor scrape 2026-11-08): a guard against a truncated scrape until a live manifest exists
 };
 
 /**
@@ -788,7 +790,7 @@ export function searchFile(all: Partial<Record<Category, Latest>>, builtAt: stri
   const cats: SearchIndexFile['cats'] = {};
   for (const cat of CATEGORY_IDS) {
     const latest = all[cat];
-    if (!latest) continue;
+    if (!latest || !REGISTRY[cat].visible) continue; // a category built but not published (registry) is not searchable
     const models = groupModels(latest.listings, cfgOf(cat))
       .map((m) => ({ m, pop: popularityRaw(m) }))
       .sort((a, b) => b.pop - a.pop || a.m.chip.localeCompare(b.m.chip));

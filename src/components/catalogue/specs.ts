@@ -73,6 +73,13 @@ export function productSpecs(cat: Category, listing: BaseListing, lang: Lang): S
         spec('Ύψος / ψυγείο', 'Height / radiator', l.type === 'AIO' ? number('radiator', ' mm') : number('heightMm', ' mm')),
         spec('Θόρυβος', 'Noise', null, true),
       ];
+    case 'monitor':
+      return [
+        spec('Διαγώνιος', 'Diagonal', number('size', '"')),
+        spec('Ανάλυση', 'Resolution', typeof l.height === 'number' ? `${l.height}p` : null),
+        spec('Ρυθμός ανανέωσης', 'Refresh rate', number('hz', ' Hz')),
+        spec('Panel', 'Panel', word('panel')),
+      ];
     case 'fan':
       return [
         spec('Μέγεθος', 'Size', number('size', ' mm')),

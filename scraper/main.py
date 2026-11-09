@@ -17,6 +17,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 import aliases  # noqa: E402
+import capabilities  # noqa: E402
 import http_client  # noqa: E402
 import makers  # noqa: E402
 import overrides  # noqa: E402
@@ -187,6 +188,32 @@ def finish(cat: Category, out_dir: Path, listings: list[dict]) -> None:
     overrides.apply(cat.name, listings, cat.model_key)  # manual fixes win over everything above
 
 
+def stage(out_dir: Path, listings: list[dict], sources_meta: dict[str, dict], run_at: str) -> None:
+    """Take the listings settle() rejected out of `listings` and write them with their reason to rejected.json,
+    so nothing is dropped silently. A source that was not freshly scraped in this run (failed, or left out by
+    --only) keeps its previous rejects: its listings were retained, so the report must still describe them."""
+    rejected = [l for l in listings if l.get("reject")]
+    listings[:] = [l for l in listings if not l.get("reject")]
+    path = out_dir / "rejected.json"
+    for l in load_json(path, {}).get("listings", []):
+        meta = sources_meta.get(l["source"], {})
+        if not (meta.get("ok") is True and meta.get("updatedAt") == run_at):
+            rejected.append(l)
+    rejected.sort(key=lambda l: (l["reject"], l["id"]))
+    counts: dict[str, int] = {}
+    for l in rejected:
+        counts[l["reject"]] = counts.get(l["reject"], 0) + 1
+    path.write_text(json.dumps({"updatedAt": run_at, "counts": counts, "listings": rejected}, ensure_ascii=False, indent=1),
+                    encoding="utf-8")
+    print(f"[{out_dir.name}] rejected {len(rejected)}: {counts}")
+
+
+def allowed(cat: Category, listings: list[dict], operation: str) -> list[dict]:
+    """The listings whose source may do `operation` for this category (capabilities.py); the dicts are the
+    same objects, so what an operation writes reaches the originals. An unsupported pair is skipped, not failed."""
+    return [l for l in listings if capabilities.supports(l["source"], cat.name, operation)]
+
+
 def collect_specs(cats: list[Category], budget: dict[str, int], makers_budget: int) -> None:
     """New product pages for every category — the shops' (one queue per site, see specs.collect) and
     the makers' (makers.collect), all hosts in parallel — then the specs re-applied to each
@@ -198,9 +225,10 @@ def collect_specs(cats: list[Category], budget: dict[str, int], makers_budget: i
             loaded.append((cat, data))
     print("specs…")
     with ThreadPoolExecutor(max_workers=2) as pool:
-        shops = pool.submit(specs.collect, [(cat.name, DATA_DIR / cat.name, data["listings"], cat.model_key)
-                                            for cat, data in loaded], budget)
-        makers_done = pool.submit(makers.collect, {cat.name: data["listings"] for cat, data in loaded}, makers_budget)
+        shops = pool.submit(specs.collect, [(cat.name, DATA_DIR / cat.name, allowed(cat, data["listings"], capabilities.SPECS),
+                                             cat.model_key) for cat, data in loaded], budget)
+        makers_done = pool.submit(makers.collect, {cat.name: allowed(cat, data["listings"], capabilities.SPECS)
+                                                   for cat, data in loaded}, makers_budget)
         shops.result()
         makers_done.result()
     for cat, data in loaded:
@@ -259,7 +287,8 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
             seconds[f"{cat.name}/{name}"] = time.monotonic() - start
 
     # Sources are different sites, so they run in parallel; each stays polite to its own host.
-    wanted = [name for name in SOURCES if not only or name in only]
+    # A source the category does not use (capabilities.py) is not run and never reported as failed.
+    wanted = [name for name in SOURCES if (not only or name in only) and capabilities.supports(name, cat.name, capabilities.LISTS)]
     with ThreadPoolExecutor(max_workers=len(wanted) or 1) as pool:
         results = dict(zip(wanted, pool.map(run, wanted)))
 
@@ -290,7 +319,10 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
     out_dir.mkdir(parents=True, exist_ok=True)
     if cat.settle:  # before any model key is used (photos, specs sharing, history)
         cat.settle(listings)
-    write_image_urls(out_dir, listings, cat.model_key)
+    if cat.rejects:
+        stage(out_dir, listings, sources_meta, run_at)
+    if cat.images:
+        write_image_urls(out_dir, listings, cat.model_key)
     finish(cat, out_dir, listings)
     listings.sort(key=lambda l: (l["chip"], l["price"]))
     if with_shipping:
@@ -315,7 +347,7 @@ def enrich_shipping(cat: Category, listings: list[dict]) -> None:
     http_client.set_label(label)
     start = time.monotonic()
     try:
-        shipping.enrich(DATA_DIR / cat.name, listings, cat.model_key)
+        shipping.enrich(DATA_DIR / cat.name, allowed(cat, listings, capabilities.SHIPPING), cat.model_key)
     finally:
         print(http_client.summary(f"{cat.name} shipping", {label: time.monotonic() - start}))
         http_client.set_label(None)
@@ -347,7 +379,7 @@ def main() -> int:
     if args.history_only:
         for cat in cats:
             data = load_json(DATA_DIR / cat.name / "latest.json", None)
-            if data:
+            if data and capabilities.supports("skroutz", cat.name, capabilities.HISTORY):
                 print(f"[{cat.name}] price history…")
                 site_history.enrich(cat.name, DATA_DIR / cat.name, data["listings"], cat.model_key, args.history_budget)
         return 0

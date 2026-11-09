@@ -230,3 +230,33 @@ class MoboListing:
 
     def to_dict(self) -> dict:
         return listing_dict(self)
+
+
+@dataclass
+class MonitorListing:
+    """One monitor offer. Mirrored in src/types.ts (MonitorListing). Every spec is what THIS listing states
+    (title and Skroutz list spec line); None = not stated, never guessed. `chip` is the model name that
+    normalize_monitor.settle() gives after grouping; `reject` is why a listing is kept out of the data
+    (rejected.json), None for a launchable listing."""
+
+    id: str
+    source: str
+    title: str
+    url: str
+    price: float
+    shopCount: int | None
+    brand: str  # "Samsung"; "Other" if unknown
+    chip: str  # model name, e.g. "Samsung S30GD" (set by settle)
+    code: str | None  # manufacturer model code, e.g. "S30GD", "27M2N3500NL"
+    size: float | None  # diagonal, inches
+    height: int | None  # pixel rows (1080, 1440, 2160 ...)
+    width: int | None
+    hz: int | None
+    panel: str | None  # IPS | VA | TN | OLED
+    colour: str | None  # black | white | silver | grey
+    revision: str | None  # model-year token such as "2026"
+    scrapedAt: str
+    reject: str | None = None
+
+    def to_dict(self) -> dict:
+        return listing_dict(self)

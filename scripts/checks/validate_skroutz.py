@@ -8,8 +8,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scraper"))
-from categories import CATEGORIES  # noqa: E402
+import capabilities  # noqa: E402
+from categories import CATEGORIES as ALL_CATEGORIES  # noqa: E402
 from sources import skroutz  # noqa: E402
+
+# Only the categories Skroutz lists: an unsupported pair (capabilities.py) is not a failed scrape.
+CATEGORIES = [cat for cat in ALL_CATEGORIES if capabilities.supports("skroutz", cat, capabilities.LISTS)]
 
 DATA = Path(__file__).resolve().parents[2] / "public" / "data"
 

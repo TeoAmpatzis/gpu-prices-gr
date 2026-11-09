@@ -1,7 +1,7 @@
 // The site's sections, in one place: names (docs/phase1/glossary.md), icons, the "Εξαρτήματα" menu groups
 // (plan, "Αρχική σελίδα, πλοήγηση και URLs") and the words global search matches categories by.
 // Σύγκριση and Προσφορές are not listed until their pages exist (owner, 2026-10-04; backlog #11, #12).
-import { Box, CircuitBoard, Cpu, Fan, HardDrive, MemoryStick, Microchip, Plug, Snowflake, Wrench, type LucideIcon } from 'lucide-react';
+import { Box, CircuitBoard, Cpu, Fan, HardDrive, MemoryStick, Microchip, Monitor, Plug, Snowflake, Wrench, type LucideIcon } from 'lucide-react';
 import type { Text } from '../lib/i18n';
 import type { Category } from '../types';
 
@@ -24,6 +24,8 @@ export const CATS: Record<Category, Section> = {
   psu: { name: { el: 'Τροφοδοτικά', en: 'Power supplies' }, one: { el: 'Τροφοδοτικό', en: 'Power supply' }, icon: Plug, words: ['τροφοδοτικό', 'psu', 'power supply'] },
   cooler: { name: { el: 'Ψύκτρες CPU', en: 'CPU coolers' }, one: { el: 'Ψύκτρα CPU', en: 'CPU cooler' }, icon: Snowflake, words: ['ψύκτρα', 'cooler', 'aio', 'υδρόψυξη'] },
   fan: { name: { el: 'Ανεμιστήρες', en: 'Case fans' }, one: { el: 'Ανεμιστήρες', en: 'Case fans' }, icon: Fan, words: ['ανεμιστήρας', 'fan', 'fans'] },
+  // Not in GROUPS below, so it is in no menu: monitors are hidden until Phase 3 (registry: visible false).
+  monitor: { name: { el: 'Οθόνες', en: 'Monitors' }, one: { el: 'Οθόνη', en: 'Monitor' }, icon: Monitor, words: ['οθόνη', 'monitor', 'display', 'screen'] },
 };
 
 export const BUILDER: Section = { name: 'PC Builder', icon: Wrench, words: ['builder', 'συναρμολόγηση', 'build', 'σύνθεση'] };

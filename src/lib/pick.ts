@@ -1,16 +1,17 @@
 // "Pick" mode of the category pages (v2 step 3): the compatibility engine's parts built from a category
 // page's own models, with the same field values the builder rows carry (derive.ts `slotFields`).
 import type { Part } from '../engine';
-import type { Category } from '../types';
+import { slotOf, type SlotCategory } from './registry';
 import { usable as builderUsable, type Slot, type SlotListing } from './builderData';
 import type { Model } from './data';
 import { slotFields } from './derive';
 import { PART_FIELDS } from './slots';
 
-/** Category id → builder slot (the nine are identical). */
-export const SLOT_OF: Record<Category, Slot> = {
+/** Builder-part category id → builder slot (the nine are identical). Other categories have no slot: use `slotOf`. */
+export const SLOT_OF: Record<SlotCategory, Slot> = {
   gpu: 'gpu', cpu: 'cpu', mobo: 'mobo', ram: 'ram', storage: 'storage', psu: 'psu', case: 'case', fan: 'fan', cooler: 'cooler',
 };
+export { slotOf };
 
 // PART_FIELDS lives in slots.ts (no code imports: the builder chunk uses it without derive.ts).
 export { PART_FIELDS } from './slots';

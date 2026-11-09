@@ -1,0 +1,314 @@
+"""Monitor title (+ list spec line) -> brand / model code / size / resolution / refresh / panel / colour,
+and the strict rule that decides whether two listings are the same monitor.
+
+Not wired into the scrapers yet (no Category("monitor") until the staging report exists). Pure functions,
+no I/O. Rules come from docs/peripherals/PHASE2_EXPERIMENT.md (measured on 3,110 real listings and checked
+against 206 BestPrice barcodes):
+
+* A model is brand + code. A code alone is not enough for short series codes (G50F is a 27" and a 32"),
+  so size, resolution height, refresh, panel and revision must not disagree.
+* Unknown never bridges: a listing missing size or resolution joins only when exactly one candidate fits.
+* A longer or shorter code is a different product (P2425 vs P2425E: different barcodes), never merged by prefix.
+* Colour (Black/White/Silver/ICE) is a variant of one model, not a different model.
+"""
+
+import html
+import re
+import unicodedata
+from dataclasses import dataclass
+
+# Brand -> display name. Order matters only for multi-word names.
+BRANDS = {
+    "samsung": "Samsung", "lg": "LG", "dell": "Dell", "alienware": "Dell", "asus": "Asus", "acer": "Acer",
+    "aoc": "AOC", "msi": "MSI", "philips": "Philips", "lenovo": "Lenovo", "hp": "HP", "benq": "BenQ",
+    "gigabyte": "Gigabyte", "xiaomi": "Xiaomi", "viewsonic": "ViewSonic", "dahua": "Dahua", "iiyama": "iiyama",
+    "hisense": "Hisense", "tcl": "TCL", "koorui": "Koorui", "corsair": "Corsair", "nzxt": "NZXT", "eizo": "Eizo",
+    "huawei": "Huawei", "innocn": "Innocn", "arzopa": "Arzopa", "blackview": "Blackview", "sony": "Sony",
+    "cooler master": "Cooler Master", "teamgroup": "TeamGroup", "nec": "NEC", "verbatim": "Verbatim",
+}
+
+# Words that mean the listing is not a new, complete monitor. The reason goes to the rejection report.
+REJECT = (
+    ("not-monitor", r"ΡΑΦΑΚΙ|ΒΑΣΗ ΣΤΗΡΙΞΗΣ|ΒΑΣΗ ΟΘΟΝΗΣ|ΚΑΛΩΔΙΟ|ΤΗΛΕΟΡΑΣΗ|\bTV\b|PROJECTOR|ΠΡΟΒΟΛΕΑΣ|ΔΙΑΔΡΑΣΤΙΚΟΣ ΠΙΝΑΚΑΣ|CLASSBOARD|ΜΟΝΙΤΟΡ ΤΡΟΦΟΔΟΣΙΑΣ"),
+    ("used", r"ΑΝΑΚΑΤΑΣΚΕΥ|REFURB|\bGRADE\s*[ABC]\b|ΜΕΤΑΧΕΙΡΙΣΜΕΝ|\bREF\b|ΕΠΙΔΙΟΡΘΩΜΕΝ"),
+    ("bundle", r"ΣΕ ΣΕΤ|\bKIT\b"),
+)
+LOOKALIKE = str.maketrans("ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ", "ABEZHIKMNOPTYX")  # Greek capitals that look Latin
+
+# Tokens that are specs or marketing, never the model code.
+NOISE = re.compile(
+    r"^(\d{3,4}X\d{3,4}|\d+(\.\d+)?(HZ|MS|K|\"|''|INCH)|\d[KP]\d?[KP]?|DISPLAYHDR\d*|HDR\d*|HDMI[\d.]*|DP[\d.]*|"
+    r"USB-?C?\d*|VGA|DVI|IPS|VA|TN|OLED|QD-?OLED|WQHD\+?|QHD|FHD|UHD|WUXGA|ULTRAWIDE|CURVED|FLAT|GAMING|MONITOR|LED|LCD|"
+    r"FREESYNC|G-?SYNC|VESA|BLACK|WHITE|PORTABLE|PRO|PLUS|ESSENTIAL|ODYSSEY|ULTRAGEAR|ZENSCREEN|ULTRASHARP|PROART|"
+    r"THINKVISION|MAG|MPG|MAB|24/7|16:9|2026|2025|2024|\d{3,4}R)$"
+)
+SHOP_SKU = re.compile(r"^\d{3}-[A-Z]{4}$")  # Dell "210-BMJC" appended by Snif
+COLOURS = {"BLACK": "black", "WHITE": "white", "SILVER": "silver", "GREY": "grey", "GRAY": "grey", "ICE": "white",
+           "ΜΑΥΡΟ": "black", "ΜΑΥΡΗ": "black", "ΛΕΥΚΟ": "white", "ΛΕΥΚΗ": "white", "ΑΣΗΜΙ": "silver", "PLATINUM": "silver"}
+# Resolution words -> pixel height. A width is only known from "2560x1440".
+HEIGHT_WORDS = (("WUXGA", 1200), ("FHD", 1080), ("FULL HD", 1080), ("QHD", 1440), ("QUAD HD", 1440), ("WQHD", 1440),
+                ("4K", 2160), ("UHD", 2160), ("5K2K", 2160))
+SIZE_TOLERANCE = 0.6  # inches: 31.5 / 32, 26.5 / 27 and 31.6 / 32 are one product
+
+
+@dataclass(frozen=True)
+class Parsed:
+    brand: str | None
+    code: str | None  # model code, hyphens/slashes removed ("27U421A-B" -> "27U421AB")
+    size: float | None  # diagonal, inches
+    height: int | None  # pixel height (1080, 1440, 2160 ...)
+    width: int | None
+    hz: int | None
+    panel: str | None  # IPS | VA | TN | OLED (QD-OLED counts as OLED)
+    colour: str | None
+    revision: str | None  # model-year token ("2026"); a different year is a different product
+    reject: str | None  # reason the listing is not a launchable monitor, else None
+
+
+def plain(text: str) -> str:
+    """Upper case without accents ("μεταχειρισμένη" -> "ΜΕΤΑΧΕΙΡΙΣΜΕΝΗ"), Greek letters kept."""
+    return "".join(c for c in unicodedata.normalize("NFD", text.upper()) if not unicodedata.combining(c))
+
+
+def fold(text: str) -> str:
+    return plain(text).translate(LOOKALIKE)
+
+
+def clean(title: str) -> str:
+    """Snif double-escapes quotes (27&amp;apos;&amp;apos;): unescape until stable."""
+    for _ in range(3):
+        un = html.unescape(title)
+        if un == title:
+            break
+        title = un
+    return re.sub(r"\s+", " ", title).strip()
+
+
+# First words of a title that are not a brand (used when no known brand is found).
+GENERIC = {"MONITOR", "GAMING", "PORTABLE", "CURVED", "ULTRAWIDE", "TOUCH", "LED", "LCD", "IPS", "VA", "TN", "OLED",
+           "FULL", "HD", "FHD", "QHD", "UHD", "SMART", "PRO", "THE", "NEW", "USB", "DISPLAY", "SERIES"}
+
+
+def _brand(title: str) -> str | None:
+    low = title.lower()
+    for key, name in BRANDS.items():
+        if re.search(r"(?<![a-zα-ω])" + re.escape(key) + r"(?![a-zα-ω])", low):
+            return name
+    # Unknown maker (AG Neovo, LC-Power, Zeuslap ...): the first Latin word is its name. The model code still has to
+    # match, so a wrong guess here costs a missed join, never a false merge.
+    for raw in re.split(r"[\s,()/]+", title):
+        w = raw.strip("-.\"'+")
+        if re.fullmatch(r"[A-Za-z][A-Za-z-]+", w) and w.upper() not in GENERIC and not NOISE.match(w.upper()):
+            return w.upper() if len(w) <= 3 else w[0].upper() + w[1:].lower()
+    return None
+
+
+def _code(folded: str) -> str | None:
+    best = None
+    for raw in re.split(r"[\s,()/]+", folded):
+        tok = raw.strip("-.\"'+")
+        if len(tok) < 3 or NOISE.match(tok) or SHOP_SKU.match(tok) or tok in COLOURS:
+            continue
+        if not (re.search(r"[A-Z]", tok) and re.search(r"\d", tok)) and not re.fullmatch(r"\d{2}-\d{2}", tok):
+            continue  # (a model number written like "Legion 24-15" has no letters)
+        if re.fullmatch(r"\d{2,4}(HZ|MS|K|P)|\d+(\.\d+)?|\d{3,4}X\d{3,4}|\d{2,3}(QHD|FHD|UHD|WQHD)", tok):
+            continue
+        tok = re.sub(r"[^A-Z0-9]", "", tok)
+        if best is None or len(tok) > len(best):  # longest wins, the first wins a tie
+            best = tok
+    return best
+
+
+def _size(folded: str) -> float | None:
+    m = re.search(r"(?<![\d.,X])(\d{2}(?:[.,]\d{1,2})?)\s*(?:\"|''|'|”|INCH|INT[ΣS])", folded) or re.search(
+        r"(?<![\d.,X])(\d{2}(?:[.,]\d{1,2})?)(?=\s+(?:IPS|VA|OLED|QD|FHD|WQHD|QHD|4K|UHD|CURVED|FLAT|ULTRAWIDE|WUXGA|FULL))", folded)
+    return float(m.group(1).replace(",", ".")) if m else None
+
+
+def _panel(folded: str) -> str | None:
+    if re.search(r"\bQD-?\s?OLED\b|\bOLED\b", folded):
+        return "OLED"
+    for p in ("IPS", "VA", "TN"):
+        if re.search(rf"\b{p}\b", folded):
+            return p
+    return None
+
+
+def parse(title: str, specs: str = "") -> Parsed:
+    title = clean(title)
+    folded = fold(title)
+    greek = plain(title)  # accents off, Greek kept: the reject and colour words are Greek, and folding would turn some letters Latin
+    reject = next((reason for reason, pat in REJECT if re.search(pat, greek)), None)
+    text = fold(title + " " + specs)
+    # A resolution has both sides plausible: "VESA 100x100" is a mount, not a screen.
+    res = next((m for m in re.finditer(r"(\d{3,4})\s*X\s*(\d{3,4})", text) if int(m.group(1)) >= 640 and int(m.group(2)) >= 480), None)
+    width, height = (int(res.group(1)), int(res.group(2))) if res else (None, None)
+    if height is None:
+        height = next((h for word, h in HEIGHT_WORDS if re.search(rf"\b{re.escape(word)}\b", text)), None)
+    hz = re.search(r"(\d{2,3})\s*HZ", fold(specs)) or re.search(r"(\d{2,3})\s*HZ", folded)
+    year = re.search(r"(?<![A-Z0-9.])(20[2-3]\d)(?![A-Z0-9.])", folded)  # on its own: "E2020H" is a code
+    colour = next((COLOURS[w] for w in re.findall(r"[A-ZΑ-Ω]+", greek) if w in COLOURS), None)
+    return Parsed(_brand(title), _code(folded), _size(text), height, width, int(hz.group(1)) if hz else None,
+                  _panel(text), colour, year.group(1) if year else None, reject)
+
+
+def has_identity(p: Parsed) -> bool:
+    return p.reject is None and bool(p.brand and p.code)
+
+
+def compatible(a: Parsed, b: Parsed) -> bool:
+    """True when nothing the two listings both state disagrees. Unknown on either side is not a disagreement
+    here; `group` decides separately whether an unknown may join."""
+    if a.size and b.size and abs(a.size - b.size) > SIZE_TOLERANCE:
+        return False
+    if a.height and b.height and a.height != b.height:
+        return False
+    if a.hz and b.hz and a.hz != b.hz:
+        return False
+    if a.panel and b.panel and a.panel != b.panel:
+        return False
+    if a.revision and b.revision and a.revision != b.revision:
+        return False
+    return True
+
+
+def group(items: list[tuple[str, Parsed]]):
+    """items: (listing id, Parsed). Returns (models, ambiguous, unidentified):
+    models = list of (brand, code, [ids]); ambiguous = ids that fit more than one model or none of the
+    complete ones; unidentified = ids without a usable brand + code (rejects included)."""
+    by: dict[tuple[str, str], list[tuple[str, Parsed]]] = {}
+    unidentified = []
+    # Clustering is first-fit and `compatible` is not transitive (144 Hz ~ unknown ~ 165 Hz), so the order decides
+    # which models form. Sorting by id makes it the same on every run, whatever order the sources delivered.
+    for lid, p in sorted(items, key=lambda item: item[0]):
+        if has_identity(p):
+            # "Cooler Master" / "Coolermaster" / "COOLER-MASTER" are one maker; the site files a model under its
+            # letters and digits only, so two spellings would otherwise be two models with one address.
+            by.setdefault((re.sub(r"[^a-z0-9]", "", p.brand.lower()), p.code), []).append((lid, p))
+        else:
+            unidentified.append(lid)
+    models, ambiguous = [], []
+    for (_, code), members in by.items():
+        brand = min(p.brand for _, p in members)  # one display spelling, the same on every run
+        clusters: list[list[tuple[str, Parsed]]] = []
+        complete = [m for m in members if m[1].size and m[1].height]
+        partial = [m for m in members if not (m[1].size and m[1].height)]
+        for m in complete:  # only listings that state size AND resolution start or extend a model
+            for c in clusters:
+                if all(compatible(m[1], o[1]) for o in c):
+                    c.append(m)
+                    break
+            else:
+                clusters.append([m])
+        for m in partial:
+            fits = [c for c in clusters if all(compatible(m[1], o[1]) for o in c)]
+            if len(fits) == 1:
+                fits[0].append(m)
+            elif not clusters:
+                clusters.append([m])  # nothing to anchor on: the listing is its own (incomplete) model
+            else:
+                ambiguous.append(m[0])
+        models += [(brand, code, [lid for lid, _ in c]) for c in clusters]
+    return models, ambiguous, unidentified
+
+
+SETTLE_REJECTS = ("no-identity", "ambiguous")  # reasons settle() decides; the others come from parse()
+
+
+# ---- scraper interface (categories.py) -------------------------------------------------------------------
+
+def make_listing(*, source: str, native_id: str, title: str, url: str, price: float,
+                 shop_count: int | None, scraped_at: str, specs: str = ""):
+    from models import MonitorListing
+
+    title = clean(title)
+    if price <= 0:
+        return None
+    p = parse(title, specs)
+    return MonitorListing(
+        id=f"{source}:{native_id}", source=source, title=title, url=url, price=round(price, 2),
+        shopCount=shop_count, brand=p.brand or "Other", chip="", code=p.code, size=p.size, height=p.height,
+        width=p.width, hz=p.hz, panel=p.panel, colour=p.colour, revision=p.revision, scrapedAt=scraped_at,
+        reject=p.reject,
+    )
+
+
+def _of(l: dict) -> Parsed:
+    return Parsed(None if l["brand"] == "Other" else l["brand"], l["code"], l["size"], l["height"], l["width"],
+                  l["hz"], l["panel"], l["colour"], l["revision"], l.get("reject"))
+
+
+def _mode(values):
+    """Most common non-empty value; a tie takes the smallest, so a model's name never flips between runs."""
+    counts: dict = {}
+    for v in values:
+        if v is not None:
+            counts[v] = counts.get(v, 0) + 1
+    return min(counts, key=lambda v: (-counts[v], v)) if counts else None
+
+
+def _size_label(size: float | None) -> str | None:
+    return None if size is None else f'{int(size + 0.5)}"'  # 26.5 -> 27, 31.5 -> 32 whatever the shop rounds to
+
+
+def settle(listings: list[dict]) -> None:
+    """After all sources, before any model key is used: group the listings (`group`), give each model its name
+    in `chip` and put what cannot be placed in `reject` ("no-identity" without brand + code, "ambiguous" when
+    an unknown size or resolution fits more than one model). Idempotent: it rebuilds from the stored fields."""
+    by_id = {l["id"]: l for l in listings}
+    for l in listings:  # what an earlier settle decided is decided again below
+        if l.get("reject") in SETTLE_REJECTS:
+            l["reject"] = None
+    models, ambiguous, unidentified = group([(l["id"], _of(l)) for l in listings])
+    for lid in unidentified:
+        l = by_id[lid]
+        l["chip"] = ""
+        l["reject"] = l.get("reject") or "no-identity"
+    for lid in ambiguous:
+        by_id[lid]["chip"] = ""
+        by_id[lid]["reject"] = "ambiguous"
+    same_code: dict[tuple[str, str], list[tuple[str, str, list[str]]]] = {}
+    for m in models:
+        same_code.setdefault((m[0], m[1]), []).append(m)
+    for (brand, code), ms in same_code.items():
+        ms.sort(key=lambda m: min(m[2]))  # a stable order, so numbered names do not swap between runs
+        info = []
+        for _, _, ids in ms:
+            rows = [by_id[i] for i in ids]
+            info.append({"size": _size_label(_mode(r["size"] for r in rows)), "panel": _mode(r["panel"] for r in rows),
+                         "hz": _mode(r["hz"] for r in rows), "revision": _mode(r["revision"] for r in rows)})
+        names = [f"{brand} {code}"] * len(ms)
+        if len(ms) > 1:
+            # Only the fields that tell this code's models apart go into the name, in a fixed order.
+            fields = [f for f in ("size", "panel", "hz", "revision") if len({i[f] for i in info}) > 1]
+            names = []
+            for i in info:
+                parts = [f"{i[f]}Hz" if f == "hz" and i[f] else i[f] for f in fields if i[f]]
+                names.append(" ".join([f"{brand} {code}", *map(str, parts)]))
+            total = {n: names.count(n) for n in names}  # counted before any name is changed
+            seen: dict[str, int] = {}
+            for k, n in enumerate(names):  # still equal after all fields: number them, stable by listing id
+                seen[n] = seen.get(n, 0) + 1
+                if total[n] > 1:
+                    names[k] = f"{n} #{seen[n]}"
+        for name, (_, _, ids) in zip(names, ms):
+            for i in ids:
+                by_id[i]["chip"] = name
+    # The site files a model under its letters and digits only (src/lib/slug.ts slugLookup): two different names with
+    # one such form would share an address and the build refuses to publish. Number the later one.
+    form = lambda name: re.sub(r"[^a-z0-9]", "", name.lower())
+    taken: dict[str, str] = {}
+    rename: dict[str, str] = {}
+    for l in sorted((l for l in listings if l.get("chip")), key=lambda l: l["id"]):
+        name = l["chip"]
+        if name in rename:
+            continue
+        final, n = name, 1
+        while taken.get(form(final), name) != name:
+            n += 1
+            final = f"{name} #{n}"
+        taken[form(final)] = name
+        rename[name] = final
+    for l in listings:
+        if l.get("chip"):
+            l["chip"] = rename[l["chip"]]

@@ -120,4 +120,12 @@ export const CAT_PAGE: Record<Category, { title: Text; subtitle: Text }> = {
       en: 'The lowest prices for air coolers and AIO liquid coolers in Greece, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
     },
   },
+  // Monitors are not published yet (registry: visible false); the sources are the ones that list them.
+  monitor: {
+    title: { el: 'Τιμές Οθονών', en: 'Monitor Prices' },
+    subtitle: {
+      el: 'Οι χαμηλότερες τιμές οθονών υπολογιστή στην Ελλάδα, ανά μοντέλο, από Skroutz, BestPrice και Snif.',
+      en: 'The lowest computer monitor prices in Greece, by model, from Skroutz, BestPrice and Snif.',
+    },
+  },
 };

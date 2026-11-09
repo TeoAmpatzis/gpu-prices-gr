@@ -135,7 +135,7 @@ jobs:
           done
           exit 1
 
-      - name: Require nine fresh complete Skroutz categories in the published commit
+      - name: Require fresh complete Skroutz categories in the published commit (every category Skroutz lists, see scraper/capabilities.py)
         if: always() && steps.publish.outcome == 'success' && steps.finished.outcome == 'success'
         env:
           DATA_COMMIT: ${{ steps.publish.outputs.data_commit }}

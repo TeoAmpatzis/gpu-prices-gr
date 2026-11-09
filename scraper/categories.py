@@ -5,10 +5,12 @@ from typing import Callable
 
 import names
 import normalize
+from category_ids import CATEGORY_IDS
 import normalize_case
 import normalize_cooling
 import normalize_cpu
 import normalize_mobo
+import normalize_monitor
 import normalize_psu
 import normalize_ram
 import normalize_storage
@@ -44,6 +46,11 @@ class Category:
     # title can't decide (storage: a drive whose interface no word states takes SAS from a listing with the same
     # part number; see normalize_storage.settle). Must be idempotent: it also sees kept listings of a failed source.
     settle: Callable[[list[dict]], None] | None = None
+    # True: settle() may set `reject` on a listing; those are taken out of latest.json and written to rejected.json
+    # with their reason (main.stage), so nothing is silently dropped. Monitors only.
+    rejects: bool = False
+    # False: no image_urls.json, so the photo workflow fetches nothing for this category (monitors are hidden).
+    images: bool = True
 
 
 # BestPrice motherboard RAM-slot filter values: (url part, slots).
@@ -196,4 +203,24 @@ CATEGORIES = {
         eshop_categories=(("ypologistes-skliroi-diskoi-ssd-list", "ΣΚΛΗΡΟΣ ΔΙΣΚΟΣ"),),
         shared=("iface", "pcie", "formFactor", "dram", "readMBs", "writeMBs", "tbw", "heatsink", "rpm", "cacheMB", "tier"),
     ),
+    "monitor": Category(
+        name="monitor",
+        # Skroutz: lists only (capabilities.py). e-shop and Shopflix are not monitor sources (Phase 0: O5, O6).
+        skroutz_paths=("/c/43/othones-upologiston.html",),
+        # ~2,500 products against BestPrice's 800 per list: sliced by price (cents); 159 pages, none over 30.
+        bestprice_paths=tuple(
+            f"/cat/2621/othones-ypologiston.html?{q}"
+            for q in ("max=9999", "min=10000&max=14999", "min=15000&max=19999", "min=20000&max=29999",
+                      "min=30000&max=49999", "min=50000&max=99999", "min=100000")
+        ),
+        snif_categories=("19197",),
+        make_listing=normalize_monitor.make_listing,
+        model_key=lambda l: l["chip"],
+        settle=normalize_monitor.settle,
+        rejects=True,
+        images=False,
+    ),
 }
+
+if tuple(CATEGORIES) != CATEGORY_IDS:  # category_ids.py is the list glitches.py and merge_history.py use
+    raise ValueError(f"CATEGORIES {tuple(CATEGORIES)} differs from category_ids.CATEGORY_IDS {CATEGORY_IDS}")
