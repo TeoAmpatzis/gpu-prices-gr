@@ -60,7 +60,9 @@ const sources = Object.keys(bySource);
 for (const [name, get] of Object.entries(listingSpecs)) {
   const share = (rows: MonitorListing[]) => rows.filter((l) => get(l) != null).length / Math.max(1, rows.length);
   const parts = sources.map((s) => ({ s, v: share(latest.listings.filter((l) => l.source === s)) }));
-  const worst = Math.min(share(latest.listings), ...parts.map((x) => x.v));
+  // Refresh rate is judged overall only: Skroutz's list card and URL do not state it for most office monitors, its product
+  // pages are not read (robots.txt, lists only), and a missing value is shown as "Not stated", never guessed.
+  const worst = name === 'refresh' ? share(latest.listings) : Math.min(share(latest.listings), ...parts.map((x) => x.v));
   gate(`listing coverage ${name}`, worst >= COVERAGE_MIN, `${(share(latest.listings) * 100).toFixed(1)}% overall; ${parts.map((x) => `${x.s} ${(x.v * 100).toFixed(1)}%`).join(', ')}`);
 }
 
