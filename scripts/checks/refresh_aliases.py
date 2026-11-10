@@ -3,13 +3,16 @@ on the data the first scrape will see (REF's latest.json, default origin/main), 
 Owner's procedure (2026-10-26): the alias set = the committed entries + the freshly regenerated ones; an entry is
 dropped ONLY when its old key has listings today (printed). Run from the repo root:
   venv/Scripts/python scripts/checks/refresh_aliases.py <cat> [REF] [--write]
-- Old key = the category's model_key on each stored listing; new key = the working copy's make_listing (+ settle) on
-  its title and URL. Fresh alias = every listing of an old key moves to one new key and the old key is gone (not when
-  that new key is itself an old key whose listings move elsewhere: its history is another product's).
+- Old key = the category's model_key on each stored listing; new key = the working copy's make_listing (+ cached specs
+  for EARLY categories + settle) on its title and URL, matched by ID over accepted rows only. Stored latest.json lacks
+  original HTML list-card spec strings, which limits replay of list-card specs not supplied by the title parser.
+- Fresh alias = every listing of an old key moves to one new key and the old key is gone (not when that new key is
+  itself an old key whose listings move elsewhere: its history is another product's).
 - A committed and a fresh entry for one old key with different targets is an error (exit 2): decide by hand.
-- Check: REF's history.json / history_imported.json folded as main.write_history would (aliases.active on today's
-  keys) into a temp folder, then merge_history.check(REF) without shrink; exit 1 when it fails.
+- Check: REF's history.json / optional history_imported.json folded as main.write_history would (aliases.active on
+  today's keys) into a temp folder, then merge_history.check(REF) without shrink; exit 1 when it fails.
 - --write rewrites only this category's block (sorted); the other categories stay byte for byte."""
+import importlib.util
 import json
 import subprocess
 import sys
@@ -17,9 +20,10 @@ import tempfile
 from collections import defaultdict
 from pathlib import Path
 
-sys.path.insert(0, "scraper")
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scraper"))
 import aliases  # noqa: E402
 import merge_history as mh  # noqa: E402
+import specs  # noqa: E402
 
 
 def fresh_aliases(pairs: list[tuple[str, str]]) -> dict[str, str]:
@@ -51,6 +55,75 @@ def _git(ref: str, rel: str) -> bytes:
     return subprocess.run(["git", "show", f"{ref}:{rel}"], capture_output=True, check=True).stdout
 
 
+def _git_json(ref: str, rel: str, *, missing_ok: bool = False) -> dict:
+    if missing_ok:
+        subprocess.run(["git", "rev-parse", "--verify", f"{ref}^{{commit}}"], capture_output=True, check=True)
+        has = subprocess.run(["git", "cat-file", "-e", f"{ref}:{rel}"], capture_output=True)
+        if has.returncode != 0:
+            return {}
+    return json.loads(_git(ref, rel).decode("utf-8"))
+
+
+def _load_baseline_mod(ref: str, cat_name: str, temp_dir: Path):
+    rel = f"scraper/normalize_{cat_name}.py"
+    has = subprocess.run(["git", "cat-file", "-e", f"{ref}:{rel}"], capture_output=True)
+    if has.returncode != 0:
+        return None
+    old_names = sys.modules.get("names")
+    try:
+        names_has = subprocess.run(["git", "cat-file", "-e", f"{ref}:scraper/names.py"], capture_output=True)
+        if names_has.returncode == 0:
+            np = temp_dir / "ref_names.py"
+            np.write_bytes(_git(ref, "scraper/names.py"))
+            nspec = importlib.util.spec_from_file_location("names", np)
+            nmod = importlib.util.module_from_spec(nspec)
+            sys.modules["names"] = nmod
+            nspec.loader.exec_module(nmod)
+        mp = temp_dir / f"ref_normalize_{cat_name}.py"
+        mp.write_bytes(_git(ref, rel))
+        mspec = importlib.util.spec_from_file_location(f"_ref_norm_{cat_name}", mp)
+        mmod = importlib.util.module_from_spec(mspec)
+        sys.modules[mspec.name] = mmod
+        mspec.loader.exec_module(mmod)
+        return mmod
+    finally:
+        if old_names is not None:
+            sys.modules["names"] = old_names
+        else:
+            sys.modules.pop("names", None)
+
+
+def replay_rows(cat, stored: list[dict], evidence_dir: Path, *, baseline=None) -> list[dict]:
+    """Replay stored rows under the working-copy category normalizer and return accepted rows only.
+
+    For EARLY categories (e.g. monitors), cached product-page observations are applied from
+    `evidence_dir/specs.json` before `settle()`. Because stored `latest.json` omits the original
+    HTML list-card spec strings, missing list-card fields are preserved from `stored` only where
+    `baseline.parse(title)` also left them unknown; removed baseline false positives are never restored.
+    """
+    rows = []
+    early = cat.name in specs.EARLY
+    for item in stored:
+        src, native = item["id"].split(":", 1)
+        out = cat.make_listing(source=src, native_id=native, title=item["title"], url=item["url"],
+                               price=item["price"], shop_count=item.get("shopCount"),
+                               scraped_at=item.get("scrapedAt", ""))
+        if out is None:
+            continue
+        row = out.to_dict()
+        if early and baseline is not None:
+            parsed = baseline.parse(item["title"])
+            for field in ("size", "width", "height", "hz", "panel"):
+                if row.get(field) is None and getattr(parsed, field) is None:
+                    row[field] = item.get(field)
+        rows.append(row)
+    if early:
+        specs.apply(cat.name, evidence_dir, rows)
+    if cat.settle:
+        cat.settle(rows)
+    return [r for r in rows if not r.get("reject") and cat.model_key(r)]
+
+
 def main(argv: list[str]) -> int:
     import categories
 
@@ -58,56 +131,60 @@ def main(argv: list[str]) -> int:
     args = [a for a in argv if a != "--write"]
     name, ref = args[0], (args[1] if len(args) > 1 else "origin/main")
     cat = categories.CATEGORIES[name]
-    rev = subprocess.run(["git", "rev-parse", "--short", ref], capture_output=True, text=True).stdout.strip()
-    stored = json.loads(_git(ref, f"public/data/{name}/latest.json"))["listings"]
-    fresh_rows, olds = [], []
-    for l in stored:
-        src, native = l["id"].split(":", 1)
-        out = cat.make_listing(source=src, native_id=native, title=l["title"], url=l["url"], price=l["price"],
-                               shop_count=l.get("shopCount"), scraped_at=l.get("scrapedAt", ""))
-        if out is not None:
-            fresh_rows.append(out.to_dict())
-            olds.append(cat.model_key(l))
-    if cat.settle:
-        cat.settle(fresh_rows)
-    pairs = [(o, cat.model_key(d)) for o, d in zip(olds, fresh_rows)]
-    live = {n for _, n in pairs}
-
-    path = Path("scraper/model_aliases.json")
-    text = path.read_text(encoding="utf-8")
-    data = json.loads(text)
-    committed = data.get(name, {})
-    fresh = fresh_aliases(pairs)
-    result, dropped, conflicts = union(committed, fresh, live)
-    print(f"{name} @ {ref} ({rev}): {len(stored)} listings, {len(live)} models; committed {len(committed)}, "
-          f"fresh {len(fresh)}, union {len(result)}")
-    for o in sorted(set(fresh) - set(committed)):
-        print(f"  new:      {o} -> {fresh[o]}")
-    for o in sorted(set(committed) - set(fresh)):
-        print(f"  kept:     {o} -> {committed[o]} (not regenerated today)")
-    for o, n in sorted(dropped.items()):
-        print(f"  DROPPED:  {o} -> {n} ({o} has listings today)")
-    for o, c, f in conflicts:
-        print(f"  CONFLICT: {o}: committed -> {c}, fresh -> {f}")
-    if conflicts:
-        return 2
-    aliases.resolve(result)  # raises on a self-alias or a cycle
+    rev = subprocess.run(["git", "rev-parse", "--short", ref], capture_output=True, text=True, check=True).stdout.strip()
+    stored = _git_json(ref, f"public/data/{name}/latest.json")["listings"]
 
     with tempfile.TemporaryDirectory() as d:
+        evidence = Path(d) / "evidence"
+        evidence.mkdir()
+        baseline = None
+        if cat.name in specs.EARLY:
+            sp = _git_json(ref, f"public/data/{name}/specs.json", missing_ok=True)
+            if sp:
+                (evidence / "specs.json").write_text(json.dumps(sp), encoding="utf-8")
+            baseline = _load_baseline_mod(ref, name, evidence)
+        accepted = replay_rows(cat, stored, evidence, baseline=baseline)
+        accepted_by_id = {r["id"]: r for r in accepted}
+        pairs = [(cat.model_key(l), cat.model_key(accepted_by_id[l["id"]]))
+                 for l in stored if l["id"] in accepted_by_id]
+        live = {cat.model_key(r) for r in accepted}
+
+        path = Path("scraper/model_aliases.json")
+        text = path.read_text(encoding="utf-8")
+        data = json.loads(text)
+        committed = data.get(name, {})
+        fresh = fresh_aliases(pairs)
+        result, dropped, conflicts = union(committed, fresh, live)
+        print(f"{name} @ {ref} ({rev}): {len(stored)} listings ({len(accepted)} accepted), {len(live)} models; "
+              f"committed {len(committed)}, fresh {len(fresh)}, union {len(result)}")
+        if cat.name in specs.EARLY:
+            print("note: stored snapshot omits original HTML list-card spec strings; replay uses cached page specs and baseline-gated fallback observations")
+        for o in sorted(set(fresh) - set(committed)):
+            print(f"  new:      {o} -> {fresh[o]}")
+        for o in sorted(set(committed) - set(fresh)):
+            print(f"  kept:     {o} -> {committed[o]} (not regenerated today)")
+        for o, n in sorted(dropped.items()):
+            print(f"  DROPPED:  {o} -> {n} ({o} has listings today)")
+        for o, c, f in conflicts:
+            print(f"  CONFLICT: {o}: committed -> {c}, fresh -> {f}")
+        if conflicts:
+            return 2
+        resolved = aliases.resolve(result)  # raises on a self-alias or a cycle
+
         out = Path(d) / name
         out.mkdir()
-        folding = aliases.active(name, aliases.resolve(result), live)
-        hist = aliases.fold_history(json.loads(_git(ref, f"public/data/{name}/history.json")), folding)
-        imp = aliases.fold_imported(json.loads(_git(ref, f"public/data/{name}/history_imported.json")), folding)
+        folding = aliases.active(name, resolved, live)
+        hist = aliases.fold_history(_git_json(ref, f"public/data/{name}/history.json"), folding)
+        imp = aliases.fold_imported(_git_json(ref, f"public/data/{name}/history_imported.json", missing_ok=True), folding)
         (out / "history.json").write_text(json.dumps(hist), encoding="utf-8")
         (out / "history_imported.json").write_text(json.dumps(imp), encoding="utf-8")
+        old_dir, old_cats, real = mh.DATA_DIR, mh.CATEGORIES, aliases.for_cat
         mh.DATA_DIR, mh.CATEGORIES = Path(d), [name]
-        real = aliases.for_cat
-        aliases.for_cat = lambda c, p=None: aliases.resolve(result) if c == name else real(c)
+        aliases.for_cat = lambda c, p=None: resolved if c == name else real(c)
         try:
             rc = mh.check(ref, False)
         finally:
-            aliases.for_cat = real
+            mh.DATA_DIR, mh.CATEGORIES, aliases.for_cat = old_dir, old_cats, real
 
     if write and rc == 0:
         indent = 1 if json.dumps(data, ensure_ascii=False, indent=1) + "\n" == text else None

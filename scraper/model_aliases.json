@@ -813,5 +813,10 @@
   "westerndigitalultrastardcsn655se77tbssd": "westerndigitalultrastardcsn655se768tbu2ssd",
   "westerndigitalultrastarhc55520tbhdd": "westerndigitalultrastarhc55520tbsashdd",
   "westerndigitalultrastarsn6501536tbssd": "westerndigitalultrastarsn6501536tbu2ssd"
+ },
+ "monitor": {
+  "Lenovo E2440 24\" IPS": "Lenovo E2440",
+  "Lenovo E2440 40\"": "Lenovo E2440",
+  "Lenovo T2440 24\" 120Hz": "Lenovo T2440"
  }
 }
