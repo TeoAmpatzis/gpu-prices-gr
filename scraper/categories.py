@@ -49,7 +49,7 @@ class Category:
     # True: settle() may set `reject` on a listing; those are taken out of latest.json and written to rejected.json
     # with their reason (main.stage), so nothing is silently dropped. Monitors only.
     rejects: bool = False
-    # False: no image_urls.json, so the photo workflow fetches nothing for this category (monitors are hidden).
+    # False: no image_urls.json, so the photo workflow fetches nothing for this category.
     images: bool = True
 
 
@@ -221,7 +221,7 @@ CATEGORIES = {
         # Safe: settle() keeps listings that disagree on size, resolution, refresh or panel in separate models.
         shared=("size", "height", "width", "hz", "panel"),
         rejects=True,
-        images=False,
+        images=True,
     ),
 }
 

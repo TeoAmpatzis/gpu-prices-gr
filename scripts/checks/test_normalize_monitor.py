@@ -400,7 +400,7 @@ class CategoryTests(unittest.TestCase):
         import capabilities
         from categories import CATEGORIES
         c = CATEGORIES["monitor"]
-        self.assertTrue(c.rejects and not c.images)
+        self.assertTrue(c.rejects and c.images)
         self.assertEqual((c.eshop_categories, c.shopflix_categories), ((), ()))  # not monitor sources (Phase 0: O5, O6)
         for op in (capabilities.SPECS, capabilities.SHIPPING, capabilities.HISTORY):
             self.assertFalse(capabilities.supports("skroutz", "monitor", op))
@@ -561,6 +561,7 @@ class NotAMonitorTests(unittest.TestCase):
         for title in ('Ocypus Sigma ES9160 IPS Monitor 24"', 'Other ES916 IPS Monitor 24"',
                       'Lian Li US88v10 IPS Monitor 24"', 'Other US88v1 IPS Monitor 24"',
                       'Elo 2295LX Touch Monitor 24"', 'Other 2295L Touch Monitor 24"',
+                      'BenQ PVS70 IPS Monitor 24"', 'Other PVS7 IPS Monitor 24"',
                       'Ocypus ES927 IPS Monitor 27"', 'Lian Li US27 IPS Monitor 27"',
                       'Elo 2403LM Touch Monitor 24"', 'Dell χωρίς Βάση IPS FHD 1920x1080'):
             with self.subTest(title=title):
@@ -646,9 +647,9 @@ class DataSizeTests(unittest.TestCase):
         self.assertTrue(all("image" not in r and "photoSku" not in r for r in rows))
         self.assertEqual(rows[0]["code"], "U2724DE")  # nothing else is touched
 
-    def test_the_monitor_category_has_no_photo_job(self):
+    def test_the_monitor_category_uses_the_existing_photo_job(self):
         from categories import CATEGORIES
-        self.assertFalse(CATEGORIES["monitor"].images)
+        self.assertTrue(CATEGORIES["monitor"].images)
 
 
 if __name__ == "__main__":

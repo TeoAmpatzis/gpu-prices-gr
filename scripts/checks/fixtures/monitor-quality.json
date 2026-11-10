@@ -215,5 +215,14 @@
     "expectedReject": null,
     "expectedSize": null,
     "expectedCode": "AW03"
+  },
+  {
+    "id": "skroutz:61678626",
+    "source": "skroutz",
+    "title": "BenQ PVS7 7\" IPS Touch FHD 1920x1200",
+    "evidenceUrl": "https://www.benq.com/en-us/monitor/creative-pro/pvs7.html",
+    "evidenceNote": "On-camera monitor; also confirmed by https://www.benq.com/en-us/news/monitor/benq-pvs7-press-release.html",
+    "expectedReject": "not-monitor",
+    "expectedSize": 7.0
   }
 ]

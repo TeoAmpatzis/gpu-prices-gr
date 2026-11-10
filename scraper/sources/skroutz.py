@@ -45,9 +45,23 @@ def _offer_prices(offers):
             yield price
 
 
-def jsonld_prices(tree: HTMLParser) -> dict[str, float]:
-    """skuid -> price of the exact product each card links to."""
-    out: dict[str, float] = {}
+def _image_url(value) -> str | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        url = urlsplit(value)
+    except ValueError:
+        return None
+    if (url.scheme == "https" and re.fullmatch(r"[a-z0-9-]+\.scdn\.gr", url.netloc)
+            and url.path.startswith("/images/sku_main_images/")):
+        return value
+    return None
+
+
+def _jsonld_data(tree: HTMLParser) -> tuple[dict[str, float], dict[str, str]]:
+    """Exact prices and lazy-card photos from the same listing-page documents."""
+    prices_by_id: dict[str, float] = {}
+    images_by_id: dict[str, str] = {}
     for script in tree.css('script[type="application/ld+json"]'):
         try:
             data = json.loads(script.text())
@@ -62,8 +76,19 @@ def jsonld_prices(tree: HTMLParser) -> dict[str, float]:
                 m = re.search(r"/s/(\d+)/", item["url"])
                 prices = list(_offer_prices(item.get("offers")))
                 if m and prices:
-                    out[m.group(1)] = min(prices)
-    return out
+                    prices_by_id[m.group(1)] = min(prices)
+                if m and item.get("@type") == "Product" and _product_url(item["url"], m.group(1)):
+                    photos = item.get("image", [])
+                    for photo in photos if isinstance(photos, list) else [photos]:
+                        if image := _image_url(photo):
+                            images_by_id.setdefault(m.group(1), image)
+                            break
+    return prices_by_id, images_by_id
+
+
+def jsonld_prices(tree: HTMLParser) -> dict[str, float]:
+    """skuid -> price of the exact product each card links to."""
+    return _jsonld_data(tree)[0]
 
 
 @dataclass
@@ -88,7 +113,7 @@ def _product_url(href: str, skuid: str) -> str | None:
 
 def _parse_page(html: str, scraped_at: str, cat: Category) -> _Page:
     tree = HTMLParser(html)
-    exact = jsonld_prices(tree)
+    exact, photos = _jsonld_data(tree)
     out = []
     ids = set()
     usable = 0
@@ -128,8 +153,9 @@ def _parse_page(html: str, scraped_at: str, cat: Category) -> _Page:
                 listing.drop = int(m.group(1))
             # Product photo on Skroutz's image host (scdn.gr), for the images workflow (main.image_urls).
             img = card.css_first('img[src*="sku_main_images"]')
-            if img:
-                listing.image = img.attributes["src"]
+            image = _image_url(img.attributes.get("src")) if img else None
+            if image or photos.get(skuid):
+                listing.image = image or photos[skuid]
             out.append(listing)
     links = {node.attributes.get("href", "") for node in tree.css("link[rel], a[rel]")
              if "next" in node.attributes.get("rel", "").lower().split()}

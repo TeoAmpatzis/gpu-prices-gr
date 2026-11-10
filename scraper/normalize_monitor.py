@@ -105,8 +105,10 @@ def rejection_reason(title: str, specs: str = "", size: float | None = None) -> 
     # https://www.elotouch.com/open-frame-touchscreens-2495l.html
     # https://www.elotouch.com/open-frame-touchscreens-1093l.html
     # https://iiyama.com/gl_en/products/prolite-tf1015mc-b3/
+    # On-camera display: https://www.benq.com/en-us/monitor/creative-pro/pvs7.html
     for maker, models in ((r"\bOCYPUS\b", "ES916"), (r"\bLIAN[ -]+LI\b", "US88V1"),
-                          (r"\bELO\b", "1093L|2295L|2495L"), (r"\bIIYAMA\b", "TF1015MC-B3")):
+                          (r"\bELO\b", "1093L|2295L|2495L"), (r"\bIIYAMA\b", "TF1015MC-B3"),
+                          (r"\bBENQ\b", "PVS7")):
         if re.search(maker, text) and re.search(rf"(?<![A-Z0-9-])(?:{models})(?![A-Z0-9-])", text):
             return "not-monitor"
     return "not-monitor" if size and size > MAX_PC_SIZE else None

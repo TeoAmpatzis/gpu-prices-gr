@@ -42,6 +42,53 @@ class CollectorTests(unittest.TestCase):
     def test_next_link_attribute_order_is_irrelevant(self):
         self.assertTrue(skroutz.parse(page(next_href="?page=2"), AT, CATEGORIES["cpu"])[1])
 
+    def test_lazy_monitor_card_uses_exact_product_jsonld_photo(self):
+        photo = "https://b.scdn.gr/images/sku_main_images/055390/55390540/xlarge_20240809095956_aoc_c27g4zxe.jpeg"
+        product = {"@type": "Product", "url": "https://www.skroutz.gr/s/55390540/aoc.html",
+                   "image": [photo], "offers": {"price": "180.25", "priceCurrency": "EUR"}}
+        for img in ("", '<img src="">', '<img data-src="ignored">'):
+            with self.subTest(img=img):
+                html = card("55390540", 'AOC C27G4ZXE VA Monitor 27" FHD 1920x1080 280Hz', "100,00 - 300,00")
+                html = html.replace("</li>", img + "</li>") + '<link rel="next" href="?page=2">'
+                data = [{"@graph": [{"itemListElement": [{"item": product}]}]}]
+                html += f'<script type="application/ld+json">{json.dumps(data)}</script>'
+                rows, has_next = skroutz.parse(html, AT, CATEGORIES["monitor"])
+                self.assertEqual(len(rows), 1)
+                self.assertEqual((rows[0].id, rows[0].price, getattr(rows[0], "image", None), has_next),
+                                 ("skroutz:55390540", 180.25, photo, True))
+                self.assertEqual(skroutz.jsonld_prices(skroutz.HTMLParser(html)), {"55390540": 180.25})
+
+    def test_card_photo_has_priority_over_jsonld_for_existing_categories(self):
+        photo = "https://a.scdn.gr/images/sku_main_images/123/card.jpg"
+        data = {"itemListElement": [{"item": {"@type": "Product", "url": "/s/123/product.html",
+                 "image": "https://b.scdn.gr/images/sku_main_images/123/jsonld.jpg"}}]}
+        html = card().replace("</li>", f'<img src="{photo}"></li>')
+        rows, _ = skroutz.parse(html + f'<script type="application/ld+json">{json.dumps(data)}</script>', AT, CATEGORIES["cpu"])
+        self.assertEqual((len(rows), getattr(rows[0], "image", None), rows[0].price), (1, photo, 180))
+
+    def test_unrelated_or_unsafe_jsonld_photo_is_ignored_without_changing_listing(self):
+        safe = "https://b.scdn.gr/images/sku_main_images/123/photo.jpg"
+        bad_products = [{"@type": "Product", "url": url, "image": safe} for url in (
+            "/s/456/product.html", "https://foreign.example/s/123/product.html", "javascript:/s/123/product.html")]
+        bad_products += [{"@type": "Product", "url": "/s/123/product.html", "image": image} for image in (
+            "data:image/png;base64,abc", "javascript:alert(1)", "file:///photo.jpg",
+            "https://127.0.0.1/images/sku_main_images/photo.jpg", "http://b.scdn.gr/images/sku_main_images/photo.jpg",
+            "https://b.scdn.gr.evil.example/images/sku_main_images/photo.jpg", "//b.scdn.gr/images/sku_main_images/photo.jpg",
+            "https://user@b.scdn.gr/images/sku_main_images/photo.jpg", "https://b.scdn.gr:8443/images/sku_main_images/photo.jpg",
+            "https://b.scdn.gr/unrelated.jpg", None, {}, [])]
+        for product in bad_products:
+            with self.subTest(product=product):
+                data = {"itemListElement": [{"item": product}]}
+                html = card() + f'<script type="application/ld+json">{json.dumps(data)}</script>'
+                rows, has_next = skroutz.parse(html, AT, CATEGORIES["cpu"])
+                self.assertEqual(len(rows), 1)
+                self.assertEqual((rows[0].id, rows[0].price, getattr(rows[0], "image", None), has_next), ("skroutz:123", 180, None, False))
+
+    def test_malformed_jsonld_has_no_photo_and_no_extra_request(self):
+        with patch.object(skroutz.http, "get", side_effect=AssertionError("unexpected request")):
+            rows, _ = skroutz.parse(card() + '<script type="application/ld+json">{oops</script>', AT, CATEGORIES["cpu"])
+        self.assertEqual((len(rows), rows[0].price, getattr(rows[0], "image", None)), (1, 180, None))
+
     def test_rel_tokens_and_single_quotes_are_supported(self):
         html = card() + "<link href='?page=2' rel='alternate next'>"
         self.assertTrue(skroutz.parse(html, AT, CATEGORIES["cpu"])[1])
