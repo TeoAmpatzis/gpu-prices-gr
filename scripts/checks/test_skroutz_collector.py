@@ -7,6 +7,7 @@ from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scraper"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from categories import CATEGORIES
 from sources import skroutz
 
@@ -180,6 +181,14 @@ class SnapshotTests(unittest.TestCase):
             before = json.dumps(rows)
             self.assertTrue(skroutz.snapshot_errors(rows, 10))
             self.assertEqual(json.dumps(rows), before)
+
+
+class MissingBaseline(unittest.TestCase):
+    def test_unpublished_category_starts_empty(self):
+        import validate_skroutz
+        with patch.object(validate_skroutz, "DATA", Path("does-not-exist")):
+            data = validate_skroutz.read_categories()
+        self.assertEqual(data, {cat: {} for cat in validate_skroutz.CATEGORIES})
 
 
 if __name__ == "__main__":

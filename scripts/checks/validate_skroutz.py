@@ -23,7 +23,9 @@ def read_categories(ref: str | None = None) -> dict:
         raise ValueError("Expected a full data commit SHA")
     def read(cat):
         if ref is None:
-            return (DATA / cat / "latest.json").read_text(encoding="utf-8")
+            path = DATA / cat / "latest.json"
+            # A category not published yet (the first monitor run) starts from an empty baseline.
+            return path.read_text(encoding="utf-8") if path.exists() else "{}"
         return subprocess.check_output(["git", "show", f"{ref}:public/data/{cat}/latest.json"],
                                        cwd=DATA.parent.parent, text=True, encoding="utf-8")
     return {cat: json.loads(read(cat)) for cat in CATEGORIES}

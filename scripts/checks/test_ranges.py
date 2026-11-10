@@ -42,6 +42,12 @@ ranges.clean("case", ls, None)
 main.share_fields(ls, ("gpuMaxMm",), lambda l: "spire")
 expect("spire 3.502 + 350 -> 350", [l["gpuMaxMm"] for l in ls], [350.0, 350.0])
 
+# 1b. case radiatorMounts stays one string (a second specs._list once turned it into a list and crashed share_fields)
+import specs  # noqa: E402
+want = "Μπροστά, Πίσω"
+expect("specs._list joins to a string", specs._list("Μπροστά • Πίσω"), want)
+expect("specs._items splits to a list", specs._items("a • b, c"), ["a", "b", "c"])
+
 # 2. cooler 25 mm only -> unknown
 ls = [{"id": "skroutz:2", "source": "skroutz", "heightMm": 25.0}]
 ranges.clean("cooler", ls, None)

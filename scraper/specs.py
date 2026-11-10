@@ -280,7 +280,7 @@ def _bool(v: str | None) -> bool | None:
     return {"true": True, "false": False}.get(v or "")
 
 
-def _list(v: str | None) -> list[str] | None:
+def _items(v: str | None) -> list[str] | None:
     items = [x.strip() for x in re.split(r"[•,]", v or "") if x.strip()]
     return items or None
 
@@ -312,8 +312,8 @@ def parse_monitor(sp: dict[str, str]) -> dict:
         "pgUltrawide": _bool(get("Ultrawide")),
         "pgCurved": _bool(get("Κυρτή")),
         "pgVesa": get("VESA Mount"),
-        "pgConnectors": _list(get("Συνδεσιμότητα")),
-        "pgFeatures": _list(get("Επιπλέον Δυνατότητες")),
+        "pgConnectors": _items(get("Συνδεσιμότητα")),
+        "pgFeatures": _items(get("Επιπλέον Δυνατότητες")),
         "pgEnergy": get("Νέα Ενεργειακή Κλάση"),
         "pgColour": get("Χρώμα"),
     }
