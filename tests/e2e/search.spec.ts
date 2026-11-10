@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { PUBLISHED } from './published';
 
 test('keyboard submissions move focus to updated search heading', async ({ page }) => {
   await page.goto('/search?q=rtx');
@@ -19,7 +20,7 @@ for (const width of [360, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/unknown-page');
     await expect(page.locator('main h1')).toBeVisible();
-    await expect(page.locator('main nav a')).toHaveCount(9);
+    await expect(page.locator('main nav a')).toHaveCount(PUBLISHED.length);
     await expect(page.locator('main a[href="/builder"]')).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.screenshot({ path: `test-results/task6-fixes/${width}-404.png`, fullPage: true });

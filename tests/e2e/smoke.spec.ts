@@ -4,10 +4,7 @@
 // say; other tests cover behaviour.
 import { expect, test, type Page } from '@playwright/test';
 
-import { REGISTRY } from '../../src/lib/registry';
-
-// The published categories (the registry's `visible`), so a newly launched one is covered without editing this list.
-const CATEGORIES = Object.entries(REGISTRY).filter(([, c]) => c.visible).map(([id]) => id);
+import { PUBLISHED as CATEGORIES } from './published';
 
 function trackErrors(page: Page): string[] {
   const errors: string[] = [];
@@ -81,7 +78,7 @@ test('home shows search, PC Builder and the category tiles', async ({ page }) =>
   await page.goto('/');
   await expect(page.locator('main input[role=combobox]')).toBeVisible();
   await expect(page.locator('main a[href="/builder"]')).toBeVisible();
-  await expect(page.locator('main [data-home-category]')).toHaveCount(9);
+  await expect(page.locator('main [data-home-category]')).toHaveCount(CATEGORIES.length);
   expect(errors).toEqual([]);
 });
 

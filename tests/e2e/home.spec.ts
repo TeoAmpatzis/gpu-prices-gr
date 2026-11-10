@@ -1,12 +1,13 @@
 import { expect, test } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
+import { PUBLISHED } from './published';
 
 test('homepage loads one bounded feed without catalogues, histories or builder data', async ({ page }) => {
   const requested: string[] = [];
   page.on('request', (request) => requested.push(new URL(request.url()).pathname));
   await page.goto('/');
-  await expect(page.locator('[data-home-category]')).toHaveCount(9);
+  await expect(page.locator('[data-home-category]')).toHaveCount(PUBLISHED.length);
   await expect(page.locator('[data-home-build]')).toHaveCount(4);
   const response = await page.request.get('/data/home.json');
   expect(gzipSync(await response.body()).length).toBeLessThanOrEqual(20 * 1024);

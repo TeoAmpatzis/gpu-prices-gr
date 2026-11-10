@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { PUBLISHED } from './published';
 
 const products = '[data-product-key]';
 test('listing links select the exact source product; refresh and Back retain query/page/scroll', async ({ page }) => {
@@ -136,10 +137,10 @@ for (const width of [360, 390, 820, 951, 1023, 1024, 1440, 1920]) {
 }
 
 for (const lang of ['el', 'en']) {
-  test(`all nine categories expose listing specifications in ${lang}`, async ({ page }, testInfo) => {
+  test(`every published category exposes listing specifications in ${lang}`, async ({ page }, testInfo) => {
     await page.addInitScript((lang) => localStorage.setItem('lang', lang), lang);
     await page.setViewportSize({ width: 1440, height: 1100 });
-    for (const cat of ['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'cooler', 'fan']) {
+    for (const cat of PUBLISHED) {
       await page.goto(`/${cat}?per=20`);
       await expect(page.locator(products).first()).toBeVisible({ timeout: 20_000 });
       await expect(page.locator('.catalogue-table thead th').first()).toHaveText(lang === 'el' ? 'Μοντέλο' : 'Model');
