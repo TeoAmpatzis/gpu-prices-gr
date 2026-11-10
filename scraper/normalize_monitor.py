@@ -29,8 +29,11 @@ BRANDS = {
 
 # Words that mean the listing is not a new, complete monitor. The reason goes to the rejection report.
 REJECT = (
-    ("not-monitor", r"ΡΑΦΑΚΙ|ΒΑΣΗ ΣΤΗΡΙΞΗΣ|ΒΑΣΗ ΟΘΟΝΗΣ|ΚΑΛΩΔΙΟ|ΤΗΛΕΟΡΑΣΗ|\bTV\b|PROJECTOR|ΠΡΟΒΟΛΕΑΣ|ΔΙΑΔΡΑΣΤΙΚΟΣ ΠΙΝΑΚΑΣ|CLASSBOARD|ΜΟΝΙΤΟΡ ΤΡΟΦΟΔΟΣΙΑΣ"),
-    ("used", r"ΑΝΑΚΑΤΑΣΚΕΥ|REFURB|\bGRADE\s*[ABC]\b|ΜΕΤΑΧΕΙΡΙΣΜΕΝ|\bREF\b|ΕΠΙΔΙΟΡΘΩΜΕΝ"),
+    ("not-monitor", r"ΡΑΦΑΚΙ|ΒΑΣΗ ΣΤΗΡΙΞΗΣ|ΒΑΣΗ ΟΘΟΝΗΣ|ΚΑΛΩΔΙΟ|ΤΗΛΕΟΡΑΣΗ|\bTV\b|PROJECTOR|ΠΡΟΒΟΛΕΑΣ|ΔΙΑΔΡΑΣΤΙΚΟΣ ΠΙΝΑΚΑΣ|CLASSBOARD|ΜΟΝΙΤΟΡ ΤΡΟΦΟΔΟΣΙΑΣ"
+                    r"|ΦΟΡΤΙΣΤ|CHARGER|ΑΝΤΑΠΤΟΡ|POWER ADAPTER|AC ADAPTER"  # chargers and power adapters for monitors
+                    r"|ΠΡΟΣΤΑΤΕΥΤΙΚ|PROTECTOR|ΦΙΛΜ|\bFILM\b|ΦΙΛΤΡΟ|SCREEN FILTER"  # screen protectors, films and filters
+                    r"|SIGNAGE|\bLFD\b|BRAVIA|\bOM\d{2}[A-Z]{1,2}\b|ALL-?IN-?ONE|ΒΡΑΧΙΟΝ|\bBRACKET\b|MONITOR ARM"),  # signage, all-in-one PCs, arms and mounts
+    ("used", r"ΑΝΑΚΑΤΑΣΚΕΥ|REFURB|REBURB|\bGRADE\s*[ABC]\b|ΜΕΤΑΧΕΙΡΙΣΜΕΝ|\bREF\b|ΕΠΙΔΙΟΡΘΩΜΕΝ"),  # (REBURB: a shop's typo)
     ("bundle", r"ΣΕ ΣΕΤ|\bKIT\b"),
 )
 LOOKALIKE = str.maketrans("ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ", "ABEZHIKMNOPTYX")  # Greek capitals that look Latin
@@ -49,6 +52,7 @@ COLOURS = {"BLACK": "black", "WHITE": "white", "SILVER": "silver", "GREY": "grey
 HEIGHT_WORDS = (("WUXGA", 1200), ("FHD", 1080), ("FULL HD", 1080), ("QHD", 1440), ("QUAD HD", 1440), ("WQHD", 1440),
                 ("4K", 2160), ("UHD", 2160), ("5K2K", 2160))
 SIZE_TOLERANCE = 0.6  # inches: 31.5 / 32, 26.5 / 27 and 31.6 / 32 are one product
+MAX_PC_SIZE = 57.5  # inches: the biggest PC monitors are 57" (Odyssey Neo G9); 65" and up are large-format signage displays
 
 
 @dataclass(frozen=True)
@@ -171,8 +175,10 @@ def parse(title: str, specs: str = "") -> Parsed:
     colour = next((COLOURS[w] for w in re.findall(r"[A-ZΑ-Ω]+", greek) if w in COLOURS), None)
     brand = _brand(title)
     code = _code(folded) or (_name_code(title, brand) if brand else None)
-    return Parsed(brand, code, _size(text), height, width, int(hz.group(1)) if hz else None,
-                  _panel(text), colour, year.group(1) if year else None, reject)
+    size = _size(text)
+    return Parsed(brand, code, size, height, width, int(hz.group(1)) if hz else None,
+                  _panel(text), colour, year.group(1) if year else None,
+                  reject or ("not-monitor" if size and size > MAX_PC_SIZE else None))
 
 
 def has_identity(p: Parsed) -> bool:

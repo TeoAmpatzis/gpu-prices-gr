@@ -412,6 +412,47 @@ class EanTests(unittest.TestCase):
         self.assertEqual(json.dumps(rows, sort_keys=True), once)
 
 
+class NotAMonitorTests(unittest.TestCase):
+    """Only PC monitors are listed: power adapters, screen protectors, signage and large-format displays, all-in-one
+    computers and refurbished units are rejected (real titles from the first published monitor data)."""
+
+    NOT_MONITORS = [
+        ("not-monitor", "\u03a6\u03bf\u03c1\u03c4\u03b9\u03c3\u03c4\u03ae\u03c2 \u03b3\u03b9\u03b1 Acer \u039f\u03b8\u03cc\u03bd\u03b5\u03c2 AL1703 SM (\u039f\u0395\u039c)"),
+        ("not-monitor", "PowerTech \u03a6\u03bf\u03c1\u03c4\u03b9\u03c3\u03c4\u03ae\u03c2 \u03b3\u03b9\u03b1 Samsung \u039f\u03b8\u03cc\u03bd\u03b5\u03c2 LCD 14V/3A 48Watt PT-135"),
+        ("not-monitor", "\u03a0\u03c1\u03bf\u03c3\u03c4\u03b1\u03c4\u03b5\u03c5\u03c4\u03b9\u03ba\u03cc \u03c6\u03af\u03bb\u03c4\u03c1\u03bf \u03bf\u03b8\u03cc\u03bd\u03b7\u03c2 \u03b3\u03b9\u03b1 24 \u03b9\u03bd\u03c4\u03c3\u03b5\u03c2 (EIZO FP-2400W)"),
+        ("not-monitor", "Samsung Digital Signage QM50C 50 4K IPS 60 Hz 8ms"),
+        ("not-monitor", "Samsung OMA Series OM75A 75 ADS Flat 60 Hz 14 ms"),  # Samsung OMxxx = signage, no size parsed
+        ("not-monitor", "Samsung Signage Stretch SH37C LH37SHCEBGBXEN 37 FHD VA Flat 60Hz 8ms"),
+        ("not-monitor", "Lenovo ThinkVision E65 LFD Monitor 64.5 4K UHD VA Flat 60 Hz 6,5 ms"),
+        ("not-monitor", "Sony FW-50BZ30J 50\" BRAVIA 4K HDR Professional Display"),
+        ("not-monitor", "Elo TouchSystems E-Series All-in-One \u03a5\u03c0\u03bf\u03bb\u03bf\u03b3\u03b9\u03c3\u03c4\u03ae\u03c2 15.6\" E850098"),
+        ("not-monitor", 'Ernitec W128950451 65" 4K 3840x2160'),  # over 57": large-format, by size alone
+        ("used", "Samsung SyncMaster B1940MR - LCD monitor - 19 (REBURBISHED)"),
+    ]
+    PC_MONITORS = [
+        'Samsung Odyssey Neo G9 G95NC 57" Ultrawide VA HDR Curved 7680x2160',
+        'Dell Pro 55 Plus P5525QC IPS Monitor 55" 3840x2160 4K UHD 60Hz 8ms',
+        "Apple Studio Display MFEY4YP/A Monitor 27 5K UHD Retina Flat 60Hz (Vesa Mount Adapter - Stand not included)",
+        'Dell Pro P2426H 24" IPS Full HD USB-C Hub 120Hz 210-BVKM',
+        'DELL Monitor Pro P P2426HEB 23.8" IPS, Conferencing, HDMI, DisplayPort, USB-C HUB, Webcam, RJ45, Height Adjustable',
+        'AOC 27B2DA 27" FHD IPS 75Hz with Speakers',
+        'BenQ RD280U Ergo Stand 28.2" IPS 3840x2560',
+    ]
+
+    def test_accessories_signage_and_refurbished_units_are_rejected(self):
+        for reason, title in self.NOT_MONITORS:
+            self.assertEqual(p(title).reject, reason, title)
+
+    def test_real_monitors_with_hubs_speakers_webcams_or_stands_are_kept(self):
+        for title in self.PC_MONITORS:
+            self.assertIsNone(p(title).reject, title)
+
+    def test_a_rejected_listing_never_gets_a_model(self):
+        rows = [listing("snif", "1", self.NOT_MONITORS[0][1]), listing("snif", "2", self.NOT_MONITORS[3][1])]
+        nm.settle(rows)
+        self.assertTrue(all(r["reject"] and not r["chip"] for r in rows))
+
+
 class NameIdentityTests(unittest.TestCase):
     """A listing with no model number is named by the words that tell it apart (as case, fan and cooler models are),
     but only with its size and resolution stated, and only joins listings whose stated specs agree."""
