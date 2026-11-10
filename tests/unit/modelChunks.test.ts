@@ -82,8 +82,8 @@ describe('modelChunkOf', () => {
   });
 });
 
-/** Categories without a "cheaper" list (their variants cover the other sizes; a chip's cheaper cards are its offers). */
-const NO_CHEAPER: Category[] = ['gpu', 'ram', 'storage', 'psu'];
+/** Categories without a "cheaper" list (their variants cover the other sizes; a chip's cheaper cards are its offers; monitors have no "same kind" rule yet). */
+const NO_CHEAPER: Category[] = ['gpu', 'ram', 'storage', 'psu', 'monitor'];
 /** Most common non-null value (first seen wins a tie, as data.mostCommon). */
 function mode<T>(vs: (T | null | undefined)[]): T | null {
   const n = new Map<T, number>();
@@ -206,8 +206,9 @@ describe('model chunks over today\'s data', () => {
       expect(entries.some((e) => !e.photo)).toBe(true);
     });
 
-    it(`${cat}: engine parts by the builder's key (slotModels + toPart)`, () => {
-      const slot = slotOf(cat)!; // the categories built here are all builder parts
+    // A peripheral (monitors) is no builder part: no slot, no engine parts.
+    it.skipIf(slotOf(cat) == null)(`${cat}: engine parts by the builder's key (slotModels + toPart)`, () => {
+      const slot = slotOf(cat)!;
       const step = Math.max(1, Math.floor(entries.length / 30));
       for (const e of entries.filter((_, i) => i % step === 0)) {
         const want = slotModels(slot, byKey.get(e.key)!.listings as never[]).map((p) => [p.key, toPart(slot, p as never).fields]);

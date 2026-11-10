@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { dealIsFresh } from '../../src/lib/homeData';
 import { homeFile } from '../../src/lib/homeFile';
+import { CATEGORY_LIST } from '../../src/lib/routes';
 import type { AutoFile, BaseListing, Latest, ModelChunk, ModelEntry } from '../../src/types';
 import type { BuilderFiles } from '../../src/lib/derive';
 import { decodeShare } from '../../src/lib/share';
@@ -22,9 +23,9 @@ describe('homepage derived feed', () => {
     for (const checkedAt of ['2026-11-03T11:59:59Z', '2026-11-04T12:00:01Z', '', 'garbage']) expect(dealIsFresh({ date: '2026-11-04', checkedAt }, now)).toBe(false);
   });
 
-  it('counts source listings, gives nine categories, and never borrows a sibling minimum', () => {
+  it('counts source listings, gives one entry per published category, and never borrows a sibling minimum', () => {
     const file = homeFile({ gpu: { ...latest, listings: [listing, { ...listing, source: 'bestprice', price: 90 }] } }, { gpu: chunks([entry]) }, auto, slots, at);
-    expect(file.categories).toHaveLength(9);
+    expect(file.categories.map((c) => c.id)).toEqual(CATEGORY_LIST);
     expect(file.categories.find((c) => c.id === 'gpu')).toMatchObject({ count: 2, min: 80 });
     expect(file.categories.find((c) => c.id === 'ram')).toMatchObject({ count: 0, min: null });
   });

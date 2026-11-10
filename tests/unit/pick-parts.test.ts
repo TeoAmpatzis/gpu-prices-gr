@@ -6,6 +6,7 @@ import { SLOTS, slotModels, usable as builderUsable, type Slot } from '../../src
 import { PART_FIELDS, SLOT_OF, slotOf, toPart, usable } from '../../src/lib/pick';
 import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
 import { CATEGORY_IDS } from '../../src/lib/categories';
+import { REGISTRY } from '../../src/lib/registry';
 import type { BaseListing, Category, Latest } from '../../src/types';
 
 const validated: Partial<Record<Category, Latest>> = {};
@@ -20,9 +21,11 @@ const modelsOf = (slot: Slot) => slotModels(slot, (validated[slot as Category]?.
 const sample = <T,>(xs: T[], n: number) => xs.filter((_, i) => i % Math.max(1, Math.floor(xs.length / n)) === 0).slice(0, n);
 
 describe('pick parts', () => {
-  it('SLOT_OF is the identity for the nine categories', () => {
-    for (const c of CATEGORY_IDS) expect(slotOf(c)).toBe(c);
-    expect(Object.keys(SLOT_OF).sort()).toEqual([...CATEGORY_IDS].sort());
+  it('SLOT_OF is the identity for the builder parts; a peripheral has no slot', () => {
+    const parts = CATEGORY_IDS.filter((c) => REGISTRY[c].domain === 'components');
+    for (const c of parts) expect(slotOf(c)).toBe(c);
+    for (const c of CATEGORY_IDS.filter((c) => REGISTRY[c].domain !== 'components')) expect(slotOf(c)).toBeNull();
+    expect(Object.keys(SLOT_OF).sort()).toEqual([...parts].sort());
   });
 
   for (const slot of SLOTS) {

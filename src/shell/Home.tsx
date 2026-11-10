@@ -17,7 +17,7 @@ import './home.css';
 
 const HomeSections = lazy(() => import('./HomeSections'));
 const POPULAR = ['RTX 5070', 'Ryzen 7 9700X', '990 Pro 1TB', 'DDR5 6000 32GB'];
-const HOME_CATEGORIES: Category[] = ['cpu', 'mobo', 'ram', 'gpu', 'storage', 'case', 'psu', 'cooler', 'fan'];
+const HOME_CATEGORIES: Category[] = (['cpu', 'mobo', 'ram', 'gpu', 'storage', 'case', 'psu', 'cooler', 'fan', 'monitor'] as Category[]).filter((c) => CATEGORY_LIST.includes(c));
 const HOME_SOURCES = ['skroutz', 'bestprice', 'shopflix', 'snif', 'eshop'] as const;
 
 /** Match the settled grid at every breakpoint while the post-paint feed or its view chunk loads. */

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { decodeRef, encodeRef, isComparable, MAX_ITEMS, parseShare, shareSearch, type CompareRef } from '../../../src/lib/compare/refs';
+import { REGISTRY } from '../../../src/lib/registry';
 
 const family: CompareRef = { cat: 'gpu', slug: 'rtx-5060-8gb' };
 const exact: CompareRef = { cat: 'gpu', slug: 'rtx-5060-8gb', selection: { source: 'skroutz', id: '60561002' } };
@@ -29,13 +30,15 @@ describe('compare references', () => {
     }
   });
 
-  it('only published categories are comparable (monitors stay out until they are visible)', () => {
+  it('only published categories are comparable (a hidden one, monitors until they launch, stays out)', () => {
+    for (const [cat, entry] of Object.entries(REGISTRY)) {
+      expect(isComparable(cat), cat).toBe(entry.visible);
+      expect(decodeRef(`${cat}:some-model`) !== null, cat).toBe(entry.visible);
+    }
     expect(isComparable('gpu')).toBe(true);
     expect(isComparable('storage')).toBe(true);
-    expect(isComparable('monitor')).toBe(false);
     expect(isComparable('builder')).toBe(false);
     expect(isComparable('toString')).toBe(false);
-    expect(decodeRef('monitor:samsung-g50f')).toBeNull();
   });
 });
 

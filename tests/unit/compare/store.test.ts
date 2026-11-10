@@ -91,7 +91,7 @@ describe('compare persistence', () => {
       v: 1, active: 'cpu',
       groups: {
         gpu: ['gpu:a', 'gpu:a', 'cpu:b', 'bad', 5, 'gpu:c', 'gpu:d', 'gpu:e', 'gpu:f'],
-        cpu: [], monitor: ['monitor:x'], toString: ['gpu:z'], ram: ['ram:a'], psu: ['psu:a'], fan: ['fan:a'],
+        cpu: [], builder: ['builder:x'], toString: ['gpu:z'], ram: ['ram:a'], psu: ['psu:a'], fan: ['fan:a'],
       },
     });
     const s = parseStored(text);

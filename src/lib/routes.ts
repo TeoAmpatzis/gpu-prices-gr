@@ -2,9 +2,10 @@
 // here drives the app's routing, the redirect of old "#…" links, vercel.json's rewrites (checked by
 // tests/unit/routes.test.ts) and the e2e tests.
 import type { Category } from '../types';
+import { REGISTRY } from './registry';
 
-/** v1's category ids, kept as the URL segments (owner, 2026-10-04). Same order as categories.tsx. */
-export const CATEGORY_LIST: Category[] = ['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler'];
+/** The published categories (registry `visible`), in registry order: v1's ids as URL segments (owner, 2026-10-04), the first nine in v1's order. */
+export const CATEGORY_LIST = (Object.keys(REGISTRY) as Category[]).filter((c) => REGISTRY[c].visible);
 export const INFO_PAGES = ['about', 'contact', 'privacy', 'how-prices'] as const;
 export type InfoPage = (typeof INFO_PAGES)[number];
 

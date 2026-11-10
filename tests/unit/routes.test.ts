@@ -5,11 +5,15 @@ import { describe, expect, it } from 'vitest';
 import { CATEGORIES, CATEGORY_IDS, type CategoryConfig } from '../../src/lib/categories';
 import { groupModels } from '../../src/lib/data';
 import { APP_SEGMENTS, CATEGORY_LIST, legacyTarget, matchRoute } from '../../src/lib/routes';
+import { REGISTRY } from '../../src/lib/registry';
 import { modelSlug } from '../../src/lib/slug';
 import type { BaseListing } from '../../src/types';
 
 describe('routes', () => {
-  it('category ids are v1\'s, in the same order', () => expect(CATEGORY_LIST).toEqual(CATEGORY_IDS));
+  it('the published categories are the built ones that are visible, v1\'s nine first and in the same order', () => {
+    expect(CATEGORY_LIST).toEqual(CATEGORY_IDS.filter((c) => REGISTRY[c].visible));
+    expect(CATEGORY_LIST.slice(0, 9)).toEqual(['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler']);
+  });
   it.each([
     ['/', { kind: 'home' }],
     ['/gpu', { kind: 'category', cat: 'gpu' }],
