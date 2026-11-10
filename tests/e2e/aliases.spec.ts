@@ -3,6 +3,7 @@
 // yet, so the moved address uses a fixture file in the shape of a real Q6 entry (old key = the old slug's letters and
 // digits) pointing at a real current cooler.
 import { expect, test } from '@playwright/test';
+import { PUBLISHED } from './published';
 
 interface Entry {
   key: string;
@@ -15,7 +16,7 @@ test('the build writes aliases.json from the alias file, and the first paint doe
   const file = await r.json();
   expect(file.v).toBe(1);
   expect(file.cats.ram.length).toBeGreaterThan(0);
-  expect(Object.keys(file.cats).sort()).toEqual(['case', 'cooler', 'cpu', 'fan', 'gpu', 'mobo', 'psu', 'ram', 'storage']);
+  expect(Object.keys(file.cats).sort()).toEqual([...PUBLISHED].sort());
 
   const asked: string[] = [];
   page.on('request', (q) => asked.push(q.url()));
