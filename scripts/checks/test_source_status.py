@@ -18,6 +18,51 @@ import main as mn  # noqa: E402
 
 
 class SourceStatusTests(unittest.TestCase):
+    def test_monitor_policy_rechecks_retained_failed_or_unselected_source(self):
+        import normalize_monitor as nm
+        from categories import CATEGORIES
+        for unselected in (False, True):
+            with self.subTest(unselected=unselected), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                out = root / "monitor"
+                out.mkdir()
+                old_at, run_at = "2026-11-03T00:00:00Z", "2026-11-04T00:00:00Z"
+                def row(source, native_id, at):
+                    return nm.make_listing(source=source, native_id=native_id,
+                        title='Dell P2425 24" IPS FHD 1920x1080', url="https://example.com/" + native_id,
+                        price=100, shop_count=2, scraped_at=at).to_dict()
+                valid = row("skroutz", "valid", old_at)
+                valid.update(hz=100, pgHeight=1200, gtin="1234567890123", shipping=4.5, merchant="Old shop")
+                accessory = dict(valid, id="skroutz:accessory", title="PowerTech Charger PT-135", chip="PowerTech PT135", reject=None)
+                old_meta = {"count": 2, "ok": True, "updatedAt": old_at}
+                (out / "latest.json").write_text(json.dumps({"sources": {"skroutz": old_meta},
+                                                             "listings": [valid, accessory]}), encoding="utf-8")
+                fresh = row("bestprice", "fresh", run_at)
+                fresh_bad = dict(fresh, id="bestprice:bad", title='Ocypus Sigma ES916 IPS Monitor 9.16"')
+                def retained(_):
+                    if unselected:
+                        self.fail("unselected source was fetched")
+                    raise RuntimeError("source unavailable")
+                sources = {"skroutz": retained, "bestprice": lambda _: [
+                    SimpleNamespace(to_dict=lambda r=r: dict(r)) for r in (fresh, fresh_bad)]}
+                with patch.object(mn, "DATA_DIR", root), patch.object(mn, "SOURCES", sources), \
+                        patch.object(mn, "now_iso", return_value=run_at), patch.object(mn, "finish"), \
+                        patch.object(mn.specs, "apply"), patch.object(mn, "report_sources"), \
+                        patch.object(mn.traceback, "print_exc"), patch.object(mn, "write_history", return_value={}) as history, \
+                        contextlib.redirect_stdout(io.StringIO()):
+                    self.assertTrue(mn.scrape_category(CATEGORIES["monitor"], ["bestprice"] if unselected else None,
+                                                       with_shipping=False))
+                data = json.loads((out / "latest.json").read_text(encoding="utf-8"))
+                self.assertEqual({r["id"] for r in data["listings"]}, {valid["id"], fresh["id"]})
+                kept = next(r for r in data["listings"] if r["id"] == valid["id"])
+                self.assertEqual({k: kept[k] for k in valid if k != "chip"}, {k: v for k, v in valid.items() if k != "chip"})
+                self.assertEqual(data["sources"]["skroutz"], dict(old_meta, ok=unselected))
+                self.assertEqual(data["sources"]["bestprice"], {"count": 1, "ok": True, "updatedAt": run_at})
+                self.assertEqual([r["id"] for r in history.call_args.args[4]], [fresh["id"]])
+                rejects = json.loads((out / "rejected.json").read_text(encoding="utf-8"))["listings"]
+                self.assertEqual({r["id"]: r["reject"] for r in rejects},
+                                 {accessory["id"]: "not-monitor", fresh_bad["id"]: "not-monitor"})
+
     def test_suspicious_skroutz_snapshot_retains_source_but_publishes_other_store(self):
         for duplicate in (False, True):
             with self.subTest(duplicate=duplicate), tempfile.TemporaryDirectory() as tmp:

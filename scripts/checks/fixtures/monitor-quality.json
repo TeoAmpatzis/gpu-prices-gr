@@ -1,0 +1,219 @@
+[
+  {
+    "id": "bestprice:2164558621",
+    "source": "bestprice",
+    "title": "Ocypus Sigma ES916 IPS Monitor 9.16\"",
+    "evidenceUrl": "https://www.advice.co.th/nescen-n070/product/productdetail/A0185203",
+    "expectedReject": "not-monitor",
+    "expectedSize": 9.16
+  },
+  {
+    "id": "bestprice:2163855693",
+    "source": "bestprice",
+    "title": "Lian Li US88v1 Ultrawide IPS Φορητό Monitor 8.8\" 1920x480 60Hz Black",
+    "evidenceUrl": "https://lian-li.com/product/8-8inch-universal-screen/",
+    "expectedReject": "not-monitor",
+    "expectedSize": 8.8
+  },
+  {
+    "id": "bestprice:2164038236",
+    "source": "bestprice",
+    "title": "Lian Li US88v1 Ultrawide IPS Φορητό Monitor 8.8\" 1920x480 60Hz White",
+    "evidenceUrl": "https://lian-li.com/product/8-8inch-universal-screen/",
+    "expectedReject": "not-monitor",
+    "expectedSize": 8.8
+  },
+  {
+    "id": "snif:36073664",
+    "source": "snif",
+    "title": "Samsung VM46B-U Video Wall 46 FHD 60Hz 8ms",
+    "evidenceUrl": "https://www.snif.gr/showproduct/36073664/samsung-vm46b-u-video-wall-46-fhd-60hz-8ms",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "bestprice:227077204",
+    "source": "bestprice",
+    "title": "Οθόνη AG SX-19G 19\" Μαύρη CCTV",
+    "evidenceUrl": "https://www.bestprice.gr/to/227077204/othoni-ag-sx-19g-19-mavri-cctv.html?seq=352",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "snif:39913930",
+    "source": "snif",
+    "title": "ELO Open Frame Touchscreen 2295L Monitor 21.5 FHD LED Flat 60Hz 22ms",
+    "evidenceUrl": "https://www.elotouch.com/open-frame-touchscreens-2295l.html",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "bestprice:2164198799",
+    "source": "bestprice",
+    "title": "Elo Touch 2295L LCD Φορητό Monitor 21.5\" 1920x1080 FHD 60Hz 22ms",
+    "evidenceUrl": "https://www.elotouch.com/open-frame-touchscreens-2295l.html",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "bestprice:225960199",
+    "source": "bestprice",
+    "title": "Elo Touch Systems Οθόνη Υπολογιστή 2495L 23.8IN FHD LCD WVA 600NIT LED BACKLIGHT OPEN FRAME 10 TOUC",
+    "evidenceUrl": "https://www.elotouch.com/open-frame-touchscreens-2495l.html",
+    "expectedReject": "not-monitor",
+    "expectedSize": 23.8,
+    "expectedCode": "2495L"
+  },
+  {
+    "id": "bestprice:227059688",
+    "source": "bestprice",
+    "title": "ELO POS Monitor 1093L 10\" LCD / LED / TFT με Ανάλυση 1280x800 E321195",
+    "evidenceUrl": "https://www.elotouch.com/open-frame-touchscreens-1093l.html",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "bestprice:179557617",
+    "source": "bestprice",
+    "title": "Swit BM-H215 21.5\" 4K input FHD Broadcast Monitor",
+    "evidenceUrl": "https://www.swit.cc/index.php?c=article&id=1882",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "snif:37079886",
+    "source": "snif",
+    "title": "Φορτιστής για Acer Οθόνες AL1703 SM (ΟΕΜ)",
+    "evidenceUrl": "https://www.snif.gr/showproduct/37079886/fortistis-gia-acer-othones-al1703-sm-oem",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "snif:41417667",
+    "source": "snif",
+    "title": "Προστατευτικό φίλτρο οθόνης για 24 ιντσες (EIZO FP-2400W) 4995047014324",
+    "evidenceUrl": "https://www.snif.gr/showproduct/41417667/prostateutiko-filtro-othonis-gia-24-intses-eizo-fp",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "manufacturer:msa20",
+    "source": "dell",
+    "title": "Dell Single Monitor Arm - MSA20",
+    "evidenceUrl": "https://www.dell.com/en-us/shop/dell-single-monitor-arm-msa20/apd/482-bbdj/monitors-monitor-accessories",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "manufacturer:mds19",
+    "source": "dell",
+    "title": "Dell Pro Dual Monitor Stand - MDS19",
+    "evidenceUrl": "https://www.dell.com/en-us/shop/dell-pro-dual-monitor-stand-mds19/apd/452-bdgb/monitors-monitor-accessories",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "manufacturer:hdmi",
+    "source": "apple",
+    "title": "Belkin Ultra HD High Speed 8K/4K HDMI Cable (2 m)",
+    "evidenceUrl": "https://www.apple.com/shop/product/hll52zm/a/belkin-ultra-hd-high-speed-8k-4k-hdmi-cable-2-m",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "manufacturer:replacement-panel",
+    "source": "laptopscreen",
+    "title": "LP156WH4(TL)(P2) Replacement Laptop LCD Screen",
+    "evidenceUrl": "https://www.laptopscreen.com/English/screen-part-number/LP156WH4%28TL%29%28P2%29/",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "skroutz:46804982",
+    "source": "skroutz",
+    "title": "Samsung Odyssey Neo G9 G95NC 57\" Ultrawide VA HDR Curved 7680x2160",
+    "evidenceUrl": "https://www.skroutz.gr/s/46804982/Samsung-Odyssey-Neo-G9-G95NC-Ultrawide-VA-HDR-Curved-Gaming-Monitor-57-7680x2160-240Hz-me-CHrono-Apokrisis-1ms-GTG.html",
+    "expectedReject": null
+  },
+  {
+    "id": "bestprice:2163900421",
+    "source": "bestprice",
+    "title": "Dell Pro 55 Plus P5525QC IPS Monitor 55\" 3840x2160 4K UHD 60Hz 8ms",
+    "evidenceUrl": "https://www.bestprice.gr/item/2163900421/dell-pro-55-plus-p5525qc-ips-monitor-55-3840x2160-4k-uhd-60hz-8ms.html",
+    "expectedReject": null
+  },
+  {
+    "id": "snif:42848965",
+    "source": "snif",
+    "title": "Οθόνη Dell Pro P2426H 24\" IPS Full HD USB-C Hub 120Hz 210-BVKM",
+    "evidenceUrl": "https://www.snif.gr/showproduct/42848965/othoni-dell-pro-p2426h-24--ips-full-hd-usb-c-hub-12",
+    "expectedReject": null
+  },
+  {
+    "id": "bestprice:2163748774",
+    "source": "bestprice",
+    "title": "Dell Pro P P2426HEB IPS Monitor 23.8\" 1920x1080 FHD 120Hz 8ms",
+    "evidenceUrl": "https://www.bestprice.gr/item/2163748774/dell-pro-p-p2426heb-ips-monitor-23-8-1920x1080-fhd-120hz-8ms.html",
+    "expectedReject": null
+  },
+  {
+    "id": "skroutz:55702235",
+    "source": "skroutz",
+    "title": "BenQ RD280U 28.2\" IPS 3840x2560",
+    "evidenceUrl": "https://www.skroutz.gr/s/55702235/BenQ-RD280U-IPS-Monitor-28-2-3840x2560-me-CHrono-Apokrisis-5ms-GTG.html",
+    "expectedReject": null
+  },
+  {
+    "id": "bestprice:2163727207",
+    "source": "bestprice",
+    "title": "Dell P2425H No Stand IPS Monitor 23.8\" 1920x1080 FHD 100Hz 5ms",
+    "evidenceUrl": "https://www.bestprice.gr/item/2163727207/dell-p2425h-no-stand-ips-monitor-23-8-1920x1080-fhd-100hz-5ms.html",
+    "expectedReject": null
+  },
+  {
+    "id": "snif:42789005",
+    "source": "snif",
+    "title": "Apple Studio Display XDR 27\" Standard Glass VESA Mount Adapter (No Stand) MFEN4YP/A",
+    "evidenceUrl": "https://www.snif.gr/showproduct/42789005/apple-studio-display-xdr-27--standard-glass-vesa-m",
+    "expectedReject": null
+  },
+  {
+    "id": "bestprice:2157410433",
+    "source": "bestprice",
+    "title": "Asus ZenScreen MB166C IPS Φορητό Monitor 15.6\" 1920x1080 FHD 60Hz 5ms",
+    "evidenceUrl": "https://www.bestprice.gr/item/2157410433/asus-zenscreen-mb166c-ips-forito-monitor-15-6-1920x1080-fhd-60hz-5ms.html",
+    "expectedReject": null
+  },
+  {
+    "id": "snif:42403033",
+    "source": "snif",
+    "title": "Samsung M5 M50F LS27FM500 Smart Monitor 27 FHD IPS Flat 60Hz 5ms",
+    "evidenceUrl": "https://www.snif.gr/showproduct/42403033/samsung-m5-m50f-ls27fm500-smart-monitor-27-fhd-ips",
+    "expectedReject": null
+  },
+  {
+    "id": "bestprice:2164267306",
+    "source": "bestprice",
+    "title": "Anmite A140W05T IPS Φορητό Monitor 14\" 1920x1200 FHD 60Hz 5ms",
+    "evidenceUrl": "https://www.bestprice.gr/item/2164267306/anmite-a140w05t-ips-forito-monitor-14-1920x1200-fhd-60hz-5ms.html",
+    "expectedReject": null
+  },
+  {
+    "id": "bestprice:2163767250",
+    "source": "bestprice",
+    "title": "iiyama POS T2252MSC-B2AG IPS Monitor 21.5\" 1920x1080 FHD 60Hz 5ms",
+    "evidenceUrl": "https://iiyama.com/gl_en/products/prolite-t2252msc-b2ag/",
+    "expectedReject": null
+  },
+  {
+    "id": "bestprice:2163767248",
+    "source": "bestprice",
+    "title": "iiyama POS T2752MSC-B1AG IPS Monitor 27\" 1920x1080 FHD 100Hz 5ms",
+    "evidenceUrl": "https://iiyama.com/gl_en/products/prolite-t2752msc-b1ag/",
+    "expectedReject": null
+  },
+  {
+    "id": "bestprice:2163767246",
+    "source": "bestprice",
+    "title": "iiyama POS TF1015MC-B3 IPS Φορητό Monitor 10.1\" 1280x800 60Hz 29ms",
+    "evidenceUrl": "https://iiyama.com/gl_en/products/prolite-tf1015mc-b3/",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "skroutz:68482111",
+    "source": "skroutz",
+    "title": "Anmite AW03 IPS FHD 1920x1080",
+    "evidenceUrl": "https://www.skroutz.gr/s/68482111/anmite-a185w03-ips-forito-monitor-18-5-fhd-1920x1080-gri.html",
+    "expectedReject": null,
+    "expectedSize": null,
+    "expectedCode": "AW03"
+  }
+]

@@ -32,7 +32,10 @@ REJECT = (
     ("not-monitor", r"ΡΑΦΑΚΙ|ΒΑΣΗ ΣΤΗΡΙΞΗΣ|ΒΑΣΗ ΟΘΟΝΗΣ|ΚΑΛΩΔΙΟ|ΤΗΛΕΟΡΑΣΗ|\bTV\b|PROJECTOR|ΠΡΟΒΟΛΕΑΣ|ΔΙΑΔΡΑΣΤΙΚΟΣ ΠΙΝΑΚΑΣ|CLASSBOARD|ΜΟΝΙΤΟΡ ΤΡΟΦΟΔΟΣΙΑΣ"
                     r"|ΦΟΡΤΙΣΤ|CHARGER|ΑΝΤΑΠΤΟΡ|POWER ADAPTER|AC ADAPTER"  # chargers and power adapters for monitors
                     r"|ΠΡΟΣΤΑΤΕΥΤΙΚ|PROTECTOR|ΦΙΛΜ|\bFILM\b|ΦΙΛΤΡΟ|SCREEN FILTER"  # screen protectors, films and filters
-                    r"|SIGNAGE|\bLFD\b|BRAVIA|\bOM\d{2}[A-Z]{1,2}\b|ALL-?IN-?ONE|ΒΡΑΧΙΟΝ|\bBRACKET\b|MONITOR ARM"),  # signage, all-in-one PCs, arms and mounts
+                    r"|SIGNAGE|\bLFD\b|BRAVIA|\bOM\d{2}[A-Z]{1,2}\b|ALL-?IN-?ONE|ΒΡΑΧΙΟΝ|\bBRACKET\b|MONITOR ARM"  # signage, all-in-one PCs, arms and mounts
+                    r"|\bVIDEO[ -]?WALL\b|\bCCTV\b|\bOPEN[ -]?FRAME\b|\bKIOSK\b|\bBROADCAST\b"
+                    r"|REPLACEMENT (?:LAPTOP |LED |LCD |SCREEN )*(?:PANEL|SCREEN)|ΑΝΤΑΛΛΑΚΤΙΚ[ΗΟ] (?:ΟΘΟΝΗ|ΠΑΝΕΛ)"
+                    r"|\b(?:HDMI|DISPLAYPORT|MONITOR) CABLE\b|\b(?:SINGLE|DUAL) MONITOR STAND\b"),
     ("used", r"ΑΝΑΚΑΤΑΣΚΕΥ|REFURB|REBURB|\bGRADE\s*[ABC]\b|ΜΕΤΑΧΕΙΡΙΣΜΕΝ|\bREF\b|ΕΠΙΔΙΟΡΘΩΜΕΝ"),  # (REBURB: a shop's typo)
     ("bundle", r"ΣΕ ΣΕΤ|\bKIT\b"),
 )
@@ -40,7 +43,7 @@ LOOKALIKE = str.maketrans("ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ", "ABEZHIKMNOPTYX")  # G
 
 # Tokens that are specs or marketing, never the model code.
 NOISE = re.compile(
-    r"^(\d{3,4}X\d{3,4}|\d+(\.\d+)?(HZ|MS|K|\"|''|INCH)|\d[KP]\d?[KP]?|DISPLAYHDR\d*|HDR\d*|HDMI[\d.]*|DP[\d.]*|"
+    r"^(\d{3,4}X\d{3,4}|\d+(\.\d+)?(HZ|MS|K|\"|''|IN(?:CH(?:ES)?)?|NITS?|CD)|\d[KP]\d?[KP]?|DISPLAYHDR\d*|HDR\d*|HDMI[\d.]*|DP[\d.]*|"
     r"USB-?C?\d*|VGA|DVI|IPS|VA|TN|OLED|QD-?OLED|WQHD\+?|QHD|FHD|UHD|WUXGA|ULTRAWIDE|CURVED|FLAT|GAMING|MONITOR|LED|LCD|"
     r"FREESYNC|G-?SYNC|VESA|BLACK|WHITE|PORTABLE|PRO|PLUS|ESSENTIAL|ODYSSEY|ULTRAGEAR|ZENSCREEN|ULTRASHARP|PROART|"
     r"THINKVISION|MAG|MPG|MAB|24/7|16:9|2026|2025|2024|\d{3,4}R)$"
@@ -89,6 +92,26 @@ def clean(title: str) -> str:
     return re.sub(r"\s+", " ", title).strip()
 
 
+def rejection_reason(title: str, specs: str = "", size: float | None = None) -> str | None:
+    """Admission policy for fresh parses and retained observations; unknown specs remain eligible."""
+    text = plain(clean(title + " " + specs))
+    reason = next((reason for reason, pat in REJECT if re.search(pat, text)), None)
+    if reason:
+        return reason
+    # Internal USB status screens, despite monitor/portable shop titles:
+    # https://www.advice.co.th/nescen-n070/product/productdetail/A0185203
+    # https://lian-li.com/product/8-8inch-universal-screen/
+    # Open-frame touchscreens: https://www.elotouch.com/open-frame-touchscreens-2295l.html
+    # https://www.elotouch.com/open-frame-touchscreens-2495l.html
+    # https://www.elotouch.com/open-frame-touchscreens-1093l.html
+    # https://iiyama.com/gl_en/products/prolite-tf1015mc-b3/
+    for maker, models in ((r"\bOCYPUS\b", "ES916"), (r"\bLIAN[ -]+LI\b", "US88V1"),
+                          (r"\bELO\b", "1093L|2295L|2495L"), (r"\bIIYAMA\b", "TF1015MC-B3")):
+        if re.search(maker, text) and re.search(rf"(?<![A-Z0-9-])(?:{models})(?![A-Z0-9-])", text):
+            return "not-monitor"
+    return "not-monitor" if size and size > MAX_PC_SIZE else None
+
+
 # First words of a title that are not a brand (used when no known brand is found).
 GENERIC = {"MONITOR", "GAMING", "PORTABLE", "CURVED", "ULTRAWIDE", "TOUCH", "LED", "LCD", "IPS", "VA", "TN", "OLED",
            "FULL", "HD", "FHD", "QHD", "UHD", "SMART", "PRO", "THE", "NEW", "USB", "DISPLAY", "SERIES"}
@@ -125,8 +148,8 @@ def _code(folded: str) -> str | None:
 
 
 def _size(folded: str) -> float | None:
-    m = re.search(r"(?<![\d.,X])(\d{2}(?:[.,]\d{1,2})?)\s*(?:\"|''|'|”|INCH|INT[ΣS])", folded) or re.search(
-        r"(?<![\d.,X])(\d{2}(?:[.,]\d{1,2})?)(?=\s+(?:IPS|VA|OLED|QD|FHD|WQHD|QHD|4K|UHD|CURVED|FLAT|ULTRAWIDE|WUXGA|FULL))", folded)
+    m = re.search(r"(?<![\w.,])(\d{1,2}(?:[.,]\d{1,2})?)\s*(?:\"|''|'|[“”″]|IN(?:CH(?:ES)?)?\b|INT[ΣS])", folded) or re.search(
+        r"(?<![\w.,])(\d{1,2}(?:[.,]\d{1,2})?)(?=\s+(?:IPS|VA|OLED|QD|FHD|WQHD|QHD|4K|UHD|CURVED|FLAT|ULTRAWIDE|WUXGA|FULL))", folded)
     return float(m.group(1).replace(",", ".")) if m else None
 
 
@@ -163,7 +186,6 @@ def parse(title: str, specs: str = "") -> Parsed:
     title = clean(title)
     folded = fold(title)
     greek = plain(title)  # accents off, Greek kept: the reject and colour words are Greek, and folding would turn some letters Latin
-    reject = next((reason for reason, pat in REJECT if re.search(pat, greek)), None)
     text = fold(title + " " + specs)
     # A resolution has both sides plausible: "VESA 100x100" is a mount, not a screen.
     res = next((m for m in re.finditer(r"(\d{3,4})\s*X\s*(\d{3,4})", text) if int(m.group(1)) >= 640 and int(m.group(2)) >= 480), None)
@@ -178,7 +200,7 @@ def parse(title: str, specs: str = "") -> Parsed:
     size = _size(text)
     return Parsed(brand, code, size, height, width, int(hz.group(1)) if hz else None,
                   _panel(text), colour, year.group(1) if year else None,
-                  reject or ("not-monitor" if size and size > MAX_PC_SIZE else None))
+                  rejection_reason(title, specs, size))
 
 
 def has_identity(p: Parsed) -> bool:
@@ -307,6 +329,7 @@ def settle(listings: list[dict]) -> None:
     for l in listings:  # what an earlier settle decided is decided again below
         if l.get("reject") in SETTLE_REJECTS:
             l["reject"] = None
+        l["reject"] = l.get("reject") or rejection_reason(l["title"], size=l.get("size") or l.get("pgSize"))
     parsed = {l["id"]: _of(l) for l in listings}
     models, ambiguous, unidentified = group(list(parsed.items()))
     for lid in unidentified:

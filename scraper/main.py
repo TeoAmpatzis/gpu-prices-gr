@@ -200,14 +200,14 @@ def stage(out_dir: Path, listings: list[dict], sources_meta: dict[str, dict], ru
     """Take the listings settle() rejected out of `listings` and write them with their reason to rejected.json,
     so nothing is dropped silently. A source that was not freshly scraped in this run (failed, or left out by
     --only) keeps its previous rejects: its listings were retained, so the report must still describe them."""
-    rejected = [l for l in listings if l.get("reject")]
+    rejected_by_id = {l["id"]: l for l in listings if l.get("reject")}
     listings[:] = [l for l in listings if not l.get("reject")]
     path = out_dir / "rejected.json"
     for l in load_json(path, {}).get("listings", []):
         meta = sources_meta.get(l["source"], {})
         if not (meta.get("ok") is True and meta.get("updatedAt") == run_at):
-            rejected.append(l)
-    rejected.sort(key=lambda l: (l["reject"], l["id"]))
+            rejected_by_id.setdefault(l["id"], l)
+    rejected = sorted(rejected_by_id.values(), key=lambda l: (l["reject"], l["id"]))
     counts: dict[str, int] = {}
     for l in rejected:
         counts[l["reject"]] = counts.get(l["reject"], 0) + 1

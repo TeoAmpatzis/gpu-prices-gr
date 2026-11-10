@@ -19,6 +19,41 @@ def p(title, specs=""):
 
 
 class ParseTests(unittest.TestCase):
+    def test_quality_diagonals_and_elo_model(self):
+        for title, size in [('Ocypus Sigma ES916 IPS Monitor 9.16"', 9.16),
+                            ('Lian Li US88v1 IPS Monitor 8.8" 1920x480', 8.8),
+                            ('Elo 2495L 23.8IN FHD 600NIT OPEN FRAME', 23.8),
+                            ('Anmite AW03 IPS FHD 1920x1080', None)]:
+            with self.subTest(title=title):
+                self.assertEqual(p(title).size, size)
+        self.assertEqual(p('Elo 2495L 23.8IN FHD 600NIT OPEN FRAME').code, '2495L')
+
+    def test_explicit_diagonal_units_decimals_and_quotes(self):
+        for diagonal, size in [('8,8"', 8.8), ('9.16″', 9.16), ('24.07“', 24.07),
+                               ('21,45”', 21.45), ('31.5 IN', 31.5), ('57 INCH', 57.0),
+                               ('23.8INCHES', 23.8), ("15.6''", 15.6), ("24'", 24.0)]:
+            with self.subTest(diagonal=diagonal):
+                self.assertEqual(p('Dell P2425 ' + diagonal).size, size)
+
+    def test_specs_and_model_substrings_never_become_diagonals_or_codes(self):
+        for token in ('AW03 IPS', 'AW03"', 'A185W03 IPS', '1920x1080 IPS', '600NIT', '165HZ', '0.03MS'):
+            with self.subTest(token=token):
+                self.assertIsNone(p('Anmite ' + token).size)
+        for spec in ('600NIT', '600NITS', '600CD/M²', '23.8IN', '8.8INCH', '1920x1080', '165HZ'):
+            with self.subTest(spec=spec):
+                self.assertEqual(p(f'Elo {spec} 2495L').code, '2495L')
+        for code in ('2495L', '2295LX', '27M2N3500NL', '24-15'):
+            with self.subTest(code=code):
+                self.assertEqual(p('Elo ' + code).code, code.replace('-', ''))
+
+    def test_quality_corpus_parse_observations(self):
+        for row in json.loads((ROOT / "scripts/checks/fixtures/monitor-quality.json").read_text(encoding="utf-8")):
+            parsed = p(row["title"], row.get("specs", ""))
+            for expected, field in (("expectedSize", "size"), ("expectedCode", "code")):
+                if expected in row:
+                    with self.subTest(id=row["id"], field=field):
+                        self.assertEqual(getattr(parsed, field), row[expected])
+
     def test_full_title(self):
         r = p('Samsung Odyssey G7 G70D LS27DG702 IPS HDR Smart Gaming Monitor 27" 3840x2160 4K UHD 144Hz 1ms')
         self.assertEqual((r.brand, r.code, r.size, r.height, r.hz, r.panel), ("Samsung", "LS27DG702", 27.0, 2160, 144, "IPS"))
@@ -152,6 +187,30 @@ def listing(source, native_id, title, price=100.0, specs=""):
 
 
 class SettleTests(unittest.TestCase):
+    def test_retained_accessory_is_rejected_under_current_policy(self):
+        base = listing("snif", "old", 'Dell P2425 24" IPS FHD 1920x1080')
+        rows = [dict(base, id="snif:charger", title="PowerTech Charger PT-135", reject=None, chip="PowerTech PT135"),
+                dict(base, id="snif:screen", title='Ocypus Sigma ES916 IPS Monitor 9.16"', reject=None, chip="Ocypus ES916")]
+        nm.settle(rows)
+        self.assertEqual([(r["reject"], r["chip"]) for r in rows], [("not-monitor", ""), ("not-monitor", "")])
+
+    def test_retained_valid_fields_survive_policy_recheck(self):
+        valid = dict(listing("bestprice", "1", 'Dell P2425 24" IPS FHD 1920x1080'),
+                     hz=100, height=1200, pgSize=24.07, pgHz=100, pgHeight=1200, pgPanel="IPS",
+                     gtin="1234567890123", merchant="Old shop", shipping=4.5, total=104.5)
+        valid["chip"] = "Dell P2425"
+        before = dict(valid)
+        rejected = dict(valid, id="snif:bad", title="Dell Charger P2425", code=None, reject=None)
+        used = dict(valid, id="snif:used", reject="used")
+        rows = [valid, rejected, used]
+        nm.settle(rows)
+        self.assertEqual(valid, before)
+        self.assertEqual((rejected["reject"], rejected["chip"], rejected["code"]), ("not-monitor", "", None))
+        self.assertEqual(used["reject"], "used")
+        once = json.dumps(rows, sort_keys=True)
+        nm.settle(rows)
+        self.assertEqual(json.dumps(rows, sort_keys=True), once)
+
     def test_make_listing_fields_and_id(self):
         l = listing("skroutz", "7", 'AOC Q27G4XF 27" IPS HDR QHD 2560x1440', specs="Ρυθμός Ανανέωσης: 180Hz")
         self.assertEqual((l["id"], l["brand"], l["code"], l["size"], l["height"], l["hz"], l["panel"]),
@@ -195,6 +254,26 @@ class SettleTests(unittest.TestCase):
 
 
 class StageTests(unittest.TestCase):
+    def test_retained_accessory_and_prior_rejects_are_reported_once(self):
+        import tempfile
+        import main as mn
+        for failed in (False, True):
+            with self.subTest(failed=failed), tempfile.TemporaryDirectory() as d:
+                out = Path(d)
+                valid = listing("bestprice", "valid", 'Dell P2425 24" IPS FHD 1920x1080')
+                old = dict(valid, id="skroutz:old", source="skroutz", title="PowerTech Charger PT-135", reject=None)
+                earlier = dict(old, reject="used", chip="")
+                unrelated = dict(old, id="skroutz:earlier", reject="used", chip="")
+                (out / "rejected.json").write_text(json.dumps({"listings": [earlier, unrelated]}), encoding="utf-8")
+                rows = [valid, old]
+                nm.settle(rows)
+                mn.stage(out, rows, {"skroutz": {"ok": not failed, "updatedAt": "old"}}, "now")
+                report = json.loads((out / "rejected.json").read_text(encoding="utf-8"))
+                self.assertEqual([r["id"] for r in rows], [valid["id"]])
+                self.assertEqual({r["id"]: r["reject"] for r in report["listings"]},
+                                 {old["id"]: "not-monitor", unrelated["id"]: "used"})
+                self.assertEqual(len(report["listings"]), 2)
+
     def test_rejects_leave_the_listings_and_are_reported_with_reason(self):
         import tempfile
         import main as mn
@@ -451,6 +530,31 @@ class NotAMonitorTests(unittest.TestCase):
         rows = [listing("snif", "1", self.NOT_MONITORS[0][1]), listing("snif", "2", self.NOT_MONITORS[3][1])]
         nm.settle(rows)
         self.assertTrue(all(r["reject"] and not r["chip"] for r in rows))
+
+    def test_quality_corpus_rejects_non_pc_displays(self):
+        for row in json.loads((ROOT / "scripts/checks/fixtures/monitor-quality.json").read_text(encoding="utf-8")):
+            if row["expectedReject"]:
+                with self.subTest(id=row["id"]):
+                    self.assertEqual(p(row["title"], row.get("specs", "")).reject, row["expectedReject"])
+
+    def test_quality_corpus_keeps_complete_pc_monitors(self):
+        for row in json.loads((ROOT / "scripts/checks/fixtures/monitor-quality.json").read_text(encoding="utf-8")):
+            if row["expectedReject"] is None:
+                with self.subTest(id=row["id"]):
+                    self.assertIsNone(p(row["title"], row.get("specs", "")).reject)
+
+    def test_exact_product_exclusions_do_not_ban_other_models_or_brands(self):
+        for title in ('Ocypus Sigma ES9160 IPS Monitor 24"', 'Other ES916 IPS Monitor 24"',
+                      'Lian Li US88v10 IPS Monitor 24"', 'Other US88v1 IPS Monitor 24"',
+                      'Elo 2295LX Touch Monitor 24"', 'Other 2295L Touch Monitor 24"',
+                      'Ocypus ES927 IPS Monitor 27"', 'Lian Li US27 IPS Monitor 27"',
+                      'Elo 2403LM Touch Monitor 24"', 'Dell χωρίς Βάση IPS FHD 1920x1080'):
+            with self.subTest(title=title):
+                self.assertIsNone(p(title).reject)
+
+    def test_shared_admission_policy_accepts_unknown_specs(self):
+        self.assertIsNone(nm.rejection_reason("Dell P2425"))
+        self.assertEqual(nm.rejection_reason("Dell P2425", "Replacement panel"), "not-monitor")
 
 
 class NameIdentityTests(unittest.TestCase):
