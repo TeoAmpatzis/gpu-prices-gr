@@ -40,8 +40,8 @@ test('a monitor page opens from the list, shows its spec group and no PC-builder
   await page.goto('/monitor?per=20');
   await page.locator(`${rows} a[data-product-link]`).first().click();
   await expect(page).toHaveURL(/\/monitor\/[^/?]+/);
-  await expect(page.locator('main h1')).toBeVisible();
-  await expect(page.getByText('Diagonal').first()).toBeVisible();
+  await expect(page.locator('main h1:visible').first()).toBeVisible();
+  await expect(page.locator('text=Diagonal >> visible=true').first()).toBeVisible();
   await expect(page.locator('[data-fit], [data-build-fit]')).toHaveCount(0);
   expect(errs).toEqual([]);
 });
