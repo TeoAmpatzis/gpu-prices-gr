@@ -331,6 +331,9 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
         cat.settle(listings)
     if cat.rejects:
         stage(out_dir, listings, sources_meta, run_at)
+        for name, meta in sources_meta.items():  # a fresh source's count = the listings kept, as the check compares
+            if meta.get("ok") is True and meta.get("updatedAt") == run_at:
+                meta["count"] = sum(1 for l in listings if l["source"] == name)
     if cat.images:
         write_image_urls(out_dir, listings, cat.model_key)
     else:
