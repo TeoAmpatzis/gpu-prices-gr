@@ -46,6 +46,20 @@ class ParseTests(unittest.TestCase):
             with self.subTest(code=code):
                 self.assertEqual(p('Elo ' + code).code, code.replace('-', ''))
 
+    def test_diagonal_does_not_start_inside_punctuated_model_token(self):
+        r = p('Lenovo Legion 24-15 IPS FHD 1920x1080')
+        with self.subTest(model='24-15', diagonal='unknown'):
+            self.assertEqual((r.code, r.size), ('2415', None))
+        r = p('Lenovo Legion 24-15 IPS Monitor 23.8" FHD 1920x1080')
+        self.assertEqual((r.code, r.size), ('2415', 23.8))
+        for model in ('AW-03', 'AW/03', 'AW+03', 'AW_03'):
+            for suffix in (' IPS FHD 1920x1080', '"'):
+                with self.subTest(model=model, suffix=suffix):
+                    self.assertIsNone(p('Anmite ' + model + suffix).size)
+        for diagonal in ('(23.8")', '[23.8"]', ' 23.8"'):
+            with self.subTest(diagonal=diagonal):
+                self.assertEqual(p('Lenovo Legion 24-15 ' + diagonal).size, 23.8)
+
     def test_quality_corpus_parse_observations(self):
         for row in json.loads((ROOT / "scripts/checks/fixtures/monitor-quality.json").read_text(encoding="utf-8")):
             parsed = p(row["title"], row.get("specs", ""))

@@ -148,8 +148,8 @@ def _code(folded: str) -> str | None:
 
 
 def _size(folded: str) -> float | None:
-    m = re.search(r"(?<![\w.,])(\d{1,2}(?:[.,]\d{1,2})?)\s*(?:\"|''|'|[“”″]|IN(?:CH(?:ES)?)?\b|INT[ΣS])", folded) or re.search(
-        r"(?<![\w.,])(\d{1,2}(?:[.,]\d{1,2})?)(?=\s+(?:IPS|VA|OLED|QD|FHD|WQHD|QHD|4K|UHD|CURVED|FLAT|ULTRAWIDE|WUXGA|FULL))", folded)
+    m = re.search(r"(?<![\w.,/+-])(\d{1,2}(?:[.,]\d{1,2})?)\s*(?:\"|''|'|[“”″]|IN(?:CH(?:ES)?)?\b|INT[ΣS])", folded) or re.search(
+        r"(?<![\w.,/+-])(\d{1,2}(?:[.,]\d{1,2})?)(?=\s+(?:IPS|VA|OLED|QD|FHD|WQHD|QHD|4K|UHD|CURVED|FLAT|ULTRAWIDE|WUXGA|FULL))", folded)
     return float(m.group(1).replace(",", ".")) if m else None
 
 
