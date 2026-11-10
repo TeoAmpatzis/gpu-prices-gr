@@ -1,9 +1,10 @@
 // Monitor launch gates that can be measured offline (docs/superpowers/plans/2026-11-10-monitors-and-compare-launch.md, section 6):
 // coverage of the four launch specs per model AND per listing (overall and for every source), how many listings keep
 // an identity (are not dropped as no-identity or ambiguous), listings that state conflicting sizes or resolutions inside one model
-// (false-merge candidates), and the gzip size of the built list file. The scrape history (three complete runs) is not
+// (false-merge candidates), and the gzip size of the built list file. PC-monitor admission is owned separately by Python
+// (`scraper/normalize_monitor.py` & `scripts/checks/monitor_admission.py`). The scrape history (three complete runs) is not
 // here: `gh run list` shows it.
-// Usage: npx tsx scripts/phase3/monitor-gates.mts [dataDir=public/data/monitor] [distListFile=dist/data/monitor/list.v2.json]
+// Usage: node node_modules/vite-node/vite-node.mjs scripts/phase3/monitor-gates.mts [dataDir=public/data/monitor] [distListFile=dist/data/monitor/list.v2.json]
 // Exit code 1 when a gate fails.
 import { existsSync, readFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
@@ -71,12 +72,8 @@ const lost = (rejected['no-identity'] ?? 0) + (rejected['ambiguous'] ?? 0);
 const keptShare = latest.listings.length / Math.max(1, latest.listings.length + lost);
 gate('listings with an identity', keptShare >= COVERAGE_MIN, `${(keptShare * 100).toFixed(1)}% kept, ${lost} dropped (no-identity ${rejected['no-identity'] ?? 0}, ambiguous ${rejected['ambiguous'] ?? 0})`);
 
-// Only PC monitors: no chargers, screen protectors, signage, all-in-one computers or refurbished units, and nothing over
-// the biggest PC monitor (57"). The scraper's reject list (scraper/normalize_monitor.py REJECT) should leave none of these.
-const NOT_A_MONITOR = /\u03a6\u03a9\u03a1\u03a4\u0399\u03a3\u03a4|\u03c6\u03bf\u03c1\u03c4\u03b9\u03c3\u03c4|charger|\u03c0\u03c1\u03bf\u03c3\u03c4\u03b1\u03c4\u03b5\u03c5\u03c4\u03b9\u03ba|protector|\u03c6\u03b9\u03bb\u03bc|\bfilm\b|signage|\blfd\b|bravia|all-?in-?one|reburb|refurb|\bOM\d{2}[A-Z]{1,2}\b/i;
-const intruders = latest.listings.filter((l) => NOT_A_MONITOR.test(l.title) || (l.size ?? 0) > 57.5);
-gate('only PC monitors', intruders.length === 0, `${intruders.length} listing(s) that look like accessories, signage or used units`);
-for (const l of intruders.slice(0, 15)) console.log(`  ${l.source} ${l.price} ${l.title.slice(0, 100)}`);
+// PC-monitor admission rules live solely in Python (`scraper/normalize_monitor.py`, checked by
+// `scripts/checks/monitor_admission.py`); this TypeScript gate does not duplicate an admission blacklist.
 
 // Listings of one model that state different diagonals (more than 0.6"; a panel is sold as 31.5 or 32, 21.5 or 22) or different pixel rows: possible false merges.
 const conflicts: string[] = [];
