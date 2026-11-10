@@ -217,6 +217,9 @@ CATEGORIES = {
         make_listing=normalize_monitor.make_listing,
         model_key=lambda l: l["chip"],
         settle=normalize_monitor.settle,
+        # A spec one shop's title states reaches the model's other listings (main.share_fields), as for every other part.
+        # Safe: settle() keeps listings that disagree on size, resolution, refresh or panel in separate models.
+        shared=("size", "height", "width", "hz", "panel"),
         rejects=True,
         images=False,
     ),

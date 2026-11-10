@@ -135,6 +135,26 @@ def _panel(folded: str) -> str | None:
     return None
 
 
+# A listing with no model number ("Arozzi NoVa IPS Monitor 27") is named by the words that tell it apart, as case, fan and
+# cooler models are: brand + the first distinctive words. Such a "code" has no digit (every real code has one), which is
+# how `group` knows to ask for size and resolution before it may start or join a model.
+NAME_WORDS = 3
+NAME_SKIP = GENERIC | {"INCH", "GEN", "LINE", "SERIES", "MONITOR", "MONITORS", "DISPLAY", "SCREEN", "FLAT", "FULL", "ULTRA",
+                       "QUAD", "WIDE", "SLIM", "EXTENSION", "LAPTOP", "COMPUTER", "OFFICE", "HDR", "SMART", "TOUCH"}
+
+
+def _name_code(title: str, brand: str | None) -> str | None:
+    brand_words = {re.sub(r"[^A-Z]", "", w) for w in (brand or "").upper().split()}
+    words = []
+    for raw in re.split(r"[\s,()/]+", title):
+        w = raw.strip("-.\"'+")
+        up = w.upper()
+        if (re.fullmatch(r"[A-Za-z][A-Za-z-]{2,}", w) and up not in NAME_SKIP and up not in brand_words
+                and not NOISE.match(up) and up not in COLOURS):
+            words.append(up)
+    return " ".join(words[:NAME_WORDS]) if words else None
+
+
 def parse(title: str, specs: str = "") -> Parsed:
     title = clean(title)
     folded = fold(title)
@@ -149,7 +169,9 @@ def parse(title: str, specs: str = "") -> Parsed:
     hz = re.search(r"(\d{2,3})\s*HZ", fold(specs)) or re.search(r"(\d{2,3})\s*HZ", folded)
     year = re.search(r"(?<![A-Z0-9.])(20[2-3]\d)(?![A-Z0-9.])", folded)  # on its own: "E2020H" is a code
     colour = next((COLOURS[w] for w in re.findall(r"[A-ZΑ-Ω]+", greek) if w in COLOURS), None)
-    return Parsed(_brand(title), _code(folded), _size(text), height, width, int(hz.group(1)) if hz else None,
+    brand = _brand(title)
+    code = _code(folded) or (_name_code(title, brand) if brand else None)
+    return Parsed(brand, code, _size(text), height, width, int(hz.group(1)) if hz else None,
                   _panel(text), colour, year.group(1) if year else None, reject)
 
 
@@ -197,7 +219,7 @@ def group(items: list[tuple[str, Parsed]]):
     # Clustering is first-fit and `compatible` is not transitive (144 Hz ~ unknown ~ 165 Hz), so the order decides
     # which models form. Sorting by id makes it the same on every run, whatever order the sources delivered.
     for lid, p in sorted(items, key=lambda item: item[0]):
-        if has_identity(p):
+        if has_identity(p) and (re.search(r"\d", p.code) or (p.size and p.height)):
             # "Cooler Master" / "Coolermaster" / "COOLER-MASTER" are one maker; the site files a model under its
             # letters and digits only, so two spellings would otherwise be two models with one address.
             by.setdefault((re.sub(r"[^a-z0-9]", "", p.brand.lower()), p.code), []).append((lid, p))

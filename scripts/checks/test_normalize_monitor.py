@@ -412,6 +412,72 @@ class EanTests(unittest.TestCase):
         self.assertEqual(json.dumps(rows, sort_keys=True), once)
 
 
+class NameIdentityTests(unittest.TestCase):
+    """A listing with no model number is named by the words that tell it apart (as case, fan and cooler models are),
+    but only with its size and resolution stated, and only joins listings whose stated specs agree."""
+
+    NOVA = 'Arozzi NoVa IPS HDR Gaming Monitor {size}" {res} {hz}Hz 2ms {colour}'
+
+    def nova(self, source, i, size, res, hz, colour="Black"):
+        return listing(source, i, self.NOVA.format(size=size, res=res, hz=hz, colour=colour))
+
+    def test_a_title_without_a_model_number_gets_a_name_code(self):
+        r = p(self.NOVA.format(size="27", res="2560x1440 QHD", hz=180, colour="Black"))
+        self.assertEqual((r.brand, r.code, r.size, r.height, r.hz), ("Arozzi", "NOVA", 27.0, 1440, 180))
+        self.assertTrue(nm.has_identity(r))
+
+    def test_a_real_model_number_still_wins(self):
+        r = p('Samsung Odyssey G7 G70D LS27DG702 IPS HDR Smart Gaming Monitor 27" 3840x2160 4K UHD 144Hz 1ms')
+        self.assertEqual(r.code, "LS27DG702")
+
+    def test_nothing_distinctive_left_means_no_name_code(self):
+        self.assertIsNone(p('Ricoh 150 OLED Φορητό Monitor 15.6" 1920x1080 FHD 60Hz 1ms').code)
+
+    def test_two_shops_with_the_same_name_and_specs_are_one_model(self):
+        rows = [self.nova("bestprice", "1", "27", "2560x1440 QHD", 180), self.nova("snif", "2", "27", "2560x1440 QHD", 180, "White")]
+        nm.settle(rows)
+        self.assertEqual(rows[0]["chip"], rows[1]["chip"])
+        self.assertTrue(rows[0]["chip"])
+
+    def test_the_same_name_at_another_size_is_another_model(self):
+        rows = [self.nova("bestprice", "1", "27", "2560x1440 QHD", 180), self.nova("bestprice", "2", "23.8", "1920x1080 FHD", 200)]
+        nm.settle(rows)
+        self.assertTrue(all(r["chip"] for r in rows))
+        self.assertNotEqual(rows[0]["chip"], rows[1]["chip"])
+
+    def test_a_name_code_without_size_and_resolution_is_not_an_identity(self):
+        rows = [listing("bestprice", "1", "Arozzi NoVa Monitor")]
+        nm.settle(rows)
+        self.assertEqual((rows[0]["chip"], rows[0]["reject"]), ("", "no-identity"))
+
+    def test_settling_twice_is_settling_once(self):
+        rows = [self.nova("bestprice", "1", "27", "2560x1440 QHD", 180), self.nova("snif", "2", "27", "2560x1440 QHD", 180)]
+        nm.settle(rows)
+        first = [(r["id"], r["chip"], r["reject"]) for r in rows]
+        nm.settle(rows)
+        self.assertEqual(first, [(r["id"], r["chip"], r["reject"]) for r in rows])
+
+
+class SharedSpecTests(unittest.TestCase):
+    """A spec one shop's title states reaches the model's other listings, as for every other part (Category.shared)."""
+
+    def test_the_monitor_category_shares_its_title_specs(self):
+        from categories import CATEGORIES
+        self.assertEqual(set(CATEGORIES["monitor"].shared), {"size", "height", "width", "hz", "panel"})
+
+    def test_refresh_and_resolution_reach_a_shop_that_does_not_state_them(self):
+        import main as scraper_main
+        from categories import CATEGORIES
+        rows = [listing("bestprice", "1", 'Dell P3425WE IPS Curved Monitor 34" 3440x1440 QHD 100Hz 8ms'),
+                listing("snif", "2", "Dell Pro Plus P3425WE Monitor 34.1 IPS Curved")]
+        nm.settle(rows)
+        self.assertEqual(rows[0]["chip"], rows[1]["chip"])
+        self.assertIsNone(rows[1]["hz"])
+        cat = CATEGORIES["monitor"]
+        scraper_main.share_fields(rows, cat.shared, cat.model_key)
+        self.assertEqual((rows[1]["hz"], rows[1]["height"]), (100, 1440))
+
+
 class DataSizeTests(unittest.TestCase):
     def test_a_category_without_photos_keeps_no_image_url_on_its_listings(self):
         import main as mn

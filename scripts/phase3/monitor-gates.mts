@@ -1,5 +1,6 @@
 // Monitor launch gates that can be measured offline (docs/superpowers/plans/2026-11-10-monitors-and-compare-launch.md, section 6):
-// coverage of the four launch specs per model, listings that state conflicting sizes or resolutions inside one model
+// coverage of the four launch specs per model AND per listing (overall and for every source), how many listings keep
+// an identity (are not dropped as no-identity or ambiguous), listings that state conflicting sizes or resolutions inside one model
 // (false-merge candidates), and the gzip size of the built list file. The scrape history (three complete runs) is not
 // here: `gh run list` shows it.
 // Usage: npx tsx scripts/phase3/monitor-gates.mts [dataDir=public/data/monitor] [distListFile=dist/data/monitor/list.v2.json]
@@ -14,6 +15,9 @@ const COVERAGE_MIN = 0.9;
 const LIST_MAX_KIB = 300;
 
 const latest = JSON.parse(readFileSync(`${dir}/latest.json`, 'utf8')) as { listings: MonitorListing[] };
+const rejected = existsSync(`${dir}/rejected.json`)
+  ? (JSON.parse(readFileSync(`${dir}/rejected.json`, 'utf8')) as { counts: Record<string, number> }).counts
+  : {};
 const models = new Map<string, MonitorListing[]>();
 for (const l of latest.listings) models.set(l.chip, [...(models.get(l.chip) ?? []), l]);
 
@@ -43,6 +47,27 @@ for (const [name, get] of Object.entries(specs)) {
   const share = known / models.size;
   gate(`coverage ${name}`, share >= COVERAGE_MIN, `${(share * 100).toFixed(1)}% of models (need ${COVERAGE_MIN * 100}%)`);
 }
+
+// The same four specs per listing (a shop's own title or its page), overall and for each source: a listing that says
+// "Not stated" in the table is a hole a shopper sees, so no source may fall below the bar.
+const listingSpecs = {
+  diagonal: (l: MonitorListing) => l.size ?? l.pgSize,
+  resolution: (l: MonitorListing) => l.height ?? l.pgHeight,
+  panel: (l: MonitorListing) => l.panel ?? l.pgPanel,
+  refresh: (l: MonitorListing) => l.hz ?? l.pgHz,
+};
+const sources = Object.keys(bySource);
+for (const [name, get] of Object.entries(listingSpecs)) {
+  const share = (rows: MonitorListing[]) => rows.filter((l) => get(l) != null).length / Math.max(1, rows.length);
+  const parts = sources.map((s) => ({ s, v: share(latest.listings.filter((l) => l.source === s)) }));
+  const worst = Math.min(share(latest.listings), ...parts.map((x) => x.v));
+  gate(`listing coverage ${name}`, worst >= COVERAGE_MIN, `${(share(latest.listings) * 100).toFixed(1)}% overall; ${parts.map((x) => `${x.s} ${(x.v * 100).toFixed(1)}%`).join(', ')}`);
+}
+
+// Listings that lose their identity are not shown at all (rejected.json): keep at least the same bar.
+const lost = (rejected['no-identity'] ?? 0) + (rejected['ambiguous'] ?? 0);
+const keptShare = latest.listings.length / Math.max(1, latest.listings.length + lost);
+gate('listings with an identity', keptShare >= COVERAGE_MIN, `${(keptShare * 100).toFixed(1)}% kept, ${lost} dropped (no-identity ${rejected['no-identity'] ?? 0}, ambiguous ${rejected['ambiguous'] ?? 0})`);
 
 // Listings of one model that state different diagonals (more than 0.6"; a panel is sold as 31.5 or 32, 21.5 or 22) or different pixel rows: possible false merges.
 const conflicts: string[] = [];
