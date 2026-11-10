@@ -14,7 +14,7 @@ import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FAIL_H, WARN_H, sourceAges } from './source-age.mjs';
 
-const CATS = ['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler'];
+const CATS = ['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler', 'monitor'];
 
 /** Pure manifest/list validation, shared by the CLI and its negative-control tests. */
 export function dataChecks(manifest, lists, now = Date.now()) {
