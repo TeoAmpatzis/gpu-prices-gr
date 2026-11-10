@@ -24,3 +24,6 @@ docs/phase4/builder-test-drive/
 
 AGENTS.md
 
+
+# Local working data that is never committed (the exact-photo review store: ledger, index, staged and verified images)
+local/
