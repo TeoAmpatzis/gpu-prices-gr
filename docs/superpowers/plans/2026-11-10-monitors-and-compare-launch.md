@@ -92,7 +92,9 @@ Legend: **[sure]** = implemented without asking, no live effect. **[ask]** = nee
 
 **X2 [done] investigate only** B5: result recorded in the bug register. A Thermaltake parser rewrite is a scraper change (ask).
 
-**X3 [ask] Parked, restart only if Teo wants them:** exact photos pipeline (design agreed: candidates committed under `exact/candidates`, index and images in `builddraft-images`, `EXACT_PHOTOS_ONLY=false`), `/case` Lighthouse 89 to 90, domain, PR #2, B8/B9.
+**X3 [ask] Parked, restart only if Teo wants them:** exact photos pipeline (design agreed: candidates committed under `exact/candidates`, index and images in `builddraft-images`, `EXACT_PHOTOS_ONLY=false`), domain, PR #2, B8/B9.
+
+**Resolved, no work needed:** `/case` mobile Lighthouse. Measured 2026-11-10 on current main (median of 3): mobile 99 (LCP 1.95 s, TBT 62 ms, CLS 0, JS 104 KB, data 269 KB), desktop 100. The old figure of 89 predates the list-file and facets-worker work. `/gpu`: mobile 99, desktop 100.
 
 ## 6. Gates before `visible: true` (each has a command and a pass condition)
 
