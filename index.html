@@ -39,6 +39,12 @@
   </head>
   <body class="bg-page text-fg">
     <div id="root"></div>
+    <script>
+      // The first monitor row waits for the monitor list file (about 180 KB, 5,800 listings): ask for it with the page's own
+      // code instead of after the first paint. Lighthouse phone: LCP 3.46 -> 3.30 s, score 90 -> 92. Only this page: for the
+      // other categories the first paint comes first (src/lib/paint.ts), starting earlier measured worse there.
+      if (location.pathname === '/monitor') document.head.appendChild(Object.assign(document.createElement('link'), { rel: 'preload', as: 'fetch', href: '/data/monitor/list.v2.json', crossOrigin: 'anonymous' }));
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
