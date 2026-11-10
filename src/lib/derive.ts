@@ -93,6 +93,9 @@ const V2_ONLY = [
   'gtin', 'pgSize', 'pgWidth', 'pgHeight', 'pgHz', 'pgResponseMs', 'pgNits', 'pgContrast', 'pgPanel', 'pgAspect', 'pgVesa',
   'pgEnergy', 'pgColour', 'pgHdr', 'pgUltrawide', 'pgCurved', 'pgConnectors', 'pgFeatures', 'reject',
 ];
+// Per category, what its list rows never use (the model pages read the full listings from the model chunks): a monitor's
+// model code, width, colour and model year are 15 KB gzip of the monitor list file, the first product waits for it.
+const LIST_SKIP_BY_CATEGORY: Partial<Record<Category, string[]>> = { monitor: ['code', 'width', 'colour', 'revision'] };
 // 'formConflict' stays in list.v2.json on purpose: the pick view runs `usable` on those listings (a few dozen boards).
 const LIST_SKIP = new Set([...DETAIL_ONLY, 'fanMounts', 'fansIncluded', 'radiators', 'airflowCfm', 'pressureMm', ...V2_ONLY]);
 
@@ -211,7 +214,7 @@ export function listFile(cat: Category, input: CategoryInput, builtAt: string, i
     builtAt,
     updatedAt: input.latest.updatedAt,
     sources: input.latest.sources,
-    ...toColumns(input.latest.listings, LIST_SKIP),
+    ...toColumns(input.latest.listings, cat in LIST_SKIP_BY_CATEGORY ? new Set([...LIST_SKIP, ...LIST_SKIP_BY_CATEGORY[cat]!]) : LIST_SKIP),
     hist,
     histBase,
     imported,
