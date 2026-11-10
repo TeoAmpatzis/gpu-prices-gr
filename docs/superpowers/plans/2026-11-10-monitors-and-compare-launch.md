@@ -35,7 +35,7 @@ Success means all of these are true on the live site:
 | B3 | Skroutz check failed with `monitor: empty listings or count mismatch (2350 vs 2706)`: the source `count` was the fetched number while rejected listings were removed afterwards. | Fixed (7222851). Replayed snapshot, scrape and check on real data: no errors. | Same. |
 | B4 | `PriceChart.tsx:70` hook lint warning (`useLayoutEffect` with a complex dependency expression). | Fixed on `fix/phone-card-footer-and-lint` (1716006). `npm run check` shows 0 warnings. | Teo pushes with the next one. |
 | B8 | At 360 px the product card footer was wider than its box by 9 px on every category (the compare button pushed into the card padding; `max-width: 52%` on the action). Layout audit: 111 issues on gpu+case before, 1 after (the remaining one is the filter slider's deliberate 22 px margin, a false positive). | Fixed on `fix/phone-card-footer-and-lint` (98f3743). Seen on live since the compare launch (441a6f1). | Teo pushes; look at a phone card on live. |
-| B5 | Maker catalogues `thermaltake` (HTTP 404) and `noctua` (HTTP 429) fail every run. Cached pages still apply, so no data is lost, but new products get no maker specs. | Open, external. | Task X2: investigate only; fixing the sitemap URL is a scraper change, ask first. |
+| B5 | Maker catalogues `thermaltake` (HTTP 404) and `noctua` (HTTP 429) failed in the run of 2026-11-09. Cached pages still apply, so no data is lost, but new products get no maker specs. | Investigated 2026-11-10 (X2). **Noctua:** the sitemap answers 200 and 396 product URLs match the parser; the 429 was a transient rate limit on the runner, nothing to fix. **Thermaltake:** the shop moved to Shopify; the old sitemap `/pub/pub/sitemaps/sitemap.xml` is 404 and the new one is `https://thermaltake.com/sitemap.xml` (index of `sitemap_products_N.xml`), with `/products/<handle>` pages, so the maker parser (old `/<name>.html` spec tables) needs a rewrite. | Scraper change, ask Teo. Low value: Thermaltake specs only, cached pages still apply. |
 | B6 | `python -m unittest discover -s scraper/tests` runs 0 tests on `origin/main` (the tests live on `feat/exact-photos-ui`). | Open, harmless until that branch lands. | Noted; no action. |
 | B7 | Probable future bugs, to look for deliberately: (a) monitor `list.v2.json` over 300 KB gzip once the real data grows; (b) false merges of two different monitors (same title, different panel/size); (c) filters hiding monitors whose value is unknown; (d) `Home.tsx` category count and nav groups when a tenth category appears; (e) compare table for monitors showing "—" for most rows while page reads are incomplete. | Each has a check in section 6 or task M5/C2. |
 
@@ -80,7 +80,7 @@ Legend: **[sure]** = implemented without asking, no live effect. **[ask]** = nee
 
 **C1 [sure] Verification pass for the gaps listed in the 2026-11-09 handoff** (4 columns on desktop, 4 items in the phone selector, keyboard path, the "save shared group when full" path, clipboard fallback). Done with Playwright against the built site and screenshots at 360 and 1440; recorded in a short report. Anything wrong becomes a bug with a failing test first.
 
-**C2 [sure, after M5] Compare with monitors.** e2e: add two monitors, open `/compare`, table rows present, "—" for unknown values, share link round trip, reload, remove. Fix whatever the rehearsal shows.
+**C2 [sure, written, waiting for data] Compare with monitors.** `tests/e2e/monitor.spec.ts` (list, brand filter in the URL, model page without a builder fit block, compare of two monitors with reload, canonical address). It is skipped while monitors are hidden and runs the day they are published; it must be run once on real data before the launch push (`launch/monitor-visible` plus monitor data in `public/data`). Manual rehearsal on 2026-11-10 already showed 4 monitors compared on desktop and 2 at a time on a phone.
 
 **C3 [ask] Typed monitor definitions** (units, booleans, conflicts) from Phase 4 task 8, only after coverage is high enough to make them meaningful. Optional for launch.
 
@@ -90,7 +90,7 @@ Legend: **[sure]** = implemented without asking, no live effect. **[ask]** = nee
 
 **X1 [sure]** B4: extract the dependency expression into a variable in `PriceChart.tsx`; no behaviour change; `npm run lint` shows 0 warnings.
 
-**X2 [sure] investigate only** B5: fetch the two catalogue URLs with the scraper's own client, record status and what changed; propose the fix. Fixing is a scraper change (ask).
+**X2 [done] investigate only** B5: result recorded in the bug register. A Thermaltake parser rewrite is a scraper change (ask).
 
 **X3 [ask] Parked, restart only if Teo wants them:** exact photos pipeline (design agreed: candidates committed under `exact/candidates`, index and images in `builddraft-images`, `EXACT_PHOTOS_ONLY=false`), `/case` Lighthouse 89 to 90, domain, PR #2, B8/B9.
 
