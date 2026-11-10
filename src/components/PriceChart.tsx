@@ -60,6 +60,7 @@ export default function PriceChart({ points, range, low }: { points: HistoryPoin
   const [width, setWidth] = useState(0);
   const [active, setActive] = useState<number | null>(null);
 
+  const empty = (points?.length ?? 0) < 2; // the box only exists once there is something to draw
   useLayoutEffect(() => {
     const el = box.current;
     if (!el) return;
@@ -67,7 +68,7 @@ export default function PriceChart({ points, range, low }: { points: HistoryPoin
     ro.observe(el);
     setWidth(Math.floor(el.getBoundingClientRect().width));
     return () => ro.disconnect();
-  }, [(points?.length ?? 0) < 2]); // the box only exists once there is something to draw
+  }, [empty]);
 
   const all = useMemo(() => [...(points ?? [])].sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0)), [points]);
   // C6: implausible short dips (and the build's marked import glitches, task 7b) are not part of the line: hollow
