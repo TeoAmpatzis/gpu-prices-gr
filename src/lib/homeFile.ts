@@ -11,6 +11,9 @@ import { CATEGORY_LIST } from './routes';
 import { encodeShare } from './share';
 import { SLOTS, type Slot } from './slots';
 
+/** A drop above this is far more often a wrong listing than a real price (a single listing has no peers for the suspect-price check). */
+export const HOME_MAX_DROP = 60;
+
 /** Uses already validated inputs, trusted model histories and the existing automatic outputs. */
 export function homeFile(latest: Partial<Record<Category, Latest>>, chunks: Partial<Record<Category, ModelChunk[]>>, auto: AutoFile, slots: BuilderFiles['slots'], builtAt: string): HomeFile {
   const now = Date.parse(builtAt);
@@ -23,7 +26,7 @@ export function homeFile(latest: Partial<Record<Category, Latest>>, chunks: Part
     const excluded = untrustedPoints(model.history);
     const last = model.history.filter((p) => !excluded.has(p)).sort((a, b) => a.d.localeCompare(b.d)).pop();
     const summary = medianSummary(model.history);
-    if (!last || summary.kind !== 'ok' || summary.dir !== 'below') continue;
+    if (!last || summary.kind !== 'ok' || summary.dir !== 'below' || summary.pct > HOME_MAX_DROP) continue;
     // A historical low must still be present among that source's current listings.
     const row = model.listings.find((l) => l.source === last.source && Math.abs(l.price - summary.price) < 0.005);
     const checkedAt = row?.scrapedAt || latest[id]?.sources[last.source]?.updatedAt || '';

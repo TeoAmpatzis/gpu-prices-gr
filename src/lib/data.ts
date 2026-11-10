@@ -127,8 +127,9 @@ export function saleOf<L extends BaseListing>(_ls: L[], cheapest: L): Sale | nul
   const ref = cheapest.dealRef;
   if (!cheapest.dealPct || ref == null || ref <= 0) return null;
   // The listing's own price against the model's typical price: a dearer offer of a model at a deal is not a deal.
-  const pct = Math.round((1 - cheapest.price / ref) * 100);
-  return pct >= DEAL_THRESHOLD * 100 ? { pct, source: cheapest.source, reference: ref } : null;
+  // Same comparison as dealOf: testing the rounded percent against 0.07 * 100 (7.000000000000001) hid every 7% deal.
+  if (cheapest.price > ref * (1 - DEAL_THRESHOLD)) return null;
+  return { pct: Math.round((1 - cheapest.price / ref) * 100), source: cheapest.source, reference: ref };
 }
 
 export interface AllTimeLow {
