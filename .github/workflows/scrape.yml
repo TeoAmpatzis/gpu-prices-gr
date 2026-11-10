@@ -6,7 +6,7 @@ name: scrape
 # Skroutz paths that robots.txt disallows.
 on:
   schedule:
-    - cron: "13 */12 * * *" # twice a day: fewer requests from the shared WARP IP, prices rarely need more
+    - cron: "13 */4 * * *" # wakes every 4 h, but the gate below lets a run go ahead only when the data is older than 11 h: two real runs a day, a failed one retried within hours
   workflow_dispatch:
     inputs:
       allow_history_shrink:
@@ -28,9 +28,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Cooldown: a scheduled run is skipped when the last completed run failed less than 24 h ago, so a
-  # challenged IP is not retried every cycle. A skipped run counts as a success, so the run after it goes ahead.
-  # A manual run always goes ahead.
+  # Freshness gate (scripts/checks/skroutz_gate.py): a scheduled run goes ahead only when the published Skroutz
+  # data is older than 11 h (so normally two real runs a day, fewer requests from the shared WARP IP) and the last
+  # run did not fail less than 3 h ago. A failed run is retried within hours, which keeps the site's Skroutz data
+  # under its 24 h "outdated" mark; a challenged IP is still not hammered. A manual run always goes ahead.
   gate:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -38,23 +39,15 @@ jobs:
       actions: read
       contents: read
     outputs:
-      run: ${{ steps.cooldown.outputs.run }}
+      run: ${{ steps.freshness.outputs.run }}
     steps:
-      - id: cooldown
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - id: freshness
         env:
           GH_TOKEN: ${{ github.token }}
-          EVENT: ${{ github.event_name }}
-        run: |
-          if [ "$EVENT" != "schedule" ]; then echo "run=true" >> "$GITHUB_OUTPUT"; exit 0; fi
-          last=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow scrape.yml --status completed --limit 1 \
-            --json conclusion,updatedAt --jq '.[0] | "\(.conclusion) \(.updatedAt)"' || true)
-          conclusion=${last%% *}; ended=${last#* }
-          if [ "$conclusion" = "failure" ] && [ $(( $(date +%s) - $(date -d "$ended" +%s) )) -lt 86400 ]; then
-            echo "::warning::Skipping this Skroutz run: the last run failed at $ended (24 h cooldown)"
-            echo "run=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          fi
+        run: python3 scripts/checks/skroutz_gate.py
 
   scrape:
     needs: gate
