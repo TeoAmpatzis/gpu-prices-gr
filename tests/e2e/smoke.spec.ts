@@ -4,7 +4,10 @@
 // say; other tests cover behaviour.
 import { expect, test, type Page } from '@playwright/test';
 
-const CATEGORIES = ['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler'];
+import { REGISTRY } from '../../src/lib/registry';
+
+// The published categories (the registry's `visible`), so a newly launched one is covered without editing this list.
+const CATEGORIES = Object.entries(REGISTRY).filter(([, c]) => c.visible).map(([id]) => id);
 
 function trackErrors(page: Page): string[] {
   const errors: string[] = [];

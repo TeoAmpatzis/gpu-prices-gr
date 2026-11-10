@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
 
-const CATS = ['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler'];
+import { REGISTRY } from '../../src/lib/registry';
+
+const CATS = Object.entries(REGISTRY).filter(([, c]) => c.visible).map(([id]) => id);
 
 test('every category page has its own description and canonical', async ({ page }) => {
   const seen = new Set<string>();
