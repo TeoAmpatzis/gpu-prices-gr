@@ -557,6 +557,24 @@ class NotAMonitorTests(unittest.TestCase):
                 with self.subTest(id=row["id"]):
                     self.assertIsNone(p(row["title"], row.get("specs", "")).reject)
 
+    def test_quality_corpus_rejects_retained_specialist_displays(self):
+        corpus = json.loads((ROOT / "scripts/checks/fixtures/monitor-quality.json").read_text(encoding="utf-8"))
+        for index, case in enumerate(corpus):
+            if not case["expectedReject"]:
+                continue
+            with self.subTest(id=case["id"]):
+                row = listing(case["source"], str(index), case["title"])
+                row.update(reject=None, chip="Previously published model")
+                nm.settle([row])
+                self.assertEqual((row["reject"], row["chip"]), (case["expectedReject"], ""))
+
+    def test_specialist_model_boundaries_and_shop_punctuation(self):
+        self.assertEqual(p('Iiyama LH5560UHSB2AG 55" VA 4K').reject, "not-monitor")
+        self.assertEqual(p('AG SMQ4301 43" IPS 4K').reject, "not-monitor")
+        for title in ['Elo 1590LX 15"', 'Elo X1590L 15"', 'Iiyama LH5560UHS-B2AG2 55" VA 4K']:
+            with self.subTest(title=title):
+                self.assertIsNone(p(title).reject)
+
     def test_quality_corpus_expected_fields_and_settled_rows(self):
         corpus = json.loads((ROOT / "scripts/checks/fixtures/monitor-quality.json").read_text(encoding="utf-8"))
         settled_rows = []

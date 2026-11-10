@@ -106,8 +106,15 @@ def rejection_reason(title: str, specs: str = "", size: float | None = None) -> 
     # https://www.elotouch.com/open-frame-touchscreens-1093l.html
     # https://iiyama.com/gl_en/products/prolite-tf1015mc-b3/
     # On-camera display: https://www.benq.com/en-us/monitor/creative-pro/pvs7.html
+    # Manufacturer open-frame catalogue: https://www.elotouch.com/open-frame-touchscreens.html
+    # Signage: https://iiyama.com/ie_en/products/prolite-lh5560uhs-b2ag/
+    # Surveillance: https://www.agneovo.com/wp-content/uploads/2022/04/SMQ-4301_DS_V012_20220624.pdf
+    # Meeting-room display: https://www.sharpnecdisplays.eu/p/datasheet/en/datasheet/rp/wd551.xhtml
     for maker, models in ((r"\bOCYPUS\b", "ES916"), (r"\bLIAN[ -]+LI\b", "US88V1"),
-                          (r"\bELO\b", "1093L|2295L|2495L"), (r"\bIIYAMA\b", "TF1015MC-B3"),
+                          (r"\bELO\b", "0764L|1064L|1093L|1099L|1291L|1564L|1590L|1593L|1594L|1598L|"
+                           "1790L|1990L|1991L|2094L|2293L|2294L|2295L|2494L|2495L|2794L|2796L|2799L|3243L|3263L"),
+                          (r"\bIIYAMA\b", "TF1015MC-?B3|LH5560UHS-?B2AG"),
+                          (r"\bAG(?:\s+NEOVO)?\b", "SMQ-?4301"), (r"\bNEC\b", "WD551"),
                           (r"\bBENQ\b", "PVS7")):
         if re.search(maker, text) and re.search(rf"(?<![A-Z0-9-])(?:{models})(?![A-Z0-9-])", text):
             return "not-monitor"

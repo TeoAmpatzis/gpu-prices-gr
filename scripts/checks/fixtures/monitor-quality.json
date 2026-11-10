@@ -263,5 +263,75 @@
     "evidenceNote": "On-camera monitor; also confirmed by https://www.benq.com/en-us/news/monitor/benq-pvs7-press-release.html",
     "expectedReject": "not-monitor",
     "expectedSize": 7.0
+  },
+  {
+    "id": "bestprice:2164772054",
+    "source": "bestprice",
+    "title": "Elo TouchSystems 1099L Touchscreen Monitor 10\"",
+    "evidenceUrl": "https://www.elotouch.com/open-frame-touchscreens/outdoor-open-frame-touchscreens.html",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "bestprice:2164534090",
+    "source": "bestprice",
+    "title": "Elo 1590L Monitor 15\"",
+    "evidenceUrl": "https://elosupport.elotouch.com/hc/en-us/articles/31432037723415-Where-can-I-find-1590L-15-inch-Open-Frame-Touchscreen-information",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "bestprice:2164542521",
+    "source": "bestprice",
+    "title": "Elo 2794L Touchscreen Monitor 27\" 1920x1080 FHD",
+    "evidenceUrl": "https://www.elotouch.com/open-frame-touchscreens.html",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "bestprice:2164956283",
+    "source": "bestprice",
+    "title": "Elo TouchSystems 2799L Οθόνη Αφής 27\" Full HD E399052",
+    "evidenceUrl": "https://www.elotouch.com/open-frame-touchscreens/outdoor-open-frame-touchscreens.html",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "bestprice:225917066",
+    "source": "bestprice",
+    "title": "Elo Touch Solutions 3263L - Οθόνη LED 31,5\" Full HD (E343671)",
+    "evidenceUrl": "https://www.elotouch.com/open-frame-touchscreens.html",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "skroutz:63115813",
+    "source": "skroutz",
+    "title": "Iiyama LH5560UHS-B2AG 55\" VA 4K 3840x2160",
+    "evidenceUrl": "https://iiyama.com/ie_en/products/prolite-lh5560uhs-b2ag/",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "skroutz:61987977",
+    "source": "skroutz",
+    "title": "AG Neovo SMQ-4301 43\" IPS 4K 3840x2160",
+    "evidenceUrl": "https://www.agneovo.com/wp-content/uploads/2022/04/SMQ-4301_DS_V012_20220624.pdf",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "skroutz:36521568",
+    "source": "skroutz",
+    "title": "Nec MultiSync WD551 55\" IPS Touch 4K 3840x2160",
+    "evidenceUrl": "https://www.sharpnecdisplays.eu/p/datasheet/en/datasheet/rp/wd551.xhtml",
+    "expectedReject": "not-monitor"
+  },
+  {
+    "id": "bestprice:2158371831",
+    "source": "bestprice",
+    "title": "Elo 2403LM LCD Monitor 23.8\" 1920x1080 FHD 60Hz 16ms",
+    "evidenceUrl": "https://www.elotouch.com/medical-grade-touchscreens.html",
+    "expectedReject": null
+  },
+  {
+    "id": "bestprice:2164198804",
+    "source": "bestprice",
+    "title": "Elo Touch 2703LM LCD Monitor 27\" 1920x1080 FHD 60Hz 14ms",
+    "evidenceUrl": "https://www.elotouch.com/medical-grade-touchscreens.html",
+    "expectedReject": null
   }
 ]
