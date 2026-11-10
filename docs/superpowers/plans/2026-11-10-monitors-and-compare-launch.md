@@ -33,7 +33,8 @@ Success means all of these are true on the live site:
 | B1 | `scrape-shops` crash: `specs.py` had two `_list` functions (7a8a4b2), so case `radiatorMounts` became a list and `share_fields` crashed (`AttributeError: 'str' object has no attribute 'get'`). | Fixed on `fix/monitor-scrape-bootstrap` (4b29699): helper renamed `_items`. Reproduced on live BestPrice pages before the fix. | Teo pushes; confirm next `scrape-shops` run is green. |
 | B2 | `scrape` crash: `validate_skroutz.py snapshot` required `monitor/latest.json`. | Fixed (4b29699): missing file = empty baseline. | Same. |
 | B3 | Skroutz check failed with `monitor: empty listings or count mismatch (2350 vs 2706)`: the source `count` was the fetched number while rejected listings were removed afterwards. | Fixed (7222851). Replayed snapshot, scrape and check on real data: no errors. | Same. |
-| B4 | `PriceChart.tsx:70` hook lint warning (`useLayoutEffect` with a complex dependency expression). | Open, pre-existing, harmless. | Task X1. |
+| B4 | `PriceChart.tsx:70` hook lint warning (`useLayoutEffect` with a complex dependency expression). | Fixed on `fix/phone-card-footer-and-lint` (1716006). `npm run check` shows 0 warnings. | Teo pushes with the next one. |
+| B8 | At 360 px the product card footer was wider than its box by 9 px on every category (the compare button pushed into the card padding; `max-width: 52%` on the action). Layout audit: 111 issues on gpu+case before, 1 after (the remaining one is the filter slider's deliberate 22 px margin, a false positive). | Fixed on `fix/phone-card-footer-and-lint` (98f3743). Seen on live since the compare launch (441a6f1). | Teo pushes; look at a phone card on live. |
 | B5 | Maker catalogues `thermaltake` (HTTP 404) and `noctua` (HTTP 429) fail every run. Cached pages still apply, so no data is lost, but new products get no maker specs. | Open, external. | Task X2: investigate only; fixing the sitemap URL is a scraper change, ask first. |
 | B6 | `python -m unittest discover -s scraper/tests` runs 0 tests on `origin/main` (the tests live on `feat/exact-photos-ui`). | Open, harmless until that branch lands. | Noted; no action. |
 | B7 | Probable future bugs, to look for deliberately: (a) monitor `list.v2.json` over 300 KB gzip once the real data grows; (b) false merges of two different monitors (same title, different panel/size); (c) filters hiding monitors whose value is unknown; (d) `Home.tsx` category count and nav groups when a tenth category appears; (e) compare table for monitors showing "—" for most rows while page reads are incomplete. | Each has a check in section 6 or task M5/C2. |
@@ -69,7 +70,7 @@ Legend: **[sure]** = implemented without asking, no live effect. **[ask]** = nee
 
 **M6 [ask] Scraper-side fixes that the rehearsal reveals** (identity step, normalisation, `no-identity` rejects at about 9% of listings, 32 `ambiguous`). These change the scraper and data, so each one is proposed with evidence first.
 
-**M7 [sure] Gate script `scripts/phase3/monitor-gates.mts`.** Reads `public/data/monitor/latest.json` (+ `specs.json`) and prints: models, listings per source, coverage of diagonal/resolution/panel/refresh on launched models, count of models merged from listings with different diagonal or resolution (false-merge candidates), `list.v2.json` gzip size. Exit code non-zero when a gate fails. Used by task M8 and by Teo to re-check later.
+**M7 [sure, done] Gate script `scripts/phase3/monitor-gates.mts`.** Reads `public/data/monitor/latest.json` (+ `specs.json`) and prints: models, listings per source, coverage of diagonal/resolution/panel/refresh on launched models, count of models merged from listings with different diagonal or resolution (false-merge candidates), `list.v2.json` gzip size. Exit code non-zero when a gate fails. Used by task M8 and by Teo to re-check later.
 
 **M8 [ask] Launch commit (`launch/monitor-visible`).** One commit: `registry.ts` monitor `enabled: true, visible: true`; `vercel.json` rewrites add `monitor`; `site-check.mjs` `CATS` adds `monitor`. All other places already follow the registry (M1 to M3). Checklist before pushing: `npm run check`, full e2e, layout audit, Lighthouse median of 3 on `/monitor` and one model page, `monitor-gates.mts` green, Teo's explicit approval. After the push: Vercel status, `site-check.mjs` live, `gh run list`.
 
@@ -110,7 +111,14 @@ Legend: **[sure]** = implemented without asking, no live effect. **[ask]** = nee
 
 ## 7. Rehearsal defects (filled by task M5)
 
-(none yet)
+Rehearsal on branch `launch/monitor-visible` (monitors published) with a local lists-only scrape (5,809 listings, 3,498 models), 2026-11-10:
+
+- `npm run check`: green, 1628 tests, build includes monitors. Monitor model chunks: largest 4.5 KiB gzip. `list.v2.json` 192 KB gzip (limit 300), `detail.json` 113 KB.
+- Full e2e: 306 of 307 passed. The one failure (`aliases.spec` expected exactly nine categories) was a test assumption, now registry-aware. Re-run: green.
+- Screenshots 1440 and 360, English and Greek: monitor list, filters (diagonal, manufacturer, resolution...), model page, compare with 4 monitors (5 columns desktop, 2 at a time on a phone), no page errors. The home grid gains a Monitors tile and the menu a "Peripherals" group.
+- `monitor-gates.mts` on the local data: coverage diagonal 97.7%, resolution 98.4%, panel 95.0%, **refresh rate 86.7% (below 90%)**, false-merge candidates 0 after allowing 0.6 inch (a panel sold as 31.5 or 32). Refresh needs the shop page reads to pass the gate.
+- Defects found by the rehearsal: B8 above (existing, all categories). No monitor-specific code defect.
+- Not covered by the rehearsal: real page-read data (none exists yet), Lighthouse on `/monitor`, keyboard and screen reader use of the monitor filters.
 
 ## 8. What can go wrong and how we notice
 
