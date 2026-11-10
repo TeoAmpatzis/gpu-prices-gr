@@ -129,7 +129,7 @@ function Table({ cat, refs, shared }: { cat: Category; refs: CompareRef[]; share
       </div>
 
       {!wide && states.length > 2 && (
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 gap-2 min-[480px]:grid-cols-2">
           {[0, 1].map((slot) => (
             <label key={slot} className="flex min-w-0 flex-col gap-1 text-xs text-muted">
               {tr(lang, CMP.column)} {slot + 1}
