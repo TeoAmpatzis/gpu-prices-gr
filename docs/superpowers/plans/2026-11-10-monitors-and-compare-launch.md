@@ -120,7 +120,9 @@ Rehearsal on branch `launch/monitor-visible` (monitors published) with a local l
 - Screenshots 1440 and 360, English and Greek: monitor list, filters (diagonal, manufacturer, resolution...), model page, compare with 4 monitors (5 columns desktop, 2 at a time on a phone), no page errors. The home grid gains a Monitors tile and the menu a "Peripherals" group.
 - `monitor-gates.mts` on the local data: coverage diagonal 97.7%, resolution 98.4%, panel 95.0%, **refresh rate 86.7% (below 90%)**, false-merge candidates 0 after allowing 0.6 inch (a panel sold as 31.5 or 32). Refresh needs the shop page reads to pass the gate.
 - Defects found by the rehearsal: B8 above (existing, all categories). No monitor-specific code defect.
-- Not covered by the rehearsal: real page-read data (none exists yet), Lighthouse on `/monitor`, keyboard and screen reader use of the monitor filters.
+- **Second rehearsal on the real data from main** (commit 1784d20, first complete `scrape-shops` run: BestPrice 2,401 + Snif 1,056 listings, 2,621 models; Skroutz monitor data still missing): `monitor-gates.mts` all PASS: coverage diagonal 98.0%, resolution 97.5%, panel 94.4%, refresh 94.3%, 0 false-merge candidates, list file 128 KiB gzip. `tests/e2e/monitor.spec.ts` 5 of 5 pass on that data. Lighthouse `/monitor` (median of 3): mobile 93 (LCP 3.16 s, TBT 53 ms, CLS 0, JS 104 KB, data 130 KB), desktop 100 (LCP 0.69 s), accessibility 100. LCP on mobile is higher than `/gpu` and `/case` (1.95 s); score is above the 90 target, so not blocking, but worth a look after launch.
+- Home and menu: monitors now sit under their own "Peripherals" heading (branch `feat/peripherals-section`), not among the PC parts.
+- Not covered: Skroutz monitor listings in the gates (re-run `monitor-gates.mts` once the Skroutz run has committed), keyboard and screen reader use of the monitor filters, real touch devices.
 
 ## 8. What can go wrong and how we notice
 
