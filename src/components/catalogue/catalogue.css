@@ -559,7 +559,6 @@
     margin-left: auto;
   }
   .catalogue-card-footer .catalogue-action {
-    max-width: 52%;
     flex: none;
   }
   .catalogue-action .ui-btn {
