@@ -142,7 +142,20 @@
     "source": "bestprice",
     "title": "Dell Pro P P2426HEB IPS Monitor 23.8\" 1920x1080 FHD 120Hz 8ms",
     "evidenceUrl": "https://www.bestprice.gr/item/2163748774/dell-pro-p-p2426heb-ips-monitor-23-8-1920x1080-fhd-120hz-8ms.html",
-    "expectedReject": null
+    "expectedReject": null,
+    "expectedSettled": {
+      "brand": "Dell",
+      "chip": "Dell P2426HEB",
+      "code": "P2426HEB",
+      "size": 23.8,
+      "height": 1080,
+      "width": 1920,
+      "hz": 120,
+      "panel": "IPS",
+      "colour": null,
+      "revision": null,
+      "reject": null
+    }
   },
   {
     "id": "skroutz:55702235",
@@ -177,7 +190,20 @@
     "source": "snif",
     "title": "Samsung M5 M50F LS27FM500 Smart Monitor 27 FHD IPS Flat 60Hz 5ms",
     "evidenceUrl": "https://www.snif.gr/showproduct/42403033/samsung-m5-m50f-ls27fm500-smart-monitor-27-fhd-ips",
-    "expectedReject": null
+    "expectedReject": null,
+    "expectedSettled": {
+      "brand": "Samsung",
+      "chip": "Samsung LS27FM500",
+      "code": "LS27FM500",
+      "size": 27.0,
+      "height": 1080,
+      "width": null,
+      "hz": 60,
+      "panel": "IPS",
+      "colour": null,
+      "revision": null,
+      "reject": null
+    }
   },
   {
     "id": "bestprice:2164267306",
@@ -214,7 +240,20 @@
     "evidenceUrl": "https://www.skroutz.gr/s/68482111/anmite-a185w03-ips-forito-monitor-18-5-fhd-1920x1080-gri.html",
     "expectedReject": null,
     "expectedSize": null,
-    "expectedCode": "AW03"
+    "expectedCode": "AW03",
+    "expectedSettled": {
+      "brand": "Anmite",
+      "chip": "Anmite AW03",
+      "code": "AW03",
+      "size": null,
+      "height": 1080,
+      "width": 1920,
+      "hz": null,
+      "panel": "IPS",
+      "colour": null,
+      "revision": null,
+      "reject": null
+    }
   },
   {
     "id": "skroutz:61678626",

@@ -557,6 +557,29 @@ class NotAMonitorTests(unittest.TestCase):
                 with self.subTest(id=row["id"]):
                     self.assertIsNone(p(row["title"], row.get("specs", "")).reject)
 
+    def test_quality_corpus_expected_fields_and_settled_rows(self):
+        corpus = json.loads((ROOT / "scripts/checks/fixtures/monitor-quality.json").read_text(encoding="utf-8"))
+        settled_rows = []
+        expected_by_id = {}
+        for row in corpus:
+            parsed = p(row["title"], row.get("specs", ""))
+            if "expectedSize" in row:
+                with self.subTest(id=row["id"], field="size"):
+                    self.assertEqual(parsed.size, row["expectedSize"])
+            if "expectedCode" in row:
+                with self.subTest(id=row["id"], field="code"):
+                    self.assertEqual(parsed.code, row["expectedCode"])
+            if "expectedSettled" in row:
+                source, native_id = row["id"].split(":", 1)
+                settled_rows.append(listing(source, native_id, row["title"], specs=row.get("specs", "")))
+                expected_by_id[row["id"]] = row["expectedSettled"]
+        self.assertTrue(expected_by_id)
+        nm.settle(settled_rows)
+        for settled in settled_rows:
+            with self.subTest(id=settled["id"], stage="settled"):
+                for field, expected in expected_by_id[settled["id"]].items():
+                    self.assertEqual(settled[field], expected, field)
+
     def test_exact_product_exclusions_do_not_ban_other_models_or_brands(self):
         for title in ('Ocypus Sigma ES9160 IPS Monitor 24"', 'Other ES916 IPS Monitor 24"',
                       'Lian Li US88v10 IPS Monitor 24"', 'Other US88v1 IPS Monitor 24"',
