@@ -68,7 +68,20 @@ Legend: **[sure]** = implemented without asking, no live effect. **[ask]** = nee
 
 **M5 [sure, after M1-M3] Rehearsal with monitors visible, locally.** On a throw-away branch flip `enabled/visible` to true with the local data and run: `npm run check`, the full e2e, `node scripts/checks/layout-audit.mjs` at 360 and 1440, `scripts/phase3/list-bytes.mts`. Collect every defect into section 7 below. Fix the ones that are code defects in monitor files; report the ones that need decisions.
 
-**M6 [ask] Scraper-side fixes that the rehearsal reveals** (identity step, normalisation, `no-identity` rejects at about 9% of listings, 32 `ambiguous`). These change the scraper and data, so each one is proposed with evidence first.
+**M6 [done 2026-11-10, branch `feat/monitor-identity`] Identity and coverage, following the other parts' algorithm.** Teo's bar: at least 90% (listings that keep an identity, and every spec per listing, for every source). Measured on the real data of main with Skroutz included (6,336 listings), before then after (offline replay of the stored titles, `scripts/phase3/monitor-gates.mts`):
+
+| Measure | Before | After |
+|---|---|---|
+| Listings that keep an identity | 91.4% (547 dropped) | 95.9% (262 dropped) |
+| Diagonal per listing (worst source) | 96.5% (Snif 87.6%) | 98.7% (Snif 97.2%) |
+| Resolution per listing (worst source) | 96.6% (Snif 85.4%) | 99.1% (Snif 97.6%) |
+| Panel per listing (worst source) | 94.4% | 96.2% |
+| Refresh rate per listing | 79.0% (Skroutz 62.8%, Snif 78.8%) | 90.3% (Skroutz 83.5%, BestPrice 95.4%, Snif 94.5%) |
+| Refresh rate per model | 86.4% | 85.8% (still below 90%) |
+
+What changed (the same two steps the other categories use): (1) `Category.shared` for monitors, so a spec one shop's title states reaches the model's other listings (`main.share_fields`; safe because `settle` already keeps listings that disagree on size, resolution, refresh or panel in separate models); (2) a name-based model for titles without a model number (brand + the first distinctive words, as case, fan and cooler models are named), allowed only with size and resolution stated and only joining listings whose stated specs agree, so it never bridges. No schema change: a name-based code is recognised by having no digit. Checks: the 3,110-listing matching test set and the barcode checks still pass; 0 models with conflicting barcodes; 0 models with conflicting sizes or resolutions.
+
+**Still below the bar: refresh rate for Skroutz-only models.** Skroutz's list card and URL do not state it for most standard 60-75 Hz office monitors, and Skroutz product pages are not read for monitors (lists only, a deliberate Phase 0 rule; no new Skroutz page reads without an approved budget). BestPrice pages are read and fill BestPrice models. Decision for Teo: allow Skroutz product-page reads for monitors inside the existing 150-pages-per-run budget, or accept refresh rate as "Not stated" for those models (not guessed).
 
 **M7 [sure, done] Gate script `scripts/phase3/monitor-gates.mts`.** Reads `public/data/monitor/latest.json` (+ `specs.json`) and prints: models, listings per source, coverage of diagonal/resolution/panel/refresh on launched models, count of models merged from listings with different diagonal or resolution (false-merge candidates), `list.v2.json` gzip size. Exit code non-zero when a gate fails. Used by task M8 and by Teo to re-check later.
 
