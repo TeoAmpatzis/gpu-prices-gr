@@ -1,7 +1,7 @@
 import { tr, useLang } from '../lib/i18n';
 import type { Category } from '../types';
 import { UI, plural } from '../ui/strings';
-import { CATS, GROUPS, href } from './nav';
+import { CATS, PART_CATS, PERIPHERAL_CATS, PERIPHERALS_TITLE, href } from './nav';
 import { SHELL } from './texts';
 
 export type Current = Category | 'builder' | null;
@@ -41,10 +41,20 @@ export function MegaMenu({ id, current, counts, onPick }: { id?: string; current
   return (
     <nav id={id} aria-label={tr(lang, UI.parts)} className="ui-pop p-3">
       <ul className="grid gap-1 md:grid-cols-3">
-        {GROUPS.flatMap((g) => g.cats).map((cat) => (
+        {PART_CATS.map((cat) => (
           <Item key={cat} cat={cat} current={current} counts={counts} onPick={onPick} />
         ))}
       </ul>
+      {PERIPHERAL_CATS.length > 0 && (
+        <>
+          <p className="mt-2 px-3 pt-2 text-xs font-medium uppercase tracking-wide text-muted">{tr(lang, PERIPHERALS_TITLE)}</p>
+          <ul className="grid gap-1 md:grid-cols-3">
+            {PERIPHERAL_CATS.map((cat) => (
+              <Item key={cat} cat={cat} current={current} counts={counts} onPick={onPick} />
+            ))}
+          </ul>
+        </>
+      )}
       <div className="mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-line px-3 pb-1 pt-3 text-sm">
         <span className="text-muted">{tr(lang, SHELL.priceSources)}</span>
         <a href={href.parts} onClick={onPick} className="tap inline-flex items-center rounded text-accent underline hover:text-fg">{tr(lang, SHELL.allCategories)}</a>

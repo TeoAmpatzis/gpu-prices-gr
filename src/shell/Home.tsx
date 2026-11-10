@@ -17,7 +17,9 @@ import './home.css';
 
 const HomeSections = lazy(() => import('./HomeSections'));
 const POPULAR = ['RTX 5070', 'Ryzen 7 9700X', '990 Pro 1TB', 'DDR5 6000 32GB'];
-const HOME_CATEGORIES: Category[] = (['cpu', 'mobo', 'ram', 'gpu', 'storage', 'case', 'psu', 'cooler', 'fan', 'monitor'] as Category[]).filter((c) => CATEGORY_LIST.includes(c));
+const HOME_CATEGORIES: Category[] = ['cpu', 'mobo', 'ram', 'gpu', 'storage', 'case', 'psu', 'cooler', 'fan'];
+/** Published things you plug in (monitors): their own section, they are not PC parts. */
+const HOME_PERIPHERALS: Category[] = (['monitor'] as Category[]).filter((c) => CATEGORY_LIST.includes(c));
 const HOME_SOURCES = ['skroutz', 'bestprice', 'shopflix', 'snif', 'eshop'] as const;
 
 /** Match the settled grid at every breakpoint while the post-paint feed or its view chunk loads. */
@@ -48,6 +50,11 @@ export function Home({ search }: { counts?: Partial<Record<Category, number>>; s
     const cancel = afterFirstPaint(() => loadHome().then((file) => { if (live) { setData(file); setError(false); } }, () => { if (live) setError(true); }));
     return () => { live = false; cancel(); };
   }, [attempt]);
+  const tile = (id: Category) => {
+    const Icon = CATS[id].icon;
+    const record = data?.categories.find((c) => c.id === id);
+    return <li key={id} className="min-w-0 flex"><a href={`/${id}`} className="home-category w-full" data-home-category={id}><span className="home-category-icon"><Icon size={20} aria-hidden="true" /></span><span><strong>{tr(lang, CATS[id].name)}</strong><span className="text-muted">{record ? `${record.count.toLocaleString(lang === 'el' ? 'el-GR' : 'en-IE')} ${t('products')}` : '—'}</span></span><span className="home-category-price"><small>{t('from')}</small><strong>{record?.min != null ? formatPrice(record.min, lang) : '—'}</strong></span></a></li>;
+  };
   return (
     <div className="home-page">
       <section className="home-hero" aria-labelledby="home-intro">
@@ -70,12 +77,14 @@ export function Home({ search }: { counts?: Partial<Record<Category, number>>; s
       </section>
       <section className="home-categories" aria-labelledby="home-categories">
         <div className="home-section-heading"><h2 id="home-categories">{t('categories')}</h2><a href="/parts">{t('all')}</a></div>
-        <ul className="home-category-grid">{HOME_CATEGORIES.map((id) => {
-          const Icon = CATS[id].icon;
-          const record = data?.categories.find((c) => c.id === id);
-          return <li key={id} className="min-w-0 flex"><a href={`/${id}`} className="home-category w-full" data-home-category={id}><span className="home-category-icon"><Icon size={20} aria-hidden="true" /></span><span><strong>{tr(lang, CATS[id].name)}</strong><span className="text-muted">{record ? `${record.count.toLocaleString(lang === 'el' ? 'el-GR' : 'en-IE')} ${t('products')}` : '—'}</span></span><span className="home-category-price"><small>{t('from')}</small><strong>{record?.min != null ? formatPrice(record.min, lang) : '—'}</strong></span></a></li>;
-        })}</ul>
+        <ul className="home-category-grid">{HOME_CATEGORIES.map(tile)}</ul>
       </section>
+      {HOME_PERIPHERALS.length > 0 && (
+        <section className="home-categories" aria-labelledby="home-peripherals">
+          <div className="home-section-heading"><h2 id="home-peripherals">{t('peripherals')}</h2></div>
+          <ul className="home-category-grid">{HOME_PERIPHERALS.map(tile)}</ul>
+        </section>
+      )}
       {error ? <div className="home-error" role="alert"><p>{t('loadFailed')}</p><Button onClick={() => { setError(false); setAttempt((n) => n + 1); }}>{t('retry')}</Button></div> : <Suspense fallback={<HomeLoading />}>{data ? <HomeSections data={data} now={now} /> : <HomeLoading />}</Suspense>}
       <div className="home-method"><span>{SOURCE_NAMES.length} {t('sources')} · {CATEGORY_LIST.length} {t('categories').toLocaleLowerCase(lang === 'el' ? 'el-GR' : 'en-IE')}</span><span>{t('policy')} <a href="/how-prices">{t('method')}</a></span></div>
     </div>

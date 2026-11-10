@@ -11,6 +11,7 @@ export const HOME_TEXT = {
   unknown: { el: 'Χωρίς στοιχεία', en: 'Unknown' },
   freshness: { el: 'Τιμές παλαιότερες από 24 ώρες σημειώνονται με προειδοποίηση. Τελευταίος έλεγχος ανά πηγή· ορισμένες κατηγορίες μπορεί να είναι παλιότερες.', en: 'Prices older than 24 hours carry a warning. Latest check per source; some categories may be older.' },
   categories: { el: 'Εξαρτήματα', en: 'Parts' },
+  peripherals: { el: 'Περιφερειακά', en: 'Peripherals' },
   all: { el: 'Όλες οι κατηγορίες', en: 'All categories' },
   products: { el: 'προϊόντα πηγών', en: 'source products' },
   from: { el: 'από', en: 'from' },

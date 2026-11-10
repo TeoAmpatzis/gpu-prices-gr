@@ -38,6 +38,10 @@ const ALL_GROUPS: { title: Text; cats: Category[] }[] = [
 ];
 /** Menu groups of the published categories only: a hidden one (registry `visible: false`) is in no menu. */
 export const GROUPS = ALL_GROUPS.map((g) => ({ ...g, cats: g.cats.filter((c) => REGISTRY[c].visible) })).filter((g) => g.cats.length > 0);
+/** Published PC parts and published peripherals (monitors), for the menus that keep them apart. */
+export const PART_CATS = GROUPS.flatMap((g) => g.cats).filter((c) => REGISTRY[c].domain === 'components');
+export const PERIPHERAL_CATS = GROUPS.flatMap((g) => g.cats).filter((c) => REGISTRY[c].domain === 'peripherals');
+export const PERIPHERALS_TITLE: Text = { el: 'Περιφερειακά', en: 'Peripherals' };
 export const TOOLS_TITLE: Text = { el: 'Εργαλεία', en: 'Tools' };
 
 /** Phase 1 links (real URLs; the model pages come in Phase 3, so a model opens its category searched). */
