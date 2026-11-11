@@ -83,11 +83,22 @@ const readJson = <T>(cat: string, f: string): T | null => {
     return null;
   }
 };
+/**
+ * The real data plus one card without a length, of a chip that has an estimate, as its own model (a memory size no
+ * card has). The real data alone has such a model only by chance (2026-11-10: one listing; 2026-11-11: none).
+ */
+const withUnmeasuredCard = (listings: GpuListing[]): GpuListing[] => {
+  const chip = fitContext(candidates('gpu', slotModels('gpu', listings))).chips.keys().next().value;
+  const base = listings.find((l) => l.chip === chip && l.lengthMm != null);
+  return base ? [...listings, { ...base, id: 'test:unmeasured', vram: 999, lengthMm: null }] : listings;
+};
 const entriesOf = (cat: Category): ModelEntry[] => {
   const raw = readJson<Latest>(cat, 'latest.json');
   if (!raw) return [];
+  const latest = validateLatest(cat, raw, VALIDATION_MODE).latest;
+  if (cat === 'gpu') latest.listings = withUnmeasuredCard(latest.listings as GpuListing[]);
   const input: CategoryInput = {
-    latest: validateLatest(cat, raw, VALIDATION_MODE).latest,
+    latest,
     history: readJson<History>(cat, 'history.json') ?? {},
     imported: readJson<Imported>(cat, 'history_imported.json') ?? {},
   };
@@ -119,7 +130,7 @@ describe('GPU length estimate (builder.fitContext rule)', () => {
   it("equals the builder's fitContext range over its candidate rows, chip by chip", () => {
     const raw = readJson<Latest>('gpu', 'latest.json');
     if (!raw) return;
-    const listings = validateLatest('gpu', raw, VALIDATION_MODE).latest.listings as GpuListing[];
+    const listings = withUnmeasuredCard(validateLatest('gpu', raw, VALIDATION_MODE).latest.listings as GpuListing[]);
     const ctx = fitContext(candidates('gpu', slotModels('gpu', listings)));
     const withEstimate = gpus.filter((g) => g.lengthEstimate);
     expect(withEstimate.length).toBeGreaterThan(0);

@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { fromColumns } from '../../src/lib/columns';
-import { builderFiles } from '../../src/lib/derive';
-import { SLOTS, slotModels, usable as builderUsable, type Slot } from '../../src/lib/builderData';
+import { builderFiles, mergeTwins } from '../../src/lib/derive';
+import { SLOTS, candidates, slotModels, usable as builderUsable, type Slot } from '../../src/lib/builderData';
 import { PART_FIELDS, SLOT_OF, slotOf, toPart, usable } from '../../src/lib/pick';
 import { VALIDATION_MODE, validateLatest } from '../../src/data/validate';
 import { CATEGORY_IDS } from '../../src/lib/categories';
@@ -32,7 +32,9 @@ describe('pick parts', () => {
     it(`${slot}: toPart fields equal the builder row, usable matches the builder`, () => {
       const rows = new Map(rowsOf(slot).map((r) => [r.id as string, r]));
       const models = modelsOf(slot);
-      const offered = models.filter((m) => rows.has(m.cheapest.id));
+      // A card row is the merged twins (derive.mergeTwins): it carries a length any twin states, so compare like with like.
+      const merged = slot === 'gpu' ? mergeTwins(candidates('gpu', models as never)) : models;
+      const offered = merged.filter((m) => rows.has(m.cheapest.id));
       expect(offered.length).toBeGreaterThan(0);
       for (const m of sample(offered, 20)) {
         const part = toPart(slot, m as never);
