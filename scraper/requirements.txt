@@ -1,6 +1,10 @@
-# Every dependency has an upper bound, so a new major release can't break the scheduled scrape
-# unattended (selectolax 1.0, 2026-10-03). 0.x packages are capped at the next minor. Raise a cap on
-# purpose, after a local run.
-curl_cffi>=0.7,<0.17
-selectolax>=0.3,<1.0
-Pillow>=10,<13
+# Exact versions (audit P4-007, 2026-11-11): the versions the scheduled scrape installed on 2026-11-10, so a
+# new release of any package, direct or indirect, never reaches the scrape unattended (selectolax 1.0,
+# 2026-10-03). Raise a version on purpose, after a local run.
+curl_cffi==0.16.3
+selectolax==0.4.13
+Pillow==12.3.0
+# installed by curl_cffi
+certifi==2026.10.23
+cffi==2.1.1
+pycparser==3.12

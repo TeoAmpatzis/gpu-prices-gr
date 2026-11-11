@@ -41,7 +41,7 @@ jobs:
     outputs:
       run: ${{ steps.freshness.outputs.run }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: main
       - id: freshness
@@ -58,11 +58,11 @@ jobs:
     steps:
       # The latest main when the job starts, not the commit of the moment it was triggered: a run
       # that waited in the queue must see what the run before it pushed (2026-09-30 data loss).
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: main
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: "3.12"
 
@@ -134,7 +134,7 @@ jobs:
           DATA_COMMIT: ${{ steps.publish.outputs.data_commit }}
         run: python scripts/checks/validate_skroutz.py check "$RUNNER_TEMP/skroutz-before.json" --ref "$DATA_COMMIT"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: skroutz-validation-${{ github.run_id }}
