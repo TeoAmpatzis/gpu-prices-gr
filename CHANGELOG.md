@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Version 2.0.0 is a complete reimagining of BuildDraft.gr, introducing a deterministic hardware compatibility engine, a dual-mode PC builder, refined static edge delivery, and sub-second performance across mobile and desktop.
 
 ### Added
-- **Deterministic Hardware Compatibility Engine (`src/engine/rules.ts`)**:
+- **Deterministic Hardware Compatibility Engine (`src/engine/`, rules in `src/engine/rules/*.ts`)**:
   - Implemented 30 rigorous physical, architectural, and electrical verification rules.
   - Sourced official manufacturer specification tables for CPU PPT/PL2 power limits, GPU board power, memory controller speeds, and motherboard BIOS revisions.
   - Added 81 automated regression test scenarios verifying full compatibility suites.
@@ -21,7 +21,7 @@ Version 2.0.0 is a complete reimagining of BuildDraft.gr, introducing a determin
   - **Guided Walkthrough Mode**: Step-by-step assembly tailored to target budgets and use-cases (Gaming, Workstation, Office) with dynamic component balance recommendations.
   - **Freeform Workbench Mode**: Flexible Part List editor for experienced builders with instant compatibility feedback, total wattage estimation, and multi-store shipping tally.
 - **Build Sharing & Persistence**:
-  - Stateless build sharing via URL query encoding (`/builder?b=...`).
+  - Stateless build sharing via URL query encoding (`/builder?v=2&cpu=…`, one parameter per part).
   - Automatic build state persistence in browser `localStorage`.
   - Instant one-click Markdown list copy formatted for forums, Reddit, and Discord.
 - **Data Hardening & Validation**:
