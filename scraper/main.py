@@ -108,7 +108,7 @@ def share_fields(listings: list[dict], fields: tuple[str, ...], model_key) -> No
 # Bool fields where None means "not stated": shared by majority, not by "any true".
 TRI_STATE = {"coolerIncluded", "dram", "heatsink"}
 # Fields whose values rank: any listing saying "Server" makes the model Server (normalize_storage).
-PRIORITY = {"tier": ["Server", "NAS", "Consumer"]}
+PRIORITY = {"tier": ["Server", "NAS", "Consumer"], "gaming": [True, False]}
 SAFER = specs.SAFER  # measurements: the safer of two disagreeing values
 disagreements: Counter = Counter()  # per run, logged by finish()
 

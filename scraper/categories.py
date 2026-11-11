@@ -228,8 +228,10 @@ CATEGORIES = {
     ),
     "mouse": Category(
         name="mouse",
-        # Source URLs/tags are activated only after collector tests and the price-slice preflight.
-        skroutz_paths=(),
+        skroutz_paths=("/c/1865/gaming_pontikia.html", "/c/69/mice.html"),
+        skroutz_tags=({"gaming": True}, {"gaming": False}),
+        snif_categories=("1919852",),
+        # Price slices must be measured before the first live mouse collection (plan Task 5).
         bestprice_paths=(),
         make_listing=normalize_mouse.make_listing,
         model_key=lambda l: names.model_key(l["chip"]),

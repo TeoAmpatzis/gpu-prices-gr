@@ -2,6 +2,7 @@
 import json
 import sys
 import unittest
+from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
@@ -26,6 +27,40 @@ def page(native_id="123", next_href=None, **kwargs):
 
 
 class CollectorTests(unittest.TestCase):
+    def test_mouse_path_tags_keep_cheapest_price_and_gaming_priority_in_either_order(self):
+        cat = replace(CATEGORIES['mouse'], skroutz_paths=('/gaming', '/office'),
+                      skroutz_tags=({'gaming': True}, {'gaming': False}))
+        for reverse in (False, True):
+            current = replace(cat, skroutz_paths=cat.skroutz_paths[::-1], skroutz_tags=cat.skroutz_tags[::-1]) if reverse else cat
+
+            def fill(session, url, label, category, at, seen):
+                gaming = url.endswith('/gaming')
+                listing = cat.make_listing(source='skroutz', native_id='same', title='Logitech M171 Wireless Mouse',
+                                           url='https://www.skroutz.gr/s/123/mouse.html',
+                                           price=20 if gaming else 18, shop_count=1, scraped_at=AT)
+                seen[listing.id] = listing
+
+            with self.subTest(reverse=reverse), patch.object(skroutz.http, 'session', return_value=Mock()), \
+                    patch.object(skroutz.http, 'polite_sleep'), patch.object(skroutz, 'fetch_category', side_effect=fill):
+                result = skroutz.fetch(current)
+                self.assertEqual(len(result), 1)
+                self.assertEqual(result[0].price, 18)
+                self.assertIs(result[0].gaming, True)
+
+    def test_office_only_mouse_tag_is_explicit_false(self):
+        cat = replace(CATEGORIES['mouse'], skroutz_paths=('/office',), skroutz_tags=({'gaming': False},))
+        listing = cat.make_listing(source='skroutz', native_id='1', title='Logitech M171 Wireless Mouse',
+                                   url='https://www.skroutz.gr/s/1/mouse.html', price=18, shop_count=1, scraped_at=AT)
+        with patch.object(skroutz.http, 'session', return_value=Mock()), \
+                patch.object(skroutz, 'fetch_category', side_effect=lambda *args: args[-1].update({listing.id: listing})):
+            self.assertIs(skroutz.fetch(cat)[0].gaming, False)
+
+    def test_mismatched_path_tags_fail_before_any_request(self):
+        cat = replace(CATEGORIES['mouse'], skroutz_paths=('/gaming', '/office'), skroutz_tags=({'gaming': True},))
+        with patch.object(skroutz.http, 'session') as session, self.assertRaisesRegex(ValueError, 'tags'):
+            skroutz.fetch(cat)
+        session.assert_not_called()
+
     def fetch(self, bodies, *, cat=None, max_pages=80):
         session = Mock()
         responses = [SimpleNamespace(text=body) if isinstance(body, str) else body for body in bodies]
@@ -178,8 +213,7 @@ class CollectorTests(unittest.TestCase):
                 self.fetch([page("1", href)])
 
     def test_failed_later_subcategory_does_not_return_first_path(self):
-        cat = SimpleNamespace(name="cpu", skroutz_paths=("/first.html", "/second.html"),
-                              make_listing=CATEGORIES["cpu"].make_listing)
+        cat = replace(CATEGORIES["cpu"], skroutz_paths=("/first.html", "/second.html"))
         with self.assertRaisesRegex(RuntimeError, "second path"):
             self.fetch([page(), RuntimeError("second path")], cat=cat)
 

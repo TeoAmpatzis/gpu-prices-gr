@@ -200,6 +200,8 @@ def _next_url(category: str, current: str, href: str, page: int) -> str:
 
 
 def fetch(cat: Category) -> list:
+    if cat.skroutz_tags and len(cat.skroutz_tags) != len(cat.skroutz_paths):
+        raise ValueError(f"{cat.name}: Skroutz tags must match category paths")
     s = http.session()
     try:
         scraped_at = now_iso()
@@ -208,7 +210,17 @@ def fetch(cat: Category) -> list:
             if i:
                 http.polite_sleep()
             label = cat.name if len(cat.skroutz_paths) == 1 else f"{cat.name}{i + 1}"
-            fetch_category(s, BASE + path, label, cat, scraped_at, seen)
+            found: dict = {}
+            fetch_category(s, BASE + path, label, cat, scraped_at, found)
+            for listing in found.values():
+                for field, value in (cat.skroutz_tags[i] if cat.skroutz_tags else {}).items():
+                    setattr(listing, field, value)
+                previous = seen.get(listing.id)
+                winner = previous if previous is not None and previous.price <= listing.price else listing
+                # Overlapping gaming/office lists describe one source product, even when office is cheaper.
+                if getattr(previous, 'gaming', None) is True or getattr(listing, 'gaming', None) is True:
+                    winner.gaming = True
+                seen[listing.id] = winner
         return list(seen.values())
     finally:
         s.close()
