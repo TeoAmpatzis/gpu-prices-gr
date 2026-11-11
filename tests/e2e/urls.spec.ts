@@ -111,7 +111,8 @@ test('in-site navigation keeps back and forward', async ({ page }) => {
 
 test('a model address opens the model page', async ({ page }) => {
   await open(page, '/gpu/rtx-5070-12gb');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText(/RTX 5070 12GB/, { timeout: 20_000 });
+  // The name carries the memory size only while the chip is sold in several sizes (data of the day).
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(/RTX 5070( 12GB)?$/, { timeout: 20_000 });
 });
 
 test('the skip link is the first Tab stop and moves focus to the content', async ({ page }) => {
