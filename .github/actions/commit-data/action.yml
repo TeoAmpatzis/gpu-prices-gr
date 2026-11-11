@@ -1,0 +1,55 @@
+name: Commit data
+description: Commit public/data as the repo owner and push it to main without losing history (rebase on the latest main, history check, three tries).
+
+inputs:
+  what:
+    description: 'What changed, for the message "chore(data): <what> <UTC date and time>"'
+    required: true
+  allow_shrink:
+    description: '"true": let history points disappear in this run only (they are logged)'
+    default: "false"
+  drop_tag:
+    description: '"true": tag the commit [allow-data-drop] so the next Vercel build may publish more than 30% fewer models/listings'
+    default: "false"
+
+outputs:
+  data_commit:
+    description: The commit that holds this run's data (HEAD when nothing changed)
+    value: ${{ steps.push.outputs.data_commit }}
+
+runs:
+  using: composite
+  steps:
+    - id: push
+      shell: bash
+      env:
+        WHAT: ${{ inputs.what }}
+        ALLOW_SHRINK: ${{ inputs.allow_shrink == 'true' && '--allow-shrink' || '' }}
+        DROP_TAG: ${{ inputs.drop_tag == 'true' && ' [allow-data-drop]' || '' }}
+      run: |
+        # Commit as the repo owner: Vercel Hobby blocks deploys of commits by
+        # authors it cannot map to the owner's Git account (e.g. github-actions[bot]).
+        git config user.name "TeoAmpatzis"
+        git config user.email "189219701+TeoAmpatzis@users.noreply.github.com"
+        # History files merge point by point (.gitattributes); other data files: this run wins.
+        git config merge.history.driver "python scraper/merge_history.py driver %O %A %B %P"
+        git add public/data
+        if git diff --cached --quiet; then
+          echo "No changes"
+          echo "data_commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+        git commit -m "chore(data): ${WHAT} $(date -u +'%Y-%m-%d %H:%M')${DROP_TAG}"
+        # Replay this commit on the latest main right before pushing, check that no history was
+        # lost, push; if main moved again in between, do it again (3 tries).
+        for attempt in 1 2 3; do
+          git pull --rebase -X theirs origin main
+          python scraper/merge_history.py check origin/main $ALLOW_SHRINK
+          if git push origin HEAD:main; then
+            echo "data_commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "main moved during the push (attempt $attempt); retrying"
+          sleep 10
+        done
+        exit 1
