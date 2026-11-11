@@ -67,11 +67,15 @@ export function encodeFilters<L extends BaseListing>(f: Filters, cfg: CategoryCo
   return p.toString().replace(/%2C/gi, ',');
 }
 
+/** Limits for hand-edited addresses: longer text and absurd page numbers are not kept. */
+const MAX_TEXT = 200;
+const MAX_PAGE = 10_000;
+
 export function decodeFilters<L extends BaseListing>(p: URLSearchParams, cfg: CategoryConfig<L>): Filters {
   const pick = p.get('pick') === '1';
   const f = defaultFilters(cfg.groups, pick);
   f.compat = !(pick && p.get('compat') === '0');
-  f.query = p.get('q') ?? '';
+  f.query = (p.get('q') ?? '').slice(0, MAX_TEXT);
   const groups = p.get(cfg.groupParam);
   if (groups != null) {
     const wanted = new Set(groups.split(','));
@@ -87,7 +91,7 @@ export function decodeFilters<L extends BaseListing>(p: URLSearchParams, cfg: Ca
   if (seg && segmentsOf(cfg).includes(seg)) f.segment = seg;
   for (const x of cfg.extraFilters) {
     const v = p.get(paramOf(x.key));
-    if (v) f.extra[x.key] = v;
+    if (v && v.length <= MAX_TEXT) f.extra[x.key] = v;
   }
   f.saleOnly = p.get('sale') === '1';
   f.lowOnly = p.get('low') === '1';
@@ -101,7 +105,7 @@ export function decodeFilters<L extends BaseListing>(p: URLSearchParams, cfg: Ca
   const sort = p.get('sort') as SortKey | null;
   if (sort && SORTS.includes(sort) && (sort !== 'per-tb' || cfg.capacityTb)) f.sort = sort;
   const page = Number(p.get('page'));
-  if (Number.isInteger(page) && page > 1) f.page = page;
+  if (Number.isInteger(page) && page > 1 && page <= MAX_PAGE) f.page = page;
   const per = Number(p.get('per'));
   if ((PER_PAGE as readonly number[]).includes(per)) f.per = per;
   return f;

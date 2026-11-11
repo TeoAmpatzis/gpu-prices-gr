@@ -31,6 +31,10 @@ export function encodeShare(b: StoredBuild, names: ShareNames): string {
   return `/builder?${q}`;
 }
 
+/** A link's own text is shown on the page ("No longer sold: <name>"): product names are short, so longer text is cut. */
+const MAX_NAME = 80;
+const MAX_BUDGET = 1_000_000;
+
 export function decodeShare(params: URLSearchParams): { build: StoredBuild; names: ShareNames; version: 1 | 2 } | null {
   if (!LINES.some((l) => params.get(l))) return null;
   const version = params.get('v') === '2' ? 2 : 1;
@@ -43,7 +47,7 @@ export function decodeShare(params: URLSearchParams): { build: StoredBuild; name
     if (l === 'storage2') build.storage2 = { key };
     else build.parts[l] = { key };
     const name = params.get(`n.${l}`);
-    if (name) names[l] = name;
+    if (name) names[l] = name.slice(0, MAX_NAME);
     const offer = params.get(`o.${l}`);
     if (offer) offers[l] = offer;
   }
@@ -56,7 +60,7 @@ export function decodeShare(params: URLSearchParams): { build: StoredBuild; name
   const res = asRes(params.get('res')) ?? (version === 1 && use === 'gaming' ? '1080p' : undefined);
   if (res) build.res = res;
   const budget = Number(params.get('budget'));
-  if (budget > 0) build.budget = Math.round(budget);
+  if (budget > 0 && budget <= MAX_BUDGET) build.budget = Math.round(budget);
   return { build, names, version };
 }
 

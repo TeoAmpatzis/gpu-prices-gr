@@ -28,7 +28,7 @@ export default function SearchPage() {
   const update = (patch: Partial<typeof state>) => navigate(searchUrl({ ...state, ...patch, page: 1 }));
   return <section className="search-page">
     <nav aria-label={text('Διαδρομή', 'Breadcrumb')} className="text-sm text-muted"><a href="/" className="text-accent">{text('Αρχική', 'Home')}</a> / {text('Αναζήτηση', 'Search')}</nav>
-    <h1 ref={heading} tabIndex={-1} className="text-2xl font-semibold outline-none">{state.q ? text(`Αποτελέσματα για «${state.q}»`, `Results for “${state.q}”`) : text('Αναζήτηση εξαρτημάτων', 'Search PC parts')}</h1>
+    <h1 ref={heading} tabIndex={-1} className="text-2xl font-semibold outline-none [overflow-wrap:anywhere]">{state.q ? text(`Αποτελέσματα για «${state.q}»`, `Results for “${state.q}”`) : text('Αναζήτηση εξαρτημάτων', 'Search PC parts')}</h1>
     <p className="text-sm text-muted">{text('Αναζήτηση οικογενειών μοντέλων. Για μεμονωμένα προϊόντα, άνοιξε μια κατηγορία. Οι τιμές δεν περιλαμβάνουν μεταφορικά.', 'Search model families. Browse a category for individual products. Prices exclude shipping.')}</p>
     <form key={query} className="search-query" onSubmit={(e) => { e.preventDefault(); const data = new FormData(e.currentTarget); update({ q: String(data.get('q') ?? '').trim() }); heading.current?.focus(); }}>
       <input className="ui-field" aria-label={text('Αναζήτηση', 'Search')} name="q" defaultValue={state.q} maxLength={500} type="search" placeholder="RTX 5070, 990 Pro 1TB…" />

@@ -27,7 +27,12 @@ const isInfo = (s: string): s is InfoPage => (INFO_PAGES as readonly string[]).i
 
 /** The route for a pathname ("/ram", "/gpu/rtx-5070-12gb", "/builder"…); anything else is a 404. */
 export function matchRoute(pathname: string): Route {
-  const parts = pathname.split('/').filter(Boolean).map((p) => decodeURIComponent(p));
+  let parts: string[];
+  try {
+    parts = pathname.split('/').filter(Boolean).map((p) => decodeURIComponent(p));
+  } catch {
+    return { kind: 'notFound' }; // a malformed % escape ("/gpu/%")
+  }
   if (parts.length === 0) return { kind: 'home' };
   const [first, second, ...rest] = parts;
   if (rest.length) return { kind: 'notFound' };

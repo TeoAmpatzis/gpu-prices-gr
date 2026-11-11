@@ -25,6 +25,9 @@ import { useMedia } from './lib/useMedia';
 import { SkeletonCards, SkeletonRows } from './ui/states';
 import { UI } from './ui/strings';
 
+/** Pages that fit one screen: home and parts paint with the first script, the 404 and the contact page are a few lines. */
+const SHORT_PAGE = (r: ReturnType<typeof matchRoute>) => r.kind === 'home' || r.kind === 'parts' || r.kind === 'notFound' || (r.kind === 'info' && r.page === 'contact');
+
 /** Loading placeholder while a page's code arrives: rows on wide screens, card shapes on phones (UX-21). */
 function PageSkeleton() {
   return useMedia('(min-width: 1024px)') ? <SkeletonRows /> : <SkeletonCards cards={4} />;
@@ -168,8 +171,8 @@ export default function App() {
     // On the builder, room at the bottom for its fixed summary bar on phones and tablets.
     <div className={`site-shell${route.kind === 'builder' ? ' pb-32 lg:pb-0' : ''}`}>
       <Header current={current} search={SEARCH} counts={site?.counts} />
-      {/* Reserve the first screen while data pages load; short pages use the flex frame's remaining space. */}
-      <main id="main" tabIndex={-1} className={`site-container site-main py-4 outline-none sm:py-5${route.kind === 'category' || route.kind === 'model' || route.kind === 'builder' ? ' min-h-screen' : ''}`}>
+      {/* Reserve the first screen while a page's code or data loads, so the footer never moves inside it (CLS 0); the pages that are always short use the flex frame's remaining space. */}
+      <main id="main" tabIndex={-1} className={`site-container site-main py-4 outline-none sm:py-5${SHORT_PAGE(route) ? '' : ' min-h-screen'}`}>
         <ErrorBoundary resetKey={path}>
           <Suspense fallback={<PageSkeleton />}>
             {route.kind === 'home' && <Home counts={site?.counts} search={SEARCH} />}
