@@ -120,11 +120,11 @@ const F = {
     gpu: P('5070 Ti', 'RTX 5070 ?Ti', { sort: 'price' }),
     cooler: P('Phantom Spirit', 'Phantom Spirit', { sort: 'price' }),
     storage: P('2TB', '(SN7100|990 Pro|NV3) 2TB', { sort: 'price', fallback: 'NVMe' }),
-    case: P('North', '^Fractal Design North( \\||$| )', { fallback: 'North' }),
+    case: P('North XL RC', '^Fractal Design North XL RC( \\||$)'),
     psu: P('850W', '850W Gold', { sort: 'price' }),
     fan: { skip: true },
   },
-  // Real margins (checked 02/11): Phantom Spirit 154 mm in a case taking 155 mm (rule 8, within 5 mm); 850 W = the
+  // Current margins: Phantom Spirit 154 mm in North XL RC taking 155 mm (rule 8, within 5 mm); 850 W = the
   // whole-build estimate, under its 10% headroom (rule 14). Both are true warnings, not wrong ones.
   expect: { warnings: [8, 14] },
 };

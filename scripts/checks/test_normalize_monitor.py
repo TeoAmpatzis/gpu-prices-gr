@@ -19,6 +19,28 @@ def p(title, specs=""):
 
 
 class ParseTests(unittest.TestCase):
+    def test_warranty_tokens_never_replace_monitor_model(self):
+        for warranty in ('3YearsW', '3Year', '5Years', '2YR'):
+            with self.subTest(warranty=warranty):
+                self.assertEqual(p(f'Lenovo Monitor L24-4e 23.8" FHD IPS {warranty}').code, 'L244E')
+        self.assertEqual(p('Dell Monitor Pro P P2426H 23.8" FHD 3YearsW').code, 'P2426H')
+
+    def test_four_digit_refresh_is_complete_and_bounded(self):
+        self.assertEqual(p('LG 25G590B-B 24.5" FHD 1000Hz').hz, 1000)
+        for token in ('10000Hz', '59.94Hz', '59,94Hz', '165HzModel'):
+            with self.subTest(token=token):
+                self.assertIsNone(p(f'LG 25G590B-B {token}').hz)
+
+    def test_warranty_titles_keep_distinct_models(self):
+        rows = [nm.make_listing(source='snif', native_id=str(index), title=title,
+                                url='https://example.com/monitor', price=100, shop_count=1,
+                                scraped_at='2026-11-11T00:00:00Z').to_dict()
+                for index, title in enumerate(('Lenovo Monitor L24-4e 23.8" FHD IPS 3YearsW',
+                                                'Lenovo Monitor S24-4e 23.8" FHD IPS 3YearsW'))]
+        nm.settle(rows)
+        self.assertEqual({row['chip'] for row in rows}, {'Lenovo L244E', 'Lenovo S244E'})
+        self.assertTrue(all(row.get('reject') is None for row in rows))
+
     def test_quality_diagonals_and_elo_model(self):
         for title, size in [('Ocypus Sigma ES916 IPS Monitor 9.16"', 9.16),
                             ('Lian Li US88v1 IPS Monitor 8.8" 1920x480', 8.8),
@@ -665,6 +687,22 @@ class SharedSpecTests(unittest.TestCase):
     def test_the_monitor_category_shares_its_title_specs(self):
         from categories import CATEGORIES
         self.assertEqual(set(CATEGORIES["monitor"].shared), {"size", "height", "width", "hz", "panel"})
+
+    def test_finish_leaves_enriched_identity_stable(self):
+        import copy
+        import tempfile
+        from unittest.mock import patch
+        import main as mn
+        from categories import CATEGORIES
+        rows = [listing('skroutz', '1', 'BenQ RD280U 28.2" IPS 3840x2560'),
+                listing('bestprice', '2', 'BenQ RD280U 28.2" IPS 3840x2160 60Hz')]
+        correction = {'cat': 'monitor', 'id': 'skroutz:1', 'set': {'pgHz': 60}}
+        with tempfile.TemporaryDirectory() as tmp, patch.object(mn.overrides, 'load', return_value=[correction]):
+            mn.finish(CATEGORIES['monitor'], Path(tmp), rows)
+        self.assertEqual({row['chip'] for row in rows}, {'BenQ RD280U #1', 'BenQ RD280U #2'})
+        again = copy.deepcopy(rows)
+        nm.settle(again)
+        self.assertEqual(again, rows)
 
     def test_refresh_and_resolution_reach_a_shop_that_does_not_state_them(self):
         import main as scraper_main

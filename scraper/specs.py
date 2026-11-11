@@ -302,7 +302,7 @@ def parse_monitor(sp: dict[str, str]) -> dict:
         "pgSize": float(size.group(1).replace(",", ".")) if size else None,
         "pgWidth": int(res.group(1)) if res else None,
         "pgHeight": int(res.group(2)) if res else None,
-        "pgHz": int(hz.group(1)) if hz else None,
+        "pgHz": int(hz.group(1)) if hz and int(hz.group(1)) > 0 else None,
         "pgResponseMs": float(ms.group(1).replace(",", ".")) if ms else None,
         "pgNits": int(nits.group(1)) if nits else None,
         "pgContrast": int(contrast.group(1)) if contrast else None,

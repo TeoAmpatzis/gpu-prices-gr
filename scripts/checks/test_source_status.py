@@ -18,6 +18,40 @@ import main as mn  # noqa: E402
 
 
 class SourceStatusTests(unittest.TestCase):
+    def test_specs_only_publishes_stable_monitor_identity_without_fresh_prices(self):
+        import copy
+        import normalize_monitor as nm
+        from categories import CATEGORIES
+        at = '2026-11-10T12:00:00Z'
+        titles = ('BenQ RD280U 28.2" IPS 3840x2560',
+                  'BenQ RD280U 28.2" IPS 3840x2160 60Hz', 'PowerTech Charger PT-135')
+        rows = [nm.make_listing(source='bestprice', native_id=str(index), title=title,
+                                url='https://example.com/monitor', price=100, shop_count=1,
+                                scraped_at=at).to_dict() for index, title in enumerate(titles)]
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            out = root / 'monitor'
+            out.mkdir()
+            meta = {'count': 3, 'ok': True, 'updatedAt': at}
+            (out / 'latest.json').write_text(json.dumps({'updatedAt': at, 'sources': {'bestprice': meta},
+                                                        'listings': rows}), encoding='utf-8')
+            (out / 'specs.json').write_text(json.dumps({'bestprice:0': {'pgHz': 60}}), encoding='utf-8')
+            (out / 'history.json').write_text('{"keep":[{"d":"2026-11-10","min":100}]}', encoding='utf-8')
+            history = (out / 'history.json').read_bytes()
+            with patch.object(mn, 'DATA_DIR', root), patch.object(mn.specs, 'collect'), \
+                    patch.object(mn.makers, 'collect'), patch.object(mn.overrides, 'load', return_value=[]), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                mn.collect_specs([CATEGORIES['monitor']], {'bestprice': 0}, 0)
+            data = json.loads((out / 'latest.json').read_text(encoding='utf-8'))
+            self.assertEqual(len(data['listings']), 2)
+            self.assertEqual(data['updatedAt'], at)
+            self.assertEqual(data['sources']['bestprice'], {**meta, 'count': 2})
+            self.assertTrue(all(row['price'] == 100 and row['scrapedAt'] == at for row in data['listings']))
+            again = copy.deepcopy(data['listings'])
+            nm.settle(again)
+            self.assertEqual(again, data['listings'])
+            self.assertEqual((out / 'history.json').read_bytes(), history)
+
     def test_monitor_policy_rechecks_retained_failed_or_unselected_source(self):
         import normalize_monitor as nm
         from categories import CATEGORIES
@@ -46,7 +80,7 @@ class SourceStatusTests(unittest.TestCase):
                 sources = {"skroutz": retained, "bestprice": lambda _: [
                     SimpleNamespace(to_dict=lambda r=r: dict(r)) for r in (fresh, fresh_bad)]}
                 with patch.object(mn, "DATA_DIR", root), patch.object(mn, "SOURCES", sources), \
-                        patch.object(mn, "now_iso", return_value=run_at), patch.object(mn, "finish"), \
+                        patch.object(mn, "now_iso", return_value=run_at), patch.object(mn.makers, "apply", return_value={}), \
                         patch.object(mn.specs, "apply"), patch.object(mn, "report_sources"), \
                         patch.object(mn.traceback, "print_exc"), patch.object(mn, "write_history", return_value={}) as history, \
                         contextlib.redirect_stdout(io.StringIO()):

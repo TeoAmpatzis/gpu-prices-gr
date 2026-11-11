@@ -85,6 +85,34 @@ export interface ProductFit {
   runner: ReactNode;
 }
 
+/** Only builder-part pages load the fit controls and saved-build state. */
+export interface ProductFitView {
+  show: boolean;
+  header: ReactNode;
+  runner: ReactNode;
+  offerLine?: (listing: BaseListing) => ReactNode;
+  offerAction?: (listing: BaseListing, short: boolean) => ReactNode;
+}
+
+export function ProductWithFit({ slot, entry, builtAt, selection, children }: {
+  slot: Slot;
+  entry: ModelEntry;
+  builtAt: string;
+  selection?: ProductSelection;
+  children: (fit: ProductFitView) => ReactNode;
+}) {
+  const fit = useProductFit(slot, entry, builtAt, selection);
+  return children({
+    show: fit.show,
+    header: <HeaderFit p={fit} />,
+    runner: fit.runner,
+    ...(slot === 'gpu' && !selection ? {
+      offerLine: (listing: BaseListing) => <OfferFitLine p={fit} l={listing} />,
+      offerAction: (listing: BaseListing, short: boolean) => <OfferFitAction p={fit} l={listing} short={short} />,
+    } : {}),
+  });
+}
+
 /** The page's fit state: the saved build now, the check's code after the first paint. */
 export function useProductFit(slot: Slot, entry: ModelEntry, builtAt: string, selection?: ProductSelection): ProductFit {
   const [stored, setStored] = useState(readBuild);

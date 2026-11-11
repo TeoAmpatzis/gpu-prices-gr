@@ -129,6 +129,7 @@ def monitor(name: str) -> dict:
     return specs.parse_monitor({**specs.jsonld_labels(html), **specs.labels(html)})
 
 
+expect("zero refresh is unknown", specs.parse_monitor({"Συχνότητα Ανανέωσης Εικόνας": "0 Hz"})["pgHz"], None)
 g50f = monitor("samsung-odyssey-g50f")
 expect("monitor: Odyssey G5 G50F identity and display", (g50f["gtin"], g50f["pgSize"], g50f["pgWidth"], g50f["pgHeight"], g50f["pgHz"], g50f["pgPanel"]),
        ("8806097817796", 27.0, 2560, 1440, 180, "IPS"))

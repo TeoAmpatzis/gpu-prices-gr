@@ -181,19 +181,25 @@ def write_history(cat: str, model_key, out_dir: Path, listings: list[dict], fres
 
 
 def finish(cat: Category, out_dir: Path, listings: list[dict]) -> None:
-    """Cached product-page specs (shops, then makers), then fields shared across a model's listings."""
+    """Cached observations and shared fields, with early-category identity stable before publication."""
     specs.apply(cat.name, out_dir, listings)
-    dropped = ranges.clean(cat.name, listings, None)  # scraping errors out, before SAFER joins values
-    dropped.update(makers.apply(cat.name, listings))  # maker values are checked inside; counted here too
+    if cat.name in specs.EARLY and cat.settle:
+        overrides.apply(cat.name, listings, cat.model_key)  # exact-ID observations participate in identity
+        cat.settle(listings)
+    accepted = [l for l in listings if not l.get("reject")] if cat.rejects else listings
+    dropped = ranges.clean(cat.name, accepted, None)  # scraping errors out, before SAFER joins values
+    dropped.update(makers.apply(cat.name, accepted))  # maker values are checked inside; counted here too
     disagreements.clear()
-    share_fields(listings, cat.shared, cat.model_key)
+    share_fields(accepted, cat.shared, cat.model_key)
     for fields, key in cat.shared_by:
-        share_fields(listings, fields, key)
+        share_fields(accepted, fields, key)
     if disagreements:
         print(f"[{cat.name}] sites disagree by >5 (safer value kept): {dict(disagreements)}")
     if dropped:
         print(f"[{cat.name}] range: values dropped as implausible: {dict(dropped)}")
-    overrides.apply(cat.name, listings, cat.model_key)  # manual fixes win over everything above
+    overrides.apply(cat.name, accepted, cat.model_key)  # manual fixes win over everything above
+    if cat.name in specs.EARLY and cat.settle:
+        cat.settle(listings)  # shared observations must not rename the next retained scrape
 
 
 def stage(out_dir: Path, listings: list[dict], sources_meta: dict[str, dict], run_at: str) -> None:
@@ -240,8 +246,15 @@ def collect_specs(cats: list[Category], budget: dict[str, int], makers_budget: i
         shops.result()
         makers_done.result()
     for cat, data in loaded:
-        finish(cat, DATA_DIR / cat.name, data["listings"])
-        (DATA_DIR / cat.name / "latest.json").write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+        out_dir = DATA_DIR / cat.name
+        finish(cat, out_dir, data["listings"])
+        if cat.name in specs.EARLY:
+            stage(out_dir, data["listings"], {}, data["updatedAt"])
+            for source, meta in data["sources"].items():
+                meta["count"] = sum(l["source"] == source for l in data["listings"])
+            write_image_urls(out_dir, data["listings"], cat.model_key)
+            data["listings"].sort(key=lambda l: (l["chip"], l["price"]))
+        (out_dir / "latest.json").write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
 def report_sources(category: str, sources: dict[str, dict], attempted: list[str]) -> None:
@@ -325,9 +338,9 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
             print(f"[{cat.name}/{name}] FAILED — keeping {len(old)} previous listings")
 
     out_dir.mkdir(parents=True, exist_ok=True)
-    if cat.name in specs.EARLY:  # identity needs the cached page observations (EAN, pg*) before it is decided
-        specs.apply(cat.name, out_dir, listings)
-    if cat.settle:  # before any model key is used (photos, specs sharing, history)
+    if cat.name in specs.EARLY:
+        finish(cat, out_dir, listings)
+    elif cat.settle:  # before any model key is used (photos, specs sharing, history)
         cat.settle(listings)
     if cat.rejects:
         stage(out_dir, listings, sources_meta, run_at)
@@ -338,7 +351,8 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
         write_image_urls(out_dir, listings, cat.model_key)
     else:
         drop_images(listings)
-    finish(cat, out_dir, listings)
+    if cat.name not in specs.EARLY:
+        finish(cat, out_dir, listings)
     listings.sort(key=lambda l: (l["chip"], l["price"]))
     if with_shipping:
         enrich_shipping(cat, listings)

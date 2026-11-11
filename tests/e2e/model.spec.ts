@@ -275,6 +275,7 @@ for (const [name, size] of [['360', { width: 360, height: 740 }], ['1366', { wid
       if (size.width < 1024) for (const r of await ranges.all()) expect((await r.boundingBox())!.height).toBeGreaterThanOrEqual(44);
       // The chart's date labels: first one (left edge) per range.
       const firstLabel = async () => section.locator('svg text').filter({ hasText: /^\d\d\/\d\d(\/\d\d)?$/ }).first().textContent();
+      await section.scrollIntoViewIfNeeded();
       await expect(section.locator('svg')).toBeVisible();
       const l90 = await firstLabel();
       await section.locator('[data-range="30"]').click();

@@ -46,7 +46,7 @@ NOISE = re.compile(
     r"^(\d{3,4}X\d{3,4}|\d+(\.\d+)?(HZ|MS|K|\"|''|IN(?:CH(?:ES)?)?|NITS?|CD)|\d[KP]\d?[KP]?|DISPLAYHDR\d*|HDR\d*|HDMI[\d.]*|DP[\d.]*|"
     r"USB-?C?\d*|VGA|DVI|IPS|VA|TN|OLED|QD-?OLED|WQHD\+?|QHD|FHD|UHD|WUXGA|ULTRAWIDE|CURVED|FLAT|GAMING|MONITOR|LED|LCD|"
     r"FREESYNC|G-?SYNC|VESA|BLACK|WHITE|PORTABLE|PRO|PLUS|ESSENTIAL|ODYSSEY|ULTRAGEAR|ZENSCREEN|ULTRASHARP|PROART|"
-    r"THINKVISION|MAG|MPG|MAB|24/7|16:9|2026|2025|2024|\d{3,4}R)$"
+    r"THINKVISION|MAG|MPG|MAB|24/7|16:9|2026|2025|2024|\d{3,4}R|\d+(?:YEARS?W?|YRW?))$"
 )
 SHOP_SKU = re.compile(r"^\d{3}-[A-Z]{4}$")  # Dell "210-BMJC" appended by Snif
 COLOURS = {"BLACK": "black", "WHITE": "white", "SILVER": "silver", "GREY": "grey", "GRAY": "grey", "ICE": "white",
@@ -201,7 +201,7 @@ def parse(title: str, specs: str = "") -> Parsed:
     width, height = (int(res.group(1)), int(res.group(2))) if res else (None, None)
     if height is None:
         height = next((h for word, h in HEIGHT_WORDS if re.search(rf"\b{re.escape(word)}\b", text)), None)
-    hz = re.search(r"(\d{2,3})\s*HZ", fold(specs)) or re.search(r"(\d{2,3})\s*HZ", folded)
+    hz = re.search(r"(?<![\d.,])(\d{2,4})\s*HZ\b", fold(specs)) or re.search(r"(?<![\d.,])(\d{2,4})\s*HZ\b", folded)
     year = re.search(r"(?<![A-Z0-9.])(20[2-3]\d)(?![A-Z0-9.])", folded)  # on its own: "E2020H" is a code
     colour = next((COLOURS[w] for w in re.findall(r"[A-ZΑ-Ω]+", greek) if w in COLOURS), None)
     brand = _brand(title)

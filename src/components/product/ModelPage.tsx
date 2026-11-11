@@ -2,7 +2,7 @@
 // no-longer-available / loading states), then the header and the shops table (task 6), price history (task 7), fit
 // with the saved build and add / replace (task 8).
 import { PackageX } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { CATEGORIES, type CategoryConfig } from '../../lib/categories';
 import { groupModels, ownTotal } from '../../lib/data';
 import { tr, useLang } from '../../lib/i18n';
@@ -20,7 +20,7 @@ import { Breadcrumbs, type Crumb } from '../../ui/nav';
 import { ErrorState, SkeletonRows } from '../../ui/states';
 import { UI } from '../../ui/strings';
 import { Alternatives } from './Alternatives';
-import { HeaderFit, OfferFitAction, OfferFitLine, useProductFit, type ProductFit } from './fitUi';
+import type { ProductFitView } from './fitUi';
 import { OffersTable } from './OffersTable';
 import { PriceHistory } from './PriceHistory';
 import { CompareButton } from '../compare/CompareButton';
@@ -31,6 +31,8 @@ import { Variants } from './Variants';
 import './product.css';
 
 type State = { for: string; res: ModelResolution } | { for: string; error: string } | null;
+
+const ProductWithFit = lazy(() => import('./fitUi').then((m) => ({ default: m.ProductWithFit })));
 
 export default function ModelPage({ cat, slug }: { cat: Category; slug: string }) {
   const lang = useLang();
@@ -114,7 +116,11 @@ export default function ModelPage({ cat, slug }: { cat: Category; slug: string }
         </div>
       );
       return res.entry.parts ? (
-        <ProductWithFit cat={cat} entry={res.entry} sources={res.sources} builtAt={res.builtAt} crumbs={crumbs(res.entry.chip)} selection={selection ?? undefined} />
+        <Suspense fallback={<SkeletonRows />}>
+          <ProductWithFit slot={cat as Slot} entry={res.entry} builtAt={res.builtAt} selection={selection ?? undefined}>
+            {(fit) => <Product cat={cat} entry={res.entry} sources={res.sources} crumbs={crumbs(res.entry.chip)} fit={fit} selection={selection ?? undefined} />}
+          </ProductWithFit>
+        </Suspense>
       ) : (
         <Product cat={cat} entry={res.entry} sources={res.sources} crumbs={crumbs(res.entry.chip)} fit={null} selection={selection ?? undefined} />
       );
@@ -127,14 +133,8 @@ export default function ModelPage({ cat, slug }: { cat: Category; slug: string }
 
 type ProductProps = { cat: Category; entry: ModelEntry; sources: ModelChunk['sources']; crumbs: Crumb[]; selection?: ProductSelection };
 
-/** A builder part's page: the fit with the saved build (the nine categories are the builder's nine slots). */
-function ProductWithFit(props: ProductProps & { builtAt: string }) {
-  const fit = useProductFit(props.cat as Slot, props.entry, props.builtAt, props.selection);
-  return <Product {...props} fit={fit} />;
-}
-
 /** The model's page proper: title, header, shops table, price history, fit with the build. */
-function Product({ cat, entry, sources, crumbs, fit, selection }: ProductProps & { fit: ProductFit | null }) {
+function Product({ cat, entry, sources, crumbs, fit, selection }: ProductProps & { fit: ProductFitView | null }) {
   const cfg = CATEGORIES[cat] as unknown as CategoryConfig<BaseListing>;
   // The model as the category page groups it (same ownTotal, same column values); every listing of the entry is this
   // one model, so the key is the entry's.
@@ -154,7 +154,7 @@ function Product({ cat, entry, sources, crumbs, fit, selection }: ProductProps &
           cheapest={selected ? ownTotal(selected) : offers[0]}
           action={
             <>
-              {fit && <HeaderFit p={fit} />}
+              {fit?.header}
               <CompareButton item={{ cat, slug: entry.slug, ...(selected ? { selection: { source: selected.source, id: selected.id } } : {}) }} name={selected?.title ?? entry.chip} />
             </>
           }
@@ -173,8 +173,8 @@ function Product({ cat, entry, sources, crumbs, fit, selection }: ProductProps &
           alternatives={!!selected}
           familySlug={entry.slug}
           // Graphics cards: the builder picks a card (an offer), so each offer has its verdict and button.
-          fitLine={fit?.slot === 'gpu' && !selected ? (l) => <OfferFitLine p={fit} l={l} /> : undefined}
-          fitAction={fit?.slot === 'gpu' && !selected ? (l, short) => <OfferFitAction p={fit} l={l} short={short} /> : undefined}
+          fitLine={fit?.offerLine}
+          fitAction={fit?.offerAction}
         />}
         <div className={`product-analysis ${fit?.show ? 'product-analysis-with-fit' : ''}`}>
         <PriceHistory entry={entry} />

@@ -30,6 +30,37 @@ const TINY_WEBP = Buffer.from(
   'base64',
 );
 
+test('monitor product loads without PC-builder UI code', async ({ page }) => {
+  const fixtures = buildMonitorFixtures();
+  await setupDeterministicRoutes(page, fixtures, () => null);
+  await page.addInitScript(() => localStorage.clear());
+  const builderScripts: string[] = [];
+  page.on('request', (request) => {
+    if (/\/assets\/(?:buildStore|fitUi)-[^/]+\.js/.test(request.url())) builderScripts.push(request.url());
+  });
+  await page.goto(`/monitor/${fixtures.slugOf(fixtures.dell)}`);
+  await expect(page.locator('[data-product-header] h1')).toHaveText(fixtures.dell.chip);
+  await page.waitForLoadState('networkidle');
+  expect(builderScripts).toEqual([]);
+});
+
+test('below-fold product chart loads when scrolled into view', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 600 });
+  const fixtures = buildMonitorFixtures();
+  await setupDeterministicRoutes(page, fixtures, () => null);
+  const chartScripts: string[] = [];
+  page.on('request', (request) => {
+    if (/\/assets\/PriceChart-[^/]+\.js/.test(request.url())) chartScripts.push(request.url());
+  });
+  await page.goto(`/monitor/${fixtures.slugOf(fixtures.dell)}`);
+  await expect(page.locator('[data-product-header] h1')).toHaveText(fixtures.dell.chip);
+  await page.waitForLoadState('networkidle');
+  expect(chartScripts).toEqual([]);
+  await page.locator('.product-history-card').scrollIntoViewIfNeeded();
+  await expect(page.locator('.product-history-card svg')).toBeVisible();
+  expect(chartScripts).toHaveLength(1);
+});
+
 function acceptedListing(id: string, price: number, extra: Partial<MonitorListing> = {}): MonitorListing {
   const row = CORPUS.find((entry) => entry.id === id);
   if (!row || row.expectedReject !== null || !row.expectedSettled) {

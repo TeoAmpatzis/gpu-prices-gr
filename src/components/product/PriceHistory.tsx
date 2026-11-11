@@ -2,7 +2,7 @@
 // 30 days / 90 days / 1 year / All, the all-time low marked, and one sentence against the 90-day median.
 // The chart is PriceChart (lazy, shared with the category page's expanded row); the low is data.historyLow (the
 // category page's allTimeLow rule); the sentence is lib/priceSummary.
-import { lazy, Suspense, useId, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { historyLow } from '../../lib/data';
 import { tr, useLang, type Text } from '../../lib/i18n';
 import { DEFAULT_RANGE, lowSentence, medianSummary, RANGES, rangeStart, type HistoryRange } from '../../lib/priceSummary';
@@ -18,6 +18,24 @@ export function PriceHistory({ entry }: { entry: ModelEntry }) {
   const lang = useLang();
   const titleId = useId();
   const [range, setRange] = useState<HistoryRange>(DEFAULT_RANGE);
+  const chart = useRef<HTMLDivElement>(null);
+  const [chartReady, setChartReady] = useState(false);
+  useEffect(() => {
+    const node = chart.current;
+    if (!node) return;
+    if (typeof IntersectionObserver === 'undefined') {
+      const timer = window.setTimeout(() => setChartReady(true));
+      return () => window.clearTimeout(timer);
+    }
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        setChartReady(true);
+        observer.disconnect();
+      }
+    });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
   const low = useMemo(() => historyLow(entry.history, entry.imported ?? undefined), [entry]);
   const summary = useMemo(() => medianSummary(entry.history), [entry]);
 
@@ -43,7 +61,10 @@ export function PriceHistory({ entry }: { entry: ModelEntry }) {
               type="button"
               aria-pressed={range === r}
               data-range={r}
-              onClick={() => setRange(r)}
+              onClick={() => {
+                setRange(r);
+                setChartReady(true);
+              }}
               className={`tap rounded-md px-3 py-1 text-sm font-medium transition ${
                 range === r ? 'bg-panel text-fg shadow-sm ring-1 ring-accent' : 'text-muted hover:text-fg'
               }`}
@@ -57,9 +78,13 @@ export function PriceHistory({ entry }: { entry: ModelEntry }) {
       <p data-median className="text-sm font-medium text-fg">
         {sentence}
       </p>
-      <Suspense fallback={<div className="h-48 rounded-xl bg-panel ring-1 ring-edge" />}>
-        <PriceChart points={entry.history} range={range} low={low?.price ?? null} />
-      </Suspense>
+      <div ref={chart}>
+        {chartReady ? (
+          <Suspense fallback={<div className="h-48 rounded-xl bg-panel ring-1 ring-edge" />}>
+            <PriceChart points={entry.history} range={range} low={low?.price ?? null} />
+          </Suspense>
+        ) : <div className="h-48 rounded-xl bg-panel ring-1 ring-edge" />}
+      </div>
       {low && (
         <p data-all-time-low={low.source} className="text-sm text-muted">
           {lowText}
