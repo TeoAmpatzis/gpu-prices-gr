@@ -1,0 +1,42 @@
+[
+  {
+    "kind": "observed",
+    "source": "snif",
+    "url": "https://www.snif.gr/category/1919852/",
+    "title": "Ποντίκι Logitech M171 Wireless Black 910-004424",
+    "expected": {"brand": "Logitech", "connection": "wireless", "colour": "black", "partNumber": "910-004424", "gaming": null, "dpi": null}
+  },
+  {
+    "kind": "observed",
+    "source": "snif",
+    "url": "https://www.snif.gr/category/1919852/",
+    "title": "MARVO M450 Scorpion Ενσύρματο Gaming Mouse",
+    "expected": {"brand": "MARVO", "connection": "wired", "gaming": true, "rgb": null}
+  },
+  {
+    "kind": "synthetic",
+    "source": "skroutz",
+    "title": "Logitech G502 X Plus Ασύρματο Μαύρο",
+    "specs": "Κουμπιά:13, 25600 DPI, RGB, Polling Rate:1000Hz",
+    "expected": {"brand": "Logitech", "connection": "wireless", "colour": "black", "buttons": 13, "dpi": 25600, "pollingHz": 1000, "rgb": true}
+  },
+  {
+    "kind": "synthetic",
+    "source": "skroutz",
+    "title": "Microsoft Example Mouse Ασύρματο Λευκό",
+    "specs": "RF 2.4GHz, Bluetooth, USB, Επαναφορτιζόμενο",
+    "expected": {"connection": "wireless", "rf": true, "bluetooth": true, "rechargeable": true, "colour": "white"}
+  },
+  {
+    "kind": "synthetic",
+    "source": "bestprice",
+    "title": "Mouse HP Example Vertical Silent 1600dpi Gray 6VY96AA",
+    "expected": {"brand": "HP", "dpi": 1600, "ergonomic": true, "silent": true, "colour": "grey", "partNumber": "6VY96AA"}
+  },
+  {
+    "kind": "synthetic",
+    "source": "snif",
+    "title": "Mars Gaming Example Mini Max V2 Mouse Ασύρματο & Ενσύρματο White",
+    "expected": {"brand": "Mars Gaming", "connection": "both", "colour": "white"}
+  }
+]

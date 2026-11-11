@@ -21,6 +21,7 @@ export default defineConfig([
     'public/',
     'scraper/',
     'docs/',
+    'local/', // project-local scratch files and captured test output
     '.vercel/',
     '.superpowers/**',
     '.claude/', // git worktrees live in .claude/worktrees/

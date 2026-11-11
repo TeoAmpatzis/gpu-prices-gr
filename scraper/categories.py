@@ -11,6 +11,7 @@ import normalize_cooling
 import normalize_cpu
 import normalize_mobo
 import normalize_monitor
+import normalize_mouse
 import normalize_psu
 import normalize_ram
 import normalize_storage
@@ -35,6 +36,8 @@ class Category:
     # Optional attributes stamped on every listing of the BestPrice slice at the same index, when
     # a slice is a spec filter ("4 RAM slots") rather than a price range.
     bestprice_tags: tuple[dict, ...] = ()
+    # Per-path observations from Skroutz's separate lists (e.g. gaming and office mice).
+    skroutz_tags: tuple[dict, ...] = ()
     # Fields shared by every listing of a model (see main.share_fields): a missing value is filled
     # from the model's other listings (bools: true if any listing says so), so a spec only one site
     # states reaches all of them.
@@ -220,6 +223,18 @@ CATEGORIES = {
         # A spec one shop's title states reaches the model's other listings (main.share_fields), as for every other part.
         # Safe: settle() keeps listings that disagree on size, resolution, refresh or panel in separate models.
         shared=("size", "height", "width", "hz", "panel"),
+        rejects=True,
+        images=True,
+    ),
+    "mouse": Category(
+        name="mouse",
+        # Source URLs/tags are activated only after collector tests and the price-slice preflight.
+        skroutz_paths=(),
+        bestprice_paths=(),
+        make_listing=normalize_mouse.make_listing,
+        model_key=lambda l: names.model_key(l["chip"]),
+        settle=normalize_mouse.settle,
+        shared=("dpi", "pollingHz", "buttons", "rgb", "gaming", "bluetooth", "rf", "rechargeable", "ergonomic", "silent"),
         rejects=True,
         images=True,
     ),

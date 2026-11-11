@@ -17,6 +17,7 @@ export function productSpecs(cat: Category, listing: BaseListing, lang: Lang): S
     typeof l[key] === 'number' && Number(l[key]) > 0 ? `${(listing.price / (Number(l[key]) / divisor)).toFixed(2)} ${unit}` : null;
   const spec = (el: string, en: string, value: string | null, hide = false): Spec => ({ label: { el, en }, value, hide });
   switch (cat) {
+    case 'mouse': return [];
     case 'gpu':
       return [
         spec('Μήκος', 'Length', number('lengthMm', ' mm')),

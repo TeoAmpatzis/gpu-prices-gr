@@ -53,6 +53,7 @@ export const RANKING: Record<Category, RankConfig> = {
   cooler: { weights: { popularity: 0.55, modern: 0.15, price: 0.3, value: 0 }, priceBand: [0.2, 0.8], saleBoost: DEAL_BOOST },
   // Monitors (hidden): popularity (offer coverage) and price fit only; no invented quality score (FINAL_PLAN section 3).
   monitor: { weights: { popularity: 0.7, modern: 0, price: 0.3, value: 0 }, priceBand: [0.2, 0.8], saleBoost: DEAL_BOOST },
+  mouse: { weights: { popularity: 0.7, modern: 0, price: 0.3, value: 0 }, priceBand: [0.2, 0.8], saleBoost: DEAL_BOOST },
 };
 
 // ---------- "modern" tables (0–1) ----------
@@ -133,6 +134,7 @@ const MODERN: { [C in Category]: (m: Model<never>) => number } = {
     return /AM5|LGA1851/.test(sockets) ? 1 : 0.3;
   },
   monitor: () => 0, // weight 0 above: nothing says one monitor is "more modern" than another
+  mouse: () => 0,
 };
 
 // ---------- scoring ----------

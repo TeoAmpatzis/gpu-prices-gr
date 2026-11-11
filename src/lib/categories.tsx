@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Box, CircuitBoard, Cpu, Fan, HardDrive, MemoryStick, Microchip, Monitor, Plug, Snowflake, type LucideIcon } from 'lucide-react';
+import { Box, CircuitBoard, Cpu, Fan, HardDrive, MemoryStick, Microchip, Monitor, Mouse, Plug, Snowflake, type LucideIcon } from 'lucide-react';
 import type {
   BaseListing,
   CaseListing,
@@ -10,6 +10,7 @@ import type {
   GpuListing,
   MoboListing,
   MonitorListing,
+  MouseListing,
   PsuListing,
   RamListing,
   StorageListing,
@@ -29,6 +30,7 @@ import {
   MEMORY,
   MOBO_RULES,
   MONITOR_RULES,
+  MOUSE_RULES,
   NO_RATING,
   OTHER,
   PSU_RULES,
@@ -467,9 +469,27 @@ export const MONITOR: CategoryConfig<MonitorListing> = {
   ],
 };
 
+export const MOUSE: CategoryConfig<MouseListing> = {
+  ...MOUSE_RULES,
+  tab: { el: 'Ποντίκια', en: 'Mice' },
+  title: CAT_PAGE.mouse.title,
+  subtitle: CAT_PAGE.mouse.subtitle,
+  icon: Mouse,
+  empty: noResults('ποντίκια', 'mice'),
+  searchPlaceholder: search('M171, MX Master 3S'),
+  groupLabel: { el: 'Σύνδεση', en: 'Connection' },
+  groupParam: 'connection',
+  groupDot: {},
+  sortByGroup: false,
+  tierScore: () => 0,
+  before: [],
+  after: [],
+};
+
 export const CATEGORIES = {
   gpu: GPU, cpu: CPU, mobo: MOBO, ram: RAM, storage: STORAGE, psu: PSU, case: CASE, fan: FAN, cooler: COOLER,
   monitor: MONITOR,
+  mouse: MOUSE,
 } as const;
 /** The categories the site builds data for: those the registry has switched on. A hidden category stays out of the build. */
 export const CATEGORY_IDS = (Object.keys(CATEGORIES) as Category[]).filter((id) => REGISTRY[id].enabled);

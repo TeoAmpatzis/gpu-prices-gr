@@ -12,6 +12,7 @@ import type {
   GpuListing,
   MoboListing,
   MonitorListing,
+  MouseListing,
   PsuListing,
   RamListing,
   StorageListing,
@@ -481,9 +482,20 @@ export const MONITOR_RULES: CategoryRules<MonitorListing> = {
   ],
 };
 
+// Disabled scaffold: filters are added after the first mouse data review.
+export const MOUSE_RULES: CategoryRules<MouseListing> = {
+  id: 'mouse',
+  groups: [],
+  group: (l) => l.connection ?? OTHER,
+  modelKey: (l) => productKey(l.chip),
+  isPro: () => false,
+  searchText: (l) => `${l.chip} ${l.title}`,
+  extraFilters: [],
+};
+
 export const RULES = {
   gpu: GPU_RULES, cpu: CPU_RULES, mobo: MOBO_RULES, ram: RAM_RULES, storage: STORAGE_RULES, psu: PSU_RULES,
-  case: CASE_RULES, fan: FAN_RULES, cooler: COOLER_RULES, monitor: MONITOR_RULES,
+  case: CASE_RULES, fan: FAN_RULES, cooler: COOLER_RULES, monitor: MONITOR_RULES, mouse: MOUSE_RULES,
 } as const;
 
 /** A category's rules for code that handles every category alike (the facet worker and its fallback). */

@@ -1,7 +1,7 @@
 // The site's sections, in one place: names (docs/phase1/glossary.md), icons, the "Εξαρτήματα" menu groups
 // (plan, "Αρχική σελίδα, πλοήγηση και URLs") and the words global search matches categories by.
 // Σύγκριση and Προσφορές are not listed until their pages exist (owner, 2026-10-04; backlog #11, #12).
-import { Box, CircuitBoard, Cpu, Fan, HardDrive, MemoryStick, Microchip, Monitor, Plug, Snowflake, Wrench, type LucideIcon } from 'lucide-react';
+import { Box, CircuitBoard, Cpu, Fan, HardDrive, MemoryStick, Microchip, Monitor, Mouse, Plug, Snowflake, Wrench, type LucideIcon } from 'lucide-react';
 import type { Text } from '../lib/i18n';
 import { REGISTRY } from '../lib/registry';
 import type { Category } from '../types';
@@ -27,6 +27,7 @@ export const CATS: Record<Category, Section> = {
   fan: { name: { el: 'Ανεμιστήρες', en: 'Case fans' }, one: { el: 'Ανεμιστήρες', en: 'Case fans' }, icon: Fan, words: ['ανεμιστήρας', 'fan', 'fans'] },
   // In the menu only once published (registry `visible`).
   monitor: { name: { el: 'Οθόνες', en: 'Monitors' }, one: { el: 'Οθόνη', en: 'Monitor' }, icon: Monitor, words: ['οθόνη', 'monitor', 'display', 'screen'] },
+  mouse: { name: { el: 'Ποντίκια', en: 'Mice' }, one: { el: 'Ποντίκι', en: 'Mouse' }, icon: Mouse, words: ['ποντίκι', 'ποντίκια', 'mouse', 'mice'] },
 };
 
 export const BUILDER: Section = { name: 'PC Builder', icon: Wrench, words: ['builder', 'συναρμολόγηση', 'build', 'σύνθεση'] };

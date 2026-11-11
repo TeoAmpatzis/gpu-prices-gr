@@ -34,6 +34,7 @@ export const MIN_SPECS = 4;
  * - storage: the spec line alone (LINE_ONLY): type, size, read speed + DRAM (SSD) / rpm + cache (HDD)
  */
 export const FILL: Record<Category, (number | 'group' | 'rgb')[]> = {
+  mouse: [],
   gpu: [1, 2],
   cpu: [2, 3],
   mobo: [],

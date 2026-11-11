@@ -37,6 +37,7 @@ const mm = (lang: Lang, n: number | null) => (n == null ? null : `${num(lang, n)
 const labelled = (label: string, v: string | null) => (v == null ? null : `${label} ${v}`);
 
 const SPECS: { [C in Category]: (ls: BaseListing[], lang: Lang) => Spec[] } = {
+  mouse: () => [],
   gpu: (raw, lang) => {
     const ls = raw as L<GpuListing>;
     const vram = pick(ls, (l) => l.vram);
@@ -197,6 +198,7 @@ const firstOf = <T, V>(ls: L<T>, f: (l: T) => V | null | undefined): V | null =>
 };
 
 const FULL: { [C in Category]: (ls: BaseListing[], lang: Lang, est?: Estimate) => Row[] } = {
+  mouse: () => [],
   gpu: (raw, lang, est) => {
     const ls = raw as L<GpuListing>;
     const vram = pick(ls, (l) => l.vram);

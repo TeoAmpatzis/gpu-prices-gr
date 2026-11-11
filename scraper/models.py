@@ -260,3 +260,35 @@ class MonitorListing:
 
     def to_dict(self) -> dict:
         return listing_dict(self)
+
+
+@dataclass
+class MouseListing:
+    """One mouse offer. Null specs are not stated; colours are variants of the settled model."""
+
+    id: str
+    source: str
+    title: str
+    url: str
+    price: float
+    shopCount: int | None
+    brand: str
+    chip: str
+    scrapedAt: str
+    connection: str | None = None
+    dpi: int | None = None
+    pollingHz: int | None = None
+    buttons: int | None = None
+    rgb: bool | None = None
+    gaming: bool | None = None
+    bluetooth: bool | None = None
+    rf: bool | None = None
+    rechargeable: bool | None = None
+    ergonomic: bool | None = None
+    silent: bool | None = None
+    colour: str | None = None
+    partNumber: str | None = None
+    reject: str | None = None
+
+    def to_dict(self) -> dict:
+        return listing_dict(self)

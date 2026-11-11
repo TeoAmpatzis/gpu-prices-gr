@@ -88,6 +88,24 @@ export interface RamListing extends BaseListing {
   formFactor: 'Desktop' | 'Laptop' | 'Server';
 }
 
+// A mouse offer (scraper/models.py MouseListing). Null means the source did not state the spec.
+export interface MouseListing extends BaseListing {
+  connection: 'wired' | 'wireless' | 'both' | null;
+  dpi: number | null;
+  pollingHz: number | null;
+  buttons: number | null;
+  rgb: boolean | null;
+  gaming: boolean | null;
+  bluetooth: boolean | null;
+  rf: boolean | null;
+  rechargeable: boolean | null;
+  ergonomic: boolean | null;
+  silent: boolean | null;
+  colour: string | null;
+  partNumber: string | null;
+  reject?: string | null;
+}
+
 // A monitor offer (scraper/models.py MonitorListing). Every spec is what THIS listing states; null = not stated.
 // Never a builder part: peripherals do not feed the compatibility engine.
 export interface MonitorListing extends BaseListing {

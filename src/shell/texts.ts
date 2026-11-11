@@ -132,4 +132,11 @@ export const CAT_PAGE: Record<Category, { title: Text; subtitle: Text }> = {
       en: 'The lowest computer monitor prices in Greece, by model, from Skroutz, BestPrice and Snif.',
     },
   },
+  mouse: {
+    title: { el: 'Ποντίκια', en: 'Mice' },
+    subtitle: {
+      el: 'Οι χαμηλότερες τιμές ποντικιών στην Ελλάδα, ανά μοντέλο, από Skroutz, BestPrice και Snif.',
+      en: 'The lowest mouse prices in Greece, by model, from Skroutz, BestPrice and Snif.',
+    },
+  },
 };

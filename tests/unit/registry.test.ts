@@ -4,11 +4,28 @@ import { CATEGORIES, CATEGORY_IDS } from '../../src/lib/categories';
 import { REGISTRY, slotOf, type Category } from '../../src/lib/registry';
 import { SLOT_OF } from '../../src/lib/pick';
 import { SLOTS } from '../../src/lib/slots';
+import { CATEGORY_LIST, matchRoute } from '../../src/lib/routes';
+import { isComparable } from '../../src/lib/compare/refs';
+import { GROUPS } from '../../src/shell/nav';
 
 const text = (path: string) => readFileSync(path, 'utf8');
 const ids = Object.keys(REGISTRY) as Category[];
 
 describe('category registry', () => {
+  it('keeps the mouse scaffold disabled, unpublished and outside the PC builder', () => {
+    const mouse = 'mouse' as Category;
+    expect(REGISTRY).toHaveProperty('mouse', { domain: 'peripherals', enabled: false, visible: false });
+    expect(slotOf(mouse)).toBeNull();
+    expect(SLOTS).not.toContain(mouse);
+    expect(SLOT_OF).not.toHaveProperty(mouse);
+    expect(CATEGORY_IDS).not.toContain(mouse);
+    expect(CATEGORY_LIST).toEqual(['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler', 'monitor']);
+    expect(GROUPS.flatMap((group) => group.cats)).not.toContain(mouse);
+    expect(matchRoute('/mouse')).toEqual({ kind: 'notFound' });
+    expect(matchRoute('/mouse/logitech-m171')).toEqual({ kind: 'notFound' });
+    expect(isComparable(mouse)).toBe(false);
+  });
+
   it('lists the same categories as the site config', () => {
     expect(Object.keys(CATEGORIES).sort()).toEqual([...ids].sort());
   });

@@ -9,6 +9,9 @@ LISTS, SPECS, SHIPPING, HISTORY = "lists", "specs", "shipping", "history"
 OPERATIONS = (LISTS, SPECS, SHIPPING, HISTORY)
 
 UNSUPPORTED: dict[tuple[str, str], frozenset[str]] = {
+    ("skroutz", "mouse"): frozenset({SPECS, SHIPPING, HISTORY}),
+    ("eshop", "mouse"): frozenset(OPERATIONS),
+    ("shopflix", "mouse"): frozenset(OPERATIONS),
     ("skroutz", "monitor"): frozenset({SPECS, SHIPPING, HISTORY}),
     # Not monitor sources (Phase 0: O5 e-shop's offset paging against its robots.txt, O6 Shopflix access).
     ("eshop", "monitor"): frozenset(OPERATIONS),

@@ -734,6 +734,7 @@ export const MAX_DROP = 0.3;
  * the live site unreachable): about half of the 2026-10-01 counts.
  */
 export const MIN_MODELS: Record<Category, number> = {
+  mouse: 1, // disabled: replace with the reviewed first-data minimum before enabling the category
   gpu: 49, // of 98
   cpu: 208, // of 417
   mobo: 606, // of 1212
