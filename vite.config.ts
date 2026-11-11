@@ -1,4 +1,4 @@
-import { copyFileSync } from 'node:fs';
+import { copyFileSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -13,6 +13,9 @@ const img = {
     rewrite: (path: string) => `/builddraft-images${path}`,
   },
 };
+
+const vercel = JSON.parse(readFileSync(new URL('./vercel.json', import.meta.url), 'utf8')) as { headers: { source: string; headers: { key: string; value: string }[] }[] };
+const securityHeaders = Object.fromEntries((vercel.headers.find((h) => h.source === '/(.*)')?.headers ?? []).map((h) => [h.key, h.value]));
 
 /**
  * Real URLs: the host answers unknown addresses with 404.html (vercel.json rewrites only the app's own
@@ -34,6 +37,8 @@ function notFoundPage(): Plugin {
 
 export default defineConfig({
   plugins: [react(), dataFiles(), notFoundPage()],
-  server: { port: 5174, host: true, proxy: img },
-  preview: { proxy: img },
+  // The dev server is reachable from other devices only on request (phone testing): DEV_HOST=1 npm run dev.
+  server: { port: 5174, host: !!process.env.DEV_HOST, proxy: img },
+  // The preview sends the site's security headers (vercel.json), so the browser tests run under the live policy.
+  preview: { proxy: img, headers: securityHeaders },
 });

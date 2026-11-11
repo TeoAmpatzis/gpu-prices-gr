@@ -30,17 +30,18 @@ describe('homepage derived feed', () => {
     expect(file.categories.find((c) => c.id === 'ram')).toMatchObject({ count: 0, min: null });
   });
 
-  it('uses existing median logic, excludes stale/glitch/sparse history, and limits drops in stable order', () => {
-    const entries = Array.from({ length: 7 }, (_, i) => ({ ...entry, slug: `family-${i}`, key: `family-${i}` }));
+  it('lists the deals the badges show (30-day reference), leaves out stale or dearer listings, and limits drops in stable order', () => {
+    const deal = { ...listing, dealPct: 20, dealRef: 100 } as BaseListing;
+    const entries = Array.from({ length: 7 }, (_, i) => ({ ...entry, listings: [deal], slug: `family-${i}`, key: `family-${i}` }));
     const file = homeFile({ gpu: latest }, { gpu: chunks(entries) }, auto, slots, at);
     expect(file.deals).toHaveLength(5);
     expect(file.deals.map((d) => d.href)).toEqual(entries.slice(0, 5).map((e) => `/gpu/${e.slug}`));
     expect(file.deals[0]).toMatchObject({ price: 80, median: 100, percent: 20, checkedAt: at, date: '2026-11-04' });
     for (const bad of [
-      { ...entry, history: history.slice(0, 10) },
-      { ...entry, history: history.map((p) => ({ ...p, d: p.d.replace('2026-11', '2026-10') })) },
-      { ...entry, history: history.map((p, i) => i === 39 ? { ...p, g: 1 as const } : p) },
-      { ...entry, listings: [{ ...listing, price: 95 }] },
+      { ...entry, listings: [listing] }, // no deal decided by the build
+      { ...entry, listings: [{ ...deal, scrapedAt: '2026-11-02T12:00:00Z' }] }, // not checked in the last 24 hours
+      { ...entry, listings: [{ ...deal, price: 95 }] }, // the model is at a deal, this offer is not
+      { ...entry, listings: [{ ...deal, price: 30 }] }, // an implausible drop
     ]) expect(homeFile({ gpu: latest }, { gpu: chunks([bad]) }, auto, slots, at).deals).toEqual([]);
   });
 

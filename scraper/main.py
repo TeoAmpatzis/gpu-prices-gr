@@ -44,8 +44,15 @@ HISTORY_DAYS = 365
 def load_json(path: Path, default):
     try:
         return json.loads(path.read_text(encoding="utf-8"))
-    except (FileNotFoundError, json.JSONDecodeError):
+    except FileNotFoundError:  # a corrupt file stops the run: reading it as empty would rewrite it without its content
         return default
+
+
+def write_atomic(path: Path, text: str, encoding: str = "utf-8") -> None:
+    """Write through a temporary file, so a run killed mid-write never leaves half a file."""
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(text, encoding=encoding)
+    os.replace(tmp, path)
 
 
 def share_fields(listings: list[dict], fields: tuple[str, ...], model_key) -> None:
@@ -132,7 +139,7 @@ def write_image_urls(out_dir: Path, listings: list[dict], model_key) -> None:
         urls = list(dict.fromkeys(now + prev.get(key, [])))[:IMAGE_CANDIDATES]
         if urls:
             out[key] = urls
-    path.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    write_atomic(path, json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
 
 def drop_images(listings: list[dict]) -> None:
@@ -176,7 +183,7 @@ def write_history(cat: str, model_key, out_dir: Path, listings: list[dict], fres
     folding = aliases.active(cat, aliases.for_cat(cat) if model_aliases is None else model_aliases, live)
     history = update_history(load_json(history_path, {}), fresh, day, model_key, folding)
     site_history.follow_aliases(out_dir, folding)
-    history_path.write_text(json.dumps(history, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    write_atomic(history_path, json.dumps(history, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     return history
 
 
@@ -217,7 +224,7 @@ def stage(out_dir: Path, listings: list[dict], sources_meta: dict[str, dict], ru
     counts: dict[str, int] = {}
     for l in rejected:
         counts[l["reject"]] = counts.get(l["reject"], 0) + 1
-    path.write_text(json.dumps({"updatedAt": run_at, "counts": counts, "listings": rejected}, ensure_ascii=False, indent=1),
+    write_atomic(path, json.dumps({"updatedAt": run_at, "counts": counts, "listings": rejected}, ensure_ascii=False, indent=1),
                     encoding="utf-8")
     print(f"[{out_dir.name}] rejected {len(rejected)}: {counts}")
 
@@ -254,7 +261,7 @@ def collect_specs(cats: list[Category], budget: dict[str, int], makers_budget: i
                 meta["count"] = sum(l["source"] == source for l in data["listings"])
             write_image_urls(out_dir, data["listings"], cat.model_key)
             data["listings"].sort(key=lambda l: (l["chip"], l["price"]))
-        (out_dir / "latest.json").write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+        write_atomic(out_dir / "latest.json", json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
 def report_sources(category: str, sources: dict[str, dict], attempted: list[str]) -> None:
@@ -356,7 +363,7 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
     listings.sort(key=lambda l: (l["chip"], l["price"]))
     if with_shipping:
         enrich_shipping(cat, listings)
-    latest_path.write_text(
+    write_atomic(latest_path,
         json.dumps({"updatedAt": run_at, "sources": sources_meta, "listings": listings}, ensure_ascii=False, indent=1),
         encoding="utf-8",
     )
@@ -435,7 +442,7 @@ def main() -> int:
         data = load_json(path, None)
         if data:
             enrich_shipping(cat, data["listings"])
-            path.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+            write_atomic(path, json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     collect_specs(cats, budget, args.makers_budget)
     rest = time.monotonic() - start - lists
     print(f"[timing] run: lists {lists:.0f}s, specs + makers {rest:.0f}s, total {lists + rest:.0f}s")

@@ -12,7 +12,7 @@ test('homepage loads one bounded feed without catalogues, histories or builder d
   const response = await page.request.get('/data/home.json');
   expect(gzipSync(await response.body()).length).toBeLessThanOrEqual(20 * 1024);
   expect(requested.filter((path) => /list\.v2|\/model\/|\/builder\/|history\.json|pickCheck/.test(path))).toEqual([]);
-  await expect(page.locator('#home-drops').locator('..')).toContainText(/90/);
+  await expect(page.locator('#home-drops').locator('..')).toContainText(/30/);
 });
 
 test('stale generated discount claims disappear and failed feed can retry', async ({ page }) => {

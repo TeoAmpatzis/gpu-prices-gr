@@ -170,7 +170,7 @@ export default function App() {
       <Header current={current} search={SEARCH} counts={site?.counts} />
       {/* Reserve the first screen while data pages load; short pages use the flex frame's remaining space. */}
       <main id="main" tabIndex={-1} className={`site-container site-main py-4 outline-none sm:py-5${route.kind === 'category' || route.kind === 'model' || route.kind === 'builder' ? ' min-h-screen' : ''}`}>
-        <ErrorBoundary>
+        <ErrorBoundary resetKey={path}>
           <Suspense fallback={<PageSkeleton />}>
             {route.kind === 'home' && <Home counts={site?.counts} search={SEARCH} />}
             {visited.map((c) => (

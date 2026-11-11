@@ -59,13 +59,15 @@ const byPrice = <M extends AnyModel>(ms: M[]) => [...ms].sort((a, b) => price(a)
  * RAM in pick order: from 16 GB up, a 2-module (dual-channel) kit within 15% of the cheapest single module's price per GB
  * comes first, cheapest first; every other kit follows in price order. Suspect prices are already left out of the data.
  */
-function dualChannelFirst(ms: AnyModel[]): AnyModel[] {
+export function dualChannelFirst(ms: AnyModel[]): AnyModel[] {
   const l = (m: AnyModel) => m.cheapest as RamListing;
   const perGb = (m: AnyModel) => price(m) / l(m).capacity;
   const singles = ms.filter((m) => l(m).modules === 1).map(perGb);
   if (!singles.length) return ms;
   const limit = Math.min(...singles) * 1.15;
-  const dual = (m: AnyModel) => l(m).modules === 2 && l(m).capacity >= 16 && perGb(m) <= limit;
+  // Also within 15% of the cheapest kit's price: a big kit with a good price per GB is not a small extra cost.
+  const priceLimit = Math.min(...ms.map(price)) * 1.15;
+  const dual = (m: AnyModel) => l(m).modules === 2 && l(m).capacity >= 16 && perGb(m) <= limit && price(m) <= priceLimit;
   return [...ms.filter(dual), ...ms.filter((m) => !dual(m))];
 }
 const cents = (n: number) => Math.round(n * 100) / 100;
