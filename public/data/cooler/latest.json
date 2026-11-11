@@ -4933,7 +4933,7 @@
    "radiator": 360,
    "rgb": true,
    "scrapedAt": "2026-11-11T17:37:11+00:00",
-   "sockets": null,
+   "sockets": "AM2,AM2+,AM3,AM3+,AM4,AM5,FM1,FM2,FM2+,LGA1150,LGA1151,LGA1155,LGA2011,LGA2011-3,LGA2066,LGA775",
    "heightMm": null,
    "shipping": 5.0,
    "total": 193.7,
