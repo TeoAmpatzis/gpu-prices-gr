@@ -4,7 +4,8 @@ Work stops here until the owner has reviewed the first data: [MOUSE_DATA_REVIEW.
 
 ## Branch and scope
 
-- Branch `feat/mouse-category`. `origin/feat/mouse-category` is at `19e2955`; the later commits are local only (a push needs the owner's yes).
+- Branch `feat/mouse-category`. Pushed with the owner's yes on 2026-11-11: `origin/feat/mouse-category` is at `f73c8d9` (parser fixes and the Gate B report). Later commits, such as this checkpoint, are local until the owner approves another push.
+- Checks on `f73c8d9` before that push: all 31 Python check programs, `npm run check` (1,655 tests) and `npm run e2e` (322 of 322) passed. The push started no CI run on the branch; GitHub run 43092987454 (green) tested the older `8e71980`.
 - Plan: `docs/superpowers/plans/2026-11-11-mouse-category.md`. Tasks 1–4 are complete. Task 5: steps 1, 2 and 4 are done; step 3 (a collection through GitHub Actions) has not run; steps 5 and 6 follow the owner's review.
 - Mouse is `enabled:false, visible:false`. No mouse data is in `public/data/`. Nothing was pushed to `main`.
 - The untracked `UNIVERSITY_PROJECT_PRESENTATION_GUIDE.md` is unrelated; leave it.
@@ -24,10 +25,20 @@ Work stops here until the owner has reviewed the first data: [MOUSE_DATA_REVIEW.
 3. `venv/Scripts/python local/mouse/replay_trial.py replay-5` (a new name each time), then `local/mouse/report.py replay-5` and compare with the previous replay.
 4. No source requests are needed for this.
 
+## Open with the owner (asked 2026-11-11, not answered yet)
+
+1. The review itself: the 50 random model groups and the reject samples in MOUSE_DATA_REVIEW.md.
+2. Same part number under two names: keep rejecting both listings (20 in the trial), or treat them as one product as the storage category does.
+3. A separate yes to merge this branch into `main` with mouse disabled and invisible, so the scheduled workflows collect mouse data once. The workflows run from `main`, and a push to `main` deploys.
+
+Before any merge: local `main` (`174d35c`) has a different history from `origin/main`, and `git diff main...HEAD` reports no merge base. Compare the branch with a freshly fetched `origin/main` instead, and do not reset or force anything.
+
+Also watch: scheduled `scrape-shops` run 43091153663 (2026-11-11 19:52 UTC) failed because its `specs` job stayed queued for 16 minutes and never started; `prices` had succeeded and committed. No step of ours failed. If the next runs show the same, look at the job split of `fb23142`.
+
 ## After the owner's review (Gate B)
 
 1. Decide the open points listed under "Known limits" in the review.
-2. With the owner's yes: push the branch and collect once through the existing workflows (plan Task 5, step 3). A local trial is not production data.
+2. With the owner's yes: merge to `main` (mouse disabled) and collect once through the existing workflows (plan Task 5, step 3). A local trial is not production data.
 3. Set `MIN_MODELS.mouse` from the frontend's own model count of the reviewed data, then `enabled:true, visible:false` (steps 5–6).
 4. Tasks 6–9: filters, colour selector, derived-data tests, visible preview. Public visibility is a separate approval (Gate C).
 
