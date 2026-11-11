@@ -12,7 +12,18 @@ import { encodeShare } from './share';
 import { SLOTS, type Slot } from './slots';
 
 /** A drop above this is far more often a wrong listing than a real price (a single listing has no peers for the suspect-price check). */
-export const HOME_MAX_DROP = 60;
+export const HOME_MAX_DROP = 50;
+
+/**
+ * A home page drop must be one a visitor can check: a part of the category's default view (no workstation, server or
+ * NAS parts) that a second listing confirms (the next offer is not more than twice the price).
+ */
+function confirmed(id: Category, row: BaseListing, listings: BaseListing[]): boolean {
+  const rules = rulesOf(id);
+  if (rules.isPro(row) || (rules.segmentOf?.(row) ?? 'main') !== 'main') return false;
+  const next = listings.filter((l) => l !== row).reduce<number | null>((m, l) => (m == null || l.price < m ? l.price : m), null);
+  return next != null && next <= row.price * 2;
+}
 
 /**
  * The "from €" of a category tile (audit P3-008): the lowest price in the category's default view (no workstation,
@@ -48,7 +59,7 @@ export function homeFile(latest: Partial<Record<Category, Latest>>, chunks: Part
     // The same deal the list and product badges show (src/lib/deals.ts: 30-day typical price, decided at build time).
     const row = model.listings.reduce<BaseListing | undefined>((m, l) => (!m || l.price < m.price ? l : m), undefined);
     const sale = row && saleOf(model.listings, row);
-    if (!row || !sale?.reference || sale.pct > HOME_MAX_DROP) continue;
+    if (!row || !sale?.reference || sale.pct > HOME_MAX_DROP || !confirmed(id, row, model.listings)) continue;
     const checkedAt = row.scrapedAt || latest[id]?.sources[row.source]?.updatedAt || '';
     const sourceAt = latest[id]?.sources[row.source]?.updatedAt || '';
     const date = checkedAt.slice(0, 10);

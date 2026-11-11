@@ -39,16 +39,20 @@ describe('homepage derived feed', () => {
 
   it('lists the deals the badges show (30-day reference), leaves out stale or dearer listings, and limits drops in stable order', () => {
     const deal = { ...listing, dealPct: 20, dealRef: 100 } as BaseListing;
-    const entries = Array.from({ length: 7 }, (_, i) => ({ ...entry, listings: [deal], slug: `family-${i}`, key: `family-${i}` }));
+    const other = { ...deal, id: 'two', source: 'bestprice', price: 99 } as BaseListing; // the second listing that confirms the price
+    const entries = Array.from({ length: 7 }, (_, i) => ({ ...entry, listings: [deal, other], slug: `family-${i}`, key: `family-${i}` }));
     const file = homeFile({ gpu: latest }, { gpu: chunks(entries) }, auto, slots, at);
     expect(file.deals).toHaveLength(5);
     expect(file.deals.map((d) => d.href)).toEqual(entries.slice(0, 5).map((e) => `/gpu/${e.slug}`));
     expect(file.deals[0]).toMatchObject({ price: 80, median: 100, percent: 20, checkedAt: at, date: '2026-11-04' });
     for (const bad of [
-      { ...entry, listings: [listing] }, // no deal decided by the build
-      { ...entry, listings: [{ ...deal, scrapedAt: '2026-11-02T12:00:00Z' }] }, // not checked in the last 24 hours
-      { ...entry, listings: [{ ...deal, price: 95 }] }, // the model is at a deal, this offer is not
-      { ...entry, listings: [{ ...deal, price: 30 }] }, // an implausible drop
+      { ...entry, listings: [listing, other] }, // no deal decided by the build
+      { ...entry, listings: [{ ...deal, scrapedAt: '2026-11-02T12:00:00Z' }, other] }, // not checked in the last 24 hours
+      { ...entry, listings: [{ ...deal, price: 95 }, other] }, // the model is at a deal, this offer is not
+      { ...entry, listings: [{ ...deal, price: 30 }, other] }, // an implausible drop
+      { ...entry, listings: [deal] }, // no second listing confirms the price
+      { ...entry, listings: [deal, { ...other, price: 161 }] }, // the next offer is more than twice the price
+      { ...entry, listings: [{ ...deal, chip: 'RTX A2000' }, { ...other, chip: 'RTX A2000' }] }, // a workstation card: not in the default view
     ]) expect(homeFile({ gpu: latest }, { gpu: chunks([bad]) }, auto, slots, at).deals).toEqual([]);
   });
 

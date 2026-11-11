@@ -25,7 +25,8 @@ describe('P2-002: the homepage leaves out implausible drops', () => {
   const feed = (price: number) => {
     const listing = { id: 'one', source: 'skroutz', price, title: 'Product', chip: 'Family', scrapedAt: at, shipping: null, dealPct: 100 - price, dealRef: 100 } as BaseListing;
     const latest = { updatedAt: at, sources: { skroutz: { count: 1, ok: true, updatedAt: at } }, listings: [listing] } as Latest;
-    const entry = { key: 'family', slug: 'family', chip: 'Family', listings: [listing], history: [] as ModelEntry['history'] } as ModelEntry;
+    const other = { ...listing, id: 'two', source: 'bestprice', price: 2 * price } as BaseListing; // confirms the price
+    const entry = { key: 'family', slug: 'family', chip: 'Family', listings: [listing, other], history: [] as ModelEntry['history'] } as ModelEntry;
     const chunks = [{ v: 1, builtAt: at, sources: {}, models: { family: entry } }] as ModelChunk[];
     return homeFile({ gpu: latest }, { gpu: chunks }, auto, {} as BuilderFiles['slots'], at).deals;
   };
