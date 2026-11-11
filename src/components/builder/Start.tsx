@@ -238,7 +238,7 @@ export default function Start({ onGo, onIntent }: { onGo: (v: Exclude<View, 'sta
           <ListChecks className="h-4 w-4" aria-hidden="true" /> {t(B.partList)}
         </button>
       </div>
-      {(!key || !prefs.budget) && <p className="-mt-3 text-xs text-muted">{t(B.needUseBudget)}</p>}
+      <p className="-mt-3 text-xs text-muted">{t(!key || !prefs.budget ? B.needUseBudget : B.autoHint)}</p>
       {replacing && (
         <Suspense fallback={null}>
           <Dialog

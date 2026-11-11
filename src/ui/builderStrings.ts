@@ -49,6 +49,11 @@ export const BUILDER = {
     el: 'Για αυτόματο build διάλεξε χρήση και προϋπολογισμό.',
     en: 'For an automatic build choose a use and a budget.',
   },
+  // What the automatic build is (audit P3-001): said instead of spending the whole budget.
+  autoHint: {
+    el: 'Το αυτόματο build δίνει τα χρήματα στην κάρτα γραφικών και στον επεξεργαστή· τα υπόλοιπα εξαρτήματα είναι τα φθηνότερα που ταιριάζουν. Με όσα απομένουν, αναβάθμισε ό,τι θέλεις.',
+    en: 'The automatic build spends on the graphics card and the processor; the other parts are the cheapest that fit. Upgrade any of them with what is left.',
+  },
   autoFailed: { el: 'Το αυτόματο build δεν φορτώθηκε.', en: "The automatic build didn't load." },
   // The measurement notice: full on the start screen, one line in the steps and the part list (C9).
   notice: {
