@@ -64,9 +64,68 @@ class ParseTests(unittest.TestCase):
             self.assertEqual(data[0]['brand'], brand)
             self.assertIsNone(data[0]['reject'], title)
             self.assertIn(model, data[0]['chip'])
-        data = rows('Logitech Razer Example Mouse')
+        data = rows('Ασύρματο Ποντίκι για Logitech και Razer X1')
         nm.settle(data)
         self.assertEqual(data[0]['reject'], 'no-identity')
+
+    def test_the_maker_that_opens_a_title_wins_over_a_later_maker_name(self):
+        # Observed in the full trial, 2026-11-11: a maker followed by its own line, also a maker name.
+        for title, brand, model in (('A4Tech Bloody R72 Ultra Ασύρματο Renegade Sunset', 'A4Tech', 'Bloody R72 Ultra'),
+                                    ('BakkerElkhuizen Evoluent Vertical Storm', 'BakkerElkhuizen', 'Evoluent Vertical Storm'),
+                                    ('iTotal XL2452 Urban Ασύρματο Ποντίκι Green', 'iTotal', 'XL2452 Urban')):
+            data = rows(title)
+            nm.settle(data)
+            self.assertEqual((data[0]['brand'], data[0]['reject']), (brand, None), title)
+            self.assertIn(model, data[0]['chip'])
+
+    def test_makers_and_colours_observed_in_the_full_trial(self):
+        for title, brand in (('Weibo FC-016 Ενσύρματο Ποντίκι Grey', 'Weibo'), ('Xtrfy M1 Μαύρο', 'Xtrfy'),
+                             ('Turtle Beach Pure Air Ασύρματο Λευκό', 'Turtle Beach'),
+                             ('3D Connexion CadMouse Pro Ενσύρματο Μαύρο', '3Dconnexion'),
+                             ('Baracuda BGM-042 Manta Λευκό', 'Barracuda')):
+            self.assertEqual(row(title)['brand'], brand)
+        cases = (('Microsoft Surface Arc Ασύρματο Bluetooth Ποντίκι Light Grey', 'Microsoft Surface Arc Wireless', 'light-grey'),
+                 ('Logitech Signature M650 Ασύρματο Off-White', 'Logitech Signature M650 Wireless', 'off-white'),
+                 ('Tellur Urs Ασύρματο Καφέ', 'Tellur Urs Wireless', 'brown'),
+                 ('Genius Ergo 8250S Ασύρματο Ποντίκι Vertical Black Golden', 'Genius Ergo 8250S Vertical Wireless', 'black-gold'),
+                 ('HP 200 Ασύρματο Ποντίκι Pike Silver', 'HP 200 Wireless', 'pike-silver'),
+                 ('Asus SmartO MD200 Ασύρματο Μπεζ', 'Asus SmartO MD200 Wireless', 'beige'))
+        for title, chip, colour in cases:
+            data = rows(title)
+            nm.settle(data)
+            self.assertEqual((data[0]['chip'], data[0]['colour']), (chip, colour), title)
+        # A colour word inside a hyphenated code is part of the code; USB-C names a version.
+        data = rows('Glorious Model D GD-BLACK Wired', 'Lenovo 400 USB-C Ασύρματο', 'Lenovo 400 Ασύρματο')
+        nm.settle(data)
+        self.assertIn('GD-BLACK', data[0]['chip'])
+        self.assertNotEqual(key(data[1]), key(data[2]))
+
+    def test_codes_and_part_numbers_observed_in_the_full_trial(self):
+        data = rows('Weibo RF-6300 Ασύρματο Μαύρο')
+        nm.settle(data)
+        self.assertEqual((data[0]['chip'], data[0]['rf']), ('Weibo RF-6300 Wireless', None))
+        data = rows('Logitech G G102 Lightsync Gaming Ενσύρματο Ποντίκι - Μωβ', 'Logitech G102 LightSync Ενσύρματο Μαύρο')
+        nm.settle(data)
+        self.assertEqual(data[0]['chip'], data[1]['chip'])
+        for title, part in (('Ποντίκι Razer Cobra Chroma RGB RZ01-04650700-R3M1', 'RZ01-04650700-R3M1'),
+                            ('HyperX Pulsefire Haste 2 Pro Slate A1KY5AA Ασύρματο', 'A1KY5AA'),
+                            ('Corsair Sabre v2 Pro CH-931G100-WW Ασύρματο', 'CH-931G100-WW'),
+                            ('Asus MD102 V2 (90XB0900-BMU0C0) Ασύρματο', '90XB0900-BMU0C0'),
+                            ('Lenovo Yoga Pro Tidal Teal GY51P14335 Ασύρματο', 'GY51P14335')):
+            data = rows(title)
+            nm.settle(data)
+            self.assertEqual(data[0]['partNumber'], part)
+            self.assertNotIn(part, data[0]['chip'])
+        data = rows('HP G1K28AA Ενσύρματο Ποντίκι Black')
+        nm.settle(data)
+        self.assertEqual((data[0]['chip'], data[0]['reject']), ('HP G1K28AA Wired', None))
+
+    def test_marketing_sentences_and_names_without_a_code_or_word_are_not_models(self):
+        for title in ('Ασύρματο Ποντίκι Remax Επαναφορτιζόμενο Bluetooth & 2.4GHz - Dual Mode, Αθόρυβο, Ρυθμιζόμενο DPI, '
+                      'Λεπτό Design, Για Laptop & PC', 'Port Designs Ασύρματο Γαλάζιο'):
+            data = rows(title)
+            nm.settle(data)
+            self.assertEqual(data[0]['reject'], 'no-identity', title)
 
     def test_silent_vertical_and_ergonomic_model_words_are_preserved(self):
         for title in ('Logitech M240 Silent Wireless Graphite', 'Logitech MX Vertical Wireless Black',
@@ -246,11 +305,18 @@ class IdentityTests(unittest.TestCase):
         self.assertEqual(len({key(r) for r in data}), 1)
 
     def test_unknown_attaches_only_to_one_known_connection(self):
-        for connection in ("Wired", "Wireless", "Wireless & Wired"):
-            data = rows("Logitech Example Mouse " + connection, "Logitech Example Mouse")
+        data = rows("Logitech Example Mouse Wired", "Logitech Example Mouse")
+        nm.settle(data)
+        self.assertEqual(key(data[0]), key(data[1]))
+        self.assertIsNone(data[1]["connection"], "identity must not invent a stated spec")
+        # Observed in the full trial: the title without a connection is the cheaper wired version.
+        for pair in (('SteelSeries Prime Wireless Ασύρματο Μαύρο', 'SteelSeries Prime Μαύρο'),
+                     ('Glorious Model D Ασύρματο Λευκό', 'Glorious Model D Μαύρο'),
+                     ('Logitech Example Mouse Wireless & Wired', 'Logitech Example Mouse')):
+            data = rows(*pair)
             nm.settle(data)
-            self.assertEqual(key(data[0]), key(data[1]), connection)
-            self.assertIsNone(data[1]["connection"], "identity must not invent a stated spec")
+            self.assertNotEqual(key(data[0]), key(data[1]), pair)
+            self.assertEqual([r['reject'] for r in data], [None, None])
         unknown = rows("Logitech Example Mouse Black", "Logitech Example Mouse White")
         nm.settle(unknown)
         self.assertEqual(key(unknown[0]), key(unknown[1]))
@@ -274,19 +340,32 @@ class IdentityTests(unittest.TestCase):
         nm.settle(data)
         self.assertEqual([r["reject"] for r in data], ["identity-conflict", "identity-conflict", None])
 
-    def test_distinct_punctuated_model_names_never_collide_after_key_folding(self):
-        data = rows("Logitech Example A+B Mouse", "Logitech Example AB Mouse",
-                    "Logitech Example A/B Mouse", "Logitech Example A B Mouse")
-        nm.settle(data)
-        self.assertEqual(len({key(r) for r in data}), len(data))
+    def test_spacing_and_hyphens_do_not_split_a_model_but_plus_and_left_handed_versions_do(self):
+        # Pairs observed in the full trial, 2026-11-11 (one product written two ways by the shops).
+        for pair in (('Cherry MW 2400 Ασύρματο', 'Cherry MW2400 Ασύρματο'),
+                     ('Redragon M815 Pro Ασύρματο', 'Redragon M815-PRO Ασύρματο'),
+                     ('Dell Laser - MS3220 Ενσύρματο', 'Dell Laser MS3220 Ενσύρματο'),
+                     ('Powertech PT-1164 Ασύρματο', 'Powertech PT-1164, & Ασύρματο'),
+                     ('Fellowes Breyta Plus Ασύρματο Vertical', 'Fellowes Breyta Plus+ Ασύρματο Vertical')):
+            data = rows(*pair)
+            nm.settle(data)
+            self.assertEqual(data[0]['chip'], data[1]['chip'], pair)
+            self.assertNotIn('#', data[0]['chip'])
+        for pair in (('Trust Yvi Ασύρματο', 'Trust Yvi+ Ασύρματο'), ('VGN Y2 Pro Ασύρματο', 'VGN Y2 Pro+ Ασύρματο'),
+                     ('Hama EWM-500 Ασύρματο', 'Hama EWM-500 Ασύρματο για Αριστερόχειρες')):
+            data = rows(*pair)
+            nm.settle(data)
+            self.assertNotEqual(key(data[0]), key(data[1]), pair)
+            self.assertFalse(any('#' in r['chip'] for r in data), pair)
+        self.assertEqual(data[1]['chip'], 'Hama EWM-500 Left-Handed Wireless')
 
     def test_minus_model_variants_keep_their_identity(self):
         data = rows('Glorious Model O- Wired Black', 'Glorious Model O Wired Black',
                     'Glorious Model D- Wired Black', 'Glorious Model D Wired Black')
         nm.settle(data)
         self.assertEqual(len({key(r) for r in data}), 4)
-        self.assertIn('O-', data[0]['chip'])
-        self.assertIn('D-', data[2]['chip'])
+        self.assertIn('O Minus', data[0]['chip'])
+        self.assertIn('D Minus', data[2]['chip'])
 
     def test_polling_prefix_consumes_the_whole_spec_in_model_names(self):
         data = rows('Logitech G502 Mouse Polling Rate:1000Hz', 'Logitech G502 Mouse 1000Hz')

@@ -40,11 +40,24 @@ OBSERVED_BRANDS = ('3Dconnexion', '3GO', 'A4Tech', 'Acer', 'Acme', 'Active Key',
  'Turbo-X', 'Ugreen', 'Urban', 'V7', 'Vakoss', 'Vention', 'Verbatim', 'Vivanco', 'Wacom', 'Well',
  'White Shark', 'Wintech', 'WiWu', 'Wozinsky', 'Xiaomi', 'XO', 'Xtreme', 'Xtrike-me', 'Yenkee', 'Yesido',
  'Yoyoso', 'Zagg')
-for _brand in OBSERVED_BRANDS:
+# Makers that open at least three otherwise unidentified titles of the full trial collection, 2026-11-11.
+TRIAL_BRANDS = ('ABKONCORE', 'Accura', 'Adata', 'ADX', 'Akashi', 'AOC', 'Aqirys', 'Armaggeddon', 'Barracuda', 'C-TECH',
+ 'Cliptec', 'Connect IT', 'Coteci', 'Cudy', 'Dark Project', 'Darmoshark', 'Disney', 'Dux Ducis', 'E-Blue', 'Edman',
+ 'Ellietech', 'Energy Sistem', 'Evolveo', 'Fnatic', 'Forev', 'FroggieX', 'Fude', 'Fury', 'HATOR', 'Hiro', 'HXSJ',
+ 'iClever', 'iMice', 'Inphic', 'Izoxis', 'Jeqang', 'Jiexin', 'Krux', 'Lexip', 'LinQ', 'Liocat', 'Logic', 'Lorgar',
+ 'Machenike', 'Mad Catz', 'Makki', 'MCHOSE', 'Medigenic', 'Miniso', 'MKESPN', 'Moveteck', 'Mustard', 'Nacon',
+ 'Onikuma', 'Pantone', 'Perixx', 'Piranha', 'Preyon', 'Q-Connect', 'Qova', 'Rampage', 'Riotoro', 'Rixus', 'Roar',
+ 'Roccat', 'Roger', 'Royal Kludge', 'Secret Gear', 'SGL', 'Somostel', 'Sony', 'Sound Friend', 'Sparco',
+ 'Spirit of Gamer', 'Strado', 'SureFire', 'T-Dagger', 'T-Wolf', 'Thunderobot', 'Total Gift', 'Turtle Beach',
+ 'Vertux', 'Weibo', 'Wesdar', 'WLmouse', 'Xtrfy', 'Yelandar', 'Yilima', 'Zenwire', 'Zornwee')
+for _brand in OBSERVED_BRANDS + TRIAL_BRANDS:
     BRANDS.setdefault(_brand.casefold(), _brand)
 BRAND_NAMES = {**BRANDS, **names.VENDOR_ALIASES, "glorious pc gaming race": "Glorious",
                "xtrike me": "Xtrike Me", "xtrike-me": "Xtrike Me",
-               "r-horse": "R.horse", "bakker elkhuizen": "BakkerElkhuizen"}
+               "r-horse": "R.horse", "bakker elkhuizen": "BakkerElkhuizen",
+               # One maker under two spellings in the trial titles (the same model codes under both).
+               "3d connexion": "3Dconnexion", "active jet": "ActiveJet", "i-total": "iTotal",
+               "contour design": "Contour", "baracuda": "Barracuda", "yilma": "Yilima"}
 BRAND_PATTERN = re.compile(r"(?<![\w-])(?:" + '|'.join(re.escape(k) for k in sorted(BRAND_NAMES, key=len, reverse=True)) + r")(?![\w-])", re.I)
 
 # Canonical colour keys are shared across Greek/English titles; unfamiliar colour names stay in the name.
@@ -55,8 +68,6 @@ COLOURS = {
     "titan-grey": ("Titan Grey", "Titan Gray"),
     "space-black": ("Space Black",),
     "white-mist": ("White Mist",),
-    "matt-white": ("Matt White",),
-    "glossy-white": ("Glossy White",),
     "graphite": ("Graphite",),
     "anthracite": ("Anthracite",),
     "lime-green": ("Lime Green",),
@@ -76,10 +87,36 @@ COLOURS = {
     "purple": ("Purple", "Μωβ"),
     "yellow": ("Yellow", "Κίτρινο", "Κιτρινο"),
     "orange": ("Orange", "Πορτοκαλί", "Πορτοκαλι"),
+    # Left in model names by the full trial collection, 2026-11-11.
+    "rose-gold": ("Rose Gold",),
+    "silk-gold": ("Silk Gold",),
+    "pike-silver": ("Pike Silver",),
+    "lumiere-blue": ("Lumiere Blue",),
+    "light-blue": ("Γαλάζιο", "Γαλαζιο"),
+    "beige": ("Beige", "Μπεζ"),
+    "gold": ("Gold", "Golden", "Χρυσό", "Χρυσο"),
+    "brown": ("Brown", "Καφέ", "Καφε"),
+    "multicolour": ("Multicolor", "Multicolour", "Πολύχρωμο", "Πολυχρωμο"),
+    "transparent": ("Transparent",),
+    "turquoise": ("Turquoise", "Τιρκουάζ", "Τιρκουαζ"),
+    **{name.casefold(): (name,) for name in (
+        "Rose", "Lilac", "Lavender", "Mint", "Cyan", "Teal", "Petrol", "Sand", "Violet", "Magenta", "Coral",
+        "Bordeaux", "Burgundy", "Fuchsia", "Platinum", "Bronze", "Olive", "Peach", "Midnight")},
 }
 COLOUR_NAMES = {alias.casefold(): key for key, aliases in COLOURS.items() for alias in aliases}
-COLOUR_PATTERN = re.compile(r"(?<!\w)(?:" + '|'.join(re.escape(k) for k in sorted(COLOUR_NAMES, key=len, reverse=True)) + r")(?!\w)", re.I)
-PART_NUMBER = re.compile(r"(?<![\w-])(?:\d{3}-\d{6}|\d[A-Z]{2}\d{2}[A-Z]{2}(?:#[A-Z0-9]+)?)(?![\w-])", re.I)
+# "Light Grey", "Off-White", "Matte Black": the shade word belongs to the colour, not to the model.
+_SHADE = r"(?:light|dark|matte|matt|glossy|off|pale|deep|midnight|tidal)"
+_COLOUR = '|'.join(re.escape(k) for k in sorted(COLOUR_NAMES, key=len, reverse=True))
+COLOUR_UNIT = re.compile(rf"(?:({_SHADE})[ -])?({_COLOUR})(?!\w)", re.I)
+# Not inside a hyphenated code ("GD-BLACK", "MUSW-4B-06-BG"); "Black/Red" and "Black-Red" are one phrase.
+COLOUR_PATTERN = re.compile(
+    rf"(?<!\w)(?<!\w-)(?:{_SHADE}[ -])?(?:{_COLOUR})(?:\s*[-/]\s*(?:{_SHADE}[ -])?(?:{_COLOUR}))*(?!\w)", re.I)
+MAX_MODEL_WORDS = 8  # longer "names" in the trial are marketing sentences, not models
+# Makers' part-number shapes seen in titles: Logitech 910-004424, HP 6VY96AA / A1KY5AA / 4E407UT, Razer
+# RZ01-04650700-R3M1, Corsair CH-931G100-WW, Asus 90XB0900-BMU0C0, Lenovo GY51P14335, Glorious GLO-MS-…, Endgame EGG-….
+PART_NUMBER = re.compile(
+    r"(?<![\w-])(?:\d{3}-\d{6}|(?=[0-9A-Z]*\d)(?=[0-9A-Z]*[A-Z])[0-9A-Z]{5}(?:AA|UT)(?:#[A-Z0-9]+)?|RZ\d{2}-\d{8}-\w{4}|"
+    r"CH-\d{3}\w{4}-\w{2}|90X[A-Z]\w{4}-\w{6}|G[XY]\d{2}\w{6}|(?:GLO-MS|EGG)-[\w-]+)(?![\w-])", re.I)
 DESCRIPTORS = r"(?:ποντ[ίι]κι(?:α)?|mouse|mice|gaming)"
 WIRED = r"\bwired\b|\bενσυρματο\b"
 WIRELESS = r"\bwireless\b|\bασυρματο\b"
@@ -87,7 +124,7 @@ FLAGS = {
     "rgb": r"\b(?:a?rgb)\b",
     "gaming": r"\bgaming\b",
     "bluetooth": r"\bbluetooth\b",
-    "rf": r"\brf\b|(?<![\w.])2[.,]4\s*g(?:hz)?\b",
+    "rf": r"\brf\b(?![-\d])|(?<![\w.])2[.,]4\s*g(?:hz)?\b",  # not the model code "RF-6300"
     "rechargeable": r"\brechargeable\b|\bεπαναφορτιζομεν[οη]\b",
     "ergonomic": r"\bergonomic\b|\bvertical\b|\bεργονομικο\b",
     "silent": r"\bsilent\b|\bαθορυβο\b",
@@ -140,35 +177,51 @@ def _identity(title: str) -> tuple[str, str, str | None, str | None]:
     text = re.sub(rf"^(?:(?:{DESCRIPTORS})\s+)+", "", text, flags=re.I)
     makers = list(BRAND_PATTERN.finditer(text))
     brands = {BRAND_NAMES[m.group().casefold()] for m in makers}
-    if len(brands) != 1:
+    # Several makers: only the one that opens the title is the maker ("A4Tech Bloody R72",
+    # "Esperanza Titanum TM108"); the other name stays a word of the model.
+    if not makers or (len(brands) > 1 and makers[0].start()):
         return 'Other', '', None, None
-    brand = brands.pop()
+    brand = BRAND_NAMES[makers[0].group().casefold()]
     before = text[:makers[0].start()]
     text = text[makers[0].end():].strip()
     # Snif sometimes puts a model code before the maker; preceding prose is not a model.
     if re.search(r'(?<![\w.])(?=[A-Za-z0-9-]*[A-Za-z])(?=[A-Za-z0-9-]*\d)[A-Za-z0-9-]+(?![\w.])', before):
         text = before + ' ' + text
-    text = BRAND_PATTERN.sub(' ', text)
+    text = BRAND_PATTERN.sub(lambda m: ' ' if BRAND_NAMES[m.group().casefold()] == brand else m.group(), text)
+    text = re.sub(r"^G\s+(?=G(?:\d|\s))", "", text)  # Snif: "Logitech G G102", "Logitech G G PRO X"
+    # Identity marks that the letters+digits model key would lose: "Yvi+", "Model O-", left-handed versions.
+    text = re.sub(r"(?<=[A-Za-z0-9])\+(?![\w+])", " Plus ", text)
+    text = re.sub(r"\b(Plus)(?:\s+Plus)+\b", r"\1", text, flags=re.I)
+    text = re.sub(r"(?<=[A-Za-z0-9])-(?=\s|$)", " Minus ", text)
+    text = re.sub(r"\bγια\s+αριστερ[όο]χειρ\w*|\bleft[ -]?handed\b", " Left-Handed ", text, flags=re.I)
     part = PART_NUMBER.search(text)
     part_number = part.group().upper() if part else None
     text = PART_NUMBER.sub(" ", text)
     connection_word = r"(?:wireless|wired|ασ[ύυ]ρματο|ενσ[ύυ]ρματο)"
     text = re.sub(rf"\b{connection_word}\s*[+&/]\s*{connection_word}\b", " ", text, flags=re.I)
     text = INCLUDED_ACCESSORY.sub(' ', text)
-    colours = {COLOUR_NAMES[m.group().casefold()] for m in COLOUR_PATTERN.finditer(text)}
+    colours = set()
+    for phrase in COLOUR_PATTERN.finditer(text):
+        for shade, name in COLOUR_UNIT.findall(phrase.group()):
+            shade = 'matte' if shade.casefold() == 'matt' else shade.casefold()
+            colours.add((shade + '-' if shade else '') + COLOUR_NAMES[name.casefold()])
     text = COLOUR_PATTERN.sub(' ', text)
     # Keep edition/identity words such as Mini, Lightspeed, for Mac and Bluetooth Edition.
     noise = (rf"\b{DESCRIPTORS}\b|\b(?:wireless|wired|ασ[ύυ]ρματο|ενσ[ύυ]ρματο)\b|"
-             r"\bbluetooth\b(?!\s+edition\b)|\b(?:a?rgb|rechargeable|optical|οπτικ[όο]|usb(?:\s*[23](?:\.0)?)?|led|gamer)\b|"
+             r"\bbluetooth\b(?!\s+edition\b)|\b(?:a?rgb|rechargeable|optical|οπτικ[όο]|usb(?!-c\b)(?:\s*[23](?:\.0)?)?|led|gamer)\b|"
              r"\bμε\s+επαναφορτιζ[όο]μενη\s+μπαταρ[ίι]α\b|\bμε\s+επιλογ[έε]ς\s+χρωμ[άα]των\s+rgb\b|"
              r"\b(?:επαναφορτιζ[όο]μενο|εργονομικ[όο]|αθ[όο]ρυβο)\b|\b(?:no|without|χωρ[ίι]ς)\b|"
              r"(?<![\w.,+-])\d+\s*(?:dpi|hz|buttons|κουμπι[άα])(?!\w)|"
              r"\b(?:polling\s*rate|buttons|κουμπι[άα])\s*:\s*\d+\s*(?:hz)?|"
-             r"(?<![\w.])2[.,]4\s*g(?:hz)?\b|\brf\b")
+             r"(?<![\w.])2[.,]4\s*g(?:hz)?\b|\brf\b(?![-\d])")
     text = re.sub(noise, " ", text, flags=re.I)
     text = re.sub(r"\(\s*\)", " ", text)
-    text = re.sub(r'(?<=\s)[-/&]+\s*$', '', text)
-    model = re.sub(r"\s+", " ", text).strip(" ,;")
+    text = re.sub(r"(?<!\S)[-/&,+|]+(?!\S)", " ", text)  # separators the removed words left alone
+    model = re.sub(r"\s+", " ", text).strip(" ,;-/&")
+    if len(model.split()) > MAX_MODEL_WORDS:
+        model = ''
+    elif not names.model_key(model):
+        model = part_number or ''  # "HP G1K28AA": the part number is the only name the shops give
     colour = '-'.join(sorted(colours)) if colours else None
     return brand, model, colour, part_number
 
@@ -233,7 +286,8 @@ def settle(listings: list[dict]) -> None:
         if brand == "Other" or not model:
             row["reject"] = "no-identity"
             continue
-        name = _fold(model)
+        # Letters and digits only, as the model key: "MW 2400" = "MW2400", "M815 Pro" = "M815-PRO".
+        name = names.model_key(model)
         if part:
             parts[(brand, part)].add(name)
         buckets[(brand, name)].append(row)
@@ -254,9 +308,12 @@ def settle(listings: list[dict]) -> None:
             if connection is None and len(known) > 1:
                 row["reject"] = "identity-conflict"
                 continue
-            families[connection or next(iter(known), None)].append(row)
+            # A title that states no connection joins the wired model only. In the trial such titles
+            # beside a wireless model were mostly its cheaper wired version ("SteelSeries Prime" 20 €
+            # against "Prime Wireless" 80 €), so there they stay a model of their own.
+            families[connection or ('wired' if known == {'wired'} else None)].append(row)
         for connection, family in sorted(families.items(), key=lambda pair: pair[0] or ""):
-            model = min((parsed[r["id"]][1] for r in family), key=lambda s: (s.casefold(), s))
+            model = min((parsed[r["id"]][1] for r in family), key=lambda s: (len(s), s.casefold(), s))
             qualifier = {"wired": " Wired", "wireless": " Wireless", "both": " Wired + Wireless", None: ""}[connection]
             groups.append((f"{brand} {model}{qualifier}", family))
 

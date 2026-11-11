@@ -1,6 +1,6 @@
 # Κατάσταση του BuildDraft.gr
 
-Mouse implementation is paused at the owner's request. Tasks 1–4 are complete; Task 5 has an isolated full collection but needs corrected offline replay and data review. Resume from [MOUSE_CHECKPOINT.md](peripherals/MOUSE_CHECKPOINT.md). Mouse remains disabled and invisible; production data was not changed.
+Mouse implementation waits at Gate B for the owner's review of the first data: [MOUSE_DATA_REVIEW.md](peripherals/MOUSE_DATA_REVIEW.md) (offline replay of the full trial collection: 7,114 accepted listings, 5,037 models, 815 rejected). Tasks 1–4 are complete; Task 5 steps 5–6 (minimum count, hidden enablement) and Tasks 6–9 follow the review. How to resume: [MOUSE_CHECKPOINT.md](peripherals/MOUSE_CHECKPOINT.md). Mouse remains disabled and invisible; production data was not changed.
 Τελευταία ενημέρωση: 2026-11-11 (ξαναγράφτηκε μετά τον έλεγχο `docs/audits/full-system-audit/`, εύρημα P3-006, με εντολή του Teo).
 Αυτό είναι το κύριο αρχείο κατάστασης. Αν διαφωνεί με άλλο αρχείο, ισχύει αυτό. Η προηγούμενη μορφή (17/10, εποχή πριν από την κυκλοφορία του v2, με όλο το ιστορικό αποφάσεων) είναι στο `docs/archive/PROJECT-STATE-2026-10-17.md`.
 
