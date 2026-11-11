@@ -6,5 +6,7 @@ export default defineConfig({
   test: {
     include: ['tests/unit/**/*.test.ts', 'tests/compat/**/*.test.ts'],
     environment: 'node',
+    // Tests over the real data take seconds on GitHub's runners (first CI run 2026-11-11: 5006 ms against the 5 s default).
+    testTimeout: 30_000,
   },
 });
