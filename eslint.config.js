@@ -23,6 +23,7 @@ export default defineConfig([
     'docs/',
     '.vercel/',
     '.superpowers/**',
+    '.claude/', // git worktrees live in .claude/worktrees/
     'test-results/',
     'playwright-report/',
   ]),
