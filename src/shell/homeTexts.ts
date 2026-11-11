@@ -16,7 +16,7 @@ export const HOME_TEXT = {
   products: { el: 'προϊόντα πηγών', en: 'source products' },
   from: { el: 'από', en: 'from' },
   drops: { el: 'Μεγαλύτερες πρόσφατες πτώσεις τιμής', en: 'Largest recent price drops' },
-  median: { el: 'Οικογένειες μοντέλων · διάμεσος 90 ημερών · χωρίς μεταφορικά', en: 'Model families · 90-day median · excluding shipping' },
+  median: { el: 'Οικογένειες μοντέλων · διάμεσος 30 ημερών · χωρίς μεταφορικά', en: 'Model families · 30-day median · excluding shipping' },
   noDrops: { el: 'Δεν υπάρχουν αρκετά πρόσφατα, αξιόπιστα στοιχεία για πτώσεις τιμής. Δες τις τρέχουσες τιμές ανά κατηγορία.', en: 'No sufficiently fresh, trusted price drops to show. Browse categories for current prices.' },
   builds: { el: 'Έτοιμες συνθέσεις ανά budget', en: 'Ready builds by budget' },
   estimates: { el: 'Αυτόματες προτάσεις με τις τρέχουσες τιμές εξαρτημάτων', en: 'Automatic suggestions at current part prices' },

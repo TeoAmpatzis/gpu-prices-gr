@@ -23,10 +23,9 @@ describe('P2-002: the homepage leaves out implausible drops', () => {
   const at = new Date(now).toISOString();
   const auto = { v: 1, builtAt: at, grid: { from: 700, to: 2500, step: 50 }, slots: [], keys: [], builds: [], uses: {}, min: {} } as unknown as AutoFile;
   const feed = (price: number) => {
-    const listing = { id: 'one', source: 'skroutz', price, title: 'Product', chip: 'Family', scrapedAt: at, shipping: null } as BaseListing;
+    const listing = { id: 'one', source: 'skroutz', price, title: 'Product', chip: 'Family', scrapedAt: at, shipping: null, dealPct: 100 - price, dealRef: 100 } as BaseListing;
     const latest = { updatedAt: at, sources: { skroutz: { count: 1, ok: true, updatedAt: at } }, listings: [listing] } as Latest;
-    const history = Array.from({ length: 40 }, (_, i) => ({ d: new Date(now - (39 - i) * 864e5).toISOString().slice(0, 10), min: i === 39 ? price : 100, source: 'skroutz' as const }));
-    const entry = { key: 'family', slug: 'family', chip: 'Family', listings: [listing], history } as ModelEntry;
+    const entry = { key: 'family', slug: 'family', chip: 'Family', listings: [listing], history: [] as ModelEntry['history'] } as ModelEntry;
     const chunks = [{ v: 1, builtAt: at, sources: {}, models: { family: entry } }] as ModelChunk[];
     return homeFile({ gpu: latest }, { gpu: chunks }, auto, {} as BuilderFiles['slots'], at).deals;
   };

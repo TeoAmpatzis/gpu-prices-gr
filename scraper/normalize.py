@@ -49,6 +49,13 @@ def expand_part_numbers(title: str) -> str:
         extra.append(f"{m.group(1)}GB")
     return f"{title} {' '.join(extra)}" if extra else title
 
+# Chips sold in fixed memory sizes: a listing that states another size is a shop's mistake (it once made a
+# family "RTX 5070 16GB") and is dropped. Only chips whose sizes are certain; add a size when a new variant ships.
+VALID_VRAM = {
+    "RTX 5050": {8}, "RTX 5060": {8}, "RTX 5060 Ti": {8, 16}, "RTX 5070": {12}, "RTX 5070 Ti": {16},
+    "RTX 5080": {16}, "RTX 5090": {32}, "RX 9060 XT": {8, 16}, "RX 9070": {16}, "RX 9070 XT": {16},
+}
+
 # Checked in order against the start of the title, then anywhere.
 PARTNERS = [
     "Asus", "MSI", "Gigabyte", "ASRock", "Sapphire", "PowerColor", "XFX", "Zotac",
@@ -70,6 +77,9 @@ def classify(title: str, hint: str = "") -> tuple[str, str, int] | None:
     if not vram_m:
         return None
     vram = int(vram_m.group(1))
+    # The part number states the memory: it beats a shop's typo ("… Gaming 16GB … GV-N5070GAMING-OC-12GD").
+    if g := GIGABYTE_VRAM.search(title):
+        vram = int(g.group(1))
 
     if m := INTEL.search(title):
         return "Intel", f"Arc {m.group(1).upper()}", vram
@@ -163,6 +173,8 @@ def make_listing(
     if not info or price <= 0:
         return None
     brand, chip, vram = info
+    if vram not in VALID_VRAM.get(chip, {vram}):
+        return None
     mem = MEM_TYPE.search(f"{title} {specs} {url.replace('-', ' ')}")
     return Listing(
         id=f"{source}:{native_id}",
