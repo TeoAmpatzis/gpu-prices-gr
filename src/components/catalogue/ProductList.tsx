@@ -2,7 +2,7 @@ import type { BaseListing } from '../../types';
 import type { ReactNode } from 'react';
 import type { CategoryConfig } from '../../lib/categories';
 import type { CatalogueRecord } from '../../lib/catalogueFilters';
-import { formatPrice, saleOf } from '../../lib/data';
+import { formatPrice, saleOf, type Model } from '../../lib/data';
 import { productHref } from '../../lib/productSelection';
 import { CompareButton } from '../compare/CompareButton';
 import { T, tr, useLang } from '../../lib/i18n';
@@ -10,9 +10,21 @@ import { SOURCES } from '../../lib/sources';
 import { productImage } from '../../lib/images';
 import { Photo } from '../../ui/Photo';
 import { UI } from '../../ui/strings';
-import type { RowPick } from '../ModelRow';
 import { productSpecs } from './specs';
 import './catalogue.css';
+
+/** Pick mode (`?pick=1`, src/components/PickView.tsx): what a model's row adds. */
+export interface RowExtra<L extends BaseListing> {
+  /** Conservative exact-listing fit badge; absent outside pick mode. */
+  badge?: ReactNode;
+  /** Greyed: "Only compatible" is off and the model would be hidden (its reason is in `extra`). */
+  dim: boolean;
+  /** Findings and the "Add to build" button, under the name. */
+  extra: ReactNode;
+  /** Per offer in the open row (graphics cards: each card is added on its own): greyed or not, and what it adds. */
+  listing?: (l: L) => { dim: boolean; extra: ReactNode };
+}
+export type RowPick<L extends BaseListing> = (m: Model<L>) => RowExtra<L>;
 
 interface Props<L extends BaseListing> {
   cfg: CategoryConfig<L>;

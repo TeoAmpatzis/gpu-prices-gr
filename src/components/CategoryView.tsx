@@ -15,7 +15,7 @@ import ProductList from './catalogue/ProductList';
 import { filterCatalogue, sortCatalogue, numericValue } from '../lib/catalogueFilters';
 import { encodeOfferChoice } from '../lib/productSelection';
 import { UI } from '../ui/strings';
-import type { RowPick } from './ModelRow';
+import type { RowPick } from './catalogue/ProductList';
 import Skeleton from './Skeleton';
 import { useMedia } from '../lib/useMedia';
 import { afterFirstPaint } from '../lib/paint';

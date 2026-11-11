@@ -22,7 +22,7 @@ import { PICK } from '../ui/pickStrings';
 import { SkeletonCards } from '../ui/states';
 import { plural, UI } from '../ui/strings';
 import { CategoryLayout, type LayoutProps, type PickSlots } from './CategoryView';
-import type { RowExtra } from './ModelRow';
+import type { RowExtra } from './catalogue/ProductList';
 import { SkeletonFilters, SkeletonTable } from './Skeleton';
 import { encodeOfferChoice } from '../lib/productSelection';
 import { filterCatalogue } from '../lib/catalogueFilters';
