@@ -1,0 +1,24 @@
+name: Data freshness
+
+# Fails (and GitHub emails the owner) when a source's prices on the live site are older than 30 hours:
+# a stopped scrape is noticed the same day. Read only: one request to the live manifest.
+on:
+  schedule:
+    - cron: "23 5,11,17,23 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  freshness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          sparse-checkout: scripts/checks
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+      - run: node scripts/checks/freshness.mjs
