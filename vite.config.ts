@@ -1,4 +1,4 @@
-import { copyFileSync, readFileSync } from 'node:fs';
+import { copyFileSync, existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -30,7 +30,8 @@ function notFoundPage(): Plugin {
       outDir = resolve(c.root, c.build.outDir);
     },
     closeBundle() {
-      copyFileSync(join(outDir, 'index.html'), join(outDir, '404.html'));
+      // A failed build has no index.html: copying would hide the build's own error (the data check's reason).
+      if (existsSync(join(outDir, 'index.html'))) copyFileSync(join(outDir, 'index.html'), join(outDir, '404.html'));
     },
   };
 }

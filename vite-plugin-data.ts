@@ -61,11 +61,30 @@ function readInputs(): Partial<Record<Category, CategoryInput>> {
 /** The images repo's index (scraper/images.py): photo id → {c: category, s: source, d: date}. */
 const IMAGES_INDEX = 'https://teoampatzis.github.io/builddraft-images/index.json';
 
+/** A remote JSON file the build reads, tried twice (one slow answer must not change what is published); null = unreachable. */
+async function remoteJson<T>(url: string): Promise<T | null> {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const r = await fetch(url, { signal: AbortSignal.timeout(10_000) });
+      if (r.ok) return (await r.json()) as T;
+    } catch {
+      // tried again below
+    }
+  }
+  return null;
+}
+
+/**
+ * On Vercel an unreachable remote file stops the build (audit P4-008): the live site stays as it is and the next data
+ * commit builds again, instead of a site without photos or a weaker data check. Elsewhere (a PC, offline) it only
+ * falls back as before.
+ */
+const STRICT_REMOTE = !!process.env.VERCEL && process.env.DATA_CHECK !== 'off';
+
 async function imageLookup(): Promise<{ lookup: ImageLookup; count: number }> {
   try {
-    const r = await fetch(process.env.IMAGES_INDEX || IMAGES_INDEX, { signal: AbortSignal.timeout(10_000) });
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    const index = (await r.json()) as Record<string, { c: string }>;
+    const index = await remoteJson<Record<string, { c: string }>>(process.env.IMAGES_INDEX || IMAGES_INDEX);
+    if (!index) throw new Error('unreachable');
     // The site's own photo id (images.photoId, = scraper/images.py model_id()), so build and browser can't drift.
     const lookup: ImageLookup = (cat, key) => {
       const id = photoId(cat, key);
@@ -73,6 +92,7 @@ async function imageLookup(): Promise<{ lookup: ImageLookup; count: number }> {
     };
     return { lookup, count: Object.keys(index).length };
   } catch {
+    if (STRICT_REMOTE) throw new Error('The images index is unreachable: not publishing a site without photos (DATA_CHECK=off publishes anyway).');
     return { lookup: () => undefined, count: 0 }; // no photos (category icons), the build still publishes
   }
 }
@@ -165,12 +185,9 @@ export function derive(
 
 async function liveManifest(): Promise<Manifest | null> {
   const base = process.env.DATA_CHECK_BASE || LIVE_SITE;
-  try {
-    const r = await fetch(`${base}/data/manifest.json`, { signal: AbortSignal.timeout(10_000) });
-    return r.ok ? ((await r.json()) as Manifest) : null;
-  } catch {
-    return null; // offline or first deploy: checkData falls back to minimum counts
-  }
+  const live = await remoteJson<Manifest>(`${base}/data/manifest.json`);
+  if (!live && STRICT_REMOTE) throw new Error(`The live manifest (${base}) is unreachable: not publishing with the weaker minimum-count check (DATA_CHECK=off publishes anyway).`);
+  return live; // null = offline or first deploy: checkData falls back to minimum counts
 }
 
 /**
