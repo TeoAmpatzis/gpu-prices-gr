@@ -1,6 +1,6 @@
 # Mouse category: design
 
-Date: 2026-11-11. Status: design for the owner's review. No code, data or workflow is changed by this file.
+Date: 2026-11-11. Implementation started with the owner's approval. The category remains disabled and invisible; no mouse data has been collected or published. Progress and the code-grounded clarifications are in `../plans/2026-11-11-mouse-category.md`.
 
 ## Goal
 

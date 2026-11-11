@@ -307,7 +307,12 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
         http_client.set_label(f"{cat.name}/{name}")
         start = time.monotonic()
         try:
-            return [l.to_dict() for l in SOURCES[name](cat)]
+            rows = [l.to_dict() for l in SOURCES[name](cat)]
+            if any(row.get('source') != name or not isinstance(row.get('id'), str)
+                   or not row['id'].startswith(name + ':') or not row['id'][len(name) + 1:].strip()
+                   for row in rows):
+                raise ValueError(f'{cat.name}/{name}: invalid source listing identity')
+            return rows
         except Exception:
             traceback.print_exc()
             return []

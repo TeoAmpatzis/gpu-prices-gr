@@ -133,10 +133,10 @@ Also assert: unknown joins exactly one connection family; ambiguous unknown is r
 
 **Interfaces:** Existing `main.scrape_category(cat, only, with_shipping=True) -> bool`, `stage`, `write_image_urls`, `update_history` and `collect_specs`. Tests patch `main.DATA_DIR` to a directory under `local/mouse/tmp` and mock every HTTP/source method.
 
-- [ ] **1. Write failing integration assertions.** Feed two accepted colours, distinct connection variants, a bundle and a pad through collection. Assert: accepted snapshot excludes rejects; rejected snapshot includes exact reason/title; all model keys agree with the normalizer; history and image URLs contain accepted model keys only; two colours share one model/image key; source success counts count accepted rows. Failed or unselected sources keep their previous accepted rows and relevant rejects. Test unknown source data cannot silently replace a valid prior snapshot.
-- [ ] **2. Add safety cases.** A partial Skroutz traversal retains the previous whole source snapshot; all-source failure reports failure; corrupt prior JSON aborts without replacing it. Specs-only preserves source freshness, prices, history bytes and settled identity. Assert no mouse request reaches Skroutz specs/shipping/history, e-shop or Shopflix. Mocked image generation uses only accepted candidates and both existing WebP sizes; `images.model_id('mouse', key)` matches the frontend hash fixture.
-- [ ] **3. Run and fix only missing wiring.** `venv/Scripts/python scripts/checks/test_mouse_pipeline.py`, `test_source_status.py`, `test_monitor_images.py`, `test_workflows.py`. Expected: all assertions pass with no network. Reuse existing pipeline ordering; add no mouse `EARLY` special case.
-- [ ] **4. Gate A verification and commit.** Run `npm run check`, `npm run e2e` and the repository Python checks. End with registry disabled/invisible and no production data changes. Proposed commit: `test(mouse): prove admission history photos and source retention`.
+- [x] **1. Write failing integration assertions.** Feed two accepted colours, distinct connection variants, a bundle and a pad through collection. Assert: accepted snapshot excludes rejects; rejected snapshot includes exact reason/title; all model keys agree with the normalizer; history and image URLs contain accepted model keys only; two colours share one model/image key; source success counts count accepted rows. Failed or unselected sources keep their previous accepted rows and relevant rejects. Test unknown source data cannot silently replace a valid prior snapshot.
+- [x] **2. Add safety cases.** A partial Skroutz traversal retains the previous whole source snapshot; all-source failure reports failure; corrupt prior JSON aborts without replacing it. Specs-only preserves source freshness, prices, history bytes and settled identity. Assert no mouse request reaches Skroutz specs/shipping/history, e-shop or Shopflix. Mocked image generation uses only accepted candidates and both existing WebP sizes; `images.model_id('mouse', key)` matches the frontend hash fixture.
+- [x] **3. Run and fix only missing wiring.** `venv/Scripts/python scripts/checks/test_mouse_pipeline.py`, `test_source_status.py`, `test_monitor_images.py`, `test_workflows.py`. Expected: all assertions pass with no network. Reuse existing pipeline ordering; add no mouse `EARLY` special case.
+- [x] **4. Gate A verification and commit.** Run `npm run check`, `npm run e2e` and the repository Python checks. End with registry disabled/invisible and no production data changes. Proposed commit: `test(mouse): prove admission history photos and source retention`.
 
 ### Task 5: Measure Source Coverage, Collect First Data and Enable Hidden Derivation
 
@@ -259,3 +259,16 @@ Use one Playwright worktree/server at a time. Run live site/freshness checks onl
 ## Deliberate Omissions
 
 No keyboard/headset categories, `/peripherals` landing page, new scraping framework, category-folder refactor, comparison-engine rewrite, new state persistence, manufacturer scraping, mouse quality score or generic extension platform. BestPrice richer product-page specs, mouse weight/sensor/battery, the optional Skroutz commit-action consolidation and existing P4-010 remediation are separate work.
+
+## Execution Evidence ? Gate A (2026-11-11)
+
+Tasks 1?4 are complete locally. Mouse is still `enabled:false, visible:false`; BestPrice mouse price slices remain unset until the live preflight. No mouse source requests, push, workflow dispatch or deployment occurred.
+
+- `npm run check`: passed; 83 suites, 1,655 tests passed, 1 skipped; typecheck, lint and build passed.
+- `npm run e2e`: all 322 Chromium tests passed (8.8 minutes).
+- Python gate: all 31 `scripts/checks/test_*.py` programs passed after the final source-identity fix.
+- Focused mouse proof: 22 normalizer tests, 33 Skroutz collector tests, 10 pipeline/sharing tests (including 12 malformed shop identity subcases), 6 capability tests; shared Python/TypeScript photo vector matches.
+- Independent code review findings were reproduced, fixed and rechecked. The shared scrape boundary now rejects mismatched source/qualified IDs and retains prior source data; no remaining Critical/Important review finding.
+- Existing pipeline code already satisfied the history/photo/retention cases; no mouse-specific pipeline or specs parser was added. The only shared pipeline correction was the proven source-identity admission guard.
+- Known limits: corpus has two observed titles from the design plus explicitly labelled synthetic boundary cases. Live source counts, slice edges, coverage, real-world grouping and payload gates are not yet validated. Plain cable descriptions without an explicit inclusion phrase are conservatively rejected for review.
+- Task 5 and the live-data gates remain unchecked. Gate A code review precedes any approved code push or collection. Logs and detailed execution ledger remain inside `local/mouse/` and `.superpowers/sdd/2026-11-11-mouse-category/`.

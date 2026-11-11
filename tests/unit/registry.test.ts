@@ -7,11 +7,16 @@ import { SLOTS } from '../../src/lib/slots';
 import { CATEGORY_LIST, matchRoute } from '../../src/lib/routes';
 import { isComparable } from '../../src/lib/compare/refs';
 import { GROUPS } from '../../src/shell/nav';
+import { photoId } from '../../src/lib/images';
 
 const text = (path: string) => readFileSync(path, 'utf8');
 const ids = Object.keys(REGISTRY) as Category[];
 
 describe('category registry', () => {
+  it('agrees with the mouse image pipeline on the shared photo identity vector', () => {
+    expect(photoId('mouse', 'logitechm171wireless')).toBe('9656df6b22f8');
+  });
+
   it('keeps the mouse scaffold disabled, unpublished and outside the PC builder', () => {
     const mouse = 'mouse' as Category;
     expect(REGISTRY).toHaveProperty('mouse', { domain: 'peripherals', enabled: false, visible: false });
