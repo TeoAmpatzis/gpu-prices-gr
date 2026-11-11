@@ -10,7 +10,7 @@
 
 **Spec:** `docs/superpowers/specs/2026-11-11-mouse-category-design.md`. Read it together with `docs/PROJECT-STATE.md`; the latter owns operational rules. This plan implements phases 1–3 and 5. Richer product-page specifications (phase 4) need a separate probe and plan.
 
-**Status:** Execution started 2026-11-11 on `feat/mouse-category`. Checked steps have completed verification; unchecked steps remain. No mouse scrape, push, workflow dispatch or deployment has been authorized or performed. Execution evidence: `.superpowers/sdd/2026-11-11-mouse-category/progress.md`; task reports are added here at completion.
+**Status:** Paused at the owner's request, 2026-11-11. Tasks 1–4 complete; Task 5 live collection completed in an isolated local directory, but corrected offline replay and final data review remain pending. Resume from `docs/peripherals/MOUSE_CHECKPOINT.md`. Mouse remains disabled/invisible; nothing was published.
 
 ## Global Constraints
 

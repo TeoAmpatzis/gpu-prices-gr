@@ -90,6 +90,7 @@ export interface RamListing extends BaseListing {
 
 // A mouse offer (scraper/models.py MouseListing). Null means the source did not state the spec.
 export interface MouseListing extends BaseListing {
+  identityTitle?: string | null; // exact list-page Product.name used only when the card lacks a model
   connection: 'wired' | 'wireless' | 'both' | null;
   dpi: number | null;
   pollingHz: number | null;

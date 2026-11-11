@@ -27,6 +27,45 @@ def page(native_id="123", next_href=None, **kwargs):
 
 
 class CollectorTests(unittest.TestCase):
+    def test_observed_mouse_cards_recover_the_model_from_the_same_list_page(self):
+        html = (Path(__file__).parent / 'fixtures/mouse-skroutz-identity.html').read_text(encoding='utf-8')
+        found, _ = skroutz.parse(html, AT, CATEGORIES['mouse'])
+        self.assertEqual(len(found), 2)
+        for listing, model in zip(found, ('25145', 'M6S-A23')):
+            data = [listing.to_dict()]
+            CATEGORIES['mouse'].settle(data)
+            self.assertIsNone(data[0]['reject'])
+            self.assertIn(model, data[0]['chip'])
+            self.assertNotIn(model, data[0]['title'])
+            self.assertIn(model, data[0]['identityTitle'])
+
+    def test_mouse_model_recovery_requires_one_exact_matching_product_name(self):
+        url = 'https://www.skroutz.gr/s/51236506/trust.html'
+        product = {'@type': 'Product', 'url': url, 'name': 'Trust 25145 Ασύρματο Μαύρο'}
+        original = 'Trust Ασύρματο Μαύρο'
+        def parse(products, category='mouse', title=original):
+            data = {'itemListElement': [{'item': p} for p in products]}
+            html = card('51236506', title=title, href=url) + f'<script type="application/ld+json">{json.dumps(data)}</script>'
+            return skroutz.parse(html, AT, CATEGORIES[category])[0][0]
+        recovered = parse([product])
+        self.assertEqual(recovered.title, original)
+        self.assertIsNone(recovered.reject)
+        self.assertEqual(recovered.identityTitle, product['name'])
+        data = [recovered.to_dict()]
+        CATEGORIES['mouse'].settle(data)
+        self.assertIn('25145', data[0]['chip'])
+        for changed in ({'url': '/s/99/trust.html'}, {'url': '/s/51236506/different.html'},
+                        {'url': 'https://evil.example/s/51236506/trust.html'}, {'@type': 'Thing'},
+                        {'name': 'Razer Other Mouse'}, {'name': None}):
+            with self.subTest(changed=changed):
+                self.assertEqual(parse([{**product, **changed}]).reject, 'no-identity')
+        self.assertEqual(parse([product, {**product, 'name': 'Trust Different Mouse'}]).reject, 'no-identity')
+        valid = parse([product], title='Trust 777 Wireless Mouse')
+        self.assertIsNone(valid.identityTitle)
+        self.assertIn('777', valid.title)
+        cpu = parse([product], category='cpu', title='AMD Ryzen 5 7600 Box')
+        self.assertEqual(cpu.title, 'AMD Ryzen 5 7600 Box')
+
     def test_mouse_path_tags_keep_cheapest_price_and_gaming_priority_in_either_order(self):
         cat = replace(CATEGORIES['mouse'], skroutz_paths=('/gaming', '/office'),
                       skroutz_tags=({'gaming': True}, {'gaming': False}))

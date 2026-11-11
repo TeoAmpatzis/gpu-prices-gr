@@ -30,6 +30,89 @@ def key(r):
 
 
 class ParseTests(unittest.TestCase):
+    def test_observed_preflight_brands_and_full_colour_phrases(self):
+        for brand in ('Apple', 'HyperX', 'Xiaomi', 'Sades', 'Ajazz', 'NGS', 'ATK', 'Spartan Gear',
+                      'Attack Shark', 'Motospeed', 'Ugreen', 'Powerlogic', 'Zeroground', 'MediaRange', 'Vakoss', 'Approx', 'ET'):
+            self.assertEqual(row(f'{brand} Example Mouse')['brand'], brand)
+        variants = ('Space Grey', 'Space Gray', 'Pale Grey', 'Graphite', 'Anthracite', 'Dark Grey',
+                    'White Mist', 'Space Black', 'Black Grey', 'Black/Silver', 'Black-Grey', 'Black / Red', 'Lime Green')
+        data = rows(*(f'Logitech MX Master 3S Wireless {colour}' for colour in variants))
+        nm.settle(data)
+        self.assertEqual(len({key(r) for r in data}), 1)
+        self.assertTrue(all(r['colour'] for r in data))
+        self.assertNotEqual(data[0]['colour'], data[2]['colour'])
+        self.assertEqual(data[0]['colour'], data[1]['colour'])
+
+    def test_makers_observed_in_full_collection_source_filters(self):
+        for title, brand in (('Yenkee YMS 2015 Wireless Mouse', 'Yenkee'),
+                             ('R-GO Tools HE Mouse Wired Black', 'R-GO Tools'),
+                             ('Cherry Gentix Mouse Black', 'Cherry'),
+                             ('Bakker Elkhuizen Example Mouse', 'BakkerElkhuizen'),
+                             ('Xtrike Me Example Mouse', 'Xtrike Me')):
+            self.assertEqual(row(title)['brand'], brand)
+
+    def test_snif_recognized_maker_may_follow_descriptors_or_a_model_code(self):
+        cases = (
+            ('Ποντίκι Ενσύρματο Gaming Zeroground RGB MS-3100G Hirashi', 'Zeroground', 'MS-3100G Hirashi'),
+            ('Ασύρματο Ποντίκι Tracer Joy RF -Μπλέ', 'Tracer', 'Joy'),
+            ('Ποντίκι MX707W 2.4Ghz Ασύρματο Msonic με USB Nano Receiver Άσπρο', 'Msonic', 'MX707W'),
+            ('Ποντίκι με φωτισμό και μεταλλική βάση R.horse ROBOCOP FC-1800 USB 2 Wired LED Gaming Mouse - Black / Red', 'R.horse', 'ROBOCOP FC-1800'),
+        )
+        for title, brand, model in cases:
+            data = rows(title)
+            nm.settle(data)
+            self.assertEqual(data[0]['brand'], brand)
+            self.assertIsNone(data[0]['reject'], title)
+            self.assertIn(model, data[0]['chip'])
+        data = rows('Logitech Razer Example Mouse')
+        nm.settle(data)
+        self.assertEqual(data[0]['reject'], 'no-identity')
+
+    def test_silent_vertical_and_ergonomic_model_words_are_preserved(self):
+        for title in ('Logitech M240 Silent Wireless Graphite', 'Logitech MX Vertical Wireless Black',
+                      'Trust Verto Ergonomic Wireless Black'):
+            data = rows(title)
+            nm.settle(data)
+            self.assertIn(title.split()[2], data[0]['chip'])
+
+    def test_persisted_list_page_identity_recovers_a_missing_model_without_changing_card_title(self):
+        data = nm.make_listing(source='skroutz', native_id='51236506', title='Trust Ασύρματο Μαύρο',
+                               identity_title='Trust 25145 Ασύρματο Εργονομικό Ποντίκι Μαύρο',
+                               url='https://www.skroutz.gr/s/51236506/product.html', price=32.8,
+                               shop_count=None, scraped_at=AT).to_dict()
+        nm.settle([data])
+        self.assertIsNone(data['reject'])
+        self.assertIn('25145', data['chip'])
+        self.assertEqual(data['title'], 'Trust Ασύρματο Μαύρο')
+        self.assertTrue(data['identityTitle'])
+        before = copy.deepcopy(data)
+        nm.settle([data])
+        self.assertEqual(data, before)
+
+    def test_supplemental_identity_preserves_card_evidence_and_quarantines_conflicts(self):
+        def recover(extra):
+            return nm.make_listing(source='skroutz', native_id='1', title='Trust Wireless Black',
+                                   identity_title=extra, url='https://example.com/1', price=20,
+                                   shop_count=None, scraped_at=AT).to_dict()
+        data = recover('Trust 25145 Mouse')
+        self.assertEqual((data['connection'], data['colour']), ('wireless', 'black'))
+        for title in ('Trust 25145 Mousepad Black', 'Trust 25145 Wireless Refurbished Black'):
+            data = recover(title)
+            self.assertIn(data['reject'], ('not-mouse', 'used'))
+            data['reject'] = None
+            nm.settle([data])
+            self.assertIn(data['reject'], ('not-mouse', 'used'))
+        for title in ('Trust 25145 Wired Black', 'Trust 25145 Wireless White', 'Razer 25145 Wireless Black'):
+            self.assertEqual(recover(title)['reject'], 'identity-conflict', title)
+        data = []
+        for i, model in enumerate(('25145', '25146')):
+            item = nm.make_listing(source='skroutz', native_id=str(i), title='Trust Wireless Black 910-004424',
+                                   identity_title=f'Trust {model} Mouse', url='https://example.com', price=20,
+                                   shop_count=None, scraped_at=AT).to_dict()
+            data.append(item)
+        nm.settle(data)
+        self.assertEqual([r['reject'] for r in data], ['identity-conflict', 'identity-conflict'])
+
     def test_documented_titles_and_synthetic_cases(self):
         fixture = json.loads((ROOT / "scripts/checks/fixtures/mouse-titles.json").read_text(encoding="utf-8"))
         for case in fixture:

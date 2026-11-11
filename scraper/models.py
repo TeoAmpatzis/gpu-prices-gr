@@ -289,6 +289,7 @@ class MouseListing:
     colour: str | None = None
     partNumber: str | None = None
     reject: str | None = None
+    identityTitle: str | None = None  # exact linked Product.name from the same list page, when the card lacks a model
 
     def to_dict(self) -> dict:
         return listing_dict(self)

@@ -4,39 +4,186 @@
     "source": "snif",
     "url": "https://www.snif.gr/category/1919852/",
     "title": "Ποντίκι Logitech M171 Wireless Black 910-004424",
-    "expected": {"brand": "Logitech", "connection": "wireless", "colour": "black", "partNumber": "910-004424", "gaming": null, "dpi": null}
+    "expected": {
+      "brand": "Logitech",
+      "connection": "wireless",
+      "colour": "black",
+      "partNumber": "910-004424",
+      "gaming": null,
+      "dpi": null
+    }
   },
   {
     "kind": "observed",
     "source": "snif",
     "url": "https://www.snif.gr/category/1919852/",
     "title": "MARVO M450 Scorpion Ενσύρματο Gaming Mouse",
-    "expected": {"brand": "MARVO", "connection": "wired", "gaming": true, "rgb": null}
+    "expected": {
+      "brand": "MARVO",
+      "connection": "wired",
+      "gaming": true,
+      "rgb": null
+    }
   },
   {
     "kind": "synthetic",
     "source": "skroutz",
     "title": "Logitech G502 X Plus Ασύρματο Μαύρο",
     "specs": "Κουμπιά:13, 25600 DPI, RGB, Polling Rate:1000Hz",
-    "expected": {"brand": "Logitech", "connection": "wireless", "colour": "black", "buttons": 13, "dpi": 25600, "pollingHz": 1000, "rgb": true}
+    "expected": {
+      "brand": "Logitech",
+      "connection": "wireless",
+      "colour": "black",
+      "buttons": 13,
+      "dpi": 25600,
+      "pollingHz": 1000,
+      "rgb": true
+    }
   },
   {
     "kind": "synthetic",
     "source": "skroutz",
     "title": "Microsoft Example Mouse Ασύρματο Λευκό",
     "specs": "RF 2.4GHz, Bluetooth, USB, Επαναφορτιζόμενο",
-    "expected": {"connection": "wireless", "rf": true, "bluetooth": true, "rechargeable": true, "colour": "white"}
+    "expected": {
+      "connection": "wireless",
+      "rf": true,
+      "bluetooth": true,
+      "rechargeable": true,
+      "colour": "white"
+    }
   },
   {
     "kind": "synthetic",
     "source": "bestprice",
     "title": "Mouse HP Example Vertical Silent 1600dpi Gray 6VY96AA",
-    "expected": {"brand": "HP", "dpi": 1600, "ergonomic": true, "silent": true, "colour": "grey", "partNumber": "6VY96AA"}
+    "expected": {
+      "brand": "HP",
+      "dpi": 1600,
+      "ergonomic": true,
+      "silent": true,
+      "colour": "grey",
+      "partNumber": "6VY96AA"
+    }
   },
   {
     "kind": "synthetic",
     "source": "snif",
     "title": "Mars Gaming Example Mini Max V2 Mouse Ασύρματο & Ενσύρματο White",
-    "expected": {"brand": "Mars Gaming", "connection": "both", "colour": "white"}
+    "expected": {
+      "brand": "Mars Gaming",
+      "connection": "both",
+      "colour": "white"
+    }
+  },
+  {
+    "kind": "observed",
+    "source": "bestprice",
+    "url": "https://www.bestprice.gr/item/2160107800/apple-magic-mouse-usb-c-2024-asyrmato-bluetooth-white.html",
+    "title": "Apple Magic Mouse USB-C 2024 Ασύρματο Bluetooth White",
+    "observedAt": "2026-11-11",
+    "expected": {
+      "brand": "Apple",
+      "colour": "white"
+    }
+  },
+  {
+    "kind": "observed",
+    "source": "skroutz",
+    "url": "https://www.skroutz.gr/s/54563686/HyperX-Pulsefire-Haste-2-Core-Asyrmato-RGB-Gaming-Pontiki-12000-DPI-Mayro.html",
+    "title": "HyperX Pulsefire Haste 2 Core Ασύρματο",
+    "observedAt": "2026-11-11",
+    "expected": {
+      "brand": "HyperX",
+      "connection": "wireless"
+    }
+  },
+  {
+    "kind": "observed",
+    "source": "skroutz",
+    "url": "https://www.skroutz.gr/s/56309174/Xiaomi-Mouse-Lite-RGB-Gaming-Pontiki-6200-DPI-Mayro.html",
+    "title": "Xiaomi Mouse Lite Μαύρο",
+    "observedAt": "2026-11-11",
+    "expected": {
+      "brand": "Xiaomi",
+      "colour": "black"
+    }
+  },
+  {
+    "kind": "observed",
+    "source": "bestprice",
+    "url": "https://www.bestprice.gr/item/2162738234/logitech-mx-master-4-asyrmato-bluetooth-pontiki-anthracite.html",
+    "title": "Logitech MX Master 4 Ασύρματο Bluetooth Ποντίκι Anthracite",
+    "observedAt": "2026-11-11",
+    "expected": {
+      "brand": "Logitech",
+      "colour": "anthracite"
+    }
+  },
+  {
+    "kind": "observed",
+    "source": "bestprice",
+    "url": "https://www.bestprice.gr/item/2158361753/logitech-mx-master-3s-for-business-asyrmato-bluetooth-pontiki-ergonomiko-space-grey.html",
+    "title": "Logitech MX Master 3S for Business Ασύρματο Bluetooth Ποντίκι Εργονομικό Space Grey",
+    "observedAt": "2026-11-11",
+    "expected": {
+      "brand": "Logitech",
+      "colour": "space-grey"
+    }
+  },
+  {
+    "kind": "observed",
+    "source": "skroutz",
+    "url": "https://www.skroutz.gr/s/54141880/Logitech-MX-Anywhere-3S-Asyrmato-Pontiki-Pale-Grey.html",
+    "title": "Logitech MX Anywhere 3S Ασύρματο Pale Grey",
+    "observedAt": "2026-11-11",
+    "expected": {
+      "brand": "Logitech",
+      "colour": "pale-grey"
+    }
+  },
+  {
+    "kind": "observed",
+    "source": "skroutz",
+    "url": "https://www.skroutz.gr/s/16021515/Logitech-MX-Vertical-Asyrmato-Ensyrmato-Ergonomiko-Bluetooth-Pontiki-Mayro.html",
+    "title": "Logitech MX Vertical Ασύρματο & Ενσύρματο Μαύρο",
+    "observedAt": "2026-11-11",
+    "expected": {
+      "brand": "Logitech",
+      "connection": "both"
+    }
+  },
+  {
+    "kind": "observed",
+    "source": "snif",
+    "url": "https://www.snif.gr/showproduct/20858216/pontiki-mx707w-2-4ghz-asurmato-msonic-me-usb-nano",
+    "title": "Ποντίκι MX707W 2.4Ghz Ασύρματο Msonic με USB Nano Receiver Άσπρο",
+    "observedAt": "2026-11-11",
+    "expected": {
+      "brand": "Msonic",
+      "colour": "white"
+    }
+  },
+  {
+    "kind": "observed",
+    "source": "snif",
+    "url": "https://www.snif.gr/showproduct/20015416/asurmato-pontiki-tracer-joy-rf--mple",
+    "title": "Ασύρματο Ποντίκι Tracer Joy RF -Μπλέ",
+    "observedAt": "2026-11-11",
+    "expected": {
+      "brand": "Tracer",
+      "colour": "blue"
+    }
+  },
+  {
+    "kind": "observed",
+    "source": "snif",
+    "url": "https://www.snif.gr/showproduct/19117981/pontiki-ensurmato-gaming-zeroground-rgb-ms-3100g-h",
+    "title": "Ποντίκι Ενσύρματο Gaming Zeroground RGB MS-3100G Hirashi",
+    "observedAt": "2026-11-11",
+    "expected": {
+      "brand": "Zeroground",
+      "connection": "wired"
+    }
   }
 ]

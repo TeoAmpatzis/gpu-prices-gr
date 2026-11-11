@@ -1,5 +1,7 @@
 # Mouse data review — partial live preflight
 
+**Checkpoint update:** A full isolated collection has since completed. Its corrected offline replay and final admission report are still pending. The sections below remain the earlier preflight findings; current state and exact trial paths are in [MOUSE_CHECKPOINT.md](MOUSE_CHECKPOINT.md).
+
 Date: 2026-11-11. This is a preflight report, **not** the completed first-data admission review. Mouse remains disabled and invisible. No production mouse snapshot has been collected or published.
 
 ## Authorization and pushed code

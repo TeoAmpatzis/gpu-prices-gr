@@ -231,8 +231,11 @@ CATEGORIES = {
         skroutz_paths=("/c/1865/gaming_pontikia.html", "/c/69/mice.html"),
         skroutz_tags=({"gaming": True}, {"gaming": False}),
         snif_categories=("1919852",),
-        # Price slices must be measured before the first live mouse collection (plan Task 5).
-        bestprice_paths=(),
+        # Measured 2026-11-11: 176 pages, at most 45 per slice (docs/peripherals/MOUSE_DATA_REVIEW.md).
+        bestprice_paths=tuple(f"/cat/2569/pontikia.html?{q}" for q in (
+            "max=499", "min=500&max=699", "min=700&max=999", "min=1000&max=1999",
+            "min=2000&max=3999", "min=4000&max=7999", "min=8000",
+        )),
         make_listing=normalize_mouse.make_listing,
         model_key=lambda l: names.model_key(l["chip"]),
         settle=normalize_mouse.settle,

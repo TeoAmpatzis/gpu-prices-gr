@@ -58,10 +58,11 @@ def _image_url(value) -> str | None:
     return None
 
 
-def _jsonld_data(tree: HTMLParser) -> tuple[dict[str, float], dict[str, str]]:
+def _jsonld_data(tree: HTMLParser) -> tuple[dict[str, float], dict[str, str], dict[str, str]]:
     """Exact prices and lazy-card photos from the same listing-page documents."""
     prices_by_id: dict[str, float] = {}
     images_by_id: dict[str, str] = {}
+    names_by_url: dict[str, set[str]] = {}
     for script in tree.css('script[type="application/ld+json"]'):
         try:
             data = json.loads(script.text())
@@ -78,12 +79,16 @@ def _jsonld_data(tree: HTMLParser) -> tuple[dict[str, float], dict[str, str]]:
                 if m and prices:
                     prices_by_id[m.group(1)] = min(prices)
                 if m and item.get("@type") == "Product" and _product_url(item["url"], m.group(1)):
+                    name = item.get('name')
+                    if isinstance(name, str) and name.strip():
+                        product_url = _product_url(item['url'], m.group(1))
+                        names_by_url.setdefault(product_url, set()).add(name.strip())
                     photos = item.get("image", [])
                     for photo in photos if isinstance(photos, list) else [photos]:
                         if image := _image_url(photo):
                             images_by_id.setdefault(m.group(1), image)
                             break
-    return prices_by_id, images_by_id
+    return prices_by_id, images_by_id, {url: next(iter(values)) for url, values in names_by_url.items() if len(values) == 1}
 
 
 def jsonld_prices(tree: HTMLParser) -> dict[str, float]:
@@ -113,7 +118,7 @@ def _product_url(href: str, skuid: str) -> str | None:
 
 def _parse_page(html: str, scraped_at: str, cat: Category) -> _Page:
     tree = HTMLParser(html)
-    exact, photos = _jsonld_data(tree)
+    exact, photos, product_names = _jsonld_data(tree)
     out = []
     ids = set()
     usable = 0
@@ -136,7 +141,7 @@ def _parse_page(html: str, scraped_at: str, cat: Category) -> _Page:
         if url is None:
             continue
         usable += 1
-        listing = cat.make_listing(
+        observed = dict(
             source="skroutz",
             native_id=skuid,
             title=title_el.attributes.get("title") or title_el.text(),
@@ -146,6 +151,12 @@ def _parse_page(html: str, scraped_at: str, cat: Category) -> _Page:
             specs=specs_el.text() if specs_el else "",  # e.g. "Τύπος:ATX / SFX"
             scraped_at=scraped_at,
         )
+        listing = cat.make_listing(**observed)
+        if (listing and cat.name == 'mouse' and listing.brand != 'Other' and listing.reject == 'no-identity'
+                and url in product_names):
+            recovered = cat.make_listing(**observed, identity_title=product_names[url])
+            if recovered and recovered.brand == listing.brand and recovered.reject is None:
+                listing = recovered
         if listing:
             # Skroutz's own price-drop badge: "-11%πτώση τιμής".
             drop = card.css_first(".badge-price_drop_bottom_badge")
