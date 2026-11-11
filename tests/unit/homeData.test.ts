@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { dealIsFresh } from '../../src/lib/homeData';
-import { homeFile } from '../../src/lib/homeFile';
+import { homeFile, tileMin } from '../../src/lib/homeFile';
 import { CATEGORY_LIST } from '../../src/lib/routes';
 import type { AutoFile, BaseListing, Latest, ModelChunk, ModelEntry } from '../../src/types';
 import type { BuilderFiles } from '../../src/lib/derive';
@@ -28,6 +28,13 @@ describe('homepage derived feed', () => {
     expect(file.categories.map((c) => c.id)).toEqual(CATEGORY_LIST);
     expect(file.categories.find((c) => c.id === 'gpu')).toMatchObject({ count: 2, min: 80 });
     expect(file.categories.find((c) => c.id === 'ram')).toMatchObject({ count: 0, min: null });
+  });
+
+  it('a tile minimum comes from the default view, two or more listings, and skips a price under half of the next offer', () => {
+    const cpu = (chip: string, price: number, source = 'skroutz') => ({ ...listing, id: `${chip}-${source}-${price}`, chip, price, source }) as BaseListing;
+    expect(tileMin('cpu', [cpu('Pentium G4560', 3.71), cpu('Pentium G4560', 60, 'bestprice'), cpu('Ryzen 5 5600', 95), cpu('Ryzen 5 5600', 99, 'bestprice')])).toBe(60);
+    expect(tileMin('cpu', [cpu('Xeon E5-2620 v4', 14), cpu('Xeon E5-2620 v4', 20, 'bestprice'), cpu('Ryzen 5 5600', 95), cpu('Ryzen 5 5600', 99, 'bestprice')])).toBe(95);
+    expect(tileMin('cpu', [cpu('Ryzen 5 5600', 95)])).toBeNull();
   });
 
   it('lists the deals the badges show (30-day reference), leaves out stale or dearer listings, and limits drops in stable order', () => {

@@ -1,6 +1,7 @@
 // Build-only homepage derivation; never import this module from browser components.
 import type { AutoFile, BaseListing, Category, Latest, ModelChunk } from '../types';
 import { autoFor } from './autoPick';
+import { rulesOf } from './categoryRules';
 import { fromColumns } from './columns';
 import { slotModels } from './builderData';
 import type { BuilderFiles } from './derive';
@@ -13,12 +14,34 @@ import { SLOTS, type Slot } from './slots';
 /** A drop above this is far more often a wrong listing than a real price (a single listing has no peers for the suspect-price check). */
 export const HOME_MAX_DROP = 60;
 
+/**
+ * The "from €" of a category tile (audit P3-008): the lowest price in the category's default view (no workstation,
+ * server or NAS parts), over models that two or more listings confirm. A price under half of the model's next offer
+ * is taken as a wrong listing and the next offer counts instead.
+ */
+export function tileMin(id: Category, rows: BaseListing[]): number | null {
+  const rules = rulesOf(id);
+  const models = new Map<string, number[]>();
+  for (const l of rows) {
+    if (rules.isPro(l) || (rules.segmentOf?.(l) ?? 'main') !== 'main') continue;
+    const key = rules.modelKey(l);
+    models.set(key, [...(models.get(key) ?? []), l.price]);
+  }
+  let min: number | null = null;
+  for (const prices of models.values()) {
+    if (prices.length < 2) continue;
+    const [first, second] = prices.sort((a, b) => a - b);
+    const price = first * 2 < second ? second : first;
+    if (min == null || price < min) min = price;
+  }
+  return min;
+}
 /** Uses already validated inputs, trusted model histories and the existing automatic outputs. */
 export function homeFile(latest: Partial<Record<Category, Latest>>, chunks: Partial<Record<Category, ModelChunk[]>>, auto: AutoFile, slots: BuilderFiles['slots'], builtAt: string): HomeFile {
   const now = Date.parse(builtAt);
   const categories = CATEGORY_LIST.map((id) => {
     const rows = latest[id]?.listings ?? [];
-    return { id, count: rows.length, min: rows.length ? Math.min(...rows.map((l) => l.price)) : null };
+    return { id, count: rows.length, min: tileMin(id, rows) };
   });
   const deals: HomeDeal[] = [];
   for (const id of CATEGORY_LIST) for (const chunk of chunks[id] ?? []) for (const model of Object.values(chunk.models)) {
