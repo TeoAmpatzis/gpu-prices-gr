@@ -2,17 +2,17 @@
  "updatedAt": "2026-11-10T20:25:23+00:00",
  "sources": {
   "skroutz": {
-   "count": 2519,
+   "count": 2515,
    "ok": true,
    "updatedAt": "2026-11-10T16:46:30+00:00"
   },
   "bestprice": {
-   "count": 2420,
+   "count": 2406,
    "ok": true,
    "updatedAt": "2026-11-10T20:25:23+00:00"
   },
   "snif": {
-   "count": 1051,
+   "count": 1048,
    "ok": true,
    "updatedAt": "2026-11-10T20:25:23+00:00"
   }
@@ -79,7 +79,26 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4710739592764",
+   "pgSize": 23.8,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgResponseMs": 5.0,
+   "pgNits": 250,
+   "pgPanel": "VA",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "75x75",
+   "pgConnectors": [
+    "HDMI",
+    "DVI",
+    "VGA",
+    "DisplayPort"
+   ],
+   "pgColour": "Άσπρο"
   },
   {
    "id": "skroutz:54856464",
@@ -977,26 +996,6 @@
    "reject": null
   },
   {
-   "id": "skroutz:61987977",
-   "source": "skroutz",
-   "title": "AG Neovo SMQ-4301 43\" IPS 4K 3840x2160",
-   "url": "https://www.skroutz.gr/s/61987977/ag-neovo-smq-4301-ips-monitor-43-4k-3840x2160-me-chrono-apokrisis-5ms-gtg.html",
-   "price": 1124.43,
-   "shopCount": null,
-   "brand": "AG",
-   "chip": "AG SMQ4301",
-   "code": "SMQ4301",
-   "size": 43.0,
-   "height": 2160,
-   "width": 3840,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
-  },
-  {
    "id": "skroutz:44399",
    "source": "skroutz",
    "title": "AG Neovo Neovo SX-15G 15\" 1024x768",
@@ -1015,29 +1014,6 @@
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
    "reject": null
-  },
-  {
-   "id": "bestprice:227077204",
-   "source": "bestprice",
-   "title": "Οθόνη AG SX-19G 19\" Μαύρη CCTV",
-   "url": "https://www.bestprice.gr/to/227077204/othoni-ag-sx-19g-19-mavri-cctv.html?seq=336",
-   "price": 916.52,
-   "shopCount": null,
-   "brand": "AG",
-   "chip": "AG SX19G",
-   "code": "SX19G",
-   "size": 19.0,
-   "height": null,
-   "width": null,
-   "hz": null,
-   "panel": null,
-   "colour": "black",
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
   },
   {
    "id": "bestprice:2164588644",
@@ -1060,7 +1036,13 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 15.0,
+   "pgWidth": 1024,
+   "pgHeight": 768,
+   "pgResponseMs": 12.0,
+   "pgAspect": "4:3",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:32195665",
@@ -1547,7 +1529,27 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4710739597547",
+   "pgSize": 23.8,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgResponseMs": 5.0,
+   "pgNits": 250,
+   "pgContrast": 3000,
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "HDMI",
+    "VGA",
+    "USB",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Touchscreen"
+   ],
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:53040948",
@@ -1590,7 +1592,27 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4710739597554",
+   "pgSize": 23.8,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgResponseMs": 5.0,
+   "pgNits": 250,
+   "pgContrast": 3000,
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "HDMI",
+    "VGA",
+    "USB",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Touchscreen"
+   ],
+   "pgColour": "Άσπρο"
   },
   {
    "id": "bestprice:2159832421",
@@ -1762,7 +1784,29 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4710739593747",
+   "pgSize": 21.5,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgResponseMs": 3.0,
+   "pgNits": 250,
+   "pgPanel": "VA",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "75x75",
+   "pgConnectors": [
+    "HDMI",
+    "DVI",
+    "VGA",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgEnergy": "E",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2157275796",
@@ -3443,7 +3487,30 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4038986146944",
+   "pgSize": 23.8,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgHz": 144,
+   "pgResponseMs": 1.0,
+   "pgNits": 250,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "FreeSync",
+    "Ενσωματωμένα Ηχεία",
+    "USB Hub"
+   ]
   },
   {
    "id": "bestprice:2160333004",
@@ -7226,7 +7293,29 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4038986188579",
+   "pgSize": 27.0,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgHz": 165,
+   "pgResponseMs": 1.0,
+   "pgNits": 250,
+   "pgContrast": 4000,
+   "pgPanel": "VA",
+   "pgAspect": "16:9",
+   "pgCurved": true,
+   "pgConnectors": [
+    "HDMI",
+    "VGA",
+    "USB",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "FreeSync",
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgEnergy": "B"
   },
   {
    "id": "bestprice:2156170401",
@@ -12223,7 +12312,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4712842713401"
   },
   {
    "id": "bestprice:2162565869",
@@ -17476,7 +17566,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4711121898839"
   },
   {
    "id": "skroutz:48469564",
@@ -20405,7 +20496,7 @@
    "brand": "Anmite",
    "chip": "Anmite AW03",
    "code": "AW03",
-   "size": 3.0,
+   "size": null,
    "height": 1080,
    "width": 1920,
    "hz": 120,
@@ -21071,7 +21162,25 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0,
+   "pgWidth": 5120,
+   "pgHeight": 2880,
+   "pgNits": 600,
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "USB-C",
+    "Thunderbolt 3"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία",
+    "Ενσωματωμένη Κάμερα"
+   ],
+   "pgColour": "Άσπρο"
   },
   {
    "id": "bestprice:2157389951",
@@ -21135,7 +21244,24 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0,
+   "pgWidth": 5120,
+   "pgHeight": 2880,
+   "pgNits": 600,
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "USB-C",
+    "Thunderbolt 3"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία",
+    "Ενσωματωμένη Κάμερα"
+   ],
+   "pgColour": "Άσπρο"
   },
   {
    "id": "skroutz:65822253",
@@ -25382,7 +25508,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:60758206",
@@ -26243,7 +26370,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "bestprice:2163591024",
@@ -26309,7 +26437,33 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4711387306994",
+   "pgSize": 31.5,
+   "pgWidth": 3840,
+   "pgHeight": 2160,
+   "pgHz": 60,
+   "pgResponseMs": 0.1,
+   "pgNits": 250,
+   "pgContrast": 1000000,
+   "pgPanel": "OLED",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "USB-C",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένη Κάμερα",
+    "USB Hub"
+   ],
+   "pgEnergy": "E",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:61800733",
@@ -26712,7 +26866,24 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4718017500357",
+   "pgSize": 15.6,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgResponseMs": 5.0,
+   "pgNits": 250,
+   "pgContrast": 800,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "USB-C"
+   ],
+   "pgEnergy": "F",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2156806401",
@@ -27660,7 +27831,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2157148697",
@@ -29447,7 +29619,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:51615768",
@@ -29467,7 +29640,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2164465786",
@@ -30582,7 +30756,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2162385155",
@@ -30758,7 +30933,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "bestprice:2163387811",
@@ -30893,7 +31069,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "bestprice:2158321636",
@@ -30956,7 +31133,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:43952697",
@@ -34148,7 +34326,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2160630552",
@@ -34300,7 +34479,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "bestprice:2156531042",
@@ -37472,7 +37652,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgHz": 60
   },
   {
    "id": "snif:43298171",
@@ -37518,7 +37699,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgHz": 60
   },
   {
    "id": "snif:40209703",
@@ -37541,7 +37723,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgHz": 60
   },
   {
    "id": "snif:43298167",
@@ -37587,7 +37770,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2155599074",
@@ -37656,7 +37840,30 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4718755073533",
+   "pgSize": 23.8,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgResponseMs": 5.0,
+   "pgNits": 250,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "VGA",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgEnergy": "E",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2155395113",
@@ -38285,7 +38492,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2160871636",
@@ -40645,7 +40853,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2163554614",
@@ -40714,26 +40923,6 @@
    "merchant": null
   },
   {
-   "id": "skroutz:61678626",
-   "source": "skroutz",
-   "title": "BenQ PVS7 7\" IPS Touch FHD 1920x1200",
-   "url": "https://www.skroutz.gr/s/61678626/benq-pvs7-ips-touch-monitor-7-fhd-1920x1200.html",
-   "price": 958.04,
-   "shopCount": null,
-   "brand": "BenQ",
-   "chip": "BenQ PVS7",
-   "code": "PVS7",
-   "size": null,
-   "height": 1200,
-   "width": 1920,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
-  },
-  {
    "id": "skroutz:54788569",
    "source": "skroutz",
    "title": "BenQ RD240Q 24.1\" IPS HDR QHD 2560x1600",
@@ -40751,7 +40940,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:69011007",
@@ -40797,46 +40987,6 @@
    "merchant": null
   },
   {
-   "id": "skroutz:55702235",
-   "source": "skroutz",
-   "title": "BenQ RD280U 28.2\" IPS 3840x2560",
-   "url": "https://www.skroutz.gr/s/55702235/BenQ-RD280U-IPS-Monitor-28-2-3840x2560-me-CHrono-Apokrisis-5ms-GTG.html",
-   "price": 621.0,
-   "shopCount": null,
-   "brand": "BenQ",
-   "chip": "BenQ RD280U",
-   "code": "RD280U",
-   "size": 28.2,
-   "height": 2560,
-   "width": 3840,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
-  },
-  {
-   "id": "skroutz:57042864",
-   "source": "skroutz",
-   "title": "BenQ RD280U Ergo Stand 28.2\" IPS 3840x2560",
-   "url": "https://www.skroutz.gr/s/57042864/BenQ-RD280U-Ergo-Stand-IPS-Gaming-Monitor-28-2-3840x2560-me-CHrono-Apokrisis-5ms-GTG.html",
-   "price": 670.63,
-   "shopCount": null,
-   "brand": "BenQ",
-   "chip": "BenQ RD280U",
-   "code": "RD280U",
-   "size": 28.2,
-   "height": 2560,
-   "width": 3840,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
-  },
-  {
    "id": "bestprice:2160136784",
    "source": "bestprice",
    "title": "BenQ RD280U IPS Monitor 28.2\" 3840x2160 4K UHD 60Hz 5ms",
@@ -40844,7 +40994,7 @@
    "price": 571.67,
    "shopCount": 13,
    "brand": "BenQ",
-   "chip": "BenQ RD280U 60Hz",
+   "chip": "BenQ RD280U #1",
    "code": "RD280U",
    "size": 28.2,
    "height": 2160,
@@ -40858,6 +41008,48 @@
    "shipping": null,
    "total": null,
    "merchant": null
+  },
+  {
+   "id": "skroutz:55702235",
+   "source": "skroutz",
+   "title": "BenQ RD280U 28.2\" IPS 3840x2560",
+   "url": "https://www.skroutz.gr/s/55702235/BenQ-RD280U-IPS-Monitor-28-2-3840x2560-me-CHrono-Apokrisis-5ms-GTG.html",
+   "price": 621.0,
+   "shopCount": null,
+   "brand": "BenQ",
+   "chip": "BenQ RD280U #2",
+   "code": "RD280U",
+   "size": 28.2,
+   "height": 2560,
+   "width": 3840,
+   "hz": null,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T16:46:30+00:00",
+   "reject": null,
+   "pgHz": 60
+  },
+  {
+   "id": "skroutz:57042864",
+   "source": "skroutz",
+   "title": "BenQ RD280U Ergo Stand 28.2\" IPS 3840x2560",
+   "url": "https://www.skroutz.gr/s/57042864/BenQ-RD280U-Ergo-Stand-IPS-Gaming-Monitor-28-2-3840x2560-me-CHrono-Apokrisis-5ms-GTG.html",
+   "price": 670.63,
+   "shopCount": null,
+   "brand": "BenQ",
+   "chip": "BenQ RD280U #2",
+   "code": "RD280U",
+   "size": 28.2,
+   "height": 2560,
+   "width": 3840,
+   "hz": null,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T16:46:30+00:00",
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2163321407",
@@ -41058,26 +41250,6 @@
    "merchant": null
   },
   {
-   "id": "skroutz:55840117",
-   "source": "skroutz",
-   "title": "BenQ SW242Q 24\" IPS QHD 2560x1600",
-   "url": "https://www.skroutz.gr/s/55840117/BenQ-SW242Q-IPS-Monitor-24-QHD-2560x1600-me-CHrono-Apokrisis-5ms-GTG.html",
-   "price": 544.62,
-   "shopCount": null,
-   "brand": "BenQ",
-   "chip": "BenQ SW242Q",
-   "code": "SW242Q",
-   "size": 24.0,
-   "height": 1600,
-   "width": 2560,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
-  },
-  {
    "id": "bestprice:2159819246",
    "source": "bestprice",
    "title": "BenQ SW242Q IPS HDR Monitor 24.1\" 2560x1440 QHD 60Hz 5ms",
@@ -41085,7 +41257,7 @@
    "price": 456.22,
    "shopCount": 11,
    "brand": "BenQ",
-   "chip": "BenQ SW242Q 60Hz",
+   "chip": "BenQ SW242Q #1",
    "code": "SW242Q",
    "size": 24.1,
    "height": 1440,
@@ -41099,6 +41271,27 @@
    "shipping": null,
    "total": null,
    "merchant": null
+  },
+  {
+   "id": "skroutz:55840117",
+   "source": "skroutz",
+   "title": "BenQ SW242Q 24\" IPS QHD 2560x1600",
+   "url": "https://www.skroutz.gr/s/55840117/BenQ-SW242Q-IPS-Monitor-24-QHD-2560x1600-me-CHrono-Apokrisis-5ms-GTG.html",
+   "price": 544.62,
+   "shopCount": null,
+   "brand": "BenQ",
+   "chip": "BenQ SW242Q #2",
+   "code": "SW242Q",
+   "size": 24.0,
+   "height": 1600,
+   "width": 2560,
+   "hz": null,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T16:46:30+00:00",
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:20847732",
@@ -41181,7 +41374,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2159158118",
@@ -42123,7 +42317,25 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "6931548314325",
+   "pgSize": 15.6,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgNits": 380,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "HDMI",
+    "USB-C"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2163607280",
@@ -42337,7 +42549,24 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "5907489608268",
+   "pgSize": 13.3,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgHz": 60,
+   "pgNits": 300,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": true,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "USB-C"
+   ]
   },
   {
    "id": "skroutz:48207384",
@@ -45276,190 +45505,6 @@
    "merchant": null
   },
   {
-   "id": "snif:43523560",
-   "source": "snif",
-   "title": "DELL Monitor Pro E2226H 22\" FHD IPS 100Hz, HDMI, DP, VGA, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/43523560/dell-monitor-pro-e2226h-22-amp-amp-quot--fhd-ips-1",
-   "price": 103.0,
-   "shopCount": null,
-   "brand": "Dell",
-   "chip": "Dell 3YEARSW 22\" 100Hz",
-   "code": "3YEARSW",
-   "size": 22.0,
-   "height": 1080,
-   "width": null,
-   "hz": 100,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:43306215",
-   "source": "snif",
-   "title": "DELL Monitor Pro P P2226H 21.5'' FHD, DisplayPort, HDMI, Height Adjustable, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/43306215/dell-monitor-pro-p-p2226h-21-5-amp-amp-apos--amp-a",
-   "price": 153.0,
-   "shopCount": null,
-   "brand": "Dell",
-   "chip": "Dell 3YEARSW 22\" 100Hz",
-   "code": "3YEARSW",
-   "size": 21.5,
-   "height": 1080,
-   "width": null,
-   "hz": 100,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:43510855",
-   "source": "snif",
-   "title": "DELL Monitor Pro 24 E2426H 23.8'' FHD, HDMI, VGA, DP, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/43510855/dell-monitor-pro-24-e2426h-23-8-amp-amp-apos--amp",
-   "price": 119.0,
-   "shopCount": null,
-   "brand": "Dell",
-   "chip": "Dell 3YEARSW 24\"",
-   "code": "3YEARSW",
-   "size": 23.8,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:43037343",
-   "source": "snif",
-   "title": "DELL Monitor Pro P P2426H 23.8'' FHD, DisplayPort, HDMI, Height Adjustable, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/43037343/dell-monitor-pro-p-p2426h-23-8-amp-amp-apos--amp-a",
-   "price": 191.0,
-   "shopCount": null,
-   "brand": "Dell",
-   "chip": "Dell 3YEARSW 24\"",
-   "code": "3YEARSW",
-   "size": 23.8,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:43037344",
-   "source": "snif",
-   "title": "DELL Monitor Pro P P2426 24.1'' IPS 16:10, HDMI, DisplayPort, Height Adjustable, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/43037344/dell-monitor-pro-p-p2426-24-1-amp-amp-apos--amp-am",
-   "price": 210.0,
-   "shopCount": null,
-   "brand": "Dell",
-   "chip": "Dell 3YEARSW 24\"",
-   "code": "3YEARSW",
-   "size": 24.1,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:42339102",
-   "source": "snif",
-   "title": "DELL Monitor Pro Plus P2725D 27'' QHD IPS, HDMI, DisplayPort, Height Adjustable, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/42339102/dell-monitor-pro-plus-p2725d-27-amp-amp-apos--amp",
-   "price": 294.0,
-   "shopCount": null,
-   "brand": "Dell",
-   "chip": "Dell 3YEARSW 27\"",
-   "code": "3YEARSW",
-   "size": 27.0,
-   "height": 1440,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:43523561",
-   "source": "snif",
-   "title": "DELL Monitor Pro E2726H 27\" FHD IPS 120Hz, HDMI, DP, VGA, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/43523561/dell-monitor-pro-e2726h-27-amp-amp-quot--fhd-ips-1",
-   "price": 140.0,
-   "shopCount": null,
-   "brand": "Dell",
-   "chip": "Dell 3YEARSW 27\" 120Hz",
-   "code": "3YEARSW",
-   "size": 27.0,
-   "height": 1080,
-   "width": null,
-   "hz": 120,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:43037342",
-   "source": "snif",
-   "title": "DELL Monitor Pro P P2726H 27'' FHD, DisplayPort, HDMI,Height Adjustable, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/43037342/dell-monitor-pro-p-p2726h-27-amp-amp-apos--amp-amp",
-   "price": 218.0,
-   "shopCount": null,
-   "brand": "Dell",
-   "chip": "Dell 3YEARSW 27\" 120Hz",
-   "code": "3YEARSW",
-   "size": 27.0,
-   "height": 1080,
-   "width": null,
-   "hz": 120,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
    "id": "bestprice:2157952950",
    "source": "bestprice",
    "title": "Dell Alienware AW2523HF IPS HDR Gaming Monitor 24.5\" 1920x1080 FHD 360Hz 1ms",
@@ -47431,7 +47476,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2160630539",
@@ -47724,6 +47770,29 @@
    "merchant": null
   },
   {
+   "id": "snif:43523560",
+   "source": "snif",
+   "title": "DELL Monitor Pro E2226H 22\" FHD IPS 100Hz, HDMI, DP, VGA, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/43523560/dell-monitor-pro-e2226h-22-amp-amp-quot--fhd-ips-1",
+   "price": 103.0,
+   "shopCount": null,
+   "brand": "Dell",
+   "chip": "Dell E2226H",
+   "code": "E2226H",
+   "size": 22.0,
+   "height": 1080,
+   "width": 1920,
+   "hz": 100,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
    "id": "bestprice:2164544810",
    "source": "bestprice",
    "title": "Dell Pro E2226HS IPS Monitor 21.5\" 1920x1080 FHD 100Hz 8ms",
@@ -47877,7 +47946,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:59807031",
@@ -48016,6 +48086,29 @@
    "url": "https://www.bestprice.gr/item/2164519113/dell-pro-24-e2426h-ips-monitor-23-8-1920x1080-fhd-120hz-8ms.html",
    "price": 101.0,
    "shopCount": 28,
+   "brand": "Dell",
+   "chip": "Dell E2426H",
+   "code": "E2426H",
+   "size": 23.8,
+   "height": 1080,
+   "width": 1920,
+   "hz": 120,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
+   "id": "snif:43510855",
+   "source": "snif",
+   "title": "DELL Monitor Pro 24 E2426H 23.8'' FHD, HDMI, VGA, DP, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/43510855/dell-monitor-pro-24-e2426h-23-8-amp-amp-apos--amp",
+   "price": 119.0,
+   "shopCount": null,
    "brand": "Dell",
    "chip": "Dell E2426H",
    "code": "E2426H",
@@ -48771,6 +48864,29 @@
    "merchant": null
   },
   {
+   "id": "snif:43523561",
+   "source": "snif",
+   "title": "DELL Monitor Pro E2726H 27\" FHD IPS 120Hz, HDMI, DP, VGA, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/43523561/dell-monitor-pro-e2726h-27-amp-amp-quot--fhd-ips-1",
+   "price": 140.0,
+   "shopCount": null,
+   "brand": "Dell",
+   "chip": "Dell E2726H",
+   "code": "E2726H",
+   "size": 27.0,
+   "height": 1080,
+   "width": 1920,
+   "hz": 120,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
    "id": "bestprice:2163614511",
    "source": "bestprice",
    "title": "Dell Pro E2726HS IPS Monitor 27\" 1920x1080 FHD 100Hz 8ms",
@@ -49042,7 +49158,25 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "5397184821572",
+   "pgSize": 14.0,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgResponseMs": 6.0,
+   "pgNits": 300,
+   "pgContrast": 700,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "USB-C",
+    "DisplayPort"
+   ],
+   "pgEnergy": "B",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:42994665",
@@ -49354,6 +49488,29 @@
    "merchant": null
   },
   {
+   "id": "snif:43306215",
+   "source": "snif",
+   "title": "DELL Monitor Pro P P2226H 21.5'' FHD, DisplayPort, HDMI, Height Adjustable, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/43306215/dell-monitor-pro-p-p2226h-21-5-amp-amp-apos--amp-a",
+   "price": 153.0,
+   "shopCount": null,
+   "brand": "Dell",
+   "chip": "Dell P2226H",
+   "code": "P2226H",
+   "size": 21.5,
+   "height": 1080,
+   "width": 1920,
+   "hz": 100,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
    "id": "snif:42974002",
    "source": "snif",
    "title": "Dell P2226H Monitor 22 Full HD IPS Flat 100Hz 5ms",
@@ -49394,7 +49551,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2156038240",
@@ -49523,7 +49681,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2157400465",
@@ -50549,6 +50708,29 @@
    "merchant": null
   },
   {
+   "id": "snif:43037344",
+   "source": "snif",
+   "title": "DELL Monitor Pro P P2426 24.1'' IPS 16:10, HDMI, DisplayPort, Height Adjustable, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/43037344/dell-monitor-pro-p-p2426-24-1-amp-amp-apos--amp-am",
+   "price": 210.0,
+   "shopCount": null,
+   "brand": "Dell",
+   "chip": "Dell P2426",
+   "code": "P2426",
+   "size": 24.1,
+   "height": 1200,
+   "width": 1920,
+   "hz": 100,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
    "id": "bestprice:2163864517",
    "source": "bestprice",
    "title": "Dell Pro P P2426E IPS Monitor 24.1\" 1920x1200 FHD 100Hz 8ms",
@@ -50767,6 +50949,29 @@
    "chip": "Dell P2426H",
    "code": "P2426H",
    "size": 24.0,
+   "height": 1080,
+   "width": 1920,
+   "hz": 120,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
+   "id": "snif:43037343",
+   "source": "snif",
+   "title": "DELL Monitor Pro P P2426H 23.8'' FHD, DisplayPort, HDMI, Height Adjustable, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/43037343/dell-monitor-pro-p-p2426h-23-8-amp-amp-apos--amp-a",
+   "price": 191.0,
+   "shopCount": null,
+   "brand": "Dell",
+   "chip": "Dell P2426H",
+   "code": "P2426H",
+   "size": 23.8,
    "height": 1080,
    "width": 1920,
    "hz": 120,
@@ -51301,7 +51506,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2157442797",
@@ -51495,6 +51701,29 @@
    "title": "Οθόνη Dell Pro 27\" Plus P2725D IPS QHD 100Hz 210-BRDL",
    "url": "https://www.snif.gr/showproduct/41634049/othoni-dell-pro-27--plus-p2725d-ips-qhd-100hz-210-b",
    "price": 273.9,
+   "shopCount": null,
+   "brand": "Dell",
+   "chip": "Dell P2725D",
+   "code": "P2725D",
+   "size": 27.0,
+   "height": 1440,
+   "width": 2560,
+   "hz": 100,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
+   "id": "snif:42339102",
+   "source": "snif",
+   "title": "DELL Monitor Pro Plus P2725D 27'' QHD IPS, HDMI, DisplayPort, Height Adjustable, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/42339102/dell-monitor-pro-plus-p2725d-27-amp-amp-apos--amp",
+   "price": 294.0,
    "shopCount": null,
    "brand": "Dell",
    "chip": "Dell P2725D",
@@ -52327,6 +52556,29 @@
    "merchant": null
   },
   {
+   "id": "snif:43037342",
+   "source": "snif",
+   "title": "DELL Monitor Pro P P2726H 27'' FHD, DisplayPort, HDMI,Height Adjustable, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/43037342/dell-monitor-pro-p-p2726h-27-amp-amp-apos--amp-amp",
+   "price": 218.0,
+   "shopCount": null,
+   "brand": "Dell",
+   "chip": "Dell P2726H 120Hz",
+   "code": "P2726H",
+   "size": 27.0,
+   "height": 1080,
+   "width": 1920,
+   "hz": 120,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
    "id": "snif:42973995",
    "source": "snif",
    "title": "Dell P2726H Monitor 27 Full HD IPS Flat 120Hz 5ms",
@@ -52875,7 +53127,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2159192266",
@@ -54068,7 +54321,28 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "5397184409602",
+   "pgSize": 27.0,
+   "pgWidth": 2560,
+   "pgHeight": 1440,
+   "pgHz": 165,
+   "pgResponseMs": 1.0,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "HDMI",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "FreeSync",
+    "G-Sync",
+    "USB Hub"
+   ],
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2156257246",
@@ -57921,7 +58195,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "snif:34793120",
@@ -58064,29 +58339,6 @@
    "merchant": null
   },
   {
-   "id": "snif:35189735",
-   "source": "snif",
-   "title": "Οθόνη Dell UltraSharp U3824DW 38\" Curved IPS WQHD+ USB-C Hub Monitor Silver 210-BHXB",
-   "url": "https://www.snif.gr/showproduct/35189735/othoni-dell-ultrasharp-u3824dw-38--curved-ips-wqhd",
-   "price": 1239.0,
-   "shopCount": null,
-   "brand": "Dell",
-   "chip": "Dell U3824DW",
-   "code": "U3824DW",
-   "size": 38.0,
-   "height": 1440,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": "silver",
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
    "id": "bestprice:2158897879",
    "source": "bestprice",
    "title": "Dell U3824DW Ultrawide IPS Curved Monitor 37.52\" 3840x1600 QHD 60Hz 8ms",
@@ -58094,7 +58346,7 @@
    "price": 942.32,
    "shopCount": 42,
    "brand": "Dell",
-   "chip": "Dell U3824DW 60Hz",
+   "chip": "Dell U3824DW #1",
    "code": "U3824DW",
    "size": 37.52,
    "height": 1600,
@@ -58117,7 +58369,7 @@
    "price": 1030.07,
    "shopCount": null,
    "brand": "Dell",
-   "chip": "Dell U3824DW 60Hz",
+   "chip": "Dell U3824DW #1",
    "code": "U3824DW",
    "size": 38.0,
    "height": 1600,
@@ -58128,6 +58380,30 @@
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
    "reject": null
+  },
+  {
+   "id": "snif:35189735",
+   "source": "snif",
+   "title": "Οθόνη Dell UltraSharp U3824DW 38\" Curved IPS WQHD+ USB-C Hub Monitor Silver 210-BHXB",
+   "url": "https://www.snif.gr/showproduct/35189735/othoni-dell-ultrasharp-u3824dw-38--curved-ips-wqhd",
+   "price": 1239.0,
+   "shopCount": null,
+   "brand": "Dell",
+   "chip": "Dell U3824DW #2",
+   "code": "U3824DW",
+   "size": 38.0,
+   "height": 1440,
+   "width": null,
+   "hz": null,
+   "panel": "IPS",
+   "colour": "silver",
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2159498325",
@@ -58493,7 +58769,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2163597370",
@@ -58622,29 +58899,6 @@
    "reject": null
   },
   {
-   "id": "bestprice:2164772054",
-   "source": "bestprice",
-   "title": "Elo TouchSystems 1099L Touchscreen Monitor 10\"",
-   "url": "https://www.bestprice.gr/item/2164772054/elo-touchsystems-1099l-touchscreen-monitor-10.html",
-   "price": 1104.56,
-   "shopCount": 1,
-   "brand": "ELO",
-   "chip": "ELO 1099L",
-   "code": "1099L",
-   "size": 10.0,
-   "height": null,
-   "width": null,
-   "hz": null,
-   "panel": null,
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
    "id": "bestprice:2160161144",
    "source": "bestprice",
    "title": "ELO Touch 1517L LCD Monitor 15\" 1024x768 60Hz 23ms",
@@ -58658,29 +58912,6 @@
    "height": 768,
    "width": 1024,
    "hz": 60,
-   "panel": null,
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "bestprice:2164534090",
-   "source": "bestprice",
-   "title": "Elo 1590L Monitor 15\"",
-   "url": "https://www.bestprice.gr/item/2164534090/elo-1590l-monitor-15.html",
-   "price": 885.49,
-   "shopCount": 1,
-   "brand": "ELO",
-   "chip": "ELO 1590L",
-   "code": "1590L",
-   "size": 15.0,
-   "height": null,
-   "width": null,
-   "hz": null,
    "panel": null,
    "colour": null,
    "revision": null,
@@ -58742,7 +58973,9 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "0834619001291",
+   "pgSize": 17.0
   },
   {
    "id": "bestprice:2163774295",
@@ -58867,78 +59100,6 @@
    "merchant": null
   },
   {
-   "id": "snif:39913930",
-   "source": "snif",
-   "title": "ELO Open Frame Touchscreen 2295L Monitor 21.5 FHD LED Flat 60Hz 22ms",
-   "url": "https://www.snif.gr/showproduct/39913930/elo-open-frame-touchscreen-2295l-monitor-21-5-fhd",
-   "price": 846.19,
-   "shopCount": null,
-   "brand": "ELO",
-   "chip": "ELO 2295L",
-   "code": "2295L",
-   "size": 21.5,
-   "height": 1080,
-   "width": 1920,
-   "hz": 60,
-   "panel": null,
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "bestprice:2164198799",
-   "source": "bestprice",
-   "title": "Elo Touch 2295L LCD Φορητό Monitor 21.5\" 1920x1080 FHD 60Hz 22ms",
-   "url": "https://www.bestprice.gr/item/2164198799/elo-touch-2295l-lcd-forito-monitor-21-5-1920x1080-fhd-60hz-22ms.html",
-   "price": 889.96,
-   "shopCount": 2,
-   "brand": "ELO",
-   "chip": "ELO 2295L",
-   "code": "2295L",
-   "size": 21.5,
-   "height": 1080,
-   "width": 1920,
-   "hz": 60,
-   "panel": null,
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "gtin": "0843173100050",
-   "pgSize": 21.5,
-   "pgWidth": 1920,
-   "pgHeight": 1080,
-   "pgHz": 60,
-   "pgResponseMs": 22.0,
-   "pgNits": 500,
-   "pgContrast": 1000,
-   "pgPanel": "LCD",
-   "pgAspect": "16:9",
-   "pgHdr": false,
-   "pgUltrawide": false,
-   "pgCurved": false,
-   "pgVesa": "100x100",
-   "pgConnectors": [
-    "HDMI",
-    "VGA",
-    "USB",
-    "DisplayPort",
-    "Ethernet"
-   ],
-   "pgFeatures": [
-    "Touchscreen"
-   ],
-   "pgEnergy": "G",
-   "pgColour": "Μαύρο",
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
    "id": "bestprice:2164543174",
    "source": "bestprice",
    "title": "ELO Touch 2402L Αφής Monitor 24\"",
@@ -58959,7 +59120,9 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "0815335026416",
+   "pgSize": 24.0
   },
   {
    "id": "bestprice:2158371831",
@@ -59114,121 +59277,6 @@
    "merchant": null
   },
   {
-   "id": "bestprice:2164542521",
-   "source": "bestprice",
-   "title": "Elo 2794L Touchscreen Monitor 27\" 1920x1080 FHD",
-   "url": "https://www.bestprice.gr/item/2164542521/elo-2794l-touchscreen-monitor-27-1920x1080-fhd.html",
-   "price": 928.58,
-   "shopCount": 1,
-   "brand": "ELO",
-   "chip": "ELO 2794L",
-   "code": "2794L",
-   "size": 27.0,
-   "height": 1080,
-   "width": 1920,
-   "hz": null,
-   "panel": null,
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "bestprice:225960199",
-   "source": "bestprice",
-   "title": "Elo Touch Systems Οθόνη Υπολογιστή 2495L 23.8IN FHD LCD WVA 600NIT LED BACKLIGHT OPEN FRAME 10 TOUC",
-   "url": "https://www.bestprice.gr/to/225960199/elo-touch-systems-othoni-ypologisti-2495l-23-8in-fhd-lcd-wva-600nit-led-backlight-open-frame-10-touc.html?seq=336",
-   "price": 907.61,
-   "shopCount": null,
-   "brand": "ELO",
-   "chip": "ELO 600NIT",
-   "code": "600NIT",
-   "size": null,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": null,
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "bestprice:227059688",
-   "source": "bestprice",
-   "title": "ELO POS Monitor 1093L 10\" LCD / LED / TFT με Ανάλυση 1280x800 E321195",
-   "url": "https://www.bestprice.gr/to/227059688/elo-pos-monitor-1093l-10-lcd-led-tft-me-analysi-1280x800-e321195.html?seq=448",
-   "price": 390.56,
-   "shopCount": null,
-   "brand": "ELO",
-   "chip": "ELO E321195",
-   "code": "E321195",
-   "size": 10.0,
-   "height": 800,
-   "width": 1280,
-   "hz": null,
-   "panel": null,
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "bestprice:225917066",
-   "source": "bestprice",
-   "title": "Elo Touch Solutions 3263L - Οθόνη LED 31,5\" Full HD (E343671)",
-   "url": "https://www.bestprice.gr/to/225917066/elo-touch-solutions-3263l-othoni-led-31-5-full-hd.html?seq=160",
-   "price": 1503.15,
-   "shopCount": null,
-   "brand": "ELO",
-   "chip": "ELO E343671",
-   "code": "E343671",
-   "size": 31.5,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": null,
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "bestprice:2164956283",
-   "source": "bestprice",
-   "title": "Elo TouchSystems 2799L Οθόνη Αφής 27\" Full HD E399052",
-   "url": "https://www.bestprice.gr/item/2164956283/elo-touchsystems-2799l-othoni-afis-27-full-hd-e399052.html",
-   "price": 1982.96,
-   "shopCount": 1,
-   "brand": "ELO",
-   "chip": "ELO E399052",
-   "code": "E399052",
-   "size": 27.0,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": null,
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
    "id": "bestprice:225896855",
    "source": "bestprice",
    "title": "ELO POS Οθόνη 15.6\" LCD 1920x1080 E449111",
@@ -59272,7 +59320,12 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 24.0,
+   "pgPanel": "LCD",
+   "pgFeatures": [
+    "Touchscreen"
+   ]
   },
   {
    "id": "bestprice:2164471654",
@@ -59295,7 +59348,15 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4894240165249",
+   "pgSize": 15.6,
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgFeatures": [
+    "USB Hub"
+   ]
   },
   {
    "id": "snif:40420540",
@@ -61307,7 +61368,30 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4995047056638",
+   "pgSize": 27.0,
+   "pgWidth": 2560,
+   "pgHeight": 1440,
+   "pgResponseMs": 5.0,
+   "pgNits": 350,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "USB-C",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgEnergy": "D",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2158300412",
@@ -61330,7 +61414,30 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4995047056645",
+   "pgSize": 27.0,
+   "pgWidth": 2560,
+   "pgHeight": 1440,
+   "pgResponseMs": 5.0,
+   "pgNits": 350,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "USB-C",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgEnergy": "D",
+   "pgColour": "Άσπρο"
   },
   {
    "id": "bestprice:2158995422",
@@ -62054,7 +62161,11 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 24.0,
+   "pgFeatures": [
+    "Touchscreen"
+   ]
   },
   {
    "id": "bestprice:2164471540",
@@ -62077,7 +62188,18 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "5715063227374",
+   "pgSize": 27.0,
+   "pgHz": 60,
+   "pgResponseMs": 5.0,
+   "pgNits": 350,
+   "pgPanel": "IPS",
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "VGA"
+   ],
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:70576765",
@@ -62140,7 +62262,28 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 15.0,
+   "pgWidth": 1024,
+   "pgHeight": 768,
+   "pgNits": 250,
+   "pgContrast": 700,
+   "pgPanel": "LCD",
+   "pgAspect": "4:3",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "VGA",
+    "USB",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Touchscreen"
+   ],
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:213841387",
@@ -64435,7 +64578,7 @@
    "brand": "Gigabyte",
    "chip": "Gigabyte GSF14",
    "code": "GSF14",
-   "size": 14.0,
+   "size": null,
    "height": 1080,
    "width": 1920,
    "hz": 144,
@@ -65736,7 +65879,13 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 14.0,
+   "pgHz": 60,
+   "pgResponseMs": 5.0,
+   "pgNits": 400,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9"
   },
   {
    "id": "bestprice:2164956573",
@@ -65759,7 +65908,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 14.0
   },
   {
    "id": "snif:29817188",
@@ -65782,7 +65932,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgHz": 100
   },
   {
    "id": "skroutz:44427438",
@@ -67901,7 +68052,11 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 24.0,
+   "pgPanel": "LCD",
+   "pgColour": "Μαύρο",
+   "pgHz": 75
   },
   {
    "id": "bestprice:2159701131",
@@ -68441,7 +68596,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0
   },
   {
    "id": "bestprice:2164956563",
@@ -68464,7 +68620,9 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0,
+   "pgHz": 120
   },
   {
    "id": "bestprice:2164956571",
@@ -68487,7 +68645,23 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0,
+   "pgHz": 120,
+   "pgResponseMs": 5.0,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "DisplayPort",
+    "Thunderbolt 4"
+   ],
+   "pgFeatures": [
+    "USB Hub"
+   ],
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2164956561",
@@ -68510,7 +68684,12 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0,
+   "pgConnectors": [
+    "Thunderbolt 4"
+   ],
+   "pgHz": 120
   },
   {
    "id": "bestprice:2164956560",
@@ -68533,7 +68712,9 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 31.5,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2164976851",
@@ -68556,7 +68737,22 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 24.0,
+   "pgHz": 100,
+   "pgResponseMs": 5.0,
+   "pgNits": 350,
+   "pgPanel": "IPS",
+   "pgAspect": "16:10",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "USB Hub"
+   ],
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2164976840",
@@ -68579,7 +68775,10 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 24.0,
+   "pgResponseMs": 5.0,
+   "pgHz": 100
   },
   {
    "id": "bestprice:2164976821",
@@ -68602,7 +68801,18 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 23.8,
+   "pgHz": 100,
+   "pgResponseMs": 5.0,
+   "pgNits": 350,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "DisplayPort"
+   ]
   },
   {
    "id": "bestprice:2164976841",
@@ -68625,7 +68835,22 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 23.8,
+   "pgHz": 100,
+   "pgResponseMs": 5.0,
+   "pgNits": 350,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "USB Hub"
+   ],
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2164976825",
@@ -68648,7 +68873,22 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 23.8,
+   "pgHz": 100,
+   "pgResponseMs": 5.0,
+   "pgNits": 350,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "USB Hub"
+   ],
+   "pgColour": "Μαύρο"
   },
   {
    "id": "snif:42833938",
@@ -68694,7 +68934,22 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0,
+   "pgHz": 100,
+   "pgResponseMs": 5.0,
+   "pgNits": 350,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "USB Hub"
+   ],
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2164976858",
@@ -68717,7 +68972,19 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0,
+   "pgHz": 100,
+   "pgResponseMs": 5.0,
+   "pgNits": 350,
+   "pgContrast": 1500,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "DisplayPort"
+   ]
   },
   {
    "id": "bestprice:2164976842",
@@ -68740,7 +69007,9 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0,
+   "pgHz": 100
   },
   {
    "id": "bestprice:2164976746",
@@ -68763,7 +69032,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 23.8
   },
   {
    "id": "bestprice:2164976827",
@@ -68786,7 +69056,9 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 23.8,
+   "pgPanel": "IPS"
   },
   {
    "id": "bestprice:2164976822",
@@ -68809,7 +69081,13 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 23.8,
+   "pgHz": 100,
+   "pgResponseMs": 5.0,
+   "pgNits": 350,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9"
   },
   {
    "id": "bestprice:2164976839",
@@ -68832,7 +69110,10 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 23.8,
+   "pgResponseMs": 5.0,
+   "pgHz": 100
   },
   {
    "id": "bestprice:2164956570",
@@ -68855,7 +69136,10 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0,
+   "pgResponseMs": 5.0,
+   "pgPanel": "IPS"
   },
   {
    "id": "bestprice:2164956562",
@@ -68878,7 +69162,12 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0,
+   "pgHz": 100,
+   "pgResponseMs": 5.0,
+   "pgNits": 350,
+   "pgPanel": "IPS"
   },
   {
    "id": "bestprice:2164956574",
@@ -68901,7 +69190,10 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0,
+   "pgResponseMs": 5.0,
+   "pgHz": 100
   },
   {
    "id": "bestprice:2164956559",
@@ -68924,7 +69216,9 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0,
+   "pgResponseMs": 5.0
   },
   {
    "id": "bestprice:2164956572",
@@ -68947,7 +69241,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0
   },
   {
    "id": "bestprice:2164976823",
@@ -68970,7 +69265,9 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 23.8,
+   "pgHz": 100
   },
   {
    "id": "bestprice:2164976820",
@@ -68993,7 +69290,14 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 23.8,
+   "pgHz": 100,
+   "pgResponseMs": 5.0,
+   "pgNits": 350,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2164956568",
@@ -69016,7 +69320,9 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0,
+   "pgHz": 100
   },
   {
    "id": "skroutz:61678786",
@@ -69145,7 +69451,25 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "0194850333811",
+   "pgSize": 14.0,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgResponseMs": 5.0,
+   "pgNits": 400,
+   "pgContrast": 800,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "USB-C"
+   ],
+   "pgEnergy": "B",
+   "pgColour": "Μαύρο",
+   "pgHz": 60
   },
   {
    "id": "skroutz:29934222",
@@ -69165,7 +69489,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2158414126",
@@ -69337,7 +69662,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2159502105",
@@ -70496,7 +70822,7 @@
    "price": 115.9,
    "shopCount": null,
    "brand": "HP",
-   "chip": "HP P24V VA",
+   "chip": "HP P24V VA 75Hz",
    "code": "P24V",
    "size": 23.8,
    "height": 1080,
@@ -70506,7 +70832,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:53962627",
@@ -70526,7 +70853,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:40939630",
@@ -70546,7 +70874,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "snif:39913792",
@@ -73508,7 +73837,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2159904135",
@@ -74253,7 +74583,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:16164562",
@@ -74772,7 +75103,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "bestprice:2156867544",
@@ -74835,7 +75167,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 100
   },
   {
    "id": "bestprice:2159632688",
@@ -75358,7 +75691,7 @@
    "size": 24.5,
    "height": 1080,
    "width": 1920,
-   "hz": 0,
+   "hz": 1000,
    "panel": "IPS",
    "colour": null,
    "revision": null,
@@ -75366,7 +75699,30 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "8806096933725",
+   "pgSize": 24.5,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgResponseMs": 1.0,
+   "pgNits": 400,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": true,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "FreeSync",
+    "G-Sync"
+   ],
+   "pgEnergy": "E",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2160129384",
@@ -76174,7 +76530,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2156227126",
@@ -76197,7 +76554,31 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgResponseMs": 5.0,
+   "pgNits": 300,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "USB-C",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία",
+    "USB Hub"
+   ],
+   "pgEnergy": "G",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2162733507",
@@ -76996,7 +77377,29 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "8806091068699",
+   "pgSize": 27.0,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgHz": 144,
+   "pgResponseMs": 1.0,
+   "pgNits": 350,
+   "pgContrast": 1100,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": true,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "HDMI",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "FreeSync",
+    "G-Sync"
+   ],
+   "pgEnergy": "F"
   },
   {
    "id": "bestprice:2158286199",
@@ -77754,7 +78157,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "bestprice:2159217377",
@@ -79211,7 +79615,26 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "8806098487332",
+   "pgSize": 29.0,
+   "pgWidth": 2560,
+   "pgHeight": 1080,
+   "pgHz": 75,
+   "pgResponseMs": 5.0,
+   "pgNits": 250,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": true,
+   "pgUltrawide": true,
+   "pgCurved": false,
+   "pgConnectors": [
+    "HDMI"
+   ],
+   "pgFeatures": [
+    "FreeSync"
+   ]
   },
   {
    "id": "skroutz:65208859",
@@ -80858,7 +81281,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2159536232",
@@ -82003,7 +82427,28 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "8806098110469",
+   "pgSize": 34.0,
+   "pgWidth": 2560,
+   "pgHeight": 1080,
+   "pgHz": 75,
+   "pgResponseMs": 5.0,
+   "pgNits": 300,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "21:9",
+   "pgHdr": true,
+   "pgUltrawide": true,
+   "pgCurved": false,
+   "pgConnectors": [
+    "HDMI",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "FreeSync",
+    "Ενσωματωμένα Ηχεία"
+   ]
   },
   {
    "id": "bestprice:2158509017",
@@ -84425,7 +84870,30 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "0194778282130",
+   "pgSize": 23.8,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgResponseMs": 6.0,
+   "pgNits": 250,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Touchscreen",
+    "Ενσωματωμένη Κάμερα",
+    "USB Hub"
+   ],
+   "pgEnergy": "G",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "snif:40204389",
@@ -84448,7 +84916,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgHz": 60
   },
   {
    "id": "snif:40999471",
@@ -84471,7 +84940,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2157816147",
@@ -85210,6 +85680,29 @@
    "reject": null
   },
   {
+   "id": "snif:42998694",
+   "source": "snif",
+   "title": "LENOVO Monitor LOQ 27Q-10 Gaming 27'' QHD IPS, HDMi, Display Port, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/42998694/lenovo-monitor-loq-27q-10-gaming-27-amp-amp-apos-",
+   "price": 201.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo 27Q10 IPS 240Hz",
+   "code": "27Q10",
+   "size": 27.0,
+   "height": 1440,
+   "width": 2560,
+   "hz": 240,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
    "id": "snif:43596533",
    "source": "snif",
    "title": "Lenovo Legion 27Q-10 Monitor 27 Quad HD IPS Flat 240Hz 4ms",
@@ -85856,6 +86349,52 @@
    "merchant": null
   },
   {
+   "id": "snif:42814913",
+   "source": "snif",
+   "title": "LENOVO Monitor Yoga Pro 27UD-10 26.5'' 4K QD-OLED, HDMI,Display Port,Speakers,Camera,3YearsW",
+   "url": "https://www.snif.gr/showproduct/42814913/lenovo-monitor-yoga-pro-27ud-10-26-5-amp-amp-apos",
+   "price": 1575.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo 27UD10 240Hz",
+   "code": "27UD10",
+   "size": 26.5,
+   "height": 2160,
+   "width": 3840,
+   "hz": 240,
+   "panel": "OLED",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
+   "id": "snif:43296605",
+   "source": "snif",
+   "title": "LENOVO Monitor LOQ 32Q-10 Gaming 31.5'' QHD IPS, HDMi, Display Port, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/43296605/lenovo-monitor-loq-32q-10-gaming-31-5-amp-amp-apos",
+   "price": 279.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo 32Q10 IPS",
+   "code": "32Q10",
+   "size": 31.5,
+   "height": 1440,
+   "width": null,
+   "hz": null,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
    "id": "skroutz:68617162",
    "source": "skroutz",
    "title": "Lenovo LOQ 32Q-10 31.5\" VA HDR QHD 2560x1440",
@@ -85863,7 +86402,7 @@
    "price": 205.63,
    "shopCount": null,
    "brand": "Lenovo",
-   "chip": "Lenovo 32Q10",
+   "chip": "Lenovo 32Q10 VA 180Hz",
    "code": "32Q10",
    "size": 31.5,
    "height": 1440,
@@ -85883,7 +86422,7 @@
    "price": 207.68,
    "shopCount": 42,
    "brand": "Lenovo",
-   "chip": "Lenovo 32Q10",
+   "chip": "Lenovo 32Q10 VA 180Hz",
    "code": "32Q10",
    "size": 31.5,
    "height": 1440,
@@ -85928,7 +86467,7 @@
    "price": 270.0,
    "shopCount": null,
    "brand": "Lenovo",
-   "chip": "Lenovo 32Q10",
+   "chip": "Lenovo 32Q10 VA 180Hz",
    "code": "32Q10",
    "size": 31.5,
    "height": 1440,
@@ -86216,420 +86755,6 @@
    "merchant": null
   },
   {
-   "id": "snif:42544884",
-   "source": "snif",
-   "title": "LENOVO Monitor Tiny-In-One 23.8''' Gen5 FHD IPS , Display Port, USB,Webcam ,3Year",
-   "url": "https://www.snif.gr/showproduct/42544884/lenovo-monitor-tiny-in-one-23-8-amp-amp-apos--amp",
-   "price": 274.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEAR",
-   "code": "3YEAR",
-   "size": 23.8,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:42337207",
-   "source": "snif",
-   "title": "LENOVO Monitor L22-4e 21.5'' FHD IPS, HDMi, VGA, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/42337207/lenovo-monitor-l22-4e-21-5-amp-amp-apos--amp-amp-a",
-   "price": 95.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 22\" IPS",
-   "code": "3YEARSW",
-   "size": 21.5,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:42544871",
-   "source": "snif",
-   "title": "LENOVO Monitor ThinkVision S24-4e 23.8'' FHD IPS, HDMi, VGA, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/42544871/lenovo-monitor-thinkvision-s24-4e-23-8-amp-amp-apo",
-   "price": 105.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 24\" IPS",
-   "code": "3YEARSW",
-   "size": 23.8,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:42337825",
-   "source": "snif",
-   "title": "LENOVO Monitor L24-4e 23,8'' FHD IPS,HDMi, VGA, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/42337825/lenovo-monitor-l24-4e-23-8-amp-amp-apos--amp-amp-a",
-   "price": 117.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 24\" IPS",
-   "code": "3YEARSW",
-   "size": 23.8,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:42544870",
-   "source": "snif",
-   "title": "LENOVO Monitor L24-4C 23,8'' FHD IPS,HDMi, VGA, Speakers,3YearsW",
-   "url": "https://www.snif.gr/showproduct/42544870/lenovo-monitor-l24-4c-23-8-amp-amp-apos--amp-amp-a",
-   "price": 131.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 24\" IPS",
-   "code": "3YEARSW",
-   "size": 23.8,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:42555994",
-   "source": "snif",
-   "title": "LENOVO Monitor Legion R24s Gaming 23.8'' FHD IPS, HDMi, Display Port, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/42555994/lenovo-monitor-legion-r24s-gaming-23-8-amp-amp-apo",
-   "price": 139.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 24\" IPS",
-   "code": "3YEARSW",
-   "size": 23.8,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:43375421",
-   "source": "snif",
-   "title": "LENOVO Monitor L24D-4C 23,8'' FHD IPS,HDMi,USB-C,USB-A,Speakers,3YearsW",
-   "url": "https://www.snif.gr/showproduct/43375421/lenovo-monitor-l24d-4c-23-8-amp-amp-apos--amp-amp",
-   "price": 187.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 24\" IPS",
-   "code": "3YEARSW",
-   "size": 23.8,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:43660952",
-   "source": "snif",
-   "title": "LENOVO Monitor ThinkVision T24D-4t 23.8'' FHD, IPS, HDMI, TOUCH,USBC, DP 3YearsW",
-   "url": "https://www.snif.gr/showproduct/43660952/lenovo-monitor-thinkvision-t24d-4t-23-8-amp-amp-ap",
-   "price": 387.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 24\" IPS",
-   "code": "3YEARSW",
-   "size": 23.8,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:42544865",
-   "source": "snif",
-   "title": "LENOVO Monitor ThinkVision S27-4e 27'' FHD IPS, HDMi, VGA, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/42544865/lenovo-monitor-thinkvision-s27-4e-27-amp-amp-apos",
-   "price": 126.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 27\" IPS #1",
-   "code": "3YEARSW",
-   "size": 27.0,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:43266736",
-   "source": "snif",
-   "title": "LENOVO Monitor L27-4e 27'' FHD IPS,HDMi, VGA, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/43266736/lenovo-monitor-l27-4e-27-amp-amp-apos--amp-amp-apo",
-   "price": 145.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 27\" IPS #1",
-   "code": "3YEARSW",
-   "size": 27.0,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:42337054",
-   "source": "snif",
-   "title": "LENOVO Monitor ThinkVision E27-40 27'' FHD IPS, HDMi, Display Port,VGA, Speakers, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/42337054/lenovo-monitor-thinkvision-e27-40-27-amp-amp-apos",
-   "price": 153.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 27\" IPS #1",
-   "code": "3YEARSW",
-   "size": 27.0,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:42567433",
-   "source": "snif",
-   "title": "LENOVO Monitor Legion Gaming R27s 27'' FHD,HDMi,Display Port,3YearsW",
-   "url": "https://www.snif.gr/showproduct/42567433/lenovo-monitor-legion-gaming--r27s-27-amp-amp-apos",
-   "price": 176.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 27\" IPS #1",
-   "code": "3YEARSW",
-   "size": 27.0,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:42998694",
-   "source": "snif",
-   "title": "LENOVO Monitor LOQ 27Q-10 Gaming 27'' QHD IPS, HDMi, Display Port, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/42998694/lenovo-monitor-loq-27q-10-gaming-27-amp-amp-apos-",
-   "price": 201.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 27\" IPS #2",
-   "code": "3YEARSW",
-   "size": 27.0,
-   "height": 1440,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:42998696",
-   "source": "snif",
-   "title": "LENOVO Monitor Legion R27qe G2 Gaming 27'' QHD IPS, HDMi, Display Port, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/42998696/lenovo-monitor-legion-r27qe-g2-gaming-27-amp-amp-a",
-   "price": 221.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 27\" IPS #2",
-   "code": "3YEARSW",
-   "size": 27.0,
-   "height": 1440,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:42358342",
-   "source": "snif",
-   "title": "LENOVO Monitor Tiny-In-One 27'' QHD IPS, Display Port, USB,Webcam, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/42358342/lenovo-monitor-tiny-in-one-27-amp-amp-apos--amp-am",
-   "price": 435.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 27\" IPS #2",
-   "code": "3YEARSW",
-   "size": 27.0,
-   "height": 1440,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:42814913",
-   "source": "snif",
-   "title": "LENOVO Monitor Yoga Pro 27UD-10 26.5'' 4K QD-OLED, HDMI,Display Port,Speakers,Camera,3YearsW",
-   "url": "https://www.snif.gr/showproduct/42814913/lenovo-monitor-yoga-pro-27ud-10-26-5-amp-amp-apos",
-   "price": 1575.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 27\" OLED",
-   "code": "3YEARSW",
-   "size": 26.5,
-   "height": 2160,
-   "width": null,
-   "hz": null,
-   "panel": "OLED",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:43296605",
-   "source": "snif",
-   "title": "LENOVO Monitor LOQ 32Q-10 Gaming 31.5'' QHD IPS, HDMi, Display Port, 3YearsW",
-   "url": "https://www.snif.gr/showproduct/43296605/lenovo-monitor-loq-32q-10-gaming-31-5-amp-amp-apos",
-   "price": 279.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 32\" IPS",
-   "code": "3YEARSW",
-   "size": 31.5,
-   "height": 1440,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:43461035",
-   "source": "snif",
-   "title": "LENOVO Monitor L34W-4C 34'' WQHD VA, Slim Bezel,HDMI,Display Port,AMD FreeSync,3YearsW",
-   "url": "https://www.snif.gr/showproduct/43461035/lenovo-monitor-l34w-4c-34-amp-amp-apos--amp-amp-ap",
-   "price": 359.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo 3YEARSW 34\" VA",
-   "code": "3YEARSW",
-   "size": 34.0,
-   "height": 1440,
-   "width": null,
-   "hz": null,
-   "panel": "VA",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
    "id": "snif:30229690",
    "source": "snif",
    "title": "Οθόνη Lenovo ThinkVision P27u-20 27'' IPS 4K 62CBRAT6EU",
@@ -86650,7 +86775,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgHz": 60
   },
   {
    "id": "snif:40204901",
@@ -86673,7 +86799,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgHz": 75
   },
   {
    "id": "snif:36375177",
@@ -86960,7 +87087,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:40877244",
@@ -86980,7 +87108,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:41225535",
@@ -87000,7 +87129,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:42488486",
@@ -87020,7 +87150,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:53571785",
@@ -87040,7 +87171,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "bestprice:2163716699",
@@ -87182,7 +87314,7 @@
    "price": 105.8,
    "shopCount": 44,
    "brand": "Lenovo",
-   "chip": "Lenovo E2440 24\" IPS",
+   "chip": "Lenovo E2440",
    "code": "E2440",
    "size": 23.8,
    "height": 1080,
@@ -87229,7 +87361,7 @@
    "price": 109.0,
    "shopCount": null,
    "brand": "Lenovo",
-   "chip": "Lenovo E2440 24\" IPS",
+   "chip": "Lenovo E2440",
    "code": "E2440",
    "size": 23.8,
    "height": 1080,
@@ -87242,14 +87374,14 @@
    "reject": null
   },
   {
-   "id": "snif:42337063",
+   "id": "snif:42103623",
    "source": "snif",
-   "title": "LENOVO Monitor ThinkVision E24-40 23.8'' IPS FHD, Slim Bezel, HDMΙ, Display Port, VGA, Height",
-   "url": "https://www.snif.gr/showproduct/42337063/lenovo-monitor-thinkvision-e24-40-23-8-amp-amp-apo",
-   "price": 126.0,
+   "title": "Lenovo ThinkVision E24-40 Full HD Flat 100Hz 6ms",
+   "url": "https://www.snif.gr/showproduct/42103623/lenovo-thinkvision-e24-40-full-hd-flat-100hz-6ms",
+   "price": 122.0,
    "shopCount": null,
    "brand": "Lenovo",
-   "chip": "Lenovo E2440 24\" IPS",
+   "chip": "Lenovo E2440",
    "code": "E2440",
    "size": 23.8,
    "height": 1080,
@@ -87265,20 +87397,20 @@
    "merchant": null
   },
   {
-   "id": "snif:42103623",
+   "id": "snif:42337063",
    "source": "snif",
-   "title": "Lenovo ThinkVision E24-40 Full HD Flat 100Hz 6ms",
-   "url": "https://www.snif.gr/showproduct/42103623/lenovo-thinkvision-e24-40-full-hd-flat-100hz-6ms",
-   "price": 122.0,
+   "title": "LENOVO Monitor ThinkVision E24-40 23.8'' IPS FHD, Slim Bezel, HDMΙ, Display Port, VGA, Height",
+   "url": "https://www.snif.gr/showproduct/42337063/lenovo-monitor-thinkvision-e24-40-23-8-amp-amp-apo",
+   "price": 126.0,
    "shopCount": null,
    "brand": "Lenovo",
-   "chip": "Lenovo E2440 40\"",
+   "chip": "Lenovo E2440",
    "code": "E2440",
-   "size": 40.0,
+   "size": 23.8,
    "height": 1080,
-   "width": null,
+   "width": 1920,
    "hz": 100,
-   "panel": null,
+   "panel": "IPS",
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T20:25:23+00:00",
@@ -87398,6 +87530,29 @@
    "reject": null
   },
   {
+   "id": "snif:42337054",
+   "source": "snif",
+   "title": "LENOVO Monitor ThinkVision E27-40 27'' FHD IPS, HDMi, Display Port,VGA, Speakers, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/42337054/lenovo-monitor-thinkvision-e27-40-27-amp-amp-apos",
+   "price": 153.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo E2740",
+   "code": "E2740",
+   "size": 27.0,
+   "height": 1080,
+   "width": 1920,
+   "hz": 100,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
    "id": "snif:42386087",
    "source": "snif",
    "title": "Lenovo ThinkVision E27-40 27 Full HD IPS 100Hz 6ms",
@@ -87438,7 +87593,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:68564467",
@@ -87745,6 +87901,29 @@
    "reject": null
   },
   {
+   "id": "snif:42544884",
+   "source": "snif",
+   "title": "LENOVO Monitor Tiny-In-One 23.8''' Gen5 FHD IPS , Display Port, USB,Webcam ,3Year",
+   "url": "https://www.snif.gr/showproduct/42544884/lenovo-monitor-tiny-in-one-23-8-amp-amp-apos--amp",
+   "price": 274.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo GEN5",
+   "code": "GEN5",
+   "size": 23.8,
+   "height": 1080,
+   "width": null,
+   "hz": null,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
    "id": "snif:42534108",
    "source": "snif",
    "title": "LENOVO Monitor Tiny-In-One 23.8''' Gen5 FHD IPS Touch, Display Port, USB,Webcam ,",
@@ -87785,7 +87964,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2164845534",
@@ -87892,6 +88072,29 @@
    ],
    "pgEnergy": "C",
    "pgColour": "Μαύρο"
+  },
+  {
+   "id": "snif:42337207",
+   "source": "snif",
+   "title": "LENOVO Monitor L22-4e 21.5'' FHD IPS, HDMi, VGA, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/42337207/lenovo-monitor-l22-4e-21-5-amp-amp-apos--amp-amp-a",
+   "price": 95.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo L224E",
+   "code": "L224E",
+   "size": 21.5,
+   "height": 1080,
+   "width": 1920,
+   "hz": 100,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
   },
   {
    "id": "snif:42169423",
@@ -88067,6 +88270,29 @@
    "reject": null
   },
   {
+   "id": "snif:42544870",
+   "source": "snif",
+   "title": "LENOVO Monitor L24-4C 23,8'' FHD IPS,HDMi, VGA, Speakers,3YearsW",
+   "url": "https://www.snif.gr/showproduct/42544870/lenovo-monitor-l24-4c-23-8-amp-amp-apos--amp-amp-a",
+   "price": 131.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo L244C",
+   "code": "L244C",
+   "size": 23.8,
+   "height": 1080,
+   "width": 1920,
+   "hz": 144,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
    "id": "snif:42762231",
    "source": "snif",
    "title": "Lenovo L24-4C Monitor 23.8 FHD IPS Flat 144Hz 4ms",
@@ -88150,6 +88376,29 @@
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
    "reject": null
+  },
+  {
+   "id": "snif:42337825",
+   "source": "snif",
+   "title": "LENOVO Monitor L24-4e 23,8'' FHD IPS,HDMi, VGA, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/42337825/lenovo-monitor-l24-4e-23-8-amp-amp-apos--amp-amp-a",
+   "price": 117.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo L244E",
+   "code": "L244E",
+   "size": 23.8,
+   "height": 1080,
+   "width": 1920,
+   "hz": 100,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
   },
   {
    "id": "snif:42169421",
@@ -88250,6 +88499,29 @@
    "title": "Lenovo L24D-4C Monitor 23.8 Full HD IPS Flat 144 Hz 6 ms",
    "url": "https://www.snif.gr/showproduct/43524069/lenovo-l24d-4c-monitor-23-8-full-hd-ips-flat-144-h",
    "price": 159.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo L24D4C",
+   "code": "L24D4C",
+   "size": 23.8,
+   "height": 1080,
+   "width": 1920,
+   "hz": 144,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
+   "id": "snif:43375421",
+   "source": "snif",
+   "title": "LENOVO Monitor L24D-4C 23,8'' FHD IPS,HDMi,USB-C,USB-A,Speakers,3YearsW",
+   "url": "https://www.snif.gr/showproduct/43375421/lenovo-monitor-l24d-4c-23-8-amp-amp-apos--amp-amp",
+   "price": 187.0,
    "shopCount": null,
    "brand": "Lenovo",
    "chip": "Lenovo L24D4C",
@@ -88511,6 +88783,29 @@
    "title": "Lenovo L27-4e Monitor 27 FHD IPS Flat 100 Hz 6ms",
    "url": "https://www.snif.gr/showproduct/43310099/lenovo-l27-4e-monitor-27-fhd-ips-flat-100-hz-6ms",
    "price": 138.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo L274E",
+   "code": "L274E",
+   "size": 27.0,
+   "height": 1080,
+   "width": 1920,
+   "hz": 100,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
+   "id": "snif:43266736",
+   "source": "snif",
+   "title": "LENOVO Monitor L27-4e 27'' FHD IPS,HDMi, VGA, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/43266736/lenovo-monitor-l27-4e-27-amp-amp-apos--amp-amp-apo",
+   "price": 145.0,
    "shopCount": null,
    "brand": "Lenovo",
    "chip": "Lenovo L274E",
@@ -88968,6 +89263,29 @@
    "reject": null
   },
   {
+   "id": "snif:43461035",
+   "source": "snif",
+   "title": "LENOVO Monitor L34W-4C 34'' WQHD VA, Slim Bezel,HDMI,Display Port,AMD FreeSync,3YearsW",
+   "url": "https://www.snif.gr/showproduct/43461035/lenovo-monitor-l34w-4c-34-amp-amp-apos--amp-amp-ap",
+   "price": 359.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo L34W4C",
+   "code": "L34W4C",
+   "size": 34.0,
+   "height": 1440,
+   "width": 3440,
+   "hz": 120,
+   "panel": "VA",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
    "id": "snif:43538315",
    "source": "snif",
    "title": "Lenovo L34W-4C Monitor 34 UWQHD Curved VA 120 Hz 6 ms",
@@ -89366,7 +89684,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2158783455",
@@ -90383,7 +90702,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2163652696",
@@ -91069,6 +91389,29 @@
    "merchant": null
   },
   {
+   "id": "snif:42555994",
+   "source": "snif",
+   "title": "LENOVO Monitor Legion R24s Gaming 23.8'' FHD IPS, HDMi, Display Port, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/42555994/lenovo-monitor-legion-r24s-gaming-23-8-amp-amp-apo",
+   "price": 139.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo R24S",
+   "code": "R24S",
+   "size": 23.8,
+   "height": 1080,
+   "width": 1920,
+   "hz": 144,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
    "id": "skroutz:48718872",
    "source": "skroutz",
    "title": "Lenovo Legion R25f-30 24.5\" VA HDR FHD 1920x1080",
@@ -91422,6 +91765,29 @@
    "merchant": null
   },
   {
+   "id": "snif:42998696",
+   "source": "snif",
+   "title": "LENOVO Monitor Legion R27qe G2 Gaming 27'' QHD IPS, HDMi, Display Port, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/42998696/lenovo-monitor-legion-r27qe-g2-gaming-27-amp-amp-a",
+   "price": 221.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo R27QE",
+   "code": "R27QE",
+   "size": 27.0,
+   "height": 1440,
+   "width": 2560,
+   "hz": 200,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
    "id": "bestprice:2163288175",
    "source": "bestprice",
    "title": "Lenovo Legion R27s IPS HDR Gaming Monitor 27\" 1920x1080 FHD 144Hz 10ms",
@@ -91486,6 +91852,29 @@
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
    "reject": null
+  },
+  {
+   "id": "snif:42567433",
+   "source": "snif",
+   "title": "LENOVO Monitor Legion Gaming R27s 27'' FHD,HDMi,Display Port,3YearsW",
+   "url": "https://www.snif.gr/showproduct/42567433/lenovo-monitor-legion-gaming--r27s-27-amp-amp-apos",
+   "price": 176.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo R27S",
+   "code": "R27S",
+   "size": 27.0,
+   "height": 1080,
+   "width": 1920,
+   "hz": 144,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
   },
   {
    "id": "snif:42762563",
@@ -91862,6 +92251,29 @@
    "pgColour": "Μαύρο"
   },
   {
+   "id": "snif:42544871",
+   "source": "snif",
+   "title": "LENOVO Monitor ThinkVision S24-4e 23.8'' FHD IPS, HDMi, VGA, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/42544871/lenovo-monitor-thinkvision-s24-4e-23-8-amp-amp-apo",
+   "price": 105.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo S244E",
+   "code": "S244E",
+   "size": 23.8,
+   "height": 1080,
+   "width": 1920,
+   "hz": 100,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
    "id": "snif:42762250",
    "source": "snif",
    "title": "Lenovo ThinkVision S24-4e Monitor 23.8 Full HD IPS Flat 100Hz 6ms",
@@ -92075,6 +92487,29 @@
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
    "reject": null
+  },
+  {
+   "id": "snif:42544865",
+   "source": "snif",
+   "title": "LENOVO Monitor ThinkVision S27-4e 27'' FHD IPS, HDMi, VGA, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/42544865/lenovo-monitor-thinkvision-s27-4e-27-amp-amp-apos",
+   "price": 126.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo S274E",
+   "code": "S274E",
+   "size": 27.0,
+   "height": 1080,
+   "width": 1920,
+   "hz": 100,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
   },
   {
    "id": "snif:42762561",
@@ -92302,7 +92737,7 @@
    "price": 120.0,
    "shopCount": 49,
    "brand": "Lenovo",
-   "chip": "Lenovo T2440 24\" 120Hz",
+   "chip": "Lenovo T2440",
    "code": "T2440",
    "size": 23.8,
    "height": 1080,
@@ -92351,7 +92786,7 @@
    "price": 127.27,
    "shopCount": null,
    "brand": "Lenovo",
-   "chip": "Lenovo T2440 24\" 120Hz",
+   "chip": "Lenovo T2440",
    "code": "T2440",
    "size": 23.8,
    "height": 1080,
@@ -92371,7 +92806,7 @@
    "price": 149.0,
    "shopCount": null,
    "brand": "Lenovo",
-   "chip": "Lenovo T2440 24\" 120Hz",
+   "chip": "Lenovo T2440",
    "code": "T2440",
    "size": 23.8,
    "height": 1080,
@@ -92391,7 +92826,7 @@
    "price": 169.0,
    "shopCount": null,
    "brand": "Lenovo",
-   "chip": "Lenovo T2440 24\" 120Hz",
+   "chip": "Lenovo T2440",
    "code": "T2440",
    "size": 23.8,
    "height": 1080,
@@ -92414,35 +92849,12 @@
    "price": 192.0,
    "shopCount": null,
    "brand": "Lenovo",
-   "chip": "Lenovo T2440 24\" 120Hz",
+   "chip": "Lenovo T2440",
    "code": "T2440",
    "size": 23.8,
    "height": 1080,
    "width": 1920,
    "hz": 120,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "snif:41983329",
-   "source": "snif",
-   "title": "Lenovo ThinkVision T24-40 Full HD IPS Flat 60Hz 6ms",
-   "url": "https://www.snif.gr/showproduct/41983329/lenovo-thinkvision-t24-40-full-hd-ips-flat-60hz-6m",
-   "price": 169.0,
-   "shopCount": null,
-   "brand": "Lenovo",
-   "chip": "Lenovo T2440 40\" 60Hz",
-   "code": "T2440",
-   "size": 40.0,
-   "height": 1080,
-   "width": null,
-   "hz": 60,
    "panel": "IPS",
    "colour": null,
    "revision": null,
@@ -92770,6 +93182,29 @@
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
    "reject": null
+  },
+  {
+   "id": "snif:43660952",
+   "source": "snif",
+   "title": "LENOVO Monitor ThinkVision T24D-4t 23.8'' FHD, IPS, HDMI, TOUCH,USBC, DP 3YearsW",
+   "url": "https://www.snif.gr/showproduct/43660952/lenovo-monitor-thinkvision-t24d-4t-23-8-amp-amp-ap",
+   "price": 387.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo T24D4T",
+   "code": "T24D4T",
+   "size": 23.8,
+   "height": 1080,
+   "width": 1920,
+   "hz": 120,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
   },
   {
    "id": "bestprice:2163689593",
@@ -94184,7 +94619,33 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 27.0,
+   "pgWidth": 2560,
+   "pgHeight": 1440,
+   "pgHz": 60,
+   "pgResponseMs": 4.0,
+   "pgNits": 350,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Touchscreen",
+    "Ενσωματωμένα Ηχεία",
+    "Ενσωματωμένη Κάμερα",
+    "USB Hub"
+   ],
+   "pgEnergy": "G",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:52874439",
@@ -94326,6 +94787,29 @@
    "height": 1080,
    "width": null,
    "hz": 60,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T20:25:23+00:00",
+   "reject": null,
+   "shipping": null,
+   "total": null,
+   "merchant": null
+  },
+  {
+   "id": "snif:42358342",
+   "source": "snif",
+   "title": "LENOVO Monitor Tiny-In-One 27'' QHD IPS, Display Port, USB,Webcam, 3YearsW",
+   "url": "https://www.snif.gr/showproduct/42358342/lenovo-monitor-tiny-in-one-27-amp-amp-apos--amp-am",
+   "price": 435.0,
+   "shopCount": null,
+   "brand": "Lenovo",
+   "chip": "Lenovo TINY-IN-ONE PORT WEBCAM",
+   "code": "TINY-IN-ONE PORT WEBCAM",
+   "size": 27.0,
+   "height": 1440,
+   "width": null,
+   "hz": null,
    "panel": "IPS",
    "colour": null,
    "revision": null,
@@ -94508,7 +94992,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:69317553",
@@ -94551,67 +95036,6 @@
    "reject": null
   },
   {
-   "id": "bestprice:2163855693",
-   "source": "bestprice",
-   "title": "Lian Li US88v1 Ultrawide IPS Φορητό Monitor 8.8\" 1920x480 60Hz Black",
-   "url": "https://www.bestprice.gr/item/2163855693/lian-li-us88v1-ultrawide-ips-forito-monitor-8-8-1920x480-60hz-black.html",
-   "price": 79.5,
-   "shopCount": 8,
-   "brand": "Lian",
-   "chip": "Lian US88V1",
-   "code": "US88V1",
-   "size": null,
-   "height": 480,
-   "width": 1920,
-   "hz": 60,
-   "panel": "IPS",
-   "colour": "black",
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null,
-   "gtin": "4718466020550",
-   "pgSize": 8.8,
-   "pgWidth": 1920,
-   "pgHeight": 480,
-   "pgHz": 60,
-   "pgNits": 500,
-   "pgPanel": "IPS",
-   "pgAspect": "5:4",
-   "pgHdr": false,
-   "pgUltrawide": true,
-   "pgCurved": false,
-   "pgConnectors": [
-    "USB"
-   ],
-   "pgColour": "Μαύρο"
-  },
-  {
-   "id": "bestprice:2164038236",
-   "source": "bestprice",
-   "title": "Lian Li US88v1 Ultrawide IPS Φορητό Monitor 8.8\" 1920x480 60Hz White",
-   "url": "https://www.bestprice.gr/item/2164038236/lian-li-us88v1-ultrawide-ips-forito-monitor-8-8-1920x480-60hz-white.html",
-   "price": 83.8,
-   "shopCount": 5,
-   "brand": "Lian",
-   "chip": "Lian US88V1",
-   "code": "US88V1",
-   "size": null,
-   "height": 480,
-   "width": 1920,
-   "hz": 60,
-   "panel": "IPS",
-   "colour": "white",
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
    "id": "bestprice:2164857479",
    "source": "bestprice",
    "title": "Logicom Nomad Display IPS Φορητό Monitor 15.6\" 1920x1080 FHD",
@@ -94632,7 +95056,22 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "3483070033760",
+   "pgSize": 15.6,
+   "pgHz": 60,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "Mini HDMI"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:68637819",
@@ -95136,7 +95575,25 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4711377426060",
+   "pgSize": 26.9,
+   "pgHz": 75,
+   "pgResponseMs": 0.5,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": true,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "FreeSync",
+    "USB Hub"
+   ]
   },
   {
    "id": "skroutz:70468382",
@@ -98329,7 +98786,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 180
   },
   {
    "id": "skroutz:56586427",
@@ -99492,7 +99950,7 @@
    "brand": "MSI",
    "chip": "MSI E16",
    "code": "E16",
-   "size": 16.0,
+   "size": null,
    "height": 2160,
    "width": 3840,
    "hz": 160,
@@ -100214,7 +100672,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:60688599",
@@ -100334,7 +100793,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:62895818",
@@ -100354,7 +100814,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2163864519",
@@ -101822,7 +102283,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2164555679",
@@ -101885,7 +102347,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "snif:39460818",
@@ -103237,7 +103700,26 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "0810130760701",
+   "pgSize": 16.0,
+   "pgWidth": 2560,
+   "pgHeight": 1600,
+   "pgNits": 220,
+   "pgPanel": "IPS",
+   "pgAspect": "16:10",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "USB-C"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2163338289",
@@ -103260,7 +103742,25 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "0850001446921",
+   "pgSize": 15.6,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgNits": 300,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "HDMI",
+    "USB-C"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:63676854",
@@ -103532,27 +104032,13 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
-  },
-  {
-   "id": "skroutz:36521568",
-   "source": "skroutz",
-   "title": "Nec MultiSync WD551 55\" IPS Touch 4K 3840x2160",
-   "url": "https://www.skroutz.gr/s/36521568/Nec-MultiSync-WD551-IPS-Touch-Monitor-55-4K-3840x2160-me-CHrono-Apokrisis-8ms-GTG.html",
-   "price": 5500.0,
-   "shopCount": null,
-   "brand": "NEC",
-   "chip": "NEC WD551",
-   "code": "WD551",
-   "size": 55.0,
-   "height": 2160,
-   "width": 3840,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "merchant": null,
+   "pgSize": 22.0,
+   "pgWidth": 1680,
+   "pgHeight": 1050,
+   "pgResponseMs": 16.0,
+   "pgNits": 300,
+   "pgContrast": 1000
   },
   {
    "id": "skroutz:68773560",
@@ -103613,29 +104099,6 @@
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
    "reject": null
-  },
-  {
-   "id": "bestprice:2164558621",
-   "source": "bestprice",
-   "title": "Ocypus Sigma ES916 IPS Monitor 9.16\"",
-   "url": "https://www.bestprice.gr/item/2164558621/ocypus-sigma-es916-ips-monitor-9-16.html",
-   "price": 42.55,
-   "shopCount": 2,
-   "brand": "Ocypus",
-   "chip": "Ocypus ES916",
-   "code": "ES916",
-   "size": null,
-   "height": null,
-   "width": null,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
   },
   {
    "id": "skroutz:64191124",
@@ -104230,7 +104693,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "bestprice:2156491232",
@@ -104379,7 +104843,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:59441570",
@@ -104399,7 +104864,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "bestprice:2156576997",
@@ -104726,7 +105192,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:20195771",
@@ -104947,7 +105414,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:27124219",
@@ -104957,7 +105425,7 @@
    "price": 79.0,
    "shopCount": null,
    "brand": "Philips",
-   "chip": "Philips 241V8LA VA 75Hz",
+   "chip": "Philips 241V8LA VA",
    "code": "241V8LA",
    "size": 23.8,
    "height": 1080,
@@ -104977,7 +105445,7 @@
    "price": 79.0,
    "shopCount": 1,
    "brand": "Philips",
-   "chip": "Philips 241V8LA VA 75Hz",
+   "chip": "Philips 241V8LA VA",
    "code": "241V8LA",
    "size": 23.8,
    "height": 1080,
@@ -105692,7 +106160,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:22388634",
@@ -105828,7 +106297,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:36442495",
@@ -105937,7 +106407,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:48107738",
@@ -105957,7 +106428,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:69131974",
@@ -107886,7 +108358,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "bestprice:2156424550",
@@ -108956,26 +109429,6 @@
    "merchant": null
   },
   {
-   "id": "skroutz:58350428",
-   "source": "skroutz",
-   "title": "Philips 27B1U3900 27\" IPS 4K 3840x2160",
-   "url": "https://www.skroutz.gr/s/58350428/Philips-27B1U3900-IPS-Monitor-27-4K-3840x2160-me-CHrono-Apokrisis-4ms-GTG.html",
-   "price": 387.27,
-   "shopCount": null,
-   "brand": "Philips",
-   "chip": "Philips 27B1U3900",
-   "code": "27B1U3900",
-   "size": 27.0,
-   "height": 2160,
-   "width": 3840,
-   "hz": null,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
-  },
-  {
    "id": "bestprice:2160287602",
    "source": "bestprice",
    "title": "Philips 27B1U3900/00 HDR IPS Monitor 27\" 2560x1440 QHD 60Hz 4ms",
@@ -108983,7 +109436,7 @@
    "price": 324.48,
    "shopCount": 5,
    "brand": "Philips",
-   "chip": "Philips 27B1U3900 60Hz",
+   "chip": "Philips 27B1U3900 #1",
    "code": "27B1U3900",
    "size": 27.0,
    "height": 1440,
@@ -108997,6 +109450,27 @@
    "shipping": null,
    "total": null,
    "merchant": null
+  },
+  {
+   "id": "skroutz:58350428",
+   "source": "skroutz",
+   "title": "Philips 27B1U3900 27\" IPS 4K 3840x2160",
+   "url": "https://www.skroutz.gr/s/58350428/Philips-27B1U3900-IPS-Monitor-27-4K-3840x2160-me-CHrono-Apokrisis-4ms-GTG.html",
+   "price": 387.27,
+   "shopCount": null,
+   "brand": "Philips",
+   "chip": "Philips 27B1U3900 #2",
+   "code": "27B1U3900",
+   "size": 27.0,
+   "height": 2160,
+   "width": 3840,
+   "hz": null,
+   "panel": "IPS",
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-10T16:46:30+00:00",
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2158240844",
@@ -109059,7 +109533,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2160287595",
@@ -109660,7 +110135,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2159536221",
@@ -113971,7 +114447,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "bestprice:2156919817",
@@ -114740,7 +115217,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:53559883",
@@ -114783,7 +115261,14 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "3567042031036",
+   "pgSize": 15.6,
+   "pgPanel": "LCD",
+   "pgAspect": "16:9",
+   "pgFeatures": [
+    "Touchscreen"
+   ]
   },
   {
    "id": "skroutz:70558547",
@@ -114835,7 +115320,7 @@
    "brand": "Powertech",
    "chip": "Powertech PT1108",
    "code": "PT1108",
-   "size": null,
+   "size": 8.0,
    "height": 768,
    "width": 1024,
    "hz": 70,
@@ -114858,7 +115343,7 @@
    "brand": "Powertech",
    "chip": "Powertech PT1108",
    "code": "PT1108",
-   "size": null,
+   "size": 8.0,
    "height": 768,
    "width": 1024,
    "hz": 70,
@@ -114892,7 +115377,13 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 10.1,
+   "pgPanel": "LCD",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2164365270",
@@ -115724,7 +116215,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:56587886",
@@ -119074,7 +119566,29 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "8806095008080",
+   "pgSize": 27.0,
+   "pgWidth": 5120,
+   "pgHeight": 2880,
+   "pgHz": 60,
+   "pgResponseMs": 5.0,
+   "pgNits": 600,
+   "pgContrast": 2000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": true,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "USB-C",
+    "Thunderbolt 4"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένη Κάμερα"
+   ],
+   "pgColour": "Γκρι"
   },
   {
    "id": "bestprice:2159326196",
@@ -120155,7 +120669,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:63698884",
@@ -120175,7 +120690,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "snif:42403038",
@@ -120221,7 +120737,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2164327032",
@@ -120290,7 +120807,14 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "8806099177485",
+   "pgSize": 27.0,
+   "pgHz": 200,
+   "pgResponseMs": 1.0,
+   "pgNits": 250,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9"
   },
   {
    "id": "bestprice:2164519210",
@@ -121184,7 +121708,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgHz": 60
   },
   {
    "id": "snif:42403042",
@@ -121230,7 +121755,8 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2163072867",
@@ -122397,7 +122923,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:54157682",
@@ -122417,7 +122944,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2163092926",
@@ -122658,7 +123186,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2162483824",
@@ -122807,7 +123336,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:61435771",
@@ -122827,7 +123357,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2162483826",
@@ -122956,7 +123487,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:41200197",
@@ -122976,7 +123508,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:42738972",
@@ -123016,7 +123549,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 100
   },
   {
    "id": "skroutz:29920883",
@@ -123036,7 +123570,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:28711199",
@@ -123076,7 +123611,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:35842072",
@@ -123096,7 +123632,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2160162508",
@@ -123314,7 +123851,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:40960625",
@@ -123334,7 +123872,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:29630645",
@@ -123354,7 +123893,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:37893072",
@@ -124365,7 +124905,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:54993549",
@@ -124375,7 +124916,7 @@
    "price": 226.11,
    "shopCount": null,
    "brand": "Samsung",
-   "chip": "Samsung S70D 32\" VA 60Hz",
+   "chip": "Samsung S70D 32\" VA",
    "code": "S70D",
    "size": 32.0,
    "height": 2160,
@@ -124396,7 +124937,7 @@
    "price": 356.44,
    "shopCount": null,
    "brand": "Samsung",
-   "chip": "Samsung S70D 32\" VA 60Hz",
+   "chip": "Samsung S70D 32\" VA",
    "code": "S70D",
    "size": 32.0,
    "height": 2160,
@@ -124416,7 +124957,7 @@
    "price": 369.0,
    "shopCount": null,
    "brand": "Samsung",
-   "chip": "Samsung S70D 32\" VA 60Hz",
+   "chip": "Samsung S70D 32\" VA",
    "code": "S70D",
    "size": 32.0,
    "height": 2160,
@@ -124439,7 +124980,7 @@
    "price": 308.0,
    "shopCount": 6,
    "brand": "Samsung",
-   "chip": "Samsung S70D 37\" VA 60Hz",
+   "chip": "Samsung S70D 37\" VA",
    "code": "S70D",
    "size": 37.0,
    "height": 2160,
@@ -124462,7 +125003,7 @@
    "price": 361.95,
    "shopCount": null,
    "brand": "Samsung",
-   "chip": "Samsung S70D 37\" VA 60Hz",
+   "chip": "Samsung S70D 37\" VA",
    "code": "S70D",
    "size": 37.0,
    "height": 2160,
@@ -124601,7 +125142,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:56364077",
@@ -124621,7 +125163,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:60758421",
@@ -124641,7 +125184,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:68542078",
@@ -124727,7 +125271,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:54351018",
@@ -124747,7 +125292,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2160831867",
@@ -124757,7 +125303,7 @@
    "price": 418.5,
    "shopCount": 9,
    "brand": "Samsung",
-   "chip": "Samsung S80UD 37\" VA 60Hz",
+   "chip": "Samsung S80UD 37\" VA",
    "code": "S80UD",
    "size": 37.0,
    "height": 2160,
@@ -124780,7 +125326,7 @@
    "price": 499.0,
    "shopCount": null,
    "brand": "Samsung",
-   "chip": "Samsung S80UD 37\" VA 60Hz",
+   "chip": "Samsung S80UD 37\" VA",
    "code": "S80UD",
    "size": 37.0,
    "height": 2160,
@@ -124800,7 +125346,7 @@
    "price": 499.37,
    "shopCount": null,
    "brand": "Samsung",
-   "chip": "Samsung S80UD 37\" VA 60Hz",
+   "chip": "Samsung S80UD 37\" VA",
    "code": "S80UD",
    "size": 37.0,
    "height": 2160,
@@ -125048,7 +125594,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:17428072",
@@ -125068,7 +125615,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:41032846",
@@ -125088,7 +125636,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:56200645",
@@ -125289,29 +125838,6 @@
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
    "reject": null
-  },
-  {
-   "id": "snif:36073664",
-   "source": "snif",
-   "title": "Samsung VM46B-U Video Wall 46 FHD 60Hz 8ms",
-   "url": "https://www.snif.gr/showproduct/36073664/samsung-vm46b-u-video-wall-46-fhd-60hz-8ms",
-   "price": 1859.0,
-   "shopCount": null,
-   "brand": "Samsung",
-   "chip": "Samsung VM46BU",
-   "code": "VM46BU",
-   "size": 46.0,
-   "height": 1080,
-   "width": null,
-   "hz": 60,
-   "panel": null,
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
   },
   {
    "id": "skroutz:66317293",
@@ -125652,29 +126178,6 @@
    "width": 2560,
    "hz": 540,
    "panel": "OLED",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "bestprice:179557617",
-   "source": "bestprice",
-   "title": "Swit BM-H215 21.5\" 4K input FHD Broadcast Monitor",
-   "url": "https://www.bestprice.gr/to/179557617/swit-bm-h215-21-5-4k-input-fhd-broadcast-monitor.html?seq=160",
-   "price": 1745.0,
-   "shopCount": null,
-   "brand": "Swit",
-   "chip": "Swit BMH215",
-   "code": "BMH215",
-   "size": 21.5,
-   "height": 1080,
-   "width": null,
-   "hz": null,
-   "panel": null,
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T20:25:23+00:00",
@@ -127161,7 +127664,20 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "5905156105263",
+   "pgSize": 13.3,
+   "pgHz": 60,
+   "pgResponseMs": 1.0,
+   "pgNits": 390,
+   "pgAspect": "16:9",
+   "pgHdr": true,
+   "pgConnectors": [
+    "Mini HDMI"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία"
+   ]
   },
   {
    "id": "skroutz:50769091",
@@ -127204,7 +127720,21 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "5905156105324",
+   "pgSize": 15.6,
+   "pgHz": 60,
+   "pgNits": 300,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgConnectors": [
+    "DVI",
+    "VGA"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία"
+   ]
   },
   {
    "id": "skroutz:70561239",
@@ -127267,7 +127797,20 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "5905156105331",
+   "pgSize": 15.6,
+   "pgHz": 60,
+   "pgNits": 250,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": true,
+   "pgConnectors": [
+    "Mini HDMI"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία"
+   ]
   },
   {
    "id": "skroutz:70560620",
@@ -127310,7 +127853,19 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "6926316318582",
+   "pgSize": 15.6,
+   "pgResponseMs": 1.0,
+   "pgNits": 350,
+   "pgContrast": 2000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": true,
+   "pgConnectors": [
+    "USB",
+    "Mini HDMI"
+   ]
   },
   {
    "id": "bestprice:2164976866",
@@ -127333,7 +127888,19 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "5905156105355",
+   "pgSize": 16.0,
+   "pgHz": 240,
+   "pgResponseMs": 9.0,
+   "pgNits": 400,
+   "pgContrast": 1200,
+   "pgPanel": "QLED",
+   "pgAspect": "16:10",
+   "pgConnectors": [
+    "USB",
+    "Mini HDMI"
+   ]
   },
   {
    "id": "bestprice:2164959856",
@@ -127356,7 +127923,18 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "5905156105379",
+   "pgSize": 16.0,
+   "pgHz": 60,
+   "pgNits": 350,
+   "pgPanel": "IPS",
+   "pgAspect": "16:10",
+   "pgHdr": true,
+   "pgFeatures": [
+    "FreeSync",
+    "Ενσωματωμένα Ηχεία"
+   ]
   },
   {
    "id": "skroutz:70561448",
@@ -127505,7 +128083,21 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "5905156105393",
+   "pgSize": 18.4,
+   "pgHz": 60,
+   "pgNits": 300,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": true,
+   "pgConnectors": [
+    "Mini HDMI"
+   ],
+   "pgFeatures": [
+    "FreeSync",
+    "Ενσωματωμένα Ηχεία"
+   ]
   },
   {
    "id": "skroutz:70561491",
@@ -128553,7 +129145,30 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "0023942495925",
+   "pgSize": 15.6,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgResponseMs": 6.0,
+   "pgNits": 250,
+   "pgContrast": 800,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": true,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "USB-C"
+   ],
+   "pgFeatures": [
+    "Touchscreen",
+    "FreeSync"
+   ],
+   "pgEnergy": "A",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:40846730",
@@ -128688,7 +129303,30 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "0023942322399",
+   "pgSize": 17.3,
+   "pgWidth": 3840,
+   "pgHeight": 2160,
+   "pgResponseMs": 6.0,
+   "pgNits": 400,
+   "pgContrast": 1200,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "USB-C"
+   ],
+   "pgFeatures": [
+    "FreeSync",
+    "USB Hub"
+   ],
+   "pgEnergy": "A",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:57450980",
@@ -128794,7 +129432,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "snif:39914131",
@@ -128860,7 +129499,30 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 15.6,
+   "pgWidth": 1366,
+   "pgHeight": 768,
+   "pgResponseMs": 12.0,
+   "pgNits": 220,
+   "pgContrast": 500,
+   "pgPanel": "TN",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "75x75",
+   "pgConnectors": [
+    "HDMI",
+    "VGA",
+    "USB"
+   ],
+   "pgFeatures": [
+    "Touchscreen",
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgEnergy": "C",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "snif:43211506",
@@ -128936,7 +129598,7 @@
    "price": 255.9,
    "shopCount": 9,
    "brand": "ViewSonic",
-   "chip": "ViewSonic TD2223 TN 75Hz",
+   "chip": "ViewSonic TD2223 TN",
    "code": "TD2223",
    "size": 21.5,
    "height": 1080,
@@ -128959,7 +129621,7 @@
    "price": 263.5,
    "shopCount": null,
    "brand": "ViewSonic",
-   "chip": "ViewSonic TD2223 TN 75Hz",
+   "chip": "ViewSonic TD2223 TN",
    "code": "TD2223",
    "size": 22.0,
    "height": 1080,
@@ -128992,7 +129654,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "skroutz:17623149",
@@ -129666,7 +130329,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 100
   },
   {
    "id": "bestprice:2162548257",
@@ -130079,7 +130743,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 100
   },
   {
    "id": "skroutz:66100804",
@@ -130228,7 +130893,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 75
   },
   {
    "id": "bestprice:2164530474",
@@ -130378,7 +131044,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 100
   },
   {
    "id": "bestprice:2163547280",
@@ -130547,7 +131214,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2163771147",
@@ -130736,7 +131404,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:67614037",
@@ -130885,7 +131554,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "skroutz:57571334",
@@ -131140,7 +131810,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2158539580",
@@ -132307,7 +132978,8 @@
    "colour": null,
    "revision": null,
    "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
+   "reject": null,
+   "pgHz": 60
   },
   {
    "id": "bestprice:2157584536",
@@ -132552,7 +133224,7 @@
    "brand": "Vilux",
    "chip": "Vilux VM802M",
    "code": "VM802M",
-   "size": null,
+   "size": 8.0,
    "height": 768,
    "width": 1024,
    "hz": null,
@@ -135261,7 +135933,30 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4948570125432",
+   "pgSize": 19.0,
+   "pgWidth": 1280,
+   "pgHeight": 1024,
+   "pgResponseMs": 5.0,
+   "pgNits": 250,
+   "pgContrast": 1000,
+   "pgPanel": "TN",
+   "pgAspect": "5:4",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "DVI",
+    "VGA",
+    "USB"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία",
+    "USB Hub"
+   ],
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2162829586",
@@ -137136,26 +137831,6 @@
    "merchant": null
   },
   {
-   "id": "skroutz:63115813",
-   "source": "skroutz",
-   "title": "Iiyama LH5560UHS-B2AG 55\" VA 4K 3840x2160",
-   "url": "https://www.skroutz.gr/s/63115813/iiyama-lh5560uhs-b2ag-va-monitor-55-4k-3840x2160-me-chrono-apokrisis-6-5ms-gtg.html",
-   "price": 1037.9,
-   "shopCount": null,
-   "brand": "iiyama",
-   "chip": "iiyama LH5560UHSB2AG",
-   "code": "LH5560UHSB2AG",
-   "size": 55.0,
-   "height": 2160,
-   "width": 3840,
-   "hz": null,
-   "panel": "VA",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T16:46:30+00:00",
-   "reject": null
-  },
-  {
    "id": "skroutz:57398113",
    "source": "skroutz",
    "title": "Iiyama Master Gold Phoenix 27\" VA HDR FHD 1920x1080",
@@ -137574,7 +138249,30 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4948570120451",
+   "pgSize": 15.6,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgResponseMs": 25.0,
+   "pgNits": 450,
+   "pgContrast": 800,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "USB"
+   ],
+   "pgFeatures": [
+    "Touchscreen",
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgEnergy": "E",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:38254691",
@@ -137703,7 +138401,32 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4948570120659",
+   "pgSize": 17.0,
+   "pgWidth": 1280,
+   "pgHeight": 1024,
+   "pgHz": 60,
+   "pgResponseMs": 5.0,
+   "pgNits": 250,
+   "pgContrast": 1000,
+   "pgPanel": "TN",
+   "pgAspect": "5:4",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "VGA",
+    "USB"
+   ],
+   "pgFeatures": [
+    "Touchscreen",
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgEnergy": "E",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2164859311",
@@ -137964,7 +138687,30 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4948570122226",
+   "pgSize": 21.5,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgResponseMs": 8.0,
+   "pgNits": 300,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "VGA"
+   ],
+   "pgFeatures": [
+    "Touchscreen",
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgEnergy": "E",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2159537850",
@@ -138621,29 +139367,6 @@
    "merchant": null
   },
   {
-   "id": "bestprice:2163767246",
-   "source": "bestprice",
-   "title": "iiyama POS TF1015MC-B3 IPS Φορητό Monitor 10.1\" 1280x800 60Hz 29ms",
-   "url": "https://www.bestprice.gr/item/2163767246/iiyama-pos-tf1015mc-b3-ips-forito-monitor-10-1-1280x800-60hz-29ms.html",
-   "price": 606.87,
-   "shopCount": 1,
-   "brand": "iiyama",
-   "chip": "iiyama TF1015MCB3",
-   "code": "TF1015MCB3",
-   "size": 10.1,
-   "height": 800,
-   "width": 1280,
-   "hz": 60,
-   "panel": "IPS",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-10T20:25:23+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
    "id": "bestprice:2163401348",
    "source": "bestprice",
    "title": "iiyama ProLite TF1515MC-B2 TN Φορητό Monitor 15\" 1024x768 60Hz 8ms",
@@ -138842,7 +139565,30 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4948570118373",
+   "pgSize": 21.5,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgResponseMs": 8.0,
+   "pgNits": 350,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "VGA",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Touchscreen"
+   ],
+   "pgEnergy": "F",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2163711586",
@@ -141698,7 +142444,31 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4948570124954",
+   "pgSize": 23.8,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgResponseMs": 1.0,
+   "pgNits": 300,
+   "pgContrast": 1300,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "USB-C",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία",
+    "USB Hub"
+   ],
+   "pgEnergy": "E",
+   "pgColour": "Άσπρο"
   },
   {
    "id": "skroutz:65467196",

@@ -217,6 +217,1406 @@
    "source": "https://en.sharkoon.com/product/35076",
    "date": "2026-11-02",
    "note": "Sharkoon MS-Y1000: Fan Configuration 'Front Panel 1x 120 mm Fan (Optional) | Rear Panel 1x 80 mm PWM Fan (Pre-Installed) | Top Panel 2x 120 mm PWM Fan (Pre-Installed) | Bottom Panel 1x 120 mm PWM Fan (Pre-Installed), 1x 120 mm Fan (Optional)' on Sharkoon's page. Q-B4 (test drive finding 20). Remove once the shops/makers give this key fansIncluded."
-  }
+  },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.asus.com/displays-desktops/monitors/business/be27aq/techspec/",
+  "date": "2026-11-11",
+  "note": "Asus BE27AQ manufacturer specification states refresh rate 75 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Asus BE27AQ.",
+  "id": "skroutz:66492105"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.asus.com/displays-desktops/monitors/eye-care/va279hae/techspec/",
+  "date": "2026-11-11",
+  "note": "Asus VA279HAE manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Asus VA279HAE.",
+  "id": "skroutz:17236068"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.asus.com/displays-desktops/monitors/eye-care/va27aq/techspec/",
+  "date": "2026-11-11",
+  "note": "Asus VA27AQ manufacturer specification states refresh rate 75 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Asus VA27AQ.",
+  "id": "skroutz:64495259"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.asus.com/displays-desktops/monitors/eye-care/va27dqsb/techspec/",
+  "date": "2026-11-11",
+  "note": "Asus VA27DQSB manufacturer specification states refresh rate 75 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Asus VA27DQSB.",
+  "id": "skroutz:25207569"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.asus.com/displays-desktops/monitors/eye-care/va27ehe/techspec/",
+  "date": "2026-11-11",
+  "note": "Asus VA27EHE manufacturer specification states refresh rate 75 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Asus VA27EHE.",
+  "id": "skroutz:20910203"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.asus.com/displays-desktops/monitors/eye-care/vp278h/techspec/",
+  "date": "2026-11-11",
+  "note": "Asus VP278H manufacturer specification states refresh rate 75 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Asus VP278H.",
+  "id": "skroutz:7770673"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.asus.com/displays-desktops/monitors/all-series/proart-display-pa329crv/techspec/",
+  "date": "2026-11-11",
+  "note": "Asus PA329CRV manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Asus 90LM02C0B01K70.",
+  "id": "snif:41893117"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.asus.com/displays-desktops/monitors/all-series/proart-display-pa147cdv/techspec/",
+  "date": "2026-11-11",
+  "note": "Asus PA147CDV manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Asus PA147CDV.",
+  "id": "skroutz:40278217"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.asus.com/displays-desktops/monitors/all-series/proart-display-pa32ucr-k/techspec/",
+  "date": "2026-11-11",
+  "note": "Asus PA32UCR-K manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Asus PA32UCRK.",
+  "id": "skroutz:36564904"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.asus.com/displays-desktops/monitors/all-series/proart-display-pa32ucxr/techspec/",
+  "date": "2026-11-11",
+  "note": "Asus PA32UCXR manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Asus PA32UCXR.",
+  "id": "skroutz:51615768"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://psref.lenovo.com/syspool/Sys/PDF/Lenovo_Monitors/Lenovo_C24_40/Lenovo_C24_40_Spec.html",
+  "date": "2026-11-11",
+  "note": "Lenovo C2440 manufacturer specification states refresh rate 75 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Lenovo C2440.",
+  "id": "skroutz:47466933"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://psref.lenovo.com/syspool/Sys/PDF/Lenovo_Monitors/Lenovo_D24_40/Lenovo_D24_40_Spec.html",
+  "date": "2026-11-11",
+  "note": "Lenovo D2440 manufacturer specification states refresh rate 75 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Lenovo D2440.",
+  "id": "skroutz:40877244"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://psref.lenovo.com/syspool/Sys/PDF/Lenovo_Monitors/Lenovo_D27_40/Lenovo_D27_40_Spec.html",
+  "date": "2026-11-11",
+  "note": "Lenovo D2740 manufacturer specification states refresh rate 75 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Lenovo D2740.",
+  "id": "skroutz:41225535"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://psref.lenovo.com/syspool/Sys/PDF/Lenovo_Monitors/Lenovo_D27_45/Lenovo_D27_45_Spec.html",
+  "date": "2026-11-11",
+  "note": "Lenovo D2745 manufacturer specification states refresh rate 75 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Lenovo D2745.",
+  "id": "skroutz:42488486"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://psref.lenovo.com/syspool/Sys/PDF/ThinkVision/ThinkVision_E27q_20/ThinkVision_E27q_20_Spec.html",
+  "date": "2026-11-11",
+  "note": "Lenovo E27Q20 manufacturer specification states refresh rate 75 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Lenovo E27Q20.",
+  "id": "skroutz:31409784"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://psref.lenovo.com/syspool/Sys/PDF/Lenovo_Monitors/Lenovo_L15/Lenovo_L15_Spec.html",
+  "date": "2026-11-11",
+  "note": "Lenovo L15 manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Lenovo L15.",
+  "id": "skroutz:40766213"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://psref.lenovo.com/syspool/Sys/PDF/ThinkVision/ThinkVision_P27u_20/ThinkVision_P27u_20_Spec.html",
+  "date": "2026-11-11",
+  "note": "Lenovo 62CBRAT6EU manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Lenovo 62CBRAT6EU.",
+  "id": "snif:30229690"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://psref.lenovo.com/syspool/Sys/PDF/ThinkVision/ThinkVision_P40w_20/ThinkVision_P40w_20_Spec.html",
+  "date": "2026-11-11",
+  "note": "Lenovo 62DDGAT6EU manufacturer specification states refresh rate 75 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model Lenovo 62DDGAT6EU.",
+  "id": "snif:40204901"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.benq.com/en-us/monitor/creative-pro/pd2706u/spec.html",
+  "date": "2026-11-11",
+  "note": "BenQ PD2706U manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model BenQ 9HLLJLBQEE.",
+  "id": "snif:43288192"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.benq.com/en-us/monitor/home/ma270u/spec.html",
+  "date": "2026-11-11",
+  "note": "BenQ MA270U manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model BenQ 9HLMWLBQBE.",
+  "id": "snif:39761738"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.benq.com/en-us/monitor/home/ma320u/spec.html",
+  "date": "2026-11-11",
+  "note": "BenQ MA320U manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model BenQ 9HLMXLBQBE.",
+  "id": "snif:40209703"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.benq.com/en-us/monitor/home/ma320up/spec.html",
+  "date": "2026-11-11",
+  "note": "BenQ MA320UP manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model BenQ 9HLP9LBQBE.",
+  "id": "snif:43298164"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.benq.com/en-us/monitor/home/ew3280u/spec.html",
+  "date": "2026-11-11",
+  "note": "BenQ EW3280U manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model BenQ EW3280U.",
+  "id": "skroutz:22158098"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.benq.com/en-us/monitor/creative-pro/pd3420q/spec.html",
+  "date": "2026-11-11",
+  "note": "BenQ PD3420Q manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model BenQ PD3420Q.",
+  "id": "skroutz:25086843"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.benq.com/en-us/monitor/programming/rd240q/spec.html",
+  "date": "2026-11-11",
+  "note": "BenQ RD240Q manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model BenQ RD240Q.",
+  "id": "skroutz:54788569"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.benq.com/en-us/monitor/programming/rd280u/spec.html",
+  "date": "2026-11-11",
+  "note": "BenQ RD280U manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model BenQ RD280U.",
+  "id": "skroutz:55702235"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.benq.com/en-us/monitor/programming/rd280u/spec.html",
+  "date": "2026-11-11",
+  "note": "BenQ RD280U manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model BenQ RD280U.",
+  "id": "skroutz:57042864"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.benq.com/en-us/monitor/creative-pro/sw242q/spec.html",
+  "date": "2026-11-11",
+  "note": "BenQ SW242Q manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model BenQ SW242Q.",
+  "id": "skroutz:55840117"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.benq.com/en-us/monitor/creative-pro/sw271c/spec.html",
+  "date": "2026-11-11",
+  "note": "BenQ SW271C manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model BenQ SW271C.",
+  "id": "skroutz:28719653"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.viewsonic.com/global/products/lcd/ID2456",
+  "date": "2026-11-11",
+  "note": "ViewSonic ID2456 manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model ViewSonic ID2456.",
+  "id": "skroutz:57697756"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.viewsonic.com/global/products/lcd/TD2223",
+  "date": "2026-11-11",
+  "note": "ViewSonic TD2223 manufacturer specification states refresh rate 75 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model ViewSonic TD2223 VA.",
+  "id": "skroutz:27962335"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.viewsonic.com/global/products/lcd/VA2432-MHD",
+  "date": "2026-11-11",
+  "note": "ViewSonic VA2432-MHD manufacturer specification states refresh rate 100 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model ViewSonic VA2432MHD.",
+  "id": "skroutz:30998189"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.viewsonic.com/global/products/lcd/VA2732-H",
+  "date": "2026-11-11",
+  "note": "ViewSonic VA2732-H manufacturer specification states refresh rate 100 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model ViewSonic VA2732H.",
+  "id": "skroutz:25309368"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.viewsonic.com/global/products/lcd/VA3209-MH",
+  "date": "2026-11-11",
+  "note": "ViewSonic VA3209-MH manufacturer specification states refresh rate 75 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model ViewSonic VA3209MH.",
+  "id": "skroutz:39230133"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.viewsonic.com/global/products/lcd/VG2408A-MHD",
+  "date": "2026-11-11",
+  "note": "ViewSonic VG2408A-MHD manufacturer specification states refresh rate 100 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model ViewSonic VG2408AMHD.",
+  "id": "skroutz:50783231"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.viewsonic.com/global/products/lcd/VG2456",
+  "date": "2026-11-11",
+  "note": "ViewSonic VG2456 manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model ViewSonic VG2456.",
+  "id": "skroutz:30098072"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.viewsonic.com/global/products/lcd/VG2719U-4K",
+  "date": "2026-11-11",
+  "note": "ViewSonic VG2719U-4K manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model ViewSonic VG2719U4K.",
+  "id": "skroutz:68638254"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.viewsonic.com/global/products/lcd/VG2756V-2K",
+  "date": "2026-11-11",
+  "note": "ViewSonic VG2756V-2K manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model ViewSonic VG2756V2K.",
+  "id": "skroutz:48212261"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.viewsonic.com/global/products/lcd/VP16-OLED",
+  "date": "2026-11-11",
+  "note": "ViewSonic VP16-OLED manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model ViewSonic VP16.",
+  "id": "skroutz:40674658"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.viewsonic.com/global/products/lcd/VX3276-4K-mhd",
+  "date": "2026-11-11",
+  "note": "ViewSonic VX3276-4K-mhd manufacturer specification states refresh rate 60 Hz. Exact model or part-number title match. Remove once source observations include this rate. Verified listing model ViewSonic VX32764KMHD.",
+  "id": "skroutz:20562232"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.dell.com/support/kbdoc/pt-br/000123953/guia-de-solu%C3%A7%C3%A3o-de-problemas-e-uso-do-monitor-dell-e2220h",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Maximum1920x1080 at60Hz. Exact model match. Remove once source observations include this rate. Verified listing model Dell E2220H.",
+  "id": "skroutz:22017159"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.dell.com/en-gb/shop/accessories/apd/210-BEJO",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Resolution1920x1080 at60Hz. Exact model match. Remove once source observations include this rate. Verified listing model Dell E2423HN.",
+  "id": "skroutz:38412227"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://dl.dell.com/manuals/all-products/esuprt_electronics_accessories/esuprt_electronics_accessories_monitor/esuprt_monitor_p_series/dell-p2421-monitor_user%27s-guide_en-us.pdf",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Maximum preset1920x1200 at60Hz. Exact model match. Remove once source observations include this rate. Verified listing model Dell P2421.",
+  "id": "skroutz:23361409"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.dell.com/en-us/shop/dell-24-monitor-p2423/apd/210-bdkc/monitors-monitor-accessories",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Resolution1920x1200 at60Hz. Exact model match. Remove once source observations include this rate. Verified listing model Dell P2423.",
+  "id": "skroutz:34585949"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.dell.com/en-us/shop/dell-27-monitor-p2723d/apd/210-bdkg/monitors-monitor-accessories",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Resolution2560x1440 at60Hz. Exact model match. Remove once source observations include this rate. Verified listing model Dell P2723D.",
+  "id": "skroutz:34614128"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.dell.com/en-us/shop/dell-34-curved-usb-c-hub-monitor-p3424we/apd/210-bgzq/monitors-monitor-accessories",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Native resolution3440x1440 at60Hz. Exact model match. Remove once source observations include this rate. Verified listing model Dell P3424WE.",
+  "id": "skroutz:45819619"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://dl.dell.com/manuals/all-products/esuprt_electronics_accessories/esuprt_electronics_accessories_monitors/dell-u3419w-monitor_user%27s-guide_en-us.pdf",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Maximum preset3440x1440 at60Hz, manualpage15. Exact model match. Remove once source observations include this rate. Verified listing model Dell U3419W.",
+  "id": "skroutz:15882152"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.dell.com/en-us/shop/Monitors/apd/Dell-UltraSharp-38-Curved-USB-C-Hub-Monitor---U3824DW/u3824dw_withstand/-",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Display resolution/refresh60Hz. Exact model match. Remove once source observations include this rate. Verified listing model Dell U3824DW.",
+  "id": "snif:35189735"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.dell.com/en-us/shop/dell-ultrasharp-27-4k-premiercolor-monitor-up2720q/apd/210-avbp/monitors-monitor-accessories",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Resolution3840x2160 at60Hz. Exact model match. Remove once source observations include this rate. Verified listing model Dell UP2720Q.",
+  "id": "skroutz:22017434"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://psref.lenovo.com/syspool/Sys/PDF/ThinkVision/ThinkVision_E22_30/ThinkVision_E22_30_Spec.pdf",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Refresh Rate75Hz, page2. Exact model match. Remove once source observations include this rate. Verified listing model Lenovo E2230.",
+  "id": "skroutz:53571785"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://psref.lenovo.com/syspool/Sys/PDF/ThinkVision/ThinkVision_P24h_2L_Monitor/ThinkVision_P24h_2L_Monitor_Spec.pdf",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Refresh Rate60Hz, page2. Exact model match. Remove once source observations include this rate. Verified listing model Lenovo P24H2L.",
+  "id": "skroutz:33567598"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://psref.lenovo.com/syspool/Sys/PDF/ThinkVision/ThinkVision_P32pz_30/ThinkVision_P32pz_30_Spec.pdf",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Refresh Rate60Hz, page2. Exact model match. Remove once source observations include this rate. Verified listing model Lenovo P32PZ30.",
+  "id": "skroutz:53043770"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://psref.lenovo.com/Detail/ThinkCentre_TIO/ThinkCentre_TinyInOne_27?M=11JHRAT1EU",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Exact part11JHRAT1EU refresh60Hz. Exact model match. Remove once source observations include this rate. Verified listing model Lenovo 11JHRAT1EU.",
+  "id": "snif:40204389"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.lenovo.com/fr/fr/p/accessories-and-software/monitors/tiny-in-one/12nbgat1eu",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Exact part12NBGAT1EU refresh60Hz. Exact model match. Remove once source observations include this rate. Verified listing model Lenovo 12NBGAT1EU.",
+  "id": "snif:40999471"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://psref.lenovo.com/syspool/Sys/PDF/ThinkCentre/ThinkCentre_TIO24Gen4/ThinkCentre_TIO24Gen4_Spec.pdf",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Native resolution1920x1080 at60Hz. Exact model match. Remove once source observations include this rate. Verified listing model Lenovo TIO24GEN4.",
+  "id": "skroutz:24981421"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 180
+  },
+  "source": "https://storage-asset.msi.com/datasheet/monitor/global/MAG-32C6.pdf",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Refresh Rate180Hz. Exact model match. Remove once source observations include this rate. Verified listing model MSI 32C6.",
+  "id": "skroutz:57399079"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://download-2.msi.com/archive/mnu_exe/monitor/MD272UPSWv1.1_English.pdf",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Refresh Rate60Hz. Exact model match. Remove once source observations include this rate. Verified listing model MSI MD272UPSW.",
+  "id": "skroutz:61023669"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.msi.com/Portable-Monitor/PRO-MP161-E2/Specification",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. PRO MP161E2 panel1920x1080, refresh60Hz. Exact model match. Remove once source observations include this rate. Verified listing model MSI MP161.",
+  "id": "skroutz:51875223"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.msi.com/Portable-Monitor/PRO-MP161-E2/Specification",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. PRO MP161E2 panel1920x1080, refresh60Hz. Exact model match. Remove once source observations include this rate. Verified listing model MSI MP161.",
+  "id": "skroutz:62895818"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://storage-asset.msi.com/specSheet/de/pro-monitors/PRO%20MP273UDE.pdf",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Refresh Rate60Hz. Exact model match. Remove once source observations include this rate. Verified listing model MSI MP273UDE.",
+  "id": "skroutz:60514559"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://storage-asset.msi.com/specSheet/de/pro-monitors/PRO%20MP273UP%20E6.pdf",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Exact PRO MP273UPDEE6 refresh60Hz. Exact model match. Remove once source observations include this rate. Verified listing model MSI MP273UPDE.",
+  "id": "skroutz:69560523"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.asus.com/uk/displays-desktops/monitors/all-series/vp228de/techspec/",
+  "date": "2026-11-11",
+  "note": "Manufacturer specification. Refresh Rate(Max)60Hz. Exact model match. Remove once source observations include this rate. Verified listing model Asus VP228DE.",
+  "id": "skroutz:11625163"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.lg.com/uk/laptops/16mr70/",
+  "date": "2026-11-11",
+  "note": "Manufacturer refresh specification states 60 Hz for this exact monitor model. Remove once source observations include this rate. Verified listing model LG 16MR70.",
+  "id": "skroutz:42893386"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.lg.com/nz/monitors/full-hd-qhd/24bk550y-b/",
+  "date": "2026-11-11",
+  "note": "Manufacturer refresh specification states 75 Hz for this exact monitor model. Remove once source observations include this rate. Verified listing model LG 24BK550YB.",
+  "id": "skroutz:11463986"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.lg.com/uk/monitors/fhd-qhd/24ms550-b/",
+  "date": "2026-11-11",
+  "note": "Manufacturer refresh specification states 100 Hz for this exact monitor model. Remove once source observations include this rate. Verified listing model LG 24MS550.",
+  "id": "skroutz:54717266"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.lg.com/ca_en/monitors/fhd-qhd/27mp500-b/",
+  "date": "2026-11-11",
+  "note": "Manufacturer refresh specification states 75 Hz for this exact monitor model. Remove once source observations include this rate. Verified listing model LG 27MP500B.",
+  "id": "skroutz:28645737"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.lg.com/fr/moniteurs/fhd-qhd/lg-24mp400p-b-moniteur-bureautique/",
+  "date": "2026-11-11",
+  "note": "Manufacturer refresh specification states 75 Hz for this exact monitor model. Remove once source observations include this rate. Verified listing model LG 24MP400PB.",
+  "id": "skroutz:41229742"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://solutions.lg.com/us/computer-monitors/lg-27bu650b-b",
+  "date": "2026-11-11",
+  "note": "Manufacturer refresh specification states 60 Hz for this exact monitor model. Remove once source observations include this rate. Verified listing model LG 27BU650BB.",
+  "id": "skroutz:70528580"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.lg.com/ca_en/monitors/uhd-4k-5k/32un880k-b/",
+  "date": "2026-11-11",
+  "note": "Manufacturer refresh specification states 60 Hz for this exact monitor model. Remove once source observations include this rate. Verified listing model LG 32UN880KBB.",
+  "id": "skroutz:58096279"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.documents.philips.com/assets/20250117/f21bf013ac834aa28e03b268002e7134.pdf",
+  "date": "2026-11-11",
+  "note": "Maximum native resolution 1920x1080 at 75 Hz over HDMI, explicitly includes 221V8L. Fill missing refresh evidence only. Verified listing model Philips 221V8L.",
+  "id": "skroutz:26995592"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.documents.philips.com/assets/20250117/f21bf013ac834aa28e03b268002e7134.pdf",
+  "date": "2026-11-11",
+  "note": "Listing title names 221V8. Manufacturer maximum native resolution 1920x1080 at 75 Hz over HDMI. Fill missing refresh evidence only. Verified listing model Philips PHI221V8.",
+  "id": "snif:39543528"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.documents.philips.com/assets/20230608/aa71dca3315a4ea886eab01b013c5f27.pdf",
+  "date": "2026-11-11",
+  "note": "Maximum native resolution 1920x1080 at 75 Hz over HDMI or DisplayPort. Fill missing refresh evidence only. Verified listing model Philips 222S1AE.",
+  "id": "skroutz:25492997"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.documents.philips.com/assets/20240402/cf42302e063a4a87ae5fb14601027056.pdf",
+  "date": "2026-11-11",
+  "note": "Maximum native resolution 1920x1080 at 75 Hz over HDMI or DisplayPort. Fill missing refresh evidence only. Verified listing model Philips 222S9JML.",
+  "id": "skroutz:59441570"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.documents.philips.com/assets/20230601/984dcee3ac4f451e97bbb01400695059.pdf",
+  "date": "2026-11-11",
+  "note": "Maximum native resolution 1920x1080 at 75 Hz over HDMI. Fill missing refresh evidence only. Verified listing model Philips 241E1SC.",
+  "id": "skroutz:27960990"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.documents.philips.com/assets/20230529/7b293b8613d24f989827b01100bfc3df.pdf",
+  "date": "2026-11-11",
+  "note": "Exact listing title identifies 241V8LA/00. Maximum native resolution 1920x1080 at 75 Hz. Manufacturer panel is VA, conflicting with this shop title. Fill missing refresh evidence only. Verified listing model Philips 241V8LA IPS.",
+  "id": "snif:26512458"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.documents.philips.com/assets/20230529/2bf2f56ec0274037a990b01100f209fd.pdf",
+  "date": "2026-11-11",
+  "note": "Maximum native resolution 1920x1080 at 75 Hz. Fill missing refresh evidence only. Verified listing model Philips 243B1JH.",
+  "id": "skroutz:28921421"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.documents.philips.com/assets/20230613/a8ff4371562b45ecb109b020012e41b3.pdf",
+  "date": "2026-11-11",
+  "note": "Maximum native resolution 1920x1080 at 75 Hz over HDMI or DisplayPort. Fill missing refresh evidence only. Verified listing model Philips 243B9H.",
+  "id": "skroutz:29916777"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.documents.philips.com/assets/20230602/f592fa08e55f4d028f99b015008f96c8.pdf",
+  "date": "2026-11-11",
+  "note": "Maximum native resolution 1920x1080 at 75 Hz over HDMI or DisplayPort. Fill missing refresh evidence only. Verified listing model Philips 243V7QJABF.",
+  "id": "skroutz:13616713"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.documents.philips.com/assets/20230530/1945124c61314f07b5b7b012008eef33.pdf",
+  "date": "2026-11-11",
+  "note": "Maximum native resolution 1920x1080 at 75 Hz. Fill missing refresh evidence only. Verified listing model Philips 24B1U5301H.",
+  "id": "skroutz:48107738"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.documents.philips.com/assets/20230602/babdaeed878b47d084d3b01500c77edc.pdf",
+  "date": "2026-11-11",
+  "note": "Maximum native resolution 1920x1080 at 75 Hz. Fill missing refresh evidence only. Verified listing model Philips 272E1CA.",
+  "id": "skroutz:20200490"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.documents.philips.com/assets/20241018/6168b1899045473488dcb20d01220fba.pdf",
+  "date": "2026-11-11",
+  "note": "Manufacturer states optimum 3840x2160 at 60 Hz and confirms 10-bit native output at 60 Hz over DisplayPort. Fill missing refresh evidence only. Verified listing model Philips 27B1U3900.",
+  "id": "skroutz:58350428"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.documents.philips.com/assets/20230531/7e5d18435222489d8176b013006558af.pdf",
+  "date": "2026-11-11",
+  "note": "Maximum native resolution 3840x2160 at 60 Hz. Fill missing refresh evidence only. Verified listing model Philips 27B1U7903.",
+  "id": "skroutz:42672169"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.documents.philips.com/assets/20240902/38f02728223c4326b18fb1df00bb2bec.pdf",
+  "date": "2026-11-11",
+  "note": "4K /00 variant maximum native resolution 3840x2160 at 60 Hz. The /01 QHD variant is a different resolution. Fill missing refresh evidence only. Verified listing model Philips 27B2U6903.",
+  "id": "skroutz:59715485"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.documents.philips.com/assets/20230601/cf4786631c144584a005b01400c2bfb3.pdf",
+  "date": "2026-11-11",
+  "note": "Maximum native resolution 5120x2160 at 75 Hz through Thunderbolt or DisplayPort. HDMI native mode is limited to 50 Hz. Fill missing refresh evidence only. Verified listing model Philips 40B1U6903CH.",
+  "id": "skroutz:45272429"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.hp.com/emea_middle_east-en/products/monitors/product-details/2102108101",
+  "date": "2026-11-11",
+  "note": "HP identifies 9D9A7A5 as the 524pn PVC-free monitor and states 100 Hz refresh. Remove once automatic source observations include this rate. Verified listing model HP 9D9A7A5ABB.",
+  "id": "bestprice:2164976851"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.hp.com/emea_middle_east-en/products/monitors/product-details/2102108146",
+  "date": "2026-11-11",
+  "note": "HP identifies 9D9A7E9 as the 524pn monitor and states 100 Hz refresh. Remove once automatic source observations include this rate. Verified listing model HP 9D9A7E9ABB.",
+  "id": "bestprice:2164976840"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.hp.com/emea_middle_east-en/products/monitors/product-details/2102221421",
+  "date": "2026-11-11",
+  "note": "HP identifies 9D9L6A9 as the 524pf no-stand monitor and states 100 Hz refresh. Remove once automatic source observations include this rate. Verified listing model HP 9D9L6A9.",
+  "id": "bestprice:2164976821"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.hp.com/emea_middle_east-en/products/monitors/product-details/2102221421",
+  "date": "2026-11-11",
+  "note": "HP identifies 9D9L6A9 as the 524pf no-stand monitor and states 100 Hz refresh. Remove once automatic source observations include this rate. Verified listing model HP 9D9L6A9ABB.",
+  "id": "bestprice:2164976841"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.hp.com/emea_middle_east-en/products/monitors/product-details/2102108152",
+  "date": "2026-11-11",
+  "note": "HP identifies 9D9S0A5 as the 527pq PVC-free monitor and states 100 Hz refresh. Remove once automatic source observations include this rate. Verified listing model HP 9D9S0A5ABB.",
+  "id": "bestprice:2164976838"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.hp.com/emea_middle_east-en/products/monitors/product-details/2102221443",
+  "date": "2026-11-11",
+  "note": "HP identifies 9D9S0A9 as the 527pq no-stand monitor and states 100 Hz refresh. Remove once automatic source observations include this rate. Verified listing model HP 9D9S0A9.",
+  "id": "bestprice:2164976858"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.hp.com/emea_middle_east-en/products/monitors/product-details/2102221443",
+  "date": "2026-11-11",
+  "note": "HP identifies 9D9S0A9 as the 527pq no-stand monitor and states 100 Hz refresh. Remove once automatic source observations include this rate. Verified listing model HP 9D9S0A9ABB.",
+  "id": "bestprice:2164976842"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.hp.com/emea_middle_east-en/products/monitors/product-details/product-specifications/2102108095",
+  "date": "2026-11-11",
+  "note": "HP identifies 9D9V7E9 as the 524pu monitor. Refresh rate (maximum) is 100 Hz. Remove once automatic source observations include this rate. Verified listing model HP 9D9V7E9.",
+  "id": "bestprice:2164976822"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.hp.com/emea_middle_east-en/products/monitors/product-details/product-specifications/2102108095",
+  "date": "2026-11-11",
+  "note": "HP identifies 9D9V7E9 as the 524pu monitor. Refresh rate (maximum) is 100 Hz. Remove once automatic source observations include this rate. Verified listing model HP 9D9V7E9ABB.",
+  "id": "bestprice:2164976839"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.hp.com/emea_middle_east-en/products/monitors/product-details/2102108271",
+  "date": "2026-11-11",
+  "note": "HP identifies 9E0G5E9 as the 527pu monitor and states 100 Hz refresh. Remove once automatic source observations include this rate. Verified listing model HP 9E0G5E9.",
+  "id": "bestprice:2164956562"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.hp.com/emea_middle_east-en/products/monitors/product-details/2102108271",
+  "date": "2026-11-11",
+  "note": "HP identifies 9E0G5E9 as the 527pu monitor and states 100 Hz refresh. Remove once automatic source observations include this rate. Verified listing model HP 9E0G5E9ABB.",
+  "id": "bestprice:2164956574"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.hp.com/emea_middle_east-en/products/monitors/product-details/2102108044",
+  "date": "2026-11-11",
+  "note": "HP identifies 9E0G9E9 as the 524pm monitor. Maximum FHD timing is 100 Hz. Remove once automatic source observations include this rate. Verified listing model HP 9E0G9E9.",
+  "id": "bestprice:2164976823"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.hp.com/emea_middle_east-en/products/monitors/product-details/2102108044",
+  "date": "2026-11-11",
+  "note": "HP identifies 9E0G9E9 as the 524pm monitor. Maximum FHD timing is 100 Hz. Remove once automatic source observations include this rate. Verified listing model HP 9E0G9E9ABB.",
+  "id": "bestprice:2164976820"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.hp.com/ie-en/products/monitors/product-details/product-specifications/2102086063",
+  "date": "2026-11-11",
+  "note": "HP identifies 9E0Y9E9 as the 527pm monitor. Refresh rate (maximum) is 100 Hz. Remove once automatic source observations include this rate. Verified listing model HP 9E0Y9E9ABB.",
+  "id": "bestprice:2164956568"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 120
+  },
+  "source": "https://h20195.www2.hp.com/v2/GetDocument.aspx?docname=c08893145",
+  "date": "2026-11-11",
+  "note": "HP 727pu QuickSpecs list 8J9E6A5 and 8J9E6AT with maximum refresh 120 Hz. Remove once automatic source observations include this rate. Verified listing model HP 8J9E6A5.",
+  "id": "bestprice:2164956563"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 120
+  },
+  "source": "https://h20195.www2.hp.com/v2/GetDocument.aspx?docname=c08893145",
+  "date": "2026-11-11",
+  "note": "HP 727pu QuickSpecs list 8J9E6A5 and 8J9E6AT with maximum refresh 120 Hz. Remove once automatic source observations include this rate. Verified listing model HP 8J9E6A5ABB.",
+  "id": "bestprice:2164956571"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 120
+  },
+  "source": "https://h20195.www2.hp.com/v2/GetDocument.aspx?docname=c08893145",
+  "date": "2026-11-11",
+  "note": "HP 727pu QuickSpecs list 8J9E6A5 and 8J9E6AT with maximum refresh 120 Hz. Remove once automatic source observations include this rate. Verified listing model HP 8J9E6AT.",
+  "id": "bestprice:2164956561"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.hp.com/emea_middle_east-en/products/monitors/product-details/2101983637",
+  "date": "2026-11-11",
+  "note": "HP identifies 8Y2K9E9 as the 732pk monitor and states 60 Hz. Remove once automatic source observations include this rate. Verified listing model HP 8Y2K9E9.",
+  "id": "bestprice:2164956560"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://h20195.www2.hp.com/v2/GetDocument.aspx?docname=c08392793",
+  "date": "2026-11-11",
+  "note": "Listing explicitly names E24 G5. HP E24 G5 QuickSpecs state maximum refresh 75 Hz. Remove once automatic source observations include this rate. Verified listing model HP 6N6E9A5ABB.",
+  "id": "bestprice:2164956565"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://h20195.www2.hp.com/v2/GetDocument.aspx?docname=c06790038",
+  "date": "2026-11-11",
+  "note": "HP E14 G4 QuickSpecs identify 1B065AA and state refresh 60 Hz. Remove once automatic source observations include this rate. Verified listing model HP 1B065AAAC3.",
+  "id": "bestprice:2164956557"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://h20195.www2.hp.com/v2/GetDocument.aspx?docname=c06790038",
+  "date": "2026-11-11",
+  "note": "HP E14 G4 QuickSpecs identify 1B065AA and state refresh 60 Hz. Remove once automatic source observations include this rate. Verified listing model HP E14.",
+  "id": "bestprice:2156852258"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://h20195.www2.hp.com/v2/GetDocument.aspx?docname=c06790038",
+  "date": "2026-11-11",
+  "note": "HP E14 G4 QuickSpecs identify 1B065AA and state refresh 60 Hz. Remove once automatic source observations include this rate. Verified listing model HP E14.",
+  "id": "skroutz:29934222"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://h20195.www2.hp.com/v2/GetDocument.aspx?docname=c08310351",
+  "date": "2026-11-11",
+  "note": "Listing explicitly names P32u G5. Its HP QuickSpecs state maximum refresh 75 Hz. Remove once automatic source observations include this rate. Verified listing model HP P32U.",
+  "id": "skroutz:40939630"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://h20195.www2.hp.com/v2/GetDocument.aspx?docname=c06922716",
+  "date": "2026-11-11",
+  "note": "Listing explicitly names E24i G4. Its HP QuickSpecs state maximum resolution 1920x1200 at 60 Hz. Remove once automatic source observations include this rate. Verified listing model HP E24I.",
+  "id": "skroutz:26339594"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://h20195.www2.hp.com/v2/GetDocument.aspx?docname=c08262307",
+  "date": "2026-11-11",
+  "note": "Listing explicitly names P24v G5. HP states maximum refresh 75 Hz via digital inputs, 60 Hz via VGA. Remove once automatic source observations include this rate. Verified listing model HP P24V VA.",
+  "id": "skroutz:42600590"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://h20195.www2.hp.com/v2/GetDocument.aspx?docname=c08310350",
+  "date": "2026-11-11",
+  "note": "Listing explicitly names P27h G5. HP states maximum refresh 75 Hz via digital inputs, 60 Hz via VGA. Remove once automatic source observations include this rate. Verified listing model HP P27H.",
+  "id": "skroutz:53962627"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://h20195.www2.hp.com/v2/GetDocument.aspx?docname=c06973545",
+  "date": "2026-11-11",
+  "note": "HP P34hc G4 QuickSpecs identify 21Y56AA and state a 48-100 Hz refresh rate. Remove once automatic source observations include this rate. Verified listing model HP 21Y56AA.",
+  "id": "snif:29817188"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://news.samsung.com/ca/samsung-electronics-unveils-new-odyssey-oled-smart-monitor-and-viewfinity-lineups-with-integrated-2024-launch",
+  "date": "2026-11-11",
+  "note": "Samsung official launch specification table lists M50D 27/32 inch, M70D 32/43 inch and M80D 32 inch at 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung M50D.",
+  "id": "skroutz:54157682"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://news.samsung.com/ca/samsung-electronics-unveils-new-odyssey-oled-smart-monitor-and-viewfinity-lineups-with-integrated-2024-launch",
+  "date": "2026-11-11",
+  "note": "Samsung official launch specification table lists M50D 27/32 inch, M70D 32/43 inch and M80D 32 inch at 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung M70D.",
+  "id": "skroutz:63317858"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://news.samsung.com/ca/samsung-electronics-unveils-new-odyssey-oled-smart-monitor-and-viewfinity-lineups-with-integrated-2024-launch",
+  "date": "2026-11-11",
+  "note": "Samsung official launch specification table lists M50D 27/32 inch, M70D 32/43 inch and M80D 32 inch at 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung M80D.",
+  "id": "skroutz:54157869"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://news.samsung.com/ca/samsung-electronics-unveils-new-odyssey-oled-smart-monitor-and-viewfinity-lineups-with-integrated-2024-launch",
+  "date": "2026-11-11",
+  "note": "Samsung official launch table lists the exact S70D, S80D and S80UD 27/32 inch monitor variants at 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung S70D 27\" IPS.",
+  "id": "skroutz:54993626"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://news.samsung.com/ca/samsung-electronics-unveils-new-odyssey-oled-smart-monitor-and-viewfinity-lineups-with-integrated-2024-launch",
+  "date": "2026-11-11",
+  "note": "Samsung official launch table lists the exact S70D, S80D and S80UD 27/32 inch monitor variants at 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung S80D 27\" IPS.",
+  "id": "skroutz:54993684"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://news.samsung.com/ca/samsung-electronics-unveils-new-odyssey-oled-smart-monitor-and-viewfinity-lineups-with-integrated-2024-launch",
+  "date": "2026-11-11",
+  "note": "Samsung official launch table lists the exact S70D, S80D and S80UD 27/32 inch monitor variants at 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung S80D 32\" VA.",
+  "id": "skroutz:56364077"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://news.samsung.com/ca/samsung-electronics-unveils-new-odyssey-oled-smart-monitor-and-viewfinity-lineups-with-integrated-2024-launch",
+  "date": "2026-11-11",
+  "note": "Samsung official launch table lists the exact S70D, S80D and S80UD 27/32 inch monitor variants at 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung S80UD 27\" IPS.",
+  "id": "skroutz:54659639"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://news.samsung.com/ca/samsung-electronics-unveils-new-odyssey-oled-smart-monitor-and-viewfinity-lineups-with-integrated-2024-launch",
+  "date": "2026-11-11",
+  "note": "Samsung official launch table lists the exact S70D, S80D and S80UD 27/32 inch monitor variants at 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung S80UD 32\" VA.",
+  "id": "skroutz:54351018"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://images.samsung.com/is/content/samsung/assets/global/p6-b2b/gro1/ds-com/display-solutions/samsung-logitech-video-conferencing-solution/samsung-and-logitech-video-collaboration-solutions-brochure-web.pdf",
+  "date": "2026-11-11",
+  "note": "Samsung specification table lists M50A 27 and 32 inch monitors at 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung M50A.",
+  "id": "skroutz:28519626"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.samsung.com/uk/monitors/smart/smart-monitor-m8-32-inch-smart-tv-apps-4k-uhd-ls32fm801uuxxu/",
+  "date": "2026-11-11",
+  "note": "Samsung M80F 32 inch specification states maximum refresh 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung M80F.",
+  "id": "skroutz:61435771"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://images.samsung.com/is/content/samsung/assets/sg/offer/monitor-promotion/220701/MonitorBrochure_Jul-Sep_2022.pdf",
+  "date": "2026-11-11",
+  "note": "Samsung catalogue lists S24A600U, S27A600U and S32A600U at 75 Hz with their matching sizes and panels. Remove once automatic source observations include this rate. Verified listing model Samsung S24A600U.",
+  "id": "skroutz:29027303"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://images.samsung.com/is/content/samsung/assets/sg/offer/monitor-promotion/220701/MonitorBrochure_Jul-Sep_2022.pdf",
+  "date": "2026-11-11",
+  "note": "Samsung catalogue lists S24A600U, S27A600U and S32A600U at 75 Hz with their matching sizes and panels. Remove once automatic source observations include this rate. Verified listing model Samsung S27A600UUU.",
+  "id": "skroutz:29920883"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://images.samsung.com/is/content/samsung/assets/sg/offer/monitor-promotion/220701/MonitorBrochure_Jul-Sep_2022.pdf",
+  "date": "2026-11-11",
+  "note": "Samsung catalogue lists S24A600U, S27A600U and S32A600U at 75 Hz with their matching sizes and panels. Remove once automatic source observations include this rate. Verified listing model Samsung S32A600UUU.",
+  "id": "skroutz:29630645"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://images.samsung.com/is/content/samsung/assets/sg/offer/monitor-promotion/220701/MonitorBrochure_Jul-Sep_2022.pdf",
+  "date": "2026-11-11",
+  "note": "Samsung catalogue lists the S27BM501 27 inch monitor at 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung S27BM501EU.",
+  "id": "skroutz:35842072"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.samsung.com/au/monitors/flat/essential-monitor-s3-24-inch-borderless-design-ips-panel-fhd-freesync-ls24c310eaexxy/",
+  "date": "2026-11-11",
+  "note": "Samsung S24C310 24 inch IPS specification states maximum refresh 75 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung S24C310EAU.",
+  "id": "skroutz:41200197"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.samsung.com/sg/monitors/high-resolution/s80pb-27-27-inch-ips-uhd-hdr-ls27b800pxuxxs/",
+  "date": "2026-11-11",
+  "note": "Samsung S27B800PXU 27 inch specification states maximum refresh 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung S27B800PXU.",
+  "id": "skroutz:37538832"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 100
+  },
+  "source": "https://www.samsung.com/de/business/monitors/high-resolution/viewfinity-s6-24-inch-qhd-100hz-easysetupstand-ls24d604uauxen/",
+  "date": "2026-11-11",
+  "note": "Samsung explicitly identifies S24D604UAU as the 24 inch QHD 100 Hz S60UD monitor. Remove once automatic source observations include this rate. Verified listing model Samsung S24D604UAU.",
+  "id": "skroutz:59329765"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.samsung.com/au/monitors/viewfinity-high-resolution-monitor/",
+  "date": "2026-11-11",
+  "note": "Samsung comparison table lists the 37 inch S80D monitor at 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung S80D 37\" VA.",
+  "id": "skroutz:60758421"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.samsung.com/fr/monitors/smart/smart-monitor-m5-27-inch-smart-tv-apps-ls27fm500euxen/",
+  "date": "2026-11-11",
+  "note": "Samsung S27FM500EU 27 inch IPS FHD monitor specification states maximum refresh 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung LS27FM500EUXDU.",
+  "id": "snif:42833928"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.samsung.com/fr/monitors/smart/smart-monitor-m5-27-inch-smart-tv-apps-ls27fm500euxen/",
+  "date": "2026-11-11",
+  "note": "Samsung S27FM500EU 27 inch IPS FHD monitor specification states maximum refresh 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung LS27FM500EUXEN.",
+  "id": "skroutz:63698884"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.samsung.com/fr/monitors/smart/smart-monitor-m5-32-inch-smart-tv-apps-ls32fm500euxen/",
+  "date": "2026-11-11",
+  "note": "Samsung S32FM500EU 32 inch VA FHD monitor specification states maximum refresh 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung LS32FM500EUXDU.",
+  "id": "snif:42833917"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.samsung.com/sg/monitors/smart/smart-monitor-m5-27-inch-smart-tv-apps-ls27fm501eexxs/",
+  "date": "2026-11-11",
+  "note": "Samsung M50F 27 inch white IPS FHD monitor specification states maximum refresh 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung LS27FM501EUXDU.",
+  "id": "snif:42833912"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.samsung.com/sg/business/monitors/smart/smart-monitor-m5-32-inch-smart-tv-apps-ls32fm501eexxs/",
+  "date": "2026-11-11",
+  "note": "Samsung M50F 32 inch white VA FHD monitor specification states maximum refresh 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung LS32FM501EUXDU.",
+  "id": "snif:42326058"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.samsung.com/ca/monitors/curved/fhd-curved-monitor-with-bezel-less-design-32-inch-lc32r500fhnxza/",
+  "date": "2026-11-11",
+  "note": "Samsung CR50 32 inch FHD monitor specification states maximum refresh 75 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung CR50.",
+  "id": "skroutz:40780016"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.samsung.com/us/business/support/owners/product/s31a-series-s24a310nhn/",
+  "date": "2026-11-11",
+  "note": "Samsung S31A 24 inch monitor specification states refresh 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung S31A.",
+  "id": "skroutz:26855661"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://www.samsung.com/africa_en/business/monitors/flat/27-s31c-full-hd-monitor-ls27c310eaaxxa/",
+  "date": "2026-11-11",
+  "note": "Samsung S31C 27 inch IPS monitor specification states maximum refresh 75 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung S31C.",
+  "id": "skroutz:40960625"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 75
+  },
+  "source": "https://image-us.samsung.com/SamsungUS/samsungbusiness/pdfs/spec-sheet/F24T450FZN-F27T450FZN-Datasheet.pdf",
+  "date": "2026-11-11",
+  "note": "Samsung T45F specification table lists the 27 inch F27T450FZN at 75 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung T45F.",
+  "id": "skroutz:33701959"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.samsung.com/uk/monitors/high-resolution/uj59-32-inch-uhd-4k-lu32j590uqpxxu/",
+  "date": "2026-11-11",
+  "note": "Samsung U32J590 31.5 inch UHD monitor specification states maximum refresh 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung U32J590.",
+  "id": "skroutz:17428072"
+ },
+ {
+  "cat": "monitor",
+  "set": {
+   "pgHz": 60
+  },
+  "source": "https://www.samsung.com/uk/monitors/high-resolution/uj59-32-inch-uhd-4k-lu32j590uqpxxu/",
+  "date": "2026-11-11",
+  "note": "Samsung U32J590 31.5 inch UHD monitor specification states maximum refresh 60 Hz. Remove once automatic source observations include this rate. Verified listing model Samsung U32J590U.",
+  "id": "skroutz:41032846"
+ }
  ]
 }

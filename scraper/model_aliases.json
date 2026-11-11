@@ -815,8 +815,29 @@
   "westerndigitalultrastarsn6501536tbssd": "westerndigitalultrastarsn6501536tbu2ssd"
  },
  "monitor": {
+  "BenQ RD280U": "BenQ RD280U #2",
+  "BenQ RD280U 60Hz": "BenQ RD280U #1",
+  "BenQ SW242Q": "BenQ SW242Q #2",
+  "BenQ SW242Q 60Hz": "BenQ SW242Q #1",
+  "Dell 3YEARSW 27\"": "Dell P2725D",
+  "Dell U3824DW": "Dell U3824DW #2",
+  "Dell U3824DW 60Hz": "Dell U3824DW #1",
+  "HP P24V VA": "HP P24V VA 75Hz",
+  "Lenovo 32Q10": "Lenovo 32Q10 VA 180Hz",
+  "Lenovo 3YEAR": "Lenovo GEN5",
+  "Lenovo 3YEARSW 22\" IPS": "Lenovo L224E",
+  "Lenovo 3YEARSW 27\" OLED": "Lenovo 27UD10 240Hz",
+  "Lenovo 3YEARSW 32\" IPS": "Lenovo 32Q10 IPS",
+  "Lenovo 3YEARSW 34\" VA": "Lenovo L34W4C",
   "Lenovo E2440 24\" IPS": "Lenovo E2440",
   "Lenovo E2440 40\"": "Lenovo E2440",
-  "Lenovo T2440 24\" 120Hz": "Lenovo T2440"
+  "Lenovo T2440 24\" 120Hz": "Lenovo T2440",
+  "Philips 241V8LA VA 75Hz": "Philips 241V8LA VA",
+  "Philips 27B1U3900": "Philips 27B1U3900 #2",
+  "Philips 27B1U3900 60Hz": "Philips 27B1U3900 #1",
+  "Samsung S70D 32\" VA 60Hz": "Samsung S70D 32\" VA",
+  "Samsung S70D 37\" VA 60Hz": "Samsung S70D 37\" VA",
+  "Samsung S80UD 37\" VA 60Hz": "Samsung S80UD 37\" VA",
+  "ViewSonic TD2223 TN 75Hz": "ViewSonic TD2223 TN"
  }
 }
