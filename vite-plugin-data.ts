@@ -12,9 +12,10 @@
 // - `vite` (dev): serves the same files from memory, re-derived when the scraper's files change.
 
 import { sitemaps } from './src/lib/sitemap';
-import { existsSync, readdirSync, readFileSync, rmdirSync, rmSync, statSync } from 'node:fs';
+import { staticPages } from './src/lib/staticPages';
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import type { Plugin } from 'vite';
 import type { Category, History, Imported, Latest, Manifest, ModelChunk } from './src/types';
 import { CATEGORIES, CATEGORY_IDS } from './src/lib/categories';
@@ -206,6 +207,7 @@ export default function dataFiles(): Plugin {
   let outDir = 'dist';
   let building = false;
   let generated = new Set<string>(); // the data/ paths this build emits (generateBundle)
+  let built: ReturnType<typeof derive>['models'] | null = null; // the models of this build, for the per-address pages
   let devImages: ImageLookup | undefined;
   // Dev: re-derive when any scraper file changed (its modification times are the cache key).
   const devFiles = () => {
@@ -230,6 +232,14 @@ export default function dataFiles(): Plugin {
     closeBundle() {
       if (!building || this.meta?.watchMode || generated.size === 0) return; // also called when dev/preview shut down
       console.log(`[data] raw scraper files left out of the build: ${pruneRawData(outDir, generated)} files`);
+      if (!built) return;
+      // Written here, not emitted: index.html exists only once the bundle is on disk.
+      const pages = staticPages(readFileSync(join(outDir, 'index.html'), 'utf8'), built);
+      for (const [file, html] of Object.entries(pages)) {
+        mkdirSync(dirname(join(outDir, file)), { recursive: true });
+        writeFileSync(join(outDir, file), html);
+      }
+      console.log(`[data] per-address pages: ${Object.keys(pages).length} files`);
     },
     async configureServer(server) {
       devImages = (await imageLookup()).lookup;
@@ -246,6 +256,7 @@ export default function dataFiles(): Plugin {
       const images = await imageLookup();
       this.info(`product photos: ${images.count} in the images index`);
       const { files, manifest: next, models } = derive(builtAt, images.lookup);
+      built = models;
       // Deliberate overrides for planned data changes (e.g. merging duplicate products): the
       // problems are still listed in the build log, then published anyway.
       const override =

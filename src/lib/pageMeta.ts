@@ -62,9 +62,12 @@ function setHead(selector: string, make: () => HTMLElement, attr: string, value:
   el.setAttribute(attr, value);
 }
 
-/** Writes the meta into the document head; `ld` (a model page) adds the JSON-LD script, anything else removes it. */
-export function applyMeta(meta: Meta, ld?: object) {
+/** Writes the meta into the document head; `ld` (a model page) adds the JSON-LD script, anything else removes it; `noindex` marks a gone product. */
+export function applyMeta(meta: Meta, ld?: object, noindex = false) {
   document.title = meta.title;
+  // A product that is no longer sold answers HTTP 200 on static hosting: tell crawlers not to keep the address.
+  document.head.querySelector('meta[name="robots"]')?.remove();
+  if (noindex) document.head.appendChild(Object.assign(document.createElement('meta'), { name: 'robots', content: 'noindex' }));
   setHead('meta[name="description"]', () => Object.assign(document.createElement('meta'), { name: 'description' }), 'content', meta.description);
   setHead('link[rel="canonical"]', () => Object.assign(document.createElement('link'), { rel: 'canonical' }), 'href', meta.canonical);
   document.head.querySelector('script[data-jsonld]')?.remove();

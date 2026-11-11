@@ -71,9 +71,10 @@ export default function ModelPage({ cat, slug }: { cat: Category; slug: string }
   // the gone / error states, the category's.
   const name = mine && 'res' in mine && mine.res.kind === 'ok' ? (selection && resolveProductSelection(mine.res.entry.listings, selection)?.title) || mine.res.entry.chip : null;
   const listings = mine && 'res' in mine && mine.res.kind === 'ok' ? mine.res.entry.listings : null;
+  const gone = !!mine && 'res' in mine && mine.res.kind === 'gone';
   useEffect(() => {
     if (!name || !listings?.length) {
-      applyMeta(pageMeta(`/${cat}`, lang)); // until the model is known, and on the gone / error states, the category's
+      applyMeta(pageMeta(`/${cat}`, lang), undefined, gone); // until the model is known, and on the gone / error states, the category's
       return;
     }
     const prices = listings.map((l) => l.price);
@@ -81,7 +82,7 @@ export default function ModelPage({ cat, slug }: { cat: Category; slug: string }
     const meta = pageMeta(`/${cat}/${slug}`, lang, data);
     applyMeta(meta, productJsonLd(meta, data));
     return () => document.head.querySelector('script[data-jsonld]')?.remove();
-  }, [name, listings, cat, slug, lang]);
+  }, [name, listings, cat, slug, lang, gone]);
 
   if (!mine) return <SkeletonRows />;
   if ('error' in mine) {
