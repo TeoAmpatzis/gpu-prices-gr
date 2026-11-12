@@ -35,7 +35,7 @@ export const BUILDER: Section = { name: 'PC Builder', icon: Wrench, words: ['bui
 const ALL_GROUPS: { title: Text; cats: Category[] }[] = [
   { title: { el: 'Βασικά', en: 'Core parts' }, cats: ['cpu', 'mobo', 'ram', 'gpu', 'storage'] },
   { title: { el: 'Κουτί, ρεύμα και ψύξη', en: 'Case, power and cooling' }, cats: ['case', 'psu', 'cooler', 'fan'] },
-  { title: { el: 'Περιφερειακά', en: 'Peripherals' }, cats: ['monitor'] },
+  { title: { el: 'Περιφερειακά', en: 'Peripherals' }, cats: ['monitor', 'mouse'] },
 ];
 /** Menu groups of the published categories only: a hidden one (registry `visible: false`) is in no menu. */
 export const GROUPS = ALL_GROUPS.map((g) => ({ ...g, cats: g.cats.filter((c) => REGISTRY[c].visible) })).filter((g) => g.cats.length > 0);

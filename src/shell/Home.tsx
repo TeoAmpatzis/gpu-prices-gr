@@ -6,7 +6,7 @@ import type { Category } from '../types';
 import { Button, LinkButton } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { SearchBox, type SearchSetup } from '../ui/SearchBox';
-import { CATS } from './nav';
+import { CATS, PERIPHERAL_CATS } from './nav';
 import { useSite } from './site';
 import { SOURCES, SOURCE_NAMES } from '../lib/sources';
 import { formatPrice, shortAgo } from '../lib/format';
@@ -18,8 +18,8 @@ import './home.css';
 const HomeSections = lazy(() => import('./HomeSections'));
 const POPULAR = ['RTX 5070', 'Ryzen 7 9700X', '990 Pro 1TB', 'DDR5 6000 32GB'];
 const HOME_CATEGORIES: Category[] = ['cpu', 'mobo', 'ram', 'gpu', 'storage', 'case', 'psu', 'cooler', 'fan'];
-/** Published things you plug in (monitors): their own section, they are not PC parts. */
-const HOME_PERIPHERALS: Category[] = (['monitor'] as Category[]).filter((c) => CATEGORY_LIST.includes(c));
+/** Published things you plug in (monitors, mice), in the menu's order: their own section, they are not PC parts. */
+const HOME_PERIPHERALS: Category[] = PERIPHERAL_CATS;
 const HOME_SOURCES = ['skroutz', 'bestprice', 'shopflix', 'snif', 'eshop'] as const;
 
 /** Match the settled grid at every breakpoint while the post-paint feed or its view chunk loads. */
