@@ -17,18 +17,18 @@ describe('category registry', () => {
     expect(photoId('mouse', 'logitechm171wireless')).toBe('9656df6b22f8');
   });
 
-  it('keeps the mouse scaffold disabled, unpublished and outside the PC builder', () => {
+  it('publishes mice as a peripheral (2026-11-12) and keeps them outside the PC builder', () => {
     const mouse = 'mouse' as Category;
-    expect(REGISTRY).toHaveProperty('mouse', { domain: 'peripherals', enabled: false, visible: false });
+    expect(REGISTRY).toHaveProperty('mouse', { domain: 'peripherals', enabled: true, visible: true });
     expect(slotOf(mouse)).toBeNull();
     expect(SLOTS).not.toContain(mouse);
     expect(SLOT_OF).not.toHaveProperty(mouse);
-    expect(CATEGORY_IDS).not.toContain(mouse);
-    expect(CATEGORY_LIST).toEqual(['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler', 'monitor']);
-    expect(GROUPS.flatMap((group) => group.cats)).not.toContain(mouse);
-    expect(matchRoute('/mouse')).toEqual({ kind: 'notFound' });
-    expect(matchRoute('/mouse/logitech-m171')).toEqual({ kind: 'notFound' });
-    expect(isComparable(mouse)).toBe(false);
+    expect(CATEGORY_IDS).toContain(mouse);
+    expect(CATEGORY_LIST).toEqual(['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler', 'monitor', 'mouse']);
+    expect(GROUPS.at(-1)!.cats).toEqual(['monitor', 'mouse']);
+    expect(matchRoute('/mouse')).not.toEqual({ kind: 'notFound' });
+    expect(matchRoute('/mouse/logitech-m171')).not.toEqual({ kind: 'notFound' });
+    expect(isComparable(mouse)).toBe(true);
   });
 
   it('lists the same categories as the site config', () => {
