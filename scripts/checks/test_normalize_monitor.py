@@ -25,6 +25,10 @@ class ParseTests(unittest.TestCase):
                 self.assertEqual(p(f'Lenovo Monitor L24-4e 23.8" FHD IPS {warranty}').code, 'L244E')
         self.assertEqual(p('Dell Monitor Pro P P2426H 23.8" FHD 3YearsW').code, 'P2426H')
 
+    def test_response_time_word_never_names_a_monitor(self):  # Shopflix, observed 2026-11-12
+        title = 'LG UltraGear G4 IPS HDR Gaming Οθόνη Υπολογιστή 27" FHD 1920x1080 144Hz 5ms GTG'
+        self.assertNotIn('GTG', nm._name_code(title, 'LG') or '')
+
     def test_four_digit_refresh_is_complete_and_bounded(self):
         self.assertEqual(p('LG 25G590B-B 24.5" FHD 1000Hz').hz, 1000)
         for token in ('10000Hz', '59.94Hz', '59,94Hz', '165HzModel'):
@@ -423,13 +427,14 @@ class CategoryTests(unittest.TestCase):
         from categories import CATEGORIES
         c = CATEGORIES["monitor"]
         self.assertTrue(c.rejects and c.images)
-        self.assertEqual((c.eshop_categories, c.shopflix_categories), ((), ()))  # not monitor sources (Phase 0: O5, O6)
+        self.assertEqual((len(c.eshop_categories), len(c.shopflix_categories)), (1, 1))  # all five sources (owner 2026-11-12)
         for op in (capabilities.SPECS, capabilities.SHIPPING, capabilities.HISTORY):
             self.assertFalse(capabilities.supports("skroutz", "monitor", op))
         self.assertTrue(capabilities.supports("skroutz", "monitor", capabilities.LISTS))
         self.assertTrue(capabilities.supports("skroutz", "gpu", capabilities.HISTORY))  # nine categories unchanged
-        for source in ("eshop", "shopflix"):  # not monitor sources: not run, never reported as failed
-            self.assertFalse(capabilities.supports(source, "monitor", capabilities.LISTS))
+        for source in ("eshop", "shopflix"):  # lists only, like Skroutz
+            self.assertTrue(capabilities.supports(source, "monitor", capabilities.LISTS))
+            self.assertFalse(capabilities.supports(source, "monitor", capabilities.SHIPPING))
             self.assertTrue(capabilities.supports(source, "gpu", capabilities.LISTS))
 
 

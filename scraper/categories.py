@@ -208,7 +208,10 @@ CATEGORIES = {
     ),
     "monitor": Category(
         name="monitor",
-        # Skroutz: lists only (capabilities.py). e-shop and Shopflix are not monitor sources (Phase 0: O5, O6).
+        # Lists only from Skroutz, e-shop.gr and Shopflix (capabilities.py).
+        # Trial 2026-11-12: e-shop 455 products on 46 pages, Shopflix 2,298.
+        eshop_categories=(("ypologistes-othones-list", "ΟΘΟΝΗ"),),
+        shopflix_categories=("Οθόνες Υπολογιστών*:::*/c/1059/othones-ypologiston",),
         skroutz_paths=("/c/43/othones-upologiston.html",),
         # ~2,500 products against BestPrice's 800 per list: sliced by price (cents); 159 pages, none over 30.
         bestprice_paths=tuple(
@@ -231,6 +234,9 @@ CATEGORIES = {
         skroutz_paths=("/c/1865/gaming_pontikia.html", "/c/69/mice.html"),
         skroutz_tags=({"gaming": True}, {"gaming": False}),
         snif_categories=("1919852",),
+        # Trial 2026-11-12: e-shop 636 products on 64 pages (its one list holds gaming and plain mice), Shopflix 4,036.
+        eshop_categories=(("ypologistes-pontikia-list", "ΠΟΝΤΙΚΙΑ"),),
+        shopflix_categories=("Ποντίκια*:::*/c/4764/pontikia", "Gaming Ποντίκια*:::*/c/3253/gaming-pontikia"),
         # Measured 2026-11-11: 176 pages, at most 45 per slice (docs/peripherals/MOUSE_DATA_REVIEW.md).
         bestprice_paths=tuple(f"/cat/2569/pontikia.html?{q}" for q in (
             "max=499", "min=500&max=699", "min=700&max=999", "min=1000&max=1999",

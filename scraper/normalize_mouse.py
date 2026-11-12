@@ -182,6 +182,11 @@ def _identity(title: str) -> tuple[str, str, str | None, str | None]:
     if not makers or (len(brands) > 1 and makers[0].start()):
         return 'Other', '', None, None
     brand = BRAND_NAMES[makers[0].group().casefold()]
+    # e-shop.gr: "RAZER VIPER V3 HYPERSPEED - WIRELESS GAMING MOUSE - 30K DPI - 280H BATTERY": the name ends at the
+    # first spaced dash whose tail is the description.
+    text = re.sub(r"\s+-\s*(?=.*\b(?:mouse|\d+k?\s*[dc]pi|polling)\b).*$", "", text, flags=re.I)
+    if makers[0].start() > len(text):
+        return 'Other', '', None, None
     before = text[:makers[0].start()]
     text = text[makers[0].end():].strip()
     # Snif sometimes puts a model code before the maker; preceding prose is not a model.
@@ -264,6 +269,7 @@ def settle(listings: list[dict]) -> None:
     buckets: dict[tuple[str, str], list[dict]] = defaultdict(list)
     parts: dict[tuple[str, str], set[str]] = defaultdict(set)
     parsed = {}
+    by_part = []
     for row in listings:
         ident = _identity(row.get('identityTitle') or row["title"])
         brand, model, _, part = ident
@@ -288,8 +294,19 @@ def settle(listings: list[dict]) -> None:
             continue
         # Letters and digits only, as the model key: "MW 2400" = "MW2400", "M815 Pro" = "M815-PRO".
         name = names.model_key(model)
+        if row["source"] == "eshop" and part:
+            by_part.append((row, brand, name, part))
+            continue
         if part:
             parts[(brand, part)].add(name)
+        buckets[(brand, name)].append(row)
+    # e-shop.gr names a mouse in its own words ("LOGITECH 910-006475 LIFT VERTICAL ERGONOMIC WIRELESS MOUSE"), so its
+    # listing joins the one model the other sources give that part number, and never makes a part-number conflict.
+    for row, brand, name, part in by_part:
+        known = parts.get((brand, part), set())
+        if len(known) == 1:
+            name = next(iter(known))
+            parsed[row["id"]] = (brand, min((parsed[r["id"]][1] for r in buckets[(brand, name)]), key=len), *parsed[row["id"]][2:])
         buckets[(brand, name)].append(row)
 
     groups = []
@@ -297,7 +314,7 @@ def settle(listings: list[dict]) -> None:
         valid = []
         for row in rows:
             part = parsed[row["id"]][3]
-            if part and len(parts[(brand, part)]) > 1:
+            if part and len(parts.get((brand, part), ())) > 1:
                 row["reject"] = "identity-conflict"
             else:
                 valid.append(row)
@@ -313,7 +330,9 @@ def settle(listings: list[dict]) -> None:
             # against "Prime Wireless" 80 €), so there they stay a model of their own.
             families[connection or ('wired' if known == {'wired'} else None)].append(row)
         for connection, family in sorted(families.items(), key=lambda pair: pair[0] or ""):
-            model = min((parsed[r["id"]][1] for r in family), key=lambda s: (len(s), s.casefold(), s))
+            # e-shop.gr titles are upper-case: its spelling names the model only when no other source has it.
+            model = min(((r["source"] == "eshop", parsed[r["id"]][1]) for r in family),
+                        key=lambda p: (p[0], len(p[1]), p[1].casefold(), p[1]))[1]
             qualifier = {"wired": " Wired", "wireless": " Wireless", "both": " Wired + Wireless", None: ""}[connection]
             groups.append((f"{brand} {model}{qualifier}", family))
 

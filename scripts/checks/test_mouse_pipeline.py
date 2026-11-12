@@ -138,8 +138,8 @@ class MousePipelineTests(unittest.TestCase):
         self.assertFalse(self.scrape())
         self.assertEqual(self.read('latest.json')['listings'], [old])
         self.assertEqual(self.read('history.json')[key][0]['d'], OLD[:10])
-        self.sources['eshop'].assert_not_called()
-        self.sources['shopflix'].assert_not_called()
+        self.sources['eshop'].assert_called()  # all five sources list mice (owner 2026-11-12)
+        self.sources['shopflix'].assert_called()
 
     def test_corrupt_prior_json_aborts_before_sources_and_preserves_bytes(self):
         path = self.out / 'latest.json'
@@ -197,8 +197,8 @@ class MousePipelineTests(unittest.TestCase):
         history.assert_not_called()
         self.sources['bestprice'].return_value = [listing('bestprice', 'one')]
         self.assertTrue(self.scrape())
-        self.sources['eshop'].assert_not_called()
-        self.sources['shopflix'].assert_not_called()
+        self.sources['eshop'].assert_called()  # all five sources list mice (owner 2026-11-12)
+        self.sources['shopflix'].assert_called()
 
     def test_image_job_discovers_mouse_and_writes_existing_sizes_for_accepted_models_only(self):
         self.sources['bestprice'].return_value = [listing('bestprice', 'good', image='https://example.com/good.jpg'),

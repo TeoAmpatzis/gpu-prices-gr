@@ -352,6 +352,28 @@ class IdentityTests(unittest.TestCase):
         nm.settle(data)
         self.assertEqual([r["reject"] for r in data], ["identity-conflict", "identity-conflict", None])
 
+    def test_eshop_joins_by_part_number_and_never_makes_a_conflict(self):
+        # Observed 2026-11-12: e-shop.gr words the same mouse differently and puts the part number first.
+        got = [row("Logitech Lift Vertical Ασύρματο Ποντίκι Graphite 910-006475", source="snif", native_id="1"),
+               row("Logitech Lift Ασύρματο Ποντίκι Graphite", source="bestprice", native_id="2"),
+               row("LOGITECH 910-006475 LIFT VERTICAL ERGONOMIC WIRELESS MOUSE OFF-WHITE", source="eshop", native_id="3"),
+               row("LOGITECH 910-003357 B100 OPTICAL USB MOUSE BLACK", source="eshop", native_id="4")]
+        nm.settle(got)
+        self.assertEqual([r["reject"] for r in got], [None] * 4)
+        self.assertEqual(got[2]["chip"], got[0]["chip"])
+        self.assertEqual(got[0]["chip"], "Logitech Lift Vertical Wireless")
+        self.assertEqual(got[3]["chip"], "Logitech B100")
+
+    def test_eshop_description_after_a_dash_is_not_the_name_and_its_capitals_do_not_rename_a_model(self):
+        got = [row("Razer Viper V3 HyperSpeed Ασύρματο Gaming Ποντίκι 30000 DPI Μαύρο", source="bestprice", native_id="1"),
+               row("RAZER VIPER V3 HYPERSPEED - WIRELESS GAMING MOUSE - 30K DPI - 280H BATTERY - 100% PTFE MOUSEFEET",
+                   source="eshop", native_id="2"),
+               row("RAZER BASILISK V3 PRO BLACK - 30K DPI - RGB - OPTICAL SWITCHES - 11 BUTTONS -HYPERSCROLL TILT WHEEL",
+                   source="eshop", native_id="3")]
+        nm.settle(got)
+        self.assertEqual([r["chip"] for r in got],
+                         ["Razer Viper V3 HyperSpeed Wireless", "Razer Viper V3 HyperSpeed Wireless", "Razer BASILISK V3 PRO"])
+
     def test_spacing_and_hyphens_do_not_split_a_model_but_plus_and_left_handed_versions_do(self):
         # Pairs observed in the full trial, 2026-11-11 (one product written two ways by the shops).
         for pair in (('Cherry MW 2400 Ασύρματο', 'Cherry MW2400 Ασύρματο'),

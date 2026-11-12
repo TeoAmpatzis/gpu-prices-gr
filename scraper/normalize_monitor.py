@@ -176,7 +176,7 @@ def _panel(folded: str) -> str | None:
 # how `group` knows to ask for size and resolution before it may start or join a model.
 NAME_WORDS = 3
 NAME_SKIP = GENERIC | {"INCH", "GEN", "LINE", "SERIES", "MONITOR", "MONITORS", "DISPLAY", "SCREEN", "FLAT", "FULL", "ULTRA",
-                       "QUAD", "WIDE", "SLIM", "EXTENSION", "LAPTOP", "COMPUTER", "OFFICE", "HDR", "SMART", "TOUCH"}
+                       "QUAD", "WIDE", "SLIM", "EXTENSION", "LAPTOP", "COMPUTER", "OFFICE", "HDR", "SMART", "TOUCH", "GTG", "MPRT"}
 
 
 def _name_code(title: str, brand: str | None) -> str | None:

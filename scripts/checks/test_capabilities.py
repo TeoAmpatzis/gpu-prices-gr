@@ -19,9 +19,10 @@ class CapabilityTests(unittest.TestCase):
         self.assertEqual(CATEGORY_IDS[-1], 'mouse')
         for source in SOURCE_NAMES:
             for op in capabilities.OPERATIONS:
-                expected = source in ('bestprice', 'snif') or (source == 'skroutz' and op == capabilities.LISTS)
+                expected = source in ('bestprice', 'snif') or op == capabilities.LISTS
                 with self.subTest(source=source, operation=op):
                     self.assertEqual(capabilities.supports(source, 'mouse', op), expected)
+                    self.assertEqual(capabilities.supports(source, 'monitor', op), expected)
 
     def test_one_category_list(self):
         self.assertEqual(tuple(CATEGORIES), CATEGORY_IDS)
