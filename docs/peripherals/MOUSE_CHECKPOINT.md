@@ -1,6 +1,8 @@
 # Mouse implementation checkpoint — 2026-11-11 (Gate B)
 
-Work stops here until the owner has reviewed the first data: [MOUSE_DATA_REVIEW.md](MOUSE_DATA_REVIEW.md).
+**Update 2026-11-12**: the owner approved the merge. `main` = `e377b42` (this branch merged with `origin/main`, fast-forward push at 05:25 UTC), mouse still disabled and invisible. On the merged code before the push: 31 Python check programs, `npm run check` (1,655 tests) and `npm run e2e` (322 of 322) passed; after it the Vercel deployment succeeded and `node scripts/checks/site-check.mjs` passed on the live site. Same part number under two names: the owner keeps the plan's rule (reject both). The owner did not comment on the 50 model groups. **Now waiting** for the first scheduled collection with mouse (plan Task 5, step 3): `scrape-shops` at `43 */6` UTC and the next gated `scrape`; do not start runs by hand without asking. Then compare `public/data/mouse/` on `origin/main` with the trial (7,114 listings, 5,037 models) before step 5. The 00:43 UTC `scrape-shops` slot of 2026-11-12 started no run (see "Also watch" below). The sections below describe the state before the merge.
+
+The first data review: [MOUSE_DATA_REVIEW.md](MOUSE_DATA_REVIEW.md).
 
 ## Branch and scope
 
