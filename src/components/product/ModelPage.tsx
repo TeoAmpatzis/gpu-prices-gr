@@ -14,7 +14,7 @@ import { navigate, onUrlChange } from '../../lib/router';
 import { hasProductSelection, readProductSelection, resolveProductSelection, type ProductSelection } from '../../lib/productSelection';
 import { CATS, href } from '../../shell/nav';
 import { PageTitle } from '../../shell/PageTitle';
-import type { BaseListing, Category, ModelChunk, ModelEntry } from '../../types';
+import type { BaseListing, Category, ModelChunk, ModelEntry, MouseListing } from '../../types';
 import { LinkButton } from '../../ui/Button';
 import { Breadcrumbs, type Crumb } from '../../ui/nav';
 import { ErrorState, SkeletonRows } from '../../ui/states';
@@ -24,6 +24,7 @@ import type { ProductFitView } from './fitUi';
 import { OffersTable } from './OffersTable';
 import { PriceHistory } from './PriceHistory';
 import { CompareButton } from '../compare/CompareButton';
+import { MouseColours, mouseOffers } from './MouseColours';
 import { ProductHeader } from './ProductHeader';
 import { ReportError } from './ReportError';
 import { SpecGroups } from './SpecGroups';
@@ -119,11 +120,11 @@ export default function ModelPage({ cat, slug }: { cat: Category; slug: string }
       return res.entry.parts ? (
         <Suspense fallback={<SkeletonRows />}>
           <ProductWithFit slot={cat as Slot} entry={res.entry} builtAt={res.builtAt} selection={selection ?? undefined}>
-            {(fit) => <Product cat={cat} entry={res.entry} sources={res.sources} crumbs={crumbs(res.entry.chip)} fit={fit} selection={selection ?? undefined} />}
+            {(fit) => <Product key={res.entry.key} cat={cat} entry={res.entry} sources={res.sources} crumbs={crumbs(res.entry.chip)} fit={fit} selection={selection ?? undefined} />}
           </ProductWithFit>
         </Suspense>
       ) : (
-        <Product cat={cat} entry={res.entry} sources={res.sources} crumbs={crumbs(res.entry.chip)} fit={null} selection={selection ?? undefined} />
+        <Product key={res.entry.key} cat={cat} entry={res.entry} sources={res.sources} crumbs={crumbs(res.entry.chip)} fit={null} selection={selection ?? undefined} />
       );
     default: {
       const never: never = res;
@@ -143,6 +144,10 @@ function Product({ cat, entry, sources, crumbs, fit, selection }: ProductProps &
   const listings = useMemo(() => selected ? [selected] : entry.listings, [entry, selected]);
   const model = useMemo(() => groupModels(listings.map(ownTotal), { ...cfg, modelKey: () => entry.key })[0], [cfg, entry, listings]);
   const offers = useMemo(() => sortOffers(entry.listings), [entry]);
+  // Mice: a colour narrows the shops table (the family view only; a selected offer keeps its own presentation).
+  // The state belongs to this model: the page gives each model its own Product (key), so it starts at "all".
+  const [colour, setColour] = useState<string | null>(null);
+  const shown = useMemo(() => mouseOffers(offers as (BaseListing & { colour?: string | null })[], cat === 'mouse' ? colour : null), [offers, cat, colour]);
   const siblings = selected ? offers.filter((l) => l.source !== selected.source || l.id !== selected.id) : [];
   return (
     <div className="product-page">
@@ -163,13 +168,14 @@ function Product({ cat, entry, sources, crumbs, fit, selection }: ProductProps &
           checked={checkedAt(sources, (selected ?? offers[0]).source)}
           variants={<Variants cat={cat} entry={entry} />}
         />
+        {cat === 'mouse' && !selected && <MouseColours listings={entry.listings as unknown as MouseListing[]} value={colour} onChange={setColour} />}
         {selected && <OffersTable cat={cat} chip={entry.chip} offers={[selected]} sources={sources} selectedSource />}
         {(!selected || siblings.length > 0) &&
         <OffersTable
-          key={entry.key}
+          key={`${entry.key} ${colour ?? ''}`}
           cat={cat}
           chip={entry.chip}
-          offers={selected ? siblings : offers}
+          offers={selected ? siblings : shown}
           sources={sources}
           alternatives={!!selected}
           familySlug={entry.slug}

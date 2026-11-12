@@ -12,5 +12,7 @@ export const PRODUCT = {
   view: { el: 'Προβολή προϊόντος', en: 'View product' },
   price: { el: 'Τιμή επιλεγμένης καταχώρισης', en: 'Selected listing price' },
   variants: { el: 'Σχετικές οικογένειες', en: 'Related families' },
+  colours: { el: 'Χρώματα', en: 'Colours' },
+  colourNote: { el: 'Ο πίνακας δείχνει μόνο τις προσφορές αυτού του χρώματος. Το ιστορικό τιμών αφορά όλα τα χρώματα του μοντέλου.', en: 'The table shows only the offers in this colour. The price history covers every colour of the model.' },
   correction: { el: 'Βρήκες λάθος σε τιμή ή χαρακτηριστικό;', en: 'Found a mistake in a price or a spec?' },
 } satisfies Record<string, Text>;

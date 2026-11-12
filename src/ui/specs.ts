@@ -2,7 +2,8 @@
 // category, always in the same order. A spec the data doesn't state is shown as "label —", never
 // skipped, so the order stays the same from row to row. Values are the most common across a model's
 // listings (as v1's builder takes them).
-import type { Lang } from '../lib/i18n';
+import { tr, type Lang } from '../lib/i18n';
+import { MOUSE_CONNECTION } from '../lib/categoryRules';
 import { mostCommon } from '../lib/data';
 import { cpuThreads } from '../lib/cpuThreads';
 import type {
@@ -15,6 +16,7 @@ import type {
   GpuListing,
   MoboListing,
   MonitorListing,
+  MouseListing,
   PsuListing,
   RamListing,
   StorageListing,
@@ -37,7 +39,19 @@ const mm = (lang: Lang, n: number | null) => (n == null ? null : `${num(lang, n)
 const labelled = (label: string, v: string | null) => (v == null ? null : `${label} ${v}`);
 
 const SPECS: { [C in Category]: (ls: BaseListing[], lang: Lang) => Spec[] } = {
-  mouse: () => [],
+  mouse: (raw, lang) => {
+    const ls = raw as L<MouseListing>;
+    const connection = pick(ls, (l) => l.connection);
+    const dpi = pick(ls, (l) => l.dpi);
+    const hz = pick(ls, (l) => l.pollingHz);
+    const buttons = pick(ls, (l) => l.buttons);
+    return [
+      { label: w(lang, 'σύνδεση', 'connection'), value: connection == null ? null : tr(lang, MOUSE_CONNECTION[connection]) },
+      { label: 'DPI', value: dpi == null ? null : `${num(lang, dpi)} DPI` },
+      { label: 'polling', value: hz == null ? null : `${num(lang, hz)} Hz` },
+      { label: w(lang, 'κουμπιά', 'buttons'), value: buttons == null ? null : `${buttons} ${w(lang, 'κουμπιά', 'buttons')}` },
+    ];
+  },
   gpu: (raw, lang) => {
     const ls = raw as L<GpuListing>;
     const vram = pick(ls, (l) => l.vram);
@@ -198,7 +212,29 @@ const firstOf = <T, V>(ls: L<T>, f: (l: T) => V | null | undefined): V | null =>
 };
 
 const FULL: { [C in Category]: (ls: BaseListing[], lang: Lang, est?: Estimate) => Row[] } = {
-  mouse: () => [],
+  // Only what a source states: an unknown value has no row, an explicit "no" is shown as No.
+  mouse: (raw, lang) => {
+    const ls = raw as L<MouseListing>;
+    const connection = pick(ls, (l) => l.connection);
+    const gaming = pick(ls, (l) => l.gaming);
+    const dpi = pick(ls, (l) => l.dpi);
+    const hz = pick(ls, (l) => l.pollingHz);
+    const buttons = pick(ls, (l) => l.buttons);
+    return [
+      ['general', w(lang, 'Κατασκευαστής', 'Maker'), pick(ls, (l) => l.brand)],
+      ['general', w(lang, 'Χρήση', 'Use'), gaming == null ? null : gaming ? 'Gaming' : w(lang, 'Γραφείου', 'Office')],
+      ['general', w(lang, 'Κουμπιά', 'Buttons'), buttons == null ? null : String(buttons)],
+      ['general', 'RGB', yesNo(lang, pick(ls, (l) => l.rgb))],
+      ['general', w(lang, 'Αθόρυβο', 'Silent'), yesNo(lang, pick(ls, (l) => l.silent))],
+      ['general', w(lang, 'Εργονομικό', 'Ergonomic'), yesNo(lang, pick(ls, (l) => l.ergonomic))],
+      ['general', 'DPI', dpi == null ? null : num(lang, dpi)],
+      ['general', 'Polling rate', hz == null ? null : `${num(lang, hz)} Hz`],
+      ['power', w(lang, 'Επαναφορτιζόμενο', 'Rechargeable'), yesNo(lang, pick(ls, (l) => l.rechargeable))],
+      ['connections', w(lang, 'Σύνδεση', 'Connection'), connection == null ? null : tr(lang, MOUSE_CONNECTION[connection])],
+      ['connections', 'Bluetooth', yesNo(lang, pick(ls, (l) => l.bluetooth))],
+      ['connections', w(lang, 'Δέκτης 2.4 GHz', '2.4 GHz receiver'), yesNo(lang, pick(ls, (l) => l.rf))],
+    ];
+  },
   gpu: (raw, lang, est) => {
     const ls = raw as L<GpuListing>;
     const vram = pick(ls, (l) => l.vram);
