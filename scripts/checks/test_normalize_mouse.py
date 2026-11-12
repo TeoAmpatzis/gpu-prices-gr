@@ -181,6 +181,18 @@ class ParseTests(unittest.TestCase):
                 for field, expected in case["expected"].items():
                     self.assertEqual(r[field], expected, field)
 
+    def test_a_model_number_before_the_spec_line_is_not_a_button_count(self):
+        # Observed 2026-11-11 (Skroutz): the card title ends in a number and the spec line starts with "Κουμπιά:".
+        for title, specs, buttons, dpi in (
+            ("Genesis Krypton 555", "Κουμπιά:8, 8000 DPI, RGB, Polling Rate:1000Hz", 8, 8000),
+            ("Endorfy GEM Plus 26000", "Κουμπιά:6, 26000 DPI, RGB, Polling Rate:1000Hz", 6, 26000),
+            ("Yenkee Shotgun YMS 3030", "Κουμπιά:7, 7200 DPI", 7, 7200),
+            ("HAMA Reaper 250", "6400 DPI, RGB", None, 6400),
+        ):
+            data = row(title, source="skroutz", specs=specs)
+            self.assertEqual((data["buttons"], data["dpi"]), (buttons, dpi), title)
+        self.assertEqual(row("Trust Primo Ποντίκι 3 Κουμπιά")["buttons"], 3)
+
     def test_missing_specs_are_unknown_and_extras_survive_serialization(self):
         listing = nm.make_listing(source="snif", native_id="7", title="Logitech M171 Mouse",
                                   url="https://example.com/7", price=12.345, shop_count=None,

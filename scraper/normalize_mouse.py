@@ -146,7 +146,7 @@ def _flag(text: str, pattern: str) -> bool | None:
 
 def _number(text: str, unit: str, prefix: bool = False) -> int | None:
     pattern = (rf"\b(?:{unit})\s*:\s*(\d+)(?![\w.]|,\d)" if prefix else
-               rf"(?<![\w.,+-])(\d+)\s*(?:{unit})(?!\w)")
+               rf"(?<![\w.,+-])(\d+)\s*(?:{unit})(?!\w|\s*:)")  # "555 Κουμπιά:8": the label of the next value
     values = [int(m.group(1)) for m in re.finditer(pattern, text)]
     return max((v for v in values if v > 0), default=None)
 
@@ -254,7 +254,7 @@ def make_listing(*, source: str, native_id: str, title: str, url: str, price: fl
         shopCount=shop_count, brand=brand, chip="", scrapedAt=scraped_at,
         connection=connection, colour=colour, partNumber=part,
         dpi=_number(text, "dpi"), pollingHz=_number(text, "hz"),
-        buttons=_number(text, "buttons|κουμπια") or _number(text, "buttons|κουμπια", prefix=True),
+        buttons=_number(text, "buttons|κουμπια", prefix=True) or _number(text, "buttons|κουμπια"),
         **{field: _flag(text, pattern) for field, pattern in FLAGS.items()}, reject=reason, identityTitle=identity_title,
     )
 
