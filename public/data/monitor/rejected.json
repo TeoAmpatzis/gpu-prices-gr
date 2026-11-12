@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-11T17:43:31+00:00",
+ "updatedAt": "2026-11-12T02:00:45+00:00",
  "counts": {
   "ambiguous": 32,
   "bundle": 1,
@@ -25,7 +25,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://bbpcdn.pstatic.gr/bpimg34/fi7M6/1XqHeS_SX710Y533/1794299398/acer-vero-b247y-gbmiqprzx-ips-monitor-238-75hz-4ms-um-qb7ee-g25.webp"
   },
@@ -34,7 +34,7 @@
    "source": "skroutz",
    "title": "Samsung Odyssey G7 G70D IPS HDR 4K 3840x2160",
    "url": "https://www.skroutz.gr/s/57753154/Samsung-Odyssey-G7-G70D-IPS-HDR-Gaming-Monitor-32-4K-3840x2160-144Hz-me-CHrono-Apokrisis-1ms-GTG.html",
-   "price": 473.33,
+   "price": 575.21,
    "shopCount": null,
    "brand": "Samsung",
    "chip": "",
@@ -46,7 +46,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "ambiguous",
    "image": "https://b.scdn.gr/images/sku_main_images/057753/57753154/xlarge_20241204120610_samsung_odyssey_g7_g70d_ips_hdr_gaming_monitor_32_4k_3840by2160_144hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -67,7 +67,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "ambiguous",
    "image": "https://d.scdn.gr/images/sku_main_images/058755/58755232/xlarge_20250213095932_samsung_essential_s4_s40gd_ips_monitor_24_fhd_1920by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -88,7 +88,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "ambiguous",
    "image": "https://c.scdn.gr/images/sku_main_images/060465/60465711/xlarge_20250526155937_samsung_g8_g81sf_oled_hdr_monitor_32_4k_3840by2160_240hz_me_chrono_apokrisis_0_03ms_gtg.jpeg"
   },
@@ -109,7 +109,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "ambiguous",
    "image": "https://a.scdn.gr/images/sku_main_images/061566/61566133/xlarge_20250709123446_samsung_ls27f320gauxen_ips_monitor_27_fhd_1920x1080.jpeg"
   },
@@ -118,7 +118,7 @@
    "source": "skroutz",
    "title": "LG UltraGear 24G411A-B IPS FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/64068808/lg-ultragear-27g411a-b-ips-gaming-monitor-27-fhd-1920x1080-me-chrono-apokrisis-5ms-gtg.html",
-   "price": 98.39,
+   "price": 99.0,
    "shopCount": null,
    "brand": "LG",
    "chip": "",
@@ -130,7 +130,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "ambiguous",
    "image": "https://c.scdn.gr/images/sku_main_images/064068/64068808/xlarge_20251105145532_lg_ultragear_24g411a_b_ips_gaming_monitor_27_fhd_1920by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -139,7 +139,7 @@
    "source": "skroutz",
    "title": "Samsung Odyssey G5 G50F IPS HDR QHD 2560x1440",
    "url": "https://www.skroutz.gr/s/64677096/samsung-odyssey-g5-g50f-ips-hdr-gaming-monitor-27-qhd-2560x1440-180hz-me-chrono-apokrisis-1ms-gtg.html",
-   "price": 167.0,
+   "price": 166.89,
    "shopCount": null,
    "brand": "Samsung",
    "chip": "",
@@ -151,7 +151,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "ambiguous",
    "image": "https://a.scdn.gr/images/sku_main_images/064677/64677096/xlarge_20251215131819_samsung_odyssey_g5_g50f_ips_monitor_27_qhd_2560by1440_180hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -160,7 +160,7 @@
    "source": "skroutz",
    "title": "Samsung ViewFinity S7 S70D VA HDR 4K 3840x2160",
    "url": "https://www.skroutz.gr/s/65789130/samsung-viewfinity-s7-s70d-va-hdr-smart-monitor-32-4k-3840x2160-me-chrono-apokrisis-5ms-gtg.html",
-   "price": 288.0,
+   "price": 289.0,
    "shopCount": null,
    "brand": "Samsung",
    "chip": "",
@@ -172,7 +172,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "ambiguous",
    "image": "https://c.scdn.gr/images/sku_main_images/065789/65789130/xlarge_20260302170954_samsung_viewfinity_s7_s70d_ultrawide_va_hdr_smart_monitor_32_4k_3840by2160_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -193,7 +193,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "ambiguous",
    "image": "https://b.scdn.gr/images/sku_main_images/065948/65948257/xlarge_20260311160726_samsung_s4_s40gd_ips_monitor_22_fhd_1920by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -202,7 +202,7 @@
    "source": "skroutz",
    "title": "Samsung Odyssey OLED G8 G80SH QD-OLED HDR 4K 3840x2160",
    "url": "https://www.skroutz.gr/s/68409457/samsung-odyssey-oled-g8-g80sh-qd-oled-hdr-gaming-monitor-27-4k-3840x2160-240hz-me-chrono-apokrisis-0-03ms-gtg.html",
-   "price": 749.98,
+   "price": 749.86,
    "shopCount": null,
    "brand": "Samsung",
    "chip": "",
@@ -214,7 +214,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "ambiguous",
    "image": "https://b.scdn.gr/images/sku_main_images/068409/68409457/xlarge_20260720173141_samsung_odyssey_oled_g8_g80sh_qd_oled_hdr_gaming_monitor_27_4k_3840by2160_240hz_me_chrono_apokrisis_0_03ms_gtg.jpeg"
   },
@@ -235,7 +235,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "ambiguous",
    "image": "https://a.scdn.gr/images/sku_main_images/070528/70528920/xlarge_20261106153455_samsung_essential_monitor_g32h_ips_gaming_monitor_27_fhd_1920by1080_144hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -256,7 +256,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/89/10/53/90/2005579-DELL-5397184657133-hero-800x800.jpg"
   },
@@ -277,7 +277,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/79/33/35/47/2058951-HP-9D9L6UT-hero-800x800.jpg"
   },
@@ -298,7 +298,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/68/71/68/68/2078368-DELL-hero-800x800.jpg"
   },
@@ -319,7 +319,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/45/47/89/43/2078441-LENOVO-hero-800x800.jpg"
   },
@@ -340,7 +340,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/36/39/98/42/2078443-AOC-hero-800x800.jpg"
   },
@@ -361,7 +361,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/96/8/35/20/2024539-PHILIPS-hero-800x800.jpg"
   },
@@ -382,7 +382,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/25/39/66/46/MRK3101653-AOC-8712581799526-hero-800x800.jpg"
   },
@@ -403,7 +403,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/50/31/68/76/MRK3101649-PHILIPS-8712581803513-hero-800x800.jpg"
   },
@@ -424,7 +424,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/94/20/45/4/MRK3101682-ARZOPA-5907085524689-hero-800x800.jpg"
   },
@@ -445,7 +445,7 @@
    "panel": "TN",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/0/81/42/73/2101966-PHILIPS-8712581750213-hero-800x800.jpg"
   },
@@ -466,7 +466,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/26/81/83/87/2101764-HP-198828043597-hero-800x800.jpg"
   },
@@ -487,7 +487,7 @@
    "panel": "TN",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/65/41/68/57/2101968-PHILIPS-8712581750237-hero-800x800.jpg"
   },
@@ -508,7 +508,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/68/30/40/44/2078436-DAHUA-6939554921506-hero-800x800.jpg"
   },
@@ -529,7 +529,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/68/60/93/48/2024518-HP-196337193345-hero-800x800.jpg"
   },
@@ -550,7 +550,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/7/43/80/58/2129518-LENOVO-hero-800x800.jpg"
   },
@@ -571,7 +571,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/70/9/83/89/2131221-AOC-hero-800x800.jpg"
   },
@@ -592,7 +592,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/48/80/52/75/MRK3106747-LENOVO-199272306696-hero-800x800.jpg"
   },
@@ -613,7 +613,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/61/42/88/11/MRK3106746-LENOVO-198158436229-hero-800x800.jpg"
   },
@@ -634,7 +634,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/18/98/53/66/2058952-HP-9E0G9UT-hero-800x800.jpg"
   },
@@ -655,7 +655,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/82/22/28/52/2165946-MONITOR-REDRAGON-GM27X5QIPS-hero-800x800.jpg"
   },
@@ -676,7 +676,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "ambiguous",
    "image": "https://www.websupplies.gr/images/thumbs/0362765.jpeg"
   },
@@ -697,9 +697,9 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "bundle",
-   "image": "https://b.scdn.gr/images/sku_main_images/060180/60180339/large_20250429150338_viewsonic_vg2448_dual_monitor_kit_ips_monitor_24_fhd_1920by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
+   "image": "https://d.scdn.gr/images/sku_main_images/060180/60180339/xlarge_20250429150338_viewsonic_vg2448_dual_monitor_kit_ips_monitor_24_fhd_1920by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
   {
    "id": "bestprice:111037067",
@@ -718,7 +718,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg11/7vTOr/1PoZS0_SX533Y400/1675683672/ae-led19a-led-monitor-19.webp"
   },
@@ -739,7 +739,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg3/aEvvB/1ShiJX_SX482Y362/1718178593/led-monitor-19.webp"
   },
@@ -760,7 +760,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg33/bpRBL/1T5uoS_SX411Y308/1730139814/waveshare-156inch-dual-monitor.webp"
   },
@@ -768,7 +768,7 @@
    "id": "bestprice:209103632",
    "source": "bestprice",
    "title": "TOUCHDISPLAYS TOUCH MONITOR 15\"",
-   "url": "https://www.bestprice.gr/to/209103632/touchdisplays-touch-monitor-15.html?seq=464",
+   "url": "https://www.bestprice.gr/to/209103632/touchdisplays-touch-monitor-15.html?seq=448",
    "price": 254.75,
    "shopCount": null,
    "brand": "Touchdisplays",
@@ -781,7 +781,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg16/e9npe/1Wrq1W_SX269Y202/1779695240/touchdisplays-touch-monitor-15.webp"
   },
@@ -802,7 +802,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg63/fduUL/1Xkgnm_SX655Y491/1792766168/xiaomi-mi-ultrawide-va-curved-gaming-monitor-34-3440x1440-qhd-144hz-4ms.webp"
   },
@@ -823,7 +823,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg10/66PeG/1Xa92J_SX599Y449/1790354701/xiaomi-mi-2k-gaming-monitor-27-ips-hdr-gaming-monitor-27-2560x1440-qhd-165hz-4ms-bhr5039gl.webp"
   },
@@ -844,7 +844,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg36/eXDPC/1WMU79_SX900Y675/1784815771/arzopa-a1-ips-hdr-forhto-monitor-156-1920x1080-fhd-60hz-5906168436338.webp"
   },
@@ -865,7 +865,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg55/2m854b/1RcEaK_SX544Y408/1702293002/arzopa-g1-ips-forhto-monitor-156-1920x1080-fhd-144hz-5ms.webp"
   },
@@ -886,7 +886,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg34/2maATM/1SGKHZ_SX640Y480/1724244303/ricoh-150-oled-forhto-monitor-156-1920x1080-fhd-60hz-1ms.webp"
   },
@@ -896,7 +896,7 @@
    "title": "Lenovo ThinkVision 27 3D IPS HDR Monitor 27\" 3840x2160 4K UHD 60Hz 6ms",
    "url": "https://www.bestprice.gr/item/2159879191/lenovo-thinkvision-27-3d-ips-hdr-monitor-27-3840x2160-4k-uhd-60hz-6ms.html",
    "price": 1799.0,
-   "shopCount": 36,
+   "shopCount": 33,
    "brand": "Lenovo",
    "chip": "",
    "code": null,
@@ -907,7 +907,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg23/2maDf9/1SIyMr_SX450Y338/1724675107/lenovo-thinkvision-27-3d-ips-hdr-monitor-27-3840x2160-4k-uhd-60hz-6ms-63f1uat3eu-262-80-lvm273d.webp"
   },
@@ -928,7 +928,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg7/2mcxiD/1TFkJy_SX450Y338/1738682464/samsung-odyssey-g6-oled-hdr-gaming-monitor-27-2560x1440-qhd-240hz-003ms-ls27dg612suxen.webp"
   },
@@ -949,7 +949,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg23/2mp0uX/1VnS5r_SX398Y298/1764073441/oem-luckfox-ips-hdr-forhto-monitor-185-1920x1080-fhd-120hz.webp"
   },
@@ -970,7 +970,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg22/2mq1tY/1VKFG1_SX450Y338/1769507281/oem-7star-ips-forhto-monitor-156-1920x1080-fhd-60hz-0660982711679.webp"
   },
@@ -991,7 +991,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg48/6duIo/1Xa56b_SX504Y378/1790339539/eos-full-monitor-27-qhd-5ms-led272kn.webp"
   },
@@ -1012,7 +1012,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg50/cRulc/1Xn8Sn_SX428Y322/1793452323/oem-waveshare-lcd-ips-monitor-156-1920x1080-fhd.webp"
   },
@@ -1033,7 +1033,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg49/bnPMd/1Xa56b_SX585Y439/1790339539/eos-full-lcd-monitor-24-qhd-5ms-led242kn.webp"
   },
@@ -1054,7 +1054,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg31/fhVp5/1Xa8ct_SX678Y509/1790351461/elo-lcd-monitor-19.webp"
   },
@@ -1075,7 +1075,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg44/2mucZ6/1X9Flr_SX640Y480/1790240541/arzopa-a1-pro-ips-hdr-forhto-monitor-156-1920x1080-fhd-60hz.webp"
   },
@@ -1096,7 +1096,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg15/fmN9t/1XezZ6_SX544Y408/1791411576/neo-ips-monitor-24-1920x1080-fhd-120hz-5ms-lh244011e0000.webp"
   },
@@ -1117,7 +1117,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg38/fqSTs/1XlHlp_SX459Y345/1793108163/lenovo-thinkcentre-tiny-in-one-22-gen-5-othonh-ypologisth-a23tio22.webp"
   },
@@ -1138,7 +1138,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg34/fxU4y/1XpEdP_SX900Y675/1794049473/dell-pro-27-plus-othonh-ypologisth-27-qhd-210-bsbg.webp"
   },
@@ -1159,7 +1159,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg47/2mw6qH/1XqkYd_SX466Y350/1794213797/uperfect-ips-hdr-forhto-monitor-16-3840x2400-60hz-25ms-m160t06.webp"
   },
@@ -1180,7 +1180,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg48/2mw6qI/1XqkYd_SX480Y360/1794213797/uperfect-ips-hdr-forhto-monitor-22-2560x1440-60hz-20ms-m220t01.webp"
   },
@@ -1201,7 +1201,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg44/fi6xS/1Xa6fZ_SX347Y261/1790343991/elo-othonh-ypologisth-215-wide-fhd-lcd-non-touch-anti-glare-zero-bezel.webp"
   },
@@ -1209,7 +1209,7 @@
    "id": "bestprice:227669182",
    "source": "bestprice",
    "title": "TOUCHDISPLAYS TOUCH MONITOR 15\" (4:3) ME EΠITPAΠEZIA BAΣH",
-   "url": "https://www.bestprice.gr/to/227669182/touchdisplays-touch-monitor-15-me-epitpapezia-bash.html?seq=448",
+   "url": "https://www.bestprice.gr/to/227669182/touchdisplays-touch-monitor-15-me-epitpapezia-bash.html?seq=432",
    "price": 325.0,
    "shopCount": null,
    "brand": "Touchdisplays",
@@ -1222,7 +1222,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg62/fph9A/1XgUx1_SX900Y675/1791967215/touchdisplays-touch-monitor-15-me-epitpapezia-bash.webp"
   },
@@ -1243,7 +1243,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg42/6CflE/1Sfw2J_SX589Y442/1717753073/othonh-ae-led19a.webp"
   },
@@ -1252,7 +1252,7 @@
    "source": "skroutz",
    "title": "Dell IPS FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/15440670/Dell-P2419H-IPS-Monitor-23-8-FHD-1920x1080-me-CHrono-Apokrisis-8ms-GTG.html",
-   "price": 446.56,
+   "price": 446.75,
    "shopCount": null,
    "brand": "Dell",
    "chip": "",
@@ -1264,7 +1264,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/015440/15440670/xlarge_20180719104145_dell_p2419h.jpeg"
   },
@@ -1285,7 +1285,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/023123/23123102/xlarge_20200511170455_viewsonic_vx2476_smh.jpeg"
   },
@@ -1306,7 +1306,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/029404/29404051/xlarge_20211104100952_dell_se2722h_monitor_27_fhd_1920x1080.jpeg"
   },
@@ -1327,7 +1327,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "drop": 8,
    "image": "https://d.scdn.gr/images/sku_main_images/030925/30925390/large_20210909150016_benq_pd2725u_monitor_27_4k.jpeg"
@@ -1349,7 +1349,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/034614/34614368/large_20220311092059_dell_p2423de_monitor_24_qhd_2560x1440.jpeg"
   },
@@ -1370,7 +1370,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/034935/34935733/xlarge_20220324113537_benq_pd2705u_monitor_27_4k_3840x2160.jpeg"
   },
@@ -1391,7 +1391,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/035346/35346826/xlarge_20240425111704_viewsonic_va2215_h_va_monitor_21_5_fhd_1920by1080_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -1400,7 +1400,7 @@
    "source": "skroutz",
    "title": "Viewsonic IPS FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/36592706/Viewsonic-VG2748a-2-IPS-Monitor-27-FHD-1920x1080-me-CHrono-Apokrisis-5ms-GTG.html",
-   "price": 153.67,
+   "price": 239.86,
    "shopCount": null,
    "brand": "ViewSonic",
    "chip": "",
@@ -1412,7 +1412,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/036592/36592706/xlarge_20230719102628_viewsonic_vg2748a_2_ips_monitor_27_fhd_1920by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -1433,7 +1433,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/037417/37417427/large_20220929123645_samsung_odyssey_g4_ips_gaming_monitor_25_fhd_1920by1080_240hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -1454,7 +1454,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/038412/38412255/xlarge_20220929110009_dell_e2423h_va_monitor_23_8_fhd_1920by1080_me_chrono_apokrisis_8ms_gtg.jpeg"
   },
@@ -1475,7 +1475,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/040770/40770228/xlarge_20230413101727_samsung_odyssey_g7_ips_hdr_gaming_monitor_28_4k_3840by2160_144hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -1496,7 +1496,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/040846/40846730/xlarge_20240510160122_verbatim_pmt_15_ips_hdr_touch_forito_monitor_15_fhd_1920by1080_me_chrono_apokrisis_6ms_gtg.jpeg"
   },
@@ -1517,7 +1517,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/041028/41028608/xlarge_20230502164925_lg_38bq85c_w_ultrawide_ips_hdr_curved_monitor_37_5_qhd_3840by1600_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -1538,7 +1538,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/042344/42344838/xlarge_20230510095058_benq_pd3205ua_ips_hdr_monitor_31_5_4k_3840by2160_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -1559,7 +1559,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/042433/42433037/large_20230516100222_asus_proart_pa279crv_ips_hdr_monitor_27_4k_3840by2160_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -1568,7 +1568,7 @@
    "source": "skroutz",
    "title": "Asus ZenScreen IPS FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/44368705/Asus-ZenScreen-MB17AHG-IPS-Forito-Monitor-17-3-FHD-1920x1080-144Hz-me-CHrono-Apokrisis-5ms-GTG.html",
-   "price": 364.83,
+   "price": 364.73,
    "shopCount": null,
    "brand": "Asus",
    "chip": "",
@@ -1580,7 +1580,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/044368/44368705/xlarge_20230720145740_asus_zenscreen_mb17ahg_ips_forito_monitor_17_3_fhd_1920by1080_144hz_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -1601,7 +1601,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/044701/44701016/xlarge_20230726123553_samsung_viewfinity_s8_ips_hdr_monitor_27_qhd_3840by1600_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -1622,7 +1622,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/044701/44701756/xlarge_20230726131040_samsung_ls32cm501euxdu_va_smart_monitor_32_fhd_1920by1080_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -1643,7 +1643,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/048409/48409194/xlarge_20240809153956_asus_vy279hf_ips_monitor_27_fhd_1920x1080.jpeg"
   },
@@ -1664,7 +1664,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/049437/49437927/xlarge_20240124130629_nec_e244fl_va_monitor_24_fhd_1920by1080_me_chrono_apokrisis_6ms_gtg.jpeg"
   },
@@ -1685,7 +1685,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/049457/49457898/xlarge_20240821142929_ricoh_150_oled_touch_forito_monitor_15_6_fhd_1920x1080.jpeg"
   },
@@ -1694,7 +1694,7 @@
    "source": "skroutz",
    "title": "Iiyama ProLite IPS FHD 1920x1200",
    "url": "https://www.skroutz.gr/s/50282678/Iiyama-ProLite-XUB2395WSU-B5-IPS-Monitor-23-FHD-1920x1200-me-CHrono-Apokrisis-4ms-GTG.html",
-   "price": 159.31,
+   "price": 159.28,
    "shopCount": null,
    "brand": "iiyama",
    "chip": "",
@@ -1706,7 +1706,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/050282/50282678/xlarge_20241014151757_iiyama_prolite_xub2395wsu_b5_ips_monitor_23_fhd_1920by1200_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -1727,7 +1727,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/050448/50448268/xlarge_20240213133322_aoc_24b3cf2_ips_monitor_24_fhd_1920by1080_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -1748,7 +1748,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/050450/50450858/xlarge_20240213144737_iiyama_prolite_t2755msc_b1_ips_touch_forito_monitor_27_fhd_1920by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -1757,7 +1757,7 @@
    "source": "skroutz",
    "title": "Viewsonic IPS FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/50778905/Viewsonic-VG2708A-IPS-Monitor-27-FHD-1920x1080-me-CHrono-Apokrisis-5ms-GTG.html",
-   "price": 125.97,
+   "price": 240.8,
    "shopCount": null,
    "brand": "ViewSonic",
    "chip": "",
@@ -1769,10 +1769,9 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
-   "drop": 35,
-   "image": "https://a.scdn.gr/images/sku_main_images/050778/50778905/large_20240226125044_viewsonic_vg2708a_ips_monitor_27_fhd_1920by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
+   "image": "https://b.scdn.gr/images/sku_main_images/050778/50778905/xlarge_20240226125044_viewsonic_vg2708a_ips_monitor_27_fhd_1920by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
   {
    "id": "skroutz:50865954",
@@ -1791,7 +1790,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/050865/50865954/xlarge_20240229122720_waveshare_23059_ips_hdr_forito_monitor_15_6_fhd_1920x1080.jpeg"
   },
@@ -1812,7 +1811,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/051174/51174249/xlarge_20240308130037_aoc_27b3ca2_ips_hdr_monitor_27_fhd_1920by1080_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -1833,9 +1832,9 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
-   "image": "https://b.scdn.gr/images/sku_main_images/051454/51454813/large_20240320111953_dell_ultrasharp_ultrawide_ips_curved_monitor_34_qhd_3440by1440_me_chrono_apokrisis_5ms_gtg.jpeg"
+   "image": "https://a.scdn.gr/images/sku_main_images/051454/51454813/xlarge_20240320111953_dell_ultrasharp_ultrawide_ips_curved_monitor_34_qhd_3440by1440_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
   {
    "id": "skroutz:52340631",
@@ -1854,7 +1853,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/052340/52340631/xlarge_20240415110051_dell_p2425h_ips_monitor_23_8_fhd_1920x1080.jpeg"
   },
@@ -1875,7 +1874,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/052402/52402743/xlarge_20240416102401_viewsonic_ips_monitor_24_fhd_1920by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -1896,7 +1895,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/053401/53401468/xlarge_20240513102914_dell_s2425hs_ips_monitor_23_8_fhd_1920by1080_me_chrono_apokrisis_8ms_gtg.jpeg"
   },
@@ -1917,7 +1916,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/053406/53406011/xlarge_20250522165420_asus_va27uqsb_ips_hdr_monitor_27_4k_3840by2160_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -1938,7 +1937,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/053571/53571741/large_20260128161602_verbatim_pmt_15_ips_hdr_touch_forito_monitor_15_6_4k_3840x2160.jpeg"
   },
@@ -1959,10 +1958,10 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "drop": 5,
-   "image": "https://b.scdn.gr/images/sku_main_images/053572/53572016/large_20240517153637_lenovo_thinkvision_27_3d_ips_monitor_27_4k_3840by2160_me_chrono_apokrisis_4ms_gtg.jpeg"
+   "image": "https://c.scdn.gr/images/sku_main_images/053572/53572016/xlarge_20240517153637_lenovo_thinkvision_27_3d_ips_monitor_27_4k_3840by2160_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
   {
    "id": "skroutz:53967056",
@@ -1981,7 +1980,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/053967/53967056/xlarge_20240529170044_philips_49m2c8900l_00_qd_oled_hdr_curved_monitor_48_9_5120by1440_144hz_me_chrono_apokrisis_0_03ms_gtg.jpeg"
   },
@@ -2002,7 +2001,7 @@
    "panel": "TN",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/054155/54155919/xlarge_20240605094651_samsung_sc_450_series_tn_monitor_23_fhd_1920by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -2023,7 +2022,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/054678/54678035/xlarge_20240628134433_philips_evnia_fast_ips_hdr_gaming_monitor_27_fhd_1920by1080_180hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -2044,7 +2043,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/054717/54717419/xlarge_20240703102859_hp_series_7_pro_ips_monitor_27_qhd_2560by1440_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -2053,7 +2052,7 @@
    "source": "skroutz",
    "title": "LG UltraGear VA HDR Curved QHD 2560x1440",
    "url": "https://www.skroutz.gr/s/54766691/LG-UltraGear-27GS60QC-B-VA-HDR-Curved-Gaming-Monitor-27-QHD-2560x1440-180Hz-me-CHrono-Apokrisis-1ms-GTG.html",
-   "price": 157.64,
+   "price": 158.1,
    "shopCount": null,
    "brand": "LG",
    "chip": "",
@@ -2065,7 +2064,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/054766/54766691/large_20240705160534_lg_ultragear_27gs60qc_b_va_hdr_curved_gaming_monitor_27_qhd_2560by1440_180hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -2086,7 +2085,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/054776/54776103/xlarge_20240710164745_hp_s7_pro_ips_monitor_24_fhd_1920x1200.jpeg"
   },
@@ -2107,7 +2106,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/054979/54979495/xlarge_20250107162331_asus_rog_strix_xg32wcs_va_hdr_curved_gaming_monitor_31_5_qhd_2560by1440_180hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -2128,7 +2127,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/055197/55197178/xlarge_20240730102409_benq_gw2490t_ips_monitor_23_8_fhd_1920by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -2137,7 +2136,7 @@
    "source": "skroutz",
    "title": "Arzopa A1 15.6\" IPS FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/55408797/Arzopa-A1-IPS-Forito-Monitor-15-6-FHD-1920x1080.html",
-   "price": 86.59,
+   "price": 86.53,
    "shopCount": null,
    "brand": "Arzopa",
    "chip": "",
@@ -2149,7 +2148,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/055408/55408797/xlarge_20240812110412_arzopa_a1_ips_forito_monitor_15_6_fhd_1920x1080.jpeg"
   },
@@ -2158,7 +2157,7 @@
    "source": "skroutz",
    "title": "AOC VA HDR FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/55499004/AOC-27G15N2-VA-HDR-Gaming-Monitor-27-FHD-1920x1080-180Hz.html",
-   "price": 109.0,
+   "price": 99.9,
    "shopCount": null,
    "brand": "AOC",
    "chip": "",
@@ -2170,9 +2169,9 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
-   "drop": 15,
+   "drop": 16,
    "image": "https://c.scdn.gr/images/sku_main_images/055499/55499004/xlarge_20240819125200_aoc_27g15n2_va_hdr_monitor_27_fhd_1920by1080_180hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
   {
@@ -2192,7 +2191,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "drop": 4,
    "image": "https://a.scdn.gr/images/sku_main_images/055743/55743511/xlarge_20250401154729_lg_32gs95ux_b_oled_hdr_monitor_31_5_4k_3840by2160_240hz_me_chrono_apokrisis_0_03ms_gtg.jpeg"
@@ -2214,7 +2213,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/056026/56026952/xlarge_20240912121549_hp_series_3_pro_va_monitor_23_8_fhd_1920by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -2235,7 +2234,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/056306/56306500/xlarge_20240918130950_dell_e2225h_va_monitor_21_5_fhd_1920x1080.jpeg"
   },
@@ -2244,7 +2243,7 @@
    "source": "skroutz",
    "title": "HP S7 Pro 39.7\" Ultrawide IPS Curved 5120x2160",
    "url": "https://www.skroutz.gr/s/56306649/HP-S7-Pro-Ultrawide-IPS-Curved-Monitor-39-7-5120x2160-me-CHrono-Apokrisis-5ms-GTG.html",
-   "price": 2642.88,
+   "price": 2641.56,
    "shopCount": null,
    "brand": "HP",
    "chip": "",
@@ -2256,7 +2255,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/056306/56306649/xlarge_20240918131545_hp_s7_pro_ips_curved_monitor_39_7_5120by2160_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -2277,7 +2276,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/056582/56582764/xlarge_20241002093332_dell_se2425h_va_monitor_23_8_fhd_1920by1080_me_chrono_apokrisis_8ms_gtg.jpeg"
   },
@@ -2298,7 +2297,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/056584/56584951/xlarge_20241002101758_lg_ultragear_27gs50f_b_va_gaming_monitor_27_fhd_1920by1080_180hz_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -2307,7 +2306,7 @@
    "source": "skroutz",
    "title": "HP Series 7 Pro 27\" IPS HDR 4K 3840x2160",
    "url": "https://www.skroutz.gr/s/57387079/HP-Series-7-Pro-IPS-HDR-Monitor-27-4K-3840x2160-me-CHrono-Apokrisis-5ms-GTG.html",
-   "price": 1328.1,
+   "price": 1215.45,
    "shopCount": null,
    "brand": "HP",
    "chip": "",
@@ -2319,7 +2318,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/057387/57387079/xlarge_20250124125826_hp_series_7_pro_ips_hdr_monitor_27_4k_3840by2160_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -2340,7 +2339,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/057397/57397365/xlarge_20250107162345_lg_32gs85q_b_ips_hdr_gaming_monitor_31_5_qhd_2560by1440_180hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -2361,7 +2360,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/057450/57450062/xlarge_20250331154548_asus_vy279hgr_ips_gaming_monitor_27_fhd_1920by1080_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -2382,7 +2381,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/057450/57450656/xlarge_20241115101431_samsung_essential_monitor_va_hdr_curved_monitor_24_fhd_1920by1080_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -2403,7 +2402,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/057598/57598954/xlarge_20241122112816_elodie_details_e511214_monitor_21_5_fhd_1920by1080_me_chrono_apokrisis_14ms_gtg.jpeg"
   },
@@ -2424,16 +2423,16 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
-   "image": "https://c.scdn.gr/images/sku_main_images/057961/57961701/large_20250312122605_asus_vu279hfi_w_ips_monitor_27_fhd_1920x1080.jpeg"
+   "image": "https://b.scdn.gr/images/sku_main_images/057961/57961701/xlarge_20250312122605_asus_vu279hfi_w_ips_monitor_27_fhd_1920x1080.jpeg"
   },
   {
    "id": "skroutz:58078432",
    "source": "skroutz",
    "title": "Iiyama ProLite IPS FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/58078432/Iiyama-ProLite-XUB2797HSN-W2-IPS-Gaming-Monitor-27-FHD-1920x1080-Leyko.html",
-   "price": 258.9,
+   "price": 227.27,
    "shopCount": null,
    "brand": "iiyama",
    "chip": "",
@@ -2445,7 +2444,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/058078/58078432/xlarge_20241220144934_iiyama_prolite_xub2797hsn_w2_ips_monitor_27_fhd_1920x1080.jpeg"
   },
@@ -2454,7 +2453,7 @@
    "source": "skroutz",
    "title": "Asus IPS FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/58171410/Asus-VA24DQFS-IPS-Monitor-24-FHD-1920x1080-me-CHrono-Apokrisis-1ms-GTG.html",
-   "price": 130.07,
+   "price": 129.9,
    "shopCount": null,
    "brand": "Asus",
    "chip": "",
@@ -2466,7 +2465,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/058171/58171410/large_20250130135247_asus_va24dqfs_ips_monitor_24_fhd_1920x1080.jpeg"
   },
@@ -2487,7 +2486,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/058247/58247626/xlarge_20250110122907_hp_series_5_pro_ips_monitor_23_8_fhd_1920x1080.jpeg"
   },
@@ -2508,7 +2507,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/058430/58430526/xlarge_20250124101044_msi_pro_mp275pg_ips_monitor_27_fhd_1920by1080_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -2517,7 +2516,7 @@
    "source": "skroutz",
    "title": "Gigabyte GSQCA VA HDR Curved QHD 2560x1440",
    "url": "https://www.skroutz.gr/s/58448246/Gigabyte-GS27QCA-VA-HDR-Curved-Gaming-Monitor-27-QHD-2560x1440-180Hz-me-CHrono-Apokrisis-1ms-GTG.html",
-   "price": 169.89,
+   "price": 161.4,
    "shopCount": null,
    "brand": "Gigabyte",
    "chip": "",
@@ -2529,7 +2528,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/058448/58448246/xlarge_20250127104306_gigabyte_gs27qca_va_hdr_curved_monitor_27_qhd_2560by1440_180hz.jpeg"
   },
@@ -2550,7 +2549,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/058477/58477839/xlarge_20250128114528_asus_tuf_gaming_vg27wq3b_va_hdr_curved_gaming_monitor_27_qhd_2560by1440_180hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -2571,7 +2570,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/058613/58613103/xlarge_20250205104821_aoc_24g42e_ips_hdr_gaming_monitor_23_8_fhd_1920by1080_180hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -2580,7 +2579,7 @@
    "source": "skroutz",
    "title": "HP Series 5 Pro 23.8\" IPS FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/58617575/HP-Series-5-Pro-IPS-Monitor-23-8-FHD-1920x1080-me-CHrono-Apokrisis-5ms-GTG.html",
-   "price": 169.05,
+   "price": 169.09,
    "shopCount": null,
    "brand": "HP",
    "chip": "",
@@ -2592,7 +2591,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/058617/58617575/xlarge_20250205114845_hp_series_5_pro_ips_monitor_23_8_fhd_1920by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -2601,7 +2600,7 @@
    "source": "skroutz",
    "title": "Dell IPS HDR 4K 3840x2160",
    "url": "https://www.skroutz.gr/s/59276180/Dell-U3225QE-IPS-HDR-Monitor-31-5-4K-3840x2160-me-CHrono-Apokrisis-5ms-GTG.html",
-   "price": 870.24,
+   "price": 880.78,
    "shopCount": null,
    "brand": "Dell",
    "chip": "",
@@ -2613,7 +2612,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/059276/59276180/xlarge_20250317144933_dell_u3225qe_ips_hdr_monitor_31_5_4k_3840by2160_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -2634,7 +2633,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/059320/59320426/xlarge_20250319165014_japannext_jn_ips27wqhdr_c65w_monitor_27_qhd_2560x1440.jpeg"
   },
@@ -2655,7 +2654,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/059441/59441403/xlarge_20250326124435_alogic_clarity_pro_max_ips_hdr_monitor_32_4k_3840x2160.jpeg"
   },
@@ -2664,7 +2663,7 @@
    "source": "skroutz",
    "title": "LG Ultragear 32\" IPS HDR 4K 3840x2160",
    "url": "https://www.skroutz.gr/s/59465438/LG-Ultragear-IPS-HDR-Gaming-Monitor-32-4K-3840x2160-144Hz-me-CHrono-Apokrisis-1ms-GTG-Leyko.html",
-   "price": 518.71,
+   "price": 514.77,
    "shopCount": null,
    "brand": "LG",
    "chip": "",
@@ -2676,7 +2675,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/059465/59465438/xlarge_20250328085542_lg_32g810sa_w_aeu_ips_hdr_monitor_32.jpeg"
   },
@@ -2697,7 +2696,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/059574/59574792/xlarge_20250401113133_hp_series_5_pro_ips_gaming_monitor_27_qhd_2560by1440_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -2718,7 +2717,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/059576/59576113/xlarge_20250401120237_dell_pro_plus_p2725de_ips_monitor_27_qhd_2560by1440_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -2739,7 +2738,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/059576/59576500/xlarge_20250904153610_arzopa_a1t_ips_forito_monitor_15_6_fhd_1920x1080.jpeg"
   },
@@ -2748,7 +2747,7 @@
    "source": "skroutz",
    "title": "AOC VA HDR Curved FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/59677326/aoc-c24g42e-va-hdr-curved-gaming-monitor-23-6-fhd-1920x1080-180hz-me-chrono-apokrisis-1ms-gtg.html",
-   "price": 89.6,
+   "price": 89.5,
    "shopCount": null,
    "brand": "AOC",
    "chip": "",
@@ -2760,7 +2759,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/059677/59677326/xlarge_20250425153249_aoc_c24g42e_va_hdr_curved_monitor_23_6_fhd_1920by1080_180hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -2781,7 +2780,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/059789/59789470/xlarge_20250411125737_dell_p2425d_ips_monitor_23_8_qhd_2560by1440_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -2802,7 +2801,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "drop": 21,
    "image": "https://b.scdn.gr/images/sku_main_images/059789/59789882/xlarge_20250411130510_viewsonic_vx2479a_hd_pro_ips_hdr_monitor_24_fhd_1920by1080_240hz_me_chrono_apokrisis_1ms_gtg.jpeg"
@@ -2824,7 +2823,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/059806/59806751/xlarge_20250414112630_dell_plus_hdr_curved_monitor_34_qhd_3440by1440_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -2845,7 +2844,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/059806/59806868/large_20250414112746_dell_plus_ips_monitor_27_4k_3840by2160_me_chrono_apokrisis_8ms_gtg.jpeg"
   },
@@ -2866,7 +2865,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/059806/59806910/xlarge_20250414112831_dell_plus_monitor_31_5_4k_3840by2160_me_chrono_apokrisis_8ms_gtg.jpeg"
   },
@@ -2875,7 +2874,7 @@
    "source": "skroutz",
    "title": "Dell PLUS 27\" IPS 4K 3840x2160",
    "url": "https://www.skroutz.gr/s/59807150/dell-plus-ips-monitor-27-4k-3840x2160-me-chrono-apokrisis-8ms-gtg.html",
-   "price": 374.8,
+   "price": 374.9,
    "shopCount": null,
    "brand": "Dell",
    "chip": "",
@@ -2887,7 +2886,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/059807/59807150/xlarge_20250414115329_dell_plus_ips_monitor_27_4k_3840by2160_me_chrono_apokrisis_8ms_gtg.jpeg"
   },
@@ -2908,7 +2907,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/059808/59808217/xlarge_20250414115517_dell_e2225hm_va_monitor_21_5_fhd_1920x1080.jpeg"
   },
@@ -2929,7 +2928,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/060351/60351478/large_20250512141047_7star_monitor_15_6_fhd_1920x1080.jpeg"
   },
@@ -2950,7 +2949,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/060654/60654605/xlarge_20250529144303_lg_ultragear_ultrawide_oled_hdr_curved_monitor_39_qhd_3440by1440_240hz_me_chrono_apokrisis_0_03ms_gtg.jpeg"
   },
@@ -2971,7 +2970,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/060802/60802672/large_20250603100439_othoni_afis_15_6_gia_tamplo_aytokinitou_me_hdmi_x00240ajbr.jpeg"
   },
@@ -2992,7 +2991,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/060863/60863012/xlarge_20250618164233_asus_va249hg_ips_gaming_monitor_23_8_fhd_1920x1080.jpeg"
   },
@@ -3013,7 +3012,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/061044/61044545/xlarge_20250618102827_asus_tuf_gaming_vg249qe5a_ips_gaming_monitor_23_8_fhd_1920by1080_144hz.jpeg"
   },
@@ -3034,7 +3033,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/061318/61318222/xlarge_20250624115631_aoc_27b31h_ips_monitor_27_fhd_1920by1080_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -3055,7 +3054,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/061566/61566609/xlarge_20250710143707_aoc_27e4u_ips_hdr_monitor_27_fhd_1920x1080.jpeg"
   },
@@ -3076,7 +3075,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/061737/61737064/xlarge_20250717171626_hp_b1gm6aa_abb_monitor_27_fhd_1920x1080.jpeg"
   },
@@ -3097,7 +3096,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/061988/61988223/xlarge_20250801141624_aoc_27g4hre_ips_hdr_gaming_monitor_27_fhd_1920by1080_200hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -3118,7 +3117,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/062390/62390643/xlarge_20250818155659_philips_envia_24m2n3200nf_ips_hdr_monitor_24_fhd_1920by1080_144hz_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -3127,7 +3126,7 @@
    "source": "skroutz",
    "title": "LG UltraGear 34\" Ultrawide VA HDR Curved QHD 3440x1440",
    "url": "https://www.skroutz.gr/s/62588362/lg-ultragear-ultrawide-va-hdr-curved-gaming-monitor-34-qhd-3440x1440-160hz-me-chrono-apokrisis-5ms-gtg.html",
-   "price": 311.21,
+   "price": 283.25,
    "shopCount": null,
    "brand": "LG",
    "chip": "",
@@ -3139,7 +3138,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/062588/62588362/xlarge_20250826132302_lg_ultragear_va_hdr_curved_monitor_34_qhd_3440by1440_160hz_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -3160,7 +3159,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/062588/62588451/xlarge_20250917094719_aoc_24b36x_ips_hdr_monitor_23_8_fhd_1920by1080_144hz_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -3181,7 +3180,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/062603/62603515/xlarge_20250828150617_verbatim_32088_ips_monitor_14_fhd_1920x1080.jpeg"
   },
@@ -3202,7 +3201,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/062907/62907565/xlarge_20250905130921_verbatim_32087_touch_forito_monitor_13_3_fhd_1920x1200.jpeg"
   },
@@ -3223,7 +3222,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/062934/62934335/xlarge_20250923172523_lg_ultrawide_ips_monitor_29_fhd_2560by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -3232,7 +3231,7 @@
    "source": "skroutz",
    "title": "Philips 2000 Series 27\" IPS QHD 2560x1440",
    "url": "https://www.skroutz.gr/s/63116399/philips-2000-series-ips-gaming-monitor-27-qhd-2560x1440.html",
-   "price": 140.63,
+   "price": 143.0,
    "shopCount": null,
    "brand": "Philips",
    "chip": "",
@@ -3244,7 +3243,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/063116/63116399/xlarge_20250926104418_philips_2000_series_ips_monitor_27_qhd_2560x1440.jpeg"
   },
@@ -3253,7 +3252,7 @@
    "source": "skroutz",
    "title": "OptimX OptimX 27\" IPS FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/63211420/optimx-optimx-ips-monitor-27-fhd-1920x1080.html",
-   "price": 87.61,
+   "price": 87.58,
    "shopCount": null,
    "brand": "Optimx",
    "chip": "",
@@ -3265,9 +3264,9 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
-   "image": "https://d.scdn.gr/images/sku_main_images/063211/63211420/xlarge_20250926121607_ips_optimx_se70if_ips_monitor_27_fhd_1920x1080.jpeg"
+   "image": "https://c.scdn.gr/images/sku_main_images/063211/63211420/large_20250926121607_ips_optimx_se70if_ips_monitor_27_fhd_1920x1080.jpeg"
   },
   {
    "id": "skroutz:63450585",
@@ -3286,7 +3285,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/063450/63450585/xlarge_20251008120847_lg_34gx900a_b_oled_hdr_curved_monitor_34_qhd_3440by1440_240hz.jpeg"
   },
@@ -3295,7 +3294,7 @@
    "source": "skroutz",
    "title": "Verbatim Light IPS HDR Touch FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/63816957/verbatim-light-32402-ips-hdr-touch-forito-monitor-15-6-fhd-1920x1080-me-chrono-apokrisis-10ms-gtg.html",
-   "price": 130.98,
+   "price": 110.57,
    "shopCount": null,
    "brand": "Verbatim",
    "chip": "",
@@ -3307,7 +3306,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/063816/63816957/xlarge_20260128161105_verbatim_light_32402_ips_hdr_touch_forito_monitor_15_6_fhd_1920by1080_me_chrono_apokrisis_10ms_gtg.jpeg"
   },
@@ -3328,7 +3327,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/063954/63954563/xlarge_20251031143302_lg_ultragear_wqhd_hdr_curved_monitor_34_qhd_3440by1440_240hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -3349,7 +3348,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/064189/64189459/xlarge_20251111130640_dell_s_series_s2725hsm_ips_monitor_27_fhd_1920by1080_144hz_me_chrono_apokrisis_8ms_gtg.jpeg"
   },
@@ -3370,7 +3369,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/064190/64190389/xlarge_20261009165843_terra_wortmann_ag_2456w_pv_v4_monitor_23_8_fhd_1920x1080.jpeg"
   },
@@ -3391,7 +3390,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/064238/64238917/xlarge_20251114123754_79006_monitor_21_5_fhd_1920x1080.jpeg"
   },
@@ -3412,7 +3411,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/064238/64238960/large_20251114123939_lg_ultragear_oled_hdr_gaming_monitor_27_qhd_2560by1440_280hz_me_chrono_apokrisis_0_03ms_gtg.jpeg"
   },
@@ -3433,7 +3432,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/064239/64239014/xlarge_20251114124043_79009_gaming_monitor_32_fhd_1920by1080_165hz.jpeg"
   },
@@ -3454,9 +3453,9 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
-   "image": "https://b.scdn.gr/images/sku_main_images/064379/64379672/xlarge_20251124170237_lg_ultragear_hdr_monitor_27_qhd_2560by1440_240hz_me_chrono_apokrisis_0_03ms_gtg.jpeg"
+   "image": "https://a.scdn.gr/images/sku_main_images/064379/64379672/large_20251124170237_lg_ultragear_hdr_monitor_27_qhd_2560by1440_240hz_me_chrono_apokrisis_0_03ms_gtg.jpeg"
   },
   {
    "id": "skroutz:64411876",
@@ -3475,7 +3474,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/064411/64411876/xlarge_20260923170229_hannspree_ips_touch_forito_monitor_21_5_fhd_1920x1080.jpeg"
   },
@@ -3496,7 +3495,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "drop": 13,
    "image": "https://d.scdn.gr/images/sku_main_images/064411/64411891/xlarge_20251224163410_lg_ultragear_ips_hdr_gaming_monitor_27_qhd_2560by1440_300hz_me_chrono_apokrisis_1ms_gtg.jpeg"
@@ -3518,7 +3517,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/064951/64951760/xlarge_20260109143535_japannext_jn_dmd_ips156f_ips_forito_monitor_15_6_fhd_1920x1080.jpeg"
   },
@@ -3539,7 +3538,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/065012/65012252/xlarge_20260115125603_arozzi_nova_ips_gaming_monitor_24_fhd_1920by1080_200hz_me_chrono_apokrisis_2ms_gtg_forest_green.jpeg"
   },
@@ -3560,7 +3559,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/065032/65032049/xlarge_20260122180825_alogic_edge_40_ultrawide_ips_monitor_40_5120by2160_me_chrono_apokrisis_14ms_gtg.jpeg"
   },
@@ -3581,7 +3580,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/065111/65111061/xlarge_20260123174357_lenovo_thinkvision_va_monitor_23_8_fhd_1920by1080_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -3602,7 +3601,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/065208/65208241/xlarge_20260225103349_japannext_jn_ips27fhdr_c65w_hsp_hdr_monitor_27_fhd_1920x1080.jpeg"
   },
@@ -3611,7 +3610,7 @@
    "source": "skroutz",
    "title": "Japannext 23.8\" IPS HDR 4K 3840x2160",
    "url": "https://www.skroutz.gr/s/65208342/japannext-ips-hdr-monitor-23-8-4k-3840x2160.html",
-   "price": 314.49,
+   "price": 314.46,
    "shopCount": null,
    "brand": "Japannext",
    "chip": "",
@@ -3623,7 +3622,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/065208/65208342/xlarge_20260129130037_japannext_jn_ips2380uhdr_c65w_hsp_hdr_monitor_23_8_4k_3840x2160.jpeg"
   },
@@ -3644,7 +3643,7 @@
    "panel": "TN",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/065325/65325148/xlarge_20260209121518_79008_tn_gaming_monitor_27_fhd_1920by1080_165hz.jpeg"
   },
@@ -3665,7 +3664,7 @@
    "panel": "TN",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/065325/65325208/xlarge_20260209121637_79007_tn_monitor_23_fhd_1920x1080.jpeg"
   },
@@ -3686,7 +3685,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/065327/65327094/xlarge_20260209125845_dell_pro_e2726hs_ultrawide_ips_monitor_27_fhd_1920x1080.jpeg"
   },
@@ -3707,7 +3706,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/065334/65334763/xlarge_20260209152205_iiyama_xb2496hsc_b1_ips_monitor_24_fhd_1920by1080_144hz_me_chrono_apokrisis_3ms_gtg.jpeg"
   },
@@ -3728,7 +3727,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/065345/65345662/xlarge_20260210094258_japannext_jn_ips275k_hspc9_ips_hdr_monitor_27_5120by2880_me_chrono_apokrisis_8ms_gtg.jpeg"
   },
@@ -3749,9 +3748,9 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
-   "image": "https://b.scdn.gr/images/sku_main_images/065348/65348641/large_20260210113041_japannext_jn_ips238fhdr_c65w_hsp_ips_hdr_monitor_23_8_fhd_1920by1080_me_chrono_apokrisis_14ms_gtg.jpeg"
+   "image": "https://c.scdn.gr/images/sku_main_images/065348/65348641/xlarge_20260210113041_japannext_jn_ips238fhdr_c65w_hsp_ips_hdr_monitor_23_8_fhd_1920by1080_me_chrono_apokrisis_14ms_gtg.jpeg"
   },
   {
    "id": "skroutz:65371663",
@@ -3770,9 +3769,9 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
-   "image": "https://c.scdn.gr/images/sku_main_images/065371/65371663/xlarge_20260211121541_acer_ips_hdr_monitor_23_8_fhd_1920by1080_180hz_me_chrono_apokrisis_1ms_gtg.jpeg"
+   "image": "https://c.scdn.gr/images/sku_main_images/065371/65371663/large_20260211121541_acer_ips_hdr_monitor_23_8_fhd_1920by1080_180hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
   {
    "id": "skroutz:65467773",
@@ -3791,7 +3790,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/065467/65467773/xlarge_20260216094503_philips_3000_series_ips_monitor_32_qhd_2560by1440_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -3812,9 +3811,9 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
-   "image": "https://d.scdn.gr/images/sku_main_images/065668/65668616/large_20260225145040_qova_ips_touch_forito_monitor_15_6_fhd_1920x1080.jpeg"
+   "image": "https://a.scdn.gr/images/sku_main_images/065668/65668616/xlarge_20260225145040_qova_ips_touch_forito_monitor_15_6_fhd_1920x1080.jpeg"
   },
   {
    "id": "skroutz:65668799",
@@ -3833,7 +3832,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/065668/65668799/xlarge_20260226150624_philips_3000_series_ips_monitor_32_qhd_2560by1440_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -3854,7 +3853,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/065669/65669264/xlarge_20260225152713_benq_bl2790c_ips_monitor_27_fhd_1920by1080_144hz_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -3875,7 +3874,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/065830/65830755/xlarge_20260305132605_arzopa_9_3mm_hdr_touch_forito_monitor_15_6_fhd_1920x1080.jpeg"
   },
@@ -3896,7 +3895,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/065858/65858704/xlarge_20260602154720_japannext_ips_gaming_monitor_23_8_fhd_1920by1080_me_chrono_apokrisis_0_5ms_gtg.jpeg"
   },
@@ -3917,7 +3916,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/065933/65933329/xlarge_20260311102754_qova_ips_forito_monitor_23_8_fhd_1920x1080.jpeg"
   },
@@ -3938,7 +3937,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/066100/66100295/large_20260319130455_hannspree_ht240cua_va_touch_forito_monitor_23_8_fhd_1920x1080.jpeg"
   },
@@ -3959,7 +3958,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/066498/66498922/xlarge_20260407131350_asus_pa32ucdmr_k_qd_oled_hdr_monitor_31_5_4k_3840by2160_240hz_me_chrono_apokrisis_0_1ms_gtg.jpeg"
   },
@@ -3980,7 +3979,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/066609/66609125/xlarge_20260415124055_dell_pro_p_p2226h_ips_monitor_21_5_fhd_1920x1080.jpeg"
   },
@@ -4001,7 +4000,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/067009/67009092/xlarge_20260507165245_samsung_essential_monitor_s3_va_monitor_24_fhd_1920x1080.jpeg"
   },
@@ -4010,7 +4009,7 @@
    "source": "skroutz",
    "title": "Asus ROG Strix OLED QD-OLED HDR 4K 3840x2160",
    "url": "https://www.skroutz.gr/s/67009377/asus-rog-strix-oled-xg27uqdms-qd-oled-hdr-gaming-monitor-26-5-4k-3840x2160-240hz-me-chrono-apokrisis-0-03ms-gtg.html",
-   "price": 856.63,
+   "price": 810.13,
    "shopCount": null,
    "brand": "Asus",
    "chip": "",
@@ -4022,9 +4021,9 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
-   "image": "https://b.scdn.gr/images/sku_main_images/067009/67009377/xlarge_20260504155356_asus_rog_strix_oled_xg27uqdms_qd_oled_hdr_gaming_monitor_26_5_4k_3840by2160_240hz_me_chrono_apokrisis_0_03ms_gtg.jpeg"
+   "image": "https://c.scdn.gr/images/sku_main_images/067009/67009377/large_20260504155356_asus_rog_strix_oled_xg27uqdms_qd_oled_hdr_gaming_monitor_26_5_4k_3840by2160_240hz_me_chrono_apokrisis_0_03ms_gtg.jpeg"
   },
   {
    "id": "skroutz:67450525",
@@ -4043,7 +4042,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/067450/67450525/xlarge_20260522113218_japannext_fhd_forito_monitor_15_6_fhd_1920x1080.jpeg"
   },
@@ -4052,7 +4051,7 @@
    "source": "skroutz",
    "title": "Japannext 23.8\" IPS FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/67450531/japannext-ips-monitor-23-8-fhd-1920x1080.html",
-   "price": 255.58,
+   "price": 254.39,
    "shopCount": null,
    "brand": "Japannext",
    "chip": "",
@@ -4064,7 +4063,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/067450/67450531/xlarge_20260522113236_japannext_jn_md_ips238f_c6_ips_monitor_23_8_fhd_1920x1080.jpeg"
   },
@@ -4085,7 +4084,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/067596/67596206/xlarge_20260602151740_japannext_jn_md_i156f_t_le_ips_hdr_forito_monitor_15_6_fhd_1920x1080.jpeg"
   },
@@ -4106,7 +4105,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/067604/67604266/xlarge_20260602170452_acer_ips_forito_monitor_18_5_fhd_1920by1080_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -4127,7 +4126,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/067613/67613556/large_20260603132718_philips_ips_hdr_monitor_23_8_fhd_1920by1080_260hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -4148,7 +4147,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/067666/67666982/xlarge_20260610164027_aoc_c27g42ze_va_hdr_curved_gaming_monitor_27_fhd_1920by1080_260hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -4169,7 +4168,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/067892/67892729/xlarge_20260616142017_terra_wortmann_ag_2427w_v3_ips_monitor_23_8_fhd_1920x1080.jpeg"
   },
@@ -4190,7 +4189,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/068018/68018362/xlarge_20260624124038_minix_forito_monitor_16_fhd_1920by1200_asimi.jpeg"
   },
@@ -4211,7 +4210,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/068018/68018371/xlarge_20260624124039_minix_sf10t_ips_hdr_forito_monitor_10_5_1920by1280_asimi.jpeg"
   },
@@ -4232,7 +4231,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/068244/68244292/xlarge_20260630152645_lg_25g523b_b_aeu_ips_hdr_gaming_monitor_24_4_fhd_1920by1080_200hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -4253,7 +4252,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/068278/68278798/xlarge_20260702155901_samsung_odyssey_g8_ips_hdr_gaming_monitor_32_6144by3456_165hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -4274,7 +4273,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/068278/68278808/xlarge_20260702160159_samsung_odyssey_g8_ips_hdr_gaming_monitor_27_5120by2880_360hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -4283,7 +4282,7 @@
    "source": "skroutz",
    "title": "LG UltraGear IPS HDR FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/68288099/lg-ultragear-ips-hdr-gaming-monitor-27-fhd-1920x1080-300hz-me-chrono-apokrisis-1ms-gtg.html",
-   "price": 240.29,
+   "price": 205.85,
    "shopCount": null,
    "brand": "LG",
    "chip": "",
@@ -4295,7 +4294,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/068288/68288099/xlarge_20260703125224_lg_ultragear_ips_hdr_gaming_monitor_27_fhd_1920by1080_300hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -4304,7 +4303,7 @@
    "source": "skroutz",
    "title": "Japannext 23.8\" IPS HDR 4K 3840x2160",
    "url": "https://www.skroutz.gr/s/68564287/japannext-ips-hdr-forito-monitor-23-8-4k-3840x2160-me-chrono-apokrisis-5ms-gtg.html",
-   "price": 437.96,
+   "price": 397.74,
    "shopCount": null,
    "brand": "Japannext",
    "chip": "",
@@ -4316,7 +4315,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/068564/68564287/xlarge_20260715161955_japannext_jn_md_ips238u_c6_ips_hdr_forito_monitor_8_4k_3840by2160_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -4337,7 +4336,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/068616/68616288/xlarge_20260720145713_dahua_100513688_va_curved_gaming_monitor_31_5_fhd_1920by1080_165hz.jpeg"
   },
@@ -4358,7 +4357,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/068616/68616618/xlarge_20260720151035_hannspree_ht249ppb_monitor_23_8_fhd_1920x1080.jpeg"
   },
@@ -4379,7 +4378,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/068616/68616771/xlarge_20260720151853_japannext_jn_dmd_ips238f_c4_ips_forito_monitor_23_8_fhd_1920x1080.jpeg"
   },
@@ -4400,7 +4399,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/068616/68616779/xlarge_20260720151943_msi_mag_va_hdr_curved_gaming_monitor_34_qhd_3440by1440_200hz_me_chrono_apokrisis_0_5ms_gtg.jpeg"
   },
@@ -4409,7 +4408,7 @@
    "source": "skroutz",
    "title": "HannSpree 21.45\" FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/68616862/hannspree-monitor-21-45-fhd-1920x1080-me-chrono-apokrisis-5ms-gtg.html",
-   "price": 427.48,
+   "price": 427.34,
    "shopCount": null,
    "brand": "Hannspree",
    "chip": "",
@@ -4421,7 +4420,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/068616/68616862/xlarge_20260720152424_hannspree_ho221ptb_monitor_21_45_fhd_1920by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -4442,7 +4441,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/068617/68617535/xlarge_20260720160530_hp_pro_ips_hdr_monitor_27_qhd_2560by1440_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -4463,7 +4462,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/068618/68618364/xlarge_20260720161744_msi_pro_ips_gaming_monitor_27_fhd_1920by1080_144hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -4472,7 +4471,7 @@
    "source": "skroutz",
    "title": "Acer Nitro IPS FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/68618639/acer-nitro-ips-gaming-monitor-23-8-fhd-1920x1080-240hz-me-chrono-apokrisis-1ms-gtg.html",
-   "price": 130.0,
+   "price": 110.57,
    "shopCount": null,
    "brand": "Acer",
    "chip": "",
@@ -4484,7 +4483,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/068618/68618639/xlarge_20260720163417_acer_nitro_ips_gaming_monitor_23_8_fhd_1920by1080_240hz.jpeg"
   },
@@ -4493,7 +4492,7 @@
    "source": "skroutz",
    "title": "LG UltraGear 32\" IPS HDR QHD 2560x1440",
    "url": "https://www.skroutz.gr/s/68637286/lg-ultragear-ips-hdr-gaming-monitor-32-qhd-2560x1440-200hz-me-chrono-apokrisis-1ms-gtg.html",
-   "price": 222.36,
+   "price": 199.0,
    "shopCount": null,
    "brand": "LG",
    "chip": "",
@@ -4505,8 +4504,9 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
+   "drop": 20,
    "image": "https://c.scdn.gr/images/sku_main_images/068637/68637286/large_20260721154923_lg_ultragear_ips_hdr_gaming_monitor_32_qhd_2560by1440_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
   {
@@ -4526,7 +4526,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/068637/68637573/xlarge_20260721162319_acer_va_monitor_27_fhd_1920by1080_144hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -4547,7 +4547,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/068672/68672580/xlarge_20260723132329_asus_va249qgs_w_ips_monitor_23_8_fhd_1920by1080_leyko.jpeg"
   },
@@ -4556,7 +4556,7 @@
    "source": "skroutz",
    "title": "LG UltraGear G4 IPS HDR FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/69010461/lg-ultragear-g4-ips-hdr-gaming-monitor-24-fhd-1920x1080-144hz-me-chrono-apokrisis-5ms-gtg.html",
-   "price": 88.85,
+   "price": 79.0,
    "shopCount": null,
    "brand": "LG",
    "chip": "",
@@ -4568,8 +4568,9 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
+   "drop": 10,
    "image": "https://b.scdn.gr/images/sku_main_images/069010/69010461/xlarge_20260819115741_lg_ultragear_g4_ips_hdr_gaming_monitor_24_fhd_1920by1080_144hz_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
   {
@@ -4589,7 +4590,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/069062/69062290/xlarge_20260923170226_lg_24g414b_ips_hdr_gaming_monitor_24_fhd_1920by1080_144hz_me_chrono_apokrisis_5ms_gtg_asimi.jpeg"
   },
@@ -4598,7 +4599,7 @@
    "source": "skroutz",
    "title": "LG U4 IPS HDR FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/69062329/lg-27u411b-ips-hdr-gaming-monitor-27-fhd-1920x1080-144hz-me-chrono-apokrisis-1ms-gtg-asimi.html",
-   "price": 93.9,
+   "price": 89.0,
    "shopCount": null,
    "brand": "LG",
    "chip": "",
@@ -4610,7 +4611,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/069062/69062329/xlarge_20260825111209_lg_27u411b_ips_hdr_gaming_monitor_27_fhd_1920by1080_144hz_me_chrono_apokrisis_1ms_gtg_asimi.jpeg"
   },
@@ -4631,7 +4632,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/069094/69094145/large_20260828124602_aoc_24g50f_ips_hdr_gaming_monitor_23_8_fhd_1920by1080_180hz_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -4652,7 +4653,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/069094/69094172/xlarge_20260826122200_aoc_c27g42fe_va_curved_gaming_monitor_27_fhd_1920by1080_180hz.jpeg"
   },
@@ -4673,7 +4674,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/069131/69131705/xlarge_20260828124436_hannspree_ht279ppb_touch_forito_monitor_27_fhd_1920x1080.jpeg"
   },
@@ -4682,7 +4683,7 @@
    "source": "skroutz",
    "title": "Samsung Odyssey G8 32\" IPS HDR 6144x3456",
    "url": "https://www.skroutz.gr/s/69132587/samsung-odyssey-g8-ips-hdr-gaming-monitor-32-6144x3456-330hz-me-chrono-apokrisis-1ms-gtg.html",
-   "price": 1283.34,
+   "price": 1283.31,
    "shopCount": null,
    "brand": "Samsung",
    "chip": "",
@@ -4694,7 +4695,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/069132/69132587/xlarge_20260828134236_samsung_odyssey_g8_ips_monitor_32_6144by3456_330hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -4715,7 +4716,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/069132/69132599/xlarge_20260828134428_uvy_hdr_forito_monitor_16_1_fhd_1920x1080.jpeg"
   },
@@ -4736,7 +4737,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/069132/69132920/xlarge_20260828143219_arozzi_nova_ips_gaming_monitor_27_qhd_2560by1440_260hz_me_chrono_apokrisis_1ms_gtg_prasino.jpeg"
   },
@@ -4757,7 +4758,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/069179/69179962/xlarge_20260901135336_philips_3000_series_ips_monitor_23_8_qhd_2560by1440_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -4778,7 +4779,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/069316/69316447/xlarge_20260914104537_asus_proart_display_oled_pa279cdv_qd_oled_hdr_monitor_26_5_4k_3840by2160_me_chrono_apokrisis_0_1ms_gtg_asimi.jpeg"
   },
@@ -4799,7 +4800,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/069317/69317072/xlarge_20260909165029_samsung_essential_g31h_ips_monitor_24_fhd_1920by1080_144hz.jpeg"
   },
@@ -4808,7 +4809,7 @@
    "source": "skroutz",
    "title": "Armaggeddon PXP 34 Pro C 34\" Ultrawide VA HDR Curved",
    "url": "https://www.skroutz.gr/s/69387482/armaggeddon-pxp-34-pro-c-ultrawide-va-hdr-curved-gaming-monitor-34-180hz-me-chrono-apokrisis-1ms-gtg.html",
-   "price": 269.82,
+   "price": 260.29,
    "shopCount": null,
    "brand": "Armaggeddon",
    "chip": "",
@@ -4820,7 +4821,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/069387/69387482/xlarge_20260915124802_armaggeddon_pxp_34_pro_c_ultrawide_va_hdr_curved_gaming_monitor_34_180hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -4841,7 +4842,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/069430/69430468/xlarge_20260917134405_lg_ultragear_ips_gaming_monitor_25_fhd_1920x1080.jpeg"
   },
@@ -4850,7 +4851,7 @@
    "source": "skroutz",
    "title": "Vilux 15.6\" IPS HDR FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/69431224/vilux-ips-hdr-forito-monitor-15-6-fhd-1920x1080-mple.html",
-   "price": 175.34,
+   "price": 162.61,
    "shopCount": null,
    "brand": "Vilux",
    "chip": "",
@@ -4862,7 +4863,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/069431/69431224/xlarge_20260917135652_vilux_ips_hdr_forito_monitor_15_6_fhd_1920by1080_mple.jpeg"
   },
@@ -4883,7 +4884,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/069431/69431226/xlarge_20260917135726_vilux_pm16_f201pd_s_ips_hdr_forito_monitor_15_6_fhd_1920by1080_mple.jpeg"
   },
@@ -4904,7 +4905,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/069432/69432467/xlarge_20260923170219_umax_ips_monitor_27_fhd_1920x1080.jpeg"
   },
@@ -4925,7 +4926,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/069561/69561018/xlarge_20260924134641_arzopa_a1_pro_ips_hdr_forito_monitor_15_6_fhd_1920by1080_gri.jpeg"
   },
@@ -4946,7 +4947,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/069617/69617547/xlarge_20260928134521_dell_pro_e2226h_ips_monitor_22_fhd_1920x1080.jpeg"
   },
@@ -4967,7 +4968,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/069674/69674832/large_20261001110426_detech_79005_monitor_19_fhd_1920x1080.jpeg"
   },
@@ -4988,7 +4989,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/069755/69755949/xlarge_20261005124430_samsung_odyssey_g7_oled_hdr_gaming_monitor_27_4k_3840by2160_165hz_me_chrono_apokrisis_0_03ms_gtg.jpeg"
   },
@@ -5009,7 +5010,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/070041/70041053/xlarge_20261013133320_iiyama_prolite_xb2497hsu_b1_ips_monitor_23_8_fhd_1920by1080_me_chrono_apokrisis_4ms_gtg.jpeg"
   },
@@ -5030,7 +5031,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/070095/70095842/xlarge_20261015160522_tcl_pro_hdr_gaming_monitor_24_5_qhd_2560by1440_320hz_me_chrono_apokrisis_1ms_gtg_gri.jpeg"
   },
@@ -5051,7 +5052,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/070109/70109231/xlarge_20261016115946_qova_ips_forito_monitor_14_fhd_1920by1080_mple.jpeg"
   },
@@ -5072,7 +5073,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/070109/70109259/xlarge_20261016120141_qova_ips_forito_monitor_15_6_fhd_1920by1080_mple.jpeg"
   },
@@ -5093,7 +5094,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/070109/70109271/xlarge_20261016120154_qova_ips_hdr_forito_monitor_15_6_fhd_1920x1080.jpeg"
   },
@@ -5114,7 +5115,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/070298/70298478/xlarge_20261027135745_zeuslap_p25k_forito_monitor_16_qhd_2560x1600.jpeg"
   },
@@ -5135,7 +5136,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/070298/70298875/large_20261027140046_hp_series_7_pro_ips_monitor_31_5_4k_3840by2160_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -5144,7 +5145,7 @@
    "source": "skroutz",
    "title": "Rampage 27\" IPS QHD 2560x1440",
    "url": "https://www.skroutz.gr/s/70299427/rampage-ips-monitor-27-qhd-2560x1440-me-chrono-apokrisis-1ms-gtg.html",
-   "price": 384.27,
+   "price": 384.09,
    "shopCount": null,
    "brand": "Rampage",
    "chip": "",
@@ -5156,7 +5157,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/070299/70299427/xlarge_20261027142701_rampage_sl27f275q_ips_monitor_27_qhd_2560by1440_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -5165,7 +5166,7 @@
    "source": "skroutz",
    "title": "Rampage 27\" Ultrawide FHD 2560x1080",
    "url": "https://www.skroutz.gr/s/70300656/rampage-ultrawide-gaming-monitor-27-fhd-2560x1080-180hz-me-chrono-apokrisis-1ms-gtg.html",
-   "price": 233.9,
+   "price": 195.07,
    "shopCount": null,
    "brand": "Rampage",
    "chip": "",
@@ -5177,7 +5178,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/070300/70300656/xlarge_20261027143143_rampage_mc27rq180_gaming_monitor_27_fhd_2560by1080_180hz_me_chrono_apokrisis_1ms_gtg.jpeg"
   },
@@ -5186,7 +5187,7 @@
    "source": "skroutz",
    "title": "Rampage 27\" IPS FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/70301291/rampage-ips-gaming-monitor-27-fhd-1920x1080-200hz-me-chrono-apokrisis-0-5ms-gtg.html",
-   "price": 206.9,
+   "price": 182.1,
    "shopCount": null,
    "brand": "Rampage",
    "chip": "",
@@ -5198,7 +5199,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://c.scdn.gr/images/sku_main_images/070301/70301291/xlarge_20261027143555_rampage_cr27r200_ips_gaming_monitor_27_fhd_1920by1080_200hz_me_chrono_apokrisis_0_5ms_gtg.jpeg"
   },
@@ -5207,7 +5208,7 @@
    "source": "skroutz",
    "title": "BenQ IPS FHD 1920x1080",
    "url": "https://www.skroutz.gr/s/70302829/benq-gw2791p-ips-monitor-27-fhd-1920x1080-asimi.html",
-   "price": 116.2,
+   "price": 121.93,
    "shopCount": null,
    "brand": "BenQ",
    "chip": "",
@@ -5219,7 +5220,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/070302/70302829/xlarge_20261027145218_benq_gw2791p_ips_monitor_27_fhd_1920by1080_asimi.jpeg"
   },
@@ -5240,7 +5241,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/070528/70528700/xlarge_20261106152211_benq_bl2791p_ips_monitor_27_fhd_1920by1080_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -5261,7 +5262,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://b.scdn.gr/images/sku_main_images/070576/70576585/xlarge_20261110102729_lorgar_ips_monitor_24_5_fhd_1920by1080_400hz_me_chrono_apokrisis_0_5ms_gtg.jpeg"
   },
@@ -5282,7 +5283,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://a.scdn.gr/images/sku_main_images/070576/70576763/xlarge_20261110103230_hp_series_7_pro_ips_monitor_24_fhd_1920by1200_me_chrono_apokrisis_5ms_gtg_asimi.jpeg"
   },
@@ -5303,7 +5304,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/070576/70576883/xlarge_20261110103648_ernitec_0070_24143_monitor_43_me_chrono_apokrisis_5ms_gtg_asimi.jpeg"
   },
@@ -5324,7 +5325,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "no-identity",
    "image": "https://d.scdn.gr/images/sku_main_images/070577/70577049/xlarge_20261110103952_hp_series_5_pro_ips_monitor_23_8_fhd_1920by1080_asimi.jpeg"
   },
@@ -5345,7 +5346,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://cts-gr.com/images/detailed/82/262-80-LVM273D.jpg"
   },
@@ -5366,7 +5367,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://external.webstorage.gr/mmimages/image/85/81/26/52/2096313-MONITOR-HPS5-PRO-hero-800x800.jpg"
   },
@@ -5387,7 +5388,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://external.webstorage.gr/mmimages/image/97/24/27/44/2096312-MONITOR-HPS3-PRO-hero-800x800.jpg"
   },
@@ -5408,7 +5409,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://external.webstorage.gr/mmimages/image/85/7/30/88/2096304-HP-hero-800x800.jpg"
   },
@@ -5429,7 +5430,7 @@
    "panel": "IPS",
    "colour": "silver",
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://www.websupplies.gr/images/thumbs/0322290.jpeg"
   },
@@ -5450,7 +5451,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://external.webstorage.gr/mmimages/image/20/27/96/16/2121982-HP-hero-800x800.jpg"
   },
@@ -5471,7 +5472,7 @@
    "panel": null,
    "colour": "black",
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/retro-anti-radiation-uv-protection-computer-glasses-black.jpg"
   },
@@ -5492,7 +5493,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://external.webstorage.gr/mmimages/image/51/30/91/14/2024542-MAG-hero-800x800.jpg"
   },
@@ -5513,7 +5514,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://external.webstorage.gr/mmimages/image/52/21/6/36/2143670-HP-hero-800x800.jpg"
   },
@@ -5534,7 +5535,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://external.webstorage.gr/mmimages/image/79/44/57/25/2163850-HP-B1GM6AA-hero-800x800.jpg"
   },
@@ -5555,7 +5556,7 @@
    "panel": "IPS",
    "colour": "grey",
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://www.websupplies.gr/images/thumbs/0361238.jpeg"
   },
@@ -5576,7 +5577,7 @@
    "panel": null,
    "colour": "grey",
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "no-identity",
    "image": "https://abertech.gr/image/catalog/data/computing/laptops/scm8-1.jpg"
   },
@@ -5597,7 +5598,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg49/c9p8B/1TPQCM_SX396Y297/1741188332/swit-bm-h215-215-4k-input-fhd-broadcast-monitor.webp"
   },
@@ -5618,7 +5619,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg37/2mamlD/1SyJXB_SX554Y416/1722334803/benq-gw2490t-ips-tv-monitor-238-1920x1080-fhd-100hz-5ms.webp"
   },
@@ -5639,7 +5640,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg14/2mqWHI/1W10av_SX450Y338/1773399299/iiyama-pos-tf1015mc-b3-ips-forhto-monitor-101-1280x800-60hz-29ms-4948570124107.webp"
   },
@@ -5660,7 +5661,7 @@
    "panel": "IPS",
    "colour": "black",
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg13/2mrjIh/1W7v94_SX659Y494/1774948342/lian-li-us88v1-ultrawide-ips-forhto-monitor-88-1920x480-60hz-black-4718466020550.webp"
   },
@@ -5681,7 +5682,7 @@
    "panel": "IPS",
    "colour": "white",
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg28/2ms5cw/1Wrr8i_SX900Y675/1779699478/lian-li-us88v1-ultrawide-ips-forhto-monitor-88-1920x480-60hz-white-4718466020567.webp"
   },
@@ -5702,7 +5703,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg56/fhVqw/1XpQt1_SX450Y338/1794096543/elo-touch-2295l-lcd-forhto-monitor-215-1920x1080-fhd-60hz-22ms-e146083.webp"
   },
@@ -5723,7 +5724,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg10/2muaca/1XgR46_SX900Y675/1791953890/elo-1590l-monitor-15.webp"
   },
@@ -5744,7 +5745,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg57/2muco9/1XgMeT_SX900Y675/1791935339/elo-2794l-touchscreen-monitor-27-1920x1080-fhd-e493591.webp"
   },
@@ -5765,7 +5766,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg16/fs79S/1Xk80t_SX838Y629/1792733997/ocypus-sigma-es916-ips-monitor-916.webp"
   },
@@ -5786,7 +5787,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg22/2mva6i/1XiZTt_SX308Y231/1792464483/elo-touchsystems-1099l-touchscreen-monitor-10-e354792.webp"
   },
@@ -5807,7 +5808,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg59/2mvW1J/1Xp6j8_SX450Y338/1793919106/elo-touchsystems-2799l-othonh-afhs-27-full-hd-e399052.webp"
   },
@@ -5828,7 +5829,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg3/fi6lR/1Xp5wM_SX468Y351/1793916108/elo-touchsystems-e-series-all-in-one-ypologisths-156-e850098.webp"
   },
@@ -5836,7 +5837,7 @@
    "id": "bestprice:225960199",
    "source": "bestprice",
    "title": "Elo Touch Systems Οθόνη Υπολογιστή 2495L 23.8IN FHD LCD WVA 600NIT LED BACKLIGHT OPEN FRAME 10 TOUC",
-   "url": "https://www.bestprice.gr/to/225960199/elo-touch-systems-othoni-ypologisti-2495l-23-8in-fhd-lcd-wva-600nit-led-backlight-open-frame-10-touc.html?seq=336",
+   "url": "https://www.bestprice.gr/to/225960199/elo-touch-systems-othoni-ypologisti-2495l-23-8in-fhd-lcd-wva-600nit-led-backlight-open-frame-10-touc.html?seq=352",
    "price": 907.63,
    "shopCount": null,
    "brand": "ELO",
@@ -5849,7 +5850,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg7/fi6zl/1Xa6pS_SX469Y352/1790344604/elo-touch-systems-othonh-ypologisth-2495l-238in-fhd-lcd-wva-600nit-led-backlight-open-frame-10-touc.webp"
   },
@@ -5870,7 +5871,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg40/fmIB2/1Xetcf_SX511Y383/1791385483/elo-pos-monitor-1093l-10-lcd-led-tft-me-analysh-1280x800-e321195.webp"
   },
@@ -5891,7 +5892,7 @@
    "panel": null,
    "colour": "black",
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg20/fmN9y/1Xeuhl_SX780Y585/1791389643/othonh-ag-sx-19g-19-mayrh-cctv.webp"
   },
@@ -5912,7 +5913,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "not-monitor",
    "image": "https://a.scdn.gr/images/sku_main_images/036521/36521568/xlarge_20240808155505_nec_multisync_wd551_ips_touch_monitor_55_4k_3840by2160_me_chrono_apokrisis_8ms_gtg.jpeg"
   },
@@ -5933,7 +5934,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "not-monitor",
    "image": "https://b.scdn.gr/images/sku_main_images/060916/60916642/xlarge_20250610164902_dahua_ldh65_lai400l_ips_monitor_65_4k_3840by2160_me_chrono_apokrisis_8ms_gtg.jpeg"
   },
@@ -5954,7 +5955,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "not-monitor",
    "image": "https://d.scdn.gr/images/sku_main_images/061678/61678626/xlarge_20250715115239_benq_pvs7_ips_monitor_7_fhd_1920x1200.jpeg"
   },
@@ -5975,7 +5976,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "not-monitor",
    "image": "https://d.scdn.gr/images/sku_main_images/061987/61987977/xlarge_20250801140129_ag_neovo_smq_4301_ips_monitor_43_4k_3840by2160_me_chrono_apokrisis_5ms_gtg.jpeg"
   },
@@ -5996,7 +5997,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "not-monitor",
    "image": "https://b.scdn.gr/images/sku_main_images/063115/63115813/xlarge_20251120153914_iiyama_lh5560uhs_b2ag_va_monitor_55_4k_3840by2160_me_chrono_apokrisis_6_5ms_gtg.jpeg"
   },
@@ -6005,7 +6006,7 @@
    "source": "skroutz",
    "title": "Ernitec W128950451 65\" 4K 3840x2160",
    "url": "https://www.skroutz.gr/s/70576985/ernitec-w128950451-monitor-65-4k-3840x2160.html",
-   "price": 10092.67,
+   "price": 10087.62,
    "shopCount": null,
    "brand": "Ernitec",
    "chip": "",
@@ -6017,7 +6018,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T12:04:21+00:00",
+   "scrapedAt": "2026-11-12T02:00:45+00:00",
    "reject": "not-monitor",
    "image": "https://b.scdn.gr/images/sku_main_images/070576/70576985/xlarge_20261110103718_ernitec_w128950451_monitor_65_4k_3840x2160.jpeg"
   },
@@ -6038,7 +6039,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/screen-top-shelf.jpg"
   },
@@ -6059,7 +6060,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://www.websupplies.gr/images/thumbs/0079134.jpeg"
   },
@@ -6080,7 +6081,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/31/7/6/13/1792504-SAMSUNG-VM46B-U-hero-800x800.jpg"
   },
@@ -6101,7 +6102,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/17-inch-hp-1740-hstnd-2b03-flat-panel-display-tft-17-1280-x.jpg"
   },
@@ -6122,7 +6123,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/acer-al1703-sm.jpg"
   },
@@ -6143,7 +6144,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/20/66/7/64/1958912-SAMSUNG-8806095208848-hero-800x800.jpg"
   },
@@ -6164,7 +6165,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/28/68/97/77/1770512-LG-110UM5J-hero-800x800.jpg"
   },
@@ -6185,7 +6186,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/7/31/34/18/1832733-LED-MON-SIG-LG-75TR3DK-BG-hero-800x800.jpg"
   },
@@ -6206,7 +6207,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/0/17/15/84/1382820-264x264-800x800.jpg"
   },
@@ -6227,7 +6228,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/96/82/9/31/MRK3076232-ELO-0843173100050-hero-800x800.jpg"
   },
@@ -6248,7 +6249,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://www.websupplies.gr/images/thumbs/0254916.jpeg"
   },
@@ -6269,7 +6270,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/24-eizo-fp-2400w-4995047014324.jpg"
   },
@@ -6290,7 +6291,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/1/60/69/74/2015415-SAMSUNG-hero-800x800.jpg"
   },
@@ -6311,7 +6312,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/13/90/78/69/1958911-SAMSUNG-hero-800x800.jpg"
   },
@@ -6332,7 +6333,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/50/7/65/27/2042788-LED-MON-SIGN-SAMSUNG-105QP105DX-5K-500N-hero-800x800.jpg"
   },
@@ -6353,7 +6354,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/41/28/48/35/2042775-LED-MON-SIGN.-SAMSUNG46-OM46B-OUT-4000N-hero-800x800.jpg"
   },
@@ -6374,7 +6375,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/2/43/43/97/2042776-LED-MON-SIGNAGE-SAMSUNG75-QM75C-500N-hero-800x800.jpg"
   },
@@ -6395,7 +6396,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/4/96/38/5/2042784-LED-MON-SIG-SAMSUNG-55OM55N-DS-hero-800x800.jpg"
   },
@@ -6416,7 +6417,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/45/21/2/20/1863899-LED-SIGNAGE-SAMSUNG-+FLIP-PRO-hero-800x800.jpg"
   },
@@ -6437,7 +6438,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/63/52/10/54/1641303-SAMSUNG-8806092748811-hero-800x800.jpg"
   },
@@ -6458,7 +6459,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/powertech-samsung-lcd-14v-3a-6-5-x-4-4-x-10mm-48watt-pt-135.jpg"
   },
@@ -6479,7 +6480,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://cts-gr.com/images/detailed/101/262-80-LVME65.jpg"
   },
@@ -6500,7 +6501,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://sonycenters.gr/images/detailed/25/50-1.jpg"
   },
@@ -6521,7 +6522,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://www.websupplies.gr/images/thumbs/0336354.jpeg"
   },
@@ -6542,7 +6543,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/84/1/80/88/MRK3106762-LENOVO-198156603623-hero-800x800.jpg"
   },
@@ -6563,7 +6564,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/69/38/64/90/1332783-LG-hero-800x800.jpg"
   },
@@ -6584,7 +6585,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/57/72/86/81/1308346-LG-hero-800x800.jpg"
   },
@@ -6605,7 +6606,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/13/73/76/91/2180787-Lenovo-64ACGAT1EK-hero-800x800.jpg"
   },
@@ -6626,7 +6627,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "used",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/tft-nec-lcd2170nx-u.jpg"
   },
@@ -6647,7 +6648,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "used",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/samsung-syncmaster-b1940mr-lcd-monitor-19-reburbished.jpg"
   },
@@ -6668,7 +6669,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "used",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/dell-ultrasharp-u2211h-21-5-ref.jpg"
   },
@@ -6689,7 +6690,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "used",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/cash-machine-tm-1501c-15-touch-monitor-refurbhished.jpg"
   },
@@ -6710,7 +6711,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-11T17:43:31+00:00",
+   "scrapedAt": "2026-11-11T20:07:09+00:00",
    "reject": "used",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/dell-e173fp-tft-lcd-17-1280-x-1024-grade-a-bulk.jpg"
   }
