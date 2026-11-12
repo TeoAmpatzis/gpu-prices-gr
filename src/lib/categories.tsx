@@ -30,6 +30,7 @@ import {
   MEMORY,
   MOBO_RULES,
   MONITOR_RULES,
+  MOUSE_CONNECTION,
   MOUSE_RULES,
   NO_RATING,
   OTHER,
@@ -479,11 +480,23 @@ export const MOUSE: CategoryConfig<MouseListing> = {
   searchPlaceholder: search('M171, MX Master 3S'),
   groupLabel: { el: 'Σύνδεση', en: 'Connection' },
   groupParam: 'connection',
-  groupDot: {},
+  groupDot: { wireless: 'bg-idle', wired: 'bg-idle' },
   sortByGroup: false,
+  // No quality score: a higher DPI is not a better mouse (ranking.ts weighs popularity and price only).
   tierScore: () => 0,
-  before: [],
-  after: [],
+  // Only what a source states; "—" when it does not.
+  before: [
+    {
+      header: { el: 'Σύνδεση', en: 'Connection' },
+      className: 'hidden sm:table-cell',
+      cell: (m, lang) => (m.cheapest.connection ? tr(lang, MOUSE_CONNECTION[m.cheapest.connection]) : '—'),
+    },
+  ],
+  after: [
+    { header: 'DPI', className: 'hidden sm:table-cell', numeric: true, cell: (m) => m.cheapest.dpi?.toLocaleString('en-US') ?? '—' },
+    { header: 'Hz', className: 'hidden md:table-cell', numeric: true, cell: (m) => m.cheapest.pollingHz ?? '—' },
+    { header: { el: 'Κουμπιά', en: 'Buttons' }, className: 'hidden md:table-cell', numeric: true, cell: (m) => m.cheapest.buttons ?? '—' },
+  ],
 };
 
 export const CATEGORIES = {

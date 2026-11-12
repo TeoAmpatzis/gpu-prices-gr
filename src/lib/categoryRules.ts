@@ -45,6 +45,8 @@ export interface CategoryRules<L extends BaseListing> {
   /** Pill filter values (data keys), in display/sort order: brands for GPU/CPU, memory type for RAM… */
   groups: string[];
   group: (l: L) => string;
+  /** Pill membership when a listing belongs to more than one pill (a dual-mode mouse); default: `group(l) === pill`. */
+  matchesGroup?: (l: L, group: string) => boolean;
   /**
    * Split shown as a segmented control (main is the default view, then "All"); omitted when a
    * category has none (cases). `middle`: options between main and pro (storage: NAS), with
@@ -67,7 +69,14 @@ export const GROUP_NAMES: Record<string, Text> = {
   [OTHER]: { el: 'Άλλο', en: 'Other' },
   [NO_RATING]: { el: 'Χωρίς ένδειξη', en: 'Not stated' },
   [AIR]: { el: 'Αέρα', en: 'Air' },
+  wireless: { el: 'Ασύρματα', en: 'Wireless' },
+  wired: { el: 'Ενσύρματα', en: 'Wired' },
+  both: { el: 'Ασύρματα και ενσύρματα', en: 'Wireless and wired' },
 };
+
+/** Whether a listing belongs to a pill: what the filter and the pill counts both use. */
+export const matchesGroup = <L extends BaseListing>(cfg: CategoryRules<L>, l: L, group: string): boolean =>
+  cfg.matchesGroup ? cfg.matchesGroup(l, group) : cfg.group(l) === group;
 
 export const VENDOR: Text = { el: 'Κατασκευαστής', en: 'Manufacturer' };
 export const SIZE: Text = { el: 'Μέγεθος', en: 'Size' };
@@ -482,15 +491,82 @@ export const MONITOR_RULES: CategoryRules<MonitorListing> = {
   ],
 };
 
-// Disabled scaffold: filters are added after the first mouse data review.
+// ---------- Mice ----------
+// A model is the scraper's `chip` (scraper/normalize_mouse.py: maker + name + connection); colours are offers of one
+// model. Every filter reads only what a source states: a mouse with an unknown value matches neither choice.
+
+/** Yes / No on a stated value only (null = not stated, matches neither). */
+function stated<L extends BaseListing>(key: string, label: Text, get: (l: L) => boolean | null): ExtraFilter<L> {
+  return {
+    key,
+    label,
+    options: () => [
+      { value: 'yes', label: YES },
+      { value: 'no', label: NO },
+    ],
+    test: (l, v) => (v === 'yes' ? get(l) === true : v === 'no' && get(l) === false),
+  };
+}
+
+// Colour keys are the scraper's (normalize_mouse.py): English words joined by "-" ("black-red", "light-blue").
+const COLOUR_EL: Record<string, string> = {
+  black: 'Μαύρο', white: 'Λευκό', grey: 'Γκρι', blue: 'Μπλε', red: 'Κόκκινο', pink: 'Ροζ', silver: 'Ασημί',
+  green: 'Πράσινο', graphite: 'Γραφίτης', purple: 'Μωβ', multicolour: 'Πολύχρωμο', orange: 'Πορτοκαλί',
+  gold: 'Χρυσό', rose: 'Ροζέ', beige: 'Μπεζ', brown: 'Καφέ', anthracite: 'Ανθρακί', yellow: 'Κίτρινο',
+  turquoise: 'Τιρκουάζ', transparent: 'Διάφανο', mint: 'Μέντα', lilac: 'Λιλά', bronze: 'Μπρονζέ',
+  light: 'Ανοιχτό', dark: 'Σκούρο', pale: 'Απαλό', matte: 'Ματ', space: 'Space', off: 'Off',
+};
+const capital = (w: string) => w.charAt(0).toUpperCase() + w.slice(1);
+/** A colour key as text: "black-red" → Μαύρο / Κόκκινο, "light-blue" → Ανοιχτό Μπλε; an unlisted word stays English. */
+export function mouseColourName(key: string): Text {
+  const words = key.split('-');
+  const shade = (w: string) => ['light', 'dark', 'pale', 'matte', 'space', 'off'].includes(w);
+  const join = (name: (w: string) => string) =>
+    words.map((w, i) => name(w) + (i === words.length - 1 ? '' : shade(w) ? ' ' : ' / ')).join('');
+  return { el: join((w) => COLOUR_EL[w] ?? capital(w)), en: join(capital) };
+}
+
+/** A mouse's connection as a spec value (the pills use the plural group names). */
+export const MOUSE_CONNECTION: Record<NonNullable<MouseListing['connection']>, Text> = {
+  wireless: { el: 'Ασύρματο', en: 'Wireless' },
+  wired: { el: 'Ενσύρματο', en: 'Wired' },
+  both: { el: 'Ασύρματο και ενσύρματο', en: 'Wireless and wired' },
+};
+
+const MOUSE_DPI = [1600, 3200, 6400, 8000, 12000, 16000, 26000, 30000];
+const MOUSE_HZ = [125, 500, 1000, 2000, 4000, 8000];
+
 export const MOUSE_RULES: CategoryRules<MouseListing> = {
   id: 'mouse',
-  groups: [],
+  groups: ['wireless', 'wired'],
   group: (l) => l.connection ?? OTHER,
+  // A mouse that works both ways is in both pills; one with no stated connection is in neither.
+  matchesGroup: (l, g) => l.connection === g || l.connection === 'both',
   modelKey: (l) => productKey(l.chip),
   isPro: () => false,
   searchText: (l) => `${l.chip} ${l.title}`,
-  extraFilters: [],
+  extraFilters: [
+    vendorFilter(),
+    {
+      key: 'use',
+      label: { el: 'Χρήση', en: 'Use' },
+      options: () => [
+        { value: 'gaming', label: 'Gaming' },
+        { value: 'office', label: { el: 'Γραφείου', en: 'Office' } },
+      ],
+      test: (l, v) => (v === 'gaming' ? l.gaming === true : v === 'office' && l.gaming === false),
+    },
+    stated('bluetooth', 'Bluetooth', (l) => l.bluetooth),
+    stated('rf', { el: 'Δέκτης 2.4 GHz', en: '2.4 GHz receiver' }, (l) => l.rf),
+    stated('rechargeable', { el: 'Επαναφορτιζόμενο', en: 'Rechargeable' }, (l) => l.rechargeable),
+    threshold('dpi', atLeastLabel('DPI'), (l) => l.dpi, (v) => `≥ ${v.toLocaleString('en-US')} DPI`, { fixed: MOUSE_DPI }),
+    threshold('pollingHz', atLeastLabel('Polling rate'), (l) => l.pollingHz, (v) => `≥ ${v} Hz`, { fixed: MOUSE_HZ }),
+    threshold('buttons', atLeastLabel({ el: 'Κουμπιά', en: 'Buttons' }), (l) => l.buttons, (v) => `≥ ${v}`, { minCount: 10 }),
+    stated('rgb', 'RGB', (l) => l.rgb),
+    stated('silent', { el: 'Αθόρυβο', en: 'Silent' }, (l) => l.silent),
+    stated('ergonomic', { el: 'Εργονομικό', en: 'Ergonomic' }, (l) => l.ergonomic),
+    oneOf('colour', { el: 'Χρώμα', en: 'Colour' }, (l) => l.colour, { minCount: 5, fmt: mouseColourName }),
+  ],
 };
 
 export const RULES = {

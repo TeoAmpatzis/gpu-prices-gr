@@ -7,7 +7,7 @@
 
 import type { BaseListing, Category, DailyLow, Imported, ListFile, SourceName } from '../types';
 import type { CategoryRules, ExtraFilter } from './categoryRules';
-import { rulesOf } from './categoryRules';
+import { matchesGroup, rulesOf } from './categoryRules';
 import { decodeList, defaultFilters, type CategoryData, type Filters, type Segment } from './data';
 import { SOURCE_NAMES } from './sources';
 import { filterCatalogue } from './catalogueFilters';
@@ -53,7 +53,7 @@ export function facetPasses<L extends BaseListing>(
   const passes = [
     () => {
       const models = run({ groups: d.groups });
-      counts.groups = Object.fromEntries(cfg.groups.map((g) => [g, models.filter((m) => cfg.group(m.listing) === g).length]));
+      counts.groups = Object.fromEntries(cfg.groups.map((g) => [g, models.filter((m) => matchesGroup(cfg, m.listing, g)).length]));
     },
     () => {
       const models = run({ sources: d.sources });

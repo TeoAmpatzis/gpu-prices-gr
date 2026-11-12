@@ -9,7 +9,7 @@ import type {
   SourceName,
 } from '../types';
 import type { CategoryConfig } from './categories';
-import type { CategoryRules } from './categoryRules';
+import { matchesGroup, type CategoryRules } from './categoryRules';
 import { recommendedScores } from './ranking';
 import { DEAL_THRESHOLD } from './deals';
 import { isDipPrice, untrustedPoints } from './dips';
@@ -361,7 +361,7 @@ export function filterModels<L extends BaseListing>(
   const q = f.query.trim().toLowerCase();
   const listings = all.filter(
     (l) =>
-      (f.groups.length === 0 || f.groups.includes(cfg.group(l))) &&
+      (f.groups.length === 0 || f.groups.some((g) => matchesGroup(cfg, l, g))) &&
       (f.sources.length === 0 || f.sources.includes(l.source)) &&
       (!q || cfg.searchText(l).toLowerCase().includes(q)) &&
       // Per listing, so a model's price is that of a listing that matches (e.g. the CL30 kit).
