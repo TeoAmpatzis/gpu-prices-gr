@@ -15251,8 +15251,8 @@
    "partner": "MSI",
    "memType": "GDDR7",
    "scrapedAt": "2026-11-12T06:05:37+00:00",
-   "lengthMm": null,
-   "minPsu": null,
+   "lengthMm": 302.0,
+   "minPsu": 650,
    "shipping": null,
    "total": null,
    "merchant": null
