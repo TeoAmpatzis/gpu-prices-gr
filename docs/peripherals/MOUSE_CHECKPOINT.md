@@ -2,6 +2,17 @@
 
 **Update 2026-11-12**: the owner approved the merge. `main` = `e377b42` (this branch merged with `origin/main`, fast-forward push at 05:25 UTC), mouse still disabled and invisible. On the merged code before the push: 31 Python check programs, `npm run check` (1,655 tests) and `npm run e2e` (322 of 322) passed; after it the Vercel deployment succeeded and `node scripts/checks/site-check.mjs` passed on the live site. Same part number under two names: the owner keeps the plan's rule (reject both). The owner did not comment on the 50 model groups. **Now waiting** for the first scheduled collection with mouse (plan Task 5, step 3): `scrape-shops` at `43 */6` UTC and the next gated `scrape`; do not start runs by hand without asking. Then compare `public/data/mouse/` on `origin/main` with the trial (7,114 listings, 5,037 models) before step 5. The 00:43 UTC `scrape-shops` slot of 2026-11-12 started no run (see "Also watch" below). The sections below describe the state before the merge.
 
+**Update 2026-11-12, 10:15 UTC** (owner: wait for the scheduled Skroutz run, keep the mouse shipping reads, finish the remaining tasks):
+
+- `scrape-shops` run 43162578473 (started by hand with the owner's yes) succeeded: `prices` 60 min, `specs` 19 min. Mouse on `origin/main`: BestPrice 2,554 and Snif 1,034 accepted listings, 2,546 models, 347 rejected; the trial had 2,551 and 1,032. It also read 60 BestPrice mouse shipping pages (135 s).
+- Skroutz mouse data is still missing. The gate lets `scrape` run when Skroutz data is older than 11 h (last 02:03 UTC), so the 16:13 UTC wake-up is the first that can run.
+- Local commits on this branch, not pushed: a parser fix (a model number before "Κουμπιά:" was read as the button count, 9 listings; offline replay-5 unchanged at 7,114 listings / 5,037 models), Task 6 (filters, dual-mode pills), Task 7 (spec rows, colour selector on the model page), menu and home from the registry, `tests/e2e/mouse.spec.ts`. Unit tests: 1,674 pass; the Python checks pass.
+- Not committed on purpose: `src/lib/derive.ts` (list file leaves out `partNumber` and `identityTitle`) and `tests/unit/mouseQuality.test.ts`. Its one failing assertion is `MIN_MODELS.mouse > 1`: it turns green at Task 5 step 5.
+- Local rehearsal with mouse visible (BestPrice and Snif data only): build passed, `mouse/list.v2.json` 112 KB gzip, mouse browser tests 5 of 5, no overflow at 360 px. Screenshots: `local/mouse/preview/` (`node local/mouse/shots.mjs`). The registry was restored to disabled and invisible afterwards.
+- Seen in the rehearsal: no source states a "No" for Bluetooth, RGB and the other flags, so those filters offer only "Yes" (the "No" choice appears when a source states it).
+
+**Next, when Skroutz mouse data is on `origin/main`:** merge `origin/main`; set `MIN_MODELS.mouse = floor(N / 2)` from the build's manifest count; `enabled:true, visible:false`; `npm run check`, `npm run e2e`, the Python checks; commit Task 8; push to `main` (hidden). Then Gate C: the owner's yes for `visible:true`, with `vercel.json` rewrites and `site-check.mjs` in the same commit, and Task 10 documents.
+
 The first data review: [MOUSE_DATA_REVIEW.md](MOUSE_DATA_REVIEW.md).
 
 ## Branch and scope
