@@ -128,15 +128,15 @@ export const CAT_PAGE: Record<Category, { title: Text; subtitle: Text }> = {
   monitor: {
     title: { el: 'Τιμές Οθονών', en: 'Monitor Prices' },
     subtitle: {
-      el: 'Οι χαμηλότερες τιμές οθονών υπολογιστή στην Ελλάδα, ανά μοντέλο, από Skroutz, BestPrice και Snif.',
-      en: 'The lowest computer monitor prices in Greece, by model, from Skroutz, BestPrice and Snif.',
+      el: 'Οι χαμηλότερες τιμές οθονών υπολογιστή στην Ελλάδα, ανά μοντέλο, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
+      en: 'The lowest computer monitor prices in Greece, by model, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
     },
   },
   mouse: {
     title: { el: 'Ποντίκια', en: 'Mice' },
     subtitle: {
-      el: 'Οι χαμηλότερες τιμές ποντικιών στην Ελλάδα, ανά μοντέλο, από Skroutz, BestPrice και Snif.',
-      en: 'The lowest mouse prices in Greece, by model, from Skroutz, BestPrice and Snif.',
+      el: 'Οι χαμηλότερες τιμές ποντικιών στην Ελλάδα, ανά μοντέλο, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
+      en: 'The lowest mouse prices in Greece, by model, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
     },
   },
 };
