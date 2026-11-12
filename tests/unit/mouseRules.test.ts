@@ -52,7 +52,8 @@ describe('mouse spec filters match stated values only', () => {
   it('yes / no flags: an unknown value matches neither, an explicit false matches No', () => {
     for (const key of ['bluetooth', 'rf', 'rechargeable', 'rgb', 'silent', 'ergonomic'] as const) {
       const f = filter(key);
-      expect(f.options([]).map((o) => o.value)).toEqual(['yes', 'no']);
+      expect(f.options([mouse({ [key]: true }), mouse()]).map((o) => o.value)).toEqual(['yes']);
+      expect(f.options([mouse({ [key]: false })]).map((o) => o.value)).toEqual(['yes', 'no']);
       for (const v of ['yes', 'no']) expect(f.test(mouse({ [key]: null }), v)).toBe(false);
       expect(f.test(mouse({ [key]: true }), 'yes')).toBe(true);
       expect(f.test(mouse({ [key]: true }), 'no')).toBe(false);

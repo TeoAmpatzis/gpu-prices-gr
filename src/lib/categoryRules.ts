@@ -495,15 +495,12 @@ export const MONITOR_RULES: CategoryRules<MonitorListing> = {
 // A model is the scraper's `chip` (scraper/normalize_mouse.py: maker + name + connection); colours are offers of one
 // model. Every filter reads only what a source states: a mouse with an unknown value matches neither choice.
 
-/** Yes / No on a stated value only (null = not stated, matches neither). */
+/** Yes / No on a stated value only (null = not stated, matches neither). "No" is offered once a source states it. */
 function stated<L extends BaseListing>(key: string, label: Text, get: (l: L) => boolean | null): ExtraFilter<L> {
   return {
     key,
     label,
-    options: () => [
-      { value: 'yes', label: YES },
-      { value: 'no', label: NO },
-    ],
+    options: (ls) => [{ value: 'yes', label: YES }, ...(ls.some((l) => get(l) === false) ? [{ value: 'no', label: NO }] : [])],
     test: (l, v) => (v === 'yes' ? get(l) === true : v === 'no' && get(l) === false),
   };
 }
