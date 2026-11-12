@@ -10,7 +10,7 @@
 
 **Spec:** `docs/superpowers/specs/2026-11-11-mouse-category-design.md`. Read it together with `docs/PROJECT-STATE.md`; the latter owns operational rules. This plan implements phases 1–3 and 5. Richer product-page specifications (phase 4) need a separate probe and plan.
 
-**Status:** Waiting at Gate B, 2026-11-11. Tasks 1–4 complete; Task 5 steps 1–4 done on an isolated local collection replayed offline through the corrected parsers (report: `docs/peripherals/MOUSE_DATA_REVIEW.md`). Step 3's collection through GitHub Actions has not run. Two plan rules changed on the evidence of the full data and are recorded in the report: punctuation-only spellings of a name share one model, and a title without a connection joins only the wired model. Resume from `docs/peripherals/MOUSE_CHECKPOINT.md`. Mouse remains disabled/invisible; nothing was published.
+**Status:** Released 2026-11-12 (`main` = `31843e2`, mice public at `/mouse`). What was done, what differs from this plan and what is still open: `docs/peripherals/MOUSE_CHECKPOINT.md`. The checkboxes below were not all ticked one by one; the checkpoint is the record.
 
 ## Global Constraints
 

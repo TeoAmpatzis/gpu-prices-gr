@@ -1,4 +1,21 @@
-# Mouse implementation checkpoint — 2026-11-11 (Gate B)
+# Mouse implementation checkpoint — released 2026-11-12
+
+**Released 2026-11-12, 11:28 UTC.** The owner approved a manual Skroutz run and the public release in one message. `main` = `31843e2`; mice are public at `/mouse`. The sections below this one are the history before the release.
+
+- Data: `scrape` run 43203669607 (started by hand, 19 min, 84 Skroutz mouse pages, 0 blocked) added Skroutz. On `main`: Skroutz 3,527, BestPrice 2,547, Snif 1,032 = 7,106 listings, 5,031 models, 811 rejected (no-identity 703, not-mouse 75, identity-conflict 20, bundle 13). The trial had 7,114 and 5,037.
+- Release in one push (disabled to public, no separate hidden step): `MIN_MODELS.mouse` = 2515, registry `enabled:true, visible:true`, `vercel.json` rewrites, `site-check.mjs`, registry test. Three data-wide tests became mouse-aware: `facets` (dual-mode pills), `keySpecs` (mice exempt from "four specs for most models"), `modelChunks` (no "same, cheaper" rule for mice).
+- Before the push: 31 Python checks, `npm run check` (1,694 tests), `npm run e2e` (328 passed, 1 skipped). After it: Vercel deployment success, `/mouse`, a model page and `/data/mouse/list.v2.json` answer 200, `site-check.mjs` and `freshness.mjs` pass on the live site.
+- Size: `mouse/list.v2.json` is 221 KB gzip (limit 300; monitors 195).
+
+**Open after the release**
+
+- Photos: none until the images repository's job (`50 */6`) downloads them; rows show the category icon meanwhile.
+- Thin specs: DPI is unknown for about three models in four, and no source states a "No" for Bluetooth, RGB and the like, so those filters offer only "Yes".
+- No "same, cheaper" alternatives for mice (no "same kind" rule yet).
+- Known parser limits from the data review stay: colour words inside some names, "Equip Mini", 703 listings without an identity.
+- Price history starts on 2026-11-12; Skroutz history is not imported for mice.
+
+**Rollback**: revert `31843e2` and push (mice go back to hidden; data and history stay). Details: [ADDING-A-CATEGORY.md](../ADDING-A-CATEGORY.md).
 
 **Update 2026-11-12**: the owner approved the merge. `main` = `e377b42` (this branch merged with `origin/main`, fast-forward push at 05:25 UTC), mouse still disabled and invisible. On the merged code before the push: 31 Python check programs, `npm run check` (1,655 tests) and `npm run e2e` (322 of 322) passed; after it the Vercel deployment succeeded and `node scripts/checks/site-check.mjs` passed on the live site. Same part number under two names: the owner keeps the plan's rule (reject both). The owner did not comment on the 50 model groups. **Now waiting** for the first scheduled collection with mouse (plan Task 5, step 3): `scrape-shops` at `43 */6` UTC and the next gated `scrape`; do not start runs by hand without asking. Then compare `public/data/mouse/` on `origin/main` with the trial (7,114 listings, 5,037 models) before step 5. The 00:43 UTC `scrape-shops` slot of 2026-11-12 started no run (see "Also watch" below). The sections below describe the state before the merge.
 

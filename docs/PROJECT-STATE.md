@@ -1,14 +1,15 @@
 # Κατάσταση του BuildDraft.gr
 
-Mouse implementation waits at Gate B for the owner's review of the first data: [MOUSE_DATA_REVIEW.md](peripherals/MOUSE_DATA_REVIEW.md) (offline replay of the full trial collection: 7,114 accepted listings, 5,037 models, 815 rejected). Tasks 1–4 are complete; Task 5 steps 5–6 (minimum count, hidden enablement) and Tasks 6–9 follow the review. How to resume: [MOUSE_CHECKPOINT.md](peripherals/MOUSE_CHECKPOINT.md). Mouse remains disabled and invisible; production data was not changed.
+Ποντίκια (mouse): **live από 2026-11-12** στο `/mouse` (commit `31843e2`). Πρώτη συλλογή από Skroutz, BestPrice και Snif: 7.106 καταχωρίσεις, 5.031 μοντέλα, 811 απορρίψεις. Τι ισχύει, τι μένει ανοιχτό και πώς γίνεται επαναφορά: [MOUSE_CHECKPOINT.md](peripherals/MOUSE_CHECKPOINT.md). Πώς προστίθεται μια κατηγορία: [ADDING-A-CATEGORY.md](ADDING-A-CATEGORY.md).
 Τελευταία ενημέρωση: 2026-11-11 (ξαναγράφτηκε μετά τον έλεγχο `docs/audits/full-system-audit/`, εύρημα P3-006, με εντολή του Teo).
 Αυτό είναι το κύριο αρχείο κατάστασης. Αν διαφωνεί με άλλο αρχείο, ισχύει αυτό. Η προηγούμενη μορφή (17/10, εποχή πριν από την κυκλοφορία του v2, με όλο το ιστορικό αποφάσεων) είναι στο `docs/archive/PROJECT-STATE-2026-10-17.md`.
 
 ## Τι είναι live
 - Το **v2 είναι το `main`** (`package.json` έκδοση 2.0.0) και είναι live στο https://gpu-prices-gr.vercel.app. Κάθε push στο `main` κάνει deploy στο Vercel (Hobby). Το v1 υπάρχει μόνο στα παλιά commits.
 - Repo: `TeoAmpatzis/gpu-prices-gr` (δημόσιο). Φωτογραφίες προϊόντων: `TeoAmpatzis/builddraft-images` (δημόσιο, GitHub Pages, σερβίρονται από το `/img/`).
-- Διευθύνσεις: `/<κατηγορία>` για `gpu cpu mobo ram storage psu case fan cooler monitor`, `/<κατηγορία>/<slug>` για κάθε προϊόν, `/builder`, `/parts`, `/compare`, `/search`, `/about`, `/contact`, `/privacy`, `/how-prices`. Οι παλιοί σύνδεσμοι `/#ram?…` ανακατευθύνονται.
+- Διευθύνσεις: `/<κατηγορία>` για `gpu cpu mobo ram storage psu case fan cooler monitor mouse`, `/<κατηγορία>/<slug>` για κάθε προϊόν, `/builder`, `/parts`, `/compare`, `/search`, `/about`, `/contact`, `/privacy`, `/how-prices`. Οι παλιοί σύνδεσμοι `/#ram?…` ανακατευθύνονται.
 - Μόνο σκούρο θέμα. Κάθε κείμενο σε ελληνικά και αγγλικά.
+- Ποντίκια (mouse): live από 2026-11-12. Πηγές: Skroutz (μόνο λίστες), BestPrice, Snif· όχι e-shop.gr και Shopflix. Δεν μπαίνουν ποτέ στο PC Builder. Φίλτρα μόνο σε ό,τι δηλώνει μια πηγή (άγνωστο DPI στο 75% των μοντέλων)· το χρώμα είναι προσφορά του ίδιου μοντέλου, όχι άλλο μοντέλο.
 - Οθόνες (monitors): live από 2026-11-11. Οι φωτογραφίες τους κατεβαίνουν από το job του `builddraft-images` (πρώτο run 2026-11-11).
 
 ## Πώς ενημερώνονται τα δεδομένα
