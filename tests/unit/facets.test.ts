@@ -7,6 +7,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { CATEGORIES, CATEGORY_IDS, segmentOptions, type CategoryConfig } from '../../src/lib/categories';
+import { matchesGroup } from '../../src/lib/categoryRules';
 import { decodeList, defaultFilters, type CategoryData, type Filters, type Segment } from '../../src/lib/data';
 import { listFile } from '../../src/lib/derive';
 import { createFacetHandler, facetCounts, type FacetAnswer, type FacetCounts, type FacetRequest } from '../../src/lib/facets';
@@ -67,7 +68,7 @@ function referenceCounts<L extends BaseListing>(
   const run = (without: Partial<Filters>) => filterCatalogue(all, { ...f, ...without }, cfg, history, imported);
   const count = (products: ReturnType<typeof run>, test: (l: L) => boolean) => products.filter((p) => test(p.listing)).length;
   const groupProducts = run({ groups: d.groups });
-  const groups = Object.fromEntries(cfg.groups.map((g) => [g, count(groupProducts, (l) => cfg.group(l) === g)]));
+  const groups = Object.fromEntries(cfg.groups.map((g) => [g, count(groupProducts, (l) => matchesGroup(cfg, l, g))]));
   const sourceProducts = run({ sources: d.sources });
   const sources = Object.fromEntries(SOURCE_NAMES.map((source) => [source, count(sourceProducts, (l) => l.source === source)])) as Record<SourceName, number>;
   const segmentProducts = run({ segment: 'all' });

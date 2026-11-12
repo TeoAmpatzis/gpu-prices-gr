@@ -95,7 +95,11 @@ const V2_ONLY = [
 ];
 // Per category, what its list rows never use (the model pages read the full listings from the model chunks): a monitor's
 // model code, width, colour and model year are 15 KB gzip of the monitor list file, the first product waits for it.
-const LIST_SKIP_BY_CATEGORY: Partial<Record<Category, string[]>> = { monitor: ['code', 'width', 'colour', 'revision'] };
+const LIST_SKIP_BY_CATEGORY: Partial<Record<Category, string[]>> = {
+  monitor: ['code', 'width', 'colour', 'revision'],
+  // A mouse's colour stays: the colour filter reads it. Its part number and the stored page name are only for the model page.
+  mouse: ['partNumber', 'identityTitle'],
+};
 // 'formConflict' stays in list.v2.json on purpose: the pick view runs `usable` on those listings (a few dozen boards).
 const LIST_SKIP = new Set([...DETAIL_ONLY, 'fanMounts', 'fansIncluded', 'radiators', 'airflowCfm', 'pressureMm', ...V2_ONLY]);
 
@@ -734,7 +738,7 @@ export const MAX_DROP = 0.3;
  * the live site unreachable): about half of the 2026-10-01 counts.
  */
 export const MIN_MODELS: Record<Category, number> = {
-  mouse: 1, // disabled: replace with the reviewed first-data minimum before enabling the category
+  mouse: 2515, // of 5031 (first collection from the three sources, 2026-11-12: scrape 43203669607, scrape-shops 43162578473)
   gpu: 49, // of 98
   cpu: 208, // of 417
   mobo: 606, // of 1212
