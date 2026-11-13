@@ -32337,8 +32337,8 @@
    "radiator": null,
    "rgb": false,
    "scrapedAt": "2026-11-13T07:53:28+00:00",
-   "sockets": null,
-   "heightMm": null,
+   "sockets": "LGA4677",
+   "heightMm": 106.0,
    "shipping": 3.5,
    "total": 92.28,
    "merchant": "Techstores"
@@ -77341,8 +77341,8 @@
    "radiator": null,
    "rgb": false,
    "scrapedAt": "2026-11-13T07:53:28+00:00",
-   "sockets": null,
-   "heightMm": null,
+   "sockets": "AM3,AM3+,AM4,AM5,LGA1150,LGA1151,LGA1155,LGA1156,LGA1200,LGA2011,LGA2011-3,LGA2066",
+   "heightMm": 160.0,
    "shipping": null,
    "total": null,
    "merchant": null
