@@ -1,8 +1,8 @@
 // FROZEN test-only copy of v1's builder rules (src/lib/builder.ts at step 5 task 9, when the builder moved to the
-// v2 engine and the file was deleted). Only tests/compat/v1-adapter.ts (the v1 report) and scripts/audit/recommender.mts
-// (Phase 0 audit) use it. Do not change the rules: the v1 report must keep describing v1.
+// v2 engine and the file was deleted). Only tests/compat/v1-adapter.ts (the scenario checks) and scripts/checks/data-equivalence.test.mts
+// use it. Do not change the rules: they are the reference the scenario checks and the equivalence check compare with.
 // Not fully frozen: the part values it reads (cpuSocket, caseGpuMax, gpuPsu, usable, slotModels…) are still imported
-// live from src/lib/builderData.ts, so a change there can change the v1 report too.
+// live from src/lib/builderData.ts, so a change there can change the checks too.
 //
 // PC builder: which parts can go together, from the specs the sites and makers state.
 //
@@ -447,39 +447,3 @@ const MISSING: Record<Slot, Text> = {
   fan: { el: 'Διάλεξε ανεμιστήρες.', en: 'Pick fans.' },
   psu: { el: 'Διάλεξε τροφοδοτικό.', en: 'Pick a power supply.' },
 };
-
-// v1's optional steps (src/lib/wizard.ts `optional` before task 9), for scripts/audit/recommender.mts.
-/** Can the step be skipped, and why (or why not). */
-export function optional(step: Slot | 'use' | 'review', b: Build): { optional: boolean; why?: Text } {
-  if (step === 'use' || step === 'fan') return { optional: true };
-  if (step === 'gpu') {
-    if (b.cpu && !cpuHasIgpu(b.cpu))
-      return {
-        optional: false,
-        why: { el: 'Ο επεξεργαστής δεν έχει ενσωματωμένα γραφικά: χρειάζεται κάρτα γραφικών.', en: 'The CPU has no integrated graphics: a graphics card is needed.' },
-      };
-    return {
-      optional: true,
-      why: b.cpu
-        ? { el: 'Ο επεξεργαστής έχει ενσωματωμένα γραφικά: η κάρτα είναι προαιρετική.', en: 'The CPU has integrated graphics: a card is optional.' }
-        : undefined,
-    };
-  }
-  if (step === 'cooler') {
-    const inBox = b.cpu ? cpuCooler(b.cpu) : null;
-    if (inBox)
-      return {
-        optional: true,
-        why: { el: 'Ο επεξεργαστής έχει ψύκτρα στο κουτί: μια καλύτερη είναι προαιρετική.', en: 'The CPU comes with a cooler: a better one is optional.' },
-      };
-    return {
-      optional: false,
-      why: b.cpu
-        ? inBox === false
-          ? { el: 'Ο επεξεργαστής δεν έχει ψύκτρα στο κουτί.', en: 'The CPU has no cooler in the box.' }
-          : { el: 'Δεν αναφέρεται αν ο επεξεργαστής έχει ψύκτρα στο κουτί.', en: "It isn't stated whether the CPU has a cooler in the box." }
-        : undefined,
-    };
-  }
-  return { optional: false };
-}

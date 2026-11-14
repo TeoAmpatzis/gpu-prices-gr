@@ -36,7 +36,7 @@ The first data review: [MOUSE_DATA_REVIEW.md](MOUSE_DATA_REVIEW.md).
 
 - Branch `feat/mouse-category`. Pushed with the owner's yes on 2026-11-11: `origin/feat/mouse-category` is at `f73c8d9` (parser fixes and the Gate B report). Later commits, such as this checkpoint, are local until the owner approves another push.
 - Checks on `f73c8d9` before that push: all 31 Python check programs, `npm run check` (1,655 tests) and `npm run e2e` (322 of 322) passed. The push started no CI run on the branch; GitHub run 43092987454 (green) tested the older `8e71980`.
-- Plan: `docs/superpowers/plans/2026-11-11-mouse-category.md`. Tasks 1–4 are complete. Task 5: steps 1, 2 and 4 are done; step 3 (a collection through GitHub Actions) has not run; steps 5 and 6 follow the owner's review.
+- Plan (deleted after the release, in git history): `docs/superpowers/plans/2026-11-11-mouse-category.md`. Tasks 1–4 are complete. Task 5: steps 1, 2 and 4 are done; step 3 (a collection through GitHub Actions) has not run; steps 5 and 6 follow the owner's review.
 - Mouse is `enabled:false, visible:false`. No mouse data is in `public/data/`. Nothing was pushed to `main`.
 - The untracked `UNIVERSITY_PROJECT_PRESENTATION_GUIDE.md` is unrelated; leave it.
 

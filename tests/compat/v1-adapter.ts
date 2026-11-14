@@ -2,7 +2,7 @@
 // calls (src/lib/builder.ts: slotModels, rate, buildNotes, buildStatus, requiredWatts) on the same row
 // shape builder.json gives the browser — and maps v1's answers to the plan's levels.
 //
-// Mapping (results table: docs/audit/compat-results.md):
+// Mapping:
 //   v1 check "Fits"                         → pass
 //   v1 check "Likely fits" (an estimate)    → note   (plan: an estimate is said to be one; rule 5 "note if estimate")
 //   v1 check "Fit not verified" (no data)   → note   (plan: unknown → "Δεν μπορέσαμε να ελέγξουμε…")
