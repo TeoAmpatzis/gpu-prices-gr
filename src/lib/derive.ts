@@ -740,7 +740,7 @@ export const MAX_DROP = 0.3;
  * the live site unreachable): about half of the 2026-10-01 counts.
  */
 export const MIN_MODELS: Record<Category, number> = {
-  headphones: 5800, // of 11713 in the isolated trial of 2026-11-14 (price floor 10 EUR); see docs/peripherals/HEADPHONES_DATA_REVIEW.md
+  headphones: 4900, // half of 9861 models from the first four-shop scrape of 2026-11-14 (Skroutz not yet in); see docs/peripherals/HEADPHONES_DATA_REVIEW.md
   mouse: 2515, // of 5031 (first collection from the three sources, 2026-11-12: scrape 43203669607, scrape-shops 43162578473)
   gpu: 49, // of 98
   cpu: 208, // of 417

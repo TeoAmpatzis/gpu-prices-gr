@@ -32,7 +32,7 @@ export const REGISTRY = {
   monitor: { domain: 'peripherals', enabled: true, visible: true },
   mouse: { domain: 'peripherals', enabled: true, visible: true },
   // Headphones: disabled until the owner approves the first collection (docs/peripherals/HEADPHONES_DESIGN.md).
-  headphones: { domain: 'peripherals', enabled: false, visible: false },
+  headphones: { domain: 'peripherals', enabled: true, visible: true },
 } as const satisfies Record<string, CategoryEntry>;
 
 export type Category = keyof typeof REGISTRY;

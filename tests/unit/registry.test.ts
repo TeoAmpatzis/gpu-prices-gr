@@ -24,8 +24,8 @@ describe('category registry', () => {
     expect(SLOTS).not.toContain(mouse);
     expect(SLOT_OF).not.toHaveProperty(mouse);
     expect(CATEGORY_IDS).toContain(mouse);
-    expect(CATEGORY_LIST).toEqual(['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler', 'monitor', 'mouse']);
-    expect(GROUPS.at(-1)!.cats).toEqual(['monitor', 'mouse']);
+    expect(CATEGORY_LIST).toEqual(['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler', 'monitor', 'mouse', 'headphones']);
+    expect(GROUPS.at(-1)!.cats).toEqual(['monitor', 'mouse', 'headphones']);
     expect(matchRoute('/mouse')).not.toEqual({ kind: 'notFound' });
     expect(matchRoute('/mouse/logitech-m171')).not.toEqual({ kind: 'notFound' });
     expect(isComparable(mouse)).toBe(true);

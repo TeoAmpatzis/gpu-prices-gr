@@ -83,7 +83,7 @@ describe('modelChunkOf', () => {
 });
 
 /** Categories without a "cheaper" list (their variants cover the other sizes; a chip's cheaper cards are its offers; monitors and mice have no "same kind" rule yet). */
-const NO_CHEAPER: Category[] = ['gpu', 'ram', 'storage', 'psu', 'monitor', 'mouse'];
+const NO_CHEAPER: Category[] = ['gpu', 'ram', 'storage', 'psu', 'monitor', 'mouse', 'headphones'];
 /** Most common non-null value (first seen wins a tie, as data.mostCommon). */
 function mode<T>(vs: (T | null | undefined)[]): T | null {
   const n = new Map<T, number>();
