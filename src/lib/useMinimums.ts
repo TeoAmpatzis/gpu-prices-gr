@@ -34,6 +34,13 @@ export const USE_MINIMUMS: Record<UseKey, UseMinimum> = {
   unsure: GAMING_1080P,
 };
 
+/** The slowest memory the automatic build and the Recommended order take: DDR4 at 3200 MT/s (cheaper than 2666 in the shops), DDR5 at 5600. A kit whose speed is not stated cannot be checked and is left out. */
+export const MIN_RAM_SPEED = { DDR4: 3200, DDR5: 5600 } as const;
+export const ramSpeedOk = (type: string, speed: number | null | undefined): boolean => {
+  const min = MIN_RAM_SPEED[type as keyof typeof MIN_RAM_SPEED];
+  return min === undefined || (speed != null && speed >= min);
+};
+
 /** The builder's use (and resolution) as a key of the tables above; null when no use is chosen. */
 export const toUseKey = (kind: Use['kind'] | null | undefined, res?: Resolution | null): UseKey | null =>
   !kind ? null : kind === 'gaming' ? `gaming-${res ?? '1080p'}` : kind;

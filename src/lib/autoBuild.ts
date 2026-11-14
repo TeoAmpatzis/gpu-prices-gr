@@ -18,7 +18,7 @@ import type { Model } from './data';
 import { fanPlan } from './fanPlan';
 import { psuEfficiency } from './psuProduct';
 import { SLOTS, type Slot } from './slots';
-import { USE_KEYS, USE_MINIMUMS, engineUseOf, type UseKey } from './useMinimums';
+import { USE_KEYS, USE_MINIMUMS, engineUseOf, ramSpeedOk, type UseKey } from './useMinimums';
 
 type AnyModel = Model<BaseListing>;
 export type AutoModels = { [S in Slot]: AnyModel[] };
@@ -129,7 +129,7 @@ export function autoCandidates(models: AutoModels, use: UseKey, ctx: Context = {
       ...(min.card === 'optional' ? [null] : []),
       ...perTier(models.gpu.filter((m) => min.vramGb == null || (m.cheapest as GpuListing).vram >= min.vramGb), gpuTier),
     ];
-  const ram = byPrice(models.ram.filter((m) => (m.cheapest as RamListing).capacity >= min.ramGb));
+  const ram = byPrice(models.ram.filter((m) => (m.cheapest as RamListing).capacity >= min.ramGb && ramSpeedOk((m.cheapest as RamListing).type, (m.cheapest as RamListing).speed)));
   const drives = byPrice(models.storage.filter((m) => storageType(m.cheapest as StorageListing) === 'NVMe' && (m.cheapest as StorageListing).capacity >= min.storageGb));
   const coolers = byPrice(models.cooler);
   const cases = byPrice(models.case);

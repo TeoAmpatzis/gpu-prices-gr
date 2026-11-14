@@ -7,7 +7,7 @@ import { partOf } from '../../src/lib/builderEngine';
 import { autoFor } from '../../src/lib/recommend';
 import type { Model } from '../../src/lib/data';
 import { SLOTS, type Slot } from '../../src/lib/slots';
-import { engineUseOf } from '../../src/lib/useMinimums';
+import { engineUseOf, ramSpeedOk } from '../../src/lib/useMinimums';
 
 const model = (key: string, price: number, row: Record<string, unknown>) => {
   const cheapest = { id: key, chip: key, price, ...row };
@@ -128,5 +128,15 @@ describe('autoFiles: auto.json and the minimum per use', () => {
     const pick = (ram: typeof models.ram) => cheapestPick(autoCandidates({ ...models, ram }, 'everyday'))!.parts.ram;
     expect(pick([single, dual])).toBe(dual.key);
     expect(pick([single, pricey])).toBe(single.key);
+  });
+  it('RAM: slow or unstated speed is skipped even when it is cheaper (DDR5 under 5600, DDR4 under 3200)', () => {
+    const slow = model('DDR5 16GB (2×8GB) 4800MHz', 30, { type: 'DDR5', capacity: 16, modules: 2, speed: 4800, formFactor: 'Desktop' });
+    const unstated = model('DDR5 16GB (2×8GB) ?', 25, { type: 'DDR5', capacity: 16, modules: 2, speed: null, formFactor: 'Desktop' });
+    const ok = model('DDR5 16GB (2×8GB) 5600MHz', 45, { type: 'DDR5', capacity: 16, modules: 2, speed: 5600, formFactor: 'Desktop' });
+    const pick = (ram: typeof models.ram) => cheapestPick(autoCandidates({ ...models, ram }, 'everyday'))!.parts.ram;
+    expect(pick([slow, unstated, ok])).toBe(ok.key);
+    expect(ramSpeedOk('DDR4', 2666)).toBe(false);
+    expect(ramSpeedOk('DDR4', 3200)).toBe(true);
+    expect(ramSpeedOk('DDR5', null)).toBe(false);
   });
 });

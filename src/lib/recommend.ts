@@ -16,7 +16,7 @@ import type { Model } from './data';
 import { psuEfficiency } from './psuProduct';
 import { recommendedScores } from './ranking';
 import { SLOTS, type Slot } from './slots';
-import { USE_MINIMUMS, type UseKey } from './useMinimums';
+import { USE_MINIMUMS, ramSpeedOk, type UseKey } from './useMinimums';
 import { autoFor, type AutoChoice } from './autoPick';
 
 export { autoFor, loadAuto, type AutoChoice } from './autoPick';
@@ -51,7 +51,7 @@ export function meetsMinimum(slot: Slot, m: AnyModel, use: UseKey | null, psuWat
     case 'gpu':
       return min.vramGb == null || (cheapRow(m) as GpuListing).vram >= min.vramGb;
     case 'ram':
-      return (cheapRow(m) as RamListing).capacity >= min.ramGb;
+      return (cheapRow(m) as RamListing).capacity >= min.ramGb && ramSpeedOk((cheapRow(m) as RamListing).type, (cheapRow(m) as RamListing).speed);
     case 'storage': {
       const l = cheapRow(m) as StorageListing;
       return storageType(l) === 'NVMe' && l.capacity >= min.storageGb;
