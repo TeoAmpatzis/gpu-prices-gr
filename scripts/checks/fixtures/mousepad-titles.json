@@ -1,0 +1,221 @@
+{
+ "groups": [
+  {
+   "chip": "Trust GXT 754 Medium",
+   "listings": [
+    [
+     "bestprice",
+     12.98,
+     "Trust GXT-754 Medium"
+    ],
+    [
+     "shopflix",
+     9.44,
+     "Trust GXT-754 Gaming Mouse Pad Medium 320mm Μαύρο"
+    ],
+    [
+     "skroutz",
+     9.44,
+     "Trust GXT-754 Medium 320mm Μαύρο"
+    ],
+    [
+     "snif",
+     12.98,
+     "Trust GXT 754 Gaming Mouse Pad Medium 320mm Μαύρο"
+    ]
+   ]
+  },
+  {
+   "chip": "AOAS S4000 XXL",
+   "listings": [
+    [
+     "bestprice",
+     8.7,
+     "AOAS S4000 RGB Black XXL"
+    ],
+    [
+     "shopflix",
+     8.8,
+     "Aoas AOAS S4000 RGB Gaming Mouse Pad XXL 800mm με RGB Φωτισμό Μαύρο"
+    ],
+    [
+     "skroutz",
+     8.0,
+     "Aoas AOAS S4000 RGB XXL 800mm Μαύρο"
+    ]
+   ]
+  },
+  {
+   "chip": "Corsair MM Pro Control Large",
+   "listings": [
+    [
+     "bestprice",
+     15.4,
+     "Corsair MM Pro Control Grey Large"
+    ],
+    [
+     "shopflix",
+     30.18,
+     "Corsair Mouse Pad Gaming Corsair Mm Pro Control Large Gray"
+    ],
+    [
+     "skroutz",
+     30.23,
+     "Corsair Mouse Pad Gaming Corsair Mm Pro Control Large Gray"
+    ]
+   ]
+  },
+  {
+   "chip": "Natec Time Zone XXL",
+   "listings": [
+    [
+     "shopflix",
+     11.06,
+     "Natec Time Zone Mouse Pad XXL 800mm"
+    ],
+    [
+     "skroutz",
+     9.09,
+     "Natec Time Zone XXL 800mm"
+    ],
+    [
+     "snif",
+     38.93,
+     "Natec Time Zone Gaming Mouse Pad XXL 800mm Μαύρο"
+    ]
+   ]
+  },
+  {
+   "chip": "Razer Gigantus V2 Medium",
+   "listings": [
+    [
+     "bestprice",
+     10.56,
+     "Razer Gigantus V2 Black Medium"
+    ],
+    [
+     "shopflix",
+     11.48,
+     "Razer Gigantus V2 Gaming Mouse Pad Medium 360mm Μαύρο"
+    ],
+    [
+     "skroutz",
+     11.48,
+     "Razer Gigantus V2 Medium 360mm Μαύρο"
+    ],
+    [
+     "snif",
+     11.99,
+     "Razer Gigantus V2 Gaming Mouse Pad Medium 360mm Μαύρο"
+    ]
+   ]
+  },
+  {
+   "chip": "Razer Gigantus V2 XXL",
+   "listings": [
+    [
+     "bestprice",
+     33.9,
+     "Razer Gigantus V2 Black XXL"
+    ],
+    [
+     "shopflix",
+     42.9,
+     "Gaming Mousepad Razer Gigantus V2 XXL 940mm Μαύρο"
+    ],
+    [
+     "skroutz",
+     37.88,
+     "Razer Gigantus V2 XXL 940mm Μαύρο"
+    ],
+    [
+     "snif",
+     158.86,
+     "Razer Gigantus V2 Gaming Mouse Pad XXL 1200mm Μαύρο"
+    ]
+   ]
+  },
+  {
+   "chip": "Cooler Master MasterAccessory MP860 Medium",
+   "listings": [
+    [
+     "bestprice",
+     69.9,
+     "Cooler Master MasterAccessory MP860 RGB Medium"
+    ],
+    [
+     "shopflix",
+     69.9,
+     "CoolerMaster MasterAccessory MP860 Gaming Mouse Pad Medium 360mm με RGB Φωτισμό Μαύρο"
+    ],
+    [
+     "skroutz",
+     69.9,
+     "CoolerMaster Masteraccessory Mp860 Medium 360mm Μαύρο"
+    ]
+   ]
+  }
+ ],
+ "rejects": [
+  [
+   "skroutz",
+   15.0,
+   "Tstudio Mousepad «ουφ Πληττω»",
+   "custom-print"
+  ],
+  [
+   "skroutz",
+   11.3,
+   "Tstudio Mouse Pad Rubber Diameter 20cm Six-seven",
+   "custom-print"
+  ],
+  [
+   "bestprice",
+   9.95,
+   "Mousepad δώρο για το νονό, My godfather 22x18cm, με δυνατότητα προσθήκης ονόματος",
+   "custom-print"
+  ],
+  [
+   "shopflix",
+   4.87,
+   "Mousepad Disney Cars Tp1002 με Ποντίκι Two Pack 135-0021",
+   "bundle"
+  ],
+  [
+   "bestprice",
+   33.9,
+   "Lazerbuilt - Minions - Σετ ασύρματου ποντικιού και mouse pad",
+   "bundle"
+  ],
+  [
+   "snif",
+   14.99,
+   "Logitech M185 Ασύρματο Mini Ποντίκι Μαύρο/Κόκκινο",
+   "not-mousepad"
+  ],
+  [
+   "skroutz",
+   30.69,
+   "Ergonomic Foam Mouse Wrist Pad Black Fellowes",
+   "not-mousepad"
+  ],
+  [
+   "skroutz",
+   10.5,
+   "World Map RGB XXL 900mm Μαύρο",
+   "no-identity"
+  ],
+  [
+   "snif",
+   29.9,
+   "Mouse Pad Corsair MM Anti-Fray 2XL Υφασμάτινο Gaming Black CH-941D070-WW",
+   "identity-conflict"
+  ],
+  [
+   "shopflix",
+   29.9,
+   "Corsair Mm Extended Mouse Pad XXL (930mm) Μαύρο CH-941D070-WW",
+   "identity-conflict"
+  ]
+ ]
+}

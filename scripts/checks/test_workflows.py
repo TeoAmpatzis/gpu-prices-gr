@@ -64,7 +64,7 @@ expect("peripherals share the queue and the commit action", re.search(r"^concurr
 expect("peripherals need prices, start from main, have time limits", re.search(r"^    needs: prices$", per_specs, re.M) and "ref: main" in per_prices and "ref: main" in per_specs and len(re.findall(r"^    timeout-minutes: \d+$", per, re.M)) == 2)
 in_peripherals = {c for cmd in per_cmds for c in re.findall(r"--category (\w+)", cmd)}
 skipped_in_shops = {c for cmd in (prices_cmd, specs_cmd) for c in re.findall(r"--skip-category (\w+)", cmd)}
-expect("scrape-shops skips exactly the categories scrape-peripherals takes", in_peripherals == skipped_in_shops and len(in_peripherals) == 3, f"{in_peripherals} / {skipped_in_shops}")
+expect("scrape-shops skips exactly the categories scrape-peripherals takes", in_peripherals == skipped_in_shops and len(in_peripherals) == 4, f"{in_peripherals} / {skipped_in_shops}")
 expect("both peripherals commands list the same categories", all(set(re.findall(r"--category (\w+)", c)) == in_peripherals for c in per_cmds))
 main_peripherals = set(re.findall(r"\w+", re.search(r"PERIPHERALS = \{([^}]*)\}", read("scraper/main.py")).group(1)))
 expect("main.PERIPHERALS (run order) matches the peripherals workflow", main_peripherals == in_peripherals, f"{main_peripherals} / {in_peripherals}")

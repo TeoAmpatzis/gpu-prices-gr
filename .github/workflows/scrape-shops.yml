@@ -49,7 +49,7 @@ jobs:
       - run: pip install -r scraper/requirements.txt
 
       - name: Scrape prices
-        run: python -u scraper/main.py --only bestprice --only eshop --only shopflix --only snif --skip-category monitor --skip-category mouse --skip-category headphones --specs-budget 0 --makers-budget 0
+        run: python -u scraper/main.py --only bestprice --only eshop --only shopflix --only snif --skip-category monitor --skip-category mouse --skip-category headphones --skip-category mousepad --specs-budget 0 --makers-budget 0
 
       - name: Commit data
         uses: ./.github/actions/commit-data
@@ -78,7 +78,7 @@ jobs:
       - run: pip install -r scraper/requirements.txt
 
       - name: Collect specs
-        run: python -u scraper/main.py --specs-only --only bestprice --only eshop --only shopflix --only snif --skip-category monitor --skip-category mouse --skip-category headphones
+        run: python -u scraper/main.py --specs-only --only bestprice --only eshop --only shopflix --only snif --skip-category monitor --skip-category mouse --skip-category headphones --skip-category mousepad
 
       - name: Commit data
         uses: ./.github/actions/commit-data

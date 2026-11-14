@@ -21,6 +21,10 @@ UNSUPPORTED: dict[tuple[str, str], frozenset[str]] = {
     ("skroutz", "headphones"): frozenset({SPECS, SHIPPING, HISTORY}),
     ("eshop", "headphones"): frozenset({SPECS, SHIPPING, HISTORY}),
     ("shopflix", "headphones"): frozenset({SPECS, SHIPPING, HISTORY}),
+    # Mousepads: like mice. Lists from every source; the other operations only from BestPrice and Snif.
+    ("skroutz", "mousepad"): frozenset({SPECS, SHIPPING, HISTORY}),
+    ("eshop", "mousepad"): frozenset({SPECS, SHIPPING, HISTORY}),
+    ("shopflix", "mousepad"): frozenset({SPECS, SHIPPING, HISTORY}),
 }
 
 

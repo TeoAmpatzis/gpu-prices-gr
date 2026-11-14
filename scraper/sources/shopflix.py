@@ -25,6 +25,7 @@ from sources.snif import PREFIX
 BASE = "https://shopflix.gr"
 INDEX = "prod_GR_spryker"
 FACET = "string-facet.facet-map.categoryLinks"
+VENDOR_FACET = "string-facet.facet-map.vendorName"
 MAX_HITS = 1000  # Algolia's pagination limit
 FIELDS = ["search-result-data.name", "search-result-data.sku", "search-result-data.slug",
           "search-result-data.price", "search-result-data.vendorOfferPrices", "search-result-data.vendorIds",
@@ -70,7 +71,9 @@ def fetch(cat: Category) -> list:
     seen: dict = {}
     for value in cat.shopflix_categories:
         path = value.split("*:::*")[1]
-        base = {"query": "", "facetFilters": json.dumps([[f"{FACET}:{value}"]])}
+        # cat.shopflix_exclude: sellers left out at the source (mousepads: one print-on-demand seller is over half of the
+        # category and sits on one price, which no price range can split under Algolia's 1000-hit limit).
+        base = {"query": "", "facetFilters": json.dumps([[f"{FACET}:{value}"], *([f"{VENDOR_FACET}:-{v}"] for v in cat.shopflix_exclude)])}
 
         def ranges(lo: float, hi: float) -> list[tuple[float, float]]:
             """Price ranges [lo, hi) with at most MAX_HITS products each."""

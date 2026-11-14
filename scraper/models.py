@@ -334,3 +334,42 @@ class HeadphonesListing:
 
     def to_dict(self) -> dict:
         return listing_dict(self)
+
+
+@dataclass
+class MousepadListing:
+    """One mousepad or desk-mat offer. Null = not stated by the listing, never guessed. Mirrored in src/types.ts
+    (MousepadListing). `chip` is the model name settle() gives after grouping (size is part of it: a Medium and an
+    XXL are two models); colours are variants of one model; `reject` is why a listing stays out of the data
+    (rejected.json). widthMm is the LONGER stated side, heightMm the shorter; a single stated length is widthMm."""
+
+    id: str
+    source: str
+    title: str
+    url: str
+    price: float
+    shopCount: int | None
+    brand: str  # "Razer"; "Other" if unknown
+    chip: str  # model name incl. size, e.g. "Razer Gigantus V2 Medium" (set by settle)
+    scrapedAt: str
+    size: str | None = None  # Small | Medium | Large | XL | XXL | XXXL | 4XL, as the title states it
+    shape: str | None = None  # rectangular | round | heart
+    gaming: bool | None = None
+    extended: bool | None = None  # desk mat: the title says "desk mat" / "extended"
+    widthMm: int | None = None
+    heightMm: int | None = None
+    thicknessMm: float | None = None
+    surface: str | None = None  # cloth | plastic | glass | leatherette | silicone
+    rgb: bool | None = None
+    wristRest: bool | None = None
+    usbPort: bool | None = None
+    wirelessCharging: bool | None = None
+    antiSlip: bool | None = None
+    stitchedEdges: bool | None = None
+    colour: str | None = None
+    partNumber: str | None = None
+    reject: str | None = None
+    identityTitle: str | None = None
+
+    def to_dict(self) -> dict:
+        return listing_dict(self)

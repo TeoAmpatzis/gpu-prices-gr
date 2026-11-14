@@ -1,6 +1,6 @@
 name: scrape-peripherals
 
-# Monitors, mice and headphones from the four shops, on their own schedule and time limit so that their long BestPrice
+# Monitors, mice, headphones and mousepads from the four shops, on their own schedule and time limit so that their long BestPrice
 # lists (headphones: 30 price slices, about 27 minutes) do not use up scrape-shops.yml's 90 minutes (Skroutz's Cloudflare blocks them; see scrape.yml).
 # Two jobs, one after the other: prices (list pages and shipping) are committed first, spec pages after.
 # Every phase is one line of requests to BestPrice, so the jobs never run side by side and there is no
@@ -51,7 +51,7 @@ jobs:
       - run: pip install -r scraper/requirements.txt
 
       - name: Scrape prices
-        run: python -u scraper/main.py --only bestprice --only eshop --only shopflix --only snif --category monitor --category mouse --category headphones --specs-budget 0 --makers-budget 0
+        run: python -u scraper/main.py --only bestprice --only eshop --only shopflix --only snif --category monitor --category mouse --category headphones --category mousepad --specs-budget 0 --makers-budget 0
 
       - name: Commit data
         uses: ./.github/actions/commit-data
@@ -80,7 +80,7 @@ jobs:
       - run: pip install -r scraper/requirements.txt
 
       - name: Collect specs
-        run: python -u scraper/main.py --specs-only --only bestprice --only eshop --only shopflix --only snif --category monitor --category mouse --category headphones
+        run: python -u scraper/main.py --specs-only --only bestprice --only eshop --only shopflix --only snif --category monitor --category mouse --category headphones --category mousepad
 
       - name: Commit data
         uses: ./.github/actions/commit-data

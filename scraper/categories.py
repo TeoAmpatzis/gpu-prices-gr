@@ -13,6 +13,7 @@ import normalize_mobo
 import normalize_monitor
 import normalize_headphones
 import normalize_mouse
+import normalize_mousepad
 import normalize_psu
 import normalize_ram
 import normalize_storage
@@ -34,6 +35,8 @@ class Category:
     snif_categories: tuple[str, ...] = ()
     # shopflix.gr categories as their Algolia facet value, "<name>*:::*/c/<id>/<slug>" (see sources/shopflix.py).
     shopflix_categories: tuple[str, ...] = ()
+    # Shopflix seller names whose listings are never fetched (see sources/shopflix.py).
+    shopflix_exclude: tuple[str, ...] = ()
     # Optional attributes stamped on every listing of the BestPrice slice at the same index, when
     # a slice is a spec filter ("4 RAM slots") rather than a price range.
     bestprice_tags: tuple[dict, ...] = ()
@@ -282,6 +285,34 @@ CATEGORIES = {
         settle=normalize_headphones.settle,
         shared=("formFactor", "productType", "gaming", "trueWireless", "connection", "bluetooth", "rf", "connector", "multipoint",
                 "anc", "transparency", "microphone", "spatialAudio", "driverMm", "batteryHours", "chargingCase", "waterResistance", "foldable"),
+        rejects=True,
+        images=True,
+    ),
+    "mousepad": Category(
+        name="mousepad",
+        # Skroutz lists 6,168 products over about 128 pages, and its reader stops at 100: three disjoint lists by the
+        # card's "Τύπος" (Gaming 1,348 + Standard 3,808 + round 1,007 = 6,163 on 2026-11-14), each tagged with it.
+        skroutz_paths=("/c/598/mouse_pad/f/574791/Gaming.html", "/c/598/mouse_pad/f/574792/Standard.html",
+                       "/c/598/mouse_pad/f/1344332/strogylo.html"),
+        skroutz_tags=({"gaming": True}, {"gaming": False}, {"shape": "round"}),
+        # 5,213 products; BestPrice shows 800 per list. Price slices measured 2026-11-14 (cents, inclusive), none over 30
+        # pages. Exactly 10.80 EUR is left out: 2,233 print-on-demand products from one seller sit on that one price and no
+        # slice can split them (docs/peripherals/MOUSEPAD_DESIGN.md).
+        bestprice_paths=tuple(f"/cat/2793/mouse-pads.html?{q}" for q in (
+            "max=299", "min=300&max=499", "min=500&max=699", "min=700&max=799", "min=800&max=899", "min=900&max=999",
+            "min=1000&max=1079", "min=1081&max=1199", "min=1200&max=1499", "min=1500&max=1999", "min=2000&max=2499",
+            "min=2500&max=2999", "min=3000&max=3999", "min=4000&max=4999", "min=5000&max=6999", "min=7000&max=9999",
+            "min=10000&max=19999", "min=20000")),
+        snif_categories=("1919853",),
+        eshop_categories=(("ypologistes-mousepads-list", "MOUSEPAD"),),
+        shopflix_categories=("Mousepads*:::*/c/4743/mouse-pads",),
+        # Koupakoupa: 2,146 of Shopflix's 4,009 mousepads, all on 11.80 EUR.
+        shopflix_exclude=("Koupakoupa",),
+        make_listing=normalize_mousepad.make_listing,
+        model_key=lambda l: names.model_key(l["chip"]),
+        settle=normalize_mousepad.settle,
+        shared=("shape", "gaming", "extended", "widthMm", "heightMm", "thicknessMm", "surface", "rgb", "wristRest", "usbPort",
+                "wirelessCharging", "antiSlip", "stitchedEdges"),
         rejects=True,
         images=True,
     ),
