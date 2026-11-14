@@ -39792,7 +39792,7 @@
    "m2Slots": null,
    "m2Gen": null,
    "sataPorts": null,
-   "maxMemoryGB": null,
+   "maxMemoryGB": 128,
    "biosFlashback": null,
    "shipping": 0.0,
    "total": 140.0,
