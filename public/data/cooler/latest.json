@@ -32124,8 +32124,8 @@
    "radiator": null,
    "rgb": false,
    "scrapedAt": "2026-11-14T18:52:42+00:00",
-   "sockets": null,
-   "heightMm": null,
+   "sockets": "LGA1700,LGA1851",
+   "heightMm": 65.099,
    "shipping": 7.0,
    "total": 67.5,
    "merchant": "Gatoulis"
