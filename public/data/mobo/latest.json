@@ -1,9 +1,9 @@
 {
- "updatedAt": "2026-11-14T07:02:30+00:00",
+ "updatedAt": "2026-11-14T11:46:50+00:00",
  "sources": {
   "skroutz": {
    "count": 812,
-   "ok": true,
+   "ok": false,
    "updatedAt": "2026-11-13T16:30:52+00:00"
   },
   "bestprice": {
