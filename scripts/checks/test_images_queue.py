@@ -40,6 +40,37 @@ class QueueTests(unittest.TestCase):
             self.assertEqual([k for _, k, *_ in queue], ["c", "d"])
 
 
+class StrictCategoryTests(unittest.TestCase):
+    """mousepad opts in to photo_agree: a stored photo must still be one of the model's candidates."""
+
+    def test_a_stored_photo_that_is_no_longer_a_candidate_is_fetched_again(self):
+        with tempfile.TemporaryDirectory() as temp:
+            data = Path(temp)
+            stage(data, "mousepad", ["a", "b", "c"])
+            mid = lambda k: images.model_id("mousepad", k)
+            index = {mid("a"): {"c": "mousepad", "u": "https://x.invalid/a.jpg"},  # still a candidate
+                     mid("b"): {"c": "mousepad", "u": "https://x.invalid/other.jpg"},  # gone from the candidates
+                     mid("c"): {"c": "mousepad"}}  # stored before the URL was recorded
+            self.assertEqual([k for _, k, *_ in images.build_queue(data, index, {}, set())], ["b", "c"])
+
+    def test_other_categories_keep_what_they_have(self):
+        with tempfile.TemporaryDirectory() as temp:
+            data = Path(temp)
+            stage(data, "gpu", ["a"])
+            index = {images.model_id("gpu", "a"): {"c": "gpu"}}
+            self.assertEqual(images.build_queue(data, index, {}, set()), [])
+
+    def test_a_photo_whose_model_has_no_candidate_is_an_orphan_but_never_when_the_file_is_empty(self):
+        with tempfile.TemporaryDirectory() as temp:
+            data = Path(temp)
+            stage(data, "mousepad", ["a"])
+            gone, kept, other = images.model_id("mousepad", "z"), images.model_id("mousepad", "a"), images.model_id("gpu", "q")
+            index = {gone: {"c": "mousepad"}, kept: {"c": "mousepad"}, other: {"c": "gpu"}}
+            self.assertEqual(images.orphans(data, index), [gone])
+            stage(data, "mousepad", [])
+            self.assertEqual(images.orphans(data, index), [])
+
+
 class TimeLimitTests(unittest.TestCase):
     def test_a_time_limit_stops_the_loop_and_still_writes_the_index(self):
         with tempfile.TemporaryDirectory() as temp:

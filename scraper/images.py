@@ -10,7 +10,7 @@ Runs in the images repo's own workflow (github.com/TeoAmpatzis/builddraft-images
 - Each model without a photo gets the first candidate that downloads and opens (http_client.get, with
   its own retry allowance), as img/<cat>/<id>-96.webp and -320.webp: contained in a white square.
   <id> = model_id(): the first 12 hex digits of sha1("<cat>\\0<model key>"), the same in
-  src/lib/images.ts. index.json records {id: {"c": cat, "s": source, "d": date}}.
+  src/lib/images.ts. index.json records {id: {"c": cat, "s": source, "d": date, "u": the URL it came from}}.
 - blocklist.json (removal requests): a listed model is never downloaded, and its files and index
   entry are deleted on the next run. Entries: {"cat": "gpu", "model": "<model key>", "reason": ...}
   or {"id": "<id>"}.
@@ -103,12 +103,28 @@ def build_queue(data: Path, index: dict, failed: dict, blocked: set[str]) -> lis
         urls = load(data / cat / "image_urls.json", {})
         ids = {key: model_id(cat, key) for key in urls}
         have = sum(1 for mid in ids.values() if mid in index)
+        strict = CATEGORIES[cat].photo_agree is not None
         todo = [(cat, key, ids[key], c) for key, c in urls.items()
-                if ids[key] not in index and ids[key] not in blocked and not failed.get(ids[key], "") > retry_after]
+                if (ids[key] not in index or (strict and index[ids[key]].get("u") not in c))  # strict: a stored photo must be a current candidate
+                and ids[key] not in blocked and not failed.get(ids[key], "") > retry_after]
         if todo:
             queues.append((have / len(urls), todo))
     queues.sort(key=lambda q: q[0])  # stable: equal coverage keeps the registry order
     return [item for _, todo in queues for item in todo]
+
+
+def orphans(data: Path, index: dict) -> list[str]:
+    """Stored photos of a photo_agree category whose model has no candidate any more (its listings disagree, or it is
+    gone): the category icon is better than a photo that may show another product. Nothing is removed from a category
+    whose candidate file is empty or missing, so a failed scrape cannot wipe the photos."""
+    out = []
+    for cat, c in CATEGORIES.items():
+        urls = load(data / cat / "image_urls.json", {})
+        if c.photo_agree is None or not urls:
+            continue
+        valid = {model_id(cat, key) for key in urls}
+        out += [mid for mid, e in index.items() if e["c"] == cat and mid not in valid]
+    return out
 
 
 def main() -> int:
@@ -136,6 +152,12 @@ def main() -> int:
             (out / "img" / cat / f"{mid}-{size}.webp").unlink(missing_ok=True)
         print(f"removed {cat}/{mid} (blocklist)")
 
+    for mid in orphans(args.data, index):
+        cat = index.pop(mid)["c"]
+        for size in SIZES:
+            (out / "img" / cat / f"{mid}-{size}.webp").unlink(missing_ok=True)
+        print(f"removed {cat}/{mid} (no photo agrees with the listings)")
+
     todo = build_queue(args.data, index, failed, blocked)
     print(f"{len(index)} photos stored, {len(todo)} models without one, {len(blocked)} blocked; budget {args.budget}")
 
@@ -153,7 +175,7 @@ def main() -> int:
             except Exception as e:  # unreachable, not an image…: try the next candidate
                 print(f"  {cat} {key[:40]}: {type(e).__name__} {str(e)[:80]} ({url[:70]})")
                 continue
-            index[mid] = {"c": cat, "s": source_of(url), "d": today}
+            index[mid] = {"c": cat, "s": source_of(url), "d": today, "u": url}
             failed.pop(mid, None)
             done += 1
             break
