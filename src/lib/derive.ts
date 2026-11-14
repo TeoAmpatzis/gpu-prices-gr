@@ -100,6 +100,8 @@ const LIST_SKIP_BY_CATEGORY: Partial<Record<Category, string[]>> = {
   // A mouse's colour stays: the colour filter reads it. Its part number and the stored page name are only for the model page.
   mouse: ['partNumber', 'identityTitle'],
   // A headphone list row shows the model name (chip); the shops' titles are read from the model chunk. This saves about 226 KB gzip of the list file.
+  // A mousepad list row shows the model name (chip); the shops' titles, part number and the rarely stated specs are read from the model chunk.
+  mousepad: ['title', 'partNumber', 'thicknessMm', 'surface', 'usbPort', 'wirelessCharging', 'antiSlip', 'stitchedEdges', 'shape', 'extended'],
   headphones: ['title', 'partNumber', 'connector', 'rf', 'multipoint', 'transparency', 'spatialAudio', 'driverMm', 'waterResistance', 'foldable'],
 };
 // 'formConflict' stays in list.v2.json on purpose: the pick view runs `usable` on those listings (a few dozen boards).
@@ -740,6 +742,7 @@ export const MAX_DROP = 0.3;
  * the live site unreachable): about half of the 2026-10-01 counts.
  */
 export const MIN_MODELS: Record<Category, number> = {
+  mousepad: 1700, // of 3432 in the local trial of 2026-11-14; see docs/peripherals/MOUSEPAD_DATA_REVIEW.md
   headphones: 4900, // half of 9861 models from the first four-shop scrape of 2026-11-14 (Skroutz not yet in); see docs/peripherals/HEADPHONES_DATA_REVIEW.md
   mouse: 2515, // of 5031 (first collection from the three sources, 2026-11-12: scrape 43203669607, scrape-shops 43162578473)
   gpu: 49, // of 98

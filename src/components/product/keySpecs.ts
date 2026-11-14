@@ -36,6 +36,7 @@ export const MIN_SPECS = 4;
 export const FILL: Record<Category, (number | 'group' | 'rgb')[]> = {
   mouse: [],
   headphones: [], // the table columns already carry type, connection, ANC and battery
+  mousepad: [], // the table columns already carry size and dimensions
   gpu: [1, 2],
   cpu: [2, 3],
   mobo: [],

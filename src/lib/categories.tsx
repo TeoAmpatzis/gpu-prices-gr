@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Box, CircuitBoard, Cpu, Fan, HardDrive, Headphones, MemoryStick, Microchip, Monitor, Mouse, Plug, Snowflake, type LucideIcon } from 'lucide-react';
+import { Box, CircuitBoard, Cpu, Fan, HardDrive, Headphones, MemoryStick, Microchip, Monitor, Mouse, Plug, RectangleHorizontal, Snowflake, type LucideIcon } from 'lucide-react';
 import type {
   BaseListing,
   CaseListing,
@@ -12,6 +12,7 @@ import type {
   MoboListing,
   MonitorListing,
   MouseListing,
+  MousepadListing,
   PsuListing,
   RamListing,
   StorageListing,
@@ -32,6 +33,8 @@ import {
   MEMORY,
   MOBO_RULES,
   MONITOR_RULES,
+  MOUSEPAD_RULES,
+  padSize,
   MOUSE_CONNECTION,
   MOUSE_RULES,
   NO_RATING,
@@ -534,11 +537,44 @@ export const HEADPHONES: CategoryConfig<HeadphonesListing> = {
   ],
 };
 
+export const MOUSEPAD: CategoryConfig<MousepadListing> = {
+  ...MOUSEPAD_RULES,
+  tab: { el: 'Mousepads', en: 'Mousepads' },
+  title: CAT_PAGE.mousepad.title,
+  subtitle: CAT_PAGE.mousepad.subtitle,
+  icon: RectangleHorizontal,
+  empty: noResults('mousepads', 'mousepads'),
+  searchPlaceholder: search('Gigantus V2, QcK'),
+  groupLabel: { el: 'Μέγεθος', en: 'Size' },
+  groupParam: 'size',
+  groupDot: { small: 'bg-idle', medium: 'bg-idle', large: 'bg-idle', xl: 'bg-idle', xxl: 'bg-idle', xxxl: 'bg-idle' },
+  sortByGroup: false,
+  // No quality score: a bigger or RGB pad is not a better one (ranking.ts weighs popularity and price only).
+  tierScore: () => 0,
+  // Only what a source states; "—" when it does not.
+  before: [
+    {
+      header: { el: 'Μέγεθος', en: 'Size' },
+      className: 'hidden sm:table-cell',
+      cell: (m) => m.cheapest.size ?? '—',
+    },
+  ],
+  after: [
+    {
+      header: { el: 'Διαστάσεις', en: 'Dimensions' },
+      className: 'hidden sm:table-cell',
+      numeric: true,
+      cell: (m) => padSize(m.cheapest) ?? '—',
+    },
+  ],
+};
+
 export const CATEGORIES = {
   gpu: GPU, cpu: CPU, mobo: MOBO, ram: RAM, storage: STORAGE, psu: PSU, case: CASE, fan: FAN, cooler: COOLER,
   monitor: MONITOR,
   mouse: MOUSE,
   headphones: HEADPHONES,
+  mousepad: MOUSEPAD,
 } as const;
 /** The categories the site builds data for: those the registry has switched on. A hidden category stays out of the build. */
 export const CATEGORY_IDS = (Object.keys(CATEGORIES) as Category[]).filter((id) => REGISTRY[id].enabled);

@@ -14,6 +14,7 @@ import type {
   MoboListing,
   MonitorListing,
   MouseListing,
+  MousepadListing,
   PsuListing,
   RamListing,
   StorageListing,
@@ -79,6 +80,13 @@ export const GROUP_NAMES: Record<string, Text> = {
   'in-ear': { el: 'In-ear / ψείρες', en: 'In-ear / earbuds' },
   'open-ear': { el: 'Open-ear / οστική αγωγή', en: 'Open-ear / bone conduction' },
   'bone-conduction': { el: 'Οστική αγωγή', en: 'Bone conduction' },
+  // Mousepad pills: the size word a seller states (it is part of the model).
+  small: { el: 'Small', en: 'Small' },
+  medium: { el: 'Medium', en: 'Medium' },
+  large: { el: 'Large', en: 'Large' },
+  xl: { el: 'XL', en: 'XL' },
+  xxl: { el: 'XXL', en: 'XXL' },
+  xxxl: { el: 'XXXL', en: 'XXXL' },
 };
 
 /** Whether a listing belongs to a pill: what the filter and the pill counts both use. */
@@ -617,9 +625,39 @@ export const HEADPHONES_RULES: CategoryRules<HeadphonesListing> = {
   ],
 };
 
+// ---------- Mousepads ----------
+// A model is the scraper's `chip` (scraper/normalize_mousepad.py: maker + model + size), so a Medium and an XXL of one
+// series are two models and colours are offers of one. Pills are the size word. Every filter reads only what a title
+// states: an unknown value matches no choice. No filter for shape, surface, thickness, USB, wireless charging, anti-slip
+// or stitched edges: the 2026-11-14 trial states each for under 4% of the listings
+// (docs/peripherals/MOUSEPAD_DATA_REVIEW.md); a model page still shows them.
+
+const MOUSEPAD_LENGTH_MM = [300, 400, 600, 800, 900];
+
+/** "900 × 400 mm", or "900 mm" when only the long side is stated; null when no title gives a size. */
+export const padSize = (l: Pick<MousepadListing, 'widthMm' | 'heightMm'>) =>
+  l.widthMm ? (l.heightMm ? `${l.widthMm} × ${l.heightMm} mm` : `${l.widthMm} mm`) : null;
+
+export const MOUSEPAD_RULES: CategoryRules<MousepadListing> = {
+  id: 'mousepad',
+  groups: ['small', 'medium', 'large', 'xl', 'xxl', 'xxxl'],
+  group: (l) => (l.size ? l.size.toLowerCase() : OTHER),
+  modelKey: (l) => productKey(l.chip),
+  isPro: () => false,
+  searchText: (l) => `${l.chip} ${l.title}`,
+  extraFilters: [
+    vendorFilter(),
+    stated('gaming', 'Gaming', (l) => l.gaming),
+    stated('rgb', 'RGB', (l) => l.rgb),
+    stated('wristRest', { el: 'Στήριγμα καρπού', en: 'Wrist rest' }, (l) => l.wristRest),
+    threshold('widthMm', atLeastLabel({ el: 'Μήκος', en: 'Length' }), (l) => l.widthMm, (v) => `≥ ${v} mm`, { fixed: MOUSEPAD_LENGTH_MM }),
+    oneOf('colour', { el: 'Χρώμα', en: 'Colour' }, (l) => l.colour, { minCount: 5, fmt: mouseColourName }),
+  ],
+};
+
 export const RULES = {
   gpu: GPU_RULES, cpu: CPU_RULES, mobo: MOBO_RULES, ram: RAM_RULES, storage: STORAGE_RULES, psu: PSU_RULES,
-  case: CASE_RULES, fan: FAN_RULES, cooler: COOLER_RULES, monitor: MONITOR_RULES, mouse: MOUSE_RULES, headphones: HEADPHONES_RULES,
+  case: CASE_RULES, fan: FAN_RULES, cooler: COOLER_RULES, monitor: MONITOR_RULES, mouse: MOUSE_RULES, headphones: HEADPHONES_RULES, mousepad: MOUSEPAD_RULES,
 } as const;
 
 /** A category's rules for code that handles every category alike (the facet worker and its fallback). */

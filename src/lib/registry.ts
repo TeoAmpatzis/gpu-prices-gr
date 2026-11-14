@@ -33,6 +33,8 @@ export const REGISTRY = {
   mouse: { domain: 'peripherals', enabled: true, visible: true },
   // Headphones: disabled until the owner approves the first collection (docs/peripherals/HEADPHONES_DESIGN.md).
   headphones: { domain: 'peripherals', enabled: true, visible: true },
+  // Mousepads: disabled until the owner approves the first collection (docs/peripherals/MOUSEPAD_DESIGN.md).
+  mousepad: { domain: 'peripherals', enabled: false, visible: false },
 } as const satisfies Record<string, CategoryEntry>;
 
 export type Category = keyof typeof REGISTRY;

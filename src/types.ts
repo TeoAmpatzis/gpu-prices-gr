@@ -133,6 +133,29 @@ export interface HeadphonesListing extends BaseListing {
   reject?: string | null;
 }
 
+// A mousepad offer (scraper/models.py MousepadListing). Null means the source did not state the spec; the scraper never
+// fills a default. `size` is the seller's size word and part of the model; widthMm is the longer stated side, heightMm the
+// shorter (a lone length such as "XXL 900mm" is the width only).
+export interface MousepadListing extends BaseListing {
+  size: 'Small' | 'Medium' | 'Large' | 'XL' | 'XXL' | 'XXXL' | '4XL' | null;
+  shape: 'rectangular' | 'round' | 'heart' | null;
+  gaming: boolean | null;
+  extended: boolean | null; // a desk mat
+  widthMm: number | null;
+  heightMm: number | null;
+  thicknessMm: number | null;
+  surface: 'cloth' | 'glass' | 'leatherette' | 'plastic' | 'silicone' | null;
+  rgb: boolean | null;
+  wristRest: boolean | null;
+  usbPort: boolean | null;
+  wirelessCharging: boolean | null;
+  antiSlip: boolean | null;
+  stitchedEdges: boolean | null;
+  colour: string | null;
+  partNumber: string | null;
+  reject?: string | null;
+}
+
 // A monitor offer (scraper/models.py MonitorListing). Every spec is what THIS listing states; null = not stated.
 // Never a builder part: peripherals do not feed the compatibility engine.
 export interface MonitorListing extends BaseListing {

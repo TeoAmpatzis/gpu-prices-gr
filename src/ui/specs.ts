@@ -3,7 +3,7 @@
 // skipped, so the order stays the same from row to row. Values are the most common across a model's
 // listings (as v1's builder takes them).
 import { tr, type Lang } from '../lib/i18n';
-import { GROUP_NAMES, HEADPHONES_TYPE, MOUSE_CONNECTION } from '../lib/categoryRules';
+import { GROUP_NAMES, HEADPHONES_TYPE, MOUSE_CONNECTION, padSize } from '../lib/categoryRules';
 import { mostCommon } from '../lib/data';
 import { cpuThreads } from '../lib/cpuThreads';
 import type {
@@ -17,6 +17,7 @@ import type {
   MoboListing,
   MonitorListing,
   MouseListing,
+  MousepadListing,
   HeadphonesListing,
   PsuListing,
   RamListing,
@@ -40,6 +41,17 @@ const mm = (lang: Lang, n: number | null) => (n == null ? null : `${num(lang, n)
 const labelled = (label: string, v: string | null) => (v == null ? null : `${label} ${v}`);
 
 const SPECS: { [C in Category]: (ls: BaseListing[], lang: Lang) => Spec[] } = {
+  mousepad: (raw, lang) => {
+    const ls = raw as L<MousepadListing>;
+    const size = pick(ls, (l) => l.size);
+    const widths = pick(ls, (l) => l.widthMm);
+    const heights = pick(ls, (l) => l.heightMm);
+    const dims = padSize({ widthMm: widths ?? null, heightMm: heights ?? null });
+    return [
+      { label: w(lang, 'μέγεθος', 'size'), value: size ?? null },
+      { label: w(lang, 'διαστάσεις', 'dimensions'), value: dims },
+    ];
+  },
   headphones: (raw, lang) => {
     const ls = raw as L<HeadphonesListing>;
     const form = pick(ls, (l) => l.formFactor);
@@ -226,6 +238,31 @@ const firstOf = <T, V>(ls: L<T>, f: (l: T) => V | null | undefined): V | null =>
 };
 
 const FULL: { [C in Category]: (ls: BaseListing[], lang: Lang, est?: Estimate) => Row[] } = {
+  // Only what a source states: an unknown value has no row, an explicit "no" is shown as No.
+  mousepad: (raw, lang) => {
+    const ls = raw as L<MousepadListing>;
+    const shape = pick(ls, (l) => l.shape);
+    const surface = pick(ls, (l) => l.surface);
+    const thickness = pick(ls, (l) => l.thicknessMm);
+    const shapes = { rectangular: ['Ορθογώνιο', 'Rectangular'], round: ['Στρογγυλό', 'Round'], heart: ['Καρδιά', 'Heart'] } as const;
+    const surfaces = { cloth: ['Υφασμάτινη', 'Cloth'], glass: ['Γυάλινη', 'Glass'], leatherette: ['Δερματίνη', 'Leatherette'], plastic: ['Πλαστική', 'Plastic'], silicone: ['Σιλικόνη', 'Silicone'] } as const;
+    return [
+      ['general', w(lang, 'Κατασκευαστής', 'Maker'), pick(ls, (l) => l.brand)],
+      ['general', w(lang, 'Μέγεθος', 'Size'), pick(ls, (l) => l.size)],
+      ['general', w(lang, 'Διαστάσεις', 'Dimensions'), padSize({ widthMm: pick(ls, (l) => l.widthMm) ?? null, heightMm: pick(ls, (l) => l.heightMm) ?? null })],
+      ['general', w(lang, 'Πάχος', 'Thickness'), thickness == null ? null : `${num(lang, thickness)} mm`],
+      ['general', w(lang, 'Σχήμα', 'Shape'), shape == null ? null : w(lang, shapes[shape][0], shapes[shape][1])],
+      ['general', w(lang, 'Επιφάνεια', 'Surface'), surface == null ? null : w(lang, surfaces[surface][0], surfaces[surface][1])],
+      ['general', 'Gaming', yesNo(lang, pick(ls, (l) => l.gaming))],
+      ['general', w(lang, 'Desk mat (επεκτεταμένο)', 'Desk mat (extended)'), yesNo(lang, pick(ls, (l) => l.extended))],
+      ['general', 'RGB', yesNo(lang, pick(ls, (l) => l.rgb))],
+      ['general', w(lang, 'Στήριγμα καρπού', 'Wrist rest'), yesNo(lang, pick(ls, (l) => l.wristRest))],
+      ['general', w(lang, 'Αντιολισθητική βάση', 'Anti-slip base'), yesNo(lang, pick(ls, (l) => l.antiSlip))],
+      ['general', w(lang, 'Ραμμένες άκρες', 'Stitched edges'), yesNo(lang, pick(ls, (l) => l.stitchedEdges))],
+      ['connections', 'USB', yesNo(lang, pick(ls, (l) => l.usbPort))],
+      ['power', w(lang, 'Ασύρματη φόρτιση', 'Wireless charging'), yesNo(lang, pick(ls, (l) => l.wirelessCharging))],
+    ];
+  },
   // Only what a source states: an unknown value has no row, an explicit "no" is shown as No.
   headphones: (raw, lang) => {
     const ls = raw as L<HeadphonesListing>;

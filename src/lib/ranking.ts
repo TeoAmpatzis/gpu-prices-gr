@@ -55,6 +55,7 @@ export const RANKING: Record<Category, RankConfig> = {
   monitor: { weights: { popularity: 0.7, modern: 0, price: 0.3, value: 0 }, priceBand: [0.2, 0.8], saleBoost: DEAL_BOOST },
   mouse: { weights: { popularity: 0.7, modern: 0, price: 0.3, value: 0 }, priceBand: [0.2, 0.8], saleBoost: DEAL_BOOST },
   // Headphones: popularity and price only; a higher battery figure or an ANC flag is not a better pair.
+  mousepad: { weights: { popularity: 0.7, modern: 0, price: 0.3, value: 0 }, priceBand: [0.2, 0.8], saleBoost: DEAL_BOOST },
   headphones: { weights: { popularity: 0.7, modern: 0, price: 0.3, value: 0 }, priceBand: [0.2, 0.8], saleBoost: DEAL_BOOST },
 };
 
@@ -138,6 +139,7 @@ const MODERN: { [C in Category]: (m: Model<never>) => number } = {
   monitor: () => 0, // weight 0 above: nothing says one monitor is "more modern" than another
   mouse: () => 0,
   headphones: () => 0,
+  mousepad: () => 0,
 };
 
 // ---------- scoring ----------

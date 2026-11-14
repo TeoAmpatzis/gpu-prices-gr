@@ -146,4 +146,11 @@ export const CAT_PAGE: Record<Category, { title: Text; subtitle: Text }> = {
       en: 'The lowest prices of headphones, earphones and headsets in Greece, by model, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
     },
   },
+  mousepad: {
+    title: { el: 'Mousepads', en: 'Mousepads' },
+    subtitle: {
+      el: 'Οι χαμηλότερες τιμές mousepads και desk mats στην Ελλάδα, ανά μοντέλο και μέγεθος, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
+      en: 'The lowest prices of mousepads and desk mats in Greece, by model and size, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
+    },
+  },
 };

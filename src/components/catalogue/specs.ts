@@ -27,6 +27,15 @@ export function productSpecs(cat: Category, listing: BaseListing, lang: Lang): S
         spec('Αυτονομία', 'Battery', number('batteryHours', ' h'), true),
       ];
     }
+    case 'mousepad': {
+      const dims = typeof l.widthMm === 'number' ? (typeof l.heightMm === 'number' ? `${l.widthMm} × ${l.heightMm} mm` : `${l.widthMm} mm`) : null;
+      return [
+        spec('Μέγεθος', 'Size', word('size')),
+        spec('Διαστάσεις', 'Dimensions', dims),
+        spec('Gaming', 'Gaming', yes('gaming')),
+        spec('RGB', 'RGB', yes('rgb'), true),
+      ];
+    }
     case 'mouse': {
       const connection = { wireless: ['Ασύρματο', 'Wireless'], wired: ['Ενσύρματο', 'Wired'], both: ['Ασύρματο και ενσύρματο', 'Wireless and wired'] }[String(l.connection)];
       return [
