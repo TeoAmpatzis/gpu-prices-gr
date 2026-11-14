@@ -3,7 +3,7 @@
 Runs in the images repo's own workflow (github.com/TeoAmpatzis/builddraft-images,
 .github/workflows/images.yml), never inside the price scrape, with the main repo checked out:
 
-  python <main>/scraper/images.py --data <main>/public/data --out <images repo> [--budget 3000]
+  python <main>/scraper/images.py --data <main>/public/data --out <images repo> [--budget 3000] [--minutes 100]
 
 - Candidates: public/data/<cat>/image_urls.json (written by main.write_image_urls from the pages
   the scrape already fetched; best first: BestPrice 500px, Shopflix 530px, Skroutz, Snif).
@@ -14,6 +14,8 @@ Runs in the images repo's own workflow (github.com/TeoAmpatzis/builddraft-images
 - blocklist.json (removal requests): a listed model is never downloaded, and its files and index
   entry are deleted on the next run. Entries: {"cat": "gpu", "model": "<model key>", "reason": ...}
   or {"id": "<id>"}.
+- Order: the least covered category first (build_queue), so a new category is not starved by an older backlog.
+  --minutes stops the loop cleanly before the job timeout, so the commit step always runs.
 - A model whose candidates all fail is retried after RETRY_FAILED_DAYS (failed.json).
 """
 
@@ -92,6 +94,23 @@ def blocked_ids(blocklist: list[dict]) -> set[str]:
     return out
 
 
+def build_queue(data: Path, index: dict, failed: dict, blocked: set[str]) -> list:
+    """Models still without a photo, the least covered category first, so a new category is never
+    left waiting behind a backlog of older ones. Within a category the order is the file's."""
+    retry_after = (date.today() - timedelta(days=RETRY_FAILED_DAYS)).isoformat()
+    queues = []
+    for cat in CATEGORIES:
+        urls = load(data / cat / "image_urls.json", {})
+        ids = {key: model_id(cat, key) for key in urls}
+        have = sum(1 for mid in ids.values() if mid in index)
+        todo = [(cat, key, ids[key], c) for key, c in urls.items()
+                if ids[key] not in index and ids[key] not in blocked and not failed.get(ids[key], "") > retry_after]
+        if todo:
+            queues.append((have / len(urls), todo))
+    queues.sort(key=lambda q: q[0])  # stable: equal coverage keeps the registry order
+    return [item for _, todo in queues for item in todo]
+
+
 def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8")
     if len(sys.argv) == 4 and sys.argv[1] == "--id":  # images.py --id gpu "RTX 5060 8GB" -> its photo id
@@ -101,6 +120,7 @@ def main() -> int:
     ap.add_argument("--data", required=True, type=Path, help="the main repo's public/data")
     ap.add_argument("--out", required=True, type=Path, help="the images repo")
     ap.add_argument("--budget", type=int, default=3000, help="new photos per run")
+    ap.add_argument("--minutes", type=float, default=0, help="stop cleanly after this long (0: no limit); keeps the job inside its timeout so the commit step always runs")
     args = ap.parse_args()
     out: Path = args.out
     index = load(out / "index.json", {})
@@ -116,20 +136,15 @@ def main() -> int:
             (out / "img" / cat / f"{mid}-{size}.webp").unlink(missing_ok=True)
         print(f"removed {cat}/{mid} (blocklist)")
 
-    todo = []
-    for cat in CATEGORIES:
-        urls = load(args.data / cat / "image_urls.json", {})
-        for key, candidates in urls.items():
-            mid = model_id(cat, key)
-            if mid in index or mid in blocked:
-                continue
-            if mid in failed and failed[mid] > (date.today() - timedelta(days=RETRY_FAILED_DAYS)).isoformat():
-                continue
-            todo.append((cat, key, mid, candidates))
+    todo = build_queue(args.data, index, failed, blocked)
     print(f"{len(index)} photos stored, {len(todo)} models without one, {len(blocked)} blocked; budget {args.budget}")
 
     done = 0
+    deadline = time.monotonic() + args.minutes * 60 if args.minutes else None
     for cat, key, mid, candidates in todo[: args.budget]:
+        if deadline and time.monotonic() > deadline:
+            print(f"time limit ({args.minutes:g} min) reached")
+            break
         for url in candidates:
             try:
                 time.sleep(random.uniform(*PAUSE))
