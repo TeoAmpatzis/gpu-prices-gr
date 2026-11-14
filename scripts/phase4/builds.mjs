@@ -35,7 +35,7 @@ const B = {
     mobo: P('B650', '\\| B650 · AM5 · ATX ·', { sort: 'price' }),
     ram: P('DDR5 32GB', '^DDR5 32GB \\(2×16GB\\) 6000MHz', { sort: 'price' }),
     gpu: P('RTX 5070', 'RTX 5070(?! ?Ti)', { sort: 'price' }),
-    cooler: P('Phantom Spirit', 'Phantom Spirit', { sort: 'price' }),
+    cooler: P('Phantom Spirit 120 SE', 'Phantom Spirit 120 SE', { sort: 'price' }), // the SE is 154 mm; the plain 120 and the EVO are 157 mm and do not fit this case
     storage: P('SN7100 1TB', 'SN7100 1TB', { sort: 'price', fallbackQuery: 'NV3 1TB', fallback: '^Kingston NV3 1TB \\|' }),
     case: P('XT Pro', 'Phanteks XT Pro', { fallbackQuery: 'Phanteks', fallback: 'Phanteks' }),
     psu: P('850W', '850W Gold', { sort: 'price' }),
@@ -118,7 +118,7 @@ const F = {
     mobo: P('Z890', '\\| Z890 · LGA1851 · ATX ·', { sort: 'price', fallback: 'Z890' }),
     ram: P('DDR5 64GB', '^DDR5 64GB \\(2×32GB\\) (6400|6000|5600)MHz', { sort: 'price', fallback: '^DDR5 64GB \\(2×32GB\\)' }),
     gpu: P('5070 Ti', 'RTX 5070 ?Ti', { sort: 'price' }),
-    cooler: P('Phantom Spirit', 'Phantom Spirit', { sort: 'price' }),
+    cooler: P('Phantom Spirit 120 SE', 'Phantom Spirit 120 SE', { sort: 'price' }), // the SE is 154 mm; the plain 120 and the EVO are 157 mm and do not fit this case
     storage: P('2TB', '(SN7100|990 Pro|NV3) 2TB', { sort: 'price', fallback: 'NVMe' }),
     case: P('North XL RC', '^Fractal Design North XL RC( \\||$)'),
     psu: P('850W', '850W Gold', { sort: 'price' }),
