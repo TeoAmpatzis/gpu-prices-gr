@@ -13,7 +13,7 @@ import type { MonitorListing } from '../../src/types';
 const dir = process.argv[2] ?? 'public/data/monitor';
 const listFile = process.argv[3] ?? 'dist/data/monitor/list.v2.json';
 const COVERAGE_MIN = 0.9;
-const LIST_MAX_KIB = 300;
+// The 300 KiB limit on the list file was dropped on 2026-11-14 (owner decision, docs/PROJECT-STATE.md rule 8); the size is still printed.
 
 const latest = JSON.parse(readFileSync(`${dir}/latest.json`, 'utf8')) as { listings: MonitorListing[] };
 const rejected = existsSync(`${dir}/rejected.json`)
@@ -88,7 +88,7 @@ for (const c of conflicts.slice(0, 25)) console.log(`  ${c}`);
 
 if (existsSync(listFile)) {
   const kib = gzipSync(readFileSync(listFile)).length / 1024;
-  gate('list file size', kib <= LIST_MAX_KIB, `${kib.toFixed(1)} KiB gzip (max ${LIST_MAX_KIB})`);
+  gate('list file size', true, `${kib.toFixed(1)} KiB gzip (no limit; reported only)`);
 } else {
   gate('list file size', false, `${listFile} not found: run \`npm run build\` first`);
 }

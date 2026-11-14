@@ -75,7 +75,7 @@ export default function ProductList<L extends BaseListing>({ cfg, products, card
         <div className="catalogue-product-name">
           <Photo image={productImage(cfg.id, p.family.key, photos?.has(p.family.key) ?? false)} size={cards ? 'md' : 'sm'} icon={cfg.icon} alt="" />
           <div>
-            <a data-product-link href={href}>
+            <a data-product-link href={href} title={l.title || l.chip}>
               {l.title || l.chip}
             </a>
             <p>{known || t(UI.catalogueMissing)}</p>

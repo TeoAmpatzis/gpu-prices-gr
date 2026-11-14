@@ -87,10 +87,16 @@
 .catalogue-product-name a {
   font-weight: 600;
   overflow-wrap: anywhere;
-  /* A 24px touch target (WCAG 2.5.8); the link was 17px tall. */
-  display: inline-block;
+  /* A 24px touch target (WCAG 2.5.8); the link was 17px tall. A long shop title shows two lines (the model page has it
+     whole): three-line titles made one row taller than its neighbours and, as the largest text on the first screen of
+     a slow phone, made the page's first-paint score wait for the list data. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
   min-height: 24px;
-  padding-block: 4px;
+  padding-block: 0;
+  margin-block: 2px;
   box-sizing: border-box;
 }
 .catalogue-product-name a:hover {
