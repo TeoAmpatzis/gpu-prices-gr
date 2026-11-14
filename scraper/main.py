@@ -19,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 import aliases  # noqa: E402
 import capabilities  # noqa: E402
 import http_client  # noqa: E402
+import images  # noqa: E402
 import makers  # noqa: E402
 import overrides  # noqa: E402
 import ranges  # noqa: E402
@@ -119,24 +120,54 @@ IMAGE_PREFERENCE = ["bestprice", "shopflix", "skroutz", "snif"]  # 500px, 530px,
 IMAGE_CANDIDATES = 4
 
 
-def write_image_urls(out_dir: Path, listings: list[dict], model_key) -> None:
+def photo_group(rows: list[dict], agree) -> list[dict]:
+    """The listings whose photos may stand for their model. With no `agree`, or no two listings that disagree: all of
+    them. Otherwise the largest group of listings that agree with each other; a listing that disagrees with none (a
+    title that states nothing) cannot tell which group it belongs to and is left out, and two groups of equal size
+    leave no photo at all, since a wrong photo is worse than the category icon."""
+    if agree is None:
+        return rows
+    split = [a for a in rows if any(not agree(a, b) for b in rows)]
+    if not split:
+        return rows
+    groups: list[list[dict]] = []
+    for a in split:
+        for g in groups:
+            if agree(g[0], a):
+                g.append(a)
+                break
+        else:
+            groups.append([a])
+    groups.sort(key=len, reverse=True)
+    return groups[0] if len(groups) == 1 or len(groups[0]) > len(groups[1]) else []
+
+
+def write_image_urls(out_dir: Path, listings: list[dict], model_key, agree=None) -> None:
     """public/data/<cat>/image_urls.json: {model key: [photo URLs, best first]}. Takes the `image`
     field off the listings (latest.json stays as it was) and keeps the previous candidates of models
-    still listed, since a source that failed this run reuses its previous listings, which have none."""
+    still listed, since a source that failed this run reuses its previous listings, which have none.
+    With `agree` (Category.photo_agree) only listings that agree with each other give a photo (photo_group),
+    and a previous candidate is kept only for a source with a listing in that group and no fresh photo."""
     path = out_dir / "image_urls.json"
     prev = load_json(path, {})
-    found: dict[str, dict[str, str]] = {}
-    keys = set()
+    rows_by_key: dict[str, list[dict]] = {}
     for l in listings:
-        key = model_key(l)
-        keys.add(key)
-        url = l.pop("image", None)
-        if url:
-            found.setdefault(key, {}).setdefault(l["source"], url)
+        rows_by_key.setdefault(model_key(l), []).append(l)
     out = {}
-    for key in sorted(keys):
-        now = [found.get(key, {})[s] for s in IMAGE_PREFERENCE if s in found.get(key, {})]
-        urls = list(dict.fromkeys(now + prev.get(key, [])))[:IMAGE_CANDIDATES]
+    for key in sorted(rows_by_key):
+        rows = rows_by_key[key]
+        allowed = photo_group(rows, agree)
+        found: dict[str, str] = {}
+        for l in rows:
+            url = l.pop("image", None)
+            if url and any(l is a for a in allowed):
+                found.setdefault(l["source"], url)
+        now = [found[s] for s in IMAGE_PREFERENCE if s in found]
+        old = prev.get(key, [])
+        if agree is not None:
+            sources = {l["source"] for l in allowed}
+            old = [u for u in old if (src := images.source_of(u)) in sources and src not in found]
+        urls = list(dict.fromkeys(now + old))[:IMAGE_CANDIDATES]
         if urls:
             out[key] = urls
     write_atomic(path, json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
@@ -259,7 +290,7 @@ def collect_specs(cats: list[Category], budget: dict[str, int], makers_budget: i
             stage(out_dir, data["listings"], {}, data["updatedAt"])
             for source, meta in data["sources"].items():
                 meta["count"] = sum(l["source"] == source for l in data["listings"])
-            write_image_urls(out_dir, data["listings"], cat.model_key)
+            write_image_urls(out_dir, data["listings"], cat.model_key, cat.photo_agree)
             data["listings"].sort(key=lambda l: (l["chip"], l["price"]))
         write_atomic(out_dir / "latest.json", json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
 
@@ -360,7 +391,7 @@ def scrape_category(cat: Category, only: list[str] | None, with_shipping: bool =
             if meta.get("ok") is True and meta.get("updatedAt") == run_at:
                 meta["count"] = sum(1 for l in listings if l["source"] == name)
     if cat.images:
-        write_image_urls(out_dir, listings, cat.model_key)
+        write_image_urls(out_dir, listings, cat.model_key, cat.photo_agree)
     else:
         drop_images(listings)
     if cat.name not in specs.EARLY:

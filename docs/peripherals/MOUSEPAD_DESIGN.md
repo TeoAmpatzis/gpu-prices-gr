@@ -164,3 +164,15 @@ Checked and left as they are:
 - The BestPrice gap at exactly 10.80 EUR is deliberate and documented (section 2 and open point 3). BestPrice's own real pads at that price are missing; in the trial the other sources have only 1 kept listing at 10.80 EUR (e-shop.gr), so the loss on the other sources is small but BestPrice's is unmeasured.
 - The Shopflix seller exclusion works in the trial: no Koupakoupa row reached the data.
 - `MIN_MODELS` is only read for enabled categories (the disabled build passes).
+
+## 15. Photo correctness (2026-11-14)
+
+`write_image_urls` used to take the first listing of each source, so a model whose listings state different lengths under one size name could show the wrong pad. Measured on the first real scrape (3,571 listings, 2,621 models with photos):
+
+- 20 models had listings that disagree on size or length (8 are ties); 19 candidate photos came from the listings that lose. The rest of the 63 flagged by a looser test were the same pad titled differently, or RGB words missing from BestPrice titles (`rgb` is never mixed inside a model; `settle` copies it).
+- Examples: HyperX Pulsefire XXL 900 vs 1,220 mm, Preyon Falcon Speed XXL 900 vs 1,200, Savio Precision Control XXL 900 vs 1,000, Havit Playzone Large 400 vs 500, Natec PRINTABLE 220/250/300.
+- A candidate photo can be traced to its listing for BestPrice (the file name starts with the listing slug) and Shopflix (`SFA-n` = listing `SF-n`): 2,386 of 2,574 candidates. Snif and e-shop photos cannot be traced.
+
+The rule (`Category.photo_agree`, mousepad only; `main.photo_group`): listings that state a different size, or lengths more than 8% apart, disagree. The largest group of agreeing listings gives the photo; a listing that states nothing is left out of a split model; a tie gives no photo (the category icon). `images.py` stores the chosen URL (`u`) and, for such a category, fetches again a stored photo that is no longer a candidate and removes the photo of a model with none. The model's own `widthMm` has the same fault; fixing identity (a different length = a different model) would change model ids and history and is left open.
+
+Other categories are untouched. Listings of a model disagree on a stated spec in 18 of 2,669 mice (mostly DPI typos), 278 of 2,229 monitors (31.5 vs 32 inch: rounding) and 897 of 5,526 headphones (form factor and connection are classification noise), so a rule there needs its own measure first.

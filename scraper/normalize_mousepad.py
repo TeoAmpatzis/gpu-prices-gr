@@ -347,3 +347,17 @@ def settle(listings: list[dict]) -> None:
         taken.add(names.model_key(final))
         for row in family:
             row["chip"] = final
+
+
+PHOTO_TOLERANCE = 1.08  # stated lengths within 8% are one pad ("237mm" and "240mm" on one Disney pad)
+
+
+def photo_agree(a: dict, b: dict) -> bool:
+    """Whether two listings of one model can share a photo: no stated size or length tells them apart. Read from each
+    title alone (the model's shared widthMm would give an unstated title another listing's length)."""
+    if a.get("size") and b.get("size") and a["size"] != b["size"]:
+        return False
+    for x, y in zip(_dimensions(a["title"])[:2], _dimensions(b["title"])[:2]):
+        if x and y and max(x, y) > PHOTO_TOLERANCE * min(x, y):
+            return False
+    return True

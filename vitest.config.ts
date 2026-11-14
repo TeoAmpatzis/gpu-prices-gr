@@ -8,5 +8,9 @@ export default defineConfig({
     environment: 'node',
     // Tests over the real data take seconds on GitHub's runners (first CI run 2026-11-11: 5006 ms against the 5 s default).
     testTimeout: 30_000,
+    // facets, modelChunks and listFile each load the real data (218 MB) and compute for 20-30 s. With a worker per
+    // runner core they starve vitest's main thread on GitHub's 4-core runners, and its 60 s RPC to the workers times out
+    // ("Timeout calling onTaskUpdate", every CI run since 2026-11-14 15:12). Two workers keep it answering.
+    maxWorkers: process.env.CI ? 2 : undefined,
   },
 });

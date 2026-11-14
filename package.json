@@ -23,7 +23,9 @@
     "bios:coverage": "vite-node scripts/phase2/bios-coverage.ts",
     "cpu-power:coverage": "vite-node scripts/phase2/cpu-power-coverage.ts",
     "gpu-power:coverage": "vite-node scripts/phase2/gpu-power-coverage.ts",
-    "check": "npm run typecheck && npm run lint && npm run test && npm run build"
+    "check": "npm run typecheck && npm run lint && npm run test && npm run build",
+    "ci:pin-data": "node scripts/checks/pin-data.mjs",
+    "ci:apply-data": "node scripts/checks/pin-data.mjs --apply"
   },
   "dependencies": {
     "lucide-react": "^0.460.0",

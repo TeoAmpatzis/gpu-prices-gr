@@ -38,6 +38,7 @@
 ## Έλεγχοι
 - `npm run check` = typecheck → lint → unit tests (Vitest) → build με έλεγχο δεδομένων.
 - `npm run e2e` = Playwright (Chromium), χτίζει και σερβίρει το `dist` στη θύρα 4174. Μόνο ένας φάκελος εργασίας τη φορά.
+- **Δεδομένα του CI**: στα PR και στα push το CI τρέχει τα tests πάνω στα δεδομένα του commit που γράφει το `.ci-data-ref` (`npm run ci:apply-data`), ώστε κόκκινο να σημαίνει «χάλασε ο κώδικας» (οι scrapes αλλάζουν το `public/data` κάθε λίγες ώρες). Το ημερήσιο προγραμματισμένο run και το χειροκίνητο με `live=true` δοκιμάζουν τα ζωντανά δεδομένα· κόκκινο εκεί = πρόβλημα δεδομένων, δεν μπλοκάρει PR. Το ref ανανεώνεται με `npm run ci:pin-data`, σε δικό του PR. **PR που αλλάζει τη μορφή των δεδομένων** (`models.py`, `types.ts`, JSON) ανανεώνει το ref στο ίδιο PR.
 - Python, χωρίς δίκτυο: `venv/Scripts/python scripts/checks/test_*.py`.
 - Ζωντανό site: `node scripts/checks/site-check.mjs`, `node scripts/checks/freshness.mjs` (αποτυγχάνει όταν μια πηγή είναι παλιότερη από 30 ώρες).
 

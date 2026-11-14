@@ -58,6 +58,10 @@ class Category:
     rejects: bool = False
     # False: no image_urls.json, so the photo workflow fetches nothing for this category.
     images: bool = True
+    # Optional: (listing, listing) -> can they share one photo. Models whose listings disagree take their photo only
+    # from the largest group that agrees, and from none when two groups tie (main.photo_group). None: any listing's
+    # photo may stand for the model.
+    photo_agree: Callable[[dict, dict], bool] | None = None
 
 
 # BestPrice motherboard RAM-slot filter values: (url part, slots).
@@ -311,6 +315,7 @@ CATEGORIES = {
         make_listing=normalize_mousepad.make_listing,
         model_key=lambda l: names.model_key(l["chip"]),
         settle=normalize_mousepad.settle,
+        photo_agree=normalize_mousepad.photo_agree,
         shared=("shape", "gaming", "extended", "widthMm", "heightMm", "thicknessMm", "surface", "rgb", "wristRest", "usbPort",
                 "wirelessCharging", "antiSlip", "stitchedEdges"),
         rejects=True,
