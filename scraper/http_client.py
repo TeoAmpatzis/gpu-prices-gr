@@ -7,6 +7,8 @@ request often passes), so Skroutz requests go through `get`, which waits and ret
 import os
 import random
 import re
+import shutil
+import subprocess
 import threading
 import time
 from pathlib import Path
@@ -31,6 +33,60 @@ _retry_lock = threading.Lock()
 BREAKER_FAILURES = 2
 _failed_in_a_row: dict[str, int] = {}
 _breaker_lock = threading.Lock()
+
+
+# The proxy tunnel (Cloudflare WARP, scrape.yml) is opened once per run and used to die half-way
+# (2026-11-14: "cannot complete SOCKS5 connection", every later request failed at once). A proxy error
+# now reconnects it and tries the request again; at most WARP_RESETS_MAX reconnects per run.
+WARP_RESETS_MAX = 5
+_warp_resets = 0
+_warp_last = 0.0
+_warp_lock = threading.Lock()
+
+
+def _warp(*args: str, timeout: float = 30.0) -> str:
+    r = subprocess.run(["warp-cli", "--accept-tos", *args], capture_output=True, text=True, timeout=timeout)
+    return r.stdout + r.stderr
+
+
+def reconnect_proxy() -> bool:
+    """Reconnect the WARP tunnel; True when it is connected again (also when another thread just did it)."""
+    global _warp_resets, _warp_last
+    if not os.environ.get("SCRAPER_PROXY") or shutil.which("warp-cli") is None:
+        return False
+    with _warp_lock:
+        if _warp_last and time.time() - _warp_last < 30:
+            return True
+        if _warp_resets >= WARP_RESETS_MAX:
+            return False
+        _warp_resets += 1
+        print(f"  proxy error: reconnecting WARP ({_warp_resets}/{WARP_RESETS_MAX})")
+        try:
+            _warp("disconnect")
+            time.sleep(2)
+            _warp("connect")
+            for _ in range(30):
+                if "Connected" in _warp("status"):  # "Disconnected" has a small c
+                    _warp_last = time.time()
+                    return True
+                time.sleep(2)
+        except Exception as e:  # warp-cli missing or hanging: the request fails like before
+            print(f"  WARP reconnect failed: {e}")
+        return False
+
+
+def _is_proxy_error(e: Exception) -> bool:
+    return isinstance(e, requests.exceptions.ProxyError) or "SOCKS5" in str(e)
+
+
+def _fetch(s: requests.Session, url: str, **kwargs) -> requests.Response:
+    """s.get, with one reconnect of the proxy tunnel and a second try when the tunnel itself failed."""
+    try:
+        return s.get(url, **kwargs)
+    except Exception as e:
+        if not _is_proxy_error(e) or not reconnect_proxy():
+            raise
+    return s.get(url, **kwargs)
 
 
 def _reserve_wait(seconds: float) -> bool:
@@ -125,7 +181,7 @@ def get(s: requests.Session, url: str, **kwargs) -> requests.Response:
         if _failed_in_a_row.get(host, 0) >= BREAKER_FAILURES:
             raise RuntimeError(f"circuit open for {host}: {BREAKER_FAILURES} requests in a row stayed blocked")
     for attempt in range(len(RETRY_WAITS) + 1):
-        r = s.get(url, **kwargs)
+        r = _fetch(s, url, **kwargs)
         why = _block(r)
         if why is None:
             with _breaker_lock:

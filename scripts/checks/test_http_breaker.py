@@ -78,5 +78,43 @@ before = s.calls
 fails(s, BLOCKED)
 expect("a success in between resets the count (still retried: not open)", s.calls - before, 4)
 
+# A dead proxy tunnel: the request is repeated once after a reconnect; when the reconnect fails (or the allowance is
+# used) the error goes up as before.
+class Tunnel(Fake):
+    def __init__(self, dead_calls):
+        super().__init__(set())
+        self.dead = dead_calls
+
+    def get(self, url, **kw):
+        self.calls += 1
+        if self.calls <= self.dead:
+            raise http.requests.exceptions.ProxyError("Failed to perform, curl: (97) cannot complete SOCKS5 connection to x. (5)")
+        return Resp(200)
+
+
+reconnects = []
+http.reconnect_proxy = lambda: reconnects.append(1) or True
+s = Tunnel(1)
+expect("a proxy error reconnects the tunnel and the request succeeds", (http.get(s, FINE).status_code, len(reconnects), s.calls), (200, 1, 2))
+
+reconnects.clear()
+s = Tunnel(5)
+try:
+    http.get(s, FINE)
+    got = "no error"
+except http.requests.exceptions.ProxyError:
+    got = "ProxyError"
+expect("a tunnel that stays dead still raises (one reconnect, two tries)", (got, len(reconnects), s.calls), ("ProxyError", 1, 2))
+
+http.reconnect_proxy = lambda: False
+s = Tunnel(1)
+try:
+    http.get(s, FINE)
+    got = "no error"
+except http.requests.exceptions.ProxyError:
+    got = "ProxyError"
+expect("no reconnect possible: raises at once", (got, s.calls), ("ProxyError", 1))
+expect("reconnect_proxy is off without SCRAPER_PROXY", __import__("importlib").reload(http).reconnect_proxy(), False)
+
 print(f"{ok} passed, {bad} failed")
 sys.exit(1 if bad else 0)

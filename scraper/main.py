@@ -458,8 +458,12 @@ def main() -> int:
     return 0 if any(ok) else 1
 
 
+# The categories scrape-peripherals.yml takes from the shops (scripts/checks/test_workflows.py keeps the two lists equal).
+PERIPHERALS = {"monitor", "mouse", "headphones"}
+
+
 def run_order(cats: list[Category]) -> list[Category]:
-    """Categories whose Skroutz scrape failed last run go first, then the rest; each group is rotated
+    """PC parts first, then the peripherals. In each: categories whose Skroutz scrape failed last run go first, then the rest; each group is rotated
     by the 6-hour run slot. Retry waiting is capped per run (http_client.RETRY_CAP), so this keeps the
     same category from always being the one that finds the allowance used up."""
     slot = int(time.time() // (6 * 3600))
@@ -472,8 +476,13 @@ def run_order(cats: list[Category]) -> list[Category]:
         k = slot % len(xs) if xs else 0
         return xs[k:] + xs[:k]
 
-    bad = [cat for cat in cats if failed(cat)]
-    return rotate(bad) + rotate([cat for cat in cats if cat.name not in {b.name for b in bad}])
+    # The PC parts go before the peripherals: the Skroutz tunnel can die half-way through a long run
+    # (2026-11-14), and then the parts the builder needs are the ones that must already be done.
+    order: list[Category] = []
+    for group in ([c for c in cats if c.name not in PERIPHERALS], [c for c in cats if c.name in PERIPHERALS]):
+        bad = [cat for cat in group if failed(cat)]
+        order += rotate(bad) + rotate([cat for cat in group if cat.name not in {b.name for b in bad}])
+    return order
 
 
 if __name__ == "__main__":
