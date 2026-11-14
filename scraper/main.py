@@ -459,7 +459,7 @@ def main() -> int:
 
 
 # The categories scrape-peripherals.yml takes from the shops (scripts/checks/test_workflows.py keeps the two lists equal).
-PERIPHERALS = {"monitor", "mouse", "headphones"}
+PERIPHERALS = {"monitor", "mouse", "headphones", "mousepad"}
 
 
 def run_order(cats: list[Category]) -> list[Category]:
