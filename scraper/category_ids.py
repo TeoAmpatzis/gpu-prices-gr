@@ -5,4 +5,4 @@ must stay light. categories.py checks its CATEGORIES against this; tests/unit/re
 against the site's registry (src/lib/registry.ts). To add a category: here, in categories.py, in the registry.
 """
 
-CATEGORY_IDS = ("gpu", "cpu", "mobo", "ram", "psu", "case", "fan", "cooler", "storage", "monitor", "mouse")
+CATEGORY_IDS = ("gpu", "cpu", "mobo", "ram", "psu", "case", "fan", "cooler", "storage", "monitor", "mouse", "headphones")

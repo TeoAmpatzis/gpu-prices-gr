@@ -17,7 +17,7 @@ from categories import Category
 from normalize import now_iso
 
 BASE = "https://www.skroutz.gr"
-MAX_PAGES = 80
+MAX_PAGES = 100  # Skroutz c/435 (Bluetooth earbuds, headphones category) takes 80+ pages of 48
 
 
 def _documents(data):

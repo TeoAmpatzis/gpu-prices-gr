@@ -398,6 +398,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--only", choices=SOURCES.keys(), action="append")
     ap.add_argument("--category", choices=CATEGORIES.keys(), action="append")
+    ap.add_argument("--skip-category", choices=CATEGORIES.keys(), action="append", help="leave this category out (scrape-shops.yml leaves the peripherals to scrape-peripherals.yml)")
     ap.add_argument("--debug", action="store_true", help="dump fetched HTML to scraper/debug/")
     ap.add_argument("--no-shipping", action="store_true", help="skip the price + shipping refresh (cache still applied)")
     ap.add_argument("--specs-budget", type=int, help="product pages per site for specs (default: specs.BUDGET)")
@@ -416,7 +417,7 @@ def main() -> int:
             for site in budget:
                 if site not in args.only:
                     budget[site] = 0
-    cats = [cat for name, cat in CATEGORIES.items() if not args.category or name in args.category]
+    cats = [cat for name, cat in CATEGORIES.items() if (not args.category or name in args.category) and name not in (args.skip_category or [])]
     if args.history_only:
         for cat in cats:
             data = load_json(DATA_DIR / cat.name / "latest.json", None)

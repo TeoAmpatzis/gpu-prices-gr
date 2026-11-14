@@ -98,14 +98,14 @@ def fetch(cat: Category) -> list:
     scraped_at = now_iso()
     seen: dict = {}
     availability.clear()
-    for i, (path, name) in enumerate(cat.eshop_categories):
+    for i, (path, name, *table) in enumerate(cat.eshop_categories):  # optional third item: the list's `table` (default PER)
         q = urllib.parse.quote_plus(name, encoding="iso-8859-7")
         label = cat.name if len(cat.eshop_categories) == 1 else f"{cat.name}{i + 1}"
         page_ids: set[str] = set()
         for page in range(MAX_PAGES):
             if i or page:
                 http.polite_sleep()
-            r = s.get(f"{BASE}/{path}?offset={page * PAGE_SIZE}&table=PER&category={q}")
+            r = s.get(f"{BASE}/{path}?offset={page * PAGE_SIZE}&table={table[0] if table else 'PER'}&category={q}")
             r.raise_for_status()
             html = r.content.decode("iso-8859-7", "replace")
             http.dump(f"eshop_{label}_p{page + 1}.html", html)

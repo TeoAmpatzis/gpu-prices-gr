@@ -16,13 +16,14 @@ SOURCE_NAMES = ("skroutz", "bestprice", "snif", "shopflix", "eshop")
 class CapabilityTests(unittest.TestCase):
     def test_mouse_sources_and_operations_are_explicit(self):
         self.assertIn('mouse', CATEGORY_IDS)
-        self.assertEqual(CATEGORY_IDS[-1], 'mouse')
+        self.assertEqual(CATEGORY_IDS[-2:], ('mouse', 'headphones'))
         for source in SOURCE_NAMES:
             for op in capabilities.OPERATIONS:
                 expected = source in ('bestprice', 'snif') or op == capabilities.LISTS
                 with self.subTest(source=source, operation=op):
                     self.assertEqual(capabilities.supports(source, 'mouse', op), expected)
                     self.assertEqual(capabilities.supports(source, 'monitor', op), expected)
+                    self.assertEqual(capabilities.supports(source, 'headphones', op), expected)
 
     def test_one_category_list(self):
         self.assertEqual(tuple(CATEGORIES), CATEGORY_IDS)

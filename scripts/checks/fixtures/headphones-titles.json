@@ -1,0 +1,53 @@
+{
+  "_note": "Titles observed in the isolated headphones trial of 2026-11-14 (all five sources). `groups`: titles of one product across sources, which must settle to the one model named. `rejects`: a title the normalizer must not admit, with its reason.",
+  "groups": [
+    {
+      "chip": "Logitech H390",
+      "listings": [
+        ["bestprice", 19.98, "Logitech H390 On Ear Ακουστικά με Μικρόφωνο & USB-A Μαύρα"],
+        ["eshop", 21.8, "LOGITECH 981-000406 H390 USB HEADSET"],
+        ["skroutz", 22.72, "Logitech H390"],
+        ["snif", 26.33, "Headset Logitech H390 Black 981-000406"],
+        ["snif", 44.4, "Ακουστικά Headset Logitech H390 με Μικρόφωνο - Λευκό"]
+      ]
+    },
+    {
+      "chip": "Sony WH-1000XM5",
+      "listings": [
+        ["bestprice", 201.11, "Sony WH-1000XM5 Ενσύρματα & Ασύρματα Bluetooth Ακουστικά Over Ear με Noise Canceling Μαύρα"],
+        ["skroutz", 231.75, "Sony WH-1000XM5 Bluetooth / 3.5mm με 30 ώρες Λειτουργίας"],
+        ["shopflix", 233.9, "Sony WH-1000XM5 Ασύρματα/Ενσύρματα Over Ear Ακουστικά με 30 ώρες Λειτουργίας Ασημί"]
+      ]
+    },
+    {
+      "chip": "JBL Tune 510BT",
+      "listings": [
+        ["eshop", 28.95, "JBL TUNE 510BT ΑΣΥΡΜΑΤΑ BLUETOOTH ON EAR ΑΚΟΥΣΤΙΚΑ WHITE"],
+        ["skroutz", 34.0, "JBL Tune 510BT Bluetooth με 40 ώρες Λειτουργίας"],
+        ["snif", 39.8, "JBL Tune 510BT Ασύρματα Bluetooth On Ear Ακουστικά Μαύρα"]
+      ]
+    },
+    {
+      "chip": "Razer Kraken V4 X",
+      "listings": [
+        ["bestprice", 59.68, "Razer Kraken V4 X Gaming Headset Over Ear Black"],
+        ["skroutz", 62.43, "Razer Kraken V4 X Over Ear"],
+        ["shopflix", 57.14, "Razer Kraken V4 X Over Ear Gaming Headset με σύνδεση USB"]
+      ]
+    },
+    {
+      "chip": "Bose QuietComfort",
+      "listings": [
+        ["bestprice", 236.67, "Bose QuietComfort Ενσύρματα & Ασύρματα Bluetooth Ακουστικά Over Ear με Noise Cancelling Petal"],
+        ["bestprice", 274.96, "Bose QuietComfort Ενσύρματα & Ασύρματα Bluetooth Ακουστικά Over Ear με Noise Cancelling Moonstone"]
+      ]
+    }
+  ],
+  "rejects": [
+    ["bestprice", 24.9, "Mars Gaming Bundle Gaming Headset Over Ear Black", "bundle"],
+    ["skroutz", 179.0, "Poly Voyager Free 60 UC M + BT700 USB-A Adapter + Basic Charge Case In-ear Carbon Black", "accessory"],
+    ["snif", 105.0, "JBL CHARGE ESSENTIAL 3 SE, BLUETOOTH SPEAKER", "not-headphones"],
+    ["shopflix", 7.89, "Rebeltec City Ενσύρματα On Ear Ακουστικά Λευκό", "below-floor"],
+    ["bestprice", 18.0, "Ασύρματα ακουστικά Bluetooth TWS68 με βάση φόρτισης- Άσπρα", "no-identity"]
+  ]
+}

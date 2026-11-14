@@ -293,3 +293,44 @@ class MouseListing:
 
     def to_dict(self) -> dict:
         return listing_dict(self)
+
+
+@dataclass
+class HeadphonesListing:
+    """One headphone, earphone, earbud or headset offer. Null = not stated by the listing, never guessed.
+    Mirrored in src/types.ts (HeadphonesListing). `chip` is the model name settle() gives after grouping; colours
+    are variants of one model; `reject` is why a listing stays out of the data (rejected.json)."""
+
+    id: str
+    source: str
+    title: str
+    url: str
+    price: float
+    shopCount: int | None
+    brand: str  # "Sony"; "Other" if unknown
+    chip: str  # model name, e.g. "Sony WH-1000XM5" (set by settle)
+    scrapedAt: str
+    formFactor: str | None = None  # over-ear | on-ear | in-ear | open-ear | bone-conduction
+    productType: str | None = None  # headphones | earphones | earbuds | headset
+    gaming: bool | None = None
+    trueWireless: bool | None = None
+    connection: str | None = None  # wired | wireless | both
+    bluetooth: bool | None = None
+    rf: bool | None = None  # 2.4 GHz receiver
+    connector: str | None = None  # stated plugs, e.g. "3.5mm, USB-C"
+    multipoint: bool | None = None
+    anc: bool | None = None
+    transparency: bool | None = None
+    microphone: bool | None = None
+    spatialAudio: bool | None = None
+    driverMm: int | None = None
+    batteryHours: int | None = None  # advertised; some listings include the charging case
+    chargingCase: bool | None = None
+    waterResistance: str | None = None  # IP code, e.g. "IPX4"
+    foldable: bool | None = None
+    colour: str | None = None
+    partNumber: str | None = None
+    reject: str | None = None
+
+    def to_dict(self) -> dict:
+        return listing_dict(self)

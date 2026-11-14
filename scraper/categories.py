@@ -11,6 +11,7 @@ import normalize_cooling
 import normalize_cpu
 import normalize_mobo
 import normalize_monitor
+import normalize_headphones
 import normalize_mouse
 import normalize_psu
 import normalize_ram
@@ -246,6 +247,41 @@ CATEGORIES = {
         model_key=lambda l: names.model_key(l["chip"]),
         settle=normalize_mouse.settle,
         shared=("dpi", "pollingHz", "buttons", "rgb", "gaming", "bluetooth", "rf", "rechargeable", "ergonomic", "silent"),
+        rejects=True,
+        images=True,
+    ),
+    "headphones": Category(
+        name="headphones",
+        # Owner 2026-11-14: no cheap wired handsfree lists (Skroutz c/584, BestPrice cat/811, Shopflix c/1519, e-shop handsfree)
+        # and a 10 EUR floor (normalize_headphones.PRICE_FLOOR). Skroutz lists read 2026-11-13: 1863 over/on-ear, 1850 gaming,
+        # 1858 wired in-ear, 1870 office headsets, 435 Bluetooth earbuds.
+        skroutz_paths=("/c/1863/headphones.html", "/c/1850/Gaming_Headsets.html", "/c/1858/akoustika_psires.html",
+                       "/c/1870/Multimedia_Headsets.html", "/c/435/hands-free-bluetooth.html"),
+        # Each BestPrice slice must stay under 50 pages (800 products); page counts measured 2026-11-14 in
+        # local/headphones/slices.json. Prices in cents, from the 10 EUR floor up.
+        bestprice_paths=(
+            *(f"/cat/8068/headphones.html?{q}" for q in (
+                "min=1000&max=1399", "min=1400&max=1699", "min=1700&max=1999", "min=2000&max=2499", "min=2500&max=2999",
+                "min=3000&max=4999", "min=5000&max=9999", "min=10000&max=19999", "min=20000")),
+            *(f"/cat/8066/gaming-headsets.html?{q}" for q in (
+                "min=1000&max=1999", "min=2000&max=2999", "min=3000&max=4999", "min=5000&max=9999", "min=10000")),
+            "/cat/8069/akoystika-pseires.html?min=1000",
+            "/cat/8072/akoystika-ypologisti.html?min=1000",
+            *(f"/cat/813/bluetooth.html?{q}" for q in (
+                "min=1000&max=1299", "min=1300&max=1499", "min=1500&max=1699", "min=1700&max=1899", "min=1900&max=1999",
+                "min=2000&max=2249", "min=2250&max=2499", "min=2500&max=2999", "min=3000&max=3999", "min=4000&max=4999",
+                "min=5000&max=7499", "min=7500&max=9999", "min=10000&max=19999", "min=20000")),
+        ),
+        snif_categories=("1819012",),
+        eshop_categories=(("ixos-eikona-akoustika-headphones-list", "ΑΚΟΥΣΤΙΚΑ"),
+                          ("tilepikoinonies-bluetooth-handsfree-list", "BLUETOOTH HEADSET", "TEL")),
+        shopflix_categories=("Ακουστικά Bluetooth*:::*/c/1807/bluetooth-handsfree", "Headphones*:::*/c/2468/headphones",
+                             "Gaming Headsets*:::*/c/3433/gaming-headsets"),
+        make_listing=normalize_headphones.make_listing,
+        model_key=lambda l: names.model_key(l["chip"]),
+        settle=normalize_headphones.settle,
+        shared=("formFactor", "productType", "gaming", "trueWireless", "connection", "bluetooth", "rf", "connector", "multipoint",
+                "anc", "transparency", "microphone", "spatialAudio", "driverMm", "batteryHours", "chargingCase", "waterResistance", "foldable"),
         rejects=True,
         images=True,
     ),

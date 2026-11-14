@@ -17,6 +17,10 @@ UNSUPPORTED: dict[tuple[str, str], frozenset[str]] = {
     # Lists only. e-shop.gr's robots.txt disallows the `offset=` paging its lists need (Phase 0, O5): open with the owner.
     ("eshop", "monitor"): frozenset({SPECS, SHIPPING, HISTORY}),
     ("shopflix", "monitor"): frozenset({SPECS, SHIPPING, HISTORY}),
+    # Headphones: like mice. Lists from every source; the other operations only from BestPrice and Snif.
+    ("skroutz", "headphones"): frozenset({SPECS, SHIPPING, HISTORY}),
+    ("eshop", "headphones"): frozenset({SPECS, SHIPPING, HISTORY}),
+    ("shopflix", "headphones"): frozenset({SPECS, SHIPPING, HISTORY}),
 }
 
 
