@@ -644,7 +644,7 @@ export const MOUSEPAD_RULES: CategoryRules<MousepadListing> = {
   group: (l) => (l.size ? l.size.toLowerCase() : OTHER),
   modelKey: (l) => productKey(l.chip),
   isPro: () => false,
-  searchText: (l) => `${l.chip} ${l.title}`,
+  searchText: (l) => l.chip, // the list rows carry no shop title (derive.ts LIST_SKIP_BY_CATEGORY); the chip is brand + model + size
   extraFilters: [
     vendorFilter(),
     stated('gaming', 'Gaming', (l) => l.gaming),

@@ -48,6 +48,10 @@ class IdentityTests(unittest.TestCase):
         self.assertEqual(a["chip"], b["chip"])
         self.assertEqual((a["colour"], b["colour"]), ("black", "red"))
 
+    def test_a_trailing_size_letter_is_the_size_not_the_model(self):
+        a, b = settled(("snif", "Corsair MM300 Black L"), ("skroutz", "Corsair MM300 Large"))
+        self.assertEqual((a["chip"], a["size"]), (b["chip"], "Large"))
+
     def test_size_variants_never_merge(self):
         a, b, c = settled(("skroutz", "Razer Gigantus V2 Medium 360mm Μαύρο"), ("skroutz", "Razer Gigantus V2 XXL 940mm Μαύρο"),
                           ("bestprice", "Razer Gigantus V2 Black XXL"))

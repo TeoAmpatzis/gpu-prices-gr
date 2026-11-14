@@ -137,7 +137,7 @@ export interface HeadphonesListing extends BaseListing {
 // fills a default. `size` is the seller's size word and part of the model; widthMm is the longer stated side, heightMm the
 // shorter (a lone length such as "XXL 900mm" is the width only).
 export interface MousepadListing extends BaseListing {
-  size: 'Small' | 'Medium' | 'Large' | 'XL' | 'XXL' | 'XXXL' | '4XL' | null;
+  size: 'Small' | 'Medium' | 'Large' | 'XL' | 'XXL' | 'XXXL' | null;
   shape: 'rectangular' | 'round' | 'heart' | null;
   gaming: boolean | null;
   extended: boolean | null; // a desk mat

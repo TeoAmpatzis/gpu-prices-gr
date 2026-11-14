@@ -48,7 +48,6 @@ BRAND_PATTERN = re.compile(r"(?<![\w-])(?:" + "|".join(re.escape(k) for k in sor
 # Word edges that do not split a hyphenated code: "MP-GAME-XL" keeps its XL, so a stated "Medium" is not overruled by it.
 B0, B1 = r"(?<![\w-])", r"(?![\w-])"
 SIZES = (  # (pattern, label); longest forms first
-    (B0 + r"(?:4xl|xxxxl|4x-?large)" + B1, "4XL"),
     (B0 + r"(?:3xl|xxxl|xxx-?large|3x-?large)" + B1, "XXXL"),
     (B0 + r"(?:2xl|xxl|xx-?large|extra\s+extra\s+large)" + B1, "XXL"),
     (B0 + r"(?:xl|x-?large|extra[\s-]+large)" + B1, "XL"),
@@ -179,8 +178,12 @@ def _identity(title: str) -> tuple[str, str, str | None, str | None, str | None]
     rest = COLOUR_PATTERN.sub(" ", rest)
     # Dimensions and size words are not part of the model name; the size comes back in the chip.
     rest = ANY_MM.sub(" ", THICK_WORD.sub(" ", PAIR.sub(" ", rest)))
+    named = False
     for pattern, _ in SIZES:
-        rest = re.sub(pattern, " ", rest, flags=re.I)
+        rest, hits = re.subn(pattern, " ", rest, flags=re.I)
+        named = named or bool(hits)
+    if size and not named:  # the size is a lone trailing S / M / L: "MM300 Black L" is the pad "MM300", Large
+        rest = re.sub(r"(?<![\w-])[SML]\s*$", " ", rest.rstrip())
     rest = NOISE.sub(" ", re.sub(PAD_ORIGINAL, " ", rest, flags=re.I))
     rest = re.sub(r"\(\s*\)|(?<!\S)[-/&,+|:]+(?!\S)", " ", rest)
     model = re.sub(r"\s+", " ", rest).strip(" ,;-/&:")

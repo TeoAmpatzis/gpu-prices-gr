@@ -352,7 +352,7 @@ class MousepadListing:
     brand: str  # "Razer"; "Other" if unknown
     chip: str  # model name incl. size, e.g. "Razer Gigantus V2 Medium" (set by settle)
     scrapedAt: str
-    size: str | None = None  # Small | Medium | Large | XL | XXL | XXXL | 4XL, as the title states it
+    size: str | None = None  # Small | Medium | Large | XL | XXL | XXXL, as the title states it
     shape: str | None = None  # rectangular | round | heart
     gaming: bool | None = None
     extended: bool | None = None  # desk mat: the title says "desk mat" / "extended"

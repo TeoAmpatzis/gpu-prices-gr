@@ -148,3 +148,19 @@ The category stays disabled and hidden in this repository (`REGISTRY.mousepad` i
 **Workflows.** `--category mousepad` was added to both `scrape-peripherals.yml` jobs and `--skip-category mousepad` to both `scrape-shops.yml` commands. `scripts/checks/test_workflows.py` expected exactly three peripheral categories and now expects four. No timeout was changed and no workflow was run. Trial times per source (parallel, one category): BestPrice 412 s, Skroutz 295 s, Snif 143 s, Shopflix 66 s, e-shop.gr 48 s. The four shops add about 7 minutes to the peripherals job; Skroutz adds about 5 minutes to `scrape.yml`, which scrapes every category.
 
 **Not done (Phase 5).** Product photos (the images job needs the category's `image_urls.json` first), the owner's go-ahead to enable and publish, and the first scheduled scrape on GitHub.
+
+## 14. Code review of the two commits (2026-11-14)
+
+Reviewed at medium effort. Fixed:
+- The list search read `title`, which the list rows do not carry, so a search matched the text "undefined". It now reads the chip only, like headphones.
+- A trailing lone `S`, `M` or `L` set the size but stayed in the model name, so "Corsair MM300 Black L" and "Corsair MM300 Large" were two models. The letter is now removed from the name (test added; the trial replay goes from 3,432 to 3,430 models).
+- `4XL` was a size with no pill, name or colour. It is removed: such a title now has no stated size.
+- The list's dimension text repeated `padSize`; it now calls it.
+
+Checked and left as they are:
+- Skroutz tags: the three lists are disjoint by the shop's own "Τύπος" facet (1,348 + 3,808 + 1,007 = 6,163 of 6,168), and the mouse category uses the same tagging.
+- A saved `custom-print` or `bundle` reject is kept by `settle`, as in the mouse category; a fresh scrape rebuilds every row from its title.
+- A thickness written in cm below 0.5 is dropped and stays unknown (nothing is invented).
+- The BestPrice gap at exactly 10.80 EUR is deliberate and documented (section 2 and open point 3). BestPrice's own real pads at that price are missing; in the trial the other sources have only 1 kept listing at 10.80 EUR (e-shop.gr), so the loss on the other sources is small but BestPrice's is unmeasured.
+- The Shopflix seller exclusion works in the trial: no Koupakoupa row reached the data.
+- `MIN_MODELS` is only read for enabled categories (the disabled build passes).

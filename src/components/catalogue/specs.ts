@@ -1,6 +1,7 @@
 import type { BaseListing, Category } from '../../types';
 import type { Lang, Text } from '../../lib/i18n';
 import { cpuThreads } from '../../lib/cpuThreads';
+import { padSize } from '../../lib/categoryRules';
 
 interface Spec {
   label: Text;
@@ -28,7 +29,7 @@ export function productSpecs(cat: Category, listing: BaseListing, lang: Lang): S
       ];
     }
     case 'mousepad': {
-      const dims = typeof l.widthMm === 'number' ? (typeof l.heightMm === 'number' ? `${l.widthMm} × ${l.heightMm} mm` : `${l.widthMm} mm`) : null;
+      const dims = padSize({ widthMm: l.widthMm as number | null, heightMm: l.heightMm as number | null });
       return [
         spec('Μέγεθος', 'Size', word('size')),
         spec('Διαστάσεις', 'Dimensions', dims),
