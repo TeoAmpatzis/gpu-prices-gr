@@ -122,6 +122,8 @@ function randomFilters(r: () => number, cfg: CategoryConfig<BaseListing>, all: B
 }
 
 const STATES = 20;
+// The reference counts are quadratic-ish: with 19,000 listings (headphones) 20 states block the vitest worker long enough for its RPC to time out.
+const statesFor = (n: number) => (n > 15000 ? 5 : STATES);
 
 describe('worker handler = facetCounts = the pre-worker counts (20 random filter states, real data)', () => {
   for (const cat of CATEGORY_IDS) {
@@ -141,7 +143,7 @@ describe('worker handler = facetCounts = the pre-worker counts (20 random filter
           return structuredClone(file);
         });
         const r = rng(cat.length * 7919 + 17);
-        for (let i = 0; i < STATES; i++) {
+        for (let i = 0; i < statesFor(all.length); i++) {
           const f = randomFilters(r, cfg, all, options);
           const ref = referenceCounts(all, f, cfg, data.history, data.imported, options);
           expect(facetCounts(all, f, cfg, data.history, data.imported, options)).toEqual(ref);
