@@ -54,6 +54,19 @@ for label, text in (("prices", prices), ("specs", specs)):
 expect("the data workflows still share one queue", re.search(r"^concurrency:\n  group: scrape\n  cancel-in-progress: false$", shops, re.M))
 expect("the commit step is no longer copied into the workflow", "git pull --rebase" not in shops)
 
+per = read(".github/workflows/scrape-peripherals.yml")
+per_prices, per_specs = job(per, "prices"), job(per, "specs")
+per_cmds = (command(per_prices), command(per_specs))
+expect("scrape-peripherals has the same two jobs and no other scraper command", per_prices and per_specs and per.count("scraper/main.py") == 2)
+expect("peripherals name the four shops and not Skroutz", all(sorted(re.findall(r"--only (\w+)", c)) == SHOPS for c in per_cmds), per_cmds)
+expect("peripherals prices fetch no spec page, specs no list page", "--specs-budget 0" in per_cmds[0] and "--specs-only" in per_cmds[1] and "--specs-only" not in per_cmds[0])
+expect("peripherals share the queue and the commit action", re.search(r"^concurrency:\n  group: scrape\n  cancel-in-progress: false$", per, re.M) and per.count(ACTION) == 2)
+expect("peripherals need prices, start from main, have time limits", re.search(r"^    needs: prices$", per_specs, re.M) and "ref: main" in per_prices and "ref: main" in per_specs and len(re.findall(r"^    timeout-minutes: \d+$", per, re.M)) == 2)
+in_peripherals = {c for cmd in per_cmds for c in re.findall(r"--category (\w+)", cmd)}
+skipped_in_shops = {c for cmd in (prices_cmd, specs_cmd) for c in re.findall(r"--skip-category (\w+)", cmd)}
+expect("scrape-shops skips exactly the categories scrape-peripherals takes", in_peripherals == skipped_in_shops and len(in_peripherals) == 3, f"{in_peripherals} / {skipped_in_shops}")
+expect("both peripherals commands list the same categories", all(set(re.findall(r"--category (\w+)", c)) == in_peripherals for c in per_cmds))
+
 action = read(".github/actions/commit-data/action.yml")
 for line in (
     'git config user.email "189219701+TeoAmpatzis@users.noreply.github.com"',
