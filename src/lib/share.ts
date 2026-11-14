@@ -2,14 +2,10 @@
 // &budget=1200. The names let a part the data no longer has be named (finding #22). Engine fields never go in a link.
 // Old links (v1 "/#builder?cpu=…", redirected by routes.legacyTarget, and v2 links without `v=2`) decode as version 1.
 
-import type { Text } from './i18n';
 import { LINES, asFanQty, asRes, asUse, lineOf, type Line, type StoredBuild } from './buildStore';
 import type { Slot } from './slots';
 
 export type ShareNames = Partial<Record<Line, string>>;
-
-/** "Δεν πωλείται πια: <name>" for a part a link or a saved build names but the data no longer has. */
-export const GONE_TEXT: Text = { el: 'Δεν πωλείται πια', en: 'No longer sold' };
 
 /** The parameters of every share link, for removing them from the builder's address. */
 export const isShareParam = (k: string): boolean =>

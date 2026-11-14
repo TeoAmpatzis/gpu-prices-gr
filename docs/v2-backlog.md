@@ -24,6 +24,7 @@ Ideas and follow-ups found during v2 work that the current phase does not ask fo
 | 18 | 2026-10-12 | **GPU power table keyed by chip + VRAM** where the official page gives different figures per memory size: RTX 3050 (6 GB 70 W / 300 W vs 8 GB 130 W / 550 W), RX 9060 XT (8 GB 150 W vs 16 GB 160 W), RTX 3080 (10 GB / 12 GB "350 / 320"), RTX 4060 Ti ("165 or 160"). Listings carry `vram`, so a `chip + vram` key would let these rows hold both figures. | Today these chips have no board power (the owner's rule: an ambiguous figure is left out), so their builds get no whole-build estimate; RTX 3050 alone is 74 listings. | v2, engine tables (`src/engine/data/gpuPower.ts`) |
 | 19 | 2026-10-12 | **Split `ryzen-3000` into `ryzen-3000` and `ryzen-3000g`** in the BIOS table, like the existing `4000`/`4000g` and `5000`/`5000g`. AMD's AM4 table has separate columns ("3000 with Radeon Graphics" and "3000"). | One generation for both columns leaves common pairs unknown, because one column has an X (e.g. B550 + Ryzen 5 3600 is ✓ in AMD's table but unknown here). | v2, engine tables (`src/engine/data/cpuMemory.ts` generation + `bios.ts`) |
 | 20 | 2026-10-17 | **Source tag on every spec value of the product page** (shop / maker / estimate), as `docs/redesign-v2.md` "Σελίδα προϊόντος" part 6 asks. Needs a scraper field recording where each value came from (shops, makers and `overrides.json` merge before `latest.json`). Owner 17/10: backlog; step 4 tags only the GPU length estimate. | The data cannot tell a shop's value from a maker's today, so a tag would be a guess. | main, scraper (`specs.apply`, `makers.apply`, `overrides.py`) + v2 product page |
+| 21 | 2026-11-14 | **Thermaltake maker parser is stale** (kept from the 2026-11-10 bug register, B5): the maker moved to Shopify; the old sitemap `/pub/pub/sitemaps/sitemap.xml` answers 404, the new one is `https://thermaltake.com/sitemap.xml` (index of `sitemap_products_N.xml`, pages `/products/<handle>`), so `scraper/makers/thermaltake.py` (old `/<name>.html` spec tables) needs a rewrite. Noctua's 429 was a transient rate limit: nothing to fix. | Cached pages still apply, so nothing is lost; new Thermaltake products get no maker specs. Not re-verified since 2026-11-10. | main, scraper |
 
 ## Gate criteria added at the Phase 1 gate (owner, 2026-10-05)
 
@@ -31,7 +32,7 @@ Also written into the phases table of `docs/redesign-v2.md`.
 
 - **Phase 3 gate**, alongside the score targets (Lighthouse mobile ≥ 90, desktop 100, CLS 0):
   - **Time to first product on a slow phone no slower than v1**: GPU 1.84 s, cases 3.93 s. Measured the same way as at the Phase 1 gate: `node scripts/phase1/content-timing.mjs <v1Url> <v2Url>` (Lighthouse's phone profile: 412 px, 4× CPU, 150 ms, 1.6 Mbit/s; median of 3; v1 built from main and served next to v2). Comes from #16, decision (a).
-  - **The first product reachable within a few key presses after the skip link** (today 26; `scripts/phase1/keyboard-walk.mjs`). From #17.
+  - **The first product reachable within a few key presses after the skip link** (26 when measured; the walk script was deleted, in git history). From #17.
   - **Real model pages replacing the search stand-in**: `/gpu/<slug>` opens the category searched for the model today.
 - **Phase 4 gate**:
   - **Home → PC Builder passes the motion check** (`scripts/checks/motion-check.mjs`, P8 and D8; today it fails on the v1 builder's data processing and first render).
@@ -41,7 +42,7 @@ Also written into the phases table of `docs/redesign-v2.md`.
 
 Also in `docs/redesign-v2.md` under "Σειρά υλοποίησης". v2 does not deploy until every item is checked.
 
-- [x] **`scripts/checks/site-check.mjs` tests v2's real addresses**: `/gpu`, `/builder?…`, home, 404, and old `#` links redirecting. Verified November 5: all 71 maintained smoke/URL checks, source freshness and served photo passed. A deliberately broken `/gpu` proxy was detected before handoff. See `docs/local-review-2026-11-04.md`. Owner approval is still required before v2 deployment. From #13.
+- [x] **`scripts/checks/site-check.mjs` tests v2's real addresses**: `/gpu`, `/builder?…`, home, 404, and old `#` links redirecting. Verified November 5: all 71 maintained smoke/URL checks, source freshness and served photo passed. A deliberately broken `/gpu` proxy was detected before handoff. Owner approval is still required before v2 deployment. From #13.
 
 ## Phase 2: data validation layer — notes
 

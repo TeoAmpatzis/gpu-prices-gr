@@ -45,7 +45,6 @@ export const GROUPS = ALL_GROUPS.map((g) => ({ ...g, cats: g.cats.filter((c) => 
 export const PART_CATS = GROUPS.flatMap((g) => g.cats).filter((c) => REGISTRY[c].domain === 'components');
 export const PERIPHERAL_CATS = GROUPS.flatMap((g) => g.cats).filter((c) => REGISTRY[c].domain === 'peripherals');
 export const PERIPHERALS_TITLE: Text = { el: 'Περιφερειακά', en: 'Peripherals' };
-export const TOOLS_TITLE: Text = { el: 'Εργαλεία', en: 'Tools' };
 
 /** Phase 1 links (real URLs; the model pages come in Phase 3, so a model opens its category searched). */
 export const href = {

@@ -41,11 +41,6 @@ export const PAGE: Record<'home' | 'builder' | 'parts' | 'search' | 'compare' | 
   },
 };
 
-export const HOME = {
-  buildCta: { el: 'Φτιάξε PC', en: 'Build a PC' },
-  categories: { el: 'Κατηγορίες', en: 'Categories' },
-};
-
 export const SHELL = {
   information: { el: 'Πληροφορίες', en: 'Information' },
   allCategories: { el: 'Όλες οι κατηγορίες', en: 'All categories' },

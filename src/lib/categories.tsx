@@ -376,9 +376,6 @@ export const COOLER: CategoryConfig<CoolerListing> = {
 // A model is one drive at one capacity ("Samsung 990 Pro 1TB"), like cases; the tier (consumer /
 // NAS / server) comes from the scraper (scraper/normalize_storage.py, owner's rules).
 
-/** "500GB", "1TB", "1.92TB". */
-export const capacityLabel = (gb: number) => (gb < 1000 ? `${gb}GB` : `${+(gb / 1000).toFixed(2)}TB`);
-
 /** "NVMe Gen4 · M.2 2280", "SATA · 2.5″", "HDD · 3.5″ · 7200 rpm". */
 export function storageTypeLine(l: StorageListing): string {
   const kind = storageType(l);

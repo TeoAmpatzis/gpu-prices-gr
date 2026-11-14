@@ -140,11 +140,6 @@ function agreed<T>(m: AnyModel, f: (l: Record<string, unknown>) => T | null | un
   return vals.size === 1 ? ([...vals][0] as T) : null;
 }
 
-export interface CompatExample {
-  a: { cat: Category; m: AnyModel };
-  b: { cat: Category; m: AnyModel };
-}
-
 /**
  * Real product pairs whose data produces each compatibility state (the catalogue's examples; Phase 2
  * brings the full rules). Values are read the same way as the spec line (most common across listings),
