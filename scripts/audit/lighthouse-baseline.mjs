@@ -18,7 +18,7 @@ mkdirSync(RAW, { recursive: true });
 
 const PAGES = [
   { id: 'home', path: '/' },
-  ...['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler', 'monitor', 'mouse'].map((c) => ({ id: c, path: `/${c}` })),
+  ...['gpu', 'cpu', 'mobo', 'ram', 'storage', 'psu', 'case', 'fan', 'cooler', 'monitor', 'mouse', 'headphones'].map((c) => ({ id: c, path: `/${c}` })),
   { id: 'builder-guided', path: '/builder' },
   { id: 'builder-quick', path: '/builder?mode=quick' },
 ];
