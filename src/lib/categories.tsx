@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Box, CircuitBoard, Cpu, Fan, HardDrive, MemoryStick, Microchip, Monitor, Mouse, Plug, Snowflake, type LucideIcon } from 'lucide-react';
+import { Box, CircuitBoard, Cpu, Fan, HardDrive, Headphones, MemoryStick, Microchip, Monitor, Mouse, Plug, Snowflake, type LucideIcon } from 'lucide-react';
 import type {
   BaseListing,
   CaseListing,
@@ -8,6 +8,7 @@ import type {
   CpuListing,
   FanListing,
   GpuListing,
+  HeadphonesListing,
   MoboListing,
   MonitorListing,
   MouseListing,
@@ -27,6 +28,7 @@ import {
   FAN_RULES,
   GPU_RULES,
   GROUP_NAMES,
+  HEADPHONES_RULES,
   MEMORY,
   MOBO_RULES,
   MONITOR_RULES,
@@ -499,10 +501,44 @@ export const MOUSE: CategoryConfig<MouseListing> = {
   ],
 };
 
+export const HEADPHONES: CategoryConfig<HeadphonesListing> = {
+  ...HEADPHONES_RULES,
+  tab: { el: 'Ακουστικά', en: 'Headphones' },
+  title: CAT_PAGE.headphones.title,
+  subtitle: CAT_PAGE.headphones.subtitle,
+  icon: Headphones,
+  empty: noResults('ακουστικά', 'headphones'),
+  searchPlaceholder: search('WH-1000XM5, AirPods Pro'),
+  groupLabel: { el: 'Τύπος', en: 'Type' },
+  groupParam: 'type',
+  groupDot: { 'over-ear': 'bg-idle', 'on-ear': 'bg-idle', 'in-ear': 'bg-idle', 'open-ear': 'bg-idle' },
+  sortByGroup: false,
+  // No quality score: ANC or a longer battery is not a better pair (ranking.ts weighs popularity and price only).
+  tierScore: () => 0,
+  // Only what a source states; "—" when it does not.
+  before: [
+    {
+      header: { el: 'Τύπος', en: 'Type' },
+      className: 'hidden sm:table-cell',
+      cell: (m, lang) => (m.cheapest.formFactor ? tr(lang, GROUP_NAMES[m.cheapest.formFactor]) : '—'),
+    },
+  ],
+  after: [
+    {
+      header: { el: 'Σύνδεση', en: 'Connection' },
+      className: 'hidden sm:table-cell',
+      cell: (m, lang) => (m.cheapest.connection ? tr(lang, GROUP_NAMES[m.cheapest.connection]) : '—'),
+    },
+    { header: 'ANC', className: 'hidden md:table-cell', cell: (m, lang) => (m.cheapest.anc ? (lang === 'el' ? 'Ναι' : 'Yes') : '—') },
+    { header: { el: 'Αυτονομία', en: 'Battery' }, className: 'hidden md:table-cell', numeric: true, cell: (m) => (m.cheapest.batteryHours ? `${m.cheapest.batteryHours} h` : '—') },
+  ],
+};
+
 export const CATEGORIES = {
   gpu: GPU, cpu: CPU, mobo: MOBO, ram: RAM, storage: STORAGE, psu: PSU, case: CASE, fan: FAN, cooler: COOLER,
   monitor: MONITOR,
   mouse: MOUSE,
+  headphones: HEADPHONES,
 } as const;
 /** The categories the site builds data for: those the registry has switched on. A hidden category stays out of the build. */
 export const CATEGORY_IDS = (Object.keys(CATEGORIES) as Category[]).filter((id) => REGISTRY[id].enabled);

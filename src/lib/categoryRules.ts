@@ -10,6 +10,7 @@ import type {
   CpuListing,
   FanListing,
   GpuListing,
+  HeadphonesListing,
   MoboListing,
   MonitorListing,
   MouseListing,
@@ -72,6 +73,12 @@ export const GROUP_NAMES: Record<string, Text> = {
   wireless: { el: 'Ασύρματα', en: 'Wireless' },
   wired: { el: 'Ενσύρματα', en: 'Wired' },
   both: { el: 'Ασύρματα και ενσύρματα', en: 'Wireless and wired' },
+  // Headphone pills: the scraper's form factor (bone conduction is listed under open-ear).
+  'over-ear': { el: 'Over-ear', en: 'Over-ear' },
+  'on-ear': { el: 'On-ear', en: 'On-ear' },
+  'in-ear': { el: 'In-ear / ψείρες', en: 'In-ear / earbuds' },
+  'open-ear': { el: 'Open-ear / οστική αγωγή', en: 'Open-ear / bone conduction' },
+  'bone-conduction': { el: 'Οστική αγωγή', en: 'Bone conduction' },
 };
 
 /** Whether a listing belongs to a pill: what the filter and the pill counts both use. */
@@ -566,9 +573,53 @@ export const MOUSE_RULES: CategoryRules<MouseListing> = {
   ],
 };
 
+// ---------- Headphones and earphones ----------
+// A model is the scraper's `chip` (scraper/normalize_headphones.py: brand + model name); colours are offers of one
+// model. Pills are the form factor; every filter reads only what a source states, so an unknown value matches neither
+// choice. No filter for the 2.4 GHz receiver or water resistance: the 2026-11-14 collection
+// states them for under 0.5% of the models (docs/peripherals/HEADPHONES_DATA_REVIEW.md); a model page still shows them.
+
+export const HEADPHONES_TYPE: Record<NonNullable<HeadphonesListing['productType']>, Text> = {
+  headphones: { el: 'Ακουστικά κεφαλής', en: 'Headphones' },
+  earphones: { el: 'Ακουστικά ψείρες', en: 'Earphones' },
+  earbuds: { el: 'Ασύρματα earbuds', en: 'True wireless earbuds' },
+  headset: { el: 'Headset με μικρόφωνο', en: 'Headset' },
+};
+
+const HEADPHONES_BATTERY_H = [10, 20, 30, 40, 60];
+
+export const HEADPHONES_RULES: CategoryRules<HeadphonesListing> = {
+  id: 'headphones',
+  groups: ['over-ear', 'on-ear', 'in-ear', 'open-ear'],
+  group: (l) => (l.formFactor === 'bone-conduction' ? 'open-ear' : (l.formFactor ?? OTHER)),
+  modelKey: (l) => productKey(l.chip),
+  isPro: () => false,
+  searchText: (l) => l.chip, // the list rows carry no shop title (derive.ts LIST_SKIP_BY_CATEGORY); the chip is brand + model,
+  extraFilters: [
+    vendorFilter(),
+    {
+      key: 'connection',
+      label: { el: 'Σύνδεση', en: 'Connection' },
+      options: () => [
+        { value: 'wireless', label: GROUP_NAMES.wireless },
+        { value: 'wired', label: GROUP_NAMES.wired },
+      ],
+      // A pair that works both ways is under both; one with no stated connection is under neither.
+      test: (l, v) => l.connection === v || l.connection === 'both',
+    },
+    stated('anc', { el: 'Ενεργή ακύρωση θορύβου (ANC)', en: 'Active noise cancelling (ANC)' }, (l) => l.anc),
+    stated('trueWireless', { el: 'Πραγματικά ασύρματα (TWS)', en: 'True wireless (TWS)' }, (l) => l.trueWireless),
+    stated('microphone', { el: 'Μικρόφωνο', en: 'Microphone' }, (l) => l.microphone),
+    stated('gaming', 'Gaming', (l) => l.gaming),
+    stated('bluetooth', 'Bluetooth', (l) => l.bluetooth),
+    threshold('batteryHours', atLeastLabel({ el: 'Αυτονομία', en: 'Battery life' }), (l) => l.batteryHours, (v) => `≥ ${v} h`, { fixed: HEADPHONES_BATTERY_H }),
+    oneOf('colour', { el: 'Χρώμα', en: 'Colour' }, (l) => l.colour, { minCount: 5, fmt: mouseColourName }),
+  ],
+};
+
 export const RULES = {
   gpu: GPU_RULES, cpu: CPU_RULES, mobo: MOBO_RULES, ram: RAM_RULES, storage: STORAGE_RULES, psu: PSU_RULES,
-  case: CASE_RULES, fan: FAN_RULES, cooler: COOLER_RULES, monitor: MONITOR_RULES, mouse: MOUSE_RULES,
+  case: CASE_RULES, fan: FAN_RULES, cooler: COOLER_RULES, monitor: MONITOR_RULES, mouse: MOUSE_RULES, headphones: HEADPHONES_RULES,
 } as const;
 
 /** A category's rules for code that handles every category alike (the facet worker and its fallback). */

@@ -17,6 +17,16 @@ export function productSpecs(cat: Category, listing: BaseListing, lang: Lang): S
     typeof l[key] === 'number' && Number(l[key]) > 0 ? `${(listing.price / (Number(l[key]) / divisor)).toFixed(2)} ${unit}` : null;
   const spec = (el: string, en: string, value: string | null, hide = false): Spec => ({ label: { el, en }, value, hide });
   switch (cat) {
+    case 'headphones': {
+      const form = { 'over-ear': ['Over-ear', 'Over-ear'], 'on-ear': ['On-ear', 'On-ear'], 'in-ear': ['In-ear', 'In-ear'], 'open-ear': ['Open-ear', 'Open-ear'], 'bone-conduction': ['Οστική αγωγή', 'Bone conduction'] }[String(l.formFactor)];
+      const connection = { wireless: ['Ασύρματα', 'Wireless'], wired: ['Ενσύρματα', 'Wired'], both: ['Ασύρματα και ενσύρματα', 'Wireless and wired'] }[String(l.connection)];
+      return [
+        spec('Τύπος', 'Type', form ? form[lang === 'el' ? 0 : 1] : null),
+        spec('Σύνδεση', 'Connection', connection ? connection[lang === 'el' ? 0 : 1] : null),
+        spec('ANC', 'ANC', yes('anc')),
+        spec('Αυτονομία', 'Battery', number('batteryHours', ' h'), true),
+      ];
+    }
     case 'mouse': {
       const connection = { wireless: ['Ασύρματο', 'Wireless'], wired: ['Ενσύρματο', 'Wired'], both: ['Ασύρματο και ενσύρματο', 'Wireless and wired'] }[String(l.connection)];
       return [

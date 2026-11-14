@@ -139,4 +139,11 @@ export const CAT_PAGE: Record<Category, { title: Text; subtitle: Text }> = {
       en: 'The lowest mouse prices in Greece, by model, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
     },
   },
+  headphones: {
+    title: { el: 'Ακουστικά', en: 'Headphones & Earphones' },
+    subtitle: {
+      el: 'Οι χαμηλότερες τιμές ακουστικών, ψείρων και headsets στην Ελλάδα, ανά μοντέλο, από Skroutz, BestPrice, Shopflix, Snif και e-shop.gr.',
+      en: 'The lowest prices of headphones, earphones and headsets in Greece, by model, from Skroutz, BestPrice, Shopflix, Snif and e-shop.gr.',
+    },
+  },
 };

@@ -3,7 +3,7 @@
 // skipped, so the order stays the same from row to row. Values are the most common across a model's
 // listings (as v1's builder takes them).
 import { tr, type Lang } from '../lib/i18n';
-import { MOUSE_CONNECTION } from '../lib/categoryRules';
+import { GROUP_NAMES, HEADPHONES_TYPE, MOUSE_CONNECTION } from '../lib/categoryRules';
 import { mostCommon } from '../lib/data';
 import { cpuThreads } from '../lib/cpuThreads';
 import type {
@@ -17,6 +17,7 @@ import type {
   MoboListing,
   MonitorListing,
   MouseListing,
+  HeadphonesListing,
   PsuListing,
   RamListing,
   StorageListing,
@@ -39,6 +40,19 @@ const mm = (lang: Lang, n: number | null) => (n == null ? null : `${num(lang, n)
 const labelled = (label: string, v: string | null) => (v == null ? null : `${label} ${v}`);
 
 const SPECS: { [C in Category]: (ls: BaseListing[], lang: Lang) => Spec[] } = {
+  headphones: (raw, lang) => {
+    const ls = raw as L<HeadphonesListing>;
+    const form = pick(ls, (l) => l.formFactor);
+    const connection = pick(ls, (l) => l.connection);
+    const anc = pick(ls, (l) => l.anc);
+    const battery = pick(ls, (l) => l.batteryHours);
+    return [
+      { label: w(lang, 'τύπος', 'type'), value: form == null ? null : tr(lang, GROUP_NAMES[form]) },
+      { label: w(lang, 'σύνδεση', 'connection'), value: connection == null ? null : tr(lang, GROUP_NAMES[connection]) },
+      { label: 'ANC', value: anc == null ? null : anc ? w(lang, 'Ναι', 'Yes') : w(lang, 'Όχι', 'No') },
+      { label: w(lang, 'μπαταρία', 'battery'), value: battery == null ? null : `${num(lang, battery)} h` },
+    ];
+  },
   mouse: (raw, lang) => {
     const ls = raw as L<MouseListing>;
     const connection = pick(ls, (l) => l.connection);
@@ -212,6 +226,36 @@ const firstOf = <T, V>(ls: L<T>, f: (l: T) => V | null | undefined): V | null =>
 };
 
 const FULL: { [C in Category]: (ls: BaseListing[], lang: Lang, est?: Estimate) => Row[] } = {
+  // Only what a source states: an unknown value has no row, an explicit "no" is shown as No.
+  headphones: (raw, lang) => {
+    const ls = raw as L<HeadphonesListing>;
+    const type = pick(ls, (l) => l.productType);
+    const form = pick(ls, (l) => l.formFactor);
+    const connection = pick(ls, (l) => l.connection);
+    const driver = pick(ls, (l) => l.driverMm);
+    const battery = pick(ls, (l) => l.batteryHours);
+    return [
+      ['general', w(lang, 'Κατασκευαστής', 'Maker'), pick(ls, (l) => l.brand)],
+      ['general', w(lang, 'Είδος', 'Kind'), type == null ? null : tr(lang, HEADPHONES_TYPE[type])],
+      ['general', w(lang, 'Τύπος', 'Type'), form == null ? null : tr(lang, GROUP_NAMES[form])],
+      ['general', 'Gaming', yesNo(lang, pick(ls, (l) => l.gaming))],
+      ['general', w(lang, 'Ενεργή ακύρωση θορύβου', 'Active noise cancelling'), yesNo(lang, pick(ls, (l) => l.anc))],
+      ['general', w(lang, 'Λειτουργία διαφάνειας', 'Transparency mode'), yesNo(lang, pick(ls, (l) => l.transparency))],
+      ['general', w(lang, 'Μικρόφωνο', 'Microphone'), yesNo(lang, pick(ls, (l) => l.microphone))],
+      ['general', w(lang, 'Χωρικός ήχος', 'Spatial audio'), yesNo(lang, pick(ls, (l) => l.spatialAudio))],
+      ['general', w(lang, 'Driver', 'Driver'), driver == null ? null : `${driver} mm`],
+      ['general', w(lang, 'Αδιάβροχα', 'Water resistance'), pick(ls, (l) => l.waterResistance)],
+      ['general', w(lang, 'Πτυσσόμενα', 'Foldable'), yesNo(lang, pick(ls, (l) => l.foldable))],
+      ['power', w(lang, 'Αυτονομία', 'Battery life'), battery == null ? null : `${num(lang, battery)} h`],
+      ['power', w(lang, 'Θήκη φόρτισης', 'Charging case'), yesNo(lang, pick(ls, (l) => l.chargingCase))],
+      ['connections', w(lang, 'Σύνδεση', 'Connection'), connection == null ? null : tr(lang, GROUP_NAMES[connection])],
+      ['connections', 'Bluetooth', yesNo(lang, pick(ls, (l) => l.bluetooth))],
+      ['connections', w(lang, 'Πραγματικά ασύρματα (TWS)', 'True wireless (TWS)'), yesNo(lang, pick(ls, (l) => l.trueWireless))],
+      ['connections', w(lang, 'Δέκτης 2.4 GHz', '2.4 GHz receiver'), yesNo(lang, pick(ls, (l) => l.rf))],
+      ['connections', 'Multipoint', yesNo(lang, pick(ls, (l) => l.multipoint))],
+      ['connections', w(lang, 'Βύσμα', 'Connector'), pick(ls, (l) => l.connector)],
+    ];
+  },
   // Only what a source states: an unknown value has no row, an explicit "no" is shown as No.
   mouse: (raw, lang) => {
     const ls = raw as L<MouseListing>;

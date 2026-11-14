@@ -1,7 +1,7 @@
 // The site's sections, in one place: names (docs/phase1/glossary.md), icons, the "Εξαρτήματα" menu groups
 // (plan, "Αρχική σελίδα, πλοήγηση και URLs") and the words global search matches categories by.
 // Σύγκριση and Προσφορές are not listed until their pages exist (owner, 2026-10-04; backlog #11, #12).
-import { Box, CircuitBoard, Cpu, Fan, HardDrive, MemoryStick, Microchip, Monitor, Mouse, Plug, Snowflake, Wrench, type LucideIcon } from 'lucide-react';
+import { Box, CircuitBoard, Cpu, Fan, HardDrive, Headphones, MemoryStick, Microchip, Monitor, Mouse, Plug, Snowflake, Wrench, type LucideIcon } from 'lucide-react';
 import type { Text } from '../lib/i18n';
 import { REGISTRY } from '../lib/registry';
 import type { Category } from '../types';
@@ -28,6 +28,7 @@ export const CATS: Record<Category, Section> = {
   // In the menu only once published (registry `visible`).
   monitor: { name: { el: 'Οθόνες', en: 'Monitors' }, one: { el: 'Οθόνη', en: 'Monitor' }, icon: Monitor, words: ['οθόνη', 'monitor', 'display', 'screen'] },
   mouse: { name: { el: 'Ποντίκια', en: 'Mice' }, one: { el: 'Ποντίκι', en: 'Mouse' }, icon: Mouse, words: ['ποντίκι', 'ποντίκια', 'mouse', 'mice'] },
+  headphones: { name: { el: 'Ακουστικά', en: 'Headphones & Earphones' }, one: { el: 'Ακουστικά', en: 'Headphones' }, icon: Headphones, words: ['ακουστικά', 'ακουστικό', 'ψείρες', 'headphones', 'earphones', 'earbuds', 'headset', 'airpods', 'handsfree'] },
 };
 
 export const BUILDER: Section = { name: 'PC Builder', icon: Wrench, words: ['builder', 'συναρμολόγηση', 'build', 'σύνθεση'] };
@@ -35,7 +36,7 @@ export const BUILDER: Section = { name: 'PC Builder', icon: Wrench, words: ['bui
 const ALL_GROUPS: { title: Text; cats: Category[] }[] = [
   { title: { el: 'Βασικά', en: 'Core parts' }, cats: ['cpu', 'mobo', 'ram', 'gpu', 'storage'] },
   { title: { el: 'Κουτί, ρεύμα και ψύξη', en: 'Case, power and cooling' }, cats: ['case', 'psu', 'cooler', 'fan'] },
-  { title: { el: 'Περιφερειακά', en: 'Peripherals' }, cats: ['monitor', 'mouse'] },
+  { title: { el: 'Περιφερειακά', en: 'Peripherals' }, cats: ['monitor', 'mouse', 'headphones'] },
 ];
 /** Menu groups of the published categories only: a hidden one (registry `visible: false`) is in no menu. */
 export const GROUPS = ALL_GROUPS.map((g) => ({ ...g, cats: g.cats.filter((c) => REGISTRY[c].visible) })).filter((g) => g.cats.length > 0);

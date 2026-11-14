@@ -54,6 +54,8 @@ export const RANKING: Record<Category, RankConfig> = {
   // Monitors (hidden): popularity (offer coverage) and price fit only; no invented quality score (FINAL_PLAN section 3).
   monitor: { weights: { popularity: 0.7, modern: 0, price: 0.3, value: 0 }, priceBand: [0.2, 0.8], saleBoost: DEAL_BOOST },
   mouse: { weights: { popularity: 0.7, modern: 0, price: 0.3, value: 0 }, priceBand: [0.2, 0.8], saleBoost: DEAL_BOOST },
+  // Headphones: popularity and price only; a higher battery figure or an ANC flag is not a better pair.
+  headphones: { weights: { popularity: 0.7, modern: 0, price: 0.3, value: 0 }, priceBand: [0.2, 0.8], saleBoost: DEAL_BOOST },
 };
 
 // ---------- "modern" tables (0–1) ----------
@@ -135,21 +137,35 @@ const MODERN: { [C in Category]: (m: Model<never>) => number } = {
   },
   monitor: () => 0, // weight 0 above: nothing says one monitor is "more modern" than another
   mouse: () => 0,
+  headphones: () => 0,
 };
 
 // ---------- scoring ----------
 
 /** Percentile (0–1) of each value among all values; ties share the average rank. */
-function percentiles(values: number[]): number[] {
+export function percentiles(values: number[]): number[] {
   const sorted = [...values].sort((a, b) => a - b);
   const n = values.length;
   return values.map((v) => {
     if (n < 2) return 1;
-    let lo = 0;
-    let hi = n - 1;
-    while (lo < n && sorted[lo] < v) lo++;
-    while (hi >= 0 && sorted[hi] > v) hi--;
-    return (lo + hi) / 2 / (n - 1);
+    // lo = first index not below v, hi = last index not above v (binary searches: a linear scan per value made the
+    // ranking of a 10,000-model category a 100-million-step loop on the phone's main thread).
+    let a = 0;
+    let b = n;
+    while (a < b) {
+      const mid = (a + b) >> 1;
+      if (sorted[mid] < v) a = mid + 1;
+      else b = mid;
+    }
+    const lo = a;
+    a = 0;
+    b = n;
+    while (a < b) {
+      const mid = (a + b) >> 1;
+      if (sorted[mid] > v) b = mid;
+      else a = mid + 1;
+    }
+    return (lo + (a - 1)) / 2 / (n - 1);
   });
 }
 

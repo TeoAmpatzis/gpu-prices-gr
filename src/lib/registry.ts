@@ -31,6 +31,8 @@ export const REGISTRY = {
   // Peripherals: never a builder part. Hidden until the monitor data passes its gates (FINAL_PLAN Phase 2).
   monitor: { domain: 'peripherals', enabled: true, visible: true },
   mouse: { domain: 'peripherals', enabled: true, visible: true },
+  // Headphones: disabled until the owner approves the first collection (docs/peripherals/HEADPHONES_DESIGN.md).
+  headphones: { domain: 'peripherals', enabled: false, visible: false },
 } as const satisfies Record<string, CategoryEntry>;
 
 export type Category = keyof typeof REGISTRY;

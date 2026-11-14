@@ -107,6 +107,32 @@ export interface MouseListing extends BaseListing {
   reject?: string | null;
 }
 
+// A headphone, earphone, earbud or headset offer (scraper/models.py HeadphonesListing). Null means the source did not
+// state the spec; the scraper never fills a default.
+export interface HeadphonesListing extends BaseListing {
+  formFactor: 'over-ear' | 'on-ear' | 'in-ear' | 'open-ear' | 'bone-conduction' | null;
+  productType: 'headphones' | 'earphones' | 'earbuds' | 'headset' | null;
+  gaming: boolean | null;
+  trueWireless: boolean | null;
+  connection: 'wired' | 'wireless' | 'both' | null;
+  bluetooth: boolean | null;
+  rf: boolean | null; // 2.4 GHz dongle
+  connector: string | null; // "3.5mm, USB-C"
+  multipoint: boolean | null;
+  anc: boolean | null;
+  transparency: boolean | null;
+  microphone: boolean | null;
+  spatialAudio: boolean | null;
+  driverMm: number | null;
+  batteryHours: number | null;
+  chargingCase: boolean | null;
+  waterResistance: string | null; // "IPX4"
+  foldable: boolean | null;
+  colour: string | null;
+  partNumber: string | null;
+  reject?: string | null;
+}
+
 // A monitor offer (scraper/models.py MonitorListing). Every spec is what THIS listing states; null = not stated.
 // Never a builder part: peripherals do not feed the compatibility engine.
 export interface MonitorListing extends BaseListing {

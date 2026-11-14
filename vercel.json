@@ -7,11 +7,11 @@
   },
   "rewrites": [
     {
-      "source": "/:page(gpu|cpu|mobo|ram|storage|psu|case|fan|cooler|monitor|mouse|builder|parts|compare|search|about|contact|privacy|how-prices)",
+      "source": "/:page(gpu|cpu|mobo|ram|storage|psu|case|fan|cooler|monitor|mouse|headphones|builder|parts|compare|search|about|contact|privacy|how-prices)",
       "destination": "/index.html"
     },
     {
-      "source": "/:cat(gpu|cpu|mobo|ram|storage|psu|case|fan|cooler|monitor|mouse)/:slug",
+      "source": "/:cat(gpu|cpu|mobo|ram|storage|psu|case|fan|cooler|monitor|mouse|headphones)/:slug",
       "destination": "/index.html"
     },
     {
