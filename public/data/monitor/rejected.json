@@ -1,11 +1,11 @@
 {
- "updatedAt": "2026-11-13T20:29:16+00:00",
+ "updatedAt": "2026-11-14T07:26:26+00:00",
  "counts": {
   "ambiguous": 39,
   "bundle": 1,
   "no-identity": 347,
   "not-monitor": 56,
-  "used": 4
+  "used": 5
  },
  "listings": [
   {
@@ -25,7 +25,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://bbpcdn.pstatic.gr/bpimg34/fi7M6/1XqHeS_SX710Y533/1794299398/acer-vero-b247y-gbmiqprzx-ips-monitor-238-75hz-4ms-um-qb7ee-g25.webp"
   },
@@ -46,7 +46,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous"
   },
   {
@@ -55,7 +55,7 @@
    "title": "Οθόνη Υπολογιστή Samsung ViewFinity S6 S60UD IPS HDR QHD 2560x1440 5ms GTG",
    "url": "https://shopflix.gr/p/SF-103816766/othone-upologiste-samsung-viewfinity-s6-s60ud-ips-hdr-qhd-2560x1440-5ms-gtg",
    "price": 402.32,
-   "shopCount": 1,
+   "shopCount": 2,
    "brand": "Samsung",
    "chip": "",
    "code": "S60UD",
@@ -66,7 +66,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://cdn.shopflix.gr/products/SFA-103816766/images/530/1728965164_mgmanager_128583.webp"
   },
@@ -87,7 +87,7 @@
    "panel": "IPS",
    "colour": "silver",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://cdn.shopflix.gr/products/SFA-203165426/images/530/20261013095833_53588.1.webp"
   },
@@ -381,7 +381,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/89/10/53/90/2005579-DELL-5397184657133-hero-800x800.jpg"
   },
@@ -402,7 +402,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/79/33/35/47/2058951-HP-9D9L6UT-hero-800x800.jpg"
   },
@@ -423,7 +423,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/68/71/68/68/2078368-DELL-hero-800x800.jpg"
   },
@@ -444,7 +444,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/45/47/89/43/2078441-LENOVO-hero-800x800.jpg"
   },
@@ -465,7 +465,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/36/39/98/42/2078443-AOC-hero-800x800.jpg"
   },
@@ -486,7 +486,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/96/8/35/20/2024539-PHILIPS-hero-800x800.jpg"
   },
@@ -507,7 +507,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/25/39/66/46/MRK3101653-AOC-8712581799526-hero-800x800.jpg"
   },
@@ -528,7 +528,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/50/31/68/76/MRK3101649-PHILIPS-8712581803513-hero-800x800.jpg"
   },
@@ -549,7 +549,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/94/20/45/4/MRK3101682-ARZOPA-5907085524689-hero-800x800.jpg"
   },
@@ -570,7 +570,7 @@
    "panel": "TN",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/0/81/42/73/2101966-PHILIPS-8712581750213-hero-800x800.jpg"
   },
@@ -591,7 +591,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/26/81/83/87/2101764-HP-198828043597-hero-800x800.jpg"
   },
@@ -612,7 +612,7 @@
    "panel": "TN",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/65/41/68/57/2101968-PHILIPS-8712581750237-hero-800x800.jpg"
   },
@@ -633,7 +633,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/68/30/40/44/2078436-DAHUA-6939554921506-hero-800x800.jpg"
   },
@@ -654,7 +654,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/68/60/93/48/2024518-HP-196337193345-hero-800x800.jpg"
   },
@@ -675,7 +675,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/7/43/80/58/2129518-LENOVO-hero-800x800.jpg"
   },
@@ -696,7 +696,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/70/9/83/89/2131221-AOC-hero-800x800.jpg"
   },
@@ -717,7 +717,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/18/11/12/64/2131220-AOC-hero-800x800.jpg"
   },
@@ -738,7 +738,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/48/80/52/75/MRK3106747-LENOVO-199272306696-hero-800x800.jpg"
   },
@@ -759,7 +759,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/61/42/88/11/MRK3106746-LENOVO-198158436229-hero-800x800.jpg"
   },
@@ -780,7 +780,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/18/98/53/66/2058952-HP-9E0G9UT-hero-800x800.jpg"
   },
@@ -801,7 +801,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://external.webstorage.gr/mmimages/image/82/22/28/52/2165946-MONITOR-REDRAGON-GM27X5QIPS-hero-800x800.jpg"
   },
@@ -822,7 +822,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "ambiguous",
    "image": "https://www.websupplies.gr/images/thumbs/0362765.jpeg"
   },
@@ -864,7 +864,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg11/7vTOr/1PoZS0_SX533Y400/1675683672/ae-led19a-led-monitor-19.webp"
   },
@@ -885,7 +885,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg3/aEvvB/1ShiJX_SX482Y362/1718178593/led-monitor-19.webp"
   },
@@ -906,7 +906,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg33/bpRBL/1T5uoS_SX411Y308/1730139814/waveshare-156inch-dual-monitor.webp"
   },
@@ -927,7 +927,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg16/e9npe/1Wrq1W_SX269Y202/1779695240/touchdisplays-touch-monitor-15.webp"
   },
@@ -948,7 +948,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg63/fduUL/1Xkgnm_SX655Y491/1792766168/xiaomi-mi-ultrawide-va-curved-gaming-monitor-34-3440x1440-qhd-144hz-4ms.webp"
   },
@@ -969,7 +969,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg10/66PeG/1XrRMX_SX599Y449/1794578279/xiaomi-mi-2k-gaming-monitor-27-ips-hdr-gaming-monitor-27-2560x1440-qhd-165hz-4ms-bhr5039gl.webp"
   },
@@ -990,7 +990,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg36/eXDPC/1WMU79_SX900Y675/1784815771/arzopa-a1-ips-hdr-forhto-monitor-156-1920x1080-fhd-60hz-5906168436338.webp"
   },
@@ -1011,7 +1011,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg55/2m854b/1RcEaK_SX544Y408/1702293002/arzopa-g1-ips-forhto-monitor-156-1920x1080-fhd-144hz-5ms.webp"
   },
@@ -1032,7 +1032,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg34/2maATM/1SGKHZ_SX640Y480/1724244303/ricoh-150-oled-forhto-monitor-156-1920x1080-fhd-60hz-1ms.webp"
   },
@@ -1053,7 +1053,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg23/2maDf9/1SIyMr_SX450Y338/1724675107/lenovo-thinkvision-27-3d-ips-hdr-monitor-27-3840x2160-4k-uhd-60hz-6ms-63f1uat3eu-262-80-lvm273d.webp"
   },
@@ -1074,7 +1074,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg7/2mcxiD/1TFkJy_SX450Y338/1738682464/samsung-odyssey-g6-oled-hdr-gaming-monitor-27-2560x1440-qhd-240hz-003ms-ls27dg612suxen.webp"
   },
@@ -1095,7 +1095,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg23/2mp0uX/1VnS5r_SX398Y298/1764073441/oem-luckfox-ips-hdr-forhto-monitor-185-1920x1080-fhd-120hz.webp"
   },
@@ -1116,7 +1116,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg22/2mq1tY/1VKFG1_SX450Y338/1769507281/oem-7star-ips-forhto-monitor-156-1920x1080-fhd-60hz-0660982711679.webp"
   },
@@ -1137,7 +1137,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg48/6duIo/1Xa56b_SX504Y378/1790339539/eos-full-monitor-27-qhd-5ms-led272kn.webp"
   },
@@ -1158,7 +1158,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg27/719TZ/1XrOuP_SX428Y322/1794565623/oem-waveshare-lcd-ips-monitor-156-1920x1080-fhd.webp"
   },
@@ -1179,7 +1179,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg49/bnPMd/1Xa56b_SX585Y439/1790339539/eos-full-lcd-monitor-24-qhd-5ms-led242kn.webp"
   },
@@ -1200,7 +1200,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg31/fhVp5/1Xa8ct_SX678Y509/1790351461/elo-lcd-monitor-19.webp"
   },
@@ -1210,7 +1210,7 @@
    "title": "Arzopa A1 Pro IPS HDR Φορητό Monitor 15.6\" 1920x1080 FHD 60Hz",
    "url": "https://www.bestprice.gr/item/2164544812/arzopa-a1-pro-ips-hdr-forito-monitor-15-6-1920x1080-fhd-60hz.html",
    "price": 72.9,
-   "shopCount": 5,
+   "shopCount": 6,
    "brand": "Arzopa",
    "chip": "",
    "code": null,
@@ -1221,7 +1221,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg44/2mucZ6/1X9Flr_SX640Y480/1790240541/arzopa-a1-pro-ips-hdr-forhto-monitor-156-1920x1080-fhd-60hz.webp"
   },
@@ -1242,7 +1242,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg15/fmN9t/1XezZ6_SX544Y408/1791411576/neo-ips-monitor-24-1920x1080-fhd-120hz-5ms-lh244011e0000.webp"
   },
@@ -1263,7 +1263,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg34/fxU4y/1XpEdP_SX900Y675/1794049473/dell-pro-27-plus-othonh-ypologisth-27-qhd-210-bsbg.webp"
   },
@@ -1284,7 +1284,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg47/2mw6qH/1XqkYd_SX466Y350/1794213797/uperfect-ips-hdr-forhto-monitor-16-3840x2400-60hz-25ms-m160t06.webp"
   },
@@ -1305,7 +1305,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg48/2mw6qI/1XqkYd_SX480Y360/1794213797/uperfect-ips-hdr-forhto-monitor-22-2560x1440-60hz-20ms-m220t01.webp"
   },
@@ -1315,7 +1315,7 @@
    "title": "Acer IPS HDR Gaming Monitor 31.5\" 3840x2160 4K UHD 240Hz 1ms",
    "url": "https://www.bestprice.gr/item/2165022042/acer-ips-hdr-gaming-monitor-31-5-3840x2160-4k-uhd-240hz-1ms.html",
    "price": 499.12,
-   "shopCount": 1,
+   "shopCount": 2,
    "brand": "Acer",
    "chip": "",
    "code": null,
@@ -1326,9 +1326,9 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
-   "image": "https://bbpcdn.pstatic.gr/bpimg49/fB8VX/1XrQEn_SX477Y358/1794573903/acer-ips-hdr-gaming-monitor-315-3840x2160-4k-uhd-240hz-1ms-xb323qkxbmiiprx.webp"
+   "image": "https://bbpcdn.pstatic.gr/bpimg31/fB8B1/1XrZ3s_SX521Y391/1794606210/acer-ips-hdr-gaming-monitor-315-3840x2160-4k-uhd-240hz-1ms-xb323qkxbmiiprx.webp"
   },
   {
    "id": "bestprice:225960108",
@@ -1347,7 +1347,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg44/fi6xS/1Xa6fZ_SX347Y261/1790343991/elo-othonh-ypologisth-215-wide-fhd-lcd-non-touch-anti-glare-zero-bezel.webp"
   },
@@ -1368,7 +1368,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg62/fph9A/1XgUx1_SX900Y675/1791967215/touchdisplays-touch-monitor-15-me-epitpapezia-bash.webp"
   },
@@ -1389,7 +1389,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://bbpcdn.pstatic.gr/bpimg42/6CflE/1Sfw2J_SX589Y442/1717753073/othonh-ae-led19a.webp"
   },
@@ -1410,7 +1410,7 @@
    "panel": null,
    "colour": "black",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity"
   },
   {
@@ -1430,7 +1430,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity"
   },
   {
@@ -1450,7 +1450,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity"
   },
   {
@@ -1459,7 +1459,7 @@
    "title": "Οθόνη Υπολογιστή Dell UltraSharp Ultrawide IPS Curved 34\" QHD 3440x1440 με Χρόνο Απόκρισης 5ms GTG",
    "url": "https://shopflix.gr/p/SF-100054500/othone-upologiste-dell-ultrasharp-ultrawide-ips-curved-34-qhd-3440x1440-me-khrono-apokrises-5ms-gtg",
    "price": 782.22,
-   "shopCount": 22,
+   "shopCount": 21,
    "brand": "Dell",
    "chip": "",
    "code": null,
@@ -1470,7 +1470,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-100054500/images/530/1722257242_SF_100054500.webp"
   },
@@ -1491,7 +1491,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-100087079/images/530/4961311975028.webp"
   },
@@ -1512,7 +1512,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-100096712/images/530/4711387005811.webp"
   },
@@ -1533,7 +1533,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-101786389/images/530/1720532667_terracloud_3000519.webp"
   },
@@ -1554,7 +1554,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-102520974/images/530/1725005694_0197532306363.webp"
   },
@@ -1575,7 +1575,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-102682677/images/530/1725433403_mgmanager_127967.webp"
   },
@@ -1596,7 +1596,7 @@
    "panel": "TN",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-102872196/images/530/1725722623_5711603068049.webp"
   },
@@ -1606,7 +1606,7 @@
    "title": "Philips Ultrawide QD-OLED HDR Curved Οθόνη Υπολογιστή 48.9\" 5120x1440 144Hz με Χρόνο Απόκρισης 0.03ms GTG Ασημί",
    "url": "https://shopflix.gr/p/SF-102872221/philips-49m2c8900l-00-ultrawide-qd-oled-hdr-curved-monitor-48-9-5120x1440-144hz-me-khrono-apokrises-0-03ms-gtg",
    "price": 844.2,
-   "shopCount": 8,
+   "shopCount": 7,
    "brand": "Philips",
    "chip": "",
    "code": null,
@@ -1617,7 +1617,7 @@
    "panel": "OLED",
    "colour": "silver",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-102872221/images/530/1725722623_8712581803926.webp"
   },
@@ -1626,7 +1626,7 @@
    "source": "shopflix",
    "title": "Οθόνη Υπολογιστή Verbatim 32239 IPS Touch Φορητό 17.3\" 4K 3840x2160 με Χρόνο Απόκρισης 6ms GTG",
    "url": "https://shopflix.gr/p/SF-104279648/o8oni-ypologisth-verbatim-32239-4k-ultra-hd-17-3",
-   "price": 498.13,
+   "price": 497.93,
    "shopCount": 2,
    "brand": "Verbatim",
    "chip": "",
@@ -1638,7 +1638,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-104279648/images/530/1733296985_0023942322399.webp"
   },
@@ -1659,7 +1659,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-104477104/images/530/1734888962_8806095585321.webp"
   },
@@ -1680,7 +1680,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-104819505/images/530/1739286813_terracloud_63F1UAT3EU.webp"
   },
@@ -1701,7 +1701,7 @@
    "panel": "OLED",
    "colour": "silver",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-104950229/images/530/20230731112140_samsung_odyssey_oled_g9_g95sc_oled_hdr_curved_monitor_49_5120by1440_240hz_me_chrono_apokrisis_0_03ms_gtg.webp"
   },
@@ -1722,7 +1722,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-105326833/images/530/1754661950_197961404357.webp"
   },
@@ -1743,7 +1743,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-105474065/images/530/1744382103_niotisservices_S55270622.webp"
   },
@@ -1764,7 +1764,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "drop": 22,
    "image": "https://cdn.shopflix.gr/products/SFA-105869685/images/530/1747990824_stocktools_2986757.webp"
@@ -1786,7 +1786,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-105993773/images/530/1747990891_stocktools_2622552.webp"
   },
@@ -1807,7 +1807,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-106045315/images/530/1747990909_flexin_DI138541.webp"
   },
@@ -1828,7 +1828,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-106045358/images/530/1747990909_stocktools_2413860.webp"
   },
@@ -1849,7 +1849,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-106101815/images/530/1748613566_5397184962350.webp"
   },
@@ -1870,7 +1870,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-106102065/images/530/1748613566_5397184962367.webp"
   },
@@ -1879,7 +1879,7 @@
    "source": "shopflix",
    "title": "Dell Pro VA Monitor 21.5\" FHD 1920x1080",
    "url": "https://shopflix.gr/p/SF-106103089/dell-pro-va-monitor-21-5-fhd-1920x1080",
-   "price": 82.9,
+   "price": 83.99,
    "shopCount": 16,
    "brand": "Dell",
    "chip": "",
@@ -1891,9 +1891,8 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
-   "drop": 4,
    "image": "https://cdn.shopflix.gr/products/SFA-106103089/images/530/1748613566_allaboutoffice_291970.webp"
   },
   {
@@ -1913,7 +1912,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-106187775/images/530/1749816782_197961409727.webp"
   },
@@ -1934,7 +1933,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-106205057/images/530/1749816800_stocktools_1686387.webp"
   },
@@ -1955,7 +1954,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-106328354/images/530/1750427186_0660982711679.webp"
   },
@@ -1965,7 +1964,7 @@
    "title": "Dell Plus Ultrawide HDR Curved Monitor 34\" QHD 3440x1440 με Χρόνο Απόκρισης 5ms GTG",
    "url": "https://shopflix.gr/p/SF-106460262/dell-plus-ultrawide-hdr-curved-monitor-34-qhd-3440x1440-me-khrono-apokrises-5ms-gtg",
    "price": 386.04,
-   "shopCount": 20,
+   "shopCount": 21,
    "brand": "Dell",
    "chip": "",
    "code": null,
@@ -1976,7 +1975,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-106460262/images/530/1752243750_5397184962398.webp"
   },
@@ -1997,7 +1996,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-106657446/images/530/1754661944_8806096433102.webp"
   },
@@ -2018,7 +2017,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "drop": 23,
    "image": "https://cdn.shopflix.gr/products/SFA-106871265/images/530/1757084937_24M_c500730.webp"
@@ -2040,7 +2039,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-107067451/images/530/1760097092_8806096483992.webp"
   },
@@ -2061,7 +2060,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-107124352/images/530/1760097112_niotisservices_S5633987.webp"
   },
@@ -2082,7 +2081,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-11354596/images/530/images_by_date_2023_October_23_10_fullcat_mains_SF_11354596.jpeg"
   },
@@ -2103,7 +2102,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-11544038/images/530/images_by_date_2023_October_23_10_fullcat_mains_SF_11544038.jpeg"
   },
@@ -2124,7 +2123,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-11766394/images/530/1722257242_SF_11766394.webp"
   },
@@ -2145,7 +2144,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-12739593/images/530/images_by_date_2023_October_23_10_fullcat_mains_SF_12739593.jpeg"
   },
@@ -2155,7 +2154,7 @@
    "title": "Samsung Odyssey G6 VA HDR Curved Gaming Monitor 32\" QHD 2560x1440 240Hz με Χρόνο Απόκρισης 1ms GTG",
    "url": "https://shopflix.gr/p/SF-12987786/samsung-odyssey-g6-va-hdr-curved-gaming-monitor-32-qhd-2560x1440-240hz-me-khrono-apokrises-1ms-gtg",
    "price": 395.1,
-   "shopCount": 3,
+   "shopCount": 2,
    "brand": "Samsung",
    "chip": "",
    "code": null,
@@ -2166,7 +2165,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "drop": 5,
    "image": "https://cdn.shopflix.gr/products/SFA-12987786/images/530/1722249313_SF_12987786.webp"
@@ -2188,7 +2187,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-14003153/images/530/images_by_date_2023_August_23_08_main_images_viralstore_SAMLS25BG400EUXEN.jpeg"
   },
@@ -2209,7 +2208,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-14071220/images/530/1745398869_SF_14071220.webp"
   },
@@ -2230,7 +2229,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-15459507/images/530/images_by_date_2023_October_24_10_main_images_mgmanager_122982.jpeg"
   },
@@ -2240,7 +2239,7 @@
    "title": "LG UltraWide IPS Οθόνη Υπολογιστή 29\" FHD 2560x1080 5ms GTG",
    "url": "https://shopflix.gr/p/SF-200067866/lg-ultrawide-ips-othone-upologiste-29-fhd-2560x1080-5ms-gtg",
    "price": 135.0,
-   "shopCount": 17,
+   "shopCount": 16,
    "brand": "LG",
    "chip": "",
    "code": null,
@@ -2251,7 +2250,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-200067866/images/530/1762244222_8806096534601.webp"
   },
@@ -2260,7 +2259,7 @@
    "source": "shopflix",
    "title": "HP Series 5 Pro IPS Gaming Οθόνη Υπολογιστή 27\" QHD 2560x1440 5ms GTG",
    "url": "https://shopflix.gr/p/SF-200084802/hp-series-5-pro-ips-gaming-othone-upologiste-27-qhd-2560x1440-5ms-gtg",
-   "price": 426.3,
+   "price": 418.1,
    "shopCount": 5,
    "brand": "HP",
    "chip": "",
@@ -2272,7 +2271,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-200084802/images/530/1762244224_0198122920570.webp"
   },
@@ -2281,7 +2280,7 @@
    "source": "shopflix",
    "title": "Verbatim 32087 Touch Φορητή Οθόνη Υπολογιστή 13.3\" FHD 1920x1200",
    "url": "https://shopflix.gr/p/SF-200101058/verbatim-32087-touch-phorete-othone-upologiste-13-3-fhd-1920x1200",
-   "price": 183.31,
+   "price": 183.23,
    "shopCount": 7,
    "brand": "Verbatim",
    "chip": "",
@@ -2293,7 +2292,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-200101058/images/530/1762244229_023942320876.webp"
   },
@@ -2303,7 +2302,7 @@
    "title": "Philips 2000 Series IPS Οθόνη Υπολογιστή 27\" QHD 2560x1440",
    "url": "https://shopflix.gr/p/SF-200107895/philips-2000-series-ips-othone-upologiste-27-qhd-2560x1440",
    "price": 142.29,
-   "shopCount": 3,
+   "shopCount": 4,
    "brand": "Philips",
    "chip": "",
    "code": null,
@@ -2314,7 +2313,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-200107895/images/530/1763740328_8721038004472.webp"
   },
@@ -2335,7 +2334,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-200183472/images/530/1764932597_stocktools_3384602.webp"
   },
@@ -2356,7 +2355,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-200263510/images/530/1766151267_stocktools_3322580.webp"
   },
@@ -2377,7 +2376,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-200779011/images/530/1770990430_4711404024702.webp"
   },
@@ -2398,7 +2397,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-200903324/images/530/1772807862_8721038002423.webp"
   },
@@ -2419,7 +2418,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-200944587/images/530/20260408150937_sf_200944587_28965.webp"
   },
@@ -2428,8 +2427,8 @@
    "source": "shopflix",
    "title": "LG UltraGear OLED HDR Gaming Οθόνη Υπολογιστή 27\" QHD 2560x1440 280Hz 0.03ms GTG",
    "url": "https://shopflix.gr/p/SF-200948779/lg-ultragear-oled-hdr-gaming-othone-upologiste-27-qhd-2560x1440-280hz-0-03ms-gtg",
-   "price": 529.9,
-   "shopCount": 12,
+   "price": 529.89,
+   "shopCount": 11,
    "brand": "LG",
    "chip": "",
    "code": null,
@@ -2440,7 +2439,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-200948780/images/530/20260408152143_sf_200948780_30734.webp"
   },
@@ -2461,7 +2460,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-200967196/images/530/20260408171859_sf_200967196_40374.webp"
   },
@@ -2482,7 +2481,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-200984514/images/530/20260408190448_sf_200984514_59566.webp"
   },
@@ -2503,7 +2502,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201048435/images/530/20260408215702_sf_201048435_98833.webp"
   },
@@ -2524,7 +2523,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201061473/images/530/20260408221159_sf_201061473_10216.webp"
   },
@@ -2545,7 +2544,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201067864/images/530/20260408233913_sf_201067864_63455.webp"
   },
@@ -2566,7 +2565,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201117403/images/530/20260409022809_sf_201117403_59890.webp"
   },
@@ -2576,7 +2575,7 @@
    "title": "Samsung Odyssey G6 IPS Gaming Οθόνη Υπολογιστή 27\" QHD 2560x1440 1ms GTG",
    "url": "https://shopflix.gr/p/SF-201132342/samsung-odyssey-g6-ips-gaming-othone-upologiste-27-qhd-2560x1440-1ms-gtg",
    "price": 269.15,
-   "shopCount": 12,
+   "shopCount": 13,
    "brand": "Samsung",
    "chip": "",
    "code": null,
@@ -2587,7 +2586,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201132343/images/530/20260409042526_sf_201132343_64340.webp"
   },
@@ -2597,7 +2596,7 @@
    "title": "LG UltraGear HDR Οθόνη Υπολογιστή 27\" QHD 2560x1440 240Hz 0.03ms GTG",
    "url": "https://shopflix.gr/p/SF-201149598/lg-ultragear-hdr-othone-upologiste-27-qhd-2560x1440-240hz-0-03ms-gtg",
    "price": 398.98,
-   "shopCount": 8,
+   "shopCount": 7,
    "brand": "LG",
    "chip": "",
    "code": null,
@@ -2608,7 +2607,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201149599/images/530/20260409023710_sf_201149599_18816.webp"
   },
@@ -2618,7 +2617,7 @@
    "title": "LG UltraGear WQHD Ultrawide HDR Curved Οθόνη Υπολογιστή 34\" QHD 3440x1440 240Hz 1ms GTG",
    "url": "https://shopflix.gr/p/SF-201151325/lg-ultragear-wqhd-ultrawide-hdr-curved-othone-upologiste-34-qhd-3440x1440-240hz-1ms-gtg",
    "price": 280.43,
-   "shopCount": 12,
+   "shopCount": 11,
    "brand": "LG",
    "chip": "",
    "code": null,
@@ -2629,7 +2628,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201151326/images/530/20260409010735_sf_201151326_88749.webp"
   },
@@ -2650,7 +2649,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201232924/images/530/20260424112317_sf_201232924_25878.webp"
   },
@@ -2671,7 +2670,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201238903/images/530/20260424114657_sf_201238903_30615.webp"
   },
@@ -2692,7 +2691,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201247231/images/530/20260424115938_sf_201247231_50887.webp"
   },
@@ -2713,7 +2712,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201345233/images/530/20260515154958_sf_201345233_76470.webp"
   },
@@ -2734,7 +2733,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201637155/images/530/20260612133033_sf_201637155_51233.webp"
   },
@@ -2755,7 +2754,7 @@
    "panel": "TN",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201638740/images/530/20260612135102_sf_201638740_77638.webp"
   },
@@ -2776,7 +2775,7 @@
    "panel": "TN",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201660587/images/530/20260612152241_sf_201660587_28205.webp"
   },
@@ -2797,7 +2796,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201704145/images/530/20260612184707_sf_201704145_24765.webp"
   },
@@ -2818,7 +2817,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201814054/images/530/20260626153724_sf_201814054_50336.webp"
   },
@@ -2839,7 +2838,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201922171/images/530/20260717134411_sf_201922171_19078.webp"
   },
@@ -2860,7 +2859,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201927569/images/530/20260717134919_sf_201927569_91863.webp"
   },
@@ -2881,7 +2880,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-201963171/images/530/20260717143538_sf_201963171_72692.webp"
   },
@@ -2902,7 +2901,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202027409/images/530/20260717155820_sf_202027409_11690.webp"
   },
@@ -2923,7 +2922,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "drop": 42,
    "image": "https://cdn.shopflix.gr/products/SFA-202027788/images/530/20260717160921_sf_202027788_74818.webp"
@@ -2945,7 +2944,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202084684/images/530/20260717155937_sf_202084684_52407.webp"
   },
@@ -2966,7 +2965,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202084799/images/530/20260717161228_sf_202084799_63466.webp"
   },
@@ -2987,7 +2986,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202126219/images/530/20260731091924_sf_202126219_88242.webp"
   },
@@ -3008,7 +3007,7 @@
    "panel": "IPS",
    "colour": "silver",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202201933/images/530/20260731101328_sf_202201933_50345.webp"
   },
@@ -3029,7 +3028,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202260183/images/530/20260731141703_sf_202260183_79054.webp"
   },
@@ -3050,7 +3049,7 @@
    "panel": null,
    "colour": "silver",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202260426/images/530/20260731121029_sf_202260426_15301.webp"
   },
@@ -3071,7 +3070,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202321452/images/530/20260731110207_sf_202321452_45920.webp"
   },
@@ -3092,7 +3091,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202334803/images/530/20260731141656_sf_202334803_94228.webp"
   },
@@ -3113,7 +3112,7 @@
    "panel": "IPS",
    "colour": "silver",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202335481/images/530/20260731132911_sf_202335481_33692.webp"
   },
@@ -3134,7 +3133,7 @@
    "panel": "IPS",
    "colour": "silver",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202335494/images/530/20260731132902_sf_202335494_92227.webp"
   },
@@ -3155,7 +3154,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202336331/images/530/20260731132907_sf_202336331_30761.webp"
   },
@@ -3176,7 +3175,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202336550/images/530/20260731141406_sf_202336550_61567.webp"
   },
@@ -3185,7 +3184,7 @@
    "source": "shopflix",
    "title": "Philips IPS HDR Οθόνη Υπολογιστή 23.8\" FHD 1920x1080 260Hz 1ms GTG",
    "url": "https://shopflix.gr/p/SF-202338099/philips-ips-hdr-othone-upologiste-23-8-fhd-1920x1080-260hz-1ms-gtg",
-   "price": 99.74,
+   "price": 99.72,
    "shopCount": 16,
    "brand": "Philips",
    "chip": "",
@@ -3197,7 +3196,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202338103/images/530/20260731111135_sf_202338103_80536.webp"
   },
@@ -3206,7 +3205,7 @@
    "source": "shopflix",
    "title": "Dell UltraSharp 52 Ultrawide IPS Curved Οθόνη Υπολογιστή 52\" 6144x2560 5ms GTG",
    "url": "https://shopflix.gr/p/SF-202338247/dell-ultrasharp-52-ultrawide-ips-curved-othone-upologiste-52-6144x2560-5ms-gtg",
-   "price": 2673.28,
+   "price": 2673.26,
    "shopCount": 5,
    "brand": "Dell",
    "chip": "",
@@ -3218,7 +3217,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202338252/images/530/20260731121052_sf_202338252_36518.webp"
   },
@@ -3239,7 +3238,7 @@
    "panel": "IPS",
    "colour": "silver",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202342392/images/530/20260731114954_sf_202342392_66035.webp"
   },
@@ -3260,7 +3259,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202396184/images/530/20260731112921_sf_202396184_48574.webp"
   },
@@ -3281,7 +3280,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202462856/images/530/20260821061949_sf_202462856_58089.webp"
   },
@@ -3302,7 +3301,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202477178/images/530/20260821064145_sf_202477178_59987.webp"
   },
@@ -3323,7 +3322,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202485433/images/530/20260821070116_sf_202485433_31399.webp"
   },
@@ -3333,7 +3332,7 @@
    "title": "Samsung Odyssey G8 IPS HDR Gaming Οθόνη Υπολογιστή 27\" 5120x2880 360Hz 1ms GTG",
    "url": "https://shopflix.gr/p/SF-202486115/samsung-odyssey-g8-ips-hdr-gaming-othone-upologiste-27-5120x2880-360hz-1ms-gtg",
    "price": 670.85,
-   "shopCount": 7,
+   "shopCount": 6,
    "brand": "Samsung",
    "chip": "",
    "code": null,
@@ -3344,7 +3343,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202486115/images/530/20260821071243_sf_202486115_54609.webp"
   },
@@ -3354,7 +3353,7 @@
    "title": "LG UltraGear G5 IPS HDR Gaming Οθόνη Υπολογιστή 27\" FHD 1920x1080 200Hz 1ms GTG",
    "url": "https://shopflix.gr/p/SF-202506399/lg-ultragear-g5-ips-hdr-gaming-othone-upologiste-27-fhd-1920x1080-200hz-1ms-gtg",
    "price": 121.43,
-   "shopCount": 12,
+   "shopCount": 11,
    "brand": "LG",
    "chip": "",
    "code": null,
@@ -3365,7 +3364,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202506399/images/530/20260821070136_sf_202506399_99413.webp"
   },
@@ -3386,7 +3385,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202509452/images/530/20260821075619_sf_202509452_87599.webp"
   },
@@ -3407,7 +3406,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202515270/images/530/20260821073141_sf_202515270_45440.webp"
   },
@@ -3417,7 +3416,7 @@
    "title": "LG UltraGear IPS HDR Gaming Οθόνη Υπολογιστή 32\" QHD 2560x1440 1ms GTG",
    "url": "https://shopflix.gr/p/SF-202533092/lg-ultragear-ips-hdr-gaming-othone-upologiste-32-qhd-2560x1440-1ms-gtg",
    "price": 198.85,
-   "shopCount": 11,
+   "shopCount": 12,
    "brand": "LG",
    "chip": "",
    "code": null,
@@ -3428,7 +3427,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202533092/images/530/20260821083805_sf_202533092_31282.webp"
   },
@@ -3449,7 +3448,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202558056/images/530/20260821072749_sf_202558056_99349.webp"
   },
@@ -3470,7 +3469,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202596938/images/530/20260821071719_sf_202596938_11736.webp"
   },
@@ -3491,7 +3490,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202753480/images/530/20260910150857_sf_202753480_91352.webp"
   },
@@ -3512,7 +3511,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202782977/images/530/20260910155952_sf_202782977_30368.webp"
   },
@@ -3533,7 +3532,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202807548/images/530/20260910170503_sf_202807548_60522.webp"
   },
@@ -3542,7 +3541,7 @@
    "source": "shopflix",
    "title": "Philips 3000 Series IPS Οθόνη Υπολογιστή 23.8\" QHD 2560x1440 4ms GTG",
    "url": "https://shopflix.gr/p/SF-202914480/philips-3000-series-ips-othone-upologiste-23-8-qhd-2560x1440-4ms-gtg",
-   "price": 319.9,
+   "price": 320.9,
    "shopCount": 1,
    "brand": "Philips",
    "chip": "",
@@ -3554,7 +3553,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202914480/images/530/20260924131657_sf_202914480_71996.webp"
   },
@@ -3564,7 +3563,7 @@
    "title": "Gigabyte VA HDR Curved Gaming Οθόνη Υπολογιστή 27\" FHD 1920x1080 200Hz",
    "url": "https://shopflix.gr/p/SF-202923108/gigabyte-va-hdr-curved-gaming-othone-upologiste-27-fhd-1920x1080-200hz",
    "price": 150.88,
-   "shopCount": 4,
+   "shopCount": 5,
    "brand": "Gigabyte",
    "chip": "",
    "code": null,
@@ -3575,7 +3574,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202923108/images/530/20260924132249_sf_202923108_88209.webp"
   },
@@ -3596,7 +3595,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202923678/images/530/20260924135615_sf_202923678_96569.webp"
   },
@@ -3617,7 +3616,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202927364/images/530/20260924135540_sf_202927364_27391.webp"
   },
@@ -3638,7 +3637,7 @@
    "panel": null,
    "colour": "black",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202972223/images/530/20261001104127_grodysseyg427g40bls27bg400euxen535294937.webp"
   },
@@ -3659,7 +3658,7 @@
    "panel": "OLED",
    "colour": "black",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-202972966/images/530/20261007074820_samsung_ls27hg702suxen.webp"
   },
@@ -3680,7 +3679,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-203063442/images/530/00002608552780_sf_203063442_2608552780.webp"
   },
@@ -3690,7 +3689,7 @@
    "title": "Arzopa A1 Pro IPS HDR Φορητή Οθόνη Υπολογιστή 15.6\" FHD 1920x1080 Γκρι",
    "url": "https://shopflix.gr/p/SF-203104549/arzopa-a1-pro-ips-hdr-phorete-othone-upologiste-15-6-fhd-1920x1080-gkri",
    "price": 72.9,
-   "shopCount": 1,
+   "shopCount": 2,
    "brand": "Arzopa",
    "chip": "",
    "code": null,
@@ -3701,7 +3700,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-203104549/images/530/00004460140313_sf_203104549_4460140313.webp"
   },
@@ -3722,7 +3721,7 @@
    "panel": "OLED",
    "colour": "silver",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-203150438/images/530/00001830964993_sf_203150438_1830964993.webp"
   },
@@ -3743,7 +3742,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-203150440/images/530/00003324944192_sf_203150440_3324944192.webp"
   },
@@ -3764,7 +3763,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-203323358/images/530/00005526784566_sf_203323358_5526784566.webp"
   },
@@ -3785,7 +3784,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-203386782/images/530/00009543612128_sf_203386782_9543612128.webp"
   },
@@ -3806,7 +3805,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cdn.shopflix.gr/products/SFA-203405901/images/530/00004723210947_sf_203405901_4723210947.webp"
   },
@@ -7948,7 +7947,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://cts-gr.com/images/detailed/82/262-80-LVM273D.jpg"
   },
@@ -7969,7 +7968,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://external.webstorage.gr/mmimages/image/85/81/26/52/2096313-MONITOR-HPS5-PRO-hero-800x800.jpg"
   },
@@ -7990,7 +7989,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://external.webstorage.gr/mmimages/image/97/24/27/44/2096312-MONITOR-HPS3-PRO-hero-800x800.jpg"
   },
@@ -8011,7 +8010,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://external.webstorage.gr/mmimages/image/47/35/5/33/2096302-HP-hero-800x800.jpg"
   },
@@ -8032,7 +8031,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://external.webstorage.gr/mmimages/image/20/27/96/16/2121982-HP-hero-800x800.jpg"
   },
@@ -8053,7 +8052,7 @@
    "panel": null,
    "colour": "black",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/retro-anti-radiation-uv-protection-computer-glasses-black.jpg"
   },
@@ -8074,7 +8073,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://external.webstorage.gr/mmimages/image/52/21/6/36/2143670-HP-hero-800x800.jpg"
   },
@@ -8095,7 +8094,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://external.webstorage.gr/mmimages/image/79/44/57/25/2163850-HP-B1GM6AA-hero-800x800.jpg"
   },
@@ -8116,7 +8115,7 @@
    "panel": "IPS",
    "colour": "grey",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://www.websupplies.gr/images/thumbs/0361238.jpeg"
   },
@@ -8137,7 +8136,7 @@
    "panel": null,
    "colour": "grey",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "no-identity",
    "image": "https://abertech.gr/image/catalog/data/computing/laptops/scm8-1.jpg"
   },
@@ -8158,7 +8157,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg49/c9p8B/1TPQCM_SX396Y297/1741188332/swit-bm-h215-215-4k-input-fhd-broadcast-monitor.webp"
   },
@@ -8168,7 +8167,7 @@
    "title": "BenQ GW2490T IPS TV Monitor 23.8\" 1920x1080 FHD 100Hz 5ms",
    "url": "https://www.bestprice.gr/item/2159814245/benq-gw2490t-ips-tv-monitor-23-8-1920x1080-fhd-100hz-5ms.html",
    "price": 123.08,
-   "shopCount": 13,
+   "shopCount": 14,
    "brand": "BenQ",
    "chip": "",
    "code": "GW2490T",
@@ -8179,7 +8178,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg37/2mamlD/1SyJXB_SX554Y416/1722334803/benq-gw2490t-ips-tv-monitor-238-1920x1080-fhd-100hz-5ms.webp"
   },
@@ -8188,8 +8187,8 @@
    "source": "bestprice",
    "title": "Lian Li US88v1 Ultrawide IPS Φορητό Monitor 8.8\" 1920x480 60Hz Black",
    "url": "https://www.bestprice.gr/item/2163855693/lian-li-us88v1-ultrawide-ips-forito-monitor-8-8-1920x480-60hz-black.html",
-   "price": 79.49,
-   "shopCount": 9,
+   "price": 79.5,
+   "shopCount": 7,
    "brand": "Lian",
    "chip": "",
    "code": "US88V1",
@@ -8200,7 +8199,7 @@
    "panel": "IPS",
    "colour": "black",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg13/2mrjIh/1W7v94_SX659Y494/1774948342/lian-li-us88v1-ultrawide-ips-forhto-monitor-88-1920x480-60hz-black-4718466020550.webp"
   },
@@ -8221,7 +8220,7 @@
    "panel": "IPS",
    "colour": "white",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg28/2ms5cw/1Wrr8i_SX900Y675/1779699478/lian-li-us88v1-ultrawide-ips-forhto-monitor-88-1920x480-60hz-white-4718466020567.webp"
   },
@@ -8242,7 +8241,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg56/fhVqw/1XpQt1_SX450Y338/1794096543/elo-touch-2295l-lcd-forhto-monitor-215-1920x1080-fhd-60hz-22ms-e146083.webp"
   },
@@ -8263,7 +8262,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg10/2muaca/1XgR46_SX900Y675/1791953890/elo-1590l-monitor-15.webp"
   },
@@ -8284,7 +8283,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg57/2muco9/1XgMeT_SX900Y675/1791935339/elo-2794l-touchscreen-monitor-27-1920x1080-fhd-e493591.webp"
   },
@@ -8305,7 +8304,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg16/fs79S/1Xk80t_SX838Y629/1792733997/ocypus-sigma-es916-ips-monitor-916.webp"
   },
@@ -8326,7 +8325,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg22/2mva6i/1XiZTt_SX308Y231/1792464483/elo-touchsystems-1099l-touchscreen-monitor-10-e354792.webp"
   },
@@ -8347,7 +8346,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg59/2mvW1J/1Xp6j8_SX450Y338/1793919106/elo-touchsystems-2799l-othonh-afhs-27-full-hd-e399052.webp"
   },
@@ -8368,7 +8367,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg3/fi6lR/1Xp5wM_SX468Y351/1793916108/elo-touchsystems-e-series-all-in-one-ypologisths-156-e850098.webp"
   },
@@ -8376,7 +8375,7 @@
    "id": "bestprice:225917066",
    "source": "bestprice",
    "title": "Elo Touch Solutions 3263L - Οθόνη LED 31,5\" Full HD (E343671)",
-   "url": "https://www.bestprice.gr/to/225917066/elo-touch-solutions-3263l-othoni-led-31-5-full-hd.html?seq=160",
+   "url": "https://www.bestprice.gr/to/225917066/elo-touch-solutions-3263l-othoni-led-31-5-full-hd.html?seq=144",
    "price": 1503.15,
    "shopCount": null,
    "brand": "ELO",
@@ -8389,7 +8388,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg10/fhVlE/1Xa7dd_SX631Y473/1790347663/elo-touch-solutions-3263l-othonh-led-315-full-hd.webp"
   },
@@ -8410,7 +8409,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg7/fi6zl/1Xa6pS_SX469Y352/1790344604/elo-touch-systems-othonh-ypologisth-2495l-238in-fhd-lcd-wva-600nit-led-backlight-open-frame-10-touc.webp"
   },
@@ -8431,7 +8430,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg40/fmIB2/1Xetcf_SX511Y383/1791385483/elo-pos-monitor-1093l-10-lcd-led-tft-me-analysh-1280x800-e321195.webp"
   },
@@ -8452,7 +8451,7 @@
    "panel": null,
    "colour": "black",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://bbpcdn.pstatic.gr/bpimg20/fmN9y/1Xeuhl_SX780Y585/1791389643/othonh-ag-sx-19g-19-mayrh-cctv.webp"
   },
@@ -8473,7 +8472,7 @@
    "panel": "IPS",
    "colour": "black",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor"
   },
   {
@@ -8493,7 +8492,7 @@
    "panel": null,
    "colour": "black",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor"
   },
   {
@@ -8513,7 +8512,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor"
   },
   {
@@ -8521,7 +8520,7 @@
    "source": "shopflix",
    "title": "BenQ PVS7 IPS Οθόνη Υπολογιστή 7\" FHD 1920x1200",
    "url": "https://shopflix.gr/p/SF-200059050/benq-pvs7-ips-othone-upologiste-7-fhd-1920x1200",
-   "price": 1096.58,
+   "price": 1132.1,
    "shopCount": 2,
    "brand": "BenQ",
    "chip": "",
@@ -8533,9 +8532,8 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
-   "drop": 5,
    "image": "https://cdn.shopflix.gr/products/SFA-200059050/images/530/1762244217_4718755093975.webp"
   },
   {
@@ -8543,7 +8541,7 @@
    "source": "shopflix",
    "title": "AG Neovo SMQ-4301 IPS Οθόνη Υπολογιστή 43\" 4K 3840x2160 5ms GTG",
    "url": "https://shopflix.gr/p/SF-200077180/ag-neovo-smq-4301-ips-othone-upologiste-43-4k-3840x2160-5ms-gtg",
-   "price": 1488.9,
+   "price": 1483.9,
    "shopCount": 1,
    "brand": "AG",
    "chip": "",
@@ -8555,7 +8553,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://cdn.shopflix.gr/products/SFA-200077180/images/530/1762244222_stocktools_2528109.webp"
   },
@@ -8576,7 +8574,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://cdn.shopflix.gr/products/SFA-200924359/images/530/20260327130905_sf_200924359_51574.webp"
   },
@@ -8597,7 +8595,7 @@
    "panel": "IPS",
    "colour": "white",
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://cdn.shopflix.gr/products/SFA-203366719/images/530/00008933077781_sf_203366719_8933077781.webp"
   },
@@ -8744,7 +8742,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/screen-top-shelf.jpg"
   },
@@ -8765,7 +8763,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://www.websupplies.gr/images/thumbs/0079134.jpeg"
   },
@@ -8786,7 +8784,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/31/7/6/13/1792504-SAMSUNG-VM46B-U-hero-800x800.jpg"
   },
@@ -8807,7 +8805,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/17-inch-hp-1740-hstnd-2b03-flat-panel-display-tft-17-1280-x.jpg"
   },
@@ -8828,7 +8826,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/acer-al1703-sm.jpg"
   },
@@ -8849,7 +8847,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/20/66/7/64/1958912-SAMSUNG-8806095208848-hero-800x800.jpg"
   },
@@ -8870,7 +8868,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/28/68/97/77/1770512-LG-110UM5J-hero-800x800.jpg"
   },
@@ -8891,7 +8889,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/7/31/34/18/1832733-LED-MON-SIG-LG-75TR3DK-BG-hero-800x800.jpg"
   },
@@ -8912,7 +8910,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/0/17/15/84/1382820-264x264-800x800.jpg"
   },
@@ -8933,7 +8931,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/96/82/9/31/MRK3076232-ELO-0843173100050-hero-800x800.jpg"
   },
@@ -8954,7 +8952,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://www.websupplies.gr/images/thumbs/0254916.jpeg"
   },
@@ -8975,7 +8973,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/24-eizo-fp-2400w-4995047014324.jpg"
   },
@@ -8996,7 +8994,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/1/60/69/74/2015415-SAMSUNG-hero-800x800.jpg"
   },
@@ -9017,7 +9015,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/13/90/78/69/1958911-SAMSUNG-hero-800x800.jpg"
   },
@@ -9038,7 +9036,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/50/7/65/27/2042788-LED-MON-SIGN-SAMSUNG-105QP105DX-5K-500N-hero-800x800.jpg"
   },
@@ -9059,7 +9057,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/41/28/48/35/2042775-LED-MON-SIGN.-SAMSUNG46-OM46B-OUT-4000N-hero-800x800.jpg"
   },
@@ -9080,7 +9078,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/2/43/43/97/2042776-LED-MON-SIGNAGE-SAMSUNG75-QM75C-500N-hero-800x800.jpg"
   },
@@ -9101,7 +9099,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/4/96/38/5/2042784-LED-MON-SIG-SAMSUNG-55OM55N-DS-hero-800x800.jpg"
   },
@@ -9122,7 +9120,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/45/21/2/20/1863899-LED-SIGNAGE-SAMSUNG-+FLIP-PRO-hero-800x800.jpg"
   },
@@ -9143,7 +9141,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/63/52/10/54/1641303-SAMSUNG-8806092748811-hero-800x800.jpg"
   },
@@ -9164,7 +9162,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/powertech-samsung-lcd-14v-3a-6-5-x-4-4-x-10mm-48watt-pt-135.jpg"
   },
@@ -9185,7 +9183,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://cts-gr.com/images/detailed/101/262-80-LVME65.jpg"
   },
@@ -9206,7 +9204,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://sonycenters.gr/images/detailed/25/50-1.jpg"
   },
@@ -9227,7 +9225,7 @@
    "panel": "IPS",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://www.websupplies.gr/images/thumbs/0336354.jpeg"
   },
@@ -9248,7 +9246,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/84/1/80/88/MRK3106762-LENOVO-198156603623-hero-800x800.jpg"
   },
@@ -9269,7 +9267,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/69/38/64/90/1332783-LG-hero-800x800.jpg"
   },
@@ -9290,7 +9288,7 @@
    "panel": "OLED",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/57/72/86/81/1308346-LG-hero-800x800.jpg"
   },
@@ -9311,7 +9309,7 @@
    "panel": "VA",
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "not-monitor",
    "image": "https://external.webstorage.gr/mmimages/image/13/73/76/91/2180787-Lenovo-64ACGAT1EK-hero-800x800.jpg"
   },
@@ -9332,7 +9330,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "used",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/tft-nec-lcd2170nx-u.jpg"
   },
@@ -9353,7 +9351,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "used",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/samsung-syncmaster-b1940mr-lcd-monitor-19-reburbished.jpg"
   },
@@ -9374,9 +9372,30 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "used",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/dell-ultrasharp-u2211h-21-5-ref.jpg"
+  },
+  {
+   "id": "snif:42452375",
+   "source": "snif",
+   "title": "Cash Machine Tm-1501c | 15” Touch Monitor Refurbhished",
+   "url": "https://www.snif.gr/showproduct/42452375/cash-machine-tm-1501c---15----touch-monitor-refurbhi",
+   "price": 139.0,
+   "shopCount": null,
+   "brand": "Cash",
+   "chip": "",
+   "code": "TM1501C",
+   "size": 15.0,
+   "height": null,
+   "width": null,
+   "hz": null,
+   "panel": null,
+   "colour": null,
+   "revision": null,
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
+   "reject": "used",
+   "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/cash-machine-tm-1501c-15-touch-monitor-refurbhished.jpg"
   },
   {
    "id": "snif:42916162",
@@ -9395,7 +9414,7 @@
    "panel": null,
    "colour": null,
    "revision": null,
-   "scrapedAt": "2026-11-13T20:29:16+00:00",
+   "scrapedAt": "2026-11-14T07:26:26+00:00",
    "reject": "used",
    "image": "https://www.easytechnology.gr/images/informationtechnologyandtablet/computers/dell-e173fp-tft-lcd-17-1280-x-1024-grade-a-bulk.jpg"
   }
