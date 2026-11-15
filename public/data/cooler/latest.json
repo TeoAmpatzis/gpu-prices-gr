@@ -26547,8 +26547,8 @@
    "radiator": null,
    "rgb": false,
    "scrapedAt": "2026-11-15T19:23:58+00:00",
-   "sockets": null,
-   "heightMm": null,
+   "sockets": "AM4,AM5,LGA1150,LGA1151,LGA1155,LGA1200,LGA1700,LGA1851",
+   "heightMm": 156.0,
    "shipping": 6.0,
    "total": 48.76,
    "merchant": "Mg Manager"
