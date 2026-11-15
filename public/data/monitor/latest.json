@@ -41502,7 +41502,31 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4710483937576",
+   "pgSize": 31.5,
+   "pgWidth": 2560,
+   "pgHeight": 1440,
+   "pgHz": 165,
+   "pgResponseMs": 1.0,
+   "pgNits": 550,
+   "pgContrast": 3000,
+   "pgPanel": "VA",
+   "pgAspect": "16:9",
+   "pgHdr": true,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "FreeSync",
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgEnergy": "F",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:40993229",
@@ -118275,7 +118299,26 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "pgSize": 23.8,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgHz": 60,
+   "pgResponseMs": 5.0,
+   "pgNits": 250,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgConnectors": [
+    "HDMI",
+    "VGA",
+    "DisplayPort"
+   ],
+   "pgEnergy": "E",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:27124056",
@@ -222811,7 +222854,32 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "6974065452279",
+   "pgSize": 22.0,
+   "pgWidth": 2560,
+   "pgHeight": 1440,
+   "pgHz": 60,
+   "pgResponseMs": 3.0,
+   "pgNits": 400,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": true,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "75x75",
+   "pgConnectors": [
+    "USB",
+    "USB-C",
+    "Mini HDMI"
+   ],
+   "pgFeatures": [
+    "Touchscreen",
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgEnergy": "E",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:67948828",
@@ -236488,7 +236556,32 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4948570124145",
+   "pgSize": 23.8,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgHz": 100,
+   "pgResponseMs": 1.0,
+   "pgNits": 250,
+   "pgContrast": 1300,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία",
+    "USB Hub"
+   ],
+   "pgEnergy": "E",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:65467196",
@@ -236572,7 +236665,33 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4948570121465",
+   "pgSize": 25.0,
+   "pgWidth": 1920,
+   "pgHeight": 1200,
+   "pgHz": 75,
+   "pgResponseMs": 4.0,
+   "pgNits": 300,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:10",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "VGA",
+    "USB",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία",
+    "USB Hub"
+   ],
+   "pgEnergy": "F",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "shopflix:SF-102770194",
@@ -236655,7 +236774,31 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4948570117307",
+   "pgSize": 27.0,
+   "pgWidth": 3840,
+   "pgHeight": 2160,
+   "pgHz": 60,
+   "pgResponseMs": 4.0,
+   "pgNits": 350,
+   "pgContrast": 1300,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgEnergy": "F",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "bestprice:2160630549",
@@ -236678,7 +236821,35 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4948570124992",
+   "pgSize": 27.0,
+   "pgWidth": 1920,
+   "pgHeight": 1080,
+   "pgHz": 100,
+   "pgResponseMs": 1.0,
+   "pgNits": 300,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "USB-C",
+    "DisplayPort",
+    "Ethernet"
+   ],
+   "pgFeatures": [
+    "FreeSync",
+    "Ενσωματωμένα Ηχεία",
+    "USB Hub"
+   ],
+   "pgEnergy": "E",
+   "pgColour": "Άσπρο"
   },
   {
    "id": "shopflix:SF-105449995",
@@ -236742,7 +236913,35 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4948570125036",
+   "pgSize": 27.0,
+   "pgWidth": 2560,
+   "pgHeight": 1440,
+   "pgHz": 100,
+   "pgResponseMs": 1.0,
+   "pgNits": 300,
+   "pgContrast": 1300,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "USB-C",
+    "DisplayPort",
+    "Ethernet"
+   ],
+   "pgFeatures": [
+    "FreeSync",
+    "Ενσωματωμένα Ηχεία",
+    "USB Hub"
+   ],
+   "pgEnergy": "E",
+   "pgColour": "Άσπρο"
   },
   {
    "id": "skroutz:58040321",
@@ -236805,7 +237004,30 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4948570125111",
+   "pgSize": 27.0,
+   "pgWidth": 2560,
+   "pgHeight": 1440,
+   "pgHz": 100,
+   "pgResponseMs": 1.0,
+   "pgNits": 300,
+   "pgContrast": 1300,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία",
+    "USB Hub"
+   ],
+   "pgColour": "Άσπρο"
   },
   {
    "id": "bestprice:2160129391",
@@ -236828,7 +237050,34 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4948570123810",
+   "pgSize": 27.0,
+   "pgWidth": 3840,
+   "pgHeight": 2160,
+   "pgHz": 60,
+   "pgResponseMs": 4.0,
+   "pgNits": 350,
+   "pgContrast": 1300,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "USB-C",
+    "DisplayPort",
+    "Ethernet"
+   ],
+   "pgFeatures": [
+    "FreeSync",
+    "Ενσωματωμένα Ηχεία"
+   ],
+   "pgEnergy": "F",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:57283879",
@@ -236891,7 +237140,34 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4948570121342",
+   "pgSize": 31.5,
+   "pgWidth": 3840,
+   "pgHeight": 2160,
+   "pgHz": 60,
+   "pgResponseMs": 4.0,
+   "pgNits": 350,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": true,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "USB-C",
+    "DisplayPort",
+    "Ethernet"
+   ],
+   "pgFeatures": [
+    "Ενσωματωμένα Ηχεία",
+    "USB Hub"
+   ],
+   "pgEnergy": "G",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "shopflix:SF-102770153",
@@ -236954,7 +237230,35 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4948570124435",
+   "pgSize": 32.0,
+   "pgWidth": 2560,
+   "pgHeight": 1440,
+   "pgHz": 100,
+   "pgResponseMs": 1.0,
+   "pgNits": 350,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "16:9",
+   "pgHdr": false,
+   "pgUltrawide": false,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "USB-C",
+    "DisplayPort",
+    "Ethernet"
+   ],
+   "pgFeatures": [
+    "FreeSync",
+    "Ενσωματωμένα Ηχεία",
+    "USB Hub"
+   ],
+   "pgEnergy": "F",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "shopflix:SF-200638421",
@@ -237017,7 +237321,33 @@
    "reject": null,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "gtin": "4948570125609",
+   "pgSize": 34.0,
+   "pgWidth": 3440,
+   "pgHeight": 1440,
+   "pgHz": 120,
+   "pgResponseMs": 1.0,
+   "pgNits": 400,
+   "pgContrast": 1000,
+   "pgPanel": "IPS",
+   "pgAspect": "21:9",
+   "pgHdr": true,
+   "pgUltrawide": true,
+   "pgCurved": false,
+   "pgVesa": "100x100",
+   "pgConnectors": [
+    "HDMI",
+    "USB",
+    "DisplayPort"
+   ],
+   "pgFeatures": [
+    "FreeSync",
+    "Ενσωματωμένα Ηχεία",
+    "USB Hub"
+   ],
+   "pgEnergy": "F",
+   "pgColour": "Μαύρο"
   },
   {
    "id": "skroutz:62885819",
