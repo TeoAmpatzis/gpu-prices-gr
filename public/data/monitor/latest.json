@@ -7,7 +7,7 @@
    "updatedAt": "2026-11-15T21:58:32+00:00"
   },
   "bestprice": {
-   "count": 2416,
+   "count": 2415,
    "ok": true,
    "updatedAt": "2026-11-16T01:24:27+00:00"
   },
@@ -138119,29 +138119,6 @@
    "chip": "LG 45GX950AB",
    "code": "45GX950AB",
    "size": 44.5,
-   "height": 2160,
-   "width": 5120,
-   "hz": 165,
-   "panel": "OLED",
-   "colour": null,
-   "revision": null,
-   "scrapedAt": "2026-11-16T01:24:27+00:00",
-   "reject": null,
-   "shipping": null,
-   "total": null,
-   "merchant": null
-  },
-  {
-   "id": "bestprice:2164454754",
-   "source": "bestprice",
-   "title": "LG UltraGear 45GX950B-B Ultrawide OLED HDR Curved Gaming Monitor 445\" 5120x2160 (WUHD 5K) 165Hz 0.03ms",
-   "url": "https://www.bestprice.gr/item/2164454754/lg-ultragear-45gx950b-b-ultrawide-oled-hdr-curved-gaming-monitor-445-5120x2160-165hz-0-03ms.html",
-   "price": 1681.11,
-   "shopCount": 2,
-   "brand": "LG",
-   "chip": "LG 45GX950BB",
-   "code": "45GX950BB",
-   "size": null,
    "height": 2160,
    "width": 5120,
    "hz": 165,
