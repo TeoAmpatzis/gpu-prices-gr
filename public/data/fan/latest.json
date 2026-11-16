@@ -29745,8 +29745,8 @@
    "scrapedAt": "2026-11-16T22:52:50+00:00",
    "fanType": null,
    "connector": "4-pin PWM",
-   "airflowCfm": null,
-   "pressureMm": null,
+   "airflowCfm": 71.3,
+   "pressureMm": 4.16,
    "shipping": 4.0,
    "total": 166.33,
    "merchant": "MobileHub"
@@ -29767,8 +29767,8 @@
    "scrapedAt": "2026-11-16T22:52:50+00:00",
    "fanType": null,
    "connector": "4-pin PWM",
-   "airflowCfm": null,
-   "pressureMm": null,
+   "airflowCfm": 71.3,
+   "pressureMm": 4.16,
    "shipping": null,
    "total": null,
    "merchant": null

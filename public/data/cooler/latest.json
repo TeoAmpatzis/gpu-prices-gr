@@ -20275,8 +20275,8 @@
    "radiator": null,
    "rgb": false,
    "scrapedAt": "2026-11-16T22:32:04+00:00",
-   "sockets": null,
-   "heightMm": null,
+   "sockets": "LGA1700,LGA1851",
+   "heightMm": 70.0,
    "shipping": 4.0,
    "total": 19.6,
    "merchant": "Computer Data"
@@ -28399,8 +28399,8 @@
    "radiator": null,
    "rgb": false,
    "scrapedAt": "2026-11-16T22:32:04+00:00",
-   "sockets": null,
-   "heightMm": null,
+   "sockets": "AM2,AM2+,AM3,AM3+,AM4,AM5,FM1,FM2,FM2+,LGA1150,LGA1151,LGA1155,LGA1156,LGA1200,LGA2011,LGA2011-3,LGA2066,LGA775",
+   "heightMm": 164.0,
    "shipping": 4.87,
    "total": 116.62,
    "merchant": "3dMall"
