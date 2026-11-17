@@ -7,10 +7,11 @@
 ## Τι είναι live
 - Το **v2 είναι το `main`** (`package.json` έκδοση 2.0.0) και είναι live στο https://gpu-prices-gr.vercel.app. Κάθε push στο `main` κάνει deploy στο Vercel (Hobby). Το v1 υπάρχει μόνο στα παλιά commits.
 - Repo: `TeoAmpatzis/gpu-prices-gr` (δημόσιο). Φωτογραφίες προϊόντων: `TeoAmpatzis/builddraft-images` (δημόσιο, GitHub Pages, σερβίρονται από το `/img/`).
-- Διευθύνσεις: `/<κατηγορία>` για `gpu cpu mobo ram storage psu case fan cooler monitor mouse`, `/<κατηγορία>/<slug>` για κάθε προϊόν, `/builder`, `/parts`, `/compare`, `/search`, `/about`, `/contact`, `/privacy`, `/how-prices`. Οι παλιοί σύνδεσμοι `/#ram?…` ανακατευθύνονται.
+- Διευθύνσεις: `/<κατηγορία>` για `gpu cpu mobo ram storage psu case fan cooler monitor mouse headphones mousepad`, `/<κατηγορία>/<slug>` για κάθε προϊόν, `/builder`, `/parts`, `/compare`, `/search`, `/about`, `/contact`, `/privacy`, `/how-prices`. Οι παλιοί σύνδεσμοι `/#ram?…` ανακατευθύνονται.
 - Μόνο σκούρο θέμα. Κάθε κείμενο σε ελληνικά και αγγλικά.
 - Ποντίκια (mouse): live από 2026-11-12. Πηγές: και οι πέντε (απόφαση Teo 2026-11-12)· Skroutz, e-shop.gr και Shopflix δίνουν μόνο λίστες. Το ίδιο ισχύει για τις οθόνες. Δεν μπαίνουν ποτέ στο PC Builder. Φίλτρα μόνο σε ό,τι δηλώνει μια πηγή (άγνωστο DPI στο 75% των μοντέλων)· το χρώμα είναι προσφορά του ίδιου μοντέλου, όχι άλλο μοντέλο.
 - Οθόνες (monitors): live από 2026-11-11. Οι φωτογραφίες τους κατεβαίνουν από το job του `builddraft-images` (πρώτο run 2026-11-11).
+- Mousepads: live από 2026-11-17 στο `/mousepad` (έγκριση Teo). Και οι πέντε πηγές· 3.432 μοντέλα, 5.452 καταχωρίσεις (δεδομένα 2026-11-16). Τα print-on-demand απορρίπτονται (`custom-print`). Λεπτομέρειες και τι μένει ανοιχτό: [MOUSEPAD_DESIGN.md](peripherals/MOUSEPAD_DESIGN.md) ενότητα 16.
 
 ## Πώς ενημερώνονται τα δεδομένα
 | Workflow | Τι κάνει | Πότε |

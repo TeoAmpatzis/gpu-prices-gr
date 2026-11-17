@@ -28,13 +28,13 @@ export const REGISTRY = {
   case: part('case'),
   fan: part('fan'),
   cooler: part('cooler'),
-  // Peripherals: never a builder part. Hidden until the monitor data passes its gates (FINAL_PLAN Phase 2).
+  // Peripherals: never a builder part. Monitors public since 2026-11-11, mice 2026-11-12.
   monitor: { domain: 'peripherals', enabled: true, visible: true },
   mouse: { domain: 'peripherals', enabled: true, visible: true },
-  // Headphones: disabled until the owner approves the first collection (docs/peripherals/HEADPHONES_DESIGN.md).
+  // Headphones: public since 2026-11-14 (docs/peripherals/HEADPHONES_DESIGN.md).
   headphones: { domain: 'peripherals', enabled: true, visible: true },
-  // Mousepads: disabled until the owner approves the first collection (docs/peripherals/MOUSEPAD_DESIGN.md).
-  mousepad: { domain: 'peripherals', enabled: false, visible: false },
+  // Mousepads: public since 2026-11-17 with the owner's approval (docs/peripherals/MOUSEPAD_DESIGN.md).
+  mousepad: { domain: 'peripherals', enabled: true, visible: true },
 } as const satisfies Record<string, CategoryEntry>;
 
 export type Category = keyof typeof REGISTRY;

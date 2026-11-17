@@ -58,7 +58,8 @@ describe('key specs', () => {
         // Mice: the sources' list pages state DPI, polling rate and buttons for gaming mice only (unknown for about
         // three models in four, docs/peripherals/MOUSE_DATA_REVIEW.md), so most mice show fewer than four specs.
         // Headphones: the shops' titles state a type and a connection, other specs are known for few models (HEADPHONES_DATA_REVIEW.md section 4).
-        if (cat !== 'mouse' && cat !== 'headphones') expect(sufficient).toBeGreaterThan(models.length / 2);
+        // Mousepads: a title states a size at most, other specs are known for under 4% of the listings (MOUSEPAD_DATA_REVIEW.md).
+        if (cat !== 'mouse' && cat !== 'headphones' && cat !== 'mousepad') expect(sufficient).toBeGreaterThan(models.length / 2);
       });
     }
 

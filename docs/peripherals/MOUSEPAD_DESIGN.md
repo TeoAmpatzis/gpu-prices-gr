@@ -176,3 +176,9 @@ Checked and left as they are:
 The rule (`Category.photo_agree`, mousepad only; `main.photo_group`): listings that state a different size, or lengths more than 8% apart, disagree. The largest group of agreeing listings gives the photo; a listing that states nothing is left out of a split model; a tie gives no photo (the category icon). `images.py` stores the chosen URL (`u`) and, for such a category, fetches again a stored photo that is no longer a candidate and removes the photo of a model with none. The model's own `widthMm` has the same fault; fixing identity (a different length = a different model) would change model ids and history and is left open.
 
 Other categories are untouched. Listings of a model disagree on a stated spec in 18 of 2,669 mice (mostly DPI typos), 278 of 2,229 monitors (31.5 vs 32 inch: rounding) and 897 of 5,526 headphones (form factor and connection are classification noise), so a rule there needs its own measure first.
+
+## 16. Release (2026-11-17)
+
+The owner approved publishing. `REGISTRY.mousepad` is `enabled:true, visible:true`; `MIN_MODELS.mousepad` = 1716, half of the 3,432 models (5,452 listings) the build makes from the data of 2026-11-16 (all five sources). Photos: 3,291 models in the images index, every model with a candidate. `.ci-data-ref` moved to a data commit that holds the mousepad files, so CI does not fail on "mousepad: no listings".
+
+Known at launch: deals and all-time lows start empty (they need 10 and 60 days of history); shipping totals cover about 6% of listings (BestPrice only, as for the other peripherals); the colour picker of section 6 exists for mice only and was left out of this release.

@@ -24,8 +24,8 @@ const filters = (o: Partial<Filters>): Filters => ({ ...defaultFilters(cfg.group
 const ids = (all: MousepadListing[], f: Partial<Filters>) => filterCatalogue(all, filters(f), cfg).map((p) => p.listing.id).sort();
 
 describe('mousepad registry entry', () => {
-  it('is a peripheral, outside the builder, disabled and hidden', () => {
-    expect(REGISTRY.mousepad).toEqual({ domain: 'peripherals', enabled: false, visible: false });
+  it('is a peripheral, outside the builder, enabled and visible', () => {
+    expect(REGISTRY.mousepad).toEqual({ domain: 'peripherals', enabled: true, visible: true });
     expect(slotOf('mousepad')).toBeNull();
   });
 });
