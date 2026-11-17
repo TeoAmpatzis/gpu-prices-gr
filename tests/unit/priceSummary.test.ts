@@ -87,7 +87,8 @@ describe('historyLow (the marked all-time low; same rule as allTimeLow)', () => 
     expect(historyLow(series(longDays), { d: '2026-10-01', low: 70, since: '2025-01-01' })).toMatchObject({ source: 'skroutz', date: null });
   });
   it('needs 60 days of history', () => {
-    expect(historyLow(series(Array(30).fill(100)), undefined)).toBeNull();
+    // ends today: historyLow measures the 60 days from Date.now(), so a fixed end date expires
+    expect(historyLow(series(Array(30).fill(100), new Date().toISOString().slice(0, 10)), undefined)).toBeNull();
   });
   it('a dip is ignored', () => {
     const prices = Array(80).fill(100);
