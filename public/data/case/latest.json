@@ -58952,7 +58952,92 @@
    "usbCFront": true,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "radiators": [
+    {
+     "pos": "front",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    },
+    {
+     "pos": "top",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    },
+    {
+     "pos": "rear",
+     "sizes": [
+      120,
+      140
+     ]
+    },
+    {
+     "pos": "side",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    }
+   ],
+   "fanMounts": [
+    {
+     "n": 3,
+     "pos": "front",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "front",
+     "size": 140
+    },
+    {
+     "n": 2,
+     "pos": "front",
+     "size": 200
+    },
+    {
+     "n": 3,
+     "pos": "top",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "top",
+     "size": 140
+    },
+    {
+     "n": 1,
+     "pos": "rear",
+     "size": 120
+    },
+    {
+     "n": 1,
+     "pos": "rear",
+     "size": 140
+    },
+    {
+     "n": 3,
+     "pos": "side",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "side",
+     "size": 140
+    },
+    {
+     "n": 3,
+     "pos": "bottom",
+     "size": 120
+    }
+   ]
   },
   {
    "id": "shopflix:SF-202498108",
@@ -58979,7 +59064,92 @@
    "usbCFront": true,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "radiators": [
+    {
+     "pos": "front",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    },
+    {
+     "pos": "top",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    },
+    {
+     "pos": "rear",
+     "sizes": [
+      120,
+      140
+     ]
+    },
+    {
+     "pos": "side",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    }
+   ],
+   "fanMounts": [
+    {
+     "n": 3,
+     "pos": "front",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "front",
+     "size": 140
+    },
+    {
+     "n": 2,
+     "pos": "front",
+     "size": 200
+    },
+    {
+     "n": 3,
+     "pos": "top",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "top",
+     "size": 140
+    },
+    {
+     "n": 1,
+     "pos": "rear",
+     "size": 120
+    },
+    {
+     "n": 1,
+     "pos": "rear",
+     "size": 140
+    },
+    {
+     "n": 3,
+     "pos": "side",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "side",
+     "size": 140
+    },
+    {
+     "n": 3,
+     "pos": "bottom",
+     "size": 120
+    }
+   ]
   },
   {
    "id": "eshop:PER.645615",
@@ -59771,7 +59941,92 @@
    "usbCFront": true,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "radiators": [
+    {
+     "pos": "front",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    },
+    {
+     "pos": "top",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    },
+    {
+     "pos": "rear",
+     "sizes": [
+      120,
+      140
+     ]
+    },
+    {
+     "pos": "side",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    }
+   ],
+   "fanMounts": [
+    {
+     "n": 3,
+     "pos": "front",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "front",
+     "size": 140
+    },
+    {
+     "n": 2,
+     "pos": "front",
+     "size": 200
+    },
+    {
+     "n": 3,
+     "pos": "top",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "top",
+     "size": 140
+    },
+    {
+     "n": 1,
+     "pos": "rear",
+     "size": 120
+    },
+    {
+     "n": 1,
+     "pos": "rear",
+     "size": 140
+    },
+    {
+     "n": 3,
+     "pos": "side",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "side",
+     "size": 140
+    },
+    {
+     "n": 3,
+     "pos": "bottom",
+     "size": 120
+    }
+   ]
   },
   {
    "id": "shopflix:SF-202557124",
@@ -59798,7 +60053,92 @@
    "usbCFront": true,
    "shipping": null,
    "total": null,
-   "merchant": null
+   "merchant": null,
+   "radiators": [
+    {
+     "pos": "front",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    },
+    {
+     "pos": "top",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    },
+    {
+     "pos": "rear",
+     "sizes": [
+      120,
+      140
+     ]
+    },
+    {
+     "pos": "side",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    }
+   ],
+   "fanMounts": [
+    {
+     "n": 3,
+     "pos": "front",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "front",
+     "size": 140
+    },
+    {
+     "n": 2,
+     "pos": "front",
+     "size": 200
+    },
+    {
+     "n": 3,
+     "pos": "top",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "top",
+     "size": 140
+    },
+    {
+     "n": 1,
+     "pos": "rear",
+     "size": 120
+    },
+    {
+     "n": 1,
+     "pos": "rear",
+     "size": 140
+    },
+    {
+     "n": 3,
+     "pos": "side",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "side",
+     "size": 140
+    },
+    {
+     "n": 3,
+     "pos": "bottom",
+     "size": 120
+    }
+   ]
   },
   {
    "id": "bestprice:2164141929",
@@ -59825,7 +60165,92 @@
    "usbCFront": true,
    "shipping": 24.0,
    "total": 215.96,
-   "merchant": "MobileHub"
+   "merchant": "MobileHub",
+   "radiators": [
+    {
+     "pos": "front",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    },
+    {
+     "pos": "top",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    },
+    {
+     "pos": "rear",
+     "sizes": [
+      120,
+      140
+     ]
+    },
+    {
+     "pos": "side",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    }
+   ],
+   "fanMounts": [
+    {
+     "n": 3,
+     "pos": "front",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "front",
+     "size": 140
+    },
+    {
+     "n": 2,
+     "pos": "front",
+     "size": 200
+    },
+    {
+     "n": 3,
+     "pos": "top",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "top",
+     "size": 140
+    },
+    {
+     "n": 1,
+     "pos": "rear",
+     "size": 120
+    },
+    {
+     "n": 1,
+     "pos": "rear",
+     "size": 140
+    },
+    {
+     "n": 3,
+     "pos": "side",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "side",
+     "size": 140
+    },
+    {
+     "n": 3,
+     "pos": "bottom",
+     "size": 120
+    }
+   ]
   },
   {
    "id": "bestprice:2164141930",
@@ -59852,7 +60277,92 @@
    "usbCFront": true,
    "shipping": 24.0,
    "total": 244.08,
-   "merchant": "MobileHub"
+   "merchant": "MobileHub",
+   "radiators": [
+    {
+     "pos": "front",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    },
+    {
+     "pos": "top",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    },
+    {
+     "pos": "rear",
+     "sizes": [
+      120,
+      140
+     ]
+    },
+    {
+     "pos": "side",
+     "sizes": [
+      240,
+      280,
+      360
+     ]
+    }
+   ],
+   "fanMounts": [
+    {
+     "n": 3,
+     "pos": "front",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "front",
+     "size": 140
+    },
+    {
+     "n": 2,
+     "pos": "front",
+     "size": 200
+    },
+    {
+     "n": 3,
+     "pos": "top",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "top",
+     "size": 140
+    },
+    {
+     "n": 1,
+     "pos": "rear",
+     "size": 120
+    },
+    {
+     "n": 1,
+     "pos": "rear",
+     "size": 140
+    },
+    {
+     "n": 3,
+     "pos": "side",
+     "size": 120
+    },
+    {
+     "n": 2,
+     "pos": "side",
+     "size": 140
+    },
+    {
+     "n": 3,
+     "pos": "bottom",
+     "size": 120
+    }
+   ]
   },
   {
    "id": "skroutz:63299670",
