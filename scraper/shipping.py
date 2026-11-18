@@ -101,7 +101,7 @@ def _usable(entry: dict | None, listing: dict) -> bool:
 
 def _refresh(source: str, todo: list[dict], cache: dict) -> int:
     s = http.session()
-    done = 0
+    done = fails = 0
     for i, l in enumerate(todo):
         if i:
             http.polite_sleep()
@@ -109,7 +109,12 @@ def _refresh(source: str, todo: list[dict], cache: dict) -> int:
             offer = FETCHERS[source](s, l["url"])
         except Exception:
             traceback.print_exc()
+            fails += 1
+            if fails >= 3:  # shortcut: 3 in a row = source is down, leave the rest to the next run
+                print(f"  shipping {source}: 3 failures in a row, stopping")
+                break
             continue
+        fails = 0
         cache[l["id"]] = {**(offer or {"total": None}), "listingPrice": l["price"], "checked": now_iso()}
         done += 1
     return done
